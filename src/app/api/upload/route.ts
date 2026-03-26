@@ -22,15 +22,34 @@ export async function POST(req: Request) {
     const ext = file.name.split('.').pop() || "jpg";
     const filename = `${cleanPrefix}${uniqueSuffix}.${ext}`;
     
-    // Write to public/uploads
-    const uploadDir = path.join(process.cwd(), "public", "uploads");
-    await mkdir(uploadDir, { recursive: true });
-    
-    const filepath = path.join(uploadDir, filename);
-    await writeFile(filepath, buffer);
+    // Upload directly to Supabase Storage (Vercel-safe)
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+    if (!supabaseUrl || !supabaseKey) {
+      throw new Error("Supabase Storage ayarları eksik. .env dosyanızı kontrol edin.");
+    }
+
+    const uploadRes = await fetch(`${supabaseUrl}/storage/v1/object/uploads/${filename}`, {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${supabaseKey}`,
+        "apikey": supabaseKey,
+        "Content-Type": file.type || "application/octet-stream",
+      },
+      body: buffer
+    });
+
+    if (!uploadRes.ok) {
+      const errorText = await uploadRes.text();
+      console.error("Supabase Storage error:", errorText);
+      throw new Error("Görsel Supabase'e yüklenemedi.");
+    }
+
+    const publicUrl = `${supabaseUrl}/storage/v1/object/public/uploads/${filename}`;
 
     // Return the public URL
-    return NextResponse.json({ success: true, url: `/uploads/${filename}` });
+    return NextResponse.json({ success: true, url: publicUrl });
   } catch (error) {
     console.error("Upload error:", error);
     return NextResponse.json({ success: false, error: "Yükleme sırasında sunucu hatası oluştu" }, { status: 500 });

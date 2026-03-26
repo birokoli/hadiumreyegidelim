@@ -1,0 +1,139 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Order {
+  id        String   @id @default(cuid())
+  pax       Int
+  totalUSD  Float
+  status    String   @default("PENDING")
+  
+  flight    String?  // JSON string
+  hotel     String?  // JSON string
+  transfer  String?  // JSON string
+  guide     String?  // JSON string
+  extras    String?  // JSON string
+
+  contactInfo String? // JSON string: name, email, phone
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Setting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Service {
+  id          String   @id @default(cuid())
+  type        String   // FLIGHT, HOTEL, TRANSFER, EXTRA
+  name        String
+  description String?
+  price       Float
+  extraData   String?  // JSON for additional info
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Guide {
+  id          String   @id @default(cuid())
+  slug        String?  @unique
+  name        String
+  title       String
+  price       Float
+  image       String?
+  biography   String?
+  quote       String?
+  youtubeUrl  String?
+  expertise   String?  // JSON string array for ["Siyer", "İslam Tarihi"]
+  publications String? // JSON string array for publications
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Category {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  description String?
+  posts       Post[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Author {
+  id        String   @id @default(cuid())
+  name      String
+  bio       String?
+  image     String?
+  expertise String?
+  linkedin  String?
+  twitter   String?
+  posts     Post[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Post {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  description String?  
+  content     String   
+  keywords    String?
+  author      String   @default("Admin")
+  authorId    String?
+  authorModel Author?  @relation(fields: [authorId], references: [id])
+  imageUrl    String?  
+  published   Boolean  @default(false)
+  category    Category? @relation(fields: [categoryId], references: [id])
+  categoryId  String?
+  focusKeyword String?
+  seoScore    Int?
+  personalExperience String?
+  references  String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Package {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  description String
+  price       Float
+  currency    String   @default("USD")
+  duration    String
+  imageUrl    String?
+  gallery     String?  // JSON string array for up to 5 additional images
+  includes    String?  // JSON string array for included features
+  isPopular   Boolean  @default(false)
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Hotel {
+  id             String   @id @default(cuid())
+  name           String
+  city           String   @default("Mekke (Makkah)") 
+  price          Float
+  stars          Int      @default(5)
+  distanceMeters Int      @default(100)
+  distanceText   String
+  description    String?
+  images         String?  // JSON string
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}

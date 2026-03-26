@@ -1,0 +1,410 @@
+
+> hadiumreyegidelim.com@0.1.0 dev
+> next dev
+
+▲ Next.js 16.2.1 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.111.4:3000
+- Environments: .env
+✓ Ready in 276ms
+
+ GET /bireysel-umre/konaklama 200 in 2.1s (next.js: 1483ms, application-code: 648ms)
+ GET /bireysel-umre/transfer 200 in 2.1s (next.js: 1984ms, application-code: 155ms)
+ GET /api/services 200 in 151ms (next.js: 143ms, application-code: 7ms)
+✓ Compiled in 43ms
+✓ Compiled in 45ms
+ GET /admin/dealers 404 in 215ms (next.js: 196ms, application-code: 19ms)
+ GET /admin 307 in 238ms (next.js: 197ms, application-code: 41ms)
+ GET /admin/orders 200 in 140ms (next.js: 120ms, application-code: 20ms)
+ GET /api/orders 200 in 56ms (next.js: 50ms, application-code: 6ms)
+ GET /admin/hotels 200 in 162ms (next.js: 153ms, application-code: 9ms)
+ GET /api/hotels 200 in 65ms (next.js: 59ms, application-code: 6ms)
+ GET /api/hotels 200 in 4ms (next.js: 1036µs, application-code: 3ms)
+ GET /admin/services 200 in 264ms (next.js: 251ms, application-code: 13ms)
+ GET /api/services 200 in 22ms (next.js: 13ms, application-code: 9ms)
+ GET /api/services 200 in 9ms (next.js: 1318µs, application-code: 7ms)
+✓ Compiled in 65ms
+✓ Compiled in 34ms
+⨯ ./src/app/(admin)/admin/services/page.tsx:259:16
+Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+  [90m257 |[0m                   </div>
+  [90m258 |[0m                 </div>
+[31m[1m>[0m [90m259 |[0m               )}
+  [90m    |[0m                [31m[1m^[0m
+  [90m260 |[0m               
+  [90m261 |[0m               {newService.[36mtype[0m === [32m'TRAIN'[0m && (
+  [90m262 |[0m                 <div className=[32m"grid grid-cols-1 md:grid-cols-12...[0m
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./src/app/(admin)/admin/services/page.tsx [Client Component Browser]
+    ./src/app/(admin)/admin/services/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/(admin)/admin/services/page.tsx [Client Component SSR]
+    ./src/app/(admin)/admin/services/page.tsx [Server Component]
+
+
+ GET /bireysel-umre/konaklama 500 in 481ms (next.js: 414ms, application-code: 67ms)
+ GET /bireysel-umre/transfer 500 in 540ms (next.js: 528ms, application-code: 12ms)
+ GET /admin/services 500 in 484ms (next.js: 476ms, application-code: 8ms)
+⨯ ./src/app/(admin)/admin/services/page.tsx:259:16
+Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+  [90m257 |[0m                   </div>
+  [90m258 |[0m                 </div>
+[31m[1m>[0m [90m259 |[0m               )}
+  [90m    |[0m                [31m[1m^[0m
+  [90m260 |[0m               
+  [90m261 |[0m               {newService.[36mtype[0m === [32m'TRAIN'[0m && (
+  [90m262 |[0m                 <div className=[32m"grid grid-cols-1 md:grid-cols-...[0m
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./src/app/(admin)/admin/services/page.tsx [Client Component Browser]
+    ./src/app/(admin)/admin/services/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/(admin)/admin/services/page.tsx [Client Component SSR]
+    ./src/app/(admin)/admin/services/page.tsx [Server Component]
+
+
+ GET /bireysel-umre/transfer 500 in 21ms (next.js: 3ms, application-code: 18ms)
+ GET /admin/services 500 in 21ms (next.js: 6ms, application-code: 15ms)
+ GET /bireysel-umre/konaklama 500 in 22ms (next.js: 9ms, application-code: 13ms)
+⨯ ./src/app/(admin)/admin/services/page.tsx:259:16
+Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+  [90m257 |[0m                   </div>
+  [90m258 |[0m                 </div>
+[31m[1m>[0m [90m259 |[0m               )}
+  [90m    |[0m                [31m[1m^[0m
+  [90m260 |[0m               
+  [90m261 |[0m               {newService.[36mtype[0m === [32m'TRAIN'[0m && (
+  [90m262 |[0m                 <div className=[32m"grid grid-cols-1 md:grid-cols-...[0m
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./src/app/(admin)/admin/services/page.tsx [Client Component Browser]
+    ./src/app/(admin)/admin/services/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/(admin)/admin/services/page.tsx [Client Component SSR]
+    ./src/app/(admin)/admin/services/page.tsx [Server Component]
+
+
+⨯ ./src/app/(admin)/admin/services/page.tsx:259:16
+Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+  [90m257 |[0m                   </div>
+  [90m258 |[0m                 </div>
+[31m[1m>[0m [90m259 |[0m               )}
+  [90m    |[0m                [31m[1m^[0m
+  [90m260 |[0m               
+  [90m261 |[0m               {newService.[36mtype[0m === [32m'TRAIN'[0m && (
+  [90m262 |[0m                 <div className=[32m"grid grid-cols-1 md:grid-cols-...[0m
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./src/app/(admin)/admin/services/page.tsx [Client Component Browser]
+    ./src/app/(admin)/admin/services/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/(admin)/admin/services/page.tsx [Client Component SSR]
+    ./src/app/(admin)/admin/services/page.tsx [Server Component]
+
+
+ GET /bireysel-umre/konaklama 500 in 48ms (next.js: 9ms, application-code: 39ms)
+ GET /bireysel-umre/transfer 500 in 48ms (next.js: 13ms, application-code: 34ms)
+ GET /bireysel-umre/konaklama 500 in 98ms (next.js: 84ms, application-code: 14ms)
+ GET /bireysel-umre/transfer 500 in 98ms (next.js: 73ms, application-code: 25ms)
+ GET /admin/services 500 in 100ms (next.js: 47ms, application-code: 54ms)
+ GET /admin/services 500 in 103ms (next.js: 32ms, application-code: 71ms)
+[browser] Uncaught Error: ./src/app/(admin)/admin/services/page.tsx:259:16
+Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+  257 |                   </div>
+  258 |                 </div>
+> 259 |               )}
+      |                ^
+  260 |               
+  261 |               {newService.type === 'TRAIN' && (
+  262 |                 <div className="grid grid-cols-1 md:grid-cols-...
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./src/app/(admin)/admin/services/page.tsx [Client Component Browser]
+    ./src/app/(admin)/admin/services/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/(admin)/admin/services/page.tsx [Client Component SSR]
+    ./src/app/(admin)/admin/services/page.tsx [Server Component]
+
+
+    at <unknown> (Error: ./src/app/(admin)/admin/services/page.tsx:259:16)
+    at <unknown> (Error: (./src/app/(admin)/admin/services/page.tsx:259:16)
+[browser] Uncaught Error: ./src/app/(admin)/admin/services/page.tsx:259:16
+Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+  257 |                   </div>
+  258 |                 </div>
+> 259 |               )}
+      |                ^
+  260 |               
+  261 |               {newService.type === 'TRAIN' && (
+  262 |                 <div className="grid grid-cols-1 md:grid-cols-...
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./src/app/(admin)/admin/services/page.tsx [Client Component Browser]
+    ./src/app/(admin)/admin/services/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/(admin)/admin/services/page.tsx [Client Component SSR]
+    ./src/app/(admin)/admin/services/page.tsx [Server Component]
+
+
+    at <unknown> (Error: ./src/app/(admin)/admin/services/page.tsx:259:16)
+    at <unknown> (Error: (./src/app/(admin)/admin/services/page.tsx:259:16)
+[browser] Uncaught Error: ./src/app/(admin)/admin/services/page.tsx:259:16
+Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+  257 |                   </div>
+  258 |                 </div>
+> 259 |               )}
+      |                ^
+  260 |               
+  261 |               {newService.type === 'TRAIN' && (
+  262 |                 <div className="grid grid-cols-1 md:grid-cols-...
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./src/app/(admin)/admin/services/page.tsx [Client Component Browser]
+    ./src/app/(admin)/admin/services/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/(admin)/admin/services/page.tsx [Client Component SSR]
+    ./src/app/(admin)/admin/services/page.tsx [Server Component]
+
+
+    at <unknown> (Error: ./src/app/(admin)/admin/services/page.tsx:259:16)
+    at <unknown> (Error: (./src/app/(admin)/admin/services/page.tsx:259:16)
+[browser] ./src/app/(admin)/admin/services/page.tsx:259:16
+Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+  257 |                   </div>
+  258 |                 </div>
+> 259 |               )}
+      |                ^
+  260 |               
+  261 |               {newService.type === 'TRAIN' && (
+  262 |                 <div className="grid grid-cols-1 md:grid-cols-...
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./src/app/(admin)/admin/services/page.tsx [Client Component Browser]
+    ./src/app/(admin)/admin/services/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/(admin)/admin/services/page.tsx [Client Component SSR]
+    ./src/app/(admin)/admin/services/page.tsx [Server Component] 
+[browser] ./src/app/(admin)/admin/services/page.tsx:259:16
+Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+  257 |                   </div>
+  258 |                 </div>
+> 259 |               )}
+      |                ^
+  260 |               
+  261 |               {newService.type === 'TRAIN' && (
+  262 |                 <div className="grid grid-cols-1 md:grid-cols-...
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./src/app/(admin)/admin/services/page.tsx [Client Component Browser]
+    ./src/app/(admin)/admin/services/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/(admin)/admin/services/page.tsx [Client Component SSR]
+    ./src/app/(admin)/admin/services/page.tsx [Server Component] 
+[browser] ./src/app/(admin)/admin/services/page.tsx:259:16
+Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+  257 |                   </div>
+  258 |                 </div>
+> 259 |               )}
+      |                ^
+  260 |               
+  261 |               {newService.type === 'TRAIN' && (
+  262 |                 <div className="grid grid-cols-1 md:grid-cols-...
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./src/app/(admin)/admin/services/page.tsx [Client Component Browser]
+    ./src/app/(admin)/admin/services/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/(admin)/admin/services/page.tsx [Client Component SSR]
+    ./src/app/(admin)/admin/services/page.tsx [Server Component] 
+[browser] ./src/app/(admin)/admin/services/page.tsx:259:16
+Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+  257 |                   </div>
+  258 |                 </div>
+> 259 |               )}
+      |                ^
+  260 |               
+  261 |               {newService.type === 'TRAIN' && (
+  262 |                 <div className="grid grid-cols-1 md:grid-cols-...
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./src/app/(admin)/admin/services/page.tsx [Client Component Browser]
+    ./src/app/(admin)/admin/services/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/(admin)/admin/services/page.tsx [Client Component SSR]
+    ./src/app/(admin)/admin/services/page.tsx [Server Component] 
+[browser] ./src/app/(admin)/admin/services/page.tsx:259:16
+Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+  257 |                   </div>
+  258 |                 </div>
+> 259 |               )}
+      |                ^
+  260 |               
+  261 |               {newService.type === 'TRAIN' && (
+  262 |                 <div className="grid grid-cols-1 md:grid-cols-...
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./src/app/(admin)/admin/services/page.tsx [Client Component Browser]
+    ./src/app/(admin)/admin/services/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/(admin)/admin/services/page.tsx [Client Component SSR]
+    ./src/app/(admin)/admin/services/page.tsx [Server Component] 
+[browser] ./src/app/(admin)/admin/services/page.tsx:259:16
+Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+  257 |                   </div>
+  258 |                 </div>
+> 259 |               )}
+      |                ^
+  260 |               
+  261 |               {newService.type === 'TRAIN' && (
+  262 |                 <div className="grid grid-cols-1 md:grid-cols-...
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./src/app/(admin)/admin/services/page.tsx [Client Component Browser]
+    ./src/app/(admin)/admin/services/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/(admin)/admin/services/page.tsx [Client Component SSR]
+    ./src/app/(admin)/admin/services/page.tsx [Server Component] 
+ GET /admin 500 in 31ms (next.js: 21ms, application-code: 10ms)
+[browser] Uncaught Error: ./src/app/(admin)/admin/services/page.tsx:259:16
+Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+  257 |                   </div>
+  258 |                 </div>
+> 259 |               )}
+      |                ^
+  260 |               
+  261 |               {newService.type === 'TRAIN' && (
+  262 |                 <div className="grid grid-cols-1 md:grid-cols-...
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./src/app/(admin)/admin/services/page.tsx [Client Component Browser]
+    ./src/app/(admin)/admin/services/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/(admin)/admin/services/page.tsx [Client Component SSR]
+    ./src/app/(admin)/admin/services/page.tsx [Server Component]
+
+
+    at <unknown> (Error: ./src/app/(admin)/admin/services/page.tsx:259:16)
+    at <unknown> (Error: (./src/app/(admin)/admin/services/page.tsx:259:16)
+[browser] ./src/app/(admin)/admin/services/page.tsx:259:16
+Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+  257 |                   </div>
+  258 |                 </div>
+> 259 |               )}
+      |                ^
+  260 |               
+  261 |               {newService.type === 'TRAIN' && (
+  262 |                 <div className="grid grid-cols-1 md:grid-cols-...
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./src/app/(admin)/admin/services/page.tsx [Client Component Browser]
+    ./src/app/(admin)/admin/services/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/(admin)/admin/services/page.tsx [Client Component SSR]
+    ./src/app/(admin)/admin/services/page.tsx [Server Component] 
+[browser] ./src/app/(admin)/admin/services/page.tsx:259:16
+Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
+  257 |                   </div>
+  258 |                 </div>
+> 259 |               )}
+      |                ^
+  260 |               
+  261 |               {newService.type === 'TRAIN' && (
+  262 |                 <div className="grid grid-cols-1 md:grid-cols-...
+
+Parsing ecmascript source code failed
+
+Import traces:
+  Client Component Browser:
+    ./src/app/(admin)/admin/services/page.tsx [Client Component Browser]
+    ./src/app/(admin)/admin/services/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/(admin)/admin/services/page.tsx [Client Component SSR]
+    ./src/app/(admin)/admin/services/page.tsx [Server Component] 
+✓ Compiled in 205ms
+ GET /admin 307 in 413ms (next.js: 63ms, application-code: 351ms)
+ GET /bireysel-umre/transfer 200 in 417ms (next.js: 146ms, application-code: 272ms)
+ GET /bireysel-umre/konaklama 200 in 229ms (next.js: 36ms, application-code: 193ms)
+ GET /admin/orders 200 in 131ms (next.js: 23ms, application-code: 107ms)
+ GET /api/orders 200 in 40ms (next.js: 29ms, application-code: 10ms)
+ GET /api/services 200 in 44ms (next.js: 36ms, application-code: 9ms)
+ GET /admin/services 200 in 42ms (next.js: 25ms, application-code: 17ms)
+ GET /api/services 200 in 8ms (next.js: 3ms, application-code: 5ms)
+ GET /api/services 200 in 5ms (next.js: 1256µs, application-code: 4ms)
+✓ Compiled in 47ms
+ GET /api/services 200 in 38ms (next.js: 30ms, application-code: 7ms)
+ GET /admin/services 200 in 54ms (next.js: 10ms, application-code: 44ms)
+ GET /api/services 200 in 5ms (next.js: 1390µs, application-code: 3ms)
+ POST /api/upload 200 in 118ms (next.js: 91ms, application-code: 27ms)
+ POST /api/services 200 in 37ms (next.js: 21ms, application-code: 16ms)
+ GET /api/services 200 in 11ms (next.js: 3ms, application-code: 7ms)
+ GET /bireysel-umre/transfer 200 in 55ms (next.js: 7ms, application-code: 48ms)
+ GET /api/services 200 in 4ms (next.js: 1337µs, application-code: 2ms)
+ GET /bireysel-umre/transfer 200 in 47ms (next.js: 2ms, application-code: 44ms)
+ GET /api/services 200 in 4ms (next.js: 1222µs, application-code: 3ms)
+ GET /bireysel-umre/transfer 200 in 51ms (next.js: 8ms, application-code: 43ms)
+ GET /api/services 200 in 41ms (next.js: 33ms, application-code: 8ms)
+ GET /bireysel-umre/transfer 200 in 47ms (next.js: 3ms, application-code: 43ms)
+ GET /api/services 200 in 7ms (next.js: 1490µs, application-code: 6ms)
+✓ Compiled in 32ms

@@ -9,6 +9,18 @@ export default function PlannerSummaryPage() {
   const { pax, flight, returnFlight, mekkeHotel, medineHotel, transfer, train, guide, extras, getTotalUSD } = useConfiguratorStore();
   const cardRef = useRef<HTMLDivElement>(null);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [whatsappNumber, setWhatsappNumber] = useState("905400213438");
+
+  React.useEffect(() => {
+    fetch('/api/settings').then(res => res.json()).then(data => {
+      if (Array.isArray(data)) {
+        const wa = data.find((s: any) => s.key === 'whatsappNumber');
+        if (wa && wa.value) {
+          setWhatsappNumber(wa.value.replace('+', ''));
+        }
+      }
+    }).catch(e => console.error(e));
+  }, []);
 
   // Helper for JSON parsed data
   const parseExtra = (extraData?: string) => {
@@ -75,7 +87,7 @@ export default function PlannerSummaryPage() {
       setTimeout(() => URL.revokeObjectURL(objectUrl), 100);
       
       const text = encodeURIComponent("Merhaba, web siteniz üzerinden kendi umre planımı tasarladım. İndirdiğim plan özetini iletiyorum, detaylar için sizinle görüşmek isterim.");
-      window.open(`https://wa.me/905400213438?text=${text}`, '_blank');
+      window.open(`https://wa.me/${whatsappNumber}?text=${text}`, '_blank');
     } catch (error) {
       console.error("Görsel oluşturulamadı:", error);
       alert("Planınız oluşturulurken bir hata oluştu.");

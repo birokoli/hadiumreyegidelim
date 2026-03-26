@@ -10,7 +10,8 @@ export default function SettingsPage() {
     home_banner_image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCeWn_hW89LbHLjNkEyCjXnO56IpdLz_zRwB9BvtIjHV_CSU9n_ADpxoS-K9Y4UqzQtVdJ9tM238gIiQ3fIEgF50wPqba1ofx6HeAab2E8EYwvLnq_w13P3UCdpuZloJ2P_FBbqiM4ZrKqELKyG3sgBrj2SCUi6yLGc39nIApI_ip6uasqiKaUGRcpE7WnqmMcqOZVc-CUXOaphNXOHK18KEZCYKehmVy4cZRQP0tk7_PHK5iJh4cVmqsN9DeHNleLOmi97WPx_9Gw",
     home_banner_title: "Ruhunuzun Ritmini Kalabalıklara Teslim Etmeyin.",
     home_banner_subtitle: "Ailenize ve Size Özel Butik Umre Deneyimi.",
-    services_banner_image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCuam-SRusysTmFa8cNfGO0nrUWU2b4lhRvrL1t5uRMO09KYGq46lqmXVR1RTQwnsytK6mpj41mpYDz4mnEykVU3E4_79ZFGw1a_ajWIITp0yX5hzJZwCg4c8E7HxHm5PJe8Jj-nfYiMyZynnNE7AWzy5NoYBmvwnuf46RLKc244lqWhr8dRzr0t2K_CwE-RI3yAUKAAHlgeYna0rO0M3jgOYeUYsFay6HDarHuq5VlPkAp591b0L4AtzHAraP1GcnhRYAXT9ea8ig"
+    services_banner_image: "https://lh3.googleusercontent.com/aida-public/AB6AXuCuam-SRusysTmFa8cNfGO0nrUWU2b4lhRvrL1t5uRMO09KYGq46lqmXVR1RTQwnsytK6mpj41mpYDz4mnEykVU3E4_79ZFGw1a_ajWIITp0yX5hzJZwCg4c8E7HxHm5PJe8Jj-nfYiMyZynnNE7AWzy5NoYBmvwnuf46RLKc244lqWhr8dRzr0t2K_CwE-RI3yAUKAAHlgeYna0rO0M3jgOYeUYsFay6HDarHuq5VlPkAp591b0L4AtzHAraP1GcnhRYAXT9ea8ig",
+    whatsappNumber: "+905404010038"
   });
   const [loading, setLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
@@ -276,6 +277,27 @@ export default function SettingsPage() {
               value={settings.maneviSoz}
               onChange={(e) => setSettings({...settings, maneviSoz: e.target.value})}
             />
+          </div>
+        </section>
+
+        {/* İletişim Ayarları Section */}
+        <section className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+          <div className="lg:sticky lg:top-32">
+            <h3 className="text-xl font-serif text-primary mb-2">İletişim Ayarları</h3>
+            <p className="text-sm text-on-surface-variant">Sitede bulunan WhatsApp butonları ve iletişim numaralarını yönetin.</p>
+          </div>
+          <div className="lg:col-span-2 bg-surface-container-lowest p-8 rounded-xl border border-outline-variant/10">
+            <div>
+              <label className="block text-xs font-label uppercase tracking-widest text-outline mb-3">WhatsApp Numarası</label>
+              <input 
+                className="w-full border-b border-outline-variant/40 bg-transparent py-2 focus:border-primary outline-none text-sm font-mono" 
+                type="text" 
+                placeholder="+905404010038"
+                value={settings.whatsappNumber}
+                onChange={(e) => setSettings({...settings, whatsappNumber: e.target.value})}
+              />
+              <p className="text-xs text-on-surface-variant mt-2">Örnek format: +905404010038 (Başında + ve ülke kodu ile birlikte boşluksuz yazın)</p>
+            </div>
           </div>
         </section>
 

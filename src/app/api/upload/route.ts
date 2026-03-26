@@ -11,9 +11,6 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: false, error: "Dosya bulunamadı" });
     }
 
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
-    
     const headingSlug = data.get("headingSlug") as string;
     
     // Enhance filename security and SEO
@@ -37,7 +34,7 @@ export async function POST(req: Request) {
         "apikey": supabaseKey,
         "Content-Type": file.type || "application/octet-stream",
       },
-      body: buffer
+      body: file
     });
 
     if (!uploadRes.ok) {

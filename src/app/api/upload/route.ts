@@ -43,15 +43,15 @@ export async function POST(req: Request) {
     if (!uploadRes.ok) {
       const errorText = await uploadRes.text();
       console.error("Supabase Storage error:", errorText);
-      throw new Error("Görsel Supabase'e yüklenemedi.");
+      throw new Error(`Supabase Reddediyor: ${errorText}`);
     }
 
     const publicUrl = `${supabaseUrl}/storage/v1/object/public/uploads/${filename}`;
 
     // Return the public URL
     return NextResponse.json({ success: true, url: publicUrl });
-  } catch (error) {
+  } catch (error: any) {
     console.error("Upload error:", error);
-    return NextResponse.json({ success: false, error: "Yükleme sırasında sunucu hatası oluştu" }, { status: 500 });
+    return NextResponse.json({ success: false, error: error?.message || "Sunucu hatası" }, { status: 500 });
   }
 }

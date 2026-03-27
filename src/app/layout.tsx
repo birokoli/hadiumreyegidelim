@@ -9,10 +9,8 @@ export const metadata: Metadata = {
   title: "Hadi Umre'ye Gidelim | Özel Aile & Vip Umre Tasarımınız",
   description: "Ruhunuzun ritmini kalabalıklara teslim etmeyin. Sadece ailenize ve size özel, konforlu, butik ve maneviyat dolu Umre organizasyonu.",
   icons: {
-    icon: [
-      { url: '/icon.png' },
-      new URL('/icon.png', 'https://hadiumreyegidelim.com'),
-    ]
+    icon: '/favicon.png?v=2',
+    apple: '/favicon.png?v=2'
   }
 };
 

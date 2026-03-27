@@ -27,7 +27,9 @@ export default function ServicesPage() {
     city: "Mekke (Makkah)",
     stars: 5,
     distanceMeters: 100,
-    distanceText: "100m"
+    distanceText: "100m",
+    transferCategory: "VIP",
+    transferCapacity: 4
   });
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>, isMulti = false) => {
@@ -96,7 +98,7 @@ export default function ServicesPage() {
   const resetForm = () => {
     setEditingId(null);
     setNewService({ type: "HOTEL" as string, name: "", description: "", price: 0, extraData: "" });
-    setExtraFields({ images: [], amenities: "", departure: "", arrival: "", stops: 0, transferType: "SINGLE", routes: "", city: "Mekke (Makkah)", stars: 5, distanceMeters: 100, distanceText: "100m" });
+    setExtraFields({ images: [], amenities: "", departure: "", arrival: "", stops: 0, transferType: "SINGLE", routes: "", city: "Mekke (Makkah)", stars: 5, distanceMeters: 100, distanceText: "100m", transferCategory: "VIP", transferCapacity: 4 });
     setShowAddForm(false);
   };
 
@@ -126,7 +128,9 @@ export default function ServicesPage() {
       city: parsed.city || "Mekke (Makkah)",
       stars: parsed.stars || 5,
       distanceMeters: parsed.distanceMeters || 100,
-      distanceText: parsed.distanceText || "100m"
+      distanceText: parsed.distanceText || "100m",
+      transferCategory: parsed.transferCategory || "VIP",
+      transferCapacity: parsed.transferCapacity || 4
     });
     
     setShowAddForm(true);
@@ -149,7 +153,7 @@ export default function ServicesPage() {
       } else if (newService.type === 'TRAIN') {
         finalExtraData = JSON.stringify({ image: extraFields.images[0] || "", departure: extraFields.departure, arrival: extraFields.arrival, stops: extraFields.stops });
       } else if (newService.type === 'TRANSFER') {
-        finalExtraData = JSON.stringify({ image: extraFields.images[0] || "", transferType: extraFields.transferType, routes: extraFields.routes });
+        finalExtraData = JSON.stringify({ image: extraFields.images[0] || "", transferType: extraFields.transferType, routes: extraFields.routes, transferCategory: extraFields.transferCategory, transferCapacity: extraFields.transferCapacity });
       } else {
         finalExtraData = extraFields.images[0] || ""; // For EXTRA
       }
@@ -385,6 +389,20 @@ export default function ServicesPage() {
                   <div className="md:col-span-5">
                     <label className="text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-2 block">Güzergah Bilgisi</label>
                     <input placeholder="Örn: Cidde Havalimanı -> Mekke Otel -> Medine" className="w-full p-3.5 rounded-xl bg-surface border border-outline-variant/30 focus:border-primary focus:ring-1 focus:ring-primary transition-all outline-none" value={extraFields.routes} onChange={e => setExtraFields({...extraFields, routes: e.target.value})} />
+                  </div>
+                  
+                  <div className="md:col-span-4 mt-4">
+                    <label className="text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-2 block">Araç Sınıfı</label>
+                    <select className="w-full p-3.5 rounded-xl bg-surface border border-outline-variant/30 focus:border-primary focus:ring-1 focus:ring-primary transition-all outline-none" value={extraFields.transferCategory} onChange={e => setExtraFields({...extraFields, transferCategory: e.target.value})}>
+                      <option value="ECO_VIP">Eco VIP</option>
+                      <option value="VIP">VIP</option>
+                      <option value="VIP_PLUS">VIP+</option>
+                    </select>
+                  </div>
+
+                  <div className="md:col-span-4 mt-4">
+                    <label className="text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-2 block">Maksimum Kapasite</label>
+                    <input type="number" min="1" className="w-full p-3.5 rounded-xl bg-surface border border-outline-variant/30 focus:border-primary focus:ring-1 focus:ring-primary transition-all outline-none" value={extraFields.transferCapacity} onChange={e => setExtraFields({...extraFields, transferCapacity: Number(e.target.value)})} />
                   </div>
                 </div>
               )}

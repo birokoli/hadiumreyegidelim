@@ -6,9 +6,10 @@ import ConfiguratorSummary from "@/components/layout/ConfiguratorSummary";
 import { useConfiguratorStore } from "@/store/useConfiguratorStore";
 
 export default function TransferSelectionPage() {
-  const { transfer, setTransfer } = useConfiguratorStore();
+  const { transfer, setTransfer, pax } = useConfiguratorStore();
   const [transfers, setTransfers] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [filterCategory, setFilterCategory] = useState<string>("ALL");
 
   useEffect(() => {
     fetch(`/api/services?t=${Date.now()}`, { cache: 'no-store' })
@@ -72,13 +73,56 @@ export default function TransferSelectionPage() {
                   <h3 className="font-headline text-2xl font-bold text-on-surface">Ulaşım ve Transfer Seçenekleri</h3>
                 </div>
                 
+                <div className="flex gap-2 mb-6 overflow-x-auto pb-2 hide-scrollbar">
+                  {[
+                    { id: 'ALL', label: 'Tüm Araçlar' },
+                    { id: 'ECO_VIP', label: 'Eco VIP' },
+                    { id: 'VIP', label: 'VIP' },
+                    { id: 'VIP_PLUS', label: 'VIP+' }
+                  ].map(cat => (
+                    <button 
+                      key={cat.id} 
+                      onClick={() => setFilterCategory(cat.id)}
+                      className={`px-5 py-2 rounded-full font-bold text-xs uppercase tracking-widest transition-colors whitespace-nowrap ${
+                        filterCategory === cat.id 
+                          ? "bg-primary text-white shadow-md shadow-primary/20" 
+                          : "bg-surface-container hover:bg-surface-container-high text-on-surface-variant"
+                      }`}
+                    >
+                      {cat.label}
+                    </button>
+                  ))}
+                </div>
+                
                 {loading ? (
                   <div className="text-primary font-bold">Transfer seçenekleri yükleniyor...</div>
                 ) : transfers.length === 0 ? (
                   <div className="text-outline">Şu anda uygun transfer veya ulaşım seçeneği bulunmamaktadır.</div>
-                ) : (
+                ) : (() => {
+                  const filteredTransfers = transfers.filter(t => {
+                    const parsed = (() => {
+                      if (!t.extraData) return {};
+                      if (t.extraData.startsWith('{')) {
+                        try { return JSON.parse(t.extraData); } catch { return {}; }
+                      }
+                      return {};
+                    })();
+                    const tCat = parsed.transferCategory || "VIP";
+                    const tCap = parsed.transferCapacity || 4;
+                    
+                    if (filterCategory !== 'ALL' && tCat !== filterCategory) return false;
+                    if (tCap < pax) return false; // Filter out if vehicle is too small for the user's pax count
+                    
+                    return true;
+                  });
+                  
+                  if (filteredTransfers.length === 0) {
+                     return <div className="text-outline bg-surface-container p-6 rounded-2xl border border-outline-variant/20 italic">Seçili kategori veya kişi sayınıza ({pax} Kişi) uygun araç bulunamadı. Lütfen başka bir kategori seçiniz.</div>;
+                  }
+                  
+                  return (
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    {transfers.map(t => {
+                    {filteredTransfers.map(t => {
                       const isSelected = transfer?.id === t.id;
                       const parsedData = (() => {
                         if (!t.extraData) return {};
@@ -98,6 +142,12 @@ export default function TransferSelectionPage() {
                         "MULTI": "Çoklu Rota"
                       };
                       const tTypeLabel = TTYPE_LABELS[tType] || "Transfer";
+
+                      const transferCategory = parsedData.transferCategory || "VIP";
+                      const transferCapacity = parsedData.transferCapacity || 4;
+                      
+                      const CAT_LABELS: Record<string, string> = { "ECO_VIP": "Eco VIP", "VIP": "VIP", "VIP_PLUS": "VIP+" };
+                      const catLabel = CAT_LABELS[transferCategory] || "VIP";
 
                       return (
                         <div key={t.id} className={`group rounded-2xl overflow-hidden transition-all flex flex-col ${isSelected ? 'bg-surface-container-lowest shadow-xl border-2 border-primary ring-4 ring-primary/10 -translate-y-1' : 'bg-surface-container-lowest shadow-sm hover:shadow-2xl border border-outline-variant/10 hover:border-tertiary hover:-translate-y-1'}`}>
@@ -124,9 +174,10 @@ export default function TransferSelectionPage() {
                                 </div>
                                 <div className="flex-1">
                                   <h4 className={`text-xl font-headline font-bold transition-colors ${isSelected ? 'text-primary' : 'text-on-surface group-hover:text-primary'}`}>{t.name}</h4>
-                                  <div className="flex items-center gap-2 mt-1">
+                                  <div className="flex items-center flex-wrap gap-2 mt-1">
                                     <span className="text-[10px] uppercase tracking-wider font-bold bg-primary/10 text-primary px-2 py-0.5 rounded">{tTypeLabel}</span>
-                                    <span className="text-xs text-secondary font-bold tracking-widest uppercase">VIP Araç</span>
+                                    <span className="text-xs text-secondary font-bold tracking-widest uppercase">{catLabel} Araç</span>
+                                    <span className="text-[9px] uppercase tracking-wider font-bold bg-surface-container text-outline px-2 py-0.5 rounded flex items-center gap-1"><span className="material-symbols-outlined text-[12px]">group</span> Maks {transferCapacity} Kişi</span>
                                   </div>
                                 </div>
                               </div>
@@ -151,7 +202,8 @@ export default function TransferSelectionPage() {
                       );
                     })}
                   </div>
-                )}
+                  );
+                })()}
               </section>
             </div>
 

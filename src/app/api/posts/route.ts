@@ -22,11 +22,15 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
+    
+    if (body.categoryId === "") body.categoryId = null;
+    if (body.authorId === "") body.authorId = null;
+    
     const post = await prisma.post.create({ data: body });
     return NextResponse.json(post);
-  } catch (error) {
-    console.error(error);
-    return NextResponse.json({ error: 'Failed to create' }, { status: 500 });
+  } catch (error: any) {
+    console.error("POST /api/posts Error:", error);
+    return NextResponse.json({ error: error.message || 'Failed to create' }, { status: 500 });
   }
 }
 
@@ -36,11 +40,14 @@ export async function PUT(request: NextRequest) {
     const body = await request.json();
     if (!id) return NextResponse.json({ error: 'ID required' }, { status: 400 });
     
+    if (body.categoryId === "") body.categoryId = null;
+    if (body.authorId === "") body.authorId = null;
+    
     const post = await prisma.post.update({ where: { id }, data: body });
     return NextResponse.json(post);
-  } catch (error) {
-    console.error(error);
-    return NextResponse.json({ error: 'Failed to update' }, { status: 500 });
+  } catch (error: any) {
+    console.error("PUT /api/posts Error:", error);
+    return NextResponse.json({ error: error.message || 'Failed to update' }, { status: 500 });
   }
 }
 

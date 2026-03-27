@@ -325,7 +325,12 @@ export default function ContentPage() {
         handleCancel();
         fetchPosts();
       } else {
-        alert("Kaydedilirken hata oluştu.");
+        try {
+          const errData = await res.json();
+          alert("Kaydedilirken hata oluştu: " + (errData.error || "Bilinmeyen sunucu hatası"));
+        } catch {
+          alert("Kaydedilirken hata oluştu (Sunucu yanıt vermedi).");
+        }
       }
     } catch (e) {
       alert("Sunucu hatası.");

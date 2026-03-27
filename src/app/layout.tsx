@@ -8,6 +8,12 @@ const notoSerif = Noto_Serif({ subsets: ["latin"], weight: ["400", "700"], style
 export const metadata: Metadata = {
   title: "Hadi Umre'ye Gidelim | Özel Aile & Vip Umre Tasarımınız",
   description: "Ruhunuzun ritmini kalabalıklara teslim etmeyin. Sadece ailenize ve size özel, konforlu, butik ve maneviyat dolu Umre organizasyonu.",
+  icons: {
+    icon: [
+      { url: '/icon.png' },
+      new URL('/icon.png', 'https://hadiumreyegidelim.com'),
+    ]
+  }
 };
 
 import { SpeedInsights } from "@vercel/speed-insights/next";

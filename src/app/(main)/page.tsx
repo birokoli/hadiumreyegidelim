@@ -142,7 +142,7 @@ export default async function Home() {
                 </span>
               </div>
               <div className="flex items-baseline gap-4 mb-4">
-                <span className="text-4xl font-headline font-bold text-tertiary opacity-70">
+                <span className="text-4xl font-headline font-bold text-tertiary-fixed-dim opacity-40" aria-hidden="true">
                   01
                 </span>
                 <h3 className="text-2xl font-headline font-bold text-primary">
@@ -161,7 +161,7 @@ export default async function Home() {
                 </span>
               </div>
               <div className="flex items-baseline gap-4 mb-4">
-                <span className="text-4xl font-headline font-bold text-tertiary opacity-70">
+                <span className="text-4xl font-headline font-bold text-tertiary-fixed-dim opacity-40" aria-hidden="true">
                   02
                 </span>
                 <h3 className="text-2xl font-headline font-bold text-primary">
@@ -180,7 +180,7 @@ export default async function Home() {
                 </span>
               </div>
               <div className="flex items-baseline gap-4 mb-4">
-                <span className="text-4xl font-headline font-bold text-tertiary opacity-70">
+                <span className="text-4xl font-headline font-bold text-tertiary-fixed-dim opacity-40" aria-hidden="true">
                   03
                 </span>
                 <h3 className="text-2xl font-headline font-bold text-primary">

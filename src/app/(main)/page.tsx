@@ -120,7 +120,7 @@ export default async function Home() {
         <div className="max-w-screen-xl mx-auto px-8">
           <div className="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
             <div className="max-w-xl">
-              <span className="text-tertiary-fixed-dim font-bold tracking-widest uppercase text-sm block mb-4">
+              <span className="text-tertiary font-bold tracking-widest uppercase text-sm block mb-4">
                 Adım Adım Yolculuk
               </span>
               <h2 className="font-headline text-3xl md:text-5xl text-primary font-bold">
@@ -142,7 +142,7 @@ export default async function Home() {
                 </span>
               </div>
               <div className="flex items-baseline gap-4 mb-4">
-                <span className="text-4xl font-headline font-bold text-tertiary-fixed-dim opacity-40">
+                <span className="text-4xl font-headline font-bold text-tertiary opacity-70">
                   01
                 </span>
                 <h3 className="text-2xl font-headline font-bold text-primary">
@@ -161,7 +161,7 @@ export default async function Home() {
                 </span>
               </div>
               <div className="flex items-baseline gap-4 mb-4">
-                <span className="text-4xl font-headline font-bold text-tertiary-fixed-dim opacity-40">
+                <span className="text-4xl font-headline font-bold text-tertiary opacity-70">
                   02
                 </span>
                 <h3 className="text-2xl font-headline font-bold text-primary">
@@ -180,7 +180,7 @@ export default async function Home() {
                 </span>
               </div>
               <div className="flex items-baseline gap-4 mb-4">
-                <span className="text-4xl font-headline font-bold text-tertiary-fixed-dim opacity-40">
+                <span className="text-4xl font-headline font-bold text-tertiary opacity-70">
                   03
                 </span>
                 <h3 className="text-2xl font-headline font-bold text-primary">
@@ -291,7 +291,7 @@ export default async function Home() {
                     {blog.description}
                   </p>
                   <div className="mt-auto pt-6 border-t border-outline-variant/10 flex items-center justify-between">
-                    <span className="text-[10px] font-bold text-outline uppercase tracking-widest flex items-center gap-2">
+                    <span className="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest flex items-center gap-2">
                       <span className="material-symbols-outlined text-[14px]">edit_square</span> {blog.author}
                     </span>
                     <span className="text-white bg-secondary w-8 h-8 rounded-full flex items-center justify-center shadow-md group-hover:w-24 transition-all duration-300 overflow-hidden relative">

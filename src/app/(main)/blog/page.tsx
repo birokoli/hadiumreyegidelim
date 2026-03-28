@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { prisma } from '@/lib/prisma';
 
 export const metadata = {
@@ -62,12 +63,19 @@ export default async function BlogIndexPage() {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {posts.map(post => (
+            {posts.map((post, index) => (
               <Link href={`/blog/${post.slug}`} key={post.id} className="group h-full">
                 <article className="bg-surface-container-lowest rounded-3xl overflow-hidden border border-outline-variant/10 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-2 flex flex-col h-full bg-white relative">
                   {post.imageUrl ? (
                     <div className="h-60 overflow-hidden bg-surface-container relative">
-                      <img src={post.imageUrl} alt={post.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
+                      <Image 
+                        src={post.imageUrl} 
+                        alt={post.title} 
+                        fill 
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out" 
+                        priority={index < 3} 
+                      />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     </div>
                   ) : (

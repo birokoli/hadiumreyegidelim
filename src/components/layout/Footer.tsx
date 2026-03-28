@@ -10,7 +10,7 @@ export default function Footer({ logoUrl }: { logoUrl?: string }) {
           <div className="mb-4">
             <Image src={logoUrl || "/logo.png"} alt="Hadi Umreye" width={240} height={80} className="h-16 w-auto object-contain" />
           </div>
-          <p className="font-label text-xs uppercase tracking-widest text-on-surface-variant/70">
+          <p className="font-label text-xs uppercase tracking-widest text-on-surface-variant">
             © {new Date().getFullYear()} Hadi Umreye - Butik ve Manevi Yolculuğunuz
           </p>
         </div>

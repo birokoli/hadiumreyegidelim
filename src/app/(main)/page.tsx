@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { prisma } from "@/lib/prisma";
 
 export default async function Home() {
@@ -21,10 +22,13 @@ export default async function Home() {
     <>
       <section className="relative min-h-[90vh] md:min-h-screen flex items-center justify-center overflow-hidden pt-20">
         <div className="absolute inset-0 z-0">
-          <img
+          <Image
             alt="Ana Sayfa Banner"
-            className="w-full h-full object-cover"
+            className="object-cover"
             src={home_banner_image}
+            fill
+            priority
+            sizes="100vw"
           />
           {/* Universal contrast overlay for user-uploaded images */}
           <div className="absolute inset-0 bg-black/40"></div>
@@ -269,7 +273,7 @@ export default async function Home() {
               <a href={`/blog/${blog.slug}`} key={blog.id} className="group flex flex-col bg-white rounded-[2rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-outline-variant/10 hover:-translate-y-2">
                 <div className="relative h-64 overflow-hidden bg-surface-container-low p-2">
                   {blog.imageUrl ? (
-                    <img src={blog.imageUrl} alt={blog.title} className="w-full h-full object-cover rounded-3xl group-hover:scale-105 transition-transform duration-700" />
+                    <Image src={blog.imageUrl} alt={blog.title} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover rounded-3xl group-hover:scale-105 transition-transform duration-700" />
                   ) : (
                     <div className="w-full h-full rounded-2xl flex items-center justify-center bg-gradient-to-br from-primary/5 to-secondary/10 text-primary/30">
                        <span className="material-symbols-outlined text-6xl">mosque</span>

@@ -25,7 +25,13 @@ export default function RootLayout({
   return (
     <html lang="tr" className={`${inter.variable} ${notoSerif.variable}`}>
       <head>
-        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL,GRAD@300,0,0&display=swap" rel="stylesheet" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL,GRAD@300,0,0&display=swap" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL,GRAD@300,0,0&display=swap" media="print" onLoad={(e) => { e.currentTarget.media = 'all'; }} />
+        <noscript>
+          <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL,GRAD@300,0,0&display=swap" />
+        </noscript>
       </head>
       <body className="bg-surface text-on-surface font-body selection:bg-tertiary-fixed-dim selection:text-on-tertiary-fixed">
         {children}

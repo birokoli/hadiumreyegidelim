@@ -63,10 +63,10 @@ export default function ConfiguratorSummary() {
       <div className="bg-[#001944] text-white p-10 rounded-3xl shadow-2xl relative overflow-hidden group">
         <div className="absolute top-0 right-0 w-32 h-32 bg-primary/40 rounded-full blur-2xl -translate-y-10 translate-x-10 group-hover:bg-primary/60 transition-colors"></div>
         
-        <h4 className="text-xs font-bold uppercase tracking-widest text-primary-fixed-dim/70 mb-10 flex items-center border-b border-white/10 pb-4">
+        <h2 className="text-xs font-bold uppercase tracking-widest text-primary-fixed-dim/70 mb-10 flex items-center border-b border-white/10 pb-4">
           <span className="material-symbols-outlined mr-3 text-lg" data-icon="receipt_long">receipt_long</span>
           Maliyet Özeti
-        </h4>
+        </h2>
         
         <div className="space-y-8 mb-12">
           <div className="flex justify-between items-end border-b border-white/10 pb-5">
@@ -111,10 +111,10 @@ export default function ConfiguratorSummary() {
       </div>
       
       <div className="bg-surface-container-lowest p-8 rounded-3xl border border-outline-variant/15 shadow-sm space-y-4">
-        <h5 className="font-headline text-lg font-bold text-primary mb-6 flex items-center border-b border-outline-variant/20 pb-4">
+        <h3 className="font-headline text-lg font-bold text-primary mb-6 flex items-center border-b border-outline-variant/20 pb-4">
           <span className="material-symbols-outlined mr-3 text-secondary" data-icon="auto_stories">auto_stories</span>
           Seçimleriniz
-        </h5>
+        </h3>
         
         <div className="flex justify-between items-start mb-6">
           <div>
@@ -135,7 +135,7 @@ export default function ConfiguratorSummary() {
             <p className="font-headline font-bold text-sm text-on-surface mb-1">{store.flight.airline} ({store.flight.name})</p>
           </div>
         ) : (
-          <div className="border-2 border-dashed border-primary/20 bg-primary/5 p-4 rounded-xl mb-4 opacity-50">
+          <div className="border-2 border-dashed border-primary/20 bg-primary/5 p-4 rounded-xl mb-4">
             <p className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">01 Uçuş Seçilmedi</p>
           </div>
         )}
@@ -152,7 +152,7 @@ export default function ConfiguratorSummary() {
             <p className="text-xs text-on-surface-variant/70 font-bold tracking-wide">{store.mekkeHotel.nights} Gece, {store.mekkeHotel.description}</p>
           </div>
         ) : (
-          <div className="border-2 border-dashed border-primary/20 bg-primary/5 p-4 rounded-xl mb-4 opacity-50">
+          <div className="border-2 border-dashed border-primary/20 bg-primary/5 p-4 rounded-xl mb-4">
             <p className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">02 Mekke Kon. Seçilmedi</p>
           </div>
         )}
@@ -169,7 +169,7 @@ export default function ConfiguratorSummary() {
             <p className="text-xs text-on-surface-variant/70 font-bold tracking-wide">{store.medineHotel.nights} Gece, {store.medineHotel.description}</p>
           </div>
         ) : (
-          <div className="border-2 border-dashed border-primary/20 bg-primary/5 p-4 rounded-xl mb-4 opacity-50">
+          <div className="border-2 border-dashed border-primary/20 bg-primary/5 p-4 rounded-xl mb-4">
             <p className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">03 Medine Kon. Seçilmedi</p>
           </div>
         )}
@@ -186,7 +186,7 @@ export default function ConfiguratorSummary() {
             <p className="text-xs text-on-surface-variant/70 font-bold tracking-wide">{store.transfer.isRoundTrip ? 'Gidiş-Dönüş' : 'Tek Yön'}</p>
           </div>
         ) : (
-          <div className="border-2 border-dashed border-primary/20 bg-primary/5 p-4 rounded-xl mb-4 opacity-50">
+          <div className="border-2 border-dashed border-primary/20 bg-primary/5 p-4 rounded-xl mb-4">
             <p className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">04 Transfer Seçilmedi</p>
           </div>
         )}
@@ -203,7 +203,7 @@ export default function ConfiguratorSummary() {
             <p className="text-xs text-on-surface-variant/70 font-bold tracking-wide">{store.train.isRoundTrip ? 'Gidiş-Dönüş' : 'Tek Yön'}</p>
           </div>
         ) : (
-          <div className="border-2 border-dashed border-primary/20 bg-primary/5 p-4 rounded-xl mb-4 opacity-50">
+          <div className="border-2 border-dashed border-primary/20 bg-primary/5 p-4 rounded-xl mb-4">
             <p className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">05 Tren Seçilmedi</p>
           </div>
         )}

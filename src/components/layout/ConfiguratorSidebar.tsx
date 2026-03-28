@@ -20,7 +20,7 @@ export default function ConfiguratorSidebar({ activeStep }: { activeStep: number
             <div className={`flex items-center space-x-4 p-5 rounded-2xl cursor-pointer transition-all duration-300 ${
               isActive 
                 ? "bg-surface-container-lowest border-l-4 border-primary shadow-lg transform -translate-y-1" 
-                : "bg-surface-container-lowest border border-transparent opacity-70 hover:opacity-100 hover:shadow-md hover:border-outline-variant/30"
+                : "bg-surface-container-lowest border border-transparent hover:shadow-md hover:border-outline-variant/30"
             }`}>
               <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-300 ${
                 isActive ? "bg-primary/10 shadow-inner" : "bg-outline/10 text-outline group-hover:bg-primary/5 group-hover:text-primary"

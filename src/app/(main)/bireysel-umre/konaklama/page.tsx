@@ -166,7 +166,7 @@ export default function AccommodationSelectionPage() {
                   <div className="flex gap-4 p-4 rounded-xl bg-surface-container/30 border border-outline-variant/20">
                      <span className="material-symbols-outlined text-tertiary">calendar_month</span>
                      <div className="flex flex-col">
-                        <span className="text-[10px] uppercase tracking-widest text-outline font-bold">Planlanan Genel Konaklama</span>
+                        <span className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">Planlanan Genel Konaklama</span>
                         <span className="text-sm font-bold text-primary">
                           {departureDate ? departureDate.split('-').reverse().join('.') : "Belirtilmedi"} - {returnDate ? returnDate.split('-').reverse().join('.') : "Belirtilmedi"}
                         </span>
@@ -198,7 +198,7 @@ export default function AccommodationSelectionPage() {
               {/* Dynamic Hotel Group */}
               {hasSearched && (
                 <section className="animate-in fade-in slide-in-from-bottom-4 duration-500">
-                  <h2 className="font-label text-sm uppercase tracking-widest text-outline mb-6 flex items-center font-bold">
+                  <h2 className="font-label text-sm uppercase tracking-widest text-on-surface-variant mb-6 flex items-center font-bold">
                      <span className="w-10 h-px bg-outline-variant/50 mr-4"></span>
                      {activeCity} İçin Seçenekler
                   </h2>
@@ -269,7 +269,7 @@ export default function AccommodationSelectionPage() {
                                 
                                 <div className="flex justify-between items-end pt-3 border-t border-outline-variant/15 mt-3">
                                   <div className="flex flex-col">
-                                    <span className="text-[8px] uppercase tracking-widest text-outline mb-1 font-bold">Kişi Başı / Gece</span>
+                                    <span className="text-[8px] uppercase tracking-widest text-on-surface-variant mb-1 font-bold">Kişi Başı / Gece</span>
                                     <div className="bg-primary/5 px-2.5 py-1 rounded-xl border border-primary/10 w-fit">
                                       <span className="text-xl font-headline font-black text-primary tracking-tight">${h.price}</span>
                                     </div>

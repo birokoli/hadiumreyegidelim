@@ -94,7 +94,7 @@ export default function TurkishDatePicker({ label, value, onChange, minDate, isS
   return (
     <div className="flex-1 space-y-3 relative group" ref={containerRef}>
       <label 
-        className={`text-xs font-bold uppercase tracking-widest text-outline transition-colors block cursor-pointer ${isSecondary ? 'group-hover:text-secondary' : 'group-hover:text-primary'} ${isOpen ? (isSecondary ? 'text-secondary' : 'text-primary') : ''}`} 
+        className={`text-xs font-bold uppercase tracking-widest text-on-surface-variant transition-colors block cursor-pointer ${isSecondary ? 'group-hover:text-secondary' : 'group-hover:text-primary'} ${isOpen ? (isSecondary ? 'text-secondary' : 'text-primary') : ''}`} 
         onClick={() => setIsOpen(!isOpen)}
       >
         {label}
@@ -134,7 +134,7 @@ export default function TurkishDatePicker({ label, value, onChange, minDate, isS
           
           <div className="grid grid-cols-7 gap-1 mb-3">
             {dayNames.map(d => (
-              <div key={d} className="text-center text-[10px] font-bold text-outline uppercase tracking-wider">
+              <div key={d} className="text-center text-[10px] font-bold text-on-surface-variant uppercase tracking-wider">
                 {d}
               </div>
             ))}

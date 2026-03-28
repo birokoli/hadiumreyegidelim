@@ -147,15 +147,15 @@ export default function PlannerPage() {
             
             {/* Search Form */}
             <div className="bg-surface-container-lowest p-8 md:p-10 rounded-3xl border border-outline-variant/15 shadow-sm">
-              <h4 className="font-headline text-2xl font-bold text-primary mb-8 border-b border-outline-variant/20 pb-4 flex items-center gap-3">
+              <h2 className="font-headline text-2xl font-bold text-primary mb-8 border-b border-outline-variant/20 pb-4 flex items-center gap-3">
                 <span className="material-symbols-outlined text-secondary">travel_explore</span>
                 Seyahat Planı & Uçuş Arama
-              </h4>
+              </h2>
               <div className="space-y-6">
                  <div className="flex flex-col sm:flex-row gap-6">
                     <div className="flex-1">
-                       <label className="block text-xs font-bold text-tertiary uppercase tracking-widest mb-2">Kalkış Şehri</label>
-                       <select value={departureCity} onChange={e => setDepartureCity(e.target.value)} className="w-full bg-surface border border-outline-variant/30 rounded-xl px-4 py-3 outline-none focus:border-primary font-medium text-sm">
+                       <label htmlFor="departureCity" className="block text-xs font-bold text-tertiary uppercase tracking-widest mb-2">Kalkış Şehri</label>
+                       <select id="departureCity" value={departureCity} onChange={e => setDepartureCity(e.target.value)} className="w-full bg-surface border border-outline-variant/30 rounded-xl px-4 py-3 outline-none focus:border-primary font-medium text-sm">
                          <option value="IST">İstanbul Havalimanı (IST)</option>
                          <option value="SAW">Sabiha Gökçen (SAW)</option>
                          <option value="ESB">Ankara Esenboğa (ESB)</option>
@@ -163,8 +163,8 @@ export default function PlannerPage() {
                        </select>
                     </div>
                     <div className="flex-1">
-                       <label className="block text-xs font-bold text-tertiary uppercase tracking-widest mb-2">Varış (Kutsal Topraklar)</label>
-                       <select value={arrivalCity} onChange={e => setArrivalCity(e.target.value)} className="w-full bg-surface border border-outline-variant/30 rounded-xl px-4 py-3 outline-none focus:border-primary font-medium text-sm">
+                       <label htmlFor="arrivalCity" className="block text-xs font-bold text-tertiary uppercase tracking-widest mb-2">Varış (Kutsal Topraklar)</label>
+                       <select id="arrivalCity" value={arrivalCity} onChange={e => setArrivalCity(e.target.value)} className="w-full bg-surface border border-outline-variant/30 rounded-xl px-4 py-3 outline-none focus:border-primary font-medium text-sm">
                          <option value="JED">Cidde Kral Abdulaziz (JED)</option>
                          <option value="MED">Medine Prens Muhammed (MED)</option>
                        </select>
@@ -188,8 +188,8 @@ export default function PlannerPage() {
                     />
                  </div>
                  <div className="flex-1 mt-2">
-                   <label className="block text-xs font-bold text-tertiary uppercase tracking-widest mb-2">Kişi Sayısı</label>
-                   <select value={pax} onChange={e => setPax(Number(e.target.value))} className="w-full bg-surface border border-outline-variant/30 rounded-xl px-4 py-3 outline-none focus:border-primary font-medium text-sm">
+                   <label htmlFor="paxCount" className="block text-xs font-bold text-tertiary uppercase tracking-widest mb-2">Kişi Sayısı</label>
+                   <select id="paxCount" value={pax} onChange={e => setPax(Number(e.target.value))} className="w-full bg-surface border border-outline-variant/30 rounded-xl px-4 py-3 outline-none focus:border-primary font-medium text-sm">
                      {[...Array(15)].map((_, i) => (
                        <option key={i+1} value={i+1}>{i+1} Kişi</option>
                      ))}
@@ -231,9 +231,9 @@ export default function PlannerPage() {
                   </div>
                 ) : (
                   <div>
-                    <h4 className="font-headline text-xl font-bold text-primary mb-6 border-b border-outline-variant/20 pb-4">
+                    <h3 className="font-headline text-xl font-bold text-primary mb-6 border-b border-outline-variant/20 pb-4">
                       {flightStage === 'outbound' ? 'Sizin İçin Bulunan Gidiş Uçuşları' : 'Sizin İçin Bulunan Dönüş Uçuşları'}
-                    </h4>
+                    </h3>
                     <div className="grid grid-cols-1 gap-4">
                       {availableFlights.map((fItem) => {
                         const isSelected = flightStage === 'outbound' ? flight?.id === fItem.id : returnFlight?.id === fItem.id;

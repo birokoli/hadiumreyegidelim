@@ -71,7 +71,7 @@ export default function ConfiguratorSummary() {
         <div className="space-y-8 mb-12">
           <div className="flex justify-between items-end border-b border-white/10 pb-5">
             <div className="flex flex-col space-y-1">
-              <span className="text-[10px] text-secondary font-bold tracking-widest uppercase mb-1">Ortalama Toplam Tutar</span>
+              <span className="text-[10px] text-white/80 font-bold tracking-widest uppercase mb-1">Ortalama Toplam Tutar</span>
               <span className="text-4xl font-headline font-bold text-white drop-shadow-md">
                 ${totalUSD.toLocaleString('en-US', { maximumFractionDigits: 0 })}
               </span>
@@ -118,7 +118,7 @@ export default function ConfiguratorSummary() {
         
         <div className="flex justify-between items-start mb-6">
           <div>
-            <span className="block text-[10px] uppercase tracking-widest text-outline mb-1 font-bold">Niyet & Kişi</span>
+            <span className="block text-[10px] uppercase tracking-widest text-on-surface-variant mb-1 font-bold">Niyet & Kişi</span>
             <p className="font-body font-bold text-on-surface text-sm">Umre, {store.pax} Yetişkin</p>
           </div>
           <span className="material-symbols-outlined text-secondary text-sm">check_circle</span>
@@ -136,7 +136,7 @@ export default function ConfiguratorSummary() {
           </div>
         ) : (
           <div className="border-2 border-dashed border-primary/20 bg-primary/5 p-4 rounded-xl mb-4 opacity-50">
-            <p className="text-[10px] uppercase tracking-widest text-primary font-bold">01 Uçuş Seçilmedi</p>
+            <p className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">01 Uçuş Seçilmedi</p>
           </div>
         )}
 
@@ -153,7 +153,7 @@ export default function ConfiguratorSummary() {
           </div>
         ) : (
           <div className="border-2 border-dashed border-primary/20 bg-primary/5 p-4 rounded-xl mb-4 opacity-50">
-            <p className="text-[10px] uppercase tracking-widest text-primary font-bold">02 Mekke Kon. Seçilmedi</p>
+            <p className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">02 Mekke Kon. Seçilmedi</p>
           </div>
         )}
 
@@ -170,7 +170,7 @@ export default function ConfiguratorSummary() {
           </div>
         ) : (
           <div className="border-2 border-dashed border-primary/20 bg-primary/5 p-4 rounded-xl mb-4 opacity-50">
-            <p className="text-[10px] uppercase tracking-widest text-primary font-bold">03 Medine Kon. Seçilmedi</p>
+            <p className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">03 Medine Kon. Seçilmedi</p>
           </div>
         )}
 
@@ -187,7 +187,7 @@ export default function ConfiguratorSummary() {
           </div>
         ) : (
           <div className="border-2 border-dashed border-primary/20 bg-primary/5 p-4 rounded-xl mb-4 opacity-50">
-            <p className="text-[10px] uppercase tracking-widest text-primary font-bold">04 Transfer Seçilmedi</p>
+            <p className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">04 Transfer Seçilmedi</p>
           </div>
         )}
         
@@ -204,7 +204,7 @@ export default function ConfiguratorSummary() {
           </div>
         ) : (
           <div className="border-2 border-dashed border-primary/20 bg-primary/5 p-4 rounded-xl mb-4 opacity-50">
-            <p className="text-[10px] uppercase tracking-widest text-primary font-bold">05 Tren Seçilmedi</p>
+            <p className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold">05 Tren Seçilmedi</p>
           </div>
         )}
 
@@ -244,7 +244,7 @@ export default function ConfiguratorSummary() {
         </div>
         <div>
           <h4 className="font-bold text-on-secondary-container text-sm">Yardıma mı ihtiyacınız var?</h4>
-          <p className="text-xs text-on-secondary-container/80 mt-1">Rehberlerimiz 7/24 yanınızda.</p>
+          <p className="text-xs text-on-secondary-container mt-1">Rehberlerimiz 7/24 yanınızda.</p>
         </div>
       </div>
     </aside>

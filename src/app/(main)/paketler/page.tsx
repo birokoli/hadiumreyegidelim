@@ -1,4 +1,5 @@
 import React from "react";
+export const dynamic = 'force-dynamic';
 import { prisma } from "@/lib/prisma";
 import BrandImageFallback from "@/components/ui/BrandImageFallback";
 import Link from "next/link";

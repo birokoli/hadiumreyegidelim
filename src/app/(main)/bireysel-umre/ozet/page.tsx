@@ -6,10 +6,10 @@ import { useConfiguratorStore } from "@/store/useConfiguratorStore";
 import { toJpeg } from "html-to-image";
 
 export default function PlannerSummaryPage() {
-  const { pax, flight, returnFlight, mekkeHotel, medineHotel, transfer, train, guide, extras, getTotalUSD } = useConfiguratorStore();
+  const { pax, flight, returnFlight, mekkeHotel, medineHotel, transfer, trains, guide, extras, getTotalUSD } = useConfiguratorStore();
   const cardRef = useRef<HTMLDivElement>(null);
   const [isGenerating, setIsGenerating] = useState(false);
-  const [whatsappNumber, setWhatsappNumber] = useState("905400213438");
+  const [whatsappNumber, setWhatsappNumber] = useState("905404010038");
 
   React.useEffect(() => {
     fetch('/api/settings').then(res => res.json()).then(data => {
@@ -44,7 +44,7 @@ export default function PlannerSummaryPage() {
   const mekkeHotelData = parseExtra((mekkeHotel as any)?.extraData);
   const medineHotelData = parseExtra((medineHotel as any)?.extraData);
   const transferData = parseExtra((transfer as any)?.extraData);
-  const trainData = parseExtra((train as any)?.extraData);
+  // handle trains in UI
 
   const handleWhatsAppShare = async () => {
     if (!cardRef.current) return;
@@ -71,7 +71,8 @@ export default function PlannerSummaryPage() {
       }
       
       const dataUrl = await toJpeg(cardRef.current, { 
-        quality: 0.95,
+        quality: 1,
+        pixelRatio: 2,
         backgroundColor: '#ffffff'
       });
       
@@ -87,7 +88,7 @@ export default function PlannerSummaryPage() {
       setTimeout(() => URL.revokeObjectURL(objectUrl), 100);
       
       const text = encodeURIComponent("Merhaba, web siteniz üzerinden kendi umre planımı tasarladım. İndirdiğim plan özetini iletiyorum, detaylar için sizinle görüşmek isterim.");
-      window.open(`https://wa.me/${whatsappNumber}?text=${text}`, '_blank');
+      window.location.href = `https://wa.me/${whatsappNumber}?text=${text}`;
     } catch (error) {
       console.error("Görsel oluşturulamadı:", error);
       alert("Planınız oluşturulurken bir hata oluştu.");
@@ -262,15 +263,24 @@ export default function PlannerSummaryPage() {
                   <div className="absolute -left-[51px] top-0 w-6 h-6 rounded-full bg-primary/10 border-4 border-white flex items-center justify-center text-primary">
                     <span className="material-symbols-outlined text-[10px]" style={{ fontVariationSettings: "'FILL' 1" }}>train</span>
                   </div>
-                  <h3 className="font-label text-[10px] font-bold uppercase tracking-[0.2em] text-tertiary mb-2">4. HIZLI TREN BİLETİ (MEKKE-MEDİNE)</h3>
-                  {train ? (
-                    <div>
-                      <h4 className="font-headline font-bold text-primary text-xl">{train.name}</h4>
-                      <div className="flex items-center gap-2 mt-1">
-                         <span className="text-xs font-bold bg-surface-container px-2 py-0.5 rounded text-outline">{trainData.departure || 'Mekke'}</span>
-                         <span className="material-symbols-outlined text-[10px] text-tertiary">arrow_forward</span>
-                         <span className="text-xs font-bold bg-surface-container px-2 py-0.5 rounded text-outline">{trainData.arrival || 'Medine'}</span>
-                      </div>
+                  <h3 className="font-label text-[10px] font-bold uppercase tracking-[0.2em] text-tertiary mb-2">4. HIZLI TREN BİLETLERİ</h3>
+                  {trains && trains.length > 0 ? (
+                    <div className="space-y-4">
+                      {trains.map((t, idx) => {
+                        const tData = parseExtra((t as any).extraData);
+                        return (
+                          <div key={idx}>
+                            <h4 className="font-headline font-bold text-primary text-xl">
+                              <span className="text-secondary mr-2">•</span>{t.name}
+                            </h4>
+                            <div className="flex items-center gap-2 mt-2">
+                               <span className="text-xs font-bold bg-surface-container px-2 py-0.5 rounded text-outline">{tData.departure || 'İstasyon'}</span>
+                               <span className="material-symbols-outlined text-[10px] text-tertiary">arrow_forward</span>
+                               <span className="text-xs font-bold bg-surface-container px-2 py-0.5 rounded text-outline">{tData.arrival || 'İstasyon'}</span>
+                            </div>
+                          </div>
+                        );
+                      })}
                     </div>
                   ) : (
                     <p className="text-sm text-outline italic">Tren bileti eklenmedi.</p>

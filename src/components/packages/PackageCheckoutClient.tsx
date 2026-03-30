@@ -8,7 +8,7 @@ export default function PackageCheckoutClient({ pkg }: { pkg: any }) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [pax, setPax] = useState(1);
-  const [whatsappNumber, setWhatsappNumber] = useState("905400213438");
+  const [whatsappNumber, setWhatsappNumber] = useState("905404010038");
 
   React.useEffect(() => {
     fetch('/api/settings').then(res => res.json()).then(data => {
@@ -49,7 +49,7 @@ export default function PackageCheckoutClient({ pkg }: { pkg: any }) {
       setTimeout(() => URL.revokeObjectURL(objectUrl), 100);
       
       const text = encodeURIComponent(`Merhaba, web siteniz üzerinden "${pkg.title}" paketinizi inceledim ve ${pax} kişi için rezervasyon yapmak istiyorum. Sistemden indirdiğim bilet/dekont ektedir, uçuş tarihleri ve detayları görüşmek isterim.`);
-      window.open(`https://wa.me/${whatsappNumber}?text=${text}`, '_blank');
+      window.location.href = `https://wa.me/${whatsappNumber}?text=${text}`;
     } catch (error) {
       console.error("Görsel oluşturulamadı:", error);
       alert("Biletiniz oluşturulurken bir hata oluştu.");

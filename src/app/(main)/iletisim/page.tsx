@@ -52,7 +52,7 @@ export default async function ContactPage({ searchParams }: { searchParams: Prom
              <div className="w-16 h-16 bg-surface-container rounded-full flex items-center justify-center mb-4">
                 <span className="material-symbols-outlined text-3xl text-secondary">call</span>
              </div>
-             <p className="font-bold text-primary text-lg">+90 540 021 34 38</p>
+             <p className="font-bold text-primary text-lg">+90 540 401 00 38</p>
              <p className="text-xs text-outline font-medium tracking-wide mt-1">7/24 Çağrı Merkezi</p>
            </div>
            <div className="flex flex-col items-center">

@@ -17,7 +17,7 @@ export default async function Home() {
   const home_banner_image = settings.home_banner_image || "https://lh3.googleusercontent.com/aida-public/AB6AXuCeWn_hW89LbHLjNkEyCjXnO56IpdLz_zRwB9BvtIjHV_CSU9n_ADpxoS-K9Y4UqzQtVdJ9tM238gIiQ3fIEgF50wPqba1ofx6HeAab2E8EYwvLnq_w13P3UCdpuZloJ2P_FBbqiM4ZrKqELKyG3sgBrj2SCUi6yLGc39nIApI_ip6uasqiKaUGRcpE7WnqmMcqOZVc-CUXOaphNXOHK18KEZCYKehmVy4cZRQP0tk7_PHK5iJh4cVmqsN9DeHNleLOmi97WPx_9Gw";
   const home_banner_title = settings.home_banner_title || "Ruhunuzun Ritmini Kalabalıklara Teslim Etmeyin.";
   const home_banner_subtitle = settings.home_banner_subtitle || "Ailenize ve Size Özel Butik Umre Deneyimi.";
-  const whatsappNumber = settings.whatsappNumber ? settings.whatsappNumber.replace('+', '') : "905400213438";
+  const whatsappNumber = settings.whatsappNumber ? settings.whatsappNumber.replace('+', '') : "905404010038";
 
   return (
     <>

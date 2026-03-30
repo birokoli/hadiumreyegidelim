@@ -85,9 +85,10 @@ export default async function PackagesPage() {
 
                     <div className="flex flex-col sm:flex-row items-center sm:items-end justify-between border-t border-outline-variant/10 pt-6 mt-auto gap-6 sm:gap-0">
                       <div className="text-center sm:text-left">
-                        <span className="text-[10px] uppercase tracking-widest text-outline font-bold block mb-1">Kişi Başı Başlangıç Fiyatı</span>
-                        <div className="text-3xl font-headline font-bold text-primary">
-                          {pkg.price} <span className="text-lg text-secondary inline-block -ml-1">{pkg.currency}</span>
+                        <span className="text-[10px] uppercase tracking-widest text-outline font-bold block mb-1">Tur Süresi</span>
+                        <div className="text-xl font-headline font-bold text-primary flex items-center gap-2">
+                          <span className="material-symbols-outlined text-[20px]">schedule</span>
+                          {pkg.duration}
                         </div>
                       </div>
                       <Link href={`/paketler/${pkg.slug}`} className="w-full sm:w-auto bg-primary text-white font-bold tracking-wide px-8 py-3.5 rounded-xl hover:bg-primary-container hover:text-primary active:scale-95 transition-all text-sm flex justify-center items-center gap-2 shadow-lg shadow-primary/20">

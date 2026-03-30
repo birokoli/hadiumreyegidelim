@@ -24,6 +24,17 @@ export default async function PackageDetailPage({ params }: { params: Promise<{ 
   }
 
   let includes: string[] = [];
+  let mainDesc = pkg.description;
+  let itinerary: any[] = [];
+  
+  if (pkg.description && pkg.description.includes('|||ITINERARY|||')) {
+    const parts = pkg.description.split('|||ITINERARY|||');
+    mainDesc = parts[0];
+    try {
+      itinerary = JSON.parse(parts[1]);
+    } catch(e) {}
+  }
+
   if (pkg.includes) {
     try { includes = JSON.parse(pkg.includes); } catch (e) {}
   }
@@ -60,8 +71,8 @@ export default async function PackageDetailPage({ params }: { params: Promise<{ 
                 {pkg.duration}
               </span>
               <span className="flex items-center gap-2 bg-white/20 border border-white/10 px-4 py-2 rounded-full backdrop-blur-md">
-                <span className="material-symbols-outlined text-[20px]">sell</span>
-                Kişi Başı {pkg.price} {pkg.currency}
+                <span className="material-symbols-outlined text-[20px]">schedule</span>
+                {pkg.duration}
               </span>
             </div>
           </div>
@@ -82,9 +93,29 @@ export default async function PackageDetailPage({ params }: { params: Promise<{ 
           <div>
             <h2 className="text-3xl font-headline font-bold text-primary mb-6">Paket Bilgileri</h2>
             <div className="text-on-surface-variant font-light leading-relaxed text-[17px] whitespace-pre-wrap">
-              {pkg.description}
+              {mainDesc}
             </div>
           </div>
+          
+          {itinerary.length > 0 && (
+            <div>
+              <h2 className="text-3xl font-headline font-bold text-primary mb-8 mt-12">Kronolojik Harita</h2>
+              <div className="space-y-6 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-outline-variant/30 before:to-transparent">
+                {itinerary.map((item, i) => (
+                  <div key={i} className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                    <div className="flex items-center justify-center w-10 h-10 rounded-full bg-surface-container-low border-4 border-white text-secondary font-bold shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10 text-sm">
+                      {item.day}
+                    </div>
+                    <div className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-white p-6 rounded-3xl shadow-sm border border-outline-variant/10 group-hover:shadow-md group-hover:border-primary/20 transition-all">
+                      <div className="text-[10px] uppercase tracking-widest text-secondary font-bold mb-1">Gün {item.day}</div>
+                      <h4 className="text-lg font-bold text-primary mb-2 font-headline">{item.title}</h4>
+                      <p className="text-sm text-on-surface-variant leading-relaxed font-light">{item.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
           
           {includes.length > 0 && (
             <div className="bg-white p-10 rounded-3xl border border-outline-variant/10 shadow-sm">
@@ -106,14 +137,14 @@ export default async function PackageDetailPage({ params }: { params: Promise<{ 
 
         {/* Right Column: Call To Action Sticky Card */}
         <div className="lg:col-span-1">
-          <div className="bg-surface-container-low p-8 rounded-3xl border border-outline-variant/20 sticky top-32 shadow-xl shadow-primary/5">
-            <span className="text-xs font-bold text-outline tracking-widest uppercase block mb-3">Başlangıç Fiyatı (Kişi Başı)</span>
-            <div className="text-5xl font-headline font-bold text-primary mb-6">
-              {pkg.price} <span className="text-2xl text-secondary">{pkg.currency}</span>
+          <div className="bg-surface-container-lowest p-8 rounded-3xl border border-outline-variant/20 sticky top-32 shadow-xl shadow-primary/5">
+            <span className="text-xs font-bold text-secondary tracking-widest uppercase block mb-3">Durum</span>
+            <div className="text-3xl font-headline font-bold text-primary mb-6">
+              Müsait
             </div>
             
             <p className="text-sm text-on-surface-variant mb-10 leading-relaxed font-light">
-              Fiyatlar uçuş tarihine, oda tipine ve otel müsaitliğine göre değişiklik gösterebilir. Kesin rezervasyon ve fiyatlandırma için müşteri temsilcimiz sizinle doğrudan iletişime geçecektir.
+              Manevi tasarım, konaklama, transfer ve rehberlik detayları tamamen size özel organize edilmektedir. Katılım durumunuzu netleştirmek ve paket detaylarını konuşmak için bizimle iletişime geçin.
             </p>
 
             <Link href={`/paketler/${pkg.slug}/checkout`} className="w-full bg-primary text-white font-bold tracking-widest text-sm px-6 py-4 rounded-xl hover:bg-primary-container hover:text-primary shadow-xl shadow-primary/20 transition-all flex items-center justify-center gap-2 mb-4">

@@ -66,18 +66,21 @@ const rawData = [
   { cat: "TRANSFER", name: "Mekke - Medine Bireysel Lüks Transfer (VIP Taksi)", desc: "Wi-Fi erişimi, güçlü VIP klima sistemi ve ücretsiz ferahlatıcı ikramlarla donatılmış geniş kabinli son model minivan/sedan araçlarda rüya gibi bir yolculuk tecrübesi." },
   { cat: "TRANSFER", name: "Lüks Minivan ile 5 Günlük Tam Kapsamlı Mekke-Medine Araç Tahsisi", desc: "Seyahatiniz süresince tüm bagaj ve rota lojistiğini devralan VIP Minivan ile istediğiniz yere ve ibadete en konforlu koşullarda ulaşma serbestisi sağlayan hizmet." },
   
-  { cat: "PACKAGE", name: "Cidde Çıkışlı 4 Günlük Hızlı (Stopover) Umre", desc: "Mekke'ye en hızlı ve pürüzsüz geçiş: 96 saatlik transit elektron vizeniz ile Mescid-i Haram sükunetini yaşayıp kalabalığa karışmadan premium geri dönüş." },
-  { cat: "PACKAGE", name: "Ultra Lüks Çöl İnzivası (Glamorous Camping Deneyimi)", desc: "Kavurucu çölde klimalı, şık iç mimariye ve panoramik tavan penceresine sahip lüks kubbe (dome) çadırlarda yıldızların ve sessizliğin zirvesine şahitlik edeceğiniz gece." },
-  { cat: "PACKAGE", name: "Bedevi Tarzı Özel Çöl Konaklamalı Ruhani İnziva Turu", desc: "Gündüzleri Kabe'nin ulvi ikliminde tavaf yapıp, geceyi teknolojiden uzak Bedevi kampında yıldız fenerleri altında tamamen yalıtılmış bir maneviyatta geçirme ayrıcalığı." },
-  { cat: "PACKAGE", name: "PAKET: Premium Ekspres Lüks Umre (5 Gün / 4 Gece)", duration: "5 Gün / 4 Gece", desc: "Tüm detayları incelikle düşünülmüş, Hareme yürüyüş mesafesindeki ultra lüks otel, Haramain Business tren bileti ve ailenize özel tasarlanan ruhani Mutavvıf hizmetini kapsar." },
-  { cat: "PACKAGE", name: "PAKET: Akıllı Bütçe Temel Umre Deneyimi (5 Gün / 4 Gece)", duration: "5 Gün / 4 Gece", desc: "Düziçi bütçeye de muazzam ibadet fırsatları: Hareme düzenli gün boyu lüks ring araçları bulunan 4 yıldızlı tesisler, ibadetin esasına odaklanan sade ve zarif gezi paketi." },
-  { cat: "PACKAGE", name: "PAKET: Dengeli Kapsamlı Keşif Paket Programı (9 Gün / 8 Gece)", duration: "9 Gün / 8 Gece", desc: "Mekke ve Medine'nin altın oranında kombinasyonu; her iki Harem bölgesindeki ibadet dengesi, nitelikli rehberliği ve maneviyat/fiyat performansı sunan favori paket." },
-  { cat: "PACKAGE", name: "PAKET: Mescid-i Nebevi'nin Gölgesinde Uzun Manevi İnziva (20-25 Gün)", duration: "20-25 Gün", desc: "Acelesi olmayan sükunet aşıkları için; ev konforunu kutsal topraklara taşıyan eşyalı özel rezidans seçenekleri ve günün her vaktini haremde geçirme serbestisi sunan uzun dönem tasarımı." }
+  { cat: "PACKAGE", name: "Sükunet: Kısa İnziva", duration: "4 Gün", desc: "Mekke'ye hızlı ve pürüzsüz geçiş. Kalabalığa karışmadan taze bir dönüş.|||ITINERARY|||[{\"day\": 1, \"title\": \"Mukaddes Topraklara Varış\", \"desc\": \"Havalimanı karşılama ve manevi ihrama giriş.\"}, {\"day\": 2, \"title\": \"İlk Umre Edası\", \"desc\": \"Mescid-i Haram'da sükunetle ilk umre.\"}, {\"day\": 3, \"title\": \"Serbest Tefekkür\", \"desc\": \"İbadet ve kişisel vird okumaları.\"}, {\"day\": 4, \"title\": \"Veda\", \"desc\": \"Tevekkül ve şükürle Veda tavafının yapılması ve dönüş.\"}]" },
+  { cat: "PACKAGE", name: "Kumların Sırrı: Çöl İnzivası", duration: "2 Gün", desc: "Çölde şık iç mimariye sahip çadırlarda yıldızların ve sessizliğin zirvesine şahitlik.|||ITINERARY|||[{\"day\": 1, \"title\": \"Çöle İntikal\", \"desc\": \"İkindi vakti çöl kampına varış ve günbatımında tefekkür yürüyüşü.\"}, {\"day\": 2, \"title\": \"Yıldızlar Altında İnziva\", \"desc\": \"Gecenin sükunetinde asırlar öncesi Bedevi hayatını idrak.\"}]" },
+  { cat: "PACKAGE", name: "Sıfırdan Başlangıç: Çöl Tefekkürü", duration: "3 Gün", desc: "Gündüzleri Kabe'nin ikliminde, geceyi Bedevi kampında yıldız fenerleri altında yalıtılmış bir maneviyatta geçirme.|||ITINERARY|||[{\"day\": 1, \"title\": \"Mekke ve Umre\", \"desc\": \"İbadet sonrası çöl kampına özel hareket.\"}, {\"day\": 2, \"title\": \"Kamp ve İnziva\", \"desc\": \"Yalıtılmış bir ortamda gün boyu kişisel doğa okuması ve huzur.\"}, {\"day\": 3, \"title\": \"Dönüş\", \"desc\": \"Sabah namazı sonrası çöl esintisi eşliğinde dönüş.\"}]" },
+  { cat: "PACKAGE", name: "Ekspres Maneviyat", duration: "5 Gün", desc: "Hareme yürüme mesafesinde özel tasarlanan ruhani alanlarda dolu dolu bir süreç.|||ITINERARY|||[{\"day\": 1, \"title\": \"Mekke Varış\", \"desc\": \"İlk umrenin rehber eşliğinde edası.\"}, {\"day\": 2, \"title\": \"Haremeyn Vakitleri\", \"desc\": \"Beş vakit namazın Harem'de eda edilmesine odaklanma.\"}, {\"day\": 3, \"title\": \"Siyer Okuması\", \"desc\": \"Sevr ve Nur Dağı eteklerinin manevi gezilmesi.\"}, {\"day\": 4, \"title\": \"Medine'ye Geçiş\", \"desc\": \"Tren ile Medine'ye geçiş ve Ravza selamlaması.\"}, {\"day\": 5, \"title\": \"Veda\", \"desc\": \"Veda selamı ve havalimanına intikal.\"}]" },
+  { cat: "PACKAGE", name: "Öze Dönüş: İlk Adım Umresi", duration: "5 Gün", desc: "İbadetin ve sükunetin esasına odaklanan sade ve zarif manevi bir gezi.|||ITINERARY|||[{\"day\": 1, \"title\": \"Varış ve Niyet\", \"desc\": \"Niyet ve ilk tavafın sükunet içerisinde gerçekleşmesi.\"}, {\"day\": 2, \"title\": \"İbadet Günü\", \"desc\": \"Sadece namaz ve tilavetine ayrılan serbest zaman.\"}, {\"day\": 3, \"title\": \"Tarihi Ziyaret\", \"desc\": \"Bedir ve Uhud atmosferinin idraki.\"}, {\"day\": 4, \"title\": \"Mescid-i Nebevi\", \"desc\": \"Kubbe-i Hadra altında derin tefekkür.\"}, {\"day\": 5, \"title\": \"Veda\", \"desc\": \"Şükür namazları ve dönüş.\"}]" },
+  { cat: "PACKAGE", name: "Kutlu Rota: İbadet ve Keşif", duration: "9 Gün", desc: "Mekke ve Medine'nin manevi altın oranında, sarsılmaz bir ruh haliyle her iki Harem bölgesindeki ibadeti dengeleyen seyahat.|||ITINERARY|||[{\"day\": 1, \"title\": \"Mekke Varış\", \"desc\": \"Hareme intikal ve umre edası.\"}, {\"day\": 3, \"title\": \"Mekke Siyeri\", \"desc\": \"İslam'ın doğduğu toprakları anlamlandırma.\"}, {\"day\": 5, \"title\": \"Hicret Günleri\", \"desc\": \"Haramain treniyle Medine'ye geçiş.\"}, {\"day\": 7, \"title\": \"Şehadet\", \"desc\": \"Medine'nin şanlı savunma mekanlarının ziyareti.\"}, {\"day\": 9, \"title\": \"Veda\", \"desc\": \"Son dualar.\"}]" },
+  { cat: "PACKAGE", name: "Mescidin Gölgesinde: Uzun İnziva", duration: "25 Gün", desc: "Acelesi olmayan sükunet aşıkları için; ev konforunu kutsal topraklara taşıyan uzun soluklu ruhani tefekkür ve ibadet dönemi.|||ITINERARY|||[{\"day\": 1, \"title\": \"Yerleşme\", \"desc\": \"Uzun dönemli konaklama alanına uyum.\"}, {\"day\": 7, \"title\": \"Harem Odaklılık\", \"desc\": \"Harem merkezli rutinin oturtulması.\"}, {\"day\": 15, \"title\": \"Medine'nin Huzuru\", \"desc\": \"Medine'ye geçiş ve Ravza sükuneti.\"}, {\"day\": 25, \"title\": \"Arınmış Dönüş\", \"desc\": \"Tamamlanan devasa inzivanın ardından arınmış şükür.\"}]" }
 ];
 
 async function main() {
   console.log('Seeding Tours and Packages to the database...');
   
+  console.log('Clearing packages before re-seeding...');
+  await prisma.package.deleteMany();
+
   for (const item of rawData) {
     if (item.cat === 'EXTRA') {
       await prisma.service.create({
@@ -104,7 +107,7 @@ async function main() {
           slug: slug,
           title: item.name,
           description: item.desc,
-          price: 999, // placeholder price
+          price: 0,
           duration: item.duration || "Esnek",
           published: true,
         }

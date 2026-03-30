@@ -18,38 +18,41 @@ export async function POST(request: Request) {
 
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
-    const prompt = `Sen uzman bir SEO uzmanı ve umre/hac, maneviyat konularında profesyonel bir blog yazarısın. Yazılarını %100 bir insan yazmış gibi kurgulamalısın. Yapay zeka dedektörlerini aşmak için şu kurallara KESİNLİKLE uy:
+    const prompt = `Sen uzman bir SEO uzmanı ve umre/hac, maneviyat konularında profesyonel bir blog yazarısın. Yazılarını %100 bir insan yazmış gibi kurgulamalısın. SEMRUSH ve Google SEO standartlarını en üst düzeyde (Hedef: %100 Orjinallik, 58.9 Readability Skoru) karşılamalısın. Yapay zeka dedektörlerini aşmak için şu kurallara KESİNLİKLE uy:
 
 Konu: "${topic}"
-Anahtar Kelimeler: "${keywords || ''}"
+Ek Anahtar Kelimeler: "${keywords || ''}"
 Mevcut Kategoriler: ${JSON.stringify(categories || [])}
 Mevcut Yazarlar (E-E-A-T): ${JSON.stringify(authors || [])}
 
-1. Burstiness (Değişkenlik): Cümle uzunluklarını rastgele değiştir. Bazı cümleler 3 kelime olsun, bazıları 25 kelime.
-2. Perplexity (Beklenmezlik): Sıradan kelimeler yerine daha az tahmin edilebilir, zengin kelimeler ve eşanlamlılar kullan. Günlük konuşma dilini, retorik soruları ve deyimleri metne yedir.
-3. Mekaniklikten Kaçın: 'Sonuç olarak', 'Özetle', 'Günümüzde', 'Önemlidir ki' gibi klasik yapay zeka kalıplarını ASLA kullanma.
-4. Kusurluluk ve Doğallık: Çok hafif anlatım bozuklukları veya doğal duran geçişler yap. Bilgiyi dümdüz listelemek yerine, sanki kendi deneyimini anlatıyormuşsun gibi bir hikaye akışı (storytelling) kur.
-5. Formu Tamamen Doldur: Gönderilen "Mevcut Kategoriler" ve "Mevcut Yazarlar" listelerini incele. Yazının konusuna en uygun Kategorinin ve Yazarın "id" değerini JSON'da döndür!
+SEMRUSH OKUNABİLİRLİK (READABILITY) KURALLARI (HEDEF: 58.9 - 8./9. Sınıf Seviyesi):
+1. Çok Kısa Paragraflar: Her paragraf MAKSİMUM 2-3 cümle olmalıdır. Okunabilirliği artırmak ve Semrush'tan yüksek puan almak için 'Split long paragraphs' uyarısını aşacak şekilde her 2-3 cümlede bir <p> etiketiyle alt paragraf başlat!
+2. Basit, Kısa Kelimeler (Rewrite hard-to-read sentences): "kullanılabiliyor", "gerçekleştirebilirsiniz", "yararlanabilirsiniz" gibi ağır, kurumsal ve karmaşık kelimeler ASLA KULLANMA. Bunlar yerine "kullanılır", "yapabilirsiniz", "alabilirsiniz" gibi basit düzey, sade ifadeler kullan. Çeviri kokan cümleler kurma. 
+
+SEO VE LİNK İNŞASI KURALLARI (ZORUNLU):
+1. ZORUNLU ANAHTAR KELİMELER: "bireysel umre", "tursuz umre", "umre vizesi", "nusuk umre", "umre maliyeti", "ucuz umre", "uçak bileti", "e vize", "suudi arabistan a", "mescid i haram", "gidiş dönüş" kelimelerini makale içerisine olabildiğince doğal bir şekilde, en az 1 kez ZORUNLU olarak entegre et!
+2. İÇ LİNKLEME (Internal Linking & CTA): Yazının akışında ve YAZININ EN SONUNDA sitemizin hizmetlerine CTA (Çağrı) niteliğinde DİNAMİK HTML <a href="..."> etiketleri kullan. Örnek: <a href="/paketler">Umre paketlerimizi inceleyin</a>, <a href="/bireysel-umre">Bireysel umre danışmanlığı ile tanışın</a>, <a href="/iletisim">Bize anında ulaşabilirsiniz</a>. Blog içerisinde konuya uygun en az 3 adet Internal Link vermen zorunludur!
+3. DIŞ LİNKLEME (External Linking): Metin içerisinde adı geçen resmi konulara (Örn: Nusuk, E-vize, Diyanet, Wikipedia) otoriter sitelere <a href="..." target="_blank"> etiketiyle en az 2 adet Dış (External) Link vermelisin. (Örn: <a href="https://nusuk.sa" target="_blank">Nusuk Resmi Sitesi</a>).
+4. E-E-A-T ve Orjinallik: Klasik makale giriş/çeliş kullanma. 'Özetle', 'Günümüzde' gibi kelimeleri listeden çıkar. Makaleyi direkt hikayesiyle ve sohbet havasında aç. 'sen/ben' veya 'siz/biz' tonunu doğal kullan. Bilgiyi dümdüz listelemek yerine, sanki yılların umre rehberi olarak kendi tecrübeni masaya koyuyormuş gibi hissettir.
 
 Teknik Kurallar:
-- Okuyucuyu sıkmayan akıcı, etkileyici ve otoriter bir dil kullan. 
-- HTML formatında içerik üret. KESİNLİKLE HTML NİTELİKLERİ İÇİNDE (class, src, alt, vb.) SADECE TEK TIRNAK (') KULLAN. ASLA ÇİFT TIRNAK (") KULLANMA.
-- H2 ve H3 etiketlerini semantik kullan. Makalenin ana başlığı (H1) "title" alanında olacak, içerik ("content") SADECE H2 veya H3 ile başlayıp alt başlıklarla devam etmeli. İçerikte H1 olmasın!
-- Paragrafları <p> ile sarmala. Gerektiğinde okunaklı listeler (<ul> <li>) ekle.
+- HTML formatında içerik üret. KESİNLİKLE HTML NİTELİKLERİ İÇİNDE (class, href, alt, vb.) SADECE TEK TIRNAK (') KULLAN. ASLA ÇİFT TIRNAK (") KULLANMA. String formatı bozulmasın.
+- H2 ve H3 etiketlerini bolca kullan. İçerikte H1 OLMASIN (Biz başlıkları zaten sayfa üstünde <h1/> basıyoruz). Fakat yazının en başında doğrudan içeriğe güçlü bir giriş yap.
+- Resim kullanacaksan (<img src='...' alt='Açıklama' />), "alt" etiketlerini MÜKEMMEL derece açıklayıcı doldur! Gerekmiyorsa sahte img kullanma.
 
-Lütfen çıktıyı SADECE AŞAĞIDAKİ YAPIDA VE EKSİKSİZ biçimde bir JSON objesi olarak ver! Tüm anahtarların doldurulması (hiçbirinin boş bırakılmaması) zorunludur. DİKKAT: "title", "metaDescription", "focusKeyword" ve "slug" alanlarını KESİNLİKLE boş bırakma, bunlar makalenin en önemli SEO alanlarıdır! Çift tırnaklara ve kaçış karakterlerine dikkat et:
+Lütfen çıktıyı SADECE AŞAĞIDAKİ YAPIDA VE EKSİKSİZ biçimde bir JSON objesi olarak ver! Tüm anahtarların doldurulması (hiçbirinin boş bırakılmaması) zorunludur. DİKKAT: "title", "metaDescription", "focusKeyword" ve "slug" alanlarını KESİNLİKLE boş bırakma! Çift tırnaklara dikkat et (HTML'de tek tırnak).
 
 {
-  "title": "H1 Ana Başlık: Tamamen dikkat çekici SEO uyumlu makale başlığı",
+  "title": "H1 Ana Başlık: Dikkat Çekici SEO Uyumlu...",
   "slug": "seo-uyumlu-cok-kisa-url-slug",
-  "metaDescription": "Google'da çıkacak 150-160 karakterlik, tıklamaya teşvik eden meta açıklaması",
-  "keywords": "konuyla ilgili virgülle ayrılmış 5-6 adet SEO anahtar kelimesi (yukarıdakileri de içerebilir)",
-  "focusKeyword": "Bu makale için hedeflenen tek bir ana odak anahtar kelime",
-  "categoryId": "Mevcut Kategoriler listesinden en uygun olanın id'si (yoksa boş string)",
-  "authorId": "Mevcut Yazarlar listesinden en uygun yazarın id'si (yoksa boş string)",
-  "content": "<h2>...</h2><p class='text-lg'>...</p>",
-  "personalExperience": "Bizzat yaşanmış hissi veren, blog yazısıyla %100 uyumlu, samimi, 2-3 cümlelik bir kişisel anekdot veya deneyim",
-  "references": "Makaledeki konulara kanıt niteliğinde, güvenilir kaynak gösterimleri (örn: Diyanet İşleri Başkanlığı Hac Rehberi 2024, Wikipedia, vb)."
+  "metaDescription": "150-160 karakterlik meta açıklaması",
+  "keywords": "hedeflenen virgüllü SEO kelimeleri",
+  "focusKeyword": "Odak kelimesi",
+  "categoryId": "Mevcut Kategorilerden id",
+  "authorId": "Mevcut Yazarlardan id",
+  "content": "<p class='text-lg'>Hikaye odaklı güçlü giriş cümlen...</p><h2>İlk Alt Başlık</h2><p>Kısa ve basit ilk paragraf...</p><p>Kısa ve basit ikinci paragraf...</p><p>Devamı... İçinde <a href='/paketler'>...</a> linklemesi vb.</p>",
+  "personalExperience": "Bizzat yaşanmış hissi veren, samimi, 2-3 cümlelik yazar tecrübesi",
+  "references": "Kullanılan dış bağlantılar, kanıtlar (Diyanet, Nusuk, Wiki vb)"
 }`;
 
     const schema: any = {

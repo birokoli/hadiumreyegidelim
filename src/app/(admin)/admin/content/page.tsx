@@ -149,6 +149,8 @@ export default function ContentPage() {
   const [aiTopic, setAiTopic] = useState("");
   const [aiKeywords, setAiKeywords] = useState("");
   const [isGenerating, setIsGenerating] = useState(false);
+  const [aiEditInstruction, setAiEditInstruction] = useState("");
+  const [isAiEditing, setIsAiEditing] = useState(false);
 
   const fetchPosts = async () => {
     try {
@@ -264,6 +266,7 @@ export default function ContentPage() {
     setNewPost({ title: "", slug: "", description: "", keywords: "", focusKeyword: "", seoScore: 0, imageUrl: "", content: "", authorId: "", categoryId: "", personalExperience: "", references: "", published: true });
     setAiTopic("");
     setAiKeywords("");
+    setAiEditInstruction("");
     setMediaMap({});
     setAiAnalysisResult(null);
     setViewMode('edit');
@@ -288,6 +291,7 @@ export default function ContentPage() {
     });
     setAiTopic("");
     setAiKeywords("");
+    setAiEditInstruction("");
     setMediaMap({});
     setAiAnalysisResult(null);
     setShowAdd(true);
@@ -410,6 +414,44 @@ export default function ContentPage() {
       alert("İçerik üretilirken hata oluştu.");
     } finally {
       setIsGenerating(false);
+    }
+  };
+
+  const handleEditAI = async () => {
+    if (!aiEditInstruction) {
+      alert("Lütfen yapay zekaya bir düzenleme talimatı verin.");
+      return;
+    }
+    if (!newPost.content || newPost.content.length < 10) {
+      alert("Düzenlenecek yeterli içerik bulunmuyor.");
+      return;
+    }
+    
+    setIsAiEditing(true);
+    try {
+      const res = await fetch('/api/ai/edit-blog', {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+          content: newPost.content, 
+          instruction: aiEditInstruction
+        })
+      });
+      
+      const data = await res.json();
+      if (!res.ok) {
+        alert(data.error || "Yapay zeka düzenleme hatası.");
+        return;
+      }
+      
+      setNewPost(prev => ({ ...prev, content: data.optimizedContent }));
+      setAiEditInstruction("");
+      alert("İçerik yapay zeka tarafından başarıyla güncellendi!");
+      
+    } catch (e) {
+      alert("İçerik düzenlenirken hata oluştu.");
+    } finally {
+      setIsAiEditing(false);
     }
   };
 
@@ -834,15 +876,47 @@ export default function ContentPage() {
                </div>
 
                {viewMode === 'edit' ? (
-                 <div className="bg-white rounded-xl overflow-hidden border border-outline-variant/30 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/10 transition-all">
-                   <ReactQuill 
-                     theme="snow" 
-                     value={newPost.content} 
-                     onChange={(val) => setNewPost(prev => ({...prev, content: val}))} 
-                     modules={modules}
-                     className="min-h-[700px] mb-16 text-lg"
-                     placeholder="Yazınızı buraya yazın veya yapay zeka ile otomatik doldurun..."
-                   />
+                 <div className="space-y-4">
+                   <div className="bg-[#f0f4f8] border border-blue-200 p-4 rounded-xl flex flex-col md:flex-row gap-4 items-end shadow-inner">
+                     <div className="flex-1 w-full">
+                       <label className="text-[10px] font-bold text-blue-900 uppercase tracking-widest flex items-center gap-1 mb-2">
+                         <span className="material-symbols-outlined text-[14px]">auto_awesome</span>
+                         Mevcut İçeriği Yapay Zeka İle Düzenle
+                       </label>
+                       <input 
+                         className="w-full bg-white border border-blue-200 rounded-lg p-3 text-sm focus:ring-blue-500 outline-none shadow-sm placeholder:text-blue-900/40"
+                         placeholder="Örn: Bu makalenin son paragrafını daha samimi yaz ve /paketler sayfasına link ver..."
+                         value={aiEditInstruction} 
+                         onChange={e => setAiEditInstruction(e.target.value)}
+                         onKeyDown={(e) => {
+                           if (e.key === 'Enter') {
+                             e.preventDefault();
+                             handleEditAI();
+                           }
+                         }}
+                       />
+                     </div>
+                     <button 
+                       type="button"
+                       onClick={handleEditAI}
+                       disabled={isAiEditing || !aiEditInstruction || !newPost.content}
+                       className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-bold tracking-[0.15em] text-xs uppercase shadow-md transition-all flex items-center gap-2 whitespace-nowrap disabled:opacity-50"
+                     >
+                       {isAiEditing ? <span className="material-symbols-outlined animate-spin text-[16px]">sync</span> : <span className="material-symbols-outlined text-[16px]">magic_button</span>}
+                       {isAiEditing ? "DÜZENLENİYOR..." : "UYGULA"}
+                     </button>
+                   </div>
+                   
+                   <div className="bg-white rounded-xl overflow-hidden border border-outline-variant/30 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/10 transition-all">
+                     <ReactQuill 
+                       theme="snow" 
+                       value={newPost.content} 
+                       onChange={(val) => setNewPost(prev => ({...prev, content: val}))} 
+                       modules={modules}
+                       className="min-h-[700px] mb-16 text-lg"
+                       placeholder="Yazınızı buraya yazın veya yapay zeka ile otomatik doldurun..."
+                     />
+                   </div>
                  </div>
                ) : (
                  <div className="bg-white rounded-3xl p-10 md:p-16 border border-outline-variant/30 min-h-[500px] max-w-4xl mx-auto shadow-[0px_32px_64px_-12px_rgba(0,55,129,0.06)] relative overflow-hidden">

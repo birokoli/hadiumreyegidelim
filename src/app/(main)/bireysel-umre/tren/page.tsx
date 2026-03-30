@@ -67,91 +67,120 @@ export default function TrainSelectionPage() {
                 ) : trains.length === 0 ? (
                   <div className="text-outline">Tren seferi bulunmamaktadır.</div>
                 ) : (
-                  <div className="space-y-6">
-                    {trains.map((t) => {
-                      const isSelected = selectedTrains.some((tr) => tr.id === t.id);
-                      const parsedData = (() => {
-                        if (!t.extraData) return {};
-                        if (t.extraData.startsWith('{')) {
-                          try { return JSON.parse(t.extraData); } catch { return {}; }
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {(() => {
+                      const groupedTrains = trains.reduce((acc, t) => {
+                        const parsedData = (() => {
+                          if (!t.extraData) return {};
+                          if (t.extraData.startsWith('{')) {
+                            try { return JSON.parse(t.extraData); } catch { return {}; }
+                          }
+                          return {};
+                        })();
+                        
+                        const departure = parsedData.departure || "Bilinmiyor";
+                        const arrival = parsedData.arrival || "Bilinmiyor";
+                        const stops = parsedData.stops || 0;
+                        
+                        const groupKey = `${departure}-${arrival}-${stops}`;
+                        
+                        if (!acc[groupKey]) {
+                          acc[groupKey] = {
+                            id: groupKey,
+                            departure,
+                            arrival,
+                            stops,
+                            economy: null,
+                            business: null
+                          };
                         }
-                        return { image: t.extraData };
-                      })();
-                      
-                      const imageUrl = parsedData.image || (t.extraData && (t.extraData.startsWith('http') || t.extraData.startsWith('/')) ? t.extraData : null);
-                      const departure = parsedData.departure || "Mekke";
-                      const arrival = parsedData.arrival || "Medine";
-                      const stops = parsedData.stops || 0;
-                      
-                      return (
-                        <div key={t.id} className={`group rounded-2xl overflow-hidden transition-all flex flex-col ${isSelected ? 'bg-surface-container-lowest shadow-xl border-2 border-primary ring-4 ring-primary/10 -translate-y-1' : 'bg-surface-container-lowest shadow-sm hover:shadow-2xl border border-outline-variant/10 hover:border-tertiary hover:-translate-y-1'}`}>
-                            <div className="h-48 overflow-hidden relative">
-                              {imageUrl ? (
-                                <img alt={t.name} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src={imageUrl} />
-                              ) : (
-                                <BrandImageFallback icon="train" />
-                              )}
-                              {isSelected && (
-                                <div className="absolute top-4 right-4 bg-primary text-white p-2 rounded-full shadow-md z-10">
-                                  <span className="material-symbols-outlined text-sm" data-icon="check" style={{ fontVariationSettings: "'FILL' 1" }}>check</span>
-                                </div>
-                              )}
-                            </div>
-                          <div className="p-6 flex flex-col flex-1 relative">
-                            <div className="flex items-center gap-4 mb-4 mt-2">
-                              <div className={`w-14 h-14 rounded-full flex items-center justify-center transition-colors ${isSelected ? 'bg-primary text-white' : 'bg-primary/5 text-primary group-hover:bg-primary/10'}`}>
-                                <span className="material-symbols-outlined text-2xl">train</span>
-                              </div>
-                              <div className="flex-1">
-                                <h4 className={`text-xl font-headline font-bold transition-colors ${isSelected ? 'text-primary' : 'text-on-surface group-hover:text-primary'}`}>{t.name}</h4>
-                                <div className="flex items-center gap-2 mt-1">
-                                  <span className="text-[10px] uppercase tracking-wider font-bold bg-surface-container px-2 py-0.5 rounded text-outline">{departure}</span>
-                                  <span className="material-symbols-outlined text-[10px] text-tertiary">arrow_forward</span>
-                                  <span className="text-[10px] uppercase tracking-wider font-bold bg-surface-container px-2 py-0.5 rounded text-outline">{arrival}</span>
-                                </div>
-                              </div>
-                            </div>
-                            
-                            {stops > 0 && (
-                              <p className="text-[10px] font-bold tracking-widest uppercase text-tertiary mb-3 flex items-center">
-                                <span className="material-symbols-outlined text-[13px] mr-1">directions_railway</span>
-                                {stops} Duraklı Sefer
-                              </p>
-                            )}
-                            
-                            {t.description && (
-                              <div className="text-sm text-on-surface-variant font-body leading-relaxed mb-6 flex-1 border-l-2 border-primary/20 pl-3 bg-primary/5 py-2 pr-2 rounded-r-lg">
-                                {t.description}
-                              </div>
+                        
+                        if (t.name.toLowerCase().includes('economy')) {
+                          acc[groupKey].economy = t;
+                        } else if (t.name.toLowerCase().includes('business')) {
+                          acc[groupKey].business = t;
+                        } else {
+                          if (!acc[groupKey].economy) acc[groupKey].economy = t;
+                        }
+                        
+                        return acc;
+                      }, {} as Record<string, any>);
+
+                      const routes = Object.values(groupedTrains);
+
+                      return routes.map((route: any) => {
+                        const isEconomySelected = route.economy ? selectedTrains.some((tr) => tr.id === route.economy.id) : false;
+                        const isBusinessSelected = route.business ? selectedTrains.some((tr) => tr.id === route.business.id) : false;
+                        const isAnySelected = isEconomySelected || isBusinessSelected;
+
+                        const handleClassSelect = (selectedClassOption: any, otherClassOption: any) => {
+                          if (selectedTrains.some(t => t.id === selectedClassOption.id)) {
+                             toggleTrain(selectedClassOption);
+                          } else {
+                             if (otherClassOption && selectedTrains.some(t => t.id === otherClassOption.id)) {
+                                toggleTrain(otherClassOption); 
+                             }
+                             toggleTrain({...selectedClassOption, type: 'train'});
+                          }
+                        };
+
+                        return (
+                          <div key={route.id} className={`bg-surface-container-lowest rounded-[2rem] p-6 border transition-all relative overflow-hidden group ${isAnySelected ? 'border-primary ring-4 ring-primary/10 shadow-xl -translate-y-1' : 'border-outline-variant/20 shadow-sm hover:shadow-2xl hover:-translate-y-1 hover:border-tertiary/50'}`}>
+                            {isAnySelected ? (
+                               <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-primary to-secondary"></div>
+                            ) : (
+                               <div className="absolute top-0 left-0 w-full h-1.5 bg-outline-variant/20 group-hover:bg-tertiary/40 transition-colors"></div>
                             )}
 
-                            <div className="flex flex-col gap-2 mt-auto pt-4">
-                              <button 
-                                onClick={() => toggleTrain({
-                                  id: t.id,
-                                  name: t.name,
-                                  price: t.price,
-                                  isRoundTrip: false,
-                                  type: 'train'
-                                })}
-                                className={`w-full py-3 text-xs md:text-sm font-bold uppercase tracking-widest rounded-xl transition-all flex items-center justify-center gap-2 ${isSelected ? 'bg-error hover:bg-error/90 text-white shadow-md' : 'bg-primary text-white hover:bg-primary-container hover:text-primary shadow-xl shadow-primary/20 hover:-translate-y-0.5'}`}>
-                                {isSelected ? (
-                                  <>
-                                    <span className="material-symbols-outlined text-[18px]">remove_shopping_cart</span>
-                                    Seçimi Kaldır
-                                  </>
-                                ) : (
-                                  <>
-                                    <span className="material-symbols-outlined text-[18px]">add_shopping_cart</span>
-                                    Bileti Ekle ($${Math.round(t.price)})
-                                  </>
-                                )}
-                              </button>
+                            {/* Route Header */}
+                            <div className="flex justify-between items-start mb-6 mt-2">
+                              <div>
+                                <h3 className="text-xl md:text-2xl font-headline font-bold text-primary mb-2 flex items-center flex-wrap gap-2">
+                                  {route.departure} <span className="material-symbols-outlined text-tertiary text-[20px]">arrow_right_alt</span> {route.arrival}
+                                </h3>
+                                <div className="flex items-center gap-2">
+                                  <span className="flex items-center gap-1 text-[10px] uppercase tracking-widest font-bold bg-surface-container text-on-surface-variant px-3 py-1.5 rounded-full">
+                                    <span className="material-symbols-outlined text-[14px]">directions_railway</span>
+                                    {route.stops === 0 ? 'Non-Stop (Kesintisiz)' : `${route.stops} Duraklı Sefer`}
+                                  </span>
+                                </div>
+                              </div>
                             </div>
+
+                            {/* Class Selection Grid */}
+                            <div className="space-y-3 mt-8">
+                              <p className="text-[10px] font-bold uppercase tracking-widest text-outline pl-1">Bilet Sınıfı Seçin</p>
+                              <div className="grid grid-cols-2 gap-3">
+                                {/* Economy Button */}
+                                {route.economy && (
+                                  <button 
+                                    onClick={() => handleClassSelect(route.economy, route.business)}
+                                    className={`flex flex-col items-center justify-center p-4 rounded-2xl border-2 transition-all ${isEconomySelected ? 'border-primary bg-primary text-white shadow-lg' : 'border-outline-variant/20 bg-surface text-on-surface hover:border-primary/40 hover:bg-primary/5'}`}
+                                  >
+                                    <span className={`material-symbols-outlined text-2xl mb-2 ${isEconomySelected ? 'text-white' : 'text-primary'}`}>airline_seat_recline_normal</span>
+                                    <span className={`text-[10px] tracking-widest uppercase font-bold mb-1 ${isEconomySelected ? 'text-white/80' : 'text-outline'}`}>Economy</span>
+                                    <span className="text-lg font-headline font-bold">${Math.round(route.economy.price)}</span>
+                                  </button>
+                                )}
+
+                                {/* Business Button */}
+                                {route.business && (
+                                  <button 
+                                    onClick={() => handleClassSelect(route.business, route.economy)}
+                                    className={`flex flex-col items-center justify-center p-4 rounded-2xl border-2 transition-all ${isBusinessSelected ? 'border-secondary bg-secondary text-white shadow-lg' : 'border-outline-variant/20 bg-surface text-on-surface hover:border-secondary/40 hover:bg-secondary/5'}`}
+                                  >
+                                    <span className={`material-symbols-outlined text-2xl mb-2 ${isBusinessSelected ? 'text-white' : 'text-secondary'}`}>airline_seat_recline_extra</span>
+                                    <span className={`text-[10px] tracking-widest uppercase font-bold mb-1 ${isBusinessSelected ? 'text-white/80' : 'text-outline'}`}>Business</span>
+                                    <span className="text-lg font-headline font-bold">${Math.round(route.business.price)}</span>
+                                  </button>
+                                )}
+                              </div>
+                            </div>
+                            
                           </div>
-                        </div>
-                      );
-                    })}
+                        );
+                      });
+                    })()}
                   </div>
                 )}
               </section>

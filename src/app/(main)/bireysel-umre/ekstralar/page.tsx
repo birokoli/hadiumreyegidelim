@@ -27,16 +27,16 @@ export default function ExtrasSelectionPage() {
   };
 
   const getImageUrl = (extraData: string | null) => {
-    if (!extraData) return "https://images.unsplash.com/photo-1590402636904-9cd8563fe272?auto=format&fit=crop&q=80&w=600";
+    if (!extraData) return null;
     if (extraData.startsWith('http') || extraData.startsWith('/')) return extraData;
     if (extraData.startsWith('{')) {
       try {
         const parsed = JSON.parse(extraData);
         if (parsed.images && parsed.images.length > 0) return parsed.images[0];
         if (parsed.image) return parsed.image;
-      } catch { return "https://images.unsplash.com/photo-1590402636904-9cd8563fe272?auto=format&fit=crop&q=80&w=600"; }
+      } catch { return null; }
     }
-    return "https://images.unsplash.com/photo-1590402636904-9cd8563fe272?auto=format&fit=crop&q=80&w=600";
+    return null;
   };
 
   return (
@@ -90,12 +90,16 @@ export default function ExtrasSelectionPage() {
                           key={ext.id}
                           onClick={() => toggleExtra({ id: ext.id, name: ext.name, price: ext.price, image: imageUrl, description: ext.description })}
                           className={`group relative rounded-2xl overflow-hidden transition-all duration-300 cursor-pointer ${isSelected ? 'bg-surface-container-lowest shadow-xl border-2 border-primary ring-4 ring-primary/10 -translate-y-1' : 'bg-surface-container-lowest shadow-sm border border-outline-variant/10 hover:shadow-2xl hover:-translate-y-1'}`}>
-                          <div className="aspect-[4/3] w-full bg-surface-container overflow-hidden">
-                            <img
-                              alt={ext.name}
-                              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                              src={imageUrl}
-                            />
+                          <div className="aspect-[4/3] w-full bg-primary overflow-hidden relative flex flex-col items-center justify-center text-white/40 group-hover:text-white/80 transition-colors duration-500">
+                            {imageUrl ? (
+                              <img
+                                alt={ext.name}
+                                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                src={imageUrl}
+                              />
+                            ) : (
+                              <span className="material-symbols-outlined text-6xl relative z-10" style={{ fontVariationSettings: "'FILL' 1" }}>tour</span>
+                            )}
                           </div>
                           <div className="p-8">
                             <div className="flex justify-between items-start mb-4">

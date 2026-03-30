@@ -220,7 +220,7 @@ export default function AccommodationSelectionPage() {
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                         {visibleHotelsData.map((h) => {
                           const isSelected = currentSelectedHotel?.id === h.id;
-                          const images = h.images && h.images.length > 0 ? h.images : ["https://images.unsplash.com/photo-1542314831-c6a4d40409a5?auto=format&fit=crop&q=80&w=600"];
+                          const images = h.images && h.images.length > 0 ? h.images : [];
 
                           return (
                             <div 
@@ -229,13 +229,17 @@ export default function AccommodationSelectionPage() {
                               className={`group relative aspect-[3/4] flex flex-col rounded-3xl overflow-hidden transition-all duration-300 transform cursor-pointer ${isSelected ? 'bg-surface-container-lowest shadow-2xl border-primary ring-2 ring-primary/20 -translate-y-2' : 'bg-surface-container-lowest shadow-md hover:shadow-2xl border border-outline-variant/30 hover:border-tertiary/50 hover:-translate-y-2'}`}>
                               
                               {/* Top Half: Photo (55%) */}
-                              <div className="relative h-[55%] w-full bg-surface-container overflow-hidden">
-                                <img 
-                                  src={images[0]} 
-                                  alt={h.name} 
-                                  referrerPolicy="no-referrer"
-                                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
-                                />
+                              <div className="relative h-[55%] w-full bg-primary flex items-center justify-center text-white/40 group-hover:text-white/80 transition-colors duration-500 overflow-hidden">
+                                {images.length > 0 ? (
+                                  <img 
+                                    src={images[0]} 
+                                    alt={h.name} 
+                                    referrerPolicy="no-referrer"
+                                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
+                                  />
+                                ) : (
+                                  <span className="material-symbols-outlined text-6xl" style={{ fontVariationSettings: "'FILL' 1" }}>hotel_class</span>
+                                )}
                                 {/* Stars Widget */}
                                 <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-md text-white border border-white/20 text-xs font-bold px-2.5 py-1.5 rounded-md shadow-md z-10 flex items-center gap-1">
                                   <span className="material-symbols-outlined text-[12px] text-tertiary" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>

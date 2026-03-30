@@ -151,22 +151,19 @@ export default function TransferSelectionPage() {
 
                       return (
                         <div key={t.id} className={`group rounded-2xl overflow-hidden transition-all flex flex-col ${isSelected ? 'bg-surface-container-lowest shadow-xl border-2 border-primary ring-4 ring-primary/10 -translate-y-1' : 'bg-surface-container-lowest shadow-sm hover:shadow-2xl border border-outline-variant/10 hover:border-tertiary hover:-translate-y-1'}`}>
-                          {imageUrl && (
-                            <div className="h-48 overflow-hidden relative">
-                              <img alt={t.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src={imageUrl} />
+                            <div className="h-48 overflow-hidden relative bg-primary flex flex-col items-center justify-center text-white/40 group-hover:text-white/80 transition-colors duration-500">
+                              {imageUrl ? (
+                                <img alt={t.name} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src={imageUrl} />
+                              ) : (
+                                <span className="material-symbols-outlined text-6xl relative z-10" style={{ fontVariationSettings: "'FILL' 1" }}>directions_car</span>
+                              )}
                               {isSelected && (
                                 <div className="absolute top-4 right-4 bg-primary text-white p-2 rounded-full shadow-md z-10">
                                   <span className="material-symbols-outlined text-sm" data-icon="check" style={{ fontVariationSettings: "'FILL' 1" }}>check</span>
                                 </div>
                               )}
                             </div>
-                          )}
                           <div className="p-6 flex flex-col flex-1 relative">
-                            {isSelected && !imageUrl && (
-                              <div className="absolute top-4 right-4 bg-primary text-white p-2 rounded-full shadow-md z-10">
-                                <span className="material-symbols-outlined text-sm" data-icon="check" style={{ fontVariationSettings: "'FILL' 1" }}>check</span>
-                              </div>
-                            )}
                             <div className="flex flex-col gap-2 mt-2 mb-6">
                               <div className="flex items-center gap-4">
                                 <div className={`w-14 h-14 rounded-full flex items-center justify-center transition-colors ${isSelected ? 'bg-primary text-white' : 'bg-primary/5 text-primary group-hover:bg-primary/10'}`}>

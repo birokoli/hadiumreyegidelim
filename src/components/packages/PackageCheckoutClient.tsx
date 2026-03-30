@@ -118,8 +118,8 @@ export default function PackageCheckoutClient({ pkg }: { pkg: any }) {
             <div className="absolute top-0 right-[-10%] w-[40%] h-[200%] bg-white/5 rotate-12 blur-[40px] pointer-events-none"></div>
             <div className="relative z-10 flex items-center justify-between">
                <div>
-                 <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-white/60 mb-1 block">MANEVİ YOLCULUK BİLETİ</span>
-                 <h2 className="font-headline text-2xl font-bold">Hadi Umreye</h2>
+                 <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-white/60 mb-1 block">REZERVASYON TALEBİ</span>
+                 <h2 className="font-headline text-2xl font-bold">Huzura İlk Adım</h2>
                </div>
                <div className="text-right">
                   <span className="material-symbols-outlined text-[40px] opacity-20">airlines</span>

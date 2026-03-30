@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import ConfiguratorSidebar from "@/components/layout/ConfiguratorSidebar";
 import ConfiguratorSummary from "@/components/layout/ConfiguratorSummary";
+import BrandImageFallback from "@/components/ui/BrandImageFallback";
 import { useConfiguratorStore, ExtraOption } from "@/store/useConfiguratorStore";
 
 export default function GuideSelectionPage() {
@@ -79,7 +80,7 @@ export default function GuideSelectionPage() {
                         key={g.id}
                         onClick={() => handleSelectGuide(g.id, g.name, g.title, g.price, g.image || '')}
                         className={`group relative rounded-2xl overflow-hidden transition-all duration-300 cursor-pointer ${guide?.id === g.id ? 'bg-surface-container-lowest shadow-xl border-2 border-primary ring-4 ring-primary/10 -translate-y-1' : 'bg-surface-container-lowest shadow-sm border border-outline-variant/10 hover:shadow-2xl hover:-translate-y-1'}`}>
-                        <div className="aspect-[4/3] w-full bg-primary overflow-hidden relative flex flex-col items-center justify-center text-white/40 group-hover:text-white/80 transition-colors duration-500">
+                        <div className="aspect-[4/3] w-full relative overflow-hidden">
                           {g.image ? (
                             <img
                               alt={g.name}
@@ -87,7 +88,7 @@ export default function GuideSelectionPage() {
                               src={g.image}
                             />
                           ) : (
-                            <span className="material-symbols-outlined text-6xl relative z-10" style={{ fontVariationSettings: "'FILL' 1" }}>record_voice_over</span>
+                            <BrandImageFallback icon="record_voice_over" />
                           )}
                         </div>
                         <div className="p-8">

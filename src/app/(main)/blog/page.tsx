@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import BrandImageFallback from '@/components/ui/BrandImageFallback';
 import { prisma } from '@/lib/prisma';
 
 export const metadata = {
@@ -79,9 +80,8 @@ export default async function BlogIndexPage() {
                       <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     </div>
                   ) : (
-                    <div className="h-60 bg-primary flex flex-col items-center justify-center text-white/40 group-hover:text-white/80 transition-colors duration-500 relative overflow-hidden">
-                      <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20"></div>
-                      <span className="material-symbols-outlined text-6xl relative z-10" style={{fontVariationSettings: "'FILL' 1"}}>menu_book</span>
+                    <div className="h-60 relative overflow-hidden">
+                      <BrandImageFallback icon="menu_book" iconSize={4} />
                     </div>
                   )}
                   

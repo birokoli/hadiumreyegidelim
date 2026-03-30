@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import ConfiguratorSidebar from "@/components/layout/ConfiguratorSidebar";
 import ConfiguratorSummary from "@/components/layout/ConfiguratorSummary";
+import BrandImageFallback from "@/components/ui/BrandImageFallback";
 import { useConfiguratorStore } from "@/store/useConfiguratorStore";
 
 interface HotelData {
@@ -229,7 +230,7 @@ export default function AccommodationSelectionPage() {
                               className={`group relative aspect-[3/4] flex flex-col rounded-3xl overflow-hidden transition-all duration-300 transform cursor-pointer ${isSelected ? 'bg-surface-container-lowest shadow-2xl border-primary ring-2 ring-primary/20 -translate-y-2' : 'bg-surface-container-lowest shadow-md hover:shadow-2xl border border-outline-variant/30 hover:border-tertiary/50 hover:-translate-y-2'}`}>
                               
                               {/* Top Half: Photo (55%) */}
-                              <div className="relative h-[55%] w-full bg-primary flex items-center justify-center text-white/40 group-hover:text-white/80 transition-colors duration-500 overflow-hidden">
+                              <div className="relative h-[55%] w-full overflow-hidden">
                                 {images.length > 0 ? (
                                   <img 
                                     src={images[0]} 
@@ -238,7 +239,7 @@ export default function AccommodationSelectionPage() {
                                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
                                   />
                                 ) : (
-                                  <span className="material-symbols-outlined text-6xl" style={{ fontVariationSettings: "'FILL' 1" }}>hotel_class</span>
+                                  <BrandImageFallback icon="hotel_class" />
                                 )}
                                 {/* Stars Widget */}
                                 <div className="absolute top-4 right-4 bg-black/60 backdrop-blur-md text-white border border-white/20 text-xs font-bold px-2.5 py-1.5 rounded-md shadow-md z-10 flex items-center gap-1">

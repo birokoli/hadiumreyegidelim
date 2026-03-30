@@ -2,6 +2,7 @@ import React from 'react';
 import { prisma } from '@/lib/prisma';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import BrandImageFallback from '@/components/ui/BrandImageFallback';
 import { Metadata } from 'next';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
@@ -48,7 +49,7 @@ export default async function PackageDetailPage({ params }: { params: Promise<{ 
     <main className="pt-20 bg-surface-container-lowest min-h-screen">
       {/* Hero Section */}
       <section className="relative h-[60vh] min-h-[400px] flex items-end pb-16 px-8 overflow-hidden">
-        <div className="absolute inset-0 z-0 bg-primary flex items-center justify-center">
+        <div className="absolute inset-0 z-0">
           {pkg.imageUrl ? (
             <img
               alt={pkg.title}
@@ -56,7 +57,7 @@ export default async function PackageDetailPage({ params }: { params: Promise<{ 
               src={pkg.imageUrl}
             />
           ) : (
-            <span className="material-symbols-outlined text-9xl text-white/20 absolute" style={{ fontVariationSettings: "'FILL' 1" }}>mosque</span>
+             <BrandImageFallback icon="mosque" iconSize={8} />
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent"></div>
         </div>

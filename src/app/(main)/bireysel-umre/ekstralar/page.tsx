@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import ConfiguratorSidebar from "@/components/layout/ConfiguratorSidebar";
 import ConfiguratorSummary from "@/components/layout/ConfiguratorSummary";
+import BrandImageFallback from "@/components/ui/BrandImageFallback";
 import { useConfiguratorStore } from "@/store/useConfiguratorStore";
 
 export default function ExtrasSelectionPage() {
@@ -90,7 +91,7 @@ export default function ExtrasSelectionPage() {
                           key={ext.id}
                           onClick={() => toggleExtra({ id: ext.id, name: ext.name, price: ext.price, image: imageUrl, description: ext.description })}
                           className={`group relative rounded-2xl overflow-hidden transition-all duration-300 cursor-pointer ${isSelected ? 'bg-surface-container-lowest shadow-xl border-2 border-primary ring-4 ring-primary/10 -translate-y-1' : 'bg-surface-container-lowest shadow-sm border border-outline-variant/10 hover:shadow-2xl hover:-translate-y-1'}`}>
-                          <div className="aspect-[4/3] w-full bg-primary overflow-hidden relative flex flex-col items-center justify-center text-white/40 group-hover:text-white/80 transition-colors duration-500">
+                          <div className="aspect-[4/3] w-full relative overflow-hidden">
                             {imageUrl ? (
                               <img
                                 alt={ext.name}
@@ -98,7 +99,7 @@ export default function ExtrasSelectionPage() {
                                 src={imageUrl}
                               />
                             ) : (
-                              <span className="material-symbols-outlined text-6xl relative z-10" style={{ fontVariationSettings: "'FILL' 1" }}>tour</span>
+                              <BrandImageFallback icon="tour" />
                             )}
                           </div>
                           <div className="p-8">

@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import ConfiguratorSidebar from "@/components/layout/ConfiguratorSidebar";
 import ConfiguratorSummary from "@/components/layout/ConfiguratorSummary";
+import BrandImageFallback from "@/components/ui/BrandImageFallback";
 import { useConfiguratorStore } from "@/store/useConfiguratorStore";
 
 export default function TransferSelectionPage() {
@@ -151,11 +152,11 @@ export default function TransferSelectionPage() {
 
                       return (
                         <div key={t.id} className={`group rounded-2xl overflow-hidden transition-all flex flex-col ${isSelected ? 'bg-surface-container-lowest shadow-xl border-2 border-primary ring-4 ring-primary/10 -translate-y-1' : 'bg-surface-container-lowest shadow-sm hover:shadow-2xl border border-outline-variant/10 hover:border-tertiary hover:-translate-y-1'}`}>
-                            <div className="h-48 overflow-hidden relative bg-primary flex flex-col items-center justify-center text-white/40 group-hover:text-white/80 transition-colors duration-500">
+                            <div className="h-48 overflow-hidden relative">
                               {imageUrl ? (
                                 <img alt={t.name} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src={imageUrl} />
                               ) : (
-                                <span className="material-symbols-outlined text-6xl relative z-10" style={{ fontVariationSettings: "'FILL' 1" }}>directions_car</span>
+                                <BrandImageFallback icon="directions_car" />
                               )}
                               {isSelected && (
                                 <div className="absolute top-4 right-4 bg-primary text-white p-2 rounded-full shadow-md z-10">

@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
+import BrandImageFallback from "@/components/ui/BrandImageFallback";
 import { prisma } from "@/lib/prisma";
 
 export default async function Home() {
@@ -275,9 +276,8 @@ export default async function Home() {
                   {blog.imageUrl ? (
                     <Image src={blog.imageUrl} alt={blog.title} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover rounded-3xl group-hover:scale-105 transition-transform duration-700" />
                   ) : (
-                    <div className="w-full h-full rounded-2xl flex items-center justify-center bg-primary text-white/40 relative overflow-hidden text-center flex-col group-hover:text-white/60 transition-colors duration-500">
-                       <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20"></div>
-                       <span className="material-symbols-outlined text-6xl relative z-10" style={{fontVariationSettings: "'FILL' 1"}}>menu_book</span>
+                    <div className="w-full h-full rounded-2xl relative overflow-hidden">
+                       <BrandImageFallback icon="menu_book" iconSize={4} />
                     </div>
                   )}
                   <div className="absolute top-6 left-6 bg-white/95 backdrop-blur-md px-4 py-2 rounded-full text-[10px] font-bold tracking-widest uppercase text-primary shadow-sm border border-outline-variant/10">

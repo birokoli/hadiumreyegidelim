@@ -1,4 +1,5 @@
 import React from "react";
+import BrandImageFallback from "@/components/ui/BrandImageFallback";
 
 export default function MediaPage() {
   return (
@@ -58,8 +59,8 @@ export default function MediaPage() {
             { title: "Rehberler", category: "Config", icon: "record_voice_over" },
           ].map((item, idx) => (
             <div key={idx} className="group relative overflow-hidden rounded-xl bg-surface-container-lowest transition-all border border-outline-variant/10 shadow-sm hover:shadow-lg hover:-translate-y-1">
-              <div className="relative aspect-square bg-primary flex flex-col items-center justify-center text-white/40 group-hover:text-white/90 transition-colors duration-500">
-                <span className="material-symbols-outlined text-5xl transition-transform duration-500 group-hover:scale-110" style={{ fontVariationSettings: "'FILL' 1" }}>{item.icon}</span>
+              <div className="relative aspect-square">
+                <BrandImageFallback icon={item.icon} iconSize={4} />
               </div>
               <div className="p-3 border-t border-primary/10 bg-primary/5">
                 <span className="text-[9px] text-tertiary font-bold tracking-widest uppercase block mb-0.5">{item.category}</span>

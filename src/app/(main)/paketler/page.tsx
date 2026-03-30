@@ -1,5 +1,6 @@
 import React from "react";
 import { prisma } from "@/lib/prisma";
+import BrandImageFallback from "@/components/ui/BrandImageFallback";
 import Link from "next/link";
 
 export default async function PackagesPage() {
@@ -59,7 +60,7 @@ export default async function PackagesPage() {
                     {pkg.imageUrl ? (
                       <img src={pkg.imageUrl} alt={pkg.title} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                     ) : (
-                      <span className="material-symbols-outlined text-6xl text-white/40 group-hover:text-white/80 transition-colors duration-500 absolute" style={{ fontVariationSettings: "'FILL' 1" }}>mosque</span>
+                      <BrandImageFallback icon="mosque" />
                     )}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
                     <div className="absolute bottom-6 left-6 right-6">

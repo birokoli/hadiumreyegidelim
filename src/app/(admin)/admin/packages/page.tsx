@@ -114,7 +114,9 @@ export default function PackagesPage() {
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const slugToUse = newPackage.slug || newPackage.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+      const trMap: Record<string, string> = { 'ç': 'c', 'ğ': 'g', 'ı': 'i', 'ö': 'o', 'ş': 's', 'ü': 'u', 'Ç': 'c', 'Ğ': 'g', 'İ': 'i', 'Ö': 'o', 'Ş': 's', 'Ü': 'u' };
+      const cleanTitle = newPackage.title.replace(/[çğıöşüÇĞİÖŞÜ]/g, m => trMap[m as keyof typeof trMap] || m);
+      const slugToUse = newPackage.slug || cleanTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
       const includesArray = newPackage.includes.split(",").map(s => s.trim()).filter(Boolean);
       // Clean up empty gallery slots before sending
       const cleanGallery = newPackage.gallery.filter(Boolean);

@@ -55,8 +55,12 @@ export default async function PackagesPage() {
                     </div>
                   )}
                   
-                  <div className="xl:w-2/5 aspect-[4/3] xl:aspect-auto relative overflow-hidden">
-                    <img src={pkg.imageUrl || 'https://images.unsplash.com/photo-1590494056254-8fe4e4f62ca7?q=80&w=1000&auto=format&fit=crop'} alt={pkg.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                  <div className="xl:w-2/5 aspect-[4/3] xl:aspect-auto relative overflow-hidden bg-surface-container-low flex flex-col items-center justify-center">
+                    {pkg.imageUrl ? (
+                      <img src={pkg.imageUrl} alt={pkg.title} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                    ) : (
+                      <span className="material-symbols-outlined text-6xl text-primary/20 group-hover:text-primary/40 transition-colors duration-500 absolute" style={{ fontVariationSettings: "'FILL' 1" }}>mosque</span>
+                    )}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
                     <div className="absolute bottom-6 left-6 right-6">
                       <span className="bg-white/90 backdrop-blur text-primary text-xs font-bold uppercase tracking-widest px-3 py-1.5 rounded inline-flex items-center gap-1.5">

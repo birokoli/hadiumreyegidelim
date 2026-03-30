@@ -146,15 +146,10 @@ export default function PackageCheckoutClient({ pkg }: { pkg: any }) {
               </div>
             </div>
 
-            {/* Ticket Details Grid */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 relative">
+            <div className="grid grid-cols-2 lg:grid-cols-3 gap-6 relative">
               <div>
                 <span className="block text-[10px] font-bold uppercase tracking-widest text-outline mb-1">MİSAFİR</span>
                 <span className="font-headline text-lg font-bold text-primary">{pax} Kişi</span>
-              </div>
-              <div>
-                <span className="block text-[10px] font-bold uppercase tracking-widest text-outline mb-1">BİRİM T.</span>
-                <span className="font-headline text-lg font-bold text-primary">{pkg.price} {pkg.currency}</span>
               </div>
               <div>
                 <span className="block text-[10px] font-bold uppercase tracking-widest text-outline mb-1">TARİH</span>
@@ -178,11 +173,8 @@ export default function PackageCheckoutClient({ pkg }: { pkg: any }) {
                <span className="text-[9px] uppercase tracking-[0.2em] font-bold rotate-90 w-2 leading-none block whitespace-nowrap">HDUMRE</span>
              </div>
              
-             <div className="text-right">
-                <span className="block text-xs font-bold uppercase tracking-[0.2em] text-outline mb-1">TOPLAM TUTAR YAKLAŞIK</span>
-                <div className="font-headline text-4xl font-bold text-primary">
-                  {formattedTotal} <span className="text-2xl text-secondary">{pkg.currency}</span>
-                </div>
+             <div className="text-right pl-4 max-w-[200px] sm:max-w-none">
+                <span className="font-headline text-sm sm:text-base font-bold text-primary block leading-snug">Fiyat bilgisi müşteri temsilcimiz tarafından verilecektir.</span>
              </div>
           </div>
         </div>

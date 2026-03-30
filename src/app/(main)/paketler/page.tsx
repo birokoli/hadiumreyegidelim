@@ -67,7 +67,9 @@ export default async function PackagesPage() {
 
                   <div className="xl:w-3/5 p-8 md:p-10 flex flex-col">
                     <h3 className="text-2xl font-headline font-bold text-primary mb-3">{pkg.title}</h3>
-                    <p className="text-on-surface-variant text-sm leading-relaxed mb-8 flex-grow">{pkg.description}</p>
+                    <p className="text-on-surface-variant text-sm leading-relaxed mb-8 flex-grow">
+                      {pkg.description ? pkg.description.split('|||ITINERARY|||')[0] : ''}
+                    </p>
                     
                     {includes.length > 0 && (
                       <div className="mb-8 bg-surface-container-low p-6 rounded-2xl">

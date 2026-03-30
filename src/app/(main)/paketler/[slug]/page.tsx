@@ -70,10 +70,6 @@ export default async function PackageDetailPage({ params }: { params: Promise<{ 
                 <span className="material-symbols-outlined text-[20px]">schedule</span>
                 {pkg.duration}
               </span>
-              <span className="flex items-center gap-2 bg-white/20 border border-white/10 px-4 py-2 rounded-full backdrop-blur-md">
-                <span className="material-symbols-outlined text-[20px]">schedule</span>
-                {pkg.duration}
-              </span>
             </div>
           </div>
           

@@ -275,7 +275,7 @@ export default async function Home() {
                   {blog.imageUrl ? (
                     <Image src={blog.imageUrl} alt={blog.title} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover rounded-3xl group-hover:scale-105 transition-transform duration-700" />
                   ) : (
-                    <div className="w-full h-full rounded-2xl flex items-center justify-center bg-gradient-to-br from-primary-container to-surface-container-high text-primary/30 relative overflow-hidden text-center flex-col">
+                    <div className="w-full h-full rounded-2xl flex items-center justify-center bg-primary text-white/40 relative overflow-hidden text-center flex-col group-hover:text-white/60 transition-colors duration-500">
                        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-20"></div>
                        <span className="material-symbols-outlined text-6xl relative z-10" style={{fontVariationSettings: "'FILL' 1"}}>menu_book</span>
                     </div>

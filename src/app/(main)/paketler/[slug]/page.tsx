@@ -48,7 +48,7 @@ export default async function PackageDetailPage({ params }: { params: Promise<{ 
     <main className="pt-20 bg-surface-container-lowest min-h-screen">
       {/* Hero Section */}
       <section className="relative h-[60vh] min-h-[400px] flex items-end pb-16 px-8 overflow-hidden">
-        <div className="absolute inset-0 z-0 bg-primary-container flex items-center justify-center">
+        <div className="absolute inset-0 z-0 bg-primary flex items-center justify-center">
           {pkg.imageUrl ? (
             <img
               alt={pkg.title}
@@ -56,7 +56,7 @@ export default async function PackageDetailPage({ params }: { params: Promise<{ 
               src={pkg.imageUrl}
             />
           ) : (
-            <span className="material-symbols-outlined text-9xl text-primary/10 absolute" style={{ fontVariationSettings: "'FILL' 1" }}>mosque</span>
+            <span className="material-symbols-outlined text-9xl text-white/20 absolute" style={{ fontVariationSettings: "'FILL' 1" }}>mosque</span>
           )}
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent"></div>
         </div>

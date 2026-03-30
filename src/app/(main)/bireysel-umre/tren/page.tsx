@@ -8,7 +8,7 @@ import { useConfiguratorStore } from "@/store/useConfiguratorStore";
 import Link from "next/link";
 
 export default function TrainSelectionPage() {
-  const { train, setTrain } = useConfiguratorStore();
+  const { trains: selectedTrains, toggleTrain } = useConfiguratorStore();
   const [trains, setTrains] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -23,19 +23,7 @@ export default function TrainSelectionPage() {
       });
   }, []);
 
-  const handleSelectTrain = (s: any, isRoundTrip: boolean) => {
-    if (train?.id === s.id && train?.isRoundTrip === isRoundTrip) {
-      setTrain(null);
-      return;
-    }
-    setTrain({
-      id: s.id,
-      name: s.name + (isRoundTrip ? ' (Gidiş-Dönüş)' : ' (Tek Yön)'),
-      price: isRoundTrip ? s.price * 1.8 : s.price,
-      isRoundTrip,
-      type: 'train'
-    });
-  };
+
 
   return (
     <>
@@ -81,7 +69,7 @@ export default function TrainSelectionPage() {
                 ) : (
                   <div className="space-y-6">
                     {trains.map((t) => {
-                      const isSelected = train?.id === t.id;
+                      const isSelected = selectedTrains.some((tr) => tr.id === t.id);
                       const parsedData = (() => {
                         if (!t.extraData) return {};
                         if (t.extraData.startsWith('{')) {
@@ -137,19 +125,28 @@ export default function TrainSelectionPage() {
                               </div>
                             )}
 
-                            <div className="flex flex-col gap-2 mt-auto">
-                              <div className="flex gap-2 w-full">
-                                <button 
-                                  onClick={() => handleSelectTrain(t, false)}
-                                  className={`flex-1 py-2 text-[10px] md:text-xs font-bold uppercase tracking-widest rounded-lg transition-colors ${isSelected && !train?.isRoundTrip ? 'bg-primary text-white' : 'bg-surface-container text-on-surface-variant hover:bg-primary/20'}`}>
-                                  Tek Yön (${Math.round(t.price)})
-                                </button>
-                                <button 
-                                  onClick={() => handleSelectTrain(t, true)}
-                                  className={`flex-1 py-2 text-[10px] md:text-xs font-bold uppercase tracking-widest rounded-lg transition-colors ${isSelected && train?.isRoundTrip ? 'bg-secondary text-white' : 'bg-surface-container text-on-surface-variant hover:bg-secondary/20'}`}>
-                                  Çift Yön (${Math.round(t.price * 1.8)})
-                                </button>
-                              </div>
+                            <div className="flex flex-col gap-2 mt-auto pt-4">
+                              <button 
+                                onClick={() => toggleTrain({
+                                  id: t.id,
+                                  name: t.name,
+                                  price: t.price,
+                                  isRoundTrip: false,
+                                  type: 'train'
+                                })}
+                                className={`w-full py-3 text-xs md:text-sm font-bold uppercase tracking-widest rounded-xl transition-all flex items-center justify-center gap-2 ${isSelected ? 'bg-error hover:bg-error/90 text-white shadow-md' : 'bg-primary text-white hover:bg-primary-container hover:text-primary shadow-xl shadow-primary/20 hover:-translate-y-0.5'}`}>
+                                {isSelected ? (
+                                  <>
+                                    <span className="material-symbols-outlined text-[18px]">remove_shopping_cart</span>
+                                    Seçimi Kaldır
+                                  </>
+                                ) : (
+                                  <>
+                                    <span className="material-symbols-outlined text-[18px]">add_shopping_cart</span>
+                                    Bileti Ekle ($${Math.round(t.price)})
+                                  </>
+                                )}
+                              </button>
                             </div>
                           </div>
                         </div>

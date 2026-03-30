@@ -191,16 +191,19 @@ export default function ConfiguratorSummary() {
           </div>
         )}
         
-        {/* Train */}
-        {store.train ? (
+        {/* Trains */}
+        {store.trains.length > 0 ? (
           <div className="bg-surface p-4 rounded-xl border border-secondary/20 relative overflow-hidden group mb-4">
             <div className="absolute top-0 right-0 w-1 bg-secondary h-full"></div>
             <div className="flex justify-between items-start mb-2">
-              <p className="text-[10px] uppercase tracking-widest text-secondary font-bold">05 Tren</p>
+              <p className="text-[10px] uppercase tracking-widest text-secondary font-bold">05 Tren Biletleri</p>
               <span className="material-symbols-outlined text-secondary text-sm">check_circle</span>
             </div>
-            <p className="font-headline font-bold text-sm text-on-surface mb-1">{store.train.name}</p>
-            <p className="text-xs text-on-surface-variant/70 font-bold tracking-wide">{store.train.isRoundTrip ? 'Gidiş-Dönüş' : 'Tek Yön'}</p>
+            {store.trains.map(t => (
+               <p key={t.id} className="font-headline font-bold text-sm text-on-surface mb-1 leading-tight mb-2">
+                 <span className="text-secondary mr-2">•</span>{t.name}
+               </p>
+            ))}
           </div>
         ) : (
           <div className="border-2 border-dashed border-primary/20 bg-primary/5 p-4 rounded-xl mb-4">

@@ -57,7 +57,7 @@ interface ConfiguratorState {
   mekkeHotel: HotelOption | null;
   medineHotel: HotelOption | null;
   transfer: TransferOption | null;
-  train: TransferOption | null;
+  trains: TransferOption[];
   guide: GuideOption | null;
   extras: ExtraOption[];
   
@@ -69,7 +69,7 @@ interface ConfiguratorState {
   setMekkeHotel: (hotel: HotelOption | null) => void;
   setMedineHotel: (hotel: HotelOption | null) => void;
   setTransfer: (transfer: TransferOption | null) => void;
-  setTrain: (train: TransferOption | null) => void;
+  toggleTrain: (train: TransferOption) => void;
   setGuide: (guide: GuideOption | null) => void;
   toggleExtra: (extra: ExtraOption) => void;
   
@@ -85,7 +85,7 @@ export const useConfiguratorStore = create<ConfiguratorState>((set, get) => ({
   mekkeHotel: null,
   medineHotel: null,
   transfer: null,
-  train: null,
+  trains: [],
   guide: null,
   extras: [],
   
@@ -97,7 +97,15 @@ export const useConfiguratorStore = create<ConfiguratorState>((set, get) => ({
   setMekkeHotel: (mekkeHotel) => set({ mekkeHotel }),
   setMedineHotel: (medineHotel) => set({ medineHotel }),
   setTransfer: (transfer) => set({ transfer }),
-  setTrain: (train) => set({ train }),
+  toggleTrain: (train) => {
+    const { trains } = get();
+    const exists = trains.find((t) => t.id === train.id);
+    if (exists) {
+      set({ trains: trains.filter((t) => t.id !== train.id) });
+    } else {
+      set({ trains: [...trains, train] });
+    }
+  },
   setGuide: (guide) => set({ guide }),
   toggleExtra: (extra) => {
     const { extras } = get();
@@ -110,7 +118,7 @@ export const useConfiguratorStore = create<ConfiguratorState>((set, get) => ({
   },
 
   getTotalUSD: () => {
-    const { pax, flight, returnFlight, mekkeHotel, medineHotel, transfer, train, guide, extras } = get();
+    const { pax, flight, returnFlight, mekkeHotel, medineHotel, transfer, trains, guide, extras } = get();
     let total = 0;
     
     // Flight is usually per person.
@@ -126,10 +134,10 @@ export const useConfiguratorStore = create<ConfiguratorState>((set, get) => ({
       total += transfer.price; 
     }
     
-    // Train is usually per person.
-    if (train) {
-      total += train.price * pax;
-    }
+    // Trains calculation: sum of all selected items * pax
+    trains.forEach((t) => {
+      total += t.price * pax;
+    });
     
     // Guide is total price for the trip.
     if (guide) total += guide.price;

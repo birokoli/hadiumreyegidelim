@@ -39,7 +39,41 @@ export default function MediaPage() {
         </div>
       </section>
 
+      {/* UI Fallbacks Showcase */}
+      <section className="mb-12">
+        <div className="mb-6 flex items-center justify-between">
+          <div>
+            <h3 className="text-2xl font-serif text-primary">System Brand Fallbacks</h3>
+            <p className="text-sm text-on-surface-variant mt-1">Görseli eksik olan içeriklerde otomatik olarak devreye giren dinamik marka öğeleri.</p>
+          </div>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
+          {[
+            { title: "Paketler", category: "Umre", icon: "mosque" },
+            { title: "Bloglar", category: "İçerik", icon: "menu_book" },
+            { title: "Konaklama", category: "Config", icon: "hotel_class" },
+            { title: "Transfer", category: "Config", icon: "directions_car" },
+            { title: "Tren", category: "Config", icon: "train" },
+            { title: "Turlar", category: "Config", icon: "tour" },
+            { title: "Rehberler", category: "Config", icon: "record_voice_over" },
+          ].map((item, idx) => (
+            <div key={idx} className="group relative overflow-hidden rounded-xl bg-surface-container-lowest transition-all border border-outline-variant/10 shadow-sm hover:shadow-lg hover:-translate-y-1">
+              <div className="relative aspect-square bg-primary flex flex-col items-center justify-center text-white/40 group-hover:text-white/90 transition-colors duration-500">
+                <span className="material-symbols-outlined text-5xl transition-transform duration-500 group-hover:scale-110" style={{ fontVariationSettings: "'FILL' 1" }}>{item.icon}</span>
+              </div>
+              <div className="p-3 border-t border-primary/10 bg-primary/5">
+                <span className="text-[9px] text-tertiary font-bold tracking-widest uppercase block mb-0.5">{item.category}</span>
+                <h4 className="font-headline font-bold text-sm text-primary truncate">{item.title}</h4>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* Bento Grid Media Display */}
+      <section className="mb-6 flex items-center justify-between">
+        <h3 className="text-2xl font-serif text-primary">Uploaded Assets</h3>
+      </section>
       <section className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
         
         {/* Large Feature Item */}

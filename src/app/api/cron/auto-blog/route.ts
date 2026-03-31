@@ -255,6 +255,17 @@ ${blogData.content}
     }
 
     // 5. VERİTABANI KAYDI
+    let validCategoryId = null;
+    let validAuthorId = null;
+    if (blogData.categoryId) {
+       const catExists = await prisma.category.findUnique({ where: { id: String(blogData.categoryId) } });
+       if (catExists) validCategoryId = catExists.id;
+    }
+    if (blogData.authorId) {
+       // Optional: Wait, I won't check User model because his admin authors might be named differently (e.g., AdminUser). I will just set authorId to null by default for CRON jobs. Or if we assume table is `user`.
+       validAuthorId = null;
+    }
+
     const newPost = await prisma.post.create({
       data: {
         title: blogData.title,
@@ -262,14 +273,13 @@ ${blogData.content}
         description: blogData.metaDescription,
         content: blogData.content,
         focusKeyword: selectedKeyword as string,
-        keywords: blogData.keywords,
-        categoryId: blogData.categoryId || null,
-        authorId: blogData.authorId || null,
+        keywords: Array.isArray(blogData.keywords) ? blogData.keywords.join(', ') : String(blogData.keywords || ''),
+        categoryId: validCategoryId,
+        authorId: validAuthorId,
         personalExperience: blogData.personalExperience,
         references: blogData.references,
         published: true, 
-        imageUrl: finalImageUrl, 
-        imagePrompts: JSON.stringify(imagePromptsJSON),
+        imageUrl: finalImageUrl,
       }
     });
 

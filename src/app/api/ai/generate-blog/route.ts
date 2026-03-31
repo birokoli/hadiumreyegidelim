@@ -1,5 +1,8 @@
 import { NextResponse } from 'next/server';
 import { GoogleGenerativeAI, SchemaType } from '@google/generative-ai';
+import { generateAndUploadImage } from '@/lib/generate-image';
+
+export const maxDuration = 120; // Allow enough time for parallel image generation
 
 // Initialize the API (Requires GEMINI_API_KEY in .env)
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
@@ -38,7 +41,7 @@ SEO VE LİNK İNŞASI KURALLARI (ZORUNLU):
 Teknik Kurallar:
 - HTML formatında içerik üret. KESİNLİKLE HTML NİTELİKLERİ İÇİNDE (class, href, alt, vb.) SADECE TEK TIRNAK (') KULLAN. ASLA ÇİFT TIRNAK (") KULLANMA. String formatı bozulmasın.
 - H2 ve H3 etiketlerini bolca kullan. İçerikte H1 OLMASIN (Biz başlıkları zaten sayfa üstünde <h1/> basıyoruz). Fakat yazının en başında doğrudan içeriğe güçlü bir giriş yap.
-- Resim kullanacaksan (<img src='...' alt='Açıklama' />), "alt" etiketlerini MÜKEMMEL derece açıklayıcı doldur! Gerekmiyorsa sahte img kullanma.
+- Resim kullanacaksan (<img src="..." alt="Açıklama" />), "alt" etiketlerini MÜKEMMEL derece açıklayıcı doldur! Gerekmiyorsa sahte img kullanma.
 
 Lütfen çıktıyı SADECE AŞAĞIDAKİ YAPIDA VE EKSİKSİZ biçimde bir JSON objesi olarak ver! Tüm anahtarların doldurulması (hiçbirinin boş bırakılmaması) zorunludur. DİKKAT: "title", "metaDescription", "focusKeyword" ve "slug" alanlarını KESİNLİKLE boş bırakma! Çift tırnaklara dikkat et (HTML'de tek tırnak).
 
@@ -90,10 +93,86 @@ Lütfen çıktıyı SADECE AŞAĞIDAKİ YAPIDA VE EKSİKSİZ biçimde bir JSON o
     // Parse the JSON
     const parsedData = JSON.parse(text);
 
+    // ==========================================
+    // FAZ 2 & 3 & 4: Görsel Promptlarını Üret ve Paralel Çiz (Nano Banana)
+    // ==========================================
+    const imagePromptInstruction = `ÇALIŞMA KURALLARI:
+1. Başlık Analizi: Sana verilen blog metnini oku. Yazının ana başlığını ve tüm alt başlıklarını tespit et.
+2. SSS İstisnası: "Sıkça Sorulan Sorular", "SSS" veya "FAQ" başlıklarını ve bu başlıkların altındaki içerikleri KESİNLİKLE YOKSAY.
+3. JSON Formatı Kuralı: Geçerli her bir başlık için aşağıdaki JSON şablonunu eksiksiz doldur. ÇIKTIYI SADECE JSON ARRAY ([{}, {}]) OLARAK VER!
+4. Dil: JSON içindeki değişkenleri İngilizce olarak, profesyonel fotoğrafçılık ve 3D render terimleri kullanarak doldur.
+5. Kalite: Görseller lüks, estetik ve ticari bir atmosfere sahip olmalıdır.
+
+KULLANILACAK JSON ŞABLONU:
+{
+  "heading": "[Başlık Adı Türkçe Olarak - Tamamen eşleşmeli]",
+  "task": "photorealistic_product_visual",
+  "subject": { "primary_object": "..." },
+  "scene": { "environment": "..." },
+  "aesthetic": { "mood": "...", "color_palette": "..." },
+  "lighting": { "style": "..." },
+  "camera": { "lens": "..." }
+}
+
+--- BLOG METNİ ---
+BAŞLIK: ${parsedData.title}
+İÇERİK:
+${parsedData.content}
+`;
+
+    const imgPromptModel = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+    const imgPromptResult = await imgPromptModel.generateContent({
+      contents: [{ role: "user", parts: [{ text: imagePromptInstruction }] }],
+      generationConfig: { temperature: 0.7, responseMimeType: "application/json" }
+    });
+
+    const promptsText = imgPromptResult.response.text().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
+    let imagePromptsJSON = [];
+    try {
+      imagePromptsJSON = JSON.parse(promptsText);
+      parsedData.imagePrompts = JSON.stringify(imagePromptsJSON);
+    } catch(e) {
+      console.error("Görsel prompt JSON parse hatası:", e);
+    }
+    
+    if (imagePromptsJSON.length > 0) {
+      const imagePromises = imagePromptsJSON.map(async (promptObj: any) => {
+        const url = await generateAndUploadImage(promptObj, promptObj.heading || "blog-image");
+        return { heading: promptObj.heading, url };
+      });
+
+      const results = await Promise.allSettled(imagePromises);
+      let htmlContent = parsedData.content;
+      
+      results.forEach((res) => {
+        if (res.status === 'fulfilled' && res.value && res.value.url) {
+           const headingText = res.value.heading;
+           const imgUrl = res.value.url;
+           
+           // Using string manipulation instead of regex to be absolutely safe
+           const index = htmlContent.toLowerCase().indexOf(`>${headingText.toLowerCase()}<`);
+           if (index !== -1) {
+              const insertPosition = htmlContent.indexOf('</h', index);
+              if (insertPosition !== -1) {
+                 const closingTagEnd = htmlContent.indexOf('>', insertPosition) + 1;
+                 const before = htmlContent.substring(0, closingTagEnd);
+                 const after = htmlContent.substring(closingTagEnd);
+                 const imgTag = `\n<img src="${imgUrl}" alt="${headingText}" style="width:100%; border-radius:12px; margin-top:15px; margin-bottom:15px;" />\n`;
+                 htmlContent = before + imgTag + after;
+              }
+           }
+           
+           if (!parsedData.imageUrl) parsedData.imageUrl = imgUrl; // Cover image fallback
+        }
+      });
+      
+      parsedData.content = htmlContent;
+    }
+
     return NextResponse.json(parsedData);
 
   } catch (error: any) {
     console.error("AI Generation Error:", error);
-    return NextResponse.json({ error: `Hata Detayı: ${error.message || 'Bilinmeyen hata'}` }, { status: 500 });
+    return NextResponse.json({ error: "Hata Detayı: " + (error.message || "Bilinmeyen hata") }, { status: 500 });
   }
 }

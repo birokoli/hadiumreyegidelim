@@ -102,6 +102,7 @@ model Post {
   seoScore    Int?
   personalExperience String?
   references  String?
+  imagePrompts String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }

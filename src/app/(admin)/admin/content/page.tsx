@@ -232,6 +232,41 @@ export default function ContentPage() {
     return html;
   }, [newPost.content, parsedHeadings, mediaMap]);
 
+  // Metin İçi Görsel Çıkarıcı (Canlı Editör)
+  const extractedImages = useMemo(() => {
+    if (typeof window === 'undefined' || !newPost.content) return [];
+    try {
+      const parser = new window.DOMParser();
+      const doc = parser.parseFromString(newPost.content, 'text/html');
+      const imgs = Array.from(doc.querySelectorAll('img'));
+      return imgs.map((img, i) => ({
+        id: `img-${i}`,
+        src: img.src,
+        alt: img.alt || 'Görsel',
+        style: img.getAttribute('style') || ''
+      }));
+    } catch { return []; }
+  }, [newPost.content]);
+
+  // Metin İçi Görsel Canlı Düzenleyici
+  const updateImageStyle = (src: string, styleString: string) => {
+    try {
+      const parser = new window.DOMParser();
+      const doc = parser.parseFromString(newPost.content, 'text/html');
+      const imgs = doc.querySelectorAll('img');
+      let updated = false;
+      imgs.forEach(img => {
+        if (img.src === src) {
+          img.setAttribute('style', styleString);
+          updated = true;
+        }
+      });
+      if (updated) {
+        setNewPost(prev => ({...prev, content: doc.body.innerHTML}));
+      }
+    } catch(e) { console.error(e); }
+  };
+
   // Breathtaking Article Styling Classes
   const breathtakingStyles = `
     [&>h2]:font-headline [&>h2]:text-3xl [&>h2]:md:text-4xl [&>h2]:text-primary [&>h2]:mt-20 [&>h2]:mb-8 [&>h2]:font-bold [&>h2]:tracking-tight [&>h2]:border-b [&>h2]:border-outline-variant/20 [&>h2]:pb-4
@@ -245,17 +280,21 @@ export default function ContentPage() {
   `;
 
   // Yeni 2030 editörü manuel görsel yüklemeyi içte değil dışta tutar! Handlerlara gerek yok.
+  // Yeni 2030 editörü manuel görsel yüklemeyi içte değil dışta tutar! Handlerlara gerek yok.
   const modules = useMemo(
     () => ({
       toolbar: {
         container: [
-          [{ header: [2, 3, false] }],
+          [{ header: [2, 3, 4, false] }],
           ["bold", "italic", "underline", "strike", "blockquote"],
+          [{ color: [] }, { background: [] }],
+          [{ align: [] }],
           [{ list: "ordered" }, { list: "bullet" }],
-          ["link"],
+          ["link", "image", "video"],
           ["clean"],
         ],
       },
+      clipboard: { matchVisual: false }
     }),
     []
   );
@@ -913,10 +952,67 @@ export default function ContentPage() {
                        value={newPost.content} 
                        onChange={(val) => setNewPost(prev => ({...prev, content: val}))} 
                        modules={modules}
-                       className="min-h-[700px] mb-16 text-lg"
+                       className="min-h-[700px] mb-2 text-lg"
                        placeholder="Yazınızı buraya yazın veya yapay zeka ile otomatik doldurun..."
                      />
                    </div>
+
+                    {/* Canlı Görsel Denetim Paneli */}
+                    {extractedImages.length > 0 && (
+                      <div className="bg-surface-container-low rounded-xl border border-outline-variant/30 px-6 py-5 mt-4 shadow-sm relative overflow-hidden">
+                        {/* Arkadan Süs */}
+                        <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-xl -translate-y-1/2 translate-x-1/2"></div>
+                        
+                        <div className="flex items-center gap-2 mb-6 border-b border-outline-variant/20 pb-3 relative z-10">
+                          <span className="material-symbols-outlined text-primary text-[22px]">imagesmode</span>
+                          <div>
+                            <h4 className="font-bold text-[13px] text-primary uppercase tracking-widest leading-none">Metin İçi Görselleri Yönet</h4>
+                            <p className="text-[10px] text-on-surface-variant font-medium mt-1">Görselin boyutunu tek tıkla canlı olarak HTML üzerinden editleyin.</p>
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 relative z-10">
+                           {extractedImages.map(img => (
+                             <div key={img.id} className="bg-white border border-outline-variant/20 rounded-xl flex flex-col shadow-sm hover:border-primary/30 transition-all overflow-hidden relative group">
+                               <div className="h-32 w-full bg-surface-container relative">
+                                  <img src={img.src} alt={img.alt} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/60 to-transparent p-3 pt-8">
+                                    <p className="text-[10px] font-bold text-white uppercase truncate drop-shadow-md" title={img.alt}>{img.alt || "Görsel İsmi Yok"}</p>
+                                  </div>
+                               </div>
+                               <div className="p-3 bg-surface-container-lowest">
+                                 <div className="grid grid-cols-3 gap-2">
+                                    <button 
+                                       type="button" 
+                                       onClick={() => updateImageStyle(img.src, "width: 35%; float: left; margin: 15px 25px 15px 0; border-radius: 12px; height: auto; box-shadow: 0 4px 15px rgba(0,0,0,0.05);")} 
+                                       className="flex flex-col items-center justify-center text-[9px] font-bold bg-surface-container-high py-2 rounded-lg text-secondary hover:bg-primary hover:text-white transition-colors uppercase group/btn border border-outline-variant/30 shadow-sm gap-1 cursor-pointer"
+                                    >
+                                       <span className="material-symbols-outlined text-[16px] group-hover/btn:scale-110 transition-transform">align_horizontal_left</span>
+                                       Yasla
+                                    </button>
+                                    <button 
+                                       type="button" 
+                                       onClick={() => updateImageStyle(img.src, "width: 60%; margin: 30px auto; display: block; border-radius: 16px; height: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.1);")} 
+                                       className="flex flex-col items-center justify-center text-[9px] font-bold bg-surface-container-high py-2 rounded-lg text-secondary hover:bg-primary hover:text-white transition-colors uppercase group/btn border border-outline-variant/30 shadow-sm gap-1 cursor-pointer"
+                                    >
+                                       <span className="material-symbols-outlined text-[16px] group-hover/btn:scale-110 transition-transform">align_horizontal_center</span>
+                                       Orta
+                                    </button>
+                                    <button 
+                                       type="button" 
+                                       onClick={() => updateImageStyle(img.src, "width: 100%; margin: 35px 0; display: block; border-radius: 20px; height: auto; box-shadow: 0 15px 40px rgba(0,0,0,0.15);")} 
+                                       className="flex flex-col items-center justify-center text-[9px] font-bold bg-surface-container-high py-2 rounded-lg text-secondary hover:bg-primary hover:text-white transition-colors uppercase group/btn border border-outline-variant/30 shadow-sm gap-1 cursor-pointer"
+                                    >
+                                       <span className="material-symbols-outlined text-[16px] group-hover/btn:scale-110 transition-transform">crop_din</span>
+                                       Tam Boy
+                                    </button>
+                                 </div>
+                               </div>
+                             </div>
+                           ))}
+                        </div>
+                      </div>
+                    )}
                  </div>
                ) : (
                  <div className="bg-white rounded-3xl p-10 md:p-16 border border-outline-variant/30 min-h-[500px] max-w-4xl mx-auto shadow-[0px_32px_64px_-12px_rgba(0,55,129,0.06)] relative overflow-hidden">

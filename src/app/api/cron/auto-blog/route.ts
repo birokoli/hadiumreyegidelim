@@ -244,7 +244,7 @@ ${blogData.content}
                  const closingTagEnd = blogData.content.indexOf('>', insertPosition) + 1;
                  const before = blogData.content.substring(0, closingTagEnd);
                  const after = blogData.content.substring(closingTagEnd);
-                 const imgTag = `\n<img src="${imgUrl}" alt="${headingText}" style="width:100%; border-radius:12px; margin-top:15px; margin-bottom:15px;" />\n`;
+                 const imgTag = `\n<img src="${imgUrl}" alt="${headingText}" style="width:70%; margin: 25px auto; border-radius:16px; display:block; box-shadow: 0 8px 25px rgba(0,0,0,0.08);" />\n`;
                  blogData.content = before + imgTag + after;
               }
            }

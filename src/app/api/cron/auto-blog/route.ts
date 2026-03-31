@@ -7,24 +7,27 @@ export const maxDuration = 300; // 5 minutes max duration for Vercel
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
 
-// Trending keyword havuzu (Geliştirilebilir)
-const TRENDING_KEYWORDS = [
-  "bireysel umre nasıl yapılır",
-  "diyanet umre fiyatları 2024",
-  "umre ile hac arasındaki fark",
-  "kadınlar mahremsiz umreye gidebilir mi",
-  "umreye giderken alınması gerekenler",
-  "çocukla umreye nasıl gidilir",
-  "ihrama nasıl girilir",
-  "sömestr umre turları",
-  "ramazan umresi fiyatları",
-  "3 aylar umresi",
-  "umre vizesi nasıl alınır",
-  "haramain hızlı tren bileti nasıl alınır",
-  "mekke'de kabeye en yakın oteller",
-  "umrenin farzları nelerdir",
-  "taksitle umre turları"
-];
+// RapidAPI kullanarak trend kelimeleri getiren fonksiyon
+async function fetchTrendingKeywords() {
+  const rapidApiKey = process.env.RAPIDAPI_KEY || 'ad6f06ba50msh1e1f35b839023acp128c19jsnbc1187c6fff0';
+  const url = 'https://google-keyword-insight1.p.rapidapi.com/keysuggest?keyword=umre&location=tr&lang=tr';
+  const options = {
+    method: 'GET',
+    headers: {
+      'X-RapidAPI-Host': 'google-keyword-insight1.p.rapidapi.com',
+      'X-RapidAPI-Key': rapidApiKey
+    }
+  };
+
+  try {
+    const response = await fetch(url, options);
+    const result = await response.json();
+    return Array.isArray(result) ? result : [];
+  } catch (error) {
+    console.error("RapidAPI Error:", error);
+    return [];
+  }
+}
 
 export async function GET(request: Request) {
   try {
@@ -38,26 +41,43 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: 'Gemini API key is missing' }, { status: 500 });
     }
 
-    // 2. KONU SEÇİMİ
-    // Veritabanındaki tüm odak kelimeleri alıp havuza uymayanları (yani hiç yazılmamış olanları) filtreleyelim.
+    // 2. KONU SEÇİMİ (RapidAPI üzerinden)
     const existingPosts = await prisma.post.findMany({ select: { focusKeyword: true } });
     const usedKeywords = existingPosts.map(p => p.focusKeyword?.trim().toLowerCase());
     
-    let selectedKeyword = null;
-    for (const keyword of TRENDING_KEYWORDS) {
-      if (!usedKeywords.includes(keyword.toLowerCase())) {
-        selectedKeyword = keyword;
-        break; // İlk yazılmamış kelimeyi al.
+    const trendingData = await fetchTrendingKeywords();
+    
+    // Geçmiş yılları ve anlamsız kısa kelimeleri filtrele
+    const validKeywords = trendingData.filter((item: any) => {
+      if (!item || !item.text) return false;
+      const t = item.text.toLowerCase();
+      // 2022, 2023 içeren eski tarihli aramaları eledik
+      return !t.includes("2023") && !t.includes("2022") && t.length > 5;
+    });
+
+    // Trend ve hacme göre sıralayıp en değerli odak kelimeyi seç (daha önce yazılmamış)
+    let selectedKeyword: string | null = null;
+    let clusterKeywords: string[] = []; // Aynı yazıya eklenecek yan kelimeler (zenginleştirme)
+
+    for (const item of validKeywords) {
+      if (!usedKeywords.includes(item.text.toLowerCase())) {
+        selectedKeyword = item.text;
+        break;
       }
     }
 
-    // Eğer havuzdaki hepsi yazılmışsa rastgele bir tane seç (Tekrar döngüsüne girmemesi için isterseniz hata dönebilirsiniz)
     if (!selectedKeyword) {
-      selectedKeyword = TRENDING_KEYWORDS[Math.floor(Math.random() * TRENDING_KEYWORDS.length)];
-      console.warn("Tüm kelimeler bitmiş, rastgele tekrar seçiliyor:", selectedKeyword);
+      // Eğer RapidAPI'den gelen her şeyi daha önce yazdıysak veya API çökerse default bir kelime seç:
+      selectedKeyword = "umre turları " + new Date().getFullYear();
+    } else {
+      // O kelime yazılacak ok. Yanına LSI olarak 3 kelime daha çek
+      const others = validKeywords.filter((k: any) => k.text !== selectedKeyword && !usedKeywords.includes(k.text.toLowerCase()));
+      clusterKeywords = others.slice(0, 3).map((k: any) => k.text);
     }
 
-    console.log("Seçilen Anahtar Kelime:", selectedKeyword);
+    const keywordsString = clusterKeywords.length > 0 ? clusterKeywords.join(', ') : "bireysel umre, umre turları, hadiumreyegidelim";
+    console.log("Seçilen Odak Kelime:", selectedKeyword);
+    console.log("Kümelenmiş (LSI) Ek Kelimeler:", keywordsString);
 
     // Bütün kategorileri çek (AI'a referans için)
     const categories = await prisma.category.findMany({ select: { id: true, name: true } });
@@ -70,7 +90,7 @@ export async function GET(request: Request) {
     const blogPrompt = `Sen uzman bir SEO uzmanı ve umre/hac, maneviyat konularında profesyonel bir blog yazarısın. Yazılarını %100 bir insan yazmış gibi kurgulamalısın. SEMRUSH ve Google SEO standartlarını en üst düzeyde (Hedef: %100 Orjinallik, 58.9 Readability Skoru) karşılamalısın. Yapay zeka dedektörlerini aşmak için şu kurallara KESİNLİKLE uy:
 
 Konu: "${selectedKeyword}"
-Ek Anahtar Kelimeler: "bireysel umre, umre turları, hadiumreyegidelim, mekke, medine"
+Ek Anahtar Kelimeler: "${keywordsString}"
 Mevcut Kategoriler: ${JSON.stringify(categories)}
 Mevcut Yazarlar (E-E-A-T): ${JSON.stringify(authors)}
 
@@ -190,28 +210,66 @@ ${blogData.content}
     });
 
     let promptsText = imgPromptResult.response.text().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
-    const imagePromptsJSON = JSON.parse(promptsText);
+    let imagePromptsJSON = [];
+    try {
+      imagePromptsJSON = JSON.parse(promptsText);
+    } catch(e) {
+      console.error("Cron image parse error", e);
+    }
 
-    // TODO: İleride bu JSON çıktıları kullanılarak gerçek görsel üretimi APIsine ('nanobanana') istek atılıp imageUrl elde edilebilir. 
-    // Şimdilik sistemin çalışması için promtu string olarak DB'ye ekliyoruz ve imageUrl'i null (veya placeholder) geçiyoruz.
+    // Gerçek görsel üretimi (Imagen 3/4)
+    // Import için dosya başına eklenmesi gerektiğinden, bunu fetch api ile veya lib fonksiyonu ile dinamik çağıracağız.
+    // Başta import eklemediğim için require kullanıyoruz veya doğrudan API'yi çağırıyoruz. (lib/generate-image)
+    const { generateAndUploadImage } = require('@/lib/generate-image');
     
+    let finalImageUrl: string | null = null;
+    if (imagePromptsJSON.length > 0) {
+      const imagePromises = imagePromptsJSON.map(async (promptObj: any) => {
+        const url = await generateAndUploadImage(promptObj, promptObj.heading || "cron-image");
+        return { heading: promptObj.heading, url };
+      });
+      
+      const results = await Promise.allSettled(imagePromises);
+      
+      results.forEach((res) => {
+        if (res.status === 'fulfilled' && res.value && res.value.url) {
+           const headingText = res.value.heading;
+           const imgUrl = res.value.url;
+           
+           // HTML metnine resmi göm
+           const index = blogData.content.toLowerCase().indexOf(`>${headingText.toLowerCase()}<`);
+           if (index !== -1) {
+              const insertPosition = blogData.content.indexOf('</h', index);
+              if (insertPosition !== -1) {
+                 const closingTagEnd = blogData.content.indexOf('>', insertPosition) + 1;
+                 const before = blogData.content.substring(0, closingTagEnd);
+                 const after = blogData.content.substring(closingTagEnd);
+                 const imgTag = `\n<img src="${imgUrl}" alt="${headingText}" style="width:100%; border-radius:12px; margin-top:15px; margin-bottom:15px;" />\n`;
+                 blogData.content = before + imgTag + after;
+              }
+           }
+           
+           if (!finalImageUrl) finalImageUrl = imgUrl; // İlk başarılı görsel kapak olsun
+        }
+      });
+    }
+
     // 5. VERİTABANI KAYDI
-    // Prisma modelimizde "imagePrompts" sütunu eklenecektir veya extraData gibi bir alanda da tutulabilir.
     const newPost = await prisma.post.create({
       data: {
         title: blogData.title,
-        slug: blogData.slug + '-' + Date.now(), // Benzersiz olması için
+        slug: blogData.slug + '-' + Date.now(),
         description: blogData.metaDescription,
         content: blogData.content,
-        focusKeyword: selectedKeyword,
+        focusKeyword: selectedKeyword as string,
         keywords: blogData.keywords,
         categoryId: blogData.categoryId || null,
         authorId: blogData.authorId || null,
         personalExperience: blogData.personalExperience,
         references: blogData.references,
-        published: true, // Otomatik yayına al
-        imageUrl: null, // Görsel şimdilik boş
-        imagePrompts: JSON.stringify(imagePromptsJSON), // Modelde bu yeni eklenecek sütun
+        published: true, 
+        imageUrl: finalImageUrl, 
+        imagePrompts: JSON.stringify(imagePromptsJSON),
       }
     });
 

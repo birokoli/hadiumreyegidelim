@@ -984,7 +984,7 @@ export default function ContentPage() {
                                  <div className="grid grid-cols-3 gap-2">
                                     <button 
                                        type="button" 
-                                       onClick={() => updateImageStyle(img.src, "width: 35%; float: left; margin: 15px 25px 15px 0; border-radius: 12px; height: auto; box-shadow: 0 4px 15px rgba(0,0,0,0.05);")} 
+                                       onClick={() => updateImageStyle(img.src, "width: 45%; min-width: 200px; max-width: 350px; float: left; margin: 15px 25px 15px 0; border-radius: 12px; height: auto; box-shadow: 0 4px 15px rgba(0,0,0,0.05);")} 
                                        className="flex flex-col items-center justify-center text-[9px] font-bold bg-surface-container-high py-2 rounded-lg text-secondary hover:bg-primary hover:text-white transition-colors uppercase group/btn border border-outline-variant/30 shadow-sm gap-1 cursor-pointer"
                                     >
                                        <span className="material-symbols-outlined text-[16px] group-hover/btn:scale-110 transition-transform">align_horizontal_left</span>
@@ -992,7 +992,7 @@ export default function ContentPage() {
                                     </button>
                                     <button 
                                        type="button" 
-                                       onClick={() => updateImageStyle(img.src, "width: 60%; margin: 30px auto; display: block; border-radius: 16px; height: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.1);")} 
+                                       onClick={() => updateImageStyle(img.src, "width: 100%; max-width: 500px; margin: 30px auto; display: block; border-radius: 16px; height: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.1);")} 
                                        className="flex flex-col items-center justify-center text-[9px] font-bold bg-surface-container-high py-2 rounded-lg text-secondary hover:bg-primary hover:text-white transition-colors uppercase group/btn border border-outline-variant/30 shadow-sm gap-1 cursor-pointer"
                                     >
                                        <span className="material-symbols-outlined text-[16px] group-hover/btn:scale-110 transition-transform">align_horizontal_center</span>

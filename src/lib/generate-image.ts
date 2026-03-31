@@ -22,9 +22,9 @@ export async function generateAndUploadImage(promptJson: any, headingText: strin
        textPrompt = String(promptJson);
     }
 
-    // Nano-Banana Imagen 3 Request
+    // Nano-Banana Imagen 4 Request
     const response = await ai.models.generateImages({
-      model: 'imagen-3.0-generate-001',
+      model: 'imagen-4.0-fast-generate-001',
       prompt: textPrompt,
       config: {
         numberOfImages: 1,

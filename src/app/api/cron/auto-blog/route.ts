@@ -258,7 +258,7 @@ ${blogData.content}
     const newPost = await prisma.post.create({
       data: {
         title: blogData.title,
-        slug: blogData.slug + '-' + Date.now(),
+        slug: blogData.slug,
         description: blogData.metaDescription,
         content: blogData.content,
         focusKeyword: selectedKeyword as string,

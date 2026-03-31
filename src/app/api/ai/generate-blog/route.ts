@@ -20,6 +20,7 @@ export async function POST(request: Request) {
     }
 
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+    const currentYear = new Date().getFullYear();
 
     const prompt = `Sen uzman bir SEO uzmanı ve umre/hac, maneviyat konularında profesyonel bir blog yazarısın. Yazılarını %100 bir insan yazmış gibi kurgulamalısın. SEMRUSH ve Google SEO standartlarını en üst düzeyde (Hedef: %100 Orjinallik, 58.9 Readability Skoru) karşılamalısın. Yapay zeka dedektörlerini aşmak için şu kurallara KESİNLİKLE uy:
 
@@ -28,22 +29,26 @@ Ek Anahtar Kelimeler: "${keywords || ''}"
 Mevcut Kategoriler: ${JSON.stringify(categories || [])}
 Mevcut Yazarlar (E-E-A-T): ${JSON.stringify(authors || [])}
 
-SEMRUSH OKUNABİLİRLİK (READABILITY) KURALLARI (HEDEF: 58.9 - 8./9. Sınıf Seviyesi):
-1. Çok Kısa Paragraflar: Her paragraf MAKSİMUM 2-3 cümle olmalıdır. Okunabilirliği artırmak ve Semrush'tan yüksek puan almak için 'Split long paragraphs' uyarısını aşacak şekilde her 2-3 cümlede bir <p> etiketiyle alt paragraf başlat!
-2. Basit, Kısa Kelimeler (Rewrite hard-to-read sentences): "kullanılabiliyor", "gerçekleştirebilirsiniz", "yararlanabilirsiniz" gibi ağır, kurumsal ve karmaşık kelimeler ASLA KULLANMA. Bunlar yerine "kullanılır", "yapabilirsiniz", "alabilirsiniz" gibi basit düzey, sade ifadeler kullan. Çeviri kokan cümleler kurma. 
+ZAMAN VE YIL KURALI: 
+- ŞU AN BULUNDUĞUMUZ YIL: ${currentYear}. ASLA geçmiş yılları (2024, 2025, 2023 vb.) başlıkta veya içerikte KULLANMA! Eğer mevcut yıldan bahsedeceksen ${currentYear} veya ${currentYear + 1} yıllarını baz al.
 
-SEO VE LİNK İNŞASI KURALLARI (ZORUNLU):
-1. ZORUNLU ANAHTAR KELİMELER: "bireysel umre", "tursuz umre", "umre vizesi", "nusuk umre", "umre maliyeti", "ucuz umre", "uçak bileti", "e vize", "suudi arabistan a", "mescid i haram", "gidiş dönüş" kelimelerini makale içerisine olabildiğince doğal bir şekilde, en az 1 kez ZORUNLU olarak entegre et!
-2. İÇ LİNKLEME (Internal Linking & CTA): Yazının akışında ve YAZININ EN SONUNDA sitemizin hizmetlerine CTA (Çağrı) niteliğinde DİNAMİK HTML <a href="..."> etiketleri kullan. Örnek: <a href="/paketler">Umre paketlerimizi inceleyin</a>, <a href="/bireysel-umre">Bireysel umre danışmanlığı ile tanışın</a>, <a href="/iletisim">Bize anında ulaşabilirsiniz</a>. Blog içerisinde konuya uygun en az 3 adet Internal Link vermen zorunludur!
-3. DIŞ LİNKLEME (External Linking): Metin içerisinde adı geçen resmi konulara (Örn: Nusuk, E-vize, Diyanet, Wikipedia) otoriter sitelere <a href="..." target="_blank"> etiketiyle en az 2 adet Dış (External) Link vermelisin. (Örn: <a href="https://nusuk.sa" target="_blank">Nusuk Resmi Sitesi</a>).
-4. E-E-A-T ve Orjinallik: Klasik makale giriş/çeliş kullanma. 'Özetle', 'Günümüzde' gibi kelimeleri listeden çıkar. Makaleyi direkt hikayesiyle ve sohbet havasında aç. 'sen/ben' veya 'siz/biz' tonunu doğal kullan. Bilgiyi dümdüz listelemek yerine, sanki yılların umre rehberi olarak kendi tecrübeni masaya koyuyormuş gibi hissettir.
+SATIŞ VE RAKİP STRATEJİSİ (ÇOK ÖNEMLİ):
+1. Eğer anahtar kelime 'Diyanet', 'başka bir tur firması' gibi dış yapıları içeriyorsa: Müşteriyi asla onlara yönlendirme! Diyanet'in kısıtlı turlarını nesnel bir dille ele ancak 'Hadi Umreye Gidelim' şirketimizin özelleştirilebilir, konforlu ve esnek 'Bireysel Umre' programlarının üstünlüğünü ve rahatlığını sat!
+2. Her makalenin sonunda CTA (Satışa Yönlendirme) yaparak müşteriyi sitemizden alıma teşvik et.
 
-Teknik Kurallar:
-- HTML formatında içerik üret. KESİNLİKLE HTML NİTELİKLERİ İÇİNDE (class, href, alt, vb.) SADECE TEK TIRNAK (') KULLAN. ASLA ÇİFT TIRNAK (") KULLANMA. String formatı bozulmasın.
-- H2 ve H3 etiketlerini bolca kullan. İçerikte H1 OLMASIN (Biz başlıkları zaten sayfa üstünde <h1/> basıyoruz). Fakat yazının en başında doğrudan içeriğe güçlü bir giriş yap.
-- Resim kullanacaksan (<img src="..." alt="Açıklama" />), "alt" etiketlerini MÜKEMMEL derece açıklayıcı doldur! Gerekmiyorsa sahte img kullanma.
+SEO VE LİNK İNŞASI KURALLARI (HEDEF: O sistemdeki Analizörden 100/100 Almak!):
+1. KELİME YERLEŞİMİ ZORUNLULUĞU: "${topic}" odak anahtar kelimesini MUTLAKA VE KESİNLİKLE;
+   - Makale Başlığında (Title)
+   - Meta Açıklamasında (Meta Description)
+   - URL yapısında (Slug)
+   - İçeriğin İLK 100 KELİMESİ İÇİNDE
+   - Makale içerisindeki görsel <img alt="..."> özelliklerinde geçirmelisin!
+2. UZUNLUK VE YOĞUNLUK: Makale EN AZ 700 kelime uzunluğunda olmalı. "${topic}" kelimesinin yoğunluğu toplam metin içinde yaklaşık %1.5 - %2.5 arasında olmalıdır (En az 10 kere). Daha fazla veya eksik KULLANMA!
+3. HTML ve LİNKLEME: Çift tırnak yerine HTML içinde tek tırnak kullan. İçerikte en az 2 adet <a href="https://hadiumreyegidelim.com/bireysel-umre"> gibi İÇ BAĞLANTI (href) bulundurmalısın.
+4. LİSTE VE SSS (E-A-T): Okunabilirliği kırmak için bolca H2, H3 alt başlığı at. Metin içerisinde en az bir kez madde işaretleri (<ul><li>) kullan. Makalenin en sonuna ise 3 soruluk "Sıkça Sorulan Sorular (SSS)" bölümü ekleyerek uzmanlık ve kalite (E-A-T) seviyesini zirveye çıkar.
+5. PARAGRAFLAR: Çok kısa, max 2-3 cümlelik sade paragraflar oluştur.
 
-Lütfen çıktıyı SADECE AŞAĞIDAKİ YAPIDA VE EKSİKSİZ biçimde bir JSON objesi olarak ver! Tüm anahtarların doldurulması (hiçbirinin boş bırakılmaması) zorunludur. DİKKAT: "title", "metaDescription", "focusKeyword" ve "slug" alanlarını KESİNLİKLE boş bırakma! Çift tırnaklara dikkat et (HTML'de tek tırnak).
+Lütfen çıktıyı SADECE AŞAĞIDAKİ YAPIDA VE EKSİKSİZ biçimde bir JSON objesi olarak ver! Çift tırnaklara vb dikkat et.
 
 {
   "title": "H1 Ana Başlık: Dikkat Çekici SEO Uyumlu...",
@@ -53,7 +58,7 @@ Lütfen çıktıyı SADECE AŞAĞIDAKİ YAPIDA VE EKSİKSİZ biçimde bir JSON o
   "focusKeyword": "Odak kelimesi",
   "categoryId": "Mevcut Kategorilerden id",
   "authorId": "Mevcut Yazarlardan id",
-  "content": "<p class='text-lg'>Hikaye odaklı güçlü giriş cümlen...</p><h2>İlk Alt Başlık</h2><p>Kısa ve basit ilk paragraf...</p><p>Kısa ve basit ikinci paragraf...</p><p>Devamı... İçinde <a href='/paketler'>...</a> linklemesi vb.</p>",
+  "content": "<p>Güçlü giriş...</p><h2>...</h2><p>...</p>...",
   "personalExperience": "Bizzat yaşanmış hissi veren, samimi, 2-3 cümlelik yazar tecrübesi",
   "references": "Kullanılan dış bağlantılar, kanıtlar (Diyanet, Nusuk, Wiki vb)"
 }`;

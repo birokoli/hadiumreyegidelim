@@ -8,9 +8,9 @@ export const maxDuration = 300; // 5 minutes max duration for Vercel
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
 
 // RapidAPI kullanarak trend kelimeleri getiren fonksiyon
-async function fetchTrendingKeywords() {
+async function fetchTrendingKeywords(seed: string = "umre") {
   const rapidApiKey = process.env.RAPIDAPI_KEY || 'ad6f06ba50msh1e1f35b839023acp128c19jsnbc1187c6fff0';
-  const url = 'https://google-keyword-insight1.p.rapidapi.com/keysuggest?keyword=umre&location=tr&lang=tr';
+  const url = `https://google-keyword-insight1.p.rapidapi.com/keysuggest?keyword=${encodeURIComponent(seed)}&location=tr&lang=tr`;
   const options = {
     method: 'GET',
     headers: {
@@ -45,14 +45,27 @@ export async function GET(request: Request) {
     const existingPosts = await prisma.post.findMany({ select: { focusKeyword: true } });
     const usedKeywords = existingPosts.map(p => p.focusKeyword?.trim().toLowerCase());
     
-    const trendingData = await fetchTrendingKeywords();
+    // Rastgele Gündem/Kategori Havuzu
+    const SEED_POOL = [
+      "2026 hac dönemi sonrası umre",
+      "bebekle umre",
+      "bireysel umre programı",
+      "lüks umre turları",
+      "diyanet umre",
+      "ramazan umresi",
+      "mekke tarihi yerler",
+      "özel umre turları"
+    ];
+    const randomSeed = SEED_POOL[Math.floor(Math.random() * SEED_POOL.length)];
+    const trendingData = await fetchTrendingKeywords(randomSeed);
     
     // Geçmiş yılları ve anlamsız kısa kelimeleri filtrele
+    const currentYear = new Date().getFullYear();
     const validKeywords = trendingData.filter((item: any) => {
       if (!item || !item.text) return false;
       const t = item.text.toLowerCase();
-      // 2022, 2023 içeren eski tarihli aramaları eledik
-      return !t.includes("2023") && !t.includes("2022") && t.length > 5;
+      // 2022, 2023, 2024 vb. eski tarihleri ele ama mevcut yılı eledik
+      return !t.includes("2023") && !t.includes("2024") && !t.includes("2022") && t.length > 5;
     });
 
     // Trend ve hacme göre sıralayıp en değerli odak kelimeyi seç (daha önce yazılmamış)
@@ -87,22 +100,29 @@ export async function GET(request: Request) {
     // 3. BLOG İÇERİĞİ ÜRETİMİ (Mevcut generate-blog mantığı)
     const textModel = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
     
-    const blogPrompt = `Sen uzman bir SEO uzmanı ve umre/hac, maneviyat konularında profesyonel bir blog yazarısın. Yazılarını %100 bir insan yazmış gibi kurgulamalısın. SEMRUSH ve Google SEO standartlarını en üst düzeyde (Hedef: %100 Orjinallik, 58.9 Readability Skoru) karşılamalısın. Yapay zeka dedektörlerini aşmak için şu kurallara KESİNLİKLE uy:
+    const blogPrompt = `Sen uzman bir SEO uzmanı ve umre/hac, maneviyat konularında profesyonel bir metin yazarısın. Yazılarını %100 bir insan yazmış gibi kurgulamalısın. İçerik oluştururken şu kurallara KESİNLİKLE uy:
 
-Konu: "${selectedKeyword}"
+Odak Anahtar Kelime: "${selectedKeyword}"
 Ek Anahtar Kelimeler: "${keywordsString}"
 Mevcut Kategoriler: ${JSON.stringify(categories)}
-Mevcut Yazarlar (E-E-A-T): ${JSON.stringify(authors)}
+Mevcut Yazarlar: ${JSON.stringify(authors)}
 
-SEMRUSH OKUNABİLİRLİK (READABILITY) KURALLARI:
-1. Çok Kısa Paragraflar: Her paragraf MAKSİMUM 2-3 cümle olmalıdır.
-2. Basit, Kısa Kelimeler KULLAN.
+ZAMAN VE YIL KURALI: 
+- ŞU AN BULUNDUĞUMUZ YIL: ${currentYear}. ASLA geçmiş yılları (2024, 2025, 2023 vb.) başlıkta veya içerikte KULLANMA! Eğer mevcut yıldan bahsedeceksen ${currentYear} veya ${currentYear + 1} yıllarını baz al.
 
-SEO VE LİNK İNŞASI KURALLARI:
-1. İÇ LİNKLEME: Yazının en sonuna ve akışa CTA (Çağrı) niteliğinde DİNAMİK HTML <a href="..."> etiketleri koy (<a href="/bireysel-umre">Bireysel umre</a> vb.).
-2. HTML formatında içerik üret. Çift tırnak yerine tek tırnak kullan. H2 ve H3 kullan, H1 KULLANMA.
+SATIŞ VE RAKİP STRATEJİSİ (ÇOK ÖNEMLİ!):
+- Eğer anahtar kelime "Diyanet", "başka bir tur firması" gibi rakip yapıları içeriyorsa: Müşteriyi KESİNLİKLE onlara yönlendirme! Diyanet'in kısıtlı turlarını objektif bir dille ele ancak "Hadi Umreye Gidelim" şirketimizin özelleştirilebilir, konforlu ve esnek "Bireysel Umre" programlarıyla kıyasla. 
+- Her makalenin sonunda CTA (Satışa Yönlendirme) yaparak "Hadi Umreye Gidelim güvencesiyle hayalinizdeki umreye hemen adımlayın" mesajı ver ve sitemizden alıma teşvik et.
 
-Lütfen çıktıyı EKSİKSİZ biçimde aşağıdaki JSON şemasına uygun olarak ver.`;
+SEO VE İÇERİK MİMARİSİ (HEDEF: 100/100 SKOR!):
+1. BAŞLIK VE METİN: Odak kelime mutlaka ana başlıkta, meta açıklamada, link slug'ında ve makalenin İLK 100 KELIMESİ içinde net bir biçimde geçmelidir.
+2. UZUNLUK: Derin, bilgilendirici ve dolu dolu olmalı. Hedef 700-1000 kelime arası.
+3. LİSTELEME: Uzun içeriği monotonluktan kurtarmak için içerikte kesinlikle EN AZ 2 YERDE madde işaretleri (<ul><li>) veya numaralı liste kullan! E-A-T metrikleri (Uzmanlık ve Güven) için doyurucu alt başlıklar at.
+4. SIKÇA SORULAN SORULAR (SSS): Makalenin EN SONUNA mutlaka 'Sıkça Sorulan Sorular' bölümü ekle ve konuda merak edilen 3 popüler soruyu cevapla.
+5. İÇ LİNKLEME: <a href="https://hadiumreyegidelim.com/bireysel-umre">Bireysel Umre Paketleri</a>, <a href="https://hadiumreyegidelim.com">Hadi Umreye Gidelim</a> vb. html etiketleriyle sitemizi işaret eden birkaç iç bağlantı göm.
+6. HTML DÜZENİ: Çift tırnak yerine tek tırnak kullan, içeriği temiz HTML tagleriyle oluştur, H1 KULLANMA (Sadece h2, h3 kullan). Paragraflar en fazla 3 cümle olsun.
+
+Lütfen çıktıyı EKSİKSİZ biçimde aşağıdaki JSON şemasına uygun olarak ver ve içeriğinde bu sıkı SEO skor değerlendirmelerini kendi içinde iki kez denetle!`;
 
     const blogSchema: any = {
       type: SchemaType.OBJECT,

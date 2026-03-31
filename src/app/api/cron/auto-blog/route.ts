@@ -50,11 +50,17 @@ export async function GET(request: Request) {
       "2026 hac dönemi sonrası umre",
       "bebekle umre",
       "bireysel umre programı",
-      "lüks umre turları",
       "diyanet umre",
       "ramazan umresi",
       "mekke tarihi yerler",
-      "özel umre turları"
+      "medine ziyaret yerleri",
+      "umre ibadeti nasıl yapılır",
+      "ihram yasakları ve kuralları",
+      "kabe ziyaret adabı",
+      "mescidi nebevi fazileti",
+      "umrede okunacak dualar",
+      "manevi umre hazırlığı",
+      "tursuz bireysel umre"
     ];
     const randomSeed = SEED_POOL[Math.floor(Math.random() * SEED_POOL.length)];
     const trendingData = await fetchTrendingKeywords(randomSeed);

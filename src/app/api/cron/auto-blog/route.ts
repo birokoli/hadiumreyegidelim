@@ -515,7 +515,7 @@ ${blogData.content}
         authorId: validAuthorId,
         personalExperience: blogData.personalExperience,
         references: blogData.references,
-        published: true, 
+        published: false, // Taslak modunda kaydet
         imageUrl: finalImageUrl,
       }
     });

@@ -41,10 +41,14 @@ export default function AILogsPage() {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "STARTING":
+      case "RESEARCHING":
+      case "OUTLINING":
       case "INTERNET_SEARCH":
       case "WRITING_CONTENT":
       case "GENERATING_IMAGES":
         return <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded w-fit flex items-center gap-1"><span className="animate-spin w-3 h-3 border-2 border-blue-600 border-t-transparent rounded-full"></span>{status}</span>;
+      case "DRAFT_READY":
+        return <span className="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded w-fit flex items-center gap-1"><span className="material-symbols-outlined text-[14px]">pause_circle</span>Yayına Hazır</span>;
       case "COMPLETED":
         return <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded w-fit">COMPLETED</span>;
       case "FAILED":
@@ -106,7 +110,7 @@ export default function AILogsPage() {
                         {log.topic}
                       </h3>
                     )}
-                    {(log.status !== 'COMPLETED' && log.status !== 'FAILED') && (
+                    {(log.status !== 'COMPLETED' && log.status !== 'FAILED' && log.status !== 'DRAFT_READY') && (
                       <div className="w-full bg-slate-200 rounded-full h-1.5 dark:bg-slate-800 mt-2">
                         <div className="bg-blue-600 h-1.5 rounded-full animate-pulse" style={{ width: '60%' }}></div>
                       </div>

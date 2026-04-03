@@ -1,40 +1,19 @@
-import { NextResponse } from 'next/server';
-import { revalidatePath } from 'next/cache';
-import { GoogleGenerativeAI, SchemaType } from '@google/generative-ai';
-import { prisma } from '@/lib/prisma';
+const fs = require('fs');
 
-export const dynamic = 'force-dynamic';
-export const maxDuration = 300; // 5 minutes max duration for Vercel
+const path = 'src/app/api/cron/auto-blog/route.ts';
+const content = fs.readFileSync(path, 'utf8');
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
+// Find the start of the GET function
+const startIdx = content.indexOf('export async function GET(request: Request) {');
 
-// RapidAPI kullanarak trend kelimeleri getiren fonksiyon
-async function fetchTrendingKeywords(seed: string = "umre") {
-  const rapidApiKey = process.env.RAPIDAPI_KEY || 'ad6f06ba50msh1e1f35b839023acp128c19jsnbc1187c6fff0';
-  const url = `https://google-keyword-insight1.p.rapidapi.com/keysuggest?keyword=${encodeURIComponent(seed)}&location=tr&lang=tr`;
-  const options = {
-    method: 'GET',
-    headers: {
-      'X-RapidAPI-Host': 'google-keyword-insight1.p.rapidapi.com',
-      'X-RapidAPI-Key': rapidApiKey
-    }
-  };
+// The helper functions (fetchTrendingKeywords) and imports are before startIdx.
+let newContent = content.substring(0, startIdx);
 
-  try {
-    const response = await fetch(url, options);
-    const result = await response.json();
-    return Array.isArray(result) ? result : [];
-  } catch (error) {
-    console.error("RapidAPI Error:", error);
-    return [];
-  }
-}
-
-export async function GET(request: Request) {
+newContent += `export async function GET(request: Request) {
   let currentAiLogId: string | null = null;
   try {
     const authHeader = request.headers.get('authorization');
-    if (process.env.CRON_SECRET && authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+    if (process.env.CRON_SECRET && authHeader !== \`Bearer \${process.env.CRON_SECRET}\`) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -93,7 +72,7 @@ export async function GET(request: Request) {
            data: { 
              status: 'RESEARCHING', 
              topic: selectedKeyword,
-             details: `Hedef başlık: "${selectedKeyword}". Uluslararası kaynaklardan ve otoritelerden derinlemesine bilgi toplanıyor...` 
+             details: \`Hedef başlık: "\${selectedKeyword}". Uluslararası kaynaklardan ve otoritelerden derinlemesine bilgi toplanıyor...\` 
            }
          });
          
@@ -111,7 +90,7 @@ export async function GET(request: Request) {
           where: { id: activeLog.id },
           data: {
             status: 'INTERNET_SEARCH',
-            details: `İnternet taraması tamamlandı, rakiplerin içerik analizleri yapıldı. Yazının zihinsel mimarisi çıkartılıyor...`
+            details: \`İnternet taraması tamamlandı, rakiplerin içerik analizleri yapıldı. Yazının zihinsel mimarisi çıkartılıyor...\`
           }
        });
        return NextResponse.json({ success: true, phase: 'outline' });
@@ -122,7 +101,7 @@ export async function GET(request: Request) {
        
        await prisma.aILog.update({
           where: { id: activeLog.id },
-          data: { status: 'WRITING_CONTENT', details: `Metin yazımı ve tasarım promptları oluşturuluyor...` }
+          data: { status: 'WRITING_CONTENT', details: \`Metin yazımı ve tasarım promptları oluşturuluyor...\` }
        });
 
        const categories = await prisma.category.findMany({ select: { id: true, name: true } });
@@ -136,12 +115,12 @@ export async function GET(request: Request) {
          tools: [{ googleSearch: {} }] as any
        });
        
-       const blogPrompt = `Sen, Suudi Arabistan'da uzun yıllar yaşamış, Mekke ve Medine'nin tüm pratik detaylarına hakim, üst düzey (VIP) ve Bireysel Umre organizasyonları konusunda uzmanlaşmış kıdemli bir İslami Seyahat Editörüsün. Yazdığın içerikler "Google Faydalı İçerik (Helpful Content)" standartlarının zirvesindedir. Okuyucuya asla internette bulunabilecek sıradan, mekanik ve sığ bilgileri vermezsin; tam aksine, sanki elinde bir kahve ile karşısındaki dostuna tavsiyeler veren bir yol arkadaşı gibi, tamamıyla (%100) YALIN, İNSANİ VE İÇTEN bir üslupla (biz dili/sen dili) yazarsın.
+       const blogPrompt = \`Sen, Suudi Arabistan'da uzun yıllar yaşamış, Mekke ve Medine'nin tüm pratik detaylarına hakim, üst düzey (VIP) ve Bireysel Umre organizasyonları konusunda uzmanlaşmış kıdemli bir İslami Seyahat Editörüsün. Yazdığın içerikler "Google Faydalı İçerik (Helpful Content)" standartlarının zirvesindedir. Okuyucuya asla internette bulunabilecek sıradan, mekanik ve sığ bilgileri vermezsin; tam aksine, sanki elinde bir kahve ile karşısındaki dostuna tavsiyeler veren bir yol arkadaşı gibi, tamamıyla (%100) YALIN, İNSANİ VE İÇTEN bir üslupla (biz dili/sen dili) yazarsın.
 
-Odak Anahtar Kelime: "${selectedKeyword}"
-Ek Anahtar Kelimeler: "${keywordsString}"
-Mevcut Kategoriler: ${JSON.stringify(categories)}
-Mevcut Yazarlar: ${JSON.stringify(authors)}
+Odak Anahtar Kelime: "\${selectedKeyword}"
+Ek Anahtar Kelimeler: "\${keywordsString}"
+Mevcut Kategoriler: \${JSON.stringify(categories)}
+Mevcut Yazarlar: \${JSON.stringify(authors)}
 
 YASAKLI YAPAY ZEKA JARGONU VE ÜSLUP (ÇOK ÖNEMLİ!):
 - ŞU KELİMELERİ ASLA KULLANMA: "Sonuç olarak", "özetlemek gerekirse", "bu makalede", "büyüleyici", "dalış yapalım", "gerçek bir mücevherdir", "unutulmamalıdır ki", "eşsiz", "hayati önem taşır", "gerekir".
@@ -149,15 +128,15 @@ YASAKLI YAPAY ZEKA JARGONU VE ÜSLUP (ÇOK ÖNEMLİ!):
 
 ZAMAN VE SATIŞ STRATEJİSİ: 
 - CANLI İNTERNET ARAŞTIRMASI YAP (HAYATİ ÖNEMDE): Konuyla ilgili bilgileri internetten derinlemesine çekmek ZORUNDASIN. Google Arama motorunu kullanarak EN AZ 10 FARKLI OTORİTER SİTEDEN (haj.gov.sa, Nusuk, SPA, Okaz, Diyanet, Wikipedia ve global otel/haber sayfaları vb.) veri çekmelisin. Saatlerce araştırma yapmış titiz bir gazeteci gibi davran. Elde ettiğin bu 10+ kaynaktaki veriyi süz, tek bir uydurma (hallucination) veya eski bilgi barındırma; çünkü yasal sorumluluğumuz var.
-- ŞU AN BULUNDUĞUMUZ YIL: ${currentYear}. Geçmiş yılları (2024, 2023 vb.) kesinlikle kullanma.
+- ŞU AN BULUNDUĞUMUZ YIL: \${currentYear}. Geçmiş yılları (2024, 2023 vb.) kesinlikle kullanma.
 - Diyanet veya dev turların kalabalık dezavantajları yerine; "Hadi Umreye Gidelim" Bireysel Umre paketlerinin esnekliğini ve konforunu doğal bir dille öv. Sona satışı kapatan bir CTA ekle.
 
 SEO VE İÇERİK MİMARİSİ (GOOGLE STANDARTLARI):
-1. ANAHTAR KELİME: Odak kelimeyi ("${selectedKeyword}") ana başlıkta, meta açıklamada, ilk 100 kelimede ve bir adet H2'de doğal akışı GÖZÜNE SOKMADAN geçir.
+1. ANAHTAR KELİME: Odak kelimeyi ("\${selectedKeyword}") ana başlıkta, meta açıklamada, ilk 100 kelimede ve bir adet H2'de doğal akışı GÖZÜNE SOKMADAN geçir.
 2. OKUNABİLİRLİK: Flesch Okunabilirlik Kurallarına uy. Cümleler max 15 kelime, paragraflar max 2-3 cümle olsun. Sürekli enter'la metni böl.
 3. FORMAT: En az 2 yerde (<ul><li>) ile liste yap, bolca H2/H3 alt başlığı at.
 4. SSS VE KAYNAKLAR: En sona 'Sıkça Sorulan Sorular' (3 Soru) ekle. Metnin veya SSS'nin bitimine Diyanet veya Nusuk gibi sağlam sitelere 1-2 dış kaynak linki (href) ver.
-5. İÇ LİNKLEME: href="https://hadiumreyegidelim.com/bireysel-umre" yapısını kullanarak sitemize iç bağlantılar at.`;
+5. İÇ LİNKLEME: href="https://hadiumreyegidelim.com/bireysel-umre" yapısını kullanarak sitemize iç bağlantılar at.\`;
 
        const blogSchema: any = {
          type: SchemaType.OBJECT,
@@ -181,7 +160,7 @@ SEO VE İÇERİK MİMARİSİ (GOOGLE STANDARTLARI):
          generationConfig: { temperature: 0.8, responseMimeType: "application/json", responseSchema: blogSchema }
        });
 
-       let blogText = blogResult.response.text().replace(/^```(?:json)?s*/i, '').replace(/s*```$/i, '').trim();
+       let blogText = blogResult.response.text().replace(/^\`\`\`(?:json)?\s*/i, '').replace(/\s*\`\`\`$/i, '').trim();
        const blogData = JSON.parse(blogText);
 
        let sourceDetails = "";
@@ -189,15 +168,15 @@ SEO VE İÇERİK MİMARİSİ (GOOGLE STANDARTLARI):
          const chunks = blogResult.response.candidates[0].groundingMetadata.groundingChunks;
          const urls = chunks.filter((c: any) => c.web?.uri).map((c: any) => c.web.uri);
          const uniqueUrls = Array.from(new Set(urls));
-         if (uniqueUrls.length > 0) sourceDetails = `| Kaynaklar: ${uniqueUrls.join(", ")}`;
+         if (uniqueUrls.length > 0) sourceDetails = \`| Kaynaklar: \${uniqueUrls.join(", ")}\`;
        }
 
        await prisma.aILog.update({
           where: { id: activeLog.id },
-          data: { status: 'GENERATING_IMAGES', details: `Metin yazıldı. ${sourceDetails} | '\${blogData.title}' için görseller üratiliyor...` }
+          data: { status: 'GENERATING_IMAGES', details: \`Metin yazıldı. \${sourceDetails} | '\\\${blogData.title}' için görseller üratiliyor...\` }
        });
 
-       const imagePromptInstruction = `ÇALIŞMA KURALLARI:
+       const imagePromptInstruction = \`ÇALIŞMA KURALLARI:
 1. Başlık Analizi: Metni oku. Ana başlığı ve alt başlıkları tespit et. (SSS hariç)
 2. JSON Formatı Kuralı: Geçerli her bir başlık için aşağıdaki JSON şablonunu doldur. ÇIKTIYI SADECE JSON ARRAY OLARAK VER!
 3. Dil: Değişkenleri İngilizce doldur.
@@ -215,8 +194,8 @@ KULLANILACAK JSON ŞABLONU:
 }
 
 --- BLOG METNİ ---
-${blogData.content}
-`;
+\${blogData.content}
+\`;
 
        const imgPromptModel = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
        const imgPromptResult = await imgPromptModel.generateContent({
@@ -224,7 +203,7 @@ ${blogData.content}
          generationConfig: { temperature: 0.7, responseMimeType: "application/json" }
        });
 
-       let promptsText = imgPromptResult.response.text().replace(/^```(?:json)?s*/i, '').replace(/s*```$/i, '').trim();
+       let promptsText = imgPromptResult.response.text().replace(/^\`\`\`(?:json)?\s*/i, '').replace(/\s*\`\`\`$/i, '').trim();
        let imagePromptsJSON = [];
        try { imagePromptsJSON = JSON.parse(promptsText); } catch(e) {}
 
@@ -243,14 +222,14 @@ ${blogData.content}
            if (res.status === 'fulfilled' && res.value && res.value.url) {
               const headingText = res.value.heading;
               const imgUrl = res.value.url;
-              const index = blogData.content.toLowerCase().indexOf(`>${headingText.toLowerCase()}<`);
+              const index = blogData.content.toLowerCase().indexOf(\`>\${headingText.toLowerCase()}<\`);
               if (index !== -1) {
                  const insertPosition = blogData.content.indexOf('</h', index);
                  if (insertPosition !== -1) {
                     const closingTagEnd = blogData.content.indexOf('>', insertPosition) + 1;
                     const before = blogData.content.substring(0, closingTagEnd);
                     const after = blogData.content.substring(closingTagEnd);
-                    const imgTag = `\n<img src="${imgUrl}" alt="${headingText}" style="width:100%; max-width: 500px; margin: 30px auto; border-radius:16px; display:block; box-shadow: 0 8px 25px rgba(0,0,0,0.08);" />\n`;
+                    const imgTag = \`\\n<img src="\${imgUrl}" alt="\${headingText}" style="width:100%; max-width: 500px; margin: 30px auto; border-radius:16px; display:block; box-shadow: 0 8px 25px rgba(0,0,0,0.08);" />\\n\`;
                     blogData.content = before + imgTag + after;
                  }
               }
@@ -296,7 +275,7 @@ ${blogData.content}
           data: { 
              status: 'DRAFT_READY', 
              imageUrl: finalImageUrl, 
-             details: `Yayına Hazır Taslak onay bekliyor: ${newPost.title} (Post ID: ${newPost.id})`
+             details: \`Yayına Hazır Taslak onay bekliyor: \${newPost.title} (Post ID: \${newPost.id})\`
           }
        });
 
@@ -306,7 +285,7 @@ ${blogData.content}
     if (phase === 'publish') {
        if (activeLog.status === 'COMPLETED') return NextResponse.json({ status: 'COMPLETED' });
        
-       const postIdMatch = activeLog.details?.match(/Post ID: (.*?)\)/);
+       const postIdMatch = activeLog.details?.match(/Post ID: (.*?)\\)/);
        let targetPostId = postIdMatch ? postIdMatch[1] : null;
 
        if (targetPostId) {
@@ -331,7 +310,7 @@ ${blogData.content}
           where: { id: activeLog.id },
           data: { 
              status: 'COMPLETED', 
-             details: `Makale canlı yayını tamamlandı!`,
+             details: \`Makale canlı yayını tamamlandı!\`,
              completedAt: new Date()
           }
        });
@@ -359,3 +338,7 @@ ${blogData.content}
     return NextResponse.json({ error: error?.message || "Failed to run cron job" }, { status: 500 });
   }
 }
+`;
+
+fs.writeFileSync(path, newContent, 'utf8');
+console.log('Successfully updated route.ts');

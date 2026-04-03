@@ -352,10 +352,10 @@ Lütfen çıktıyı EKSİKSİZ biçimde aşağıdaki JSON şemasına uygun olara
         categoryId: { type: SchemaType.STRING },
         authorId: { type: SchemaType.STRING },
         content: { type: SchemaType.STRING },
-        personalExperience: { type: SchemaType.STRING },
+        personalExperience: { type: SchemaType.STRING, description: "Bizzat yaşanmış hissi veren 2-3 cümlelik gerçek bir hikaye/deneyim olmalı. ASLA null bırakma!" },
         references: { type: SchemaType.STRING }
       },
-      required: ["title", "slug", "metaDescription", "keywords", "focusKeyword", "categoryId", "content"]
+      required: ["title", "slug", "metaDescription", "keywords", "focusKeyword", "categoryId", "authorId", "content", "personalExperience", "references"]
     };
 
     const blogResult = await textModel.generateContent({
@@ -498,9 +498,19 @@ ${blogData.content}
        const catExists = await prisma.category.findUnique({ where: { id: String(blogData.categoryId) } });
        if (catExists) validCategoryId = catExists.id;
     }
+    
     if (blogData.authorId) {
-       // Optional: Wait, I won't check User model because his admin authors might be named differently (e.g., AdminUser). I will just set authorId to null by default for CRON jobs. Or if we assume table is `user`.
-       validAuthorId = null;
+       const authorExists = await prisma.author.findUnique({ where: { id: String(blogData.authorId) } });
+       if (authorExists) validAuthorId = authorExists.id;
+    }
+    
+    // Fallback: AI seçemezse veya bulamazsa Yasin Toktaş'ı (veya sistemdeki ilk yazarı) zorunlu ata
+    if (!validAuthorId) {
+       const defaultAuthor = await prisma.author.findFirst({ where: { name: { contains: 'Yasin' } } }) 
+                             || await prisma.author.findFirst();
+       if (defaultAuthor) {
+          validAuthorId = defaultAuthor.id;
+       }
     }
 
     const newPost = await prisma.post.create({

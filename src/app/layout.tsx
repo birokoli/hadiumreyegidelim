@@ -12,6 +12,11 @@ export const metadata: Metadata = {
   icons: {
     icon: '/favicon.png?v=2',
     apple: '/favicon.png?v=2'
+  },
+  robots: {
+    index: true,
+    follow: true,
+    'max-image-preview': 'large',
   }
 };
 

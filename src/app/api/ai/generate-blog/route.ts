@@ -25,7 +25,7 @@ export async function POST(request: Request) {
     });
     const currentYear = new Date().getFullYear();
 
-    const prompt = `Sen, Suudi Arabistan'da uzun yıllar yaşamış, Mekke ve Medine'nin tüm pratik detaylarına hakim, üst düzey (VIP) ve Bireysel Umre organizasyonları konusunda uzmanlaşmış kıdemli bir İslami Seyahat Editörüsün. Yazdığın içerikler "Google Faydalı İçerik (Helpful Content)" standartlarının zirvesindedir. Okuyucuya sığ robotik bilgiler değil, vizyoner ve hayata dokunan tecrübeler sunarsın.
+    const prompt = `Sen, Suudi Arabistan'da uzun yıllar yaşamış, Mekke ve Medine'nin tüm pratik detaylarına hakim, üst düzey (VIP) ve Bireysel Umre organizasyonları konusunda uzmanlaşmış kıdemli bir İslami Seyahat Editörüsün. Yazdığın içerikler "Google Faydalı İçerik (Helpful Content)" standartlarının zirvesindedir. Okuyucuya bilgi verirken asla robotik davranmazsın; tam aksine, sanki elinde bir kahve ile karşısındaki dostuna tavsiyeler veren bir yol arkadaşı gibi ŞEFFAF, YALIN VE İÇTEN bir üslupla konuşursun.
 
 Konu: "${topic}"
 Ek Anahtar Kelimeler: "${keywords || ''}"
@@ -37,7 +37,7 @@ YASAKLI YAPAY ZEKA JARGONU VE ÜSLUP (ÇOK ÖNEMLİ):
 - Üslup: Empatik, somut örneklere dayanan, sıcak bir dil. Süslü sıfatlar yerine pratik, ikna edici çözümler anlat.
 
 ZAMAN VE SATIŞ STRATEJİSİ:
-- CANLI İNTERNET ARAŞTIRMASI YAP (HAYATİ ÖNEMDE): Konuyla ilgili bilgileri internetten derinlemesine çekmek ZORUNDASIN. Özellikle oteller, Harem bölgesi haberleri, yeni kurallar veya vizelerden bahsedeceksen; Suudi Arabistan'ın resmi devlet makamlarını (haj.gov.sa, Nusuk), yerel Arapça haber ajanslarını (SPA - Saudi Press Agency, Okaz, Sabq) İngilizce ve Arapça olarak tarayarak en güncel, resmi ve hatasız bilgiyi harmanla. Saatlerce araştırma yapmış titiz bir editör gibi davran, tek bir uydurma (hallucination) veya eski bilgi barındırma; çünkü yasal sorumluluğumuz var.
+- CANLI İNTERNET ARAŞTIRMASI YAP (HAYATİ ÖNEMDE): Konuyla ilgili bilgileri internetten derinlemesine çekmek ZORUNDASIN. Google'ı tarayarak EN AZ 10 FARKLI OTORİTER SİTEDEN (haj.gov.sa, Nusuk, SPA, Diyanet, Wikipedia vb.) veri harmanla. Saatlerce OSINT (Açık kaynak) araştırması yapmış bir muhabir gibi davran. Yasal sorumluluktan dolayı bilgiler %100 güncel ve hatasız olmalıdır.
 - ŞU AN YIL: ${currentYear}. Geçmiş yılları ASLA kullanma.
 - Diyanet veya diğer acentelerin kalabalık yapısı yerine "Hadi Umreye Gidelim" Bireysel Umre paketlerinin VIP konforunu ön plana çıkar.
 
@@ -89,14 +89,18 @@ Lütfen çıktıyı SADECE AŞAĞIDAKİ YAPIDA VE EKSİKSİZ biçimde bir JSON o
       }
     });
 
-    const response = result.response;
-    let text = response.text();
-    
-    // Strip markdown formatting if Gemini includes it despite responseMimeType
-    text = text.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
-    
-    // Parse the JSON
-    const parsedData = JSON.parse(text);
+    let rawText = result.response.text().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
+    const parsedData = JSON.parse(rawText);
+
+    // Dışarıya 10 referans site kanıtı ekle (UI'da gözükmesi için references içine yama)
+    if (result.response.candidates?.[0]?.groundingMetadata?.groundingChunks) {
+      const chunks = result.response.candidates[0].groundingMetadata.groundingChunks;
+      const urls = chunks.filter((c: any) => c.web?.uri).map((c: any) => c.web.uri);
+      const uniqueUrls = Array.from(new Set(urls));
+      if (uniqueUrls.length > 0) {
+        parsedData.references = (parsedData.references || "") + `<hr/><p><strong>Canlı Araştırma Kaynakları:</strong> ${uniqueUrls.map(u => `<a href="${u}" target="_blank">${u}</a>`).join(', ')}</p>`;
+      }
+    }
 
     // ==========================================
     // FAZ 2 & 3 & 4: Görsel Promptlarını Üret ve Paralel Çiz (Nano Banana)

@@ -333,7 +333,7 @@ export async function GET(request: Request) {
       tools: [{ googleSearch: {} }] as any
     });
     
-    const blogPrompt = `Sen, Suudi Arabistan'da uzun yıllar yaşamış, Mekke ve Medine'nin tüm pratik detaylarına hakim, üst düzey (VIP) ve Bireysel Umre organizasyonları konusunda uzmanlaşmış kıdemli bir İslami Seyahat Editörüsün. Yazdığın içerikler "Google Faydalı İçerik (Helpful Content)" standartlarının zirvesindedir. Okuyucuya asla internette bulunabilecek sıradan, mekanik ve sığ bilgileri vermezsin; tam aksine sahada test edilmiş somut, hayat kurtaran ve vizyoner tavsiyeler sunarsın.
+    const blogPrompt = `Sen, Suudi Arabistan'da uzun yıllar yaşamış, Mekke ve Medine'nin tüm pratik detaylarına hakim, üst düzey (VIP) ve Bireysel Umre organizasyonları konusunda uzmanlaşmış kıdemli bir İslami Seyahat Editörüsün. Yazdığın içerikler "Google Faydalı İçerik (Helpful Content)" standartlarının zirvesindedir. Okuyucuya asla internette bulunabilecek sıradan, mekanik ve sığ bilgileri vermezsin; tam aksine, sanki elinde bir kahve ile karşısındaki dostuna tavsiyeler veren bir yol arkadaşı gibi, tamamıyla (%100) YALIN, İNSANİ VE İÇTEN bir üslupla (biz dili/sen dili) yazarsın.
 
 Odak Anahtar Kelime: "${selectedKeyword}"
 Ek Anahtar Kelimeler: "${keywordsString}"
@@ -345,7 +345,7 @@ YASAKLI YAPAY ZEKA JARGONU VE ÜSLUP (ÇOK ÖNEMLİ!):
 - Üslup: Empatik, somut örneklere dayanan, sıcak ve sürükleyici bir dil. Örneğin "Oteller yakındır" demek yerine "Kabe'ye sıfır noktasındaki 5 yıldızlı odanızdan inip saniyeler içinde Mescid-i Haram'a geçebilirsiniz" gibi vizyoner kelimeler kullan. 
 
 ZAMAN VE SATIŞ STRATEJİSİ: 
-- CANLI İNTERNET ARAŞTIRMASI YAP (HAYATİ ÖNEMDE): Konuyla ilgili bilgileri internetten derinlemesine çekmek ZORUNDASIN. Özellikle oteller, Harem bölgesi haberleri, yeni kurallar veya vizelerden bahsedeceksen; Suudi Arabistan'ın resmi devlet makamlarını (haj.gov.sa, Nusuk), yerel Arapça haber ajanslarını (SPA - Saudi Press Agency, Okaz, Sabq) İngilizce ve Arapça olarak tarayarak en güncel, resmi ve hatasız bilgiyi harmanla. Saatlerce araştırma yapmış titiz bir editör gibi davran, tek bir uydurma (hallucination) veya eski bilgi barındırma; çünkü yasal sorumluluğumuz var.
+- CANLI İNTERNET ARAŞTIRMASI YAP (HAYATİ ÖNEMDE): Konuyla ilgili bilgileri internetten derinlemesine çekmek ZORUNDASIN. Google Arama motorunu kullanarak EN AZ 10 FARKLI OTORİTER SİTEDEN (haj.gov.sa, Nusuk, SPA, Okaz, Diyanet, Wikipedia ve global otel/haber sayfaları vb.) veri çekmelisin. Saatlerce araştırma yapmış titiz bir gazeteci gibi davran. Elde ettiğin bu 10+ kaynaktaki veriyi süz, tek bir uydurma (hallucination) veya eski bilgi barındırma; çünkü yasal sorumluluğumuz var.
 - ŞU AN BULUNDUĞUMUZ YIL: ${currentYear}. Geçmiş yılları (2024, 2023 vb.) kesinlikle kullanma.
 - Diyanet veya dev turların kalabalık dezavantajları yerine; "Hadi Umreye Gidelim" Bireysel Umre paketlerinin esnekliğini (istenilen gün, istenilen lüks otel) ve VIP konforunu doğal bir dille öv. Sona satışı kapatan bir CTA (Yönlendirme) ekle.
 
@@ -381,10 +381,20 @@ SEO VE İÇERİK MİMARİSİ (GOOGLE STANDARTLARI):
     let blogText = blogResult.response.text().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
     const blogData = JSON.parse(blogText);
 
+    let sourceDetails = "";
+    if (blogResult.response.candidates?.[0]?.groundingMetadata?.groundingChunks) {
+      const chunks = blogResult.response.candidates[0].groundingMetadata.groundingChunks;
+      const urls = chunks.filter((c: any) => c.web?.uri).map((c: any) => c.web.uri);
+      const uniqueUrls = Array.from(new Set(urls));
+      if (uniqueUrls.length > 0) {
+        sourceDetails = `| Aranan Kaynaklar: ${uniqueUrls.join(", ")}`;
+      }
+    }
+
     if (currentAiLogId) {
       await prisma.aILog.update({
         where: { id: currentAiLogId },
-        data: { status: 'GENERATING_IMAGES', details: `Metin yazıldı. '${blogData.title}' için yapay zeka görselleri üretiliyor...` }
+        data: { status: 'GENERATING_IMAGES', details: `Metin başarıyla yazıldı. ${sourceDetails} | \nŞimdi '${blogData.title}' için yapay zeka görselleri üretiliyor...` }
       });
     }
 

@@ -6,6 +6,7 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const notoSerif = Noto_Serif({ subsets: ["latin"], weight: ["400", "700"], style: ["normal", "italic"], variable: "--font-noto-serif" });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://hadiumreyegidelim.com"),
   title: "Hadi Umre'ye Gidelim | Özel Aile & Vip Umre Tasarımınız",
   description: "Ruhunuzun ritmini kalabalıklara teslim etmeyin. Sadece ailenize ve size özel, konforlu, butik ve maneviyat dolu Umre organizasyonu.",
   icons: {

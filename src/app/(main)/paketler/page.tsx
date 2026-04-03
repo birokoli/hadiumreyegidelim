@@ -3,6 +3,15 @@ export const dynamic = 'force-dynamic';
 import { prisma } from "@/lib/prisma";
 import BrandImageFallback from "@/components/ui/BrandImageFallback";
 import Link from "next/link";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Ayrıcalıklı Umre Paketleri 2026 | Hadi Umre'ye Gidelim",
+  description: "Manevi yolculuğunuzu konfor ve huzur içinde geçirebilmeniz için her detayı düşünülmüş, VIP transferli ve özel rehberli Umre tur seçenekleri.",
+  alternates: {
+    canonical: "/paketler"
+  }
+};
 
 export default async function PackagesPage() {
   const packages = await prisma.package.findMany({

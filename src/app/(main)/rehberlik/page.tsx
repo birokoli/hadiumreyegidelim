@@ -1,6 +1,15 @@
 import React from "react";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Manevi Rehberler & Gizli Mücevherler | Hadi Umre'ye Gidelim",
+  description: "Kutsal topraklardaki her adımınızı ilim ve hikmetle taçlandıran akademik rehberlerimiz ve kalabalıkların ötesindeki gizli ziyaret noktaları.",
+  alternates: {
+    canonical: "/rehberlik"
+  }
+};
 
 export const dynamic = "force-dynamic";
 

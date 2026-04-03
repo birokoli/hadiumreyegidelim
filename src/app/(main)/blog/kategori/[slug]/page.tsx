@@ -4,13 +4,17 @@ import { prisma } from '@/lib/prisma';
 import BrandImageFallback from '@/components/ui/BrandImageFallback';
 import { notFound } from 'next/navigation';
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const category = await prisma.category.findUnique({ where: { slug: params.slug } });
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const category = await prisma.category.findUnique({ where: { slug } });
   if (!category) return { title: 'Kategori Bulunamadı | Ethereal Serenity' };
   
   return {
-    title: `${category.name} | Blog Katagorisi | Ethereal Serenity`,
-    description: category.description || `${category.name} kategorisindeki manevi rehberlik yazıları.`,
+    title: `${category.name} | Blog Kategorisi | Hadi Umre'ye Gidelim`,
+    description: category.description || `${category.name} kategorisindeki ayrıcalıklı umre rehberlik yazıları.`,
+    alternates: {
+      canonical: `/blog/kategori/${slug}`
+    }
   };
 }
 

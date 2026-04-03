@@ -1,4 +1,13 @@
 import React from 'react';
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "İletişim & Randevu | Hadi Umre'ye Gidelim",
+  description: "Manevi yolculuğunuza ilk adımı birlikte atıyoruz. Umre danışmanlarımızla hemen iletişime geçin, size özel VIP Umre planınızı oluşturalım.",
+  alternates: {
+    canonical: "/iletisim"
+  }
+};
 
 export default async function ContactPage({ searchParams }: { searchParams: Promise<{ paket?: string }> }) {
   const { paket } = await searchParams;

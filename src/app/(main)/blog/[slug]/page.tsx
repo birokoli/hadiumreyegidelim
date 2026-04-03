@@ -12,9 +12,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   }
   
   return {
-    title: `${post.title} | Ethereal Serenity`,
+    title: `${post.title} | Hadi Umre'ye Gidelim`,
     description: post.description,
     keywords: post.keywords?.split(',').map(k => k.trim()),
+    alternates: {
+      canonical: `/blog/${slug}`,
+    },
     openGraph: {
       title: post.title,
       description: post.description || undefined,

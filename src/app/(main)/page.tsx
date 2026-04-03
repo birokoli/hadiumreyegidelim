@@ -3,6 +3,13 @@ import Link from "next/link";
 import Image from "next/image";
 import BrandImageFallback from "@/components/ui/BrandImageFallback";
 import { prisma } from "@/lib/prisma";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: "/",
+  },
+};
 
 export default async function Home() {
   const latestBlogs = await prisma.post.findMany({
@@ -24,7 +31,7 @@ export default async function Home() {
       <section className="relative min-h-[90vh] md:min-h-screen flex items-center justify-center overflow-hidden pt-20">
         <div className="absolute inset-0 z-0">
           <Image
-            alt="Ana Sayfa Banner"
+            alt="Kabe Manzaralı VIP Butik Umre Deneyimi"
             className="object-cover"
             src={home_banner_image}
             fill
@@ -201,7 +208,7 @@ export default async function Home() {
           <div className="grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-6 h-auto md:h-[600px] lg:h-[700px]">
             <div className="md:col-span-2 md:row-span-2 relative overflow-hidden rounded-2xl shadow-lg bg-surface-container-lowest p-8 md:p-12 flex flex-col justify-end group">
               <img
-                alt="Luxury room view"
+                alt="Mekke Harem-i Şerif Manzaralı Lüks Otel Konaklaması"
                 className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-1000"
                 data-alt="Premium hotel room with Kaaba view"
                 src="https://lh3.googleusercontent.com/aida-public/AB6AXuCM2RtX0vVPC6GWUcxcpANmI1T3BzAzzNPeVPKf-dR-u_LwaG8cumBNtYAPkiEqER-ZhV1pYbFj0S2-vbWUx_AKerRswdg-IL1_8lK1EcjdVInHH56psjjIb7G3mh6JLt5n5YyniTuAxY2PXnDLNQpGs4Nt1HVHUI3VUSBiyD8PsEMAvJv4kpHc3dIhrtt_MPJ2pMxbJ9PW1zw08Sy86J7Xl1jgMwwdqtmIASOrBSSA9IoSupMWkdRx47KjAXDjxjrNpK_c6Xeknhw"

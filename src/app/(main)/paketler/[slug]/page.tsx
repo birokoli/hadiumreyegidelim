@@ -12,7 +12,22 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     where: { slug },
   });
   if (!pkg) return { title: 'Bulunamadı' };
-  return { title: `${pkg.title} | Hadi Umreye` };
+  
+  const shortDesc = pkg.description ? pkg.description.substring(0, 150) + "..." : "Sınırlı kontenjanlı, ayrıcalıklı Umre paketimizi keşfedin.";
+
+  return { 
+    title: `${pkg.title} | Hadi Umre'ye Gidelim`,
+    description: shortDesc,
+    alternates: {
+      canonical: `/paketler/${slug}`
+    },
+    openGraph: {
+      title: pkg.title,
+      description: shortDesc,
+      type: 'website',
+      images: pkg.imageUrl ? [{ url: pkg.imageUrl }] : [],
+    }
+  };
 }
 
 export default async function PackageDetailPage({ params }: { params: Promise<{ slug: string }> }) {

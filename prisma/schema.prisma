@@ -138,3 +138,14 @@ model Hotel {
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 }
+
+model AILog {
+  id          String   @id @default(cuid())
+  topic       String?
+  status      String   @default("STARTING") // STARTING, INTERNET_SEARCH, WRITING_CONTENT, GENERATING_IMAGES, COMPLETED, FAILED
+  details     String?  // JSON string for logs/errors
+  imageUrl    String?  // Saved generated image preview
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  completedAt DateTime?
+}

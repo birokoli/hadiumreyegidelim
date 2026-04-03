@@ -30,6 +30,7 @@ async function fetchTrendingKeywords(seed: string = "umre") {
 }
 
 export async function GET(request: Request) {
+  let currentAiLogId: string | null = null;
   try {
     // 1. GÜVENLİK KONTROLÜ (Cron Secret)
     const authHeader = request.headers.get('authorization');
@@ -40,6 +41,11 @@ export async function GET(request: Request) {
     if (!process.env.GEMINI_API_KEY) {
       return NextResponse.json({ error: 'Gemini API key is missing' }, { status: 500 });
     }
+
+    const aiLog = await prisma.aILog.create({
+      data: { status: 'STARTING', details: 'Cron tetiklendi. Konu/anahtar kelime analizi yapılıyor...' }
+    });
+    currentAiLogId = aiLog.id;
 
     // 2. KONU SEÇİMİ (RapidAPI üzerinden)
     const existingPosts = await prisma.post.findMany({ select: { focusKeyword: true } });
@@ -314,6 +320,13 @@ export async function GET(request: Request) {
     // Bütün yazarları çek
     const authors = await prisma.author.findMany({ select: { id: true, name: true } });
 
+    if (currentAiLogId) {
+      await prisma.aILog.update({
+        where: { id: currentAiLogId },
+        data: { topic: selectedKeyword, status: 'INTERNET_SEARCH', details: `Odak Kelime: "${selectedKeyword}". Google Search üzerinden canlı veriler araştırılıyor ve metin yazılıyor...` }
+      });
+    }
+
     // 3. BLOG İÇERİĞİ ÜRETİMİ (Mevcut generate-blog mantığı)
     const textModel = genAI.getGenerativeModel({ 
       model: "gemini-2.5-flash",
@@ -367,6 +380,13 @@ SEO VE İÇERİK MİMARİSİ (GOOGLE STANDARTLARI):
 
     let blogText = blogResult.response.text().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
     const blogData = JSON.parse(blogText);
+
+    if (currentAiLogId) {
+      await prisma.aILog.update({
+        where: { id: currentAiLogId },
+        data: { status: 'GENERATING_IMAGES', details: `Metin yazıldı. '${blogData.title}' için yapay zeka görselleri üretiliyor...` }
+      });
+    }
 
     // 4. GÖRSEL PROMPT ÜRETİMİ (NANOBANANA & IMAGEN KURALLARI)
     const imagePromptInstruction = `ÇALIŞMA KURALLARI:
@@ -532,10 +552,27 @@ ${blogData.content}
       }
     });
 
+    if (currentAiLogId) {
+      await prisma.aILog.update({
+        where: { id: currentAiLogId },
+        data: { status: 'COMPLETED', imageUrl: finalImageUrl, details: `Makale başarıyla üretildi ve yayınlandı: ${newPost.title}`, completedAt: new Date() }
+      });
+    }
+
     return NextResponse.json({ success: true, post: newPost, generatedPromptsCount: imagePromptsJSON.length });
 
   } catch (error: any) {
     console.error("Auto Cron Blog Error:", error);
-    return NextResponse.json({ error: error.message || "Failed to run cron job" }, { status: 500 });
+    if (currentAiLogId) {
+      try {
+        await prisma.aILog.update({
+          where: { id: currentAiLogId },
+          data: { status: 'FAILED', details: error?.message || String(error), completedAt: new Date() }
+        });
+      } catch (err) {
+        console.error("Failed to update AILog on error:", err);
+      }
+    }
+    return NextResponse.json({ error: error?.message || "Failed to run cron job" }, { status: 500 });
   }
 }

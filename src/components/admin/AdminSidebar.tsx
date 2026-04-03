@@ -16,6 +16,7 @@ export default function AdminSidebar({ logoUrl }: { logoUrl?: string }) {
     { href: "/admin/authors", icon: "badge", label: "Yazarlar" },
     { href: "/admin/categories", icon: "category", label: "Kategoriler" },
     { href: "/admin/content", icon: "article", label: "İçerikler (Blog)" },
+    { href: "/admin/ai-logs", icon: "memory", label: "Yapay Zeka İzleme" },
     { href: "/admin/media", icon: "photo_library", label: "Medya" },
     { href: "/admin/settings", icon: "settings", label: "Ayarlar" },
   ];

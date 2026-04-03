@@ -331,13 +331,14 @@ SATIŞ VE RAKİP STRATEJİSİ (ÇOK ÖNEMLİ!):
 - Eğer anahtar kelime "Diyanet", "başka bir tur firması" gibi rakip yapıları içeriyorsa: Müşteriyi KESİNLİKLE onlara yönlendirme! Diyanet'in kısıtlı turlarını objektif bir dille ele ancak "Hadi Umreye Gidelim" şirketimizin özelleştirilebilir, konforlu ve esnek "Bireysel Umre" programlarıyla kıyasla. 
 - Her makalenin sonunda CTA (Satışa Yönlendirme) yaparak "Hadi Umreye Gidelim güvencesiyle hayalinizdeki umreye hemen adımlayın" mesajı ver ve sitemizden alıma teşvik et.
 
-SEO VE İÇERİK MİMARİSİ (HEDEF: 100/100 SKOR!):
-1. BAŞLIK VE METİN: Odak kelime mutlaka ana başlıkta, meta açıklamada, link slug'ında ve makalenin İLK 100 KELIMESİ içinde net bir biçimde geçmelidir.
-2. UZUNLUK: Derin, bilgilendirici ve dolu dolu olmalı. Hedef 700-1000 kelime arası.
-3. LİSTELEME: Uzun içeriği monotonluktan kurtarmak için içerikte kesinlikle EN AZ 2 YERDE madde işaretleri (<ul><li>) veya numaralı liste kullan! E-A-T metrikleri (Uzmanlık ve Güven) için doyurucu alt başlıklar at.
+SEO VE İÇERİK MİMARİSİ (HEDEF: 100/100 SKOR! SEMRUSH VE RANK MATH KURALLARI):
+1. BAŞLIK VE METİN: Odak kelimeyi ("${selectedKeyword}") EK ALMADAN, BİREBİR AYNI YAZILIŞIYLA mutlaka ana başlıkta, meta açıklamada, ilk 100 kelime içinde ve bir adet H2 alt başlığında geçir.
+2. UZUNLUK VE OKUNABİLİRLİK (ÇOK ÖNEMLİ): Flesch Okunabilirlik Kuralları gereği ASLA uzun cümleler kurma! Cümleler ortalama 10-15 kelimeyi geçmesin. Her paragraf EN FAZLA 2-3 cümle uzunluğunda olsun (Uzun duvar metinleri SEO puanını düşürür). Metnin tamamında bolca Geciş Kelimesi (Bununla birlikte, örneğin, dolayısıyla, özellikle, çünkü vb.) kullan. 8. sınıf seviyesinde anlaşılır bir dil benimse.
+3. LİSTELEME: Okumayı kolaylaştırmak için içerikte en az 2-3 farklı yerde HTML madde işaretleri (<ul><li>) kullan. Alt başlıklar oldukça zengin olsun.
 4. SIKÇA SORULAN SORULAR (SSS): Makalenin EN SONUNA mutlaka 'Sıkça Sorulan Sorular' bölümü ekle ve konuda merak edilen 3 popüler soruyu cevapla.
-5. İÇ LİNKLEME: <a href="https://hadiumreyegidelim.com/bireysel-umre">Bireysel Umre Paketleri</a>, <a href="https://hadiumreyegidelim.com">Hadi Umreye Gidelim</a> vb. html etiketleriyle sitemizi işaret eden birkaç iç bağlantı göm.
-6. HTML DÜZENİ: Çift tırnak yerine tek tırnak kullan, içeriği temiz HTML tagleriyle oluştur, H1 KULLANMA (Sadece h2, h3 kullan). Paragraflar en fazla 3 cümle olsun.
+5. İÇ LİNKLEME: <a href="https://hadiumreyegidelim.com/bireysel-umre">Bireysel Umre Paketleri</a>, <a href="https://hadiumreyegidelim.com">Hadi Umreye Gidelim</a> vb. html etiketleriyle sitemizi hedefleyen birkaç iç bağlantı göm.
+6. KAYNAKÇA (DIŞ LİNK): Metnin veya SSS'nin sonuna Diyanet, Nusuk, Güvenilir İslami Ansiklopediler gibi platformları işaret eden 1-2 dış kaynak bağlantısı (html href) ekle.
+7. HTML DÜZENİ: Çift tırnak yerine tek tırnak kullan, H1 KULLANMA.
 
 Lütfen çıktıyı EKSİKSİZ biçimde aşağıdaki JSON şemasına uygun olarak ver ve içeriğinde bu sıkı SEO skor değerlendirmelerini kendi içinde iki kez denetle!`;
 
@@ -353,7 +354,7 @@ Lütfen çıktıyı EKSİKSİZ biçimde aşağıdaki JSON şemasına uygun olara
         authorId: { type: SchemaType.STRING },
         content: { type: SchemaType.STRING },
         personalExperience: { type: SchemaType.STRING, description: "Bizzat yaşanmış hissi veren 2-3 cümlelik gerçek bir hikaye/deneyim olmalı. ASLA null bırakma!" },
-        references: { type: SchemaType.STRING }
+        references: { type: SchemaType.STRING, description: "Diyanet, Nusuk, Wiki gibi 1-2 güvenilir dış kaynak bağlantısı/bilgisi taşıyan HTML veya metin listesi. MUTLAKA DOLDUR, asla null bırakma." }
       },
       required: ["title", "slug", "metaDescription", "keywords", "focusKeyword", "categoryId", "authorId", "content", "personalExperience", "references"]
     };

@@ -37,16 +37,17 @@ SATIŞ VE RAKİP STRATEJİSİ (ÇOK ÖNEMLİ):
 2. Her makalenin sonunda CTA (Satışa Yönlendirme) yaparak müşteriyi sitemizden alıma teşvik et.
 
 SEO VE LİNK İNŞASI KURALLARI (HEDEF: O sistemdeki Analizörden 100/100 Almak!):
-1. KELİME YERLEŞİMİ ZORUNLULUĞU: "${topic}" odak anahtar kelimesini MUTLAKA VE KESİNLİKLE;
+1. KELİME YERLEŞİMİ ZORUNLULUĞU: "${topic}" odak anahtar kelimesini EK ALMADAN VE BİREBİR AYNI YAZILIŞIYLA MUTLAKA;
    - Makale Başlığında (Title)
    - Meta Açıklamasında (Meta Description)
    - URL yapısında (Slug)
    - İçeriğin İLK 100 KELİMESİ İÇİNDE
    - Makale içerisindeki görsel <img alt="..."> özelliklerinde geçirmelisin!
-2. UZUNLUK VE YOĞUNLUK: Makale EN AZ 700 kelime uzunluğunda olmalı. "${topic}" kelimesinin yoğunluğu toplam metin içinde yaklaşık %1.5 - %2.5 arasında olmalıdır (En az 10 kere). Daha fazla veya eksik KULLANMA!
-3. HTML ve LİNKLEME: Çift tırnak yerine HTML içinde tek tırnak kullan. İçerikte en az 2 adet <a href="https://hadiumreyegidelim.com/bireysel-umre"> gibi İÇ BAĞLANTI (href) bulundurmalısın.
-4. LİSTE VE SSS (E-A-T): Okunabilirliği kırmak için bolca H2, H3 alt başlığı at. Metin içerisinde en az bir kez madde işaretleri (<ul><li>) kullan. Makalenin en sonuna ise 3 soruluk "Sıkça Sorulan Sorular (SSS)" bölümü ekleyerek uzmanlık ve kalite (E-A-T) seviyesini zirveye çıkar.
-5. PARAGRAFLAR: Çok kısa, max 2-3 cümlelik sade paragraflar oluştur.
+2. UZUNLUK VE YOĞUNLUK: Makale EN AZ 700 kelime uzunluğunda olmalı. "${topic}" kelimesinin yoğunluğu toplam metin içinde yaklaşık %1.5 - %2.5 arasında olmalıdır.
+3. OKUNABİLİRLİK (ÇOK ÖNEMLİ!): Kesinlikle uzun ve devasa paragraflar kurma. Flesch okunabilirlik standartları gereğince KISA CÜMLELER kur (10-15 kelime) ve her paragraf 2-3 cümleyi geçmesin. Madde işaretleri (<ul><li>) ile metni bolca havalandır. "Bununla birlikte, örneğin, dolayısıyla, özetle" gibi geçiş kelimelerini sıkça kullan. Akademik bir dil değil, akıcı ve çok kolay anlaşılır bir dil kullan!
+4. LİSTE VE SSS (E-A-T): Okunabilirliği kırmak için bolca H2, H3 alt başlığı at. Makalenin en sonuna ise 3 soruluk "Sıkça Sorulan Sorular (SSS)" bölümü ekle.
+5. REFERANS VE DIŞ LİNK: SSS veya makale bitiminde Diyanet, Nusuk, vs. gibi otoriter 1-2 DIŞ KAYNAK LİNKİ ver.
+6. İÇ LİNKLEME: Çift tırnak yerine HTML içinde tek tırnak kullan. İçerikte en az 2 adet <a href="https://hadiumreyegidelim.com/bireysel-umre"> gibi İÇ BAĞLANTI bulundur.
 
 Lütfen çıktıyı SADECE AŞAĞIDAKİ YAPIDA VE EKSİKSİZ biçimde bir JSON objesi olarak ver! Çift tırnaklara vb dikkat et.
 
@@ -74,8 +75,8 @@ Lütfen çıktıyı SADECE AŞAĞIDAKİ YAPIDA VE EKSİKSİZ biçimde bir JSON o
         categoryId: { type: SchemaType.STRING, description: "Mevcut Kategoriler listesinden en uygun olanın id'si (yoksa boş string)" },
         authorId: { type: SchemaType.STRING, description: "Mevcut Yazarlar listesinden en uygun yazarın id'si (yoksa boş string)" },
         content: { type: SchemaType.STRING, description: "HTML formatında içerik (h2, h3, p). İçinde asla h1 bulunmamalıdır." },
-        personalExperience: { type: SchemaType.STRING, description: "Bizzat yaşanmış hissi veren, blog yazısıyla %100 uyumlu kişisel deneyim" },
-        references: { type: SchemaType.STRING, description: "Makaledeki konulara kanıt niteliğinde güvenilir kaynaklar" }
+        personalExperience: { type: SchemaType.STRING, description: "Bizzat yaşanmış hissi veren, blog yazısıyla %100 uyumlu kişisel deneyim. ASLA null veya boş bırakma!" },
+        references: { type: SchemaType.STRING, description: "Makaledeki konulara kanıt niteliğinde güvenilir İslami veya resmî dış kaynaklar (Diyanet, Nusuk, Wiki). MUTLAKA doldur." }
       },
       required: ["title", "slug", "metaDescription", "keywords", "focusKeyword", "categoryId", "authorId", "content", "personalExperience", "references"],
     };

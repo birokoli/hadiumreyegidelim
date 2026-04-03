@@ -332,7 +332,7 @@ YASAKLI YAPAY ZEKA JARGONU VE ÜSLUP (ÇOK ÖNEMLİ!):
 - Üslup: Empatik, somut örneklere dayanan, sıcak ve sürükleyici bir dil. Örneğin "Oteller yakındır" demek yerine "Kabe'ye sıfır noktasındaki 5 yıldızlı odanızdan inip saniyeler içinde Mescid-i Haram'a geçebilirsiniz" gibi vizyoner kelimeler kullan. 
 
 ZAMAN VE SATIŞ STRATEJİSİ: 
-- CANLI İNTERNET ARAŞTIRMASI YAP: Hukuki sorumluluğumuz olduğu için Suudi Krallığı (Nusuk), Diyanet ve Haramain (Hızlı Tren) gibi kurumların güncel kurallarını Google Search ile anlık tara! Asla tahmin yürütme (hallucinate). Bilgiler %100 güncel ve hatasız olmalıdır.
+- CANLI İNTERNET ARAŞTIRMASI YAP (HAYATİ ÖNEMDE): Konuyla ilgili bilgileri internetten derinlemesine çekmek ZORUNDASIN. Özellikle oteller, Harem bölgesi haberleri, yeni kurallar veya vizelerden bahsedeceksen; Suudi Arabistan'ın resmi devlet makamlarını (haj.gov.sa, Nusuk), yerel Arapça haber ajanslarını (SPA - Saudi Press Agency, Okaz, Sabq) İngilizce ve Arapça olarak tarayarak en güncel, resmi ve hatasız bilgiyi harmanla. Saatlerce araştırma yapmış titiz bir editör gibi davran, tek bir uydurma (hallucination) veya eski bilgi barındırma; çünkü yasal sorumluluğumuz var.
 - ŞU AN BULUNDUĞUMUZ YIL: ${currentYear}. Geçmiş yılları (2024, 2023 vb.) kesinlikle kullanma.
 - Diyanet veya dev turların kalabalık dezavantajları yerine; "Hadi Umreye Gidelim" Bireysel Umre paketlerinin esnekliğini (istenilen gün, istenilen lüks otel) ve VIP konforunu doğal bir dille öv. Sona satışı kapatan bir CTA (Yönlendirme) ekle.
 

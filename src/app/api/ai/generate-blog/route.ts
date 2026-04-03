@@ -37,7 +37,7 @@ YASAKLI YAPAY ZEKA JARGONU VE ÜSLUP (ÇOK ÖNEMLİ):
 - Üslup: Empatik, somut örneklere dayanan, sıcak bir dil. Süslü sıfatlar yerine pratik, ikna edici çözümler anlat.
 
 ZAMAN VE SATIŞ STRATEJİSİ:
-- CANLI İNTERNET ARAŞTIRMASI YAP: Hukuki sorumluluğumuz olduğu için Suudi Krallığı (Nusuk), Diyanet ve Haramain (Hızlı Tren) gibi kurumların güncel kurallarını Google Search ile anlık tara! Asla tahmin yürütme (hallucinate). Bilgiler %100 güncel ve hatasız olmalıdır.
+- CANLI İNTERNET ARAŞTIRMASI YAP (HAYATİ ÖNEMDE): Konuyla ilgili bilgileri internetten derinlemesine çekmek ZORUNDASIN. Özellikle oteller, Harem bölgesi haberleri, yeni kurallar veya vizelerden bahsedeceksen; Suudi Arabistan'ın resmi devlet makamlarını (haj.gov.sa, Nusuk), yerel Arapça haber ajanslarını (SPA - Saudi Press Agency, Okaz, Sabq) İngilizce ve Arapça olarak tarayarak en güncel, resmi ve hatasız bilgiyi harmanla. Saatlerce araştırma yapmış titiz bir editör gibi davran, tek bir uydurma (hallucination) veya eski bilgi barındırma; çünkü yasal sorumluluğumuz var.
 - ŞU AN YIL: ${currentYear}. Geçmiş yılları ASLA kullanma.
 - Diyanet veya diğer acentelerin kalabalık yapısı yerine "Hadi Umreye Gidelim" Bireysel Umre paketlerinin VIP konforunu ön plana çıkar.
 

@@ -3,6 +3,15 @@ import AdminSidebar from "@/components/admin/AdminSidebar";
 import AdminNavbar from "@/components/admin/AdminNavbar";
 import AdminLayoutWrapper from "@/components/admin/AdminLayoutWrapper";
 import { prisma } from "@/lib/prisma";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Yönetim Paneli",
+  robots: {
+    index: false,
+    follow: false,
+  }
+};
 
 export default async function AdminLayout({
   children,

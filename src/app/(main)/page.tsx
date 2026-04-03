@@ -11,6 +11,8 @@ export const metadata: Metadata = {
   },
 };
 
+export const revalidate = 60;
+
 export default async function Home() {
   const latestBlogs = await prisma.post.findMany({
     where: { published: true },

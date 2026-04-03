@@ -9,6 +9,8 @@ export const metadata = {
   description: 'Manevi yolculuğunuzda size rehberlik edecek yazılar, Medine ve Mekke hakkında derinlemesine bilgiler ve AI destekli rotalar.',
 };
 
+export const revalidate = 60;
+
 export default async function BlogIndexPage() {
   const posts = await prisma.post.findMany({
     where: { published: true },

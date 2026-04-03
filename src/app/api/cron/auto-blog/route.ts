@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { GoogleGenerativeAI, SchemaType } from '@google/generative-ai';
 import { prisma } from '@/lib/prisma';
 
@@ -567,6 +568,13 @@ ${blogData.content}
         where: { id: currentAiLogId },
         data: { status: 'COMPLETED', imageUrl: finalImageUrl, details: `Makale başarıyla üretildi ve yayınlandı: ${newPost.title}`, completedAt: new Date() }
       });
+    }
+
+    try {
+      revalidatePath('/');
+      revalidatePath('/blog');
+    } catch (e) {
+      console.log("Revalidation failed, running locally?", e);
     }
 
     return NextResponse.json({ success: true, post: newPost, generatedPromptsCount: imagePromptsJSON.length });

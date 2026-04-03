@@ -25,6 +25,7 @@ export default function Navbar({ links, logoUrl }: { links?: {label: string, url
             {label: "Paketler", url: "/paketler"},
             {label: "Bireysel Tasarım", url: "/bireysel-umre"},
             {label: "Rehberler & Keşifler Portalı", url: "/rehberlik"},
+            {label: "Umre Vizesi", url: "/umre-vizesi"},
             {label: "Manevi Rehberlik Blogu", url: "/blog"},
             {label: "İletişim", url: "/iletisim"}
           ]).map((link, idx) => (

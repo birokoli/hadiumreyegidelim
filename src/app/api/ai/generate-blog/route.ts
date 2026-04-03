@@ -22,32 +22,27 @@ export async function POST(request: Request) {
     const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
     const currentYear = new Date().getFullYear();
 
-    const prompt = `Sen uzman bir SEO uzmanı ve umre/hac, maneviyat konularında profesyonel bir blog yazarısın. Yazılarını %100 bir insan yazmış gibi kurgulamalısın. SEMRUSH ve Google SEO standartlarını en üst düzeyde (Hedef: %100 Orjinallik, 58.9 Readability Skoru) karşılamalısın. Yapay zeka dedektörlerini aşmak için şu kurallara KESİNLİKLE uy:
+    const prompt = `Sen, Suudi Arabistan'da uzun yıllar yaşamış, Mekke ve Medine'nin tüm pratik detaylarına hakim, üst düzey (VIP) ve Bireysel Umre organizasyonları konusunda uzmanlaşmış kıdemli bir İslami Seyahat Editörüsün. Yazdığın içerikler "Google Faydalı İçerik (Helpful Content)" standartlarının zirvesindedir. Okuyucuya sığ robotik bilgiler değil, vizyoner ve hayata dokunan tecrübeler sunarsın.
 
 Konu: "${topic}"
 Ek Anahtar Kelimeler: "${keywords || ''}"
 Mevcut Kategoriler: ${JSON.stringify(categories || [])}
 Mevcut Yazarlar (E-E-A-T): ${JSON.stringify(authors || [])}
 
-ZAMAN VE YIL KURALI: 
-- ŞU AN BULUNDUĞUMUZ YIL: ${currentYear}. ASLA geçmiş yılları (2024, 2025, 2023 vb.) başlıkta veya içerikte KULLANMA! Eğer mevcut yıldan bahsedeceksen ${currentYear} veya ${currentYear + 1} yıllarını baz al.
+YASAKLI YAPAY ZEKA JARGONU VE ÜSLUP (ÇOK ÖNEMLİ):
+- ŞU KELİMELERİ ASLA KULLANMA: "Sonuç olarak", "özetlemek gerekirse", "bu makalede", "büyüleyici", "dalış yapalım", "gerçek bir mücevherdir", "unutulmamalıdır ki", "eşsiz", "hayati önem taşır", "gerekir".
+- Üslup: Empatik, somut örneklere dayanan, sıcak bir dil. Süslü sıfatlar yerine pratik, ikna edici çözümler anlat.
 
-SATIŞ VE RAKİP STRATEJİSİ (ÇOK ÖNEMLİ):
-1. Eğer anahtar kelime 'Diyanet', 'başka bir tur firması' gibi dış yapıları içeriyorsa: Müşteriyi asla onlara yönlendirme! Diyanet'in kısıtlı turlarını nesnel bir dille ele ancak 'Hadi Umreye Gidelim' şirketimizin özelleştirilebilir, konforlu ve esnek 'Bireysel Umre' programlarının üstünlüğünü ve rahatlığını sat!
-2. Her makalenin sonunda CTA (Satışa Yönlendirme) yaparak müşteriyi sitemizden alıma teşvik et.
+ZAMAN VE SATIŞ STRATEJİSİ:
+- ŞU AN YIL: ${currentYear}. Geçmiş yılları ASLA kullanma.
+- Diyanet veya diğer acentelerin kalabalık yapısı yerine "Hadi Umreye Gidelim" Bireysel Umre paketlerinin VIP konforunu ön plana çıkar.
 
-SEO VE LİNK İNŞASI KURALLARI (HEDEF: O sistemdeki Analizörden 100/100 Almak!):
-1. KELİME YERLEŞİMİ ZORUNLULUĞU: "${topic}" odak anahtar kelimesini EK ALMADAN VE BİREBİR AYNI YAZILIŞIYLA MUTLAKA;
-   - Makale Başlığında (Title)
-   - Meta Açıklamasında (Meta Description)
-   - URL yapısında (Slug)
-   - İçeriğin İLK 100 KELİMESİ İÇİNDE
-   - Makale içerisindeki görsel <img alt="..."> özelliklerinde geçirmelisin!
-2. UZUNLUK VE YOĞUNLUK: Makale EN AZ 700 kelime uzunluğunda olmalı. "${topic}" kelimesinin yoğunluğu toplam metin içinde yaklaşık %1.5 - %2.5 arasında olmalıdır.
-3. OKUNABİLİRLİK (ÇOK ÖNEMLİ!): Kesinlikle uzun ve devasa paragraflar kurma. Flesch okunabilirlik standartları gereğince KISA CÜMLELER kur (10-15 kelime) ve her paragraf 2-3 cümleyi geçmesin. Madde işaretleri (<ul><li>) ile metni bolca havalandır. "Bununla birlikte, örneğin, dolayısıyla, özetle" gibi geçiş kelimelerini sıkça kullan. Akademik bir dil değil, akıcı ve çok kolay anlaşılır bir dil kullan!
-4. LİSTE VE SSS (E-A-T): Okunabilirliği kırmak için bolca H2, H3 alt başlığı at. Makalenin en sonuna ise 3 soruluk "Sıkça Sorulan Sorular (SSS)" bölümü ekle.
-5. REFERANS VE DIŞ LİNK: SSS veya makale bitiminde Diyanet, Nusuk, vs. gibi otoriter 1-2 DIŞ KAYNAK LİNKİ ver.
-6. İÇ LİNKLEME: Çift tırnak yerine HTML içinde tek tırnak kullan. İçerikte en az 2 adet <a href="https://hadiumreyegidelim.com/bireysel-umre"> gibi İÇ BAĞLANTI bulundur.
+SEO VE GOOGLE YÖNERGELERİ:
+1. Odak kelimeyi ("${topic}") ana başlık, meta açıklama, URL ve ilk 100 kelimede GÖZÜNE SOKMADAN doğal bir akışla kullan.
+2. Flesch Okunabilirlik Kurallarına uymak için KISA CÜMLELER kur. Paragraflar 2-3 cümleyi asla geçmesin. Metni bağlaçlarla (örneğin, kaldı ki, hatta) akıcı hale getir.
+3. H2 ve H3 başlıklarını zengin tut, aralara madde işaretli HTML listeleri (<ul><li>) serpiştir.
+4. Makale sonuna 3 maddelik 'Sıkça Sorulan Sorular (SSS)' ekle.
+5. SSS veya içerik bitimine Diyanet / Nusuk gibi güvenilir bir dış kaynak linki (href) ve sitemiz içine (https://hadiumreyegidelim.com/bireysel-umre) en az 2 iç link göm.
 
 Lütfen çıktıyı SADECE AŞAĞIDAKİ YAPIDA VE EKSİKSİZ biçimde bir JSON objesi olarak ver! Çift tırnaklara vb dikkat et.
 

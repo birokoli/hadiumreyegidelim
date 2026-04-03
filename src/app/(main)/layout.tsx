@@ -2,6 +2,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import React from "react";
 import { prisma } from "@/lib/prisma";
+import FloatingWhatsApp from "@/components/ui/FloatingWhatsApp";
 
 export default async function MainLayout({
   children,
@@ -42,6 +43,7 @@ export default async function MainLayout({
         <div className="flex-1 flex flex-col">{children}</div>
         <Footer logoUrl={logoUrl} />
       </div>
+      <FloatingWhatsApp />
     </>
   );
 }

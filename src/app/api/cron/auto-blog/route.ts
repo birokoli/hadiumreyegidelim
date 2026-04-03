@@ -147,10 +147,11 @@ YASAKLI YAPAY ZEKA JARGONU VE ÜSLUP (ÇOK ÖNEMLİ!):
 - ŞU KELİMELERİ ASLA KULLANMA: "Sonuç olarak", "özetlemek gerekirse", "bu makalede", "büyüleyici", "dalış yapalım", "gerçek bir mücevherdir", "unutulmamalıdır ki", "eşsiz", "hayati önem taşır", "gerekir".
 - Üslup: Empatik, somut örneklere dayanan, sıcak ve sürükleyici bir dil. Örneğin "Oteller yakındır" demek yerine "Kabe'ye sıfır noktasındaki 5 yıldızlı odanızdan inip saniyeler içinde Mescid-i Haram'a geçebilirsiniz" gibi vizyoner kelimeler kullan. 
 
-ZAMAN VE SATIŞ STRATEJİSİ: 
-- CANLI İNTERNET ARAŞTIRMASI YAP (HAYATİ ÖNEMDE): Konuyla ilgili bilgileri internetten derinlemesine çekmek ZORUNDASIN. Google Arama motorunu kullanarak EN AZ 10 FARKLI OTORİTER SİTEDEN (haj.gov.sa, Nusuk, SPA, Okaz, Diyanet, Wikipedia ve global otel/haber sayfaları vb.) veri çekmelisin. Saatlerce araştırma yapmış titiz bir gazeteci gibi davran. Elde ettiğin bu 10+ kaynaktaki veriyi süz, tek bir uydurma (hallucination) veya eski bilgi barındırma; çünkü yasal sorumluluğumuz var.
-- ŞU AN BULUNDUĞUMUZ YIL: ${currentYear}. Geçmiş yılları (2024, 2023 vb.) kesinlikle kullanma.
-- Diyanet veya dev turların kalabalık dezavantajları yerine; "Hadi Umreye Gidelim" Bireysel Umre paketlerinin esnekliğini ve konforunu doğal bir dille öv. Sona satışı kapatan bir CTA ekle.
+ZAMAN VE BÜYÜME (GROWTH) SATIŞ STRATEJİSİ: 
+- CANLI İNTERNET ARAŞTIRMASI YAP (HAYATİ ÖNEMDE): Konuyla ilgili bilgileri internetten derinlemesine çekmek ZORUNDASIN. Google Arama motorunu kullanarak EN AZ 10 FARKLI OTORİTER SİTEDEN (haj.gov.sa, Nusuk, SPA, Okaz, Diyanet, Wikipedia ve global otel/haber sayfaları vb.) veri çekmelisin.
+- ŞU AN BULUNDUĞUMUZ YIL: ${currentYear}. Geçmiş yılları kesinlikle kullanma.
+- İÇERİK TARZI (ÇOK ÖNEMLİ): Düz makale yerine, Müşteri çekici (Lead Generation) "Fiyat Karşılaştırmaları", "Diyanet vs Bireysel Umre Farkları", "Listeler (Örn: Bebekle Umre İçin 5 Altın Kural)" formatlarında yaz. Hedef kitlen tamamen fiyat veya bireysel avantajları arayan SICAK MÜŞTERİLERDİR.
+- SATIŞI KAPAT VE WHATSAPP'A YÖNLENDİR (CTA): Makalenin en can alıcı noktasına kalın harflerle, okuyucunun doğrudan bizimle iletişime geçmesini sağlayacak çok güçlü bir metin koy. Örn: "**2026 sezonu güncel VIP otel fiyatları ve ailenize özel proforma almak için anında sağ alttaki Canlı Destek (WhatsApp) ikonuna tıklayın, ekibimiz süreci dakikalar içinde anlatsın.**"
 
 SEO VE İÇERİK MİMARİSİ (GOOGLE STANDARTLARI):
 1. ANAHTAR KELİME: Odak kelimeyi ("${selectedKeyword}") ana başlıkta, meta açıklamada, ilk 100 kelimede ve bir adet H2'de doğal akışı GÖZÜNE SOKMADAN geçir.

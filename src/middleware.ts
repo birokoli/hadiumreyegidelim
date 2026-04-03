@@ -12,9 +12,11 @@ export function middleware(req: NextRequest) {
 
   // Sadece /admin ile başlayan istekleri kontrol et
   if (url.startsWith('/admin')) {
-    // 1. ZORUNLU YÖNLENDİRME: Eğer hadiumreyegidelim.com/admin girildiyse, admin.hadiumreyegidelim.com/admin'e şutla
+    // 1. GİZLİLİK VE GÜVENLİK (Tamamen Kapatma): 
+    // Eğer ana duman üzerinden /admin yazılırsa, onlara admin subdomain'ini gösterme! Direkt anasayfaya fırlat.
     if (!hostname.includes('localhost') && !hostname.startsWith('admin.')) {
-      return NextResponse.redirect(`https://admin.hadiumreyegidelim.com${url}`);
+      const homeUrl = new URL('/', req.url);
+      return NextResponse.redirect(homeUrl);
     }
 
     // Login sayfasını ve API endpointlerini hariç tut

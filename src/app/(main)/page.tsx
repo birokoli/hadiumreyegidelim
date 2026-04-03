@@ -50,6 +50,7 @@ export default async function Home() {
             Boutique Umre Experience
           </div>
           <h1 className="font-headline text-5xl md:text-7xl text-white leading-[1.15] mb-8 max-w-4xl mx-auto font-bold tracking-tight drop-shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
+            <span className="sr-only">Umre Turları ve Fiyatları 2026 </span>
             {home_banner_title}
           </h1>
           <p className="font-headline italic text-xl md:text-3xl text-white/90 mb-12 max-w-2xl mx-auto drop-shadow-md">

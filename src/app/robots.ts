@@ -6,7 +6,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: '*',
       allow: '/',
-      disallow: ['/admin/', '/api/'], // Güvenlik için admin panelini robotlardan gizle
+      disallow: ['/admin/', '/api/', '/profil/'], // Güvenlik için admin panelini robotlardan gizle
     },
     sitemap: 'https://hadiumreyegidelim.com/sitemap.xml',
   };

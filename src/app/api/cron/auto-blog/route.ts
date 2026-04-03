@@ -515,7 +515,7 @@ ${blogData.content}
         authorId: validAuthorId,
         personalExperience: blogData.personalExperience,
         references: blogData.references,
-        published: false, // Taslak modunda kaydet
+        published: true, // Direkt canlıya al
         imageUrl: finalImageUrl,
       }
     });

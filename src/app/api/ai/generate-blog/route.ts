@@ -19,7 +19,10 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Topic is required.' }, { status: 400 });
     }
 
-    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+    const model = genAI.getGenerativeModel({ 
+      model: "gemini-2.5-flash",
+      tools: [{ googleSearch: {} }] as any
+    });
     const currentYear = new Date().getFullYear();
 
     const prompt = `Sen, Suudi Arabistan'da uzun yıllar yaşamış, Mekke ve Medine'nin tüm pratik detaylarına hakim, üst düzey (VIP) ve Bireysel Umre organizasyonları konusunda uzmanlaşmış kıdemli bir İslami Seyahat Editörüsün. Yazdığın içerikler "Google Faydalı İçerik (Helpful Content)" standartlarının zirvesindedir. Okuyucuya sığ robotik bilgiler değil, vizyoner ve hayata dokunan tecrübeler sunarsın.
@@ -34,6 +37,7 @@ YASAKLI YAPAY ZEKA JARGONU VE ÜSLUP (ÇOK ÖNEMLİ):
 - Üslup: Empatik, somut örneklere dayanan, sıcak bir dil. Süslü sıfatlar yerine pratik, ikna edici çözümler anlat.
 
 ZAMAN VE SATIŞ STRATEJİSİ:
+- CANLI İNTERNET ARAŞTIRMASI YAP: Hukuki sorumluluğumuz olduğu için Suudi Krallığı (Nusuk), Diyanet ve Haramain (Hızlı Tren) gibi kurumların güncel kurallarını Google Search ile anlık tara! Asla tahmin yürütme (hallucinate). Bilgiler %100 güncel ve hatasız olmalıdır.
 - ŞU AN YIL: ${currentYear}. Geçmiş yılları ASLA kullanma.
 - Diyanet veya diğer acentelerin kalabalık yapısı yerine "Hadi Umreye Gidelim" Bireysel Umre paketlerinin VIP konforunu ön plana çıkar.
 

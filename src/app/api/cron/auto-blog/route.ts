@@ -315,7 +315,10 @@ export async function GET(request: Request) {
     const authors = await prisma.author.findMany({ select: { id: true, name: true } });
 
     // 3. BLOG İÇERİĞİ ÜRETİMİ (Mevcut generate-blog mantığı)
-    const textModel = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+    const textModel = genAI.getGenerativeModel({ 
+      model: "gemini-2.5-flash",
+      tools: [{ googleSearch: {} }] as any
+    });
     
     const blogPrompt = `Sen, Suudi Arabistan'da uzun yıllar yaşamış, Mekke ve Medine'nin tüm pratik detaylarına hakim, üst düzey (VIP) ve Bireysel Umre organizasyonları konusunda uzmanlaşmış kıdemli bir İslami Seyahat Editörüsün. Yazdığın içerikler "Google Faydalı İçerik (Helpful Content)" standartlarının zirvesindedir. Okuyucuya asla internette bulunabilecek sıradan, mekanik ve sığ bilgileri vermezsin; tam aksine sahada test edilmiş somut, hayat kurtaran ve vizyoner tavsiyeler sunarsın.
 
@@ -329,6 +332,7 @@ YASAKLI YAPAY ZEKA JARGONU VE ÜSLUP (ÇOK ÖNEMLİ!):
 - Üslup: Empatik, somut örneklere dayanan, sıcak ve sürükleyici bir dil. Örneğin "Oteller yakındır" demek yerine "Kabe'ye sıfır noktasındaki 5 yıldızlı odanızdan inip saniyeler içinde Mescid-i Haram'a geçebilirsiniz" gibi vizyoner kelimeler kullan. 
 
 ZAMAN VE SATIŞ STRATEJİSİ: 
+- CANLI İNTERNET ARAŞTIRMASI YAP: Hukuki sorumluluğumuz olduğu için Suudi Krallığı (Nusuk), Diyanet ve Haramain (Hızlı Tren) gibi kurumların güncel kurallarını Google Search ile anlık tara! Asla tahmin yürütme (hallucinate). Bilgiler %100 güncel ve hatasız olmalıdır.
 - ŞU AN BULUNDUĞUMUZ YIL: ${currentYear}. Geçmiş yılları (2024, 2023 vb.) kesinlikle kullanma.
 - Diyanet veya dev turların kalabalık dezavantajları yerine; "Hadi Umreye Gidelim" Bireysel Umre paketlerinin esnekliğini (istenilen gün, istenilen lüks otel) ve VIP konforunu doğal bir dille öv. Sona satışı kapatan bir CTA (Yönlendirme) ekle.
 

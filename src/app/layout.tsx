@@ -17,7 +17,23 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
     'max-image-preview': 'large',
-  }
+  },
+  openGraph: {
+    title: "Hadi Umre'ye Gidelim | Özel Aile & Vip Umre",
+    description: "Sadece ailenize ve size özel, konforlu, butik ve maneviyat dolu VIP Umre organizasyonu.",
+    url: 'https://hadiumreyegidelim.com',
+    siteName: "Hadi Umre'ye Gidelim",
+    images: [
+      {
+        url: 'https://images.unsplash.com/photo-1565552645632-d725f8bfc19a?q=80&w=2600&auto=format&fit=crop',
+        width: 1200,
+        height: 630,
+        alt: 'Kabe Manzaralı VIP Butik Umre Deneyimi',
+      },
+    ],
+    locale: 'tr_TR',
+    type: 'website',
+  },
 };
 
 import { SpeedInsights } from "@vercel/speed-insights/next";

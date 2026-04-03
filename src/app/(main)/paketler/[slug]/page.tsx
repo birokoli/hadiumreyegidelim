@@ -61,8 +61,32 @@ export default async function PackageDetailPage({ params }: { params: Promise<{ 
     try { gallery = JSON.parse(pkg.gallery); } catch (e) {}
   }
 
+  // Schema.org Markup for Google Discover & Search (E-E-A-T)
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: pkg.title,
+    description: mainDesc,
+    image: pkg.imageUrl ? [pkg.imageUrl] : [],
+    brand: {
+      '@type': 'Brand',
+      name: "Hadi Umre'ye Gidelim"
+    },
+    offers: {
+      '@type': 'AggregateOffer',
+      priceCurrency: 'USD',
+      lowPrice: '1000',
+      availability: 'https://schema.org/InStock',
+      url: `https://hadiumreyegidelim.com/paketler/${pkg.slug}`
+    }
+  };
+
   return (
     <main className="pt-20 bg-surface-container-lowest min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* Hero Section */}
       <section className="relative h-[60vh] min-h-[400px] flex items-end pb-16 px-8 overflow-hidden">
         <div className="absolute inset-0 z-0">

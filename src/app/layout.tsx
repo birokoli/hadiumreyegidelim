@@ -55,7 +55,7 @@ export default function RootLayout({
 }>) {
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "TravelAgency",
+    "@type": "Organization",
     "name": "Hadi Umreye Gidelim",
     "image": "https://hadiumreyegidelim.com/logo.png",
     "@id": "https://hadiumreyegidelim.com",

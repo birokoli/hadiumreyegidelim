@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { cookies } from 'next/headers';
+import { verifyToken } from '@/lib/jwt';
 
 export async function GET() {
   try {
@@ -16,11 +18,27 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     
+    // Check if user is logged in
+    let userId = null;
+    try {
+      const cookieStore = await cookies();
+      const token = cookieStore.get('b2c_session')?.value;
+      if (token) {
+        const session = await verifyToken(token);
+        if (session && session.id) {
+          userId = session.id;
+        }
+      }
+    } catch (e) {
+      // Ignore err
+    }
+    
     const order = await prisma.order.create({
       data: {
         pax: body.pax,
         totalUSD: body.totalUSD,
         status: 'PENDING',
+        userId: userId, // Link to B2C user!
         flight: body.flight ? JSON.stringify(body.flight) : null,
         hotel: body.hotel ? JSON.stringify(body.hotel) : null,
         transfer: body.transfer ? JSON.stringify(body.transfer) : null,

@@ -34,10 +34,23 @@ export function middleware(req: NextRequest) {
     return NextResponse.next();
   }
 
+  // B2C Müşteri Profili Koruması
+  if (url.startsWith('/profil')) {
+    // Login ve Register sayfalarını serbest bırak
+    if (url === '/profil/giris' || url === '/profil/uye-ol') {
+      return NextResponse.next();
+    }
+
+    const b2cCookie = req.cookies.get('b2c_session');
+    if (!b2cCookie?.value) {
+      return NextResponse.redirect(new URL('/profil/giris', req.url));
+    }
+  }
+
   return NextResponse.next();
 }
 
 export const config = {
-  // Sadece kök dizin ve /admin rotalarında çalışsın
-  matcher: ['/', '/admin/:path*'],
+  // Admin ve Profil rotalarında çalışsın
+  matcher: ['/', '/admin/:path*', '/profil/:path*'],
 };

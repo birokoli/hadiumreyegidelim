@@ -34,8 +34,8 @@ export default function Navbar({ links, logoUrl }: { links?: {label: string, url
           ))}
         </div>
         <div className="flex items-center gap-6">
-          <Link href="/admin" className="flex items-center text-primary hover:text-primary-container transition-colors">
-            <span className="material-symbols-outlined text-[28px]" data-icon="account_circle">
+          <Link href="/profil" className="flex items-center text-primary hover:text-primary-container transition-colors">
+            <span className="material-symbols-outlined text-[28px]" data-icon="account_circle" title="Kullanıcı Profili">
               account_circle
             </span>
           </Link>

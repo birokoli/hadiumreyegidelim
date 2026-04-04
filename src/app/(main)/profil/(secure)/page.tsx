@@ -26,6 +26,38 @@ export default async function ProfileDashboard() {
   if (hour < 11) greeting = "Hayırlı Sabahlar";
   else if (hour > 18) greeting = "Hayırlı Akşamlar";
 
+  // Dinamik İslami Takvim ve Kampanya Zekası (Intl API)
+  const getDynamicCampaign = () => {
+    try {
+      const date = new Date();
+      // Get Islamic month number (1 to 12)
+      const islamicFormatter = new Intl.DateTimeFormat('en-US-u-ca-islamic', { month: 'numeric' });
+      const islamicMonth = parseInt(islamicFormatter.format(date), 10);
+      
+      const campaigns = {
+        1: { title: "Hicri Yılbaşı: Kabe'de Başlangıç", desc: "Yeni hicri yıla Beytullah'ta girmek için özel VIP paketlerimizde %10 tasarruf edin.", code: "HİCRİ14" },
+        2: { title: "Huzura Yolculuk: Sakin Sezon", desc: "Kalabalıktan uzak, maneviyatı yüksek sakin dönem umresine özel indirim.", code: "HUZUR10" },
+        3: { title: "Mevlid Ayı Özel Umresi", desc: "Efendimizin (s.a.v) doğduğu bu ayda Medine'ye misafir olun.", code: "MEVLİD15" },
+        4: { title: "Kış Güneşi: Aile Umresi", desc: "Soğuk günlerde Mekke sıcaklığını ailenizle yaşayın.", code: "AİLE10" },
+        5: { title: "Kış Güneşi: Aile Umresi", desc: "Soğuk günlerde Mekke sıcaklığını ailenizle yaşayın.", code: "AİLE10" },
+        6: { title: "Manevi Bahar: Erken Kayıt", desc: "Üç aylar yaklaşırken yerinizi şimdiden ayırtarak avantaj sağlayın.", code: "BAHAR5" },
+        7: { title: "Mübarek Üç Aylar Fırsatı", desc: "Recep ayının feyzini Mescid-i Haram'da yaşamak için erken davranın.", code: "RECEP15" },
+        8: { title: "Şaban Ayı: Ramazan'a Hazırlık", desc: "Ramazan yoğunluğu başlamadan önce umrenizi huzurla tamamlayın.", code: "SABAN10" },
+        9: { title: "Ramazan'da Umre Bir Başkadır", desc: "En kutsal ayda Lüks VIP otellerde yerinizi garantileyin.", code: "RAMAZAN20" },
+        10: { title: "Şevval Ayı Umresi Fırsatı", desc: "Ramazan sükunetinin ardından rahat ve ferah bir umre deneyimi.", code: "SEVVAL15" },
+        11: { title: "Hac Öncesi Son Umre Fırsatı", desc: "Umre sezonu kapanmadan önce son kafilelere dahil olun.", code: "SONKAFİLE" },
+        12: { title: "Yeni Sezon Ön Kayıtları Başladı", desc: "Hac dönemi bitiminde açılacak yeni sezon için yerinizi garantileyin.", code: "YENİSEZON" },
+      };
+
+      return campaigns[islamicMonth as keyof typeof campaigns] || campaigns[2];
+    } catch (e) {
+      // Fallback if Intl API fails
+      return { title: "VIP Aile Umresi'nde Fırsat", desc: "Mekke ve Medine lüks otellerinde erken rezervasyon indirimi başladı.", code: "VIP10AİLE" };
+    }
+  };
+
+  const activeCampaign = getDynamicCampaign();
+
   return (
     <div className="space-y-8 animate-in fade-in duration-500">
       
@@ -109,10 +141,10 @@ export default async function ProfileDashboard() {
         <div className="relative z-10 w-full h-full flex flex-col sm:flex-row items-start sm:items-center justify-between p-6 sm:px-10">
           <div className="mb-4 sm:mb-0">
             <span className="inline-block px-3 py-1 mb-2 text-[10px] font-bold tracking-widest text-[#0f172a] bg-amber-400 rounded-full hidden sm:block w-max">
-              SİZE ÖZEL FIRSAT
+              BU AYA ÖZEL FIRSAT
             </span>
-            <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight">Ramazan Ayında %15 Tasarruf Edin</h3>
-            <p className="text-slate-300 text-sm mt-1 sm:mt-0">Lüks otel paketlerinde ön rezervasyon dönemi başladı.</p>
+            <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight">{activeCampaign.title}</h3>
+            <p className="text-slate-300 text-sm mt-1 sm:mt-0">{activeCampaign.desc}</p>
           </div>
           <div className="flex bg-white/10 backdrop-blur-md border border-white/20 text-white px-5 py-3 rounded-xl font-medium text-sm group-hover:bg-white group-hover:text-[#0f172a] transition-all">
             Hemen İncele
@@ -129,28 +161,26 @@ export default async function ProfileDashboard() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           
-          {/* Ticket style Coupon 1 */}
+          {/* O Aya Özel Dinamik Kupon */}
           <div className="relative flex rounded-2xl bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-            {/* Ticket Left Punch */}
             <div className="absolute -left-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-slate-50 rounded-full border-r border-slate-200 z-10"></div>
-            {/* Ticket Right Punch */}
             <div className="absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-slate-50 rounded-full border-l border-slate-200 z-10"></div>
             
             <div className="w-1/3 bg-amber-50 flex flex-col items-center justify-center p-4 border-r border-dashed border-amber-200">
-              <span className="text-xs font-bold text-amber-600 uppercase tracking-wider mb-1">İNDİRİM</span>
-              <span className="text-3xl font-black text-amber-700">%10</span>
+              <span className="text-xs font-bold text-amber-600 uppercase tracking-wider mb-1">GÜNCEL</span>
+              <span className="text-3xl font-black text-amber-700">%15</span>
             </div>
             <div className="w-2/3 p-5 flex flex-col justify-center">
-              <h4 className="font-bold text-slate-800">Aile İndirimi</h4>
-              <p className="text-xs text-slate-500 mt-1 mb-3">VIP Otel Konfigürasyonlarında Geçerlidir.</p>
+              <h4 className="font-bold text-slate-800">Dönemsel Kampanya</h4>
+              <p className="text-xs text-slate-500 mt-1 mb-3">Sadece bu hicri ay içerisindeki rezervasyonlarda.</p>
               <div className="flex items-center justify-between">
-                <span className="text-[10px] font-bold text-slate-400">SON 3 GÜN</span>
-                <span className="bg-slate-100 text-slate-700 text-xs font-mono font-bold px-3 py-1 rounded-lg border border-slate-200 cursor-pointer hover:bg-slate-200 transition-colors">AİLE10</span>
+                <span className="text-[10px] font-bold text-slate-400">YENİ TANIMLANDI</span>
+                <span className="bg-slate-100 text-slate-700 text-xs font-mono font-bold px-3 py-1 rounded-lg border border-slate-200 cursor-pointer hover:bg-slate-200 transition-colors uppercase">{activeCampaign.code}</span>
               </div>
             </div>
           </div>
 
-          {/* Ticket style Coupon 2 */}
+          {/* Standart Hoşgeldin Hediyesi Kupon 2 */}
           <div className="relative flex rounded-2xl bg-white border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
             <div className="absolute -left-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-slate-50 rounded-full border-r border-slate-200 z-10"></div>
             <div className="absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-slate-50 rounded-full border-l border-slate-200 z-10"></div>

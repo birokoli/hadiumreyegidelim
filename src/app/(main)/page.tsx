@@ -60,7 +60,7 @@ export default async function Home() {
             <Link href="/bireysel-umre" className="bg-primary text-white px-10 py-5 rounded-2xl font-bold tracking-widest text-sm uppercase shadow-2xl hover:bg-white hover:text-primary active:scale-95 transition-all">
               NİYET ET VE PLANLA
             </Link>
-            <a href={`https://wa.me/${whatsappNumber}?text=Merhaba,%20ana%20sayfanızdan%20ulaşıyorum,%20hizmetleriniz%20hakkında%20bilgi%20almak%20istiyorum.`} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-3 text-white font-bold border border-white/30 bg-white/10 backdrop-blur-sm px-8 py-5 rounded-2xl hover:bg-white hover:text-primary transition-all uppercase tracking-widest text-xs shadow-xl">
+            <a href={`https://wa.me/${whatsappNumber}?text=Merhaba,%20ana%20sayfanızdan%20ulaşıyorum,%20hizmetleriniz%20hakkında%20bilgi%20almak%20istiyorum.`} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-3 text-white font-bold border border-transparent bg-[#25D366] px-8 py-5 rounded-2xl hover:bg-[#128C7E] hover:text-white transition-all uppercase tracking-widest text-xs shadow-xl">
               <span className="material-symbols-outlined text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>
                 chat
               </span>

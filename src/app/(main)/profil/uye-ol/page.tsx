@@ -29,10 +29,11 @@ export default function RegisterPage() {
       if (data.success) {
         window.location.href = "/profil"; // Force refresh to trigger layout changes
       } else {
-        setError(data.error || "Kayıt başarısız.");
+        const errorMsg = data.details ? `${data.error} (${data.details})` : (data.error || "Kayıt başarısız.");
+        setError(errorMsg);
       }
-    } catch (err) {
-      setError("Bir hata oluştu. Lütfen tekrar deneyin.");
+    } catch (err: any) {
+      setError("Bir hata oluştu. Lütfen tekrar deneyin. " + (err?.message || ""));
     } finally {
       setLoading(false);
     }

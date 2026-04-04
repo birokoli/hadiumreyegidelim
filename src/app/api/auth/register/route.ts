@@ -55,8 +55,14 @@ export async function POST(request: Request) {
     });
 
     return NextResponse.json({ success: true, message: 'Hesap başarıyla oluşturuldu.' });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Registration Error:', error);
-    return NextResponse.json({ error: 'Kayıt sırasında bir hata oluştu.' }, { status: 500 });
+    return NextResponse.json(
+      { 
+        error: 'Kayıt sırasında bir hata oluştu.', 
+        details: error?.message || String(error)
+      }, 
+      { status: 500 }
+    );
   }
 }

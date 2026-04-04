@@ -61,11 +61,25 @@ export default function AILogsPage() {
   return (
     <div className="p-8 max-w-7xl mx-auto min-h-screen pb-24">
       <div className="mb-10 p-8 rounded-3xl bg-gradient-to-r from-slate-900 via-[#0B2545] to-slate-900 border border-white/10 shadow-2xl relative overflow-hidden">
-        <div className="relative z-10">
-          <h1 className="text-3xl font-bold tracking-tight text-white mb-3">AI Otonom İzleme Merkezi</h1>
-          <p className="text-blue-100/80 max-w-2xl text-lg font-light">
-            Günde 3 kez çalışan otonom SEO yapay zekasının canlı çalışma sürecini (İnternet Taraması, Görsel Çizimi, Metin Yazımı) buradan saniye saniye izleyebilirsiniz.
-          </p>
+        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight text-white mb-3">AI Otonom İzleme Merkezi</h1>
+            <p className="text-blue-100/80 max-w-2xl text-lg font-light">
+              Günde 3 kez çalışan otonom SEO yapay zekasının canlı çalışma sürecini (İnternet Taraması, Görsel Çizimi, Metin Yazımı) buradan saniye saniye izleyebilirsiniz.
+            </p>
+          </div>
+          <button 
+            onClick={async () => {
+              const res = await fetch('/api/admin/trigger-ai', { method: 'POST' });
+              const data = await res.json();
+              if(data.success) alert("🚀 AI Ateşlendi! 1 dakika içinde loglar düşmeye başlayacak.");
+              else alert("Hata oluştu.");
+            }}
+            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-2xl font-bold transition-all shadow-lg hover:shadow-blue-500/30 whitespace-nowrap active:scale-95"
+          >
+            <span className="material-symbols-outlined text-[20px]">bolt</span>
+            Hemen AI Blog Üret (Zorla)
+          </button>
         </div>
         <div className="absolute -right-20 -top-20 opacity-20 hover:opacity-40 transition-opacity blur-sm">
           <span className="material-symbols-outlined text-[300px] text-blue-300">memory</span>

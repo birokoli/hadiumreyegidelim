@@ -25,32 +25,41 @@ export default async function BlogIndexPage() {
     orderBy: { name: 'asc' }
   });
 
-  return (
-    <main className="pt-32 pb-24 min-h-screen bg-surface relative overflow-hidden">
-      {/* Visual Accents */}
-      <div className="fixed top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/5 blur-[120px] -z-10 rounded-full mix-blend-multiply pointer-events-none"></div>
+  const heroPost = posts[0];
+  const gridPosts = posts.slice(1);
 
+  // Sahte Okunma Süresi Hesaplayıcı (1000 karaktere 1 dakika)
+  const getReadTime = (content: string | null) => {
+    if (!content) return "2 Dk Okuma";
+    return Math.max(2, Math.ceil(content.length / 1000)) + " Dk Okuma";
+  };
+
+  return (
+    <main className="pt-32 pb-24 min-h-screen bg-slate-50 relative overflow-hidden">
+      {/* Visual Accents */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/5 blur-[120px] rounded-full translate-x-1/3 -translate-y-1/3 pointer-events-none"></div>
+      
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <header className="mb-16 text-center max-w-3xl mx-auto">
-          <span className="font-label text-[10px] font-bold uppercase tracking-[0.2em] text-tertiary mb-6 block bg-tertiary-fixed-dim/20 w-fit mx-auto px-4 py-1.5 rounded-full">
+          <span className="inline-block px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] bg-white border border-slate-200 text-slate-500 shadow-sm mb-6">
             İLİM VE İRFAN YOLCULUĞU
           </span>
-          <h1 className="font-headline text-5xl md:text-6xl text-primary leading-tight mb-6 font-bold tracking-tight drop-shadow-sm">
-            Manevi Rehberlik Blogu
+          <h1 className="font-headline text-5xl md:text-6xl text-slate-900 leading-tight mb-6 font-bold tracking-tight">
+            Manevi Rehber<span className="text-primary opacity-60">lik</span>
           </h1>
-          <p className="text-on-surface-variant text-lg leading-relaxed font-body mb-10">
-            Kutsal topraklara yapacağınız ziyaret öncesinde, rotanızı aydınlatacak ve ruhunuzu hazırlayacak özel içeriklerimizi keşfedin.
+          <p className="text-slate-500 text-lg leading-relaxed mb-10 max-w-2xl mx-auto">
+            Hac ve Umre bültenimizi takip edin, Medine ve Mekke'ye dair sırları, güncel konaklama ve ziyaret taktiklerini ilk siz öğrenin.
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-3">
-            <Link href="/blog" className="px-5 py-2 rounded-full text-xs font-bold uppercase tracking-widest bg-primary text-white shadow-md">
+            <Link href="/blog" className="px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest bg-primary text-white shadow-md shadow-primary/20 hover:scale-105 transition-transform">
               Tümü
             </Link>
             {categories.map((cat: any) => (
               <Link 
                 key={cat.id} 
                 href={`/blog/kategori/${cat.slug}`} 
-                className="px-5 py-2 rounded-full text-xs font-bold uppercase tracking-widest bg-surface-container-high text-on-surface-variant hover:bg-primary/10 hover:text-primary transition-colors border border-outline-variant/20 shadow-sm"
+                className="px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest bg-white text-slate-600 hover:bg-slate-100 border border-slate-200 shadow-sm hover:shadow-md transition-all whitespace-nowrap"
               >
                 {cat.name}
               </Link>
@@ -59,58 +68,122 @@ export default async function BlogIndexPage() {
         </header>
 
         {posts.length === 0 ? (
-          <div className="text-center text-outline-variant py-20 bg-surface-container-lowest rounded-3xl border border-outline-variant/10 shadow-sm max-w-2xl mx-auto">
-            <span className="material-symbols-outlined text-6xl mb-4 text-primary/30" style={{fontVariationSettings: "'FILL' 1"}}>menu_book</span>
-            <p className="text-xl font-headline text-primary/70">Henüz yayınlanmış bir yazı bulunmuyor.</p>
-            <p className="text-sm mt-2 text-outline">Lütfen daha sonra tekrar ziyaret edin.</p>
+          <div className="text-center py-20 bg-white rounded-3xl border border-slate-100 shadow-sm max-w-2xl mx-auto">
+            <span className="material-symbols-outlined text-6xl mb-4 text-slate-300">article</span>
+            <p className="text-xl font-headline text-slate-800 font-medium">Henüz yayınlanmış bir bülten bulunmuyor.</p>
+            <p className="text-sm mt-2 text-slate-500">Çok yakında harika içeriklerle burada olacağız.</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {posts.map((post, index) => (
-              <Link href={`/blog/${post.slug}`} key={post.id} className="group h-full">
-                <article className="bg-surface-container-lowest rounded-3xl overflow-hidden border border-outline-variant/10 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-2 flex flex-col h-full bg-white relative">
-                  {post.imageUrl ? (
-                    <div className="h-60 overflow-hidden bg-surface-container relative">
+          <div className="space-y-12">
+            
+            {/* Manşet Post (Hero) */}
+            {heroPost && (
+              <Link href={`/blog/${heroPost.slug}`} className="group block">
+                <article className="bg-white rounded-[2rem] overflow-hidden border border-slate-100 shadow-md hover:shadow-xl hover:border-primary/20 transition-all duration-500 flex flex-col md:flex-row relative z-20">
+                  <div className="md:w-3/5 h-[300px] md:h-[450px] relative overflow-hidden bg-slate-100">
+                    {heroPost.imageUrl ? (
                       <Image 
-                        src={post.imageUrl} 
-                        alt={post.title} 
+                        src={heroPost.imageUrl} 
+                        alt={heroPost.title} 
                         fill 
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        sizes="(max-width: 768px) 100vw, 60vw"
                         className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out" 
-                        priority={index < 3} 
+                        priority 
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    ) : (
+                      <BrandImageFallback icon="auto_awesome" iconSize={6} />
+                    )}
+                    <div className="absolute top-6 left-6 flex gap-2">
+                      <span className="bg-amber-400 text-amber-950 px-3 py-1.5 rounded-lg text-xs font-bold uppercase shadow-lg">
+                        YENİ
+                      </span>
                     </div>
-                  ) : (
-                    <div className="h-60 relative overflow-hidden">
-                      <BrandImageFallback icon="menu_book" iconSize={4} />
-                    </div>
-                  )}
+                  </div>
                   
-                  <div className="p-8 flex-1 flex flex-col">
-                    <div className="flex items-center gap-3 text-[10px] font-bold tracking-widest uppercase text-tertiary mb-4">
-                      {post.category && (
-                        <span className="bg-primary/5 text-primary px-2 py-1 rounded-md">
-                          {post.category.name}
+                  <div className="md:w-2/5 p-8 md:p-12 flex flex-col justify-center">
+                    <div className="flex items-center gap-3 text-xs font-medium text-slate-500 mb-6">
+                      {heroPost.category && (
+                        <span className="font-bold uppercase tracking-wider text-primary">
+                          {heroPost.category.name}
                         </span>
                       )}
-                      <span>{post.author}</span>
-                      <span className="w-1.5 h-1.5 rounded-full bg-tertiary/30"></span>
-                      <span>{new Date(post.createdAt).toLocaleDateString('tr-TR')}</span>
+                      <span className="w-1 h-1 rounded-full bg-slate-300"></span>
+                      <span>{new Date(heroPost.createdAt).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' })}</span>
                     </div>
-                    <h2 className="font-headline text-2xl font-bold text-primary mb-3 leading-snug group-hover:text-secondary transition-colors line-clamp-2">
-                      {post.title}
+                    
+                    <h2 className="font-headline text-3xl md:text-4xl font-bold text-slate-900 mb-6 leading-tight group-hover:text-primary transition-colors line-clamp-3">
+                      {heroPost.title}
                     </h2>
-                    <p className="text-on-surface-variant text-sm leading-relaxed line-clamp-3 flex-1 mb-8 opacity-90">
-                      {post.description}
+                    
+                    <p className="text-slate-600 text-base leading-relaxed line-clamp-3 mb-8">
+                      {heroPost.description}
                     </p>
-                    <div className="mt-auto pt-5 border-t border-outline-variant/10 flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-primary group-hover:text-secondary transition-colors">
-                      Yazıyı Oku <span className="material-symbols-outlined text-sm">arrow_forward</span>
+                    
+                    <div className="mt-auto flex items-center justify-between border-t border-slate-100 pt-6">
+                      <div className="flex items-center gap-2 text-primary font-bold text-sm group-hover:translate-x-1 transition-transform">
+                        İncele <span className="material-symbols-outlined text-[20px]">arrow_forward</span>
+                      </div>
+                      <div className="flex items-center gap-1.5 text-slate-400 text-xs font-medium">
+                        <span className="material-symbols-outlined text-[16px]">schedule</span>
+                        {getReadTime(heroPost.content)}
+                      </div>
                     </div>
                   </div>
                 </article>
               </Link>
-            ))}
+            )}
+
+            {/* Grid Posts */}
+            {gridPosts.length > 0 && (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {gridPosts.map((post) => (
+                  <Link href={`/blog/${post.slug}`} key={post.id} className="group flex h-full">
+                    <article className="bg-white rounded-3xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col w-full">
+                      
+                      <div className="h-56 relative overflow-hidden bg-slate-100 mb-2">
+                        {post.imageUrl ? (
+                          <Image 
+                            src={post.imageUrl} 
+                            alt={post.title} 
+                            fill 
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                            className="object-cover group-hover:scale-105 transition-transform duration-700 ease-out" 
+                          />
+                        ) : (
+                          <BrandImageFallback icon="auto_stories" iconSize={4} />
+                        )}
+                        {post.category && (
+                          <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-md text-slate-800 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider">
+                            {post.category.name}
+                          </div>
+                        )}
+                      </div>
+                      
+                      <div className="p-6 flex-1 flex flex-col">
+                        <h3 className="font-headline text-xl font-bold text-slate-900 mb-3 leading-snug group-hover:text-primary transition-colors line-clamp-2">
+                          {post.title}
+                        </h3>
+                        <p className="text-slate-600 text-sm leading-relaxed line-clamp-3 mb-6 flex-1">
+                          {post.description}
+                        </p>
+                        
+                        <div className="mt-auto border-t border-slate-100 pt-4 flex items-center justify-between text-xs text-slate-500 font-medium">
+                          <span className="flex items-center gap-1.5">
+                            <span className="material-symbols-outlined text-[14px]">calendar_month</span>
+                            {new Date(post.createdAt).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long' })}
+                          </span>
+                          <span className="flex items-center gap-1.5">
+                            <span className="material-symbols-outlined text-[14px]">timer</span>
+                            {getReadTime(post.content)}
+                          </span>
+                        </div>
+                      </div>
+
+                    </article>
+                  </Link>
+                ))}
+              </div>
+            )}
           </div>
         )}
       </div>

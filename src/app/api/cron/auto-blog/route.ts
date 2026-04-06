@@ -158,31 +158,29 @@ SEO VE İÇERİK MİMARİSİ (GOOGLE STANDARTLARI):
 2. OKUNABİLİRLİK: Flesch Okunabilirlik Kurallarına uy. Cümleler max 15 kelime, paragraflar max 2-3 cümle olsun. Sürekli enter'la metni böl.
 3. FORMAT: En az 2 yerde (<ul><li>) ile liste yap, bolca H2/H3 alt başlığı at.
 4. SSS VE KAYNAKLAR: En sona 'Sıkça Sorulan Sorular' (3 Soru) ekle. Metnin veya SSS'nin bitimine Diyanet veya Nusuk gibi sağlam sitelere 1-2 dış kaynak linki (href) ver.
-5. İÇ LİNKLEME: href="https://hadiumreyegidelim.com/bireysel-umre" yapısını kullanarak sitemize iç bağlantılar at.`;
+5. İÇ LİNKLEME: href="https://hadiumreyegidelim.com/bireysel-umre" yapısını kullanarak sitemize iç bağlantılar at.
 
-       const blogSchema: any = {
-         type: SchemaType.OBJECT,
-         properties: {
-           title: { type: SchemaType.STRING },
-           slug: { type: SchemaType.STRING },
-           metaDescription: { type: SchemaType.STRING },
-           keywords: { type: SchemaType.STRING },
-           focusKeyword: { type: SchemaType.STRING },
-           categoryId: { type: SchemaType.STRING },
-           authorId: { type: SchemaType.STRING },
-           content: { type: SchemaType.STRING },
-           personalExperience: { type: SchemaType.STRING },
-           references: { type: SchemaType.STRING }
-         },
-         required: ["title", "slug", "metaDescription", "keywords", "focusKeyword", "categoryId", "authorId", "content", "personalExperience", "references"]
-       };
+JSON ÇIKTISI KURALI: 
+Lütfen yanıtını SADECE geçerli bir JSON nesnesi (object) olarak ver. Markdown kod bloğu içine alabilirsin. Format şu şekilde olmalıdır:
+{
+  "title": "...",
+  "slug": "...",
+  "metaDescription": "...",
+  "keywords": "...",
+  "focusKeyword": "${selectedKeyword}",
+  "categoryId": "Mevcut kategorilerden birinin ID'si",
+  "authorId": "Mevcut yazarlardan birinin ID'si",
+  "content": "HTML formatında blog metni",
+  "personalExperience": "...",
+  "references": "..."
+}`;
 
        const blogResult = await textModel.generateContent({
          contents: [{ role: "user", parts: [{ text: blogPrompt }] }],
-         generationConfig: { temperature: 0.8, responseMimeType: "application/json", responseSchema: blogSchema }
+         generationConfig: { temperature: 0.8 }
        });
 
-       let blogText = blogResult.response.text().replace(/^```(?:json)?s*/i, '').replace(/s*```$/i, '').trim();
+       let blogText = blogResult.response.text().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
        const blogData = JSON.parse(blogText);
 
        let sourceDetails = "";

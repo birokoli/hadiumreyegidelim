@@ -20,6 +20,12 @@ export default async function Home() {
     take: 3
   });
 
+  const featuredPackages = await prisma.package.findMany({
+    where: { published: true },
+    orderBy: { createdAt: 'desc' },
+    take: 3
+  });
+
   const settingsArray = await prisma.setting.findMany();
   const settings = settingsArray.reduce((acc, s) => { acc[s.key] = s.value; return acc; }, {} as Record<string, string>);
 
@@ -123,6 +129,69 @@ export default async function Home() {
                 7/24 WhatsApp Hizmeti
               </span>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Premium Hazır Paketler Vitrini */}
+      <section className="py-24 bg-surface-container-lowest relative overflow-hidden">
+        <div className="max-w-screen-2xl mx-auto px-8 relative z-10">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+            <div>
+              <span className="text-secondary font-bold tracking-widest uppercase text-[10px] block mb-3 border-l-2 border-secondary pl-3">
+                Kişiselleştirilmiş Lüks Turlar
+              </span>
+              <h2 className="font-headline text-4xl md:text-5xl text-primary font-bold">
+                Müsait & VIP Paketlerimiz
+              </h2>
+            </div>
+            <Link href="/paketler" className="text-secondary font-bold flex items-center gap-2 hover:gap-4 transition-all uppercase tracking-widest text-[10px] bg-secondary/10 px-6 py-3 rounded-xl hover:bg-secondary/20 shadow-sm border border-secondary/10">
+              Tüm Paketleri Gör <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {featuredPackages.map((pkg: any) => (
+              <div key={pkg.id} className="bg-white rounded-[2rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 group flex flex-col border border-outline-variant/10 hover:-translate-y-2 relative">
+                {pkg.isPopular && (
+                  <div className="absolute top-6 left-6 z-20 bg-secondary text-primary font-bold text-[10px] uppercase tracking-widest px-4 py-2 rounded-full shadow-lg border border-secondary/20 backdrop-blur-md">
+                    En Çok Tercih Edilen
+                  </div>
+                )}
+                <div className="aspect-[4/3] relative overflow-hidden bg-surface-container-low flex items-center justify-center p-2">
+                  {pkg.imageUrl ? (
+                    <Image src={pkg.imageUrl} alt={pkg.title} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover rounded-3xl group-hover:scale-105 transition-transform duration-700" />
+                  ) : (
+                    <div className="w-full h-full rounded-2xl relative overflow-hidden">
+                       <BrandImageFallback icon="mosque" iconSize={4} />
+                    </div>
+                  )}
+                  <div className="absolute bottom-6 left-6 right-6">
+                    <span className="bg-white/95 backdrop-blur-md text-primary text-[10px] font-bold uppercase tracking-widest px-4 py-2 rounded-xl inline-flex items-center gap-1.5 shadow-sm border border-outline-variant/10">
+                      <span className="material-symbols-outlined text-[16px]">schedule</span> {pkg.duration}
+                    </span>
+                  </div>
+                </div>
+                <div className="p-8 md:p-10 flex flex-col flex-1">
+                  <h3 className="text-2xl font-headline font-bold text-primary mb-4 line-clamp-2 group-hover:text-secondary transition-colors">{pkg.title}</h3>
+                  <p className="text-on-surface-variant text-sm leading-relaxed mb-8 line-clamp-3">
+                    {pkg.description ? pkg.description.split('|||ITINERARY|||')[0] : ''}
+                  </p>
+                  
+                  <div className="mt-auto pt-6 border-t border-outline-variant/10">
+                    <Link href={`/paketler/${pkg.slug}`} className="w-full bg-primary text-white font-bold tracking-widest uppercase text-[11px] py-4 rounded-xl hover:bg-white hover:text-primary active:scale-95 transition-all flex justify-center items-center gap-3 shadow-md border border-transparent hover:border-outline-variant/20">
+                      Paketi İncele <span className="material-symbols-outlined text-[16px]">touch_app</span>
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            ))}
+            
+            {featuredPackages.length === 0 && (
+              <div className="col-span-1 md:col-span-3 py-24 text-center bg-white/50 backdrop-blur-sm rounded-3xl border border-outline-variant/20 border-dashed">
+                 <p className="text-outline text-sm tracking-widest uppercase font-bold">Bu sezona ait VIP paketlerimiz güncellenmektedir. Lütfen daha sonra tekrar kontrol ediniz.</p>
+              </div>
+            )}
           </div>
         </div>
       </section>

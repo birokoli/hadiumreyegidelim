@@ -154,7 +154,7 @@ export default async function Home() {
             {featuredPackages.map((pkg: any) => (
               <div key={pkg.id} className="bg-white rounded-[2rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 group flex flex-col border border-outline-variant/10 hover:-translate-y-2 relative">
                 {pkg.isPopular && (
-                  <div className="absolute top-6 left-6 z-20 bg-secondary text-primary font-bold text-[10px] uppercase tracking-widest px-4 py-2 rounded-full shadow-lg border border-secondary/20 backdrop-blur-md">
+                  <div className="absolute top-6 left-6 z-20 bg-secondary text-white font-bold text-[10px] uppercase tracking-widest px-4 py-2 rounded-full shadow-lg border border-secondary/20 backdrop-blur-md">
                     En Çok Tercih Edilen
                   </div>
                 )}

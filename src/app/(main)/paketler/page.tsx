@@ -33,11 +33,11 @@ export default async function PackagesPage() {
         
         <div className="relative z-10 w-full max-w-screen-2xl mx-auto px-8">
           <div className="max-w-2xl">
-            <span className="text-secondary font-label text-sm tracking-[0.2em] font-bold uppercase mb-4 block">Size Özel Tasarlandı</span>
-            <h1 className="font-headline text-5xl md:text-7xl text-white font-bold leading-[1.1] mb-6">
+            <span className="text-tertiary-fixed-dim font-label text-sm tracking-[0.2em] font-bold uppercase mb-4 block drop-shadow-md">Size Özel Tasarlandı</span>
+            <h1 className="font-headline text-5xl md:text-7xl text-white font-bold leading-[1.1] mb-6 drop-shadow-lg">
               Ayrıcalıklı<br />Umre Paketleri
             </h1>
-            <p className="font-body text-xl text-white/90 leading-relaxed font-light max-w-xl border-l-4 border-secondary pl-6">
+            <p className="font-body text-xl text-white/90 leading-relaxed font-light max-w-xl border-l-4 border-tertiary-fixed-dim pl-6 drop-shadow-md">
               Manevi yolculuğunuzu konfor ve huzur içinde geçirebilmeniz için her detayı düşünülmüş, özenle hazırlanmış tur seçenekleri.
             </p>
           </div>
@@ -61,7 +61,7 @@ export default async function PackagesPage() {
               return (
                 <div key={pkg.id} className="bg-white rounded-3xl overflow-hidden shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_20px_40px_rgb(0,0,0,0.08)] transition-all duration-500 group flex flex-col xl:flex-row border border-outline-variant/10 relative">
                   {pkg.isPopular && (
-                    <div className="absolute top-6 left-6 z-20 bg-secondary text-primary font-bold text-xs uppercase tracking-widest px-4 py-1.5 rounded-full shadow-lg">
+                    <div className="absolute top-6 left-6 z-20 bg-secondary text-white font-bold text-[10px] sm:text-xs uppercase tracking-widest px-4 py-1.5 rounded-full shadow-lg">
                       En Çok Tercih Edilen
                     </div>
                   )}

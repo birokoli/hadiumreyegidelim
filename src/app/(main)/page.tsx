@@ -322,6 +322,48 @@ export default async function Home() {
           </div>
         </div>
       </section>
+
+      {/* SEO FAQ Section - Bireysel Umre Dominasyonu */}
+      <section className="py-16 bg-surface-container-low border-t border-outline-variant/10">
+        <div className="max-w-screen-md mx-auto px-8">
+          <div className="text-center mb-12">
+            <h2 className="font-headline text-3xl font-bold text-primary mb-4">Bireysel Umre Rehberi: 2026 Vize ve Detaylar</h2>
+            <p className="text-on-surface-variant text-sm leading-relaxed">
+              Diyanet turlarına veya kafilelere bağlı kalmadan kendi imkanlarıyla <strong>bireysel umre nasıl yapılır</strong> merak eden misafirlerimiz için en çok sorulan soruları derledik. VIP ve Bireysel Umre paketleri hakkında detaylı bilgiye aşağıdan ulaşabilirsiniz.
+            </p>
+          </div>
+
+          <div className="space-y-6">
+            <div className="bg-white rounded-2xl p-6 shadow-sm border border-outline-variant/20 hover:shadow-md transition-shadow">
+              <h3 className="font-bold text-lg text-primary mb-3">1. Bireysel Umre Vizesi Nasıl Alınır? Zor Mu?</h3>
+              <p className="text-on-surface-variant text-sm leading-relaxed">
+                Suudi Arabistan yönetimi artık <strong>bireysel umre vizesi</strong> alımını son derece kolaylaştırmıştır. Otel konaklamanız ve uçuşunuz belirlendikten sonra, acente garantörlüğü ile Nusuk sistemi üzerinden 24 saat içerisinde adınıza e-vize tanımlanır. Klasik turların evrak yüküyle uğraşmadan anında hazır olursunuz.
+              </p>
+            </div>
+
+            <div className="bg-white rounded-2xl p-6 shadow-sm border border-outline-variant/20 hover:shadow-md transition-shadow">
+              <h3 className="font-bold text-lg text-primary mb-3">2. Diyanetsiz ve Tursuz "Kendi Başına Umre" Yapılabilir Mi?</h3>
+              <p className="text-on-surface-variant text-sm leading-relaxed">
+                Evet, kesinlikle yapılabilir. Kalabalık kafilelere mahkum olmadan, ailenizle <strong>diyanetsiz umre turları</strong> planlamak en doğal hakkınızdır. Sistemimizde yer alan fiyat konfigüratörü ile Kabe manzaralı lüks otellerinizi tamamen kendi bütçenize göre seçer, "Kendi umrenizi kendiniz tasarlarsınız". Bu sistem klasik paketlere göre %30'a varan tasarruf sağlar.
+              </p>
+            </div>
+
+            <div className="bg-white rounded-2xl p-6 shadow-sm border border-outline-variant/20 hover:shadow-md transition-shadow">
+              <h3 className="font-bold text-lg text-primary mb-3">3. Bireysel VIP Umre Turlarında Rehberlik Veriliyor Mu?</h3>
+              <p className="text-on-surface-variant text-sm leading-relaxed">
+                Bireysel gitmeniz rehbersiz kalacağınız anlamına gelmez. Vize ve biletleriniz ayarlandıktan sonra, Mekke ve Medine'deki lokal <strong>özel ilahiyatçı rehberlerimiz</strong> karşılama ve ibadetlerinizi ifa etmeniz (Tavaf, Say) noktasında birebir size eşlik eder. 
+              </p>
+            </div>
+            
+            <div className="bg-white rounded-2xl p-6 shadow-sm border border-outline-variant/20 hover:shadow-md transition-shadow">
+              <h3 className="font-bold text-lg text-primary mb-3">4. Hangi Aylar (Fırsat Sezonu) Umre İçin Daha Ucuzdur?</h3>
+              <p className="text-on-surface-variant text-sm leading-relaxed">
+                <strong>2026 Umre fiyatları</strong> döneme göre değişiklik gösterir. Özellikle Şevval ayı ve Kurban bayramı sonrası (Eylül, Ekim ayları) fiyatların en düşük olduğu "Yeşil Sezon"dur. Konfigüratörümüzdeki ısı haritasından bu takvimi görebilir ve çok ucuza VIP kalitesinde seyahat ayarlayabilirsiniz.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
     </>
   );
 }

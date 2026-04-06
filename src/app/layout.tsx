@@ -9,10 +9,10 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://hadiumreyegidelim.com"),
   title: {
     template: "%s | Hadi Umreye Gidelim",
-    default: "Umre Fiyatları ve Turları 2026 | Özel, VIP ve Bireysel Umre",
+    default: "Bireysel Umre Nasıl Yapılır? Vize ve Özel Paket Fiyatları 2026",
   },
-  description: "2026 Yılı Umre Turları, VIP, Lüks, ve Bireysel Aile Umresi paketleri. En uygun fiyatlarla lüks otellerde maneviyat dolu özel bir Umre deneyimi planlayın.",
-  keywords: ["umre", "umre turları", "umre fiyatları 2026", "bireysel umre", "vip umre", "lüks umre", "özel umre turları", "aile umresi", "mekke otelleri", "medine otelleri"],
+  description: "Bireysel umre vizesi nasıl alınır? Diyanete veya turlara bağımlı kalmadan, 2026 Özel Bireysel Umre ve VIP Aile umresi fiyatları hakkında şeffaf rehber.",
+  keywords: ["bireysel umre", "bireysel umre vizesi", "bireysel umre nasıl yapılır", "bireysel umre vizesi nasıl alınır", "diyanetsiz umre", "umre fiyatları 2026", "özel umre", "kendi imkanlarıyla umre", "vip umre"],
   icons: {
     icon: '/favicon.png?v=2',
     apple: '/favicon.png?v=2'
@@ -25,8 +25,8 @@ export const metadata: Metadata = {
     'max-video-preview': -1,
   },
   openGraph: {
-    title: "Umre Turları ve Fiyatları 2026 | Özel Bireysel Umre & VIP Konfor",
-    description: "2026 Umre Paketleri: Diyanet Onaylı vizelerle, sadece ailenize ve size özel, konforlu, Mescid-i Haram'a sıfır lüks butik ve VIP Bireysel Umre organizasyonu.",
+    title: "Bireysel Umre Rehberi | Suudi Arabistan e-Vize & Özel Fiyatlar 2026",
+    description: "Bireysel umre vizesi nasıl alınır? Diyanet turlarına bağlanmadan, Mescid-i Haram'a sıfır, sadece ailenize özel butik umre organizasyonu kurun ve tasarruf edin.",
     url: 'https://hadiumreyegidelim.com',
     siteName: "Hadi Umreye Gidelim",
     images: [
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
         url: 'https://images.unsplash.com/photo-1565552645632-d725f8bfc19a?q=80&w=2600&auto=format&fit=crop',
         width: 1200,
         height: 630,
-        alt: 'Kabe Manzaralı VIP Butik Umre Deneyimi',
+        alt: 'Bireysel VIP Umre Deneyimi ve Rehberlik',
       },
     ],
     locale: 'tr_TR',
@@ -53,24 +53,56 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    "name": "Hadi Umreye Gidelim",
-    "image": "https://hadiumreyegidelim.com/logo.png",
-    "@id": "https://hadiumreyegidelim.com",
-    "url": "https://hadiumreyegidelim.com",
-    "telephone": "+905404010038",
-    "address": {
-      "@type": "PostalAddress",
-      "addressCountry": "TR"
+  const jsonLd = [
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Hadi Umreye Gidelim",
+      "image": "https://hadiumreyegidelim.com/logo.png",
+      "@id": "https://hadiumreyegidelim.com",
+      "url": "https://hadiumreyegidelim.com",
+      "telephone": "+905404010038",
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "TR"
+      },
+      "description": "2026 Yılı Özel, Lüks, ve Bireysel Aile Umresi Planlama Platformu.",
+      "sameAs": [
+        "https://instagram.com/hadiumreyegidelim",
+        "https://youtube.com/@hadiumreyegidelim"
+      ]
     },
-    "description": "2026 Yılı Özel, Lüks, ve Bireysel Aile Umresi Planlama Platformu. Size özel tasarım VIP turlarla maneviyat dolu bir seyahat organizatörü.",
-    "sameAs": [
-      "https://instagram.com/hadiumreyegidelim",
-      "https://youtube.com/@hadiumreyegidelim"
-    ]
-  };
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Bireysel umre nasıl yapılır?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Bireysel umre, kafilelere bağlı kalmadan kendi otel ve uçuş tarihlerinizi seçtiğiniz konforlu bir ibadet yöntemidir. Isı haritamızdan yeşil fırsat günlerini seçerek vize, transfer ve lüks konaklamanızı anında organize edebilir, tasarruf edebilirsiniz."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Bireysel umre vizesi nasıl alınır?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Bireysel umre vizeleri tamamen yasal olarak 24 saat içinde Nusuk sistemiyle tarafımızca alınmaktadır. Otel ve uçak kombinasyonunuz kesinleştikten sonra bürokrasiye takılmadan 1 yıllık çok girişli turistik veya Suudi Arabistan e-vizeniz temin edilir."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Diyanet turları olmadan kendi imkanlarıyla umre yapılabilir mi?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Evet. Suudi Arabistan'ın son esnek kuralları sayesinde, yüksek komisyon alan tur şirketlerine mahkum kalmadan diyanetsiz bireysel umre yapmak son derece kolay ve yasaldır."
+          }
+        }
+      ]
+    }
+  ];
 
   return (
     <html lang="tr" className={`${inter.variable} ${notoSerif.variable}`}>

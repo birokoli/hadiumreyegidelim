@@ -151,25 +151,54 @@ export default function TurkishDatePicker({ label, value, onChange, minDate, isS
               const dd = String(d.getDate()).padStart(2, "0");
               const todayStr = `${yyyy}-${mm}-${dd}`;
               
-              const isSelected = todayStr === value;
-              const isDisabled = Boolean(minDate && todayStr < minDate);
+              const isHajjPeriod = yyyy === 2026 && ((d.getMonth() === 3 && d.getDate() >= 20) || d.getMonth() === 4);
+              const isDisabled = Boolean(minDate && todayStr < minDate) || isHajjPeriod;
+              const isSelected = todayStr === value && !isHajjPeriod;
+              const isOffseason = (d.getMonth() === 8 || d.getMonth() === 9) && d.getFullYear() === 2026 && !isHajjPeriod;
 
               return (
                 <button
                   key={idx}
                   disabled={isDisabled}
                   onClick={(e) => handleSelectDate(day, e)}
-                  className={`h-10 w-10 mx-auto rounded-full text-sm font-bold transition-all flex items-center justify-center
-                    ${isDisabled ? 'opacity-30 cursor-not-allowed text-outline' : 'cursor-pointer'}
+                  title={isHajjPeriod ? "⛔ Hac Mevsimi Kapalı (20 Nis - 31 May)" : (isOffseason && !isDisabled ? "Kurban Sonrası Ucuz Bilet (Offseason Fırsatı)" : "")}
+                  className={`h-10 w-10 mx-auto rounded-full text-[13px] font-bold transition-all flex items-center justify-center relative
+                    ${isHajjPeriod ? 'bg-error/5 text-error/50 line-through cursor-not-allowed border border-error/10' : (isDisabled ? 'opacity-30 cursor-not-allowed text-outline' : 'cursor-pointer')}
                     ${isSelected 
-                      ? (isSecondary ? 'bg-secondary text-white shadow-md scale-110' : 'bg-primary text-white shadow-md scale-110') 
-                      : (!isDisabled ? 'hover:bg-surface-variant hover:scale-110 text-on-surface' : '')}
+                      ? (isSecondary ? 'bg-secondary text-white shadow-md scale-110 z-10' : 'bg-primary text-white shadow-md scale-110 z-10') 
+                      : (!isDisabled ? (isOffseason ? 'bg-[#e0f5eb] text-primary border border-primary/20 hover:bg-primary/20 hover:scale-110 z-0' : 'hover:bg-surface-variant hover:scale-110 text-on-surface') : '')}
                   `}
                 >
                   {day}
+                  {isOffseason && !isSelected && !isDisabled && (
+                    <span className="absolute bottom-1 w-1 h-1 rounded-full bg-[#11A851] opacity-60"></span>
+                  )}
                 </button>
               );
             })}
+          </div>
+          
+          <div className="mt-5 pt-4 border-t border-outline-variant/10 flex flex-col gap-3 items-start bg-surface-container-lowest -mx-5 -mb-5 px-5 py-4 rounded-b-3xl">
+             <div className="flex gap-3 items-center">
+               <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#e0f5eb] border border-primary/20 flex items-center justify-center relative">
+                 <span className="material-symbols-outlined text-primary text-[14px]">local_fire_department</span>
+                 <span className="absolute bottom-1.5 w-1 h-1 rounded-full bg-[#11A851]"></span>
+               </div>
+               <p className="text-[10px] text-on-surface-variant leading-relaxed">
+                 <strong className="text-primary tracking-wide text-[11px] block mb-0.5">Sezon Sonu Fiyat Fırsatı</strong>
+                 Yeşille işaretli tarihler <strong>(Eylül-Ekim 2026)</strong> en avantajlı yoğunluk düşüşünü gösterir.
+               </p>
+             </div>
+             
+             <div className="flex gap-3 items-center w-full bg-error/5 rounded-xl p-3 border border-error/10">
+               <div className="flex-shrink-0 w-7 h-7 rounded-full bg-error/10 flex items-center justify-center">
+                 <span className="material-symbols-outlined text-error text-[14px]" style={{ fontVariationSettings: "'FILL' 1" }}>gpp_bad</span>
+               </div>
+               <p className="text-[9px] text-error/80 leading-snug">
+                 <strong className="block text-error text-[10px] mb-0.5">20 Nisan - 31 Mayıs 2026 Onaylanamaz</strong>
+                 Bu tarihler arası Hac mevsimine denk geldiği için genel randevuya kapalıdır.
+               </p>
+             </div>
           </div>
         </div>
       )}

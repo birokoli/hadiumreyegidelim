@@ -1,11 +1,14 @@
 import Link from "next/link";
 import Image from "next/image";
 import React from "react";
+import SeoCitiesFooter from "./SeoCitiesFooter";
 
 export default function Footer({ logoUrl }: { logoUrl?: string }) {
   return (
-    <footer className="bg-surface-container-low w-full py-16 px-8 border-t border-slate-200 mt-20">
-      <div className="max-w-screen-2xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center space-y-12 md:space-y-0">
+    <>
+      <SeoCitiesFooter />
+      <footer className="bg-surface-container-low w-full py-16 px-8 border-t border-slate-200">
+        <div className="max-w-screen-2xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center space-y-12 md:space-y-0">
         <div>
           <div className="mb-4">
             <Image src={logoUrl || "/logo.png"} alt="Hadi Umreye" width={240} height={80} className="h-16 w-auto object-contain" />
@@ -42,5 +45,6 @@ export default function Footer({ logoUrl }: { logoUrl?: string }) {
         </div>
       </div>
     </footer>
+    </>
   );
 }

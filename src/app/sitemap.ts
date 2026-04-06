@@ -1,5 +1,6 @@
 import { MetadataRoute } from 'next';
 import { prisma } from '@/lib/prisma';
+import { turkeyCities } from '@/lib/turkey-cities';
 
 // 4. Otomatik Sitemap
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -71,5 +72,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     ...categoryUrls,
     ...blogUrls,
+    ...turkeyCities.map((city) => ({
+      url: `${baseUrl}/${city.slug}-cikisli-bireysel-umre`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.85,
+    })),
   ];
 }

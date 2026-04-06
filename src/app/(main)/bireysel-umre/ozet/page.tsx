@@ -87,7 +87,11 @@ export default function PlannerSummaryPage() {
       
       setTimeout(() => URL.revokeObjectURL(objectUrl), 100);
       
-      const text = encodeURIComponent("Merhaba, web siteniz üzerinden kendi umre planımı tasarladım. İndirdiğim plan özetini iletiyorum, detaylar için sizinle görüşmek isterim.");
+      let depContext = "";
+      if (flight && flight.code) {
+         depContext = `(${flight.code} kalkışlı) `;
+      }
+      const text = encodeURIComponent(`Merhaba, sitenizden kendi ${depContext}özel umre planımı tasarladım. Toplam ${pax} kişi için hesaplanan ${getTotalUSD()} USD'lik (Proforma) detaylı JPEG özetini iletiyorum. Güncel net fiyatınızı alabilir miyim?`);
       window.location.href = `https://wa.me/${whatsappNumber}?text=${text}`;
     } catch (error) {
       console.error("Görsel oluşturulamadı:", error);

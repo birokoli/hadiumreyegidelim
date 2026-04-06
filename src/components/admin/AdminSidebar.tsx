@@ -10,6 +10,7 @@ export default function AdminSidebar({ logoUrl }: { logoUrl?: string }) {
 
   const links = [
     { href: "/admin/orders", icon: "receipt_long", label: "Siparişler" },
+    { href: "/admin/contact", icon: "call", label: "İletişim Talepleri" },
     { href: "/admin/packages", icon: "inventory_2", label: "Paketler" },
     { href: "/admin/services", icon: "mosque", label: "Ek Hizmetler" },
     { href: "/admin/guides", icon: "person_pin", label: "Rehberler" },

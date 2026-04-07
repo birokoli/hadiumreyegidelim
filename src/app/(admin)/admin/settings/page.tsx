@@ -149,7 +149,7 @@ export default function SettingsPage() {
                 <h3 className="text-2xl font-serif text-primary">Kurumsal Kimlik (Renkler & Logo)</h3>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div>
                   <label className="block text-xs font-bold text-outline uppercase tracking-wider mb-2">Ana Marka Rengi (Primary)</label>
                   <div className="flex items-center gap-3">
@@ -185,28 +185,28 @@ export default function SettingsPage() {
                     />
                   </div>
                 </div>
+              </div>
 
-                <div>
-                  <label className="block text-xs font-bold text-outline uppercase tracking-wider mb-2">Site Logosu (URL veya Yükle)</label>
-                  <div className="flex items-center gap-3">
-                    <label className={`flex-shrink-0 cursor-pointer px-4 py-3 bg-secondary text-white font-bold rounded-xl text-sm uppercase tracking-wider shadow-sm hover:shadow-md transition-all flex items-center justify-center min-w-[140px] ${uploadingLogo ? 'opacity-70 pointer-events-none' : ''}`}>
-                      {uploadingLogo ? (
-                        <><span className="material-symbols-outlined animate-spin mr-2 text-[18px]">sync</span> Yükleniyor...</>
-                      ) : (
-                        <><span className="material-symbols-outlined mr-2 text-[18px]">upload</span> Logo Yükle</>
-                      )}
-                      <input type="file" accept="image/png, image/jpeg, image/webp" className="hidden" onChange={handleLogoUpload} disabled={uploadingLogo} />
-                    </label>
-                    <input
-                      type="text"
-                      value={settings.SITE_LOGO}
-                      onChange={(e) => handleChange('SITE_LOGO', e.target.value)}
-                      placeholder="Örn: /logo.png veya https://..."
-                      className="flex-1 bg-surface-container-low border border-outline-variant/20 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 outline-none transition-all font-medium text-primary"
-                    />
-                  </div>
-                  <p className="text-[10px] text-outline mt-1.5 ml-1">İsterseniz doğrudan bilgisayarınızdan PNG/JPEG yükleyebilir, isterseniz hazır görsel URL'si yapıştırabilirsiniz.</p>
+              <div>
+                <label className="block text-xs font-bold text-outline uppercase tracking-wider mb-2">Site Logosu (URL veya Yükle)</label>
+                <div className="flex items-center gap-3">
+                  <label className={`flex-shrink-0 cursor-pointer px-4 py-3 bg-secondary text-white font-bold rounded-xl text-sm uppercase tracking-wider shadow-sm hover:shadow-md transition-all flex items-center justify-center min-w-[140px] ${uploadingLogo ? 'opacity-70 pointer-events-none' : ''}`}>
+                    {uploadingLogo ? (
+                      <><span className="material-symbols-outlined animate-spin mr-2 text-[18px]">sync</span> Yükleniyor...</>
+                    ) : (
+                      <><span className="material-symbols-outlined mr-2 text-[18px]">upload</span> Logo Yükle</>
+                    )}
+                    <input type="file" accept="image/png, image/jpeg, image/webp" className="hidden" onChange={handleLogoUpload} disabled={uploadingLogo} />
+                  </label>
+                  <input
+                    type="text"
+                    value={settings.SITE_LOGO}
+                    onChange={(e) => handleChange('SITE_LOGO', e.target.value)}
+                    placeholder="Örn: /logo.png veya https://..."
+                    className="flex-1 min-w-0 bg-surface-container-low border border-outline-variant/20 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 outline-none transition-all font-medium text-primary"
+                  />
                 </div>
+                <p className="text-[10px] text-outline mt-1.5 ml-1">İsterseniz doğrudan bilgisayarınızdan PNG/JPEG yükleyebilir, isterseniz hazır görsel URL'si yapıştırabilirsiniz.</p>
               </div>
             </div>
 

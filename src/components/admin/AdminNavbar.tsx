@@ -6,7 +6,9 @@ import Link from 'next/link';
 export default function AdminNavbar() {
   const [data, setData] = useState<any>({ unreadLeads: [], pendingOrders: [] });
   const [showDropdown, setShowDropdown] = useState(false);
+  const [showQuickActions, setShowQuickActions] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const quickActionsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     fetch('/api/admin/notifications')
@@ -21,6 +23,9 @@ export default function AdminNavbar() {
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setShowDropdown(false);
+      }
+      if (quickActionsRef.current && !quickActionsRef.current.contains(event.target as Node)) {
+        setShowQuickActions(false);
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
@@ -96,9 +101,42 @@ export default function AdminNavbar() {
             </div>
           )}
 
-          <a href="mailto:admin@hadiumreyegidelim.com" className="text-slate-500 hover:text-[#236B40] transition-colors ml-2" title="Sistem Destek Talebi">
-            <span className="material-symbols-outlined">help_outline</span>
-          </a>
+          <div className="relative" ref={quickActionsRef}>
+            <button 
+              className={`text-slate-500 transition-colors ml-4 flex items-center justify-center w-8 h-8 rounded-full border border-outline-variant/30 ${showQuickActions ? 'bg-primary text-white border-primary' : 'hover:bg-surface-container hover:text-primary'}`}
+              onClick={() => setShowQuickActions(!showQuickActions)}
+              title="Hızlı Aksiyonlar"
+            >
+              <span className="material-symbols-outlined text-lg">add</span>
+            </button>
+
+            {showQuickActions && (
+              <div className="absolute top-12 right-0 w-56 bg-white rounded-2xl shadow-xl border border-outline-variant/10 overflow-hidden flex flex-col z-50">
+                <div className="p-3 bg-surface-container-low border-b border-outline-variant/10">
+                  <h3 className="text-xs font-bold text-primary px-2">Hızlı Kısayollar</h3>
+                </div>
+                <div className="p-2 flex flex-col gap-1">
+                  <Link href="/admin/content" onClick={() => setShowQuickActions(false)} className="flex items-center gap-2 p-2 hover:bg-slate-50 rounded-lg text-sm font-medium transition-colors">
+                    <span className="material-symbols-outlined text-[18px] text-tertiary">edit_document</span>
+                    Yeni Blog Yaz
+                  </Link>
+                  <Link href="/admin/packages" onClick={() => setShowQuickActions(false)} className="flex items-center gap-2 p-2 hover:bg-slate-50 rounded-lg text-sm font-medium transition-colors">
+                    <span className="material-symbols-outlined text-[18px] text-secondary">inventory_2</span>
+                    Yeni Paket Oluştur
+                  </Link>
+                  <Link href="/admin/media" onClick={() => setShowQuickActions(false)} className="flex items-center gap-2 p-2 hover:bg-slate-50 rounded-lg text-sm font-medium transition-colors">
+                    <span className="material-symbols-outlined text-[18px] text-[#25D366]">add_photo_alternate</span>
+                    Fotoğraf Yükle
+                  </Link>
+                  <div className="h-px bg-outline-variant/10 my-1"></div>
+                  <Link href="/" target="_blank" onClick={() => setShowQuickActions(false)} className="flex items-center gap-2 p-2 hover:bg-slate-50 rounded-lg text-sm font-medium transition-colors">
+                    <span className="material-symbols-outlined text-[18px] text-primary">visibility</span>
+                    Siteyi Önizle
+                  </Link>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
         <div className="h-10 w-px bg-outline-variant/20"></div>
         <div className="flex items-center gap-3">

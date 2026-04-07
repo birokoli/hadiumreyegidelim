@@ -25,6 +25,8 @@ export default async function MainLayout({
 
   let logoUrl = "/logo.png";
 
+  let navbarCtaText = "Niyet Et";
+
   settingsArray.forEach(setting => {
     if (setting.key === 'navbar_links' && setting.value) {
       try {
@@ -32,12 +34,14 @@ export default async function MainLayout({
       } catch(e) {}
     } else if (setting.key === 'SITE_LOGO' && setting.value) {
       logoUrl = setting.value;
+    } else if (setting.key === 'NAVBAR_CTA' && setting.value) {
+      navbarCtaText = setting.value;
     }
   });
 
   return (
     <>
-      <Navbar links={navLinks} logoUrl={logoUrl} />
+      <Navbar links={navLinks} logoUrl={logoUrl} ctaText={navbarCtaText} />
       {/* We add a wrapper to ensure content pushes footer down if needed, though pages handle their own height */}
       <div className="flex flex-col min-h-screen">
         <div className="flex-1 flex flex-col">{children}</div>

@@ -4,7 +4,7 @@ import Image from "next/image";
 import React from "react";
 import { usePathname } from "next/navigation";
 
-export default function Navbar({ links, logoUrl }: { links?: {label: string, url: string}[], logoUrl?: string }) {
+export default function Navbar({ links, logoUrl, ctaText }: { links?: {label: string, url: string}[], logoUrl?: string, ctaText?: string }) {
   const pathname = usePathname();
 
   const getLinkClass = (path: string) => {
@@ -41,7 +41,7 @@ export default function Navbar({ links, logoUrl }: { links?: {label: string, url
             </span>
           </Link>
           <Link href="/bireysel-umre" className="bg-primary text-on-primary px-8 py-2.5 rounded-md font-medium text-sm tracking-tight hover:bg-primary-container active:scale-95 transition-all shadow-sm">
-            Niyet Et
+            {ctaText || "Niyet Et"}
           </Link>
         </div>
       </div>

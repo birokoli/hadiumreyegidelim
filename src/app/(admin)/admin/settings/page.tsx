@@ -14,6 +14,8 @@ export default function SettingsPage() {
     SITE_LOGO: "/logo.png",
     BUTTON_RADIUS: "1rem",
     HOME_CTA: "NİYET ET VE PLANLA",
+    NAVBAR_CTA: "Niyet Et",
+    WHATSAPP_CTA: "WHATSAPP DANIŞMANLIK",
     CONTACT_TITLE: "İletişim & Rezervasyon",
     CONTACT_DESC: "Manevi yolculuğunuza ilk adımı birlikte atıyoruz. Formu doldurun, umre danışmanlarımız müsaitlik ve detaylar için en kısa sürede sizi arasın.",
     CONTACT_EMAIL: "info@hadiumreye.com",
@@ -171,7 +173,7 @@ export default function SettingsPage() {
                 <h3 className="text-2xl font-serif text-primary">Arayüz Butonları (UI)</h3>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 gap-6">
                 <div>
                   <label className="block text-xs font-bold text-outline uppercase tracking-wider mb-2">Genel Buton Şekli (Kavis)</label>
                   <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
@@ -209,15 +211,37 @@ export default function SettingsPage() {
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-xs font-bold text-outline uppercase tracking-wider mb-2">Anasayfa Ana Buton Yazısı</label>
-                  <input
-                    type="text"
-                    value={settings.HOME_CTA}
-                    onChange={(e) => handleChange('HOME_CTA', e.target.value)}
-                    className="w-full bg-surface-container-low border border-outline-variant/20 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 outline-none transition-all font-bold text-primary uppercase"
-                  />
-                  <p className="text-[10px] text-outline mt-1.5 ml-1">Örn: NİYET ET VE PLANLA</p>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 border-t border-outline-variant/20">
+                  <div>
+                    <label className="block text-xs font-bold text-outline uppercase tracking-wider mb-2">Anasayfa Ana Buton Yazısı</label>
+                    <input
+                      type="text"
+                      value={settings.HOME_CTA}
+                      onChange={(e) => handleChange('HOME_CTA', e.target.value)}
+                      className="w-full bg-surface-container-low border border-outline-variant/20 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 outline-none transition-all font-bold text-primary uppercase text-sm"
+                    />
+                    <p className="text-[10px] text-outline mt-1.5 ml-1">Örn: NİYET ET VE PLANLA</p>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-outline uppercase tracking-wider mb-2">WhatsApp Buton Yazısı</label>
+                    <input
+                      type="text"
+                      value={settings.WHATSAPP_CTA}
+                      onChange={(e) => handleChange('WHATSAPP_CTA', e.target.value)}
+                      className="w-full bg-[#25D366]/10 border border-[#25D366]/30 rounded-xl px-4 py-3 focus:ring-2 focus:ring-[#25D366]/50 outline-none transition-all font-bold text-[#128C7E] uppercase text-sm"
+                    />
+                    <p className="text-[10px] text-outline mt-1.5 ml-1">WhatsApp Danışmanlık vs.</p>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-outline uppercase tracking-wider mb-2">Üst Menü (Navbar) Butonu</label>
+                    <input
+                      type="text"
+                      value={settings.NAVBAR_CTA}
+                      onChange={(e) => handleChange('NAVBAR_CTA', e.target.value)}
+                      className="w-full bg-surface-container-low border border-outline-variant/20 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 outline-none transition-all font-bold text-primary text-sm"
+                    />
+                    <p className="text-[10px] text-outline mt-1.5 ml-1">Tüm menülerde görünen "Niyet Et" yazısı.</p>
+                  </div>
                 </div>
               </div>
             </div>

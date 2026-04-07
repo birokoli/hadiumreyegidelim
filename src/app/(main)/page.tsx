@@ -38,6 +38,9 @@ export default async function Home() {
   const whatsappNumber = settings.WHATSAPP_NUMBER ? settings.WHATSAPP_NUMBER.replace('+', '') : "905404010038";
   const whatsappMessage = settings.WHATSAPP_MESSAGE ? encodeURIComponent(settings.WHATSAPP_MESSAGE) : "Merhaba, ana sayfanızdan ulaşıyorum, hizmetleriniz hakkında bilgi almak istiyorum.";
 
+  const homeCta = settings.HOME_CTA || "NİYET ET VE PLANLA";
+  const whatsappCta = settings.WHATSAPP_CTA || "WHATSAPP DANIŞMANLIK";
+
   return (
     <>
       <section className="relative min-h-[90vh] md:min-h-screen flex items-center justify-center overflow-hidden pt-20">
@@ -68,13 +71,13 @@ export default async function Home() {
           </p>
           <div className="flex flex-col sm:flex-row gap-6 md:gap-8 justify-center items-center">
             <Link href="/bireysel-umre" className="bg-primary text-white px-10 py-5 rounded-2xl font-bold tracking-widest text-sm uppercase shadow-2xl hover:bg-white hover:text-primary active:scale-95 transition-all">
-              NİYET ET VE PLANLA
+              {homeCta}
             </Link>
             <a href={`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-3 text-white font-bold border border-transparent bg-[#25D366] px-8 py-5 rounded-2xl hover:bg-[#128C7E] hover:text-white transition-all uppercase tracking-widest text-xs shadow-xl">
               <span className="material-symbols-outlined text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>
                 chat
               </span>
-              WHATSAPP DANIŞMANLIK
+              {whatsappCta}
             </a>
           </div>
         </div>

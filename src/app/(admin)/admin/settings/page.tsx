@@ -5,8 +5,8 @@ import React, { useState, useEffect } from "react";
 export default function SettingsPage() {
   const [settings, setSettings] = useState({
     HERO_TAGLINE: "BOUTIQUE UMRE EXPERIENCE",
-    HERO_TITLE: "Bireysel Umre & Özel Aile Paketleri",
-    HERO_DESC: "Kendi bütçenize, tarihlerinize ve aile yapınıza %100 uygun bireysel VİP umre paketlerini Suudi e-vize ayrıcalığıyla anında oluşturun.",
+    HERO_TITLE: "Ruhunuzun Ritmini Kalabalıklara Teslim Etmeyin.",
+    HERO_DESC: "Ailenize ve Size Özel Butik Umre Deneyimi.",
     WHATSAPP_NUMBER: "905404010038",
     WHATSAPP_MESSAGE: "Selamun Aleykum, Müsait misiniz? Umre paketleriniz için fiyat bilgisi alabilir miyim?",
     BRAND_PRIMARY: "#003781",

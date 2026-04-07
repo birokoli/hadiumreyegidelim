@@ -16,9 +16,9 @@ export default function Navbar({ links, logoUrl, ctaText }: { links?: {label: st
 
   return (
     <nav className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-xl shadow-[0px_0px_32px_0px_rgba(0,0,0,0.04)]">
-      <div className="flex justify-between items-center px-8 py-3 max-w-screen-2xl mx-auto">
-        <Link href="/" className="hover:opacity-80 transition-opacity flex items-center">
-          <Image src={logoUrl || "/logo.png"} alt="Hadi Umreye" width={256} height={64} className="h-14 md:h-16 w-auto object-contain" priority />
+      <div className="flex justify-between items-center px-8 py-4 max-w-screen-2xl mx-auto">
+        <Link href="/" className="hover:opacity-80 transition-opacity flex items-center shrink-0">
+          <Image src={logoUrl || "/logo.png"} alt="Hadi Umreye" width={280} height={96} className="h-[80px] md:h-[96px] w-auto object-contain -my-6" priority />
         </Link>
         <div className="hidden md:flex items-center space-x-12 font-headline font-medium text-sm tracking-wide">
           {(links || [

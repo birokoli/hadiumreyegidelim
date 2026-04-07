@@ -216,16 +216,39 @@ export default function SettingsPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
               <label className="block text-xs font-bold text-outline uppercase tracking-wider mb-2">Genel Buton Şekli (Kavis)</label>
-              <select
-                value={settings.BUTTON_RADIUS}
-                onChange={(e) => handleChange('BUTTON_RADIUS', e.target.value)}
-                className="w-full bg-surface-container-low border border-outline-variant/20 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 outline-none transition-all font-medium text-primary"
-              >
-                <option value="0px">Köşeli ve Keskin (Kurumsal)</option>
-                <option value="0.5rem">Hafif Yuvarlak (Modern)</option>
-                <option value="1rem">Yuvarlak (Standart)</option>
-                <option value="9999px">Tam Oval (Yumuşak Kapsül)</option>
-              </select>
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+                <button 
+                  onClick={() => handleChange('BUTTON_RADIUS', '0px')}
+                  className={`w-full py-3 px-2 flex flex-col items-center justify-center gap-2 border-2 transition-all ${settings.BUTTON_RADIUS === '0px' ? 'border-primary bg-primary/5' : 'border-outline-variant/20 hover:border-outline-variant/60 bg-surface-container-low'} rounded-xl`}
+                >
+                  <div className="w-16 h-8 bg-primary text-white text-[10px] flex items-center justify-center font-bold" style={{ borderRadius: '0px' }}>Buton</div>
+                  <span className="text-[10px] text-outline font-bold uppercase tracking-widest mt-1">Keskin</span>
+                </button>
+
+                <button 
+                  onClick={() => handleChange('BUTTON_RADIUS', '0.5rem')}
+                  className={`w-full py-3 px-2 flex flex-col items-center justify-center gap-2 border-2 transition-all ${settings.BUTTON_RADIUS === '0.5rem' ? 'border-primary bg-primary/5' : 'border-outline-variant/20 hover:border-outline-variant/60 bg-surface-container-low'} rounded-xl`}
+                >
+                  <div className="w-16 h-8 bg-primary text-white text-[10px] flex items-center justify-center font-bold" style={{ borderRadius: '0.5rem' }}>Buton</div>
+                  <span className="text-[10px] text-outline font-bold uppercase tracking-widest mt-1">Hafif Kavis</span>
+                </button>
+
+                <button 
+                  onClick={() => handleChange('BUTTON_RADIUS', '1rem')}
+                  className={`w-full py-3 px-2 flex flex-col items-center justify-center gap-2 border-2 transition-all ${settings.BUTTON_RADIUS === '1rem' ? 'border-primary bg-primary/5' : 'border-outline-variant/20 hover:border-outline-variant/60 bg-surface-container-low'} rounded-xl`}
+                >
+                  <div className="w-16 h-8 bg-primary text-white text-[10px] flex items-center justify-center font-bold" style={{ borderRadius: '1rem' }}>Buton</div>
+                  <span className="text-[10px] text-outline font-bold uppercase tracking-widest mt-1">Standart</span>
+                </button>
+
+                <button 
+                  onClick={() => handleChange('BUTTON_RADIUS', '9999px')}
+                  className={`w-full py-3 px-2 flex flex-col items-center justify-center gap-2 border-2 transition-all ${settings.BUTTON_RADIUS === '9999px' ? 'border-primary bg-primary/5' : 'border-outline-variant/20 hover:border-outline-variant/60 bg-surface-container-low'} rounded-xl`}
+                >
+                  <div className="w-16 h-8 bg-primary text-white text-[10px] flex items-center justify-center font-bold" style={{ borderRadius: '9999px' }}>Buton</div>
+                  <span className="text-[10px] text-outline font-bold uppercase tracking-widest mt-1">Oval (Hap)</span>
+                </button>
+              </div>
             </div>
 
             <div>

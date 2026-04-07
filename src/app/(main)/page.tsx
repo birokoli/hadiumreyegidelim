@@ -30,9 +30,13 @@ export default async function Home() {
   const settings = settingsArray.reduce((acc, s) => { acc[s.key] = s.value; return acc; }, {} as Record<string, string>);
 
   const home_banner_image = settings.home_banner_image || "https://lh3.googleusercontent.com/aida-public/AB6AXuCeWn_hW89LbHLjNkEyCjXnO56IpdLz_zRwB9BvtIjHV_CSU9n_ADpxoS-K9Y4UqzQtVdJ9tM238gIiQ3fIEgF50wPqba1ofx6HeAab2E8EYwvLnq_w13P3UCdpuZloJ2P_FBbqiM4ZrKqELKyG3sgBrj2SCUi6yLGc39nIApI_ip6uasqiKaUGRcpE7WnqmMcqOZVc-CUXOaphNXOHK18KEZCYKehmVy4cZRQP0tk7_PHK5iJh4cVmqsN9DeHNleLOmi97WPx_9Gw";
-  const home_banner_title = settings.home_banner_title || "Ruhunuzun Ritmini Kalabalıklara Teslim Etmeyin.";
-  const home_banner_subtitle = settings.home_banner_subtitle || "Ailenize ve Size Özel Butik Umre Deneyimi.";
-  const whatsappNumber = settings.whatsappNumber ? settings.whatsappNumber.replace('+', '') : "905404010038";
+  
+  const home_banner_title = settings.HERO_TITLE || "Ruhunuzun Ritmini Kalabalıklara Teslim Etmeyin.";
+  const home_banner_subtitle = settings.HERO_DESC || "Ailenize ve Size Özel Butik Umre Deneyimi.";
+  const home_banner_tagline = settings.HERO_TAGLINE || "BOUTİQUE UMRE EXPERİENCE";
+  
+  const whatsappNumber = settings.WHATSAPP_NUMBER ? settings.WHATSAPP_NUMBER.replace('+', '') : "905404010038";
+  const whatsappMessage = settings.WHATSAPP_MESSAGE ? encodeURIComponent(settings.WHATSAPP_MESSAGE) : "Merhaba, ana sayfanızdan ulaşıyorum, hizmetleriniz hakkında bilgi almak istiyorum.";
 
   return (
     <>
@@ -53,7 +57,7 @@ export default async function Home() {
 
         <div className="relative z-10 max-w-screen-xl mx-auto px-8 text-center mt-12 md:mt-0">
           <div className="inline-block px-5 py-2 mb-8 rounded-full bg-white/10 border border-white/20 text-white font-label text-[10px] tracking-[0.3em] uppercase font-bold backdrop-blur-md shadow-xl">
-            Boutique Umre Experience
+            {home_banner_tagline}
           </div>
           <h1 className="font-headline text-5xl md:text-7xl text-white leading-[1.15] mb-8 max-w-4xl mx-auto font-bold tracking-tight drop-shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
             <span className="sr-only">Umre Turları ve Fiyatları 2026 </span>
@@ -66,7 +70,7 @@ export default async function Home() {
             <Link href="/bireysel-umre" className="bg-primary text-white px-10 py-5 rounded-2xl font-bold tracking-widest text-sm uppercase shadow-2xl hover:bg-white hover:text-primary active:scale-95 transition-all">
               NİYET ET VE PLANLA
             </Link>
-            <a href={`https://wa.me/${whatsappNumber}?text=Merhaba,%20ana%20sayfanızdan%20ulaşıyorum,%20hizmetleriniz%20hakkında%20bilgi%20almak%20istiyorum.`} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-3 text-white font-bold border border-transparent bg-[#25D366] px-8 py-5 rounded-2xl hover:bg-[#128C7E] hover:text-white transition-all uppercase tracking-widest text-xs shadow-xl">
+            <a href={`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-3 text-white font-bold border border-transparent bg-[#25D366] px-8 py-5 rounded-2xl hover:bg-[#128C7E] hover:text-white transition-all uppercase tracking-widest text-xs shadow-xl">
               <span className="material-symbols-outlined text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>
                 chat
               </span>

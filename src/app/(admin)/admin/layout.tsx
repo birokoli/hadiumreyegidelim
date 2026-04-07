@@ -20,12 +20,12 @@ export default async function AdminLayout({
 }) {
   let logoUrl = "/logo.png";
   try {
-    const setting = await prisma.setting.findUnique({ where: { key: 'logo_url' } });
+    const setting = await prisma.setting.findUnique({ where: { key: 'SITE_LOGO' } });
     if (setting?.value) {
       logoUrl = setting.value;
     }
   } catch (e) {
-    console.error("Could not load logo_url", e);
+    console.error("Could not load SITE_LOGO", e);
   }
   return (
     <AdminLayoutWrapper 

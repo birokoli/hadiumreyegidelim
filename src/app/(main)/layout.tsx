@@ -11,7 +11,7 @@ export default async function MainLayout({
 }) {
   const settingsArray = await prisma.setting.findMany({
     where: { 
-      key: { in: ['navbar_links', 'logo_url'] } 
+      key: { in: ['navbar_links', 'SITE_LOGO'] } 
     }
   });
   
@@ -30,7 +30,7 @@ export default async function MainLayout({
       try {
         navLinks = JSON.parse(setting.value);
       } catch(e) {}
-    } else if (setting.key === 'logo_url' && setting.value) {
+    } else if (setting.key === 'SITE_LOGO' && setting.value) {
       logoUrl = setting.value;
     }
   });

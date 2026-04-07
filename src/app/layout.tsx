@@ -47,21 +47,34 @@ export const metadata: Metadata = {
 
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
+import { prisma } from "@/lib/prisma";
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  let settings: Record<string, string> = {};
+  try {
+    const settingsArray = await prisma.setting.findMany();
+    settings = settingsArray.reduce((acc, s) => { acc[s.key] = s.value; return acc; }, {} as Record<string, string>);
+  } catch (e) {
+    console.error("Layout Settings Fetch error:", e);
+  }
+
+  const colorPrimary = settings.BRAND_PRIMARY || "#003781";
+  const colorSecondary = settings.BRAND_SECONDARY || "#236B40";
+  const btnRadius = settings.BUTTON_RADIUS || "1rem";
+
   const jsonLd = [
     {
       "@context": "https://schema.org",
       "@type": "Organization",
       "name": "Hadi Umreye Gidelim",
-      "image": "https://hadiumreyegidelim.com/logo.png",
+      "image": `https://hadiumreyegidelim.com${settings.SITE_LOGO || '/logo.png'}`,
       "@id": "https://hadiumreyegidelim.com",
       "url": "https://hadiumreyegidelim.com",
-      "telephone": "+905404010038",
+      "telephone": `+${settings.WHATSAPP_NUMBER || '905404010038'}`,
       "address": {
         "@type": "PostalAddress",
         "addressCountry": "TR"
@@ -116,6 +129,22 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL,GRAD@300,0,0&display=swap" rel="stylesheet" crossOrigin="anonymous" />
       </head>
       <body className="bg-surface text-neutral-900 font-body selection:bg-tertiary-fixed-dim selection:text-on-tertiary-fixed">
+        <style dangerouslySetInnerHTML={{__html: `
+          :root {
+            --color-primary: ${colorPrimary} !important;
+            --color-secondary: ${colorSecondary} !important;
+          }
+          
+          /* Dynamic Button Radius Enforcement */
+          .rounded-xl, .rounded-2xl, .rounded-3xl, .rounded-full, .rounded-md {
+             border-radius: ${btnRadius} !important;
+          }
+          
+          /* Specialized exception for decorative elements */
+          .w-12.h-12.rounded-full, .w-8.h-8.rounded-full, .w-24.h-24.rounded-full {
+             border-radius: 9999px !important;
+          }
+        `}} />
         {children}
         <SpeedInsights />
         <Analytics />

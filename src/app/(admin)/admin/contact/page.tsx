@@ -2,6 +2,7 @@ export const dynamic = 'force-dynamic';
 
 import React from 'react';
 import { prisma } from '@/lib/prisma';
+import DeleteContactButton from './DeleteContactButton';
 
 export default async function ContactLeadsPage() {
   const leads = await prisma.contactRequest.findMany({
@@ -73,7 +74,7 @@ export default async function ContactLeadsPage() {
                       <td className="p-5 text-center">
                          <span className="bg-error/10 text-error text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full">Yeni</span>
                       </td>
-                      <td className="p-5 text-right whitespace-nowrap">
+                      <td className="p-5 text-right whitespace-nowrap flex items-center justify-end gap-2">
                         <a 
                           href={waUrl}
                           target="_blank"
@@ -82,6 +83,7 @@ export default async function ContactLeadsPage() {
                         >
                           WhatsApp <span className="material-symbols-outlined text-[14px]">chat</span>
                         </a>
+                        <DeleteContactButton id={lead.id} />
                       </td>
                     </tr>
                   );

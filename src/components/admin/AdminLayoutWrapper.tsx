@@ -27,7 +27,7 @@ export default function AdminLayoutWrapper({
     <div className="bg-surface text-on-surface min-h-screen font-body selection:bg-tertiary-fixed-dim selection:text-tertiary">
       {sidebar}
       {navbar}
-      <div className="ml-0 lg:ml-72 relative transition-all duration-300">
+      <div className="ml-0 lg:ml-72 pt-20 relative transition-all duration-300">
         {children}
       </div>
     </div>

@@ -4,7 +4,7 @@ import React from "react";
 
 export default function AdminNavbar() {
   return (
-    <header className="fixed top-0 right-0 w-[calc(100%-16rem)] z-40 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl flex justify-between items-center px-8 h-20 shadow-[0_4px_32px_rgba(0,0,0,0.02)] border-b border-outline-variant/10">
+    <header className="fixed top-0 right-0 w-[calc(100%-18rem)] z-40 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl flex justify-between items-center px-8 h-20 shadow-[0_4px_32px_rgba(0,0,0,0.02)] border-b border-outline-variant/10">
       <div className="flex items-center gap-6 flex-1">
         <div className="relative w-full max-w-md">
           <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline text-sm">search</span>

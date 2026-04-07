@@ -103,11 +103,11 @@ export default function AdminNavbar() {
 
           <div className="relative" ref={quickActionsRef}>
             <button 
-              className={`text-slate-500 transition-colors ml-4 flex items-center justify-center w-8 h-8 rounded-full border border-outline-variant/30 ${showQuickActions ? 'bg-primary text-white border-primary' : 'hover:bg-surface-container hover:text-primary'}`}
+              className={`text-slate-500 transition-colors ml-4 mt-1 relative ${showQuickActions ? 'text-[#236B40]' : 'hover:text-[#236B40]'}`}
               onClick={() => setShowQuickActions(!showQuickActions)}
               title="Hızlı Aksiyonlar"
             >
-              <span className="material-symbols-outlined text-lg">add</span>
+              <span className="material-symbols-outlined">add_circle</span>
             </button>
 
             {showQuickActions && (

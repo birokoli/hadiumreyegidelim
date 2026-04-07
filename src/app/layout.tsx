@@ -14,8 +14,8 @@ export const metadata: Metadata = {
   description: "Bireysel umre vizesi nasıl alınır? Diyanete veya turlara bağımlı kalmadan, 2026 Özel Bireysel Umre ve VIP Aile umresi fiyatları hakkında şeffaf rehber.",
   keywords: ["bireysel umre", "bireysel umre vizesi", "bireysel umre nasıl yapılır", "bireysel umre vizesi nasıl alınır", "diyanetsiz umre", "umre fiyatları 2026", "özel umre", "kendi imkanlarıyla umre", "vip umre"],
   icons: {
-    icon: '/favicon.png?v=2',
-    apple: '/favicon.png?v=2'
+    icon: '/logo.png?v=5',
+    apple: '/logo.png?v=5'
   },
   robots: {
     index: true,

@@ -7,6 +7,14 @@ export default function SettingsPage() {
     HERO_TAGLINE: "BOUTIQUE UMRE EXPERIENCE",
     HERO_TITLE: "Ruhunuzun Ritmini Kalabalıklara Teslim Etmeyin.",
     HERO_DESC: "Ailenize ve Size Özel Butik Umre Deneyimi.",
+    HOME_TOURS_KICKER: "Kişiselleştirilmiş Lüks Turlar",
+    HOME_TOURS_TITLE: "Müsait & VIP Paketlerimiz",
+    HOME_STEPS_KICKER: "Adım Adım Yolculuk",
+    HOME_STEPS_TITLE: "Maneviyat Yolunda Hazırlığınız Nasıl Başlar?",
+    HOME_BLOG_KICKER: "İlham Kaynağı",
+    HOME_BLOG_TITLE: "Manevi Rehberlik Blogu",
+    HOME_FAQ_TITLE: "Bireysel Umre Rehberi: 2026 Vize ve Detaylar",
+    HOME_FAQ_DESC: "Diyanet turlarına veya kafilelere bağlı kalmadan kendi imkanlarıyla bireysel umre nasıl yapılır merak eden misafirlerimiz için en çok sorulan soruları derledik. VIP ve Bireysel Umre paketleri hakkında detaylı bilgiye aşağıdan ulaşabilirsiniz.",
     WHATSAPP_NUMBER: "905404010038",
     WHATSAPP_MESSAGE: "Selamun Aleykum, Müsait misiniz? Umre paketleriniz için fiyat bilgisi alabilir miyim?",
     BRAND_PRIMARY: "#003781",
@@ -291,8 +299,74 @@ export default function SettingsPage() {
               </div>
             </div>
             
-            <div className="opacity-50 p-6 border-2 border-dashed border-outline-variant/30 rounded-2xl text-center">
-              <p className="text-outline font-medium">Bu bölüme eklenecek "Adım Adım Gezi" ve "SSS" ayarları hazırlanıyor.</p>
+            <div className="bg-surface-container-lowest rounded-2xl p-8 border border-outline-variant/10 shadow-sm mt-8">
+              <div className="flex items-center gap-3 mb-6">
+                <span className="material-symbols-outlined text-secondary">tour</span>
+                <h3 className="text-2xl font-serif text-primary">Paketler & Vitrin Bölümü</h3>
+              </div>
+              <div className="space-y-6">
+                <div>
+                  <label className="block text-xs font-bold text-outline uppercase tracking-wider mb-2">Vitrin Üst Yazısı (Kicker)</label>
+                  <input type="text" value={settings.HOME_TOURS_KICKER} onChange={(e) => handleChange('HOME_TOURS_KICKER', e.target.value)} className="w-full bg-surface-container-low border border-outline-variant/20 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 outline-none transition-all font-medium text-primary text-sm" />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-outline uppercase tracking-wider mb-2">Vitrin Ana Başlığı</label>
+                  <input type="text" value={settings.HOME_TOURS_TITLE} onChange={(e) => handleChange('HOME_TOURS_TITLE', e.target.value)} className="w-full bg-surface-container-low border border-outline-variant/20 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 outline-none transition-all font-bold text-lg text-primary" />
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-surface-container-lowest rounded-2xl p-8 border border-outline-variant/10 shadow-sm mt-8">
+              <div className="flex items-center gap-3 mb-6">
+                <span className="material-symbols-outlined text-tertiary">edit_note</span>
+                <h3 className="text-2xl font-serif text-primary">Adım Adım Yolculuk Bölümü</h3>
+              </div>
+              <div className="space-y-6">
+                <div>
+                  <label className="block text-xs font-bold text-outline uppercase tracking-wider mb-2">Bölüm Üst Yazısı (Kicker)</label>
+                  <input type="text" value={settings.HOME_STEPS_KICKER} onChange={(e) => handleChange('HOME_STEPS_KICKER', e.target.value)} className="w-full bg-surface-container-low border border-outline-variant/20 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 outline-none transition-all font-medium text-primary text-sm" />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-outline uppercase tracking-wider mb-2">Bölüm Ana Başlığı</label>
+                  <input type="text" value={settings.HOME_STEPS_TITLE} onChange={(e) => handleChange('HOME_STEPS_TITLE', e.target.value)} className="w-full bg-surface-container-low border border-outline-variant/20 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 outline-none transition-all font-bold text-lg text-primary" />
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+              <div className="bg-surface-container-lowest rounded-2xl p-8 border border-outline-variant/10 shadow-sm">
+                <div className="flex items-center gap-3 mb-6">
+                  <span className="material-symbols-outlined text-primary">menu_book</span>
+                  <h3 className="text-xl font-serif text-primary">Blog Vitrini</h3>
+                </div>
+                <div className="space-y-6">
+                  <div>
+                    <label className="block text-xs font-bold text-outline uppercase tracking-wider mb-2">Blog Üst Yazısı</label>
+                    <input type="text" value={settings.HOME_BLOG_KICKER} onChange={(e) => handleChange('HOME_BLOG_KICKER', e.target.value)} className="w-full bg-surface-container-low border border-outline-variant/20 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 outline-none transition-all font-medium text-primary text-sm" />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-outline uppercase tracking-wider mb-2">Blog Ana Başlığı</label>
+                    <input type="text" value={settings.HOME_BLOG_TITLE} onChange={(e) => handleChange('HOME_BLOG_TITLE', e.target.value)} className="w-full bg-surface-container-low border border-outline-variant/20 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 outline-none transition-all font-bold text-lg text-primary" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-surface-container-lowest rounded-2xl p-8 border border-outline-variant/10 shadow-sm">
+                <div className="flex items-center gap-3 mb-6">
+                  <span className="material-symbols-outlined text-primary">help</span>
+                  <h3 className="text-xl font-serif text-primary">SSS Bölümü (SEO)</h3>
+                </div>
+                <div className="space-y-6">
+                  <div>
+                    <label className="block text-xs font-bold text-outline uppercase tracking-wider mb-2">SSS Ana Başlığı (H2)</label>
+                    <input type="text" value={settings.HOME_FAQ_TITLE} onChange={(e) => handleChange('HOME_FAQ_TITLE', e.target.value)} className="w-full bg-surface-container-low border border-outline-variant/20 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 outline-none transition-all font-bold text-lg text-primary" />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-outline uppercase tracking-wider mb-2">SSS Açıklaması</label>
+                    <textarea rows={3} value={settings.HOME_FAQ_DESC} onChange={(e) => handleChange('HOME_FAQ_DESC', e.target.value)} className="w-full bg-surface-container-low border border-outline-variant/20 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 outline-none transition-all text-sm text-primary" />
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         )}

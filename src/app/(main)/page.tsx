@@ -41,6 +41,15 @@ export default async function Home() {
   const homeCta = settings.HOME_CTA || "NİYET ET VE PLANLA";
   const whatsappCta = settings.WHATSAPP_CTA || "WHATSAPP DANIŞMANLIK";
 
+  const homeToursKicker = settings.HOME_TOURS_KICKER || "Kişiselleştirilmiş Lüks Turlar";
+  const homeToursTitle = settings.HOME_TOURS_TITLE || "Müsait & VIP Paketlerimiz";
+  const homeStepsKicker = settings.HOME_STEPS_KICKER || "Adım Adım Yolculuk";
+  const homeStepsTitle = settings.HOME_STEPS_TITLE || "Maneviyat Yolunda Hazırlığınız Nasıl Başlar?";
+  const homeBlogKicker = settings.HOME_BLOG_KICKER || "İlham Kaynağı";
+  const homeBlogTitle = settings.HOME_BLOG_TITLE || "Manevi Rehberlik Blogu";
+  const homeFaqTitle = settings.HOME_FAQ_TITLE || "Bireysel Umre Rehberi: 2026 Vize ve Detaylar";
+  const homeFaqDesc = settings.HOME_FAQ_DESC || "Diyanet turlarına veya kafilelere bağlı kalmadan kendi imkanlarıyla bireysel umre nasıl yapılır merak eden misafirlerimiz için en çok sorulan soruları derledik. VIP ve Bireysel Umre paketleri hakkında detaylı bilgiye aşağıdan ulaşabilirsiniz.";
+
   return (
     <>
       <section className="relative min-h-[90vh] md:min-h-screen flex items-center justify-center overflow-hidden pt-20">
@@ -146,10 +155,10 @@ export default async function Home() {
           <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
             <div>
               <span className="text-secondary font-bold tracking-widest uppercase text-[10px] block mb-3 border-l-2 border-secondary pl-3">
-                Kişiselleştirilmiş Lüks Turlar
+                {homeToursKicker}
               </span>
               <h2 className="font-headline text-4xl md:text-5xl text-primary font-bold">
-                Müsait & VIP Paketlerimiz
+                {homeToursTitle}
               </h2>
             </div>
             <Link href="/paketler" className="text-secondary font-bold flex items-center gap-2 hover:gap-4 transition-all uppercase tracking-widest text-[10px] bg-secondary/10 px-6 py-3 rounded-xl hover:bg-secondary/20 shadow-sm border border-secondary/10">
@@ -208,10 +217,10 @@ export default async function Home() {
           <div className="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
             <div className="max-w-xl">
               <span className="text-tertiary font-bold tracking-widest uppercase text-sm block mb-4">
-                Adım Adım Yolculuk
+                {homeStepsKicker}
               </span>
               <h2 className="font-headline text-3xl md:text-5xl text-primary font-bold">
-                Maneviyat Yolunda Hazırlığınız Nasıl Başlar?
+                {homeStepsTitle}
               </h2>
             </div>
             <div className="text-on-surface-variant max-w-sm text-lg md:text-xl italic font-headline opacity-80 border-l-4 border-tertiary-fixed-dim pl-4">
@@ -344,10 +353,10 @@ export default async function Home() {
           <div className="flex flex-col md:flex-row items-end justify-between mb-16 gap-6">
             <div>
               <span className="text-secondary font-bold tracking-widest uppercase text-[10px] block mb-3 border-l-2 border-secondary pl-3">
-                İlham Kaynağı
+                {homeBlogKicker}
               </span>
               <h2 className="font-headline text-4xl md:text-5xl text-primary font-bold">
-                Manevi Rehberlik Blogu
+                {homeBlogTitle}
               </h2>
             </div>
             <a href="/blog" className="text-secondary font-bold flex items-center gap-2 hover:gap-4 transition-all uppercase tracking-widest text-[10px] bg-secondary/10 px-6 py-3 rounded-xl hover:bg-secondary/20 shadow-sm">
@@ -403,9 +412,9 @@ export default async function Home() {
       <section className="py-16 bg-surface-container-low border-t border-outline-variant/10">
         <div className="max-w-screen-md mx-auto px-8">
           <div className="text-center mb-12">
-            <h2 className="font-headline text-3xl font-bold text-primary mb-4">Bireysel Umre Rehberi: 2026 Vize ve Detaylar</h2>
+            <h2 className="font-headline text-3xl font-bold text-primary mb-4">{homeFaqTitle}</h2>
             <p className="text-on-surface-variant text-sm leading-relaxed">
-              Diyanet turlarına veya kafilelere bağlı kalmadan kendi imkanlarıyla <strong>bireysel umre nasıl yapılır</strong> merak eden misafirlerimiz için en çok sorulan soruları derledik. VIP ve Bireysel Umre paketleri hakkında detaylı bilgiye aşağıdan ulaşabilirsiniz.
+              {homeFaqDesc}
             </p>
           </div>
 

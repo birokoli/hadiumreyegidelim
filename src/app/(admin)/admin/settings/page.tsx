@@ -32,6 +32,7 @@ export default function SettingsPage() {
   
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [uploadingLogo, setUploadingLogo] = useState(false);
   const [activeTab, setActiveTab] = useState<'branding' | 'home' | 'contact'>('branding');
 
   useEffect(() => {
@@ -45,6 +46,30 @@ export default function SettingsPage() {
       })
       .catch(() => setLoading(false));
   }, []);
+
+
+
+  const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingLogo(true);
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("headingSlug", "site-logo");
+    try {
+      const res = await fetch("/api/upload", { method: "POST", body: formData });
+      const data = await res.json();
+      if (data.success) {
+        setSettings(prev => ({ ...prev, SITE_LOGO: data.url }));
+      } else {
+        alert("Logo yüklenirken hata oluştu: " + data.error);
+      }
+    } catch {
+      alert("Ağ hatası: Logo yüklenemedi.");
+    } finally {
+      setUploadingLogo(false);
+    }
+  };
 
   const handleSave = async () => {
     setSaving(true);
@@ -162,15 +187,25 @@ export default function SettingsPage() {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-outline uppercase tracking-wider mb-2">Site Logosu (URL)</label>
-                  <input
-                    type="text"
-                    value={settings.SITE_LOGO}
-                    onChange={(e) => handleChange('SITE_LOGO', e.target.value)}
-                    placeholder="Örn: /logo.png veya https://..."
-                    className="w-full bg-surface-container-low border border-outline-variant/20 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 outline-none transition-all font-medium text-primary"
-                  />
-                  <p className="text-[10px] text-outline mt-1.5 ml-1">Medya Galerisi'nden aldığınız linki buraya yapıştırabilirsiniz.</p>
+                  <label className="block text-xs font-bold text-outline uppercase tracking-wider mb-2">Site Logosu (URL veya Yükle)</label>
+                  <div className="flex items-center gap-3">
+                    <label className={`flex-shrink-0 cursor-pointer px-4 py-3 bg-secondary text-white font-bold rounded-xl text-sm uppercase tracking-wider shadow-sm hover:shadow-md transition-all flex items-center justify-center min-w-[140px] ${uploadingLogo ? 'opacity-70 pointer-events-none' : ''}`}>
+                      {uploadingLogo ? (
+                        <><span className="material-symbols-outlined animate-spin mr-2 text-[18px]">sync</span> Yükleniyor...</>
+                      ) : (
+                        <><span className="material-symbols-outlined mr-2 text-[18px]">upload</span> Logo Yükle</>
+                      )}
+                      <input type="file" accept="image/png, image/jpeg, image/webp" className="hidden" onChange={handleLogoUpload} disabled={uploadingLogo} />
+                    </label>
+                    <input
+                      type="text"
+                      value={settings.SITE_LOGO}
+                      onChange={(e) => handleChange('SITE_LOGO', e.target.value)}
+                      placeholder="Örn: /logo.png veya https://..."
+                      className="flex-1 bg-surface-container-low border border-outline-variant/20 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 outline-none transition-all font-medium text-primary"
+                    />
+                  </div>
+                  <p className="text-[10px] text-outline mt-1.5 ml-1">İsterseniz doğrudan bilgisayarınızdan PNG/JPEG yükleyebilir, isterseniz hazır görsel URL'si yapıştırabilirsiniz.</p>
                 </div>
               </div>
             </div>

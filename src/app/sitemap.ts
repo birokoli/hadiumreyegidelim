@@ -19,6 +19,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   });
 
+  const packages = await prisma.package.findMany({
+    where: { published: true },
+    orderBy: { updatedAt: 'desc' }
+  });
+
   const blogUrls = posts.map((post) => ({
     url: `${baseUrl}/blog/${post.slug}`,
     lastModified: post.updatedAt,
@@ -31,6 +36,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: category.updatedAt,
     changeFrequency: 'daily' as const,
     priority: 0.85,
+  }));
+
+  const packageUrls = packages.map((pkg) => ({
+    url: `${baseUrl}/paketler/${pkg.slug}`,
+    lastModified: pkg.updatedAt,
+    changeFrequency: 'weekly' as const,
+    priority: 1.0, // Products are very important
   }));
 
   return [
@@ -72,6 +84,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     ...categoryUrls,
     ...blogUrls,
+    ...packageUrls,
     ...turkeyCities.map((city) => ({
       url: `${baseUrl}/${city.slug}-cikisli-bireysel-umre`,
       lastModified: new Date(),

@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
+import Link from 'next/link';
 
 // 1. Dinamik Meta Etiketleri Altyapısı (Open Graph & Twitter)
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
@@ -65,15 +66,51 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     }]
   };
 
+  // Breadcrumb Schema for Blog Post
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Anasayfa', item: 'https://hadiumreyegidelim.com' },
+      { '@type': 'ListItem', position: 2, name: 'Manevi Rehberlik Blogu', item: 'https://hadiumreyegidelim.com/blog' },
+      { '@type': 'ListItem', position: 3, name: post.title, item: `https://hadiumreyegidelim.com/blog/${post.slug}` }
+    ]
+  };
+
   return (
     // 2. Semantik HTML Kullanımı (<main> ve <article>)
     <main className="pt-32 pb-24 min-h-screen bg-surface">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <article className="max-w-3xl mx-auto px-6">
         <header className="mb-12">
+          {/* Visual Breadcrumbs */}
+          <nav className="flex mb-8" aria-label="Breadcrumb">
+            <ol className="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+              <li className="inline-flex items-center">
+                <Link href="/" className="inline-flex items-center text-xs font-bold text-outline hover:text-primary transition-colors tracking-widest uppercase">
+                  Anasayfa
+                </Link>
+              </li>
+              <li>
+                <div className="flex items-center">
+                  <span className="material-symbols-outlined text-[14px] text-outline-variant mx-1">chevron_right</span>
+                  <Link href="/blog" className="ms-1 text-xs font-bold text-outline hover:text-primary transition-colors tracking-widest uppercase">
+                    Blog
+                  </Link>
+                </div>
+              </li>
+              <li>
+                <div className="flex items-center">
+                  <span className="material-symbols-outlined text-[14px] text-outline-variant mx-1">chevron_right</span>
+                  <span className="ms-1 text-xs font-bold text-primary/60 tracking-widest uppercase line-clamp-1 max-w-[150px] md:max-w-[300px]">
+                    {post.title}
+                  </span>
+                </div>
+              </li>
+            </ol>
+          </nav>
+
           {post.imageUrl && (
             <div className="w-full h-[400px] mb-10 rounded-3xl overflow-hidden shadow-[0px_32px_64px_-12px_rgba(0,55,129,0.06)] border border-outline-variant/10">
               <img src={post.imageUrl} alt={post.title} className="w-full h-full object-cover" />

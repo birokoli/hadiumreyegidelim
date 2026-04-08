@@ -176,29 +176,10 @@ Lütfen yanıtını SADECE geçerli bir JSON nesnesi (object) olarak ver. Markdo
   "references": "..."
 }`;
 
-       const schema: any = {
-         type: SchemaType.OBJECT,
-         properties: {
-           title: { type: SchemaType.STRING },
-           slug: { type: SchemaType.STRING },
-           metaDescription: { type: SchemaType.STRING },
-           keywords: { type: SchemaType.STRING },
-           focusKeyword: { type: SchemaType.STRING },
-           categoryId: { type: SchemaType.STRING },
-           authorId: { type: SchemaType.STRING },
-           content: { type: SchemaType.STRING },
-           personalExperience: { type: SchemaType.STRING },
-           references: { type: SchemaType.STRING }
-         },
-         required: ["title", "slug", "metaDescription", "keywords", "focusKeyword", "categoryId", "authorId", "content", "personalExperience", "references"],
-       };
-
        const blogResult = await textModel.generateContent({
          contents: [{ role: "user", parts: [{ text: blogPrompt }] }],
          generationConfig: { 
-           temperature: 0.8,
-           responseMimeType: "application/json",
-           responseSchema: schema
+           temperature: 0.8
          }
        });
 

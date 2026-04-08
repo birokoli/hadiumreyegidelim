@@ -23,7 +23,7 @@ export default function Navbar({ links, logoUrl, ctaText }: { links?: {label: st
         <div className="hidden md:flex items-center space-x-12 font-headline font-medium text-sm tracking-wide">
           {(links || [
             {label: "Paketler", url: "/paketler"},
-            {label: "Bireysel Tasarım", url: "/bireysel-umre"},
+            {label: "Bireysel Umre", url: "/bireysel-umre"},
             {label: "Rehberler & Keşifler Portalı", url: "/rehberlik"},
             {label: "Umre Vizesi", url: "/umre-vizesi"},
             {label: "Manevi Rehberlik Blogu", url: "/blog"},

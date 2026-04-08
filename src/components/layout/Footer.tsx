@@ -18,6 +18,9 @@ export default function Footer({ logoUrl }: { logoUrl?: string }) {
           </p>
         </div>
         <div className="flex flex-wrap gap-x-12 gap-y-6">
+          <Link className="font-label text-xs uppercase font-bold tracking-widest text-on-surface-variant hover:text-primary transition-all" href="/bireysel-umre">
+            Bireysel Umre
+          </Link>
           <Link className="font-label text-xs uppercase font-bold tracking-widest text-on-surface-variant hover:text-primary transition-all" href="#">
             Niyetimiz
           </Link>

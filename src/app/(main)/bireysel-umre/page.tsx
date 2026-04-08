@@ -11,8 +11,40 @@ export const metadata: Metadata = {
 };
 
 export default function PlannerPage() {
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Bireysel Umre yapabilmek için Suudi Vizesi nasıl alınır? (E-Vize)",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Eskiden umre vizeleri sadece acenteler üzerinden verilirdi. Artık Suudi Arabistan'ın 1 yıllık çok girişli (Multiple Entry) Elektronik Turizm Vizesi (E-Visa) sistemi ile vizeni dakikalar içerisinde alabiliyorsunuz. Başvuru esnasında 'Umre yapacağım' seçeneğini işaretlemek, size Suudi hükümeti tarafından tamamen yasal ve bağımsız bir bireysel umre yetkisi verir."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "2026 Bireysel Umre fiyatları nasıl hesaplanır? Daha mı pahalıdır?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Sanılanın aksine bireysel umre her zaman daha pahalı değildir. Tasarım aracımız sayesinde 2026 uçak bileti, Mekke otelleri, Medine konaklaması, Hızlı Tren veya VİP Karşılama parametrelerini esnekçe seçebilirsiniz. Lüks bir Özel Aile Umresi tasarladığınızda tamamen bütçenize göre şekillenebilir."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Mekke ve Medine'de ibadetlerim için rehber desteği alabilir miyim?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Evet! Acenteden bağımsız gitmek sizi yalnız bırakmaz. Sistemimiz içerisindeki Özel Rehber ataması sayesinde Mekke'de hocamız sizi otelinizden alır, ilk tavafınızı, sa'yınızı ve Mescid-i Haram tanıtımınızı sadece size özel refakat ederek tamamlar."
+        }
+      }
+    ]
+  };
+
   return (
-    <BireyselUmreClient>
+    <BireyselUmreClient title="Bireysel Umre Turları ve Tasarlayıcı" subtitle="Manevi rotanızı kalabalık tur şirketlerinden bağımsız, ailenize özel VIP detaylarla tasarlayın.">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <section className="max-w-screen-xl mx-auto px-6 mt-32 relative z-10">
         <div className="bg-surface-container-lowest p-8 md:p-12 rounded-3xl border border-outline-variant/15 shadow-sm">
           <header className="mb-10 text-center">

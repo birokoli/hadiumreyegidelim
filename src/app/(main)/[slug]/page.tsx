@@ -4,12 +4,10 @@ import { notFound } from "next/navigation";
 import BireyselUmreClient from "@/components/features/BireyselUmreClient";
 import { turkeyCities, getTurkishCityBySlug } from "@/lib/turkey-cities";
 
-// Next.js params are asynchronous in later versions, but let's stick to standard typing for parity
-interface Props {
-  params: {
-    slug: string;
-  };
-}
+// Next 15 Dynamic Routing API
+type Props = {
+  params: Promise<{ slug: string }>;
+};
 
 // Ensure statically generated paths
 export function generateStaticParams() {
@@ -19,11 +17,13 @@ export function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  if (!params.slug?.endsWith("-cikisli-bireysel-umre")) {
+  const resolvedParams = await params;
+  
+  if (!resolvedParams.slug?.endsWith("-cikisli-bireysel-umre")) {
     return {};
   }
   
-  const citySlug = params.slug.replace("-cikisli-bireysel-umre", "");
+  const citySlug = resolvedParams.slug.replace("-cikisli-bireysel-umre", "");
   const city = getTurkishCityBySlug(citySlug);
 
   if (!city) {
@@ -34,17 +34,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `${city.name} ${city.airportName} Çıkışlı VIP Bireysel Umre Turları 2026`,
     description: `${city.name} çıkışlı, doğrudan Kabe manzaralı lüks oteller ve VIP transfer seçenekleri ile ailenize özel VIP Bireysel Umre planınızı hemen oluşturun.`,
     alternates: {
-      canonical: `https://hadiumreyegidelim.com/${params.slug}`,
+      canonical: `https://hadiumreyegidelim.com/${resolvedParams.slug}`,
     },
   };
 }
 
-export default function DynamicCityUmrahPage({ params }: Props) {
-  if (!params.slug?.endsWith("-cikisli-bireysel-umre")) {
+export default async function DynamicCityUmrahPage({ params }: Props) {
+  const resolvedParams = await params;
+
+  if (!resolvedParams.slug?.endsWith("-cikisli-bireysel-umre")) {
     notFound();
   }
 
-  const citySlug = params.slug.replace("-cikisli-bireysel-umre", "");
+  const citySlug = resolvedParams.slug.replace("-cikisli-bireysel-umre", "");
   const city = getTurkishCityBySlug(citySlug);
 
   if (!city) {
@@ -59,7 +61,7 @@ export default function DynamicCityUmrahPage({ params }: Props) {
     "description": `${city.name} (${city.airportName}) çıkışlı uçuşlarla kalabalıklardan uzak, size özel VIP Bireysel Umre. Kabe manzaralı lüks oteller ve VIP karşılama detaylarıyla.`,
     "offers": {
       "@type": "Offer",
-      "url": `https://hadiumreyegidelim.com/${params.slug}`,
+      "url": `https://hadiumreyegidelim.com/${resolvedParams.slug}`,
       "priceCurrency": "USD",
       "price": "1250",
       "availability": "https://schema.org/InStock",

@@ -30,6 +30,31 @@ async function fetchTrendingKeywords(seed: string = "umre") {
   }
 }
 
+// API Yoğunlukları (503/429) durumunda bekleme mekanizması (ASLA MODEL DÜŞÜRMEZ)
+async function generateContentWithFallback(modelOpts: any, generateOpts: any, maxRetries = 8) {
+  const modelName = modelOpts.model || "gemini-3.1-pro";
+  let lastError: any = null;
+
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      const model = genAI.getGenerativeModel(modelOpts);
+      return await model.generateContent(generateOpts);
+    } catch (error: any) {
+      lastError = error;
+      console.warn(`[Auto-Blog] AI Hata (Model: ${modelName}, Deneme: ${attempt}/${maxRetries}): ${error.message}`);
+      
+      if (error.message && (error.message.includes('503') || error.message.includes('429'))) {
+         // Sadece bekleyip tekrar deniyoruz (3s, 6s, 9s...) - ASLA modeli düşürme
+         await new Promise(res => setTimeout(res, attempt * 3000));
+      } else {
+         // Başka bir hataysa döngüyü kır ve patlat
+         throw error; 
+      }
+    }
+  }
+  throw new Error(`Google API sunucuları ${maxRetries} kez denendi fakat sonuç alınamadı. Son Hata: ${lastError?.message}`);
+}
+
 export async function GET(request: Request) {
   let currentAiLogId: string | null = null;
   try {
@@ -131,11 +156,8 @@ export async function GET(request: Request) {
        const selectedKeyword = activeLog.topic || "umre";
        const keywordsString = selectedKeyword + ", bireysel umre, umre turları";
 
-       const textModel = genAI.getGenerativeModel({ 
-         model: "gemini-2.5-flash",
-         tools: [{ googleSearch: {} }] as any
-       });
-       
+       const keywordsString = selectedKeyword + ", bireysel umre, umre turları";
+
        const blogPrompt = `Sen, Suudi Arabistan'da uzun yıllar yaşamış, Mekke ve Medine'nin tüm pratik detaylarına hakim, üst düzey (VIP) ve Bireysel Umre organizasyonları konusunda uzmanlaşmış kıdemli bir İslami Seyahat Editörüsün. Yazdığın içerikler "Google Faydalı İçerik (Helpful Content)" standartlarının zirvesindedir. Okuyucuya asla internette bulunabilecek sıradan, mekanik ve sığ bilgileri vermezsin; tam aksine, sanki elinde bir kahve ile karşısındaki dostuna tavsiyeler veren bir yol arkadaşı gibi, tamamıyla (%100) YALIN, İNSANİ VE İÇTEN bir üslupla (biz dili/sen dili) yazarsın.
 
 Odak Anahtar Kelime: "${selectedKeyword}"
@@ -145,7 +167,11 @@ Mevcut Yazarlar: ${JSON.stringify(authors)}
 
 YASAKLI YAPAY ZEKA JARGONU VE ÜSLUP (ÇOK ÖNEMLİ!):
 - ŞU KELİMELERİ ASLA KULLANMA: "Sonuç olarak", "özetlemek gerekirse", "bu makalede", "büyüleyici", "dalış yapalım", "gerçek bir mücevherdir", "unutulmamalıdır ki", "eşsiz", "hayati önem taşır", "gerekir".
+- YIL TEKRARI YOK: Papağan gibi "2026 Umre", "2026 sezonu" deyip durma, çok itici duruyor! Zaten 2026'da olduğumuzu biliyoruz. Odak kelimeyi sadece 1-2 kez geçirip bırak.
+- ZIRVALAMAK YASAK: "Mekke çok güzeldir, insanı büyüler, huzur doludur" gibi içi boş edebi zırvalıkları BİR KENARA BIRAK.
+- SOMUT VE GERÇEK BİLGİ VER: "Kral Fahd kapısından girerseniz...", "Ocak ayında Medine akşamları 12 derecedir...", "Taksi ücretleri ortalama 30 riyal tutar..." gibi tamamen GERÇEK, YAŞANMIŞ, hayat kurtaran niş bilgilerle doldur. Okuyan kişi "Bu adam gerçekten oralarda yaşamış ve her sokağını biliyor" demeli.
 - Üslup: Empatik, somut örneklere dayanan, sıcak ve sürükleyici bir dil. Örneğin "Oteller yakındır" demek yerine "Kabe'ye sıfır noktasındaki 5 yıldızlı odanızdan inip saniyeler içinde Mescid-i Haram'a geçebilirsiniz" gibi vizyoner kelimeler kullan. 
+
 
 ZAMAN VE BÜYÜME (GROWTH) SATIŞ STRATEJİSİ: 
 - CANLI İNTERNET ARAŞTIRMASI YAP (HAYATİ ÖNEMDE): Konuyla ilgili bilgileri internetten derinlemesine çekmek ZORUNDASIN. Google Arama motorunu kullanarak EN AZ 10 FARKLI OTORİTER SİTEDEN (haj.gov.sa, Nusuk, SPA, Okaz, Diyanet, Wikipedia ve global otel/haber sayfaları vb.) veri çekmelisin.
@@ -162,7 +188,9 @@ SEO VE İÇERİK MİMARİSİ (GOOGLE STANDARTLARI):
 5. İÇ LİNKLEME: href="https://hadiumreyegidelim.com/bireysel-umre" yapısını kullanarak sitemize iç bağlantılar at.
 
 JSON ÇIKTISI KURALI: 
-Lütfen yanıtını SADECE geçerli bir JSON nesnesi (object) olarak ver. Markdown kod bloğu içine alabilirsin. Format şu şekilde olmalıdır:
+Lütfen yanıtını SADECE geçerli bir JSON nesnesi (object) olarak ver. 
+ÖNEMLİ: HTML (content alanı) içinde kesinlikle çift tırnak (") KULLANMA! HTML nitelikleri için SADECE tek tırnak (') kullan (Örn: <a href='...'>). JSON yapısını bozmamak için metin içindeki alıntıları da tek tırnakla yap.
+Format şu şekilde olmalıdır:
 {
   "title": "...",
   "slug": "...",
@@ -171,20 +199,35 @@ Lütfen yanıtını SADECE geçerli bir JSON nesnesi (object) olarak ver. Markdo
   "focusKeyword": "${selectedKeyword}",
   "categoryId": "Mevcut kategorilerden birinin ID'si",
   "authorId": "Mevcut yazarlardan birinin ID'si",
-  "content": "HTML formatında blog metni",
+  "content": "HTML formatında blog metni (SADECE TEK TIRNAK İÇERİR)",
   "personalExperience": "...",
   "references": "..."
 }`;
 
-       const blogResult = await textModel.generateContent({
-         contents: [{ role: "user", parts: [{ text: blogPrompt }] }],
-         generationConfig: { 
-           temperature: 0.8
+       const blogResult = await generateContentWithFallback(
+         { model: "gemini-3.1-pro", tools: [{ googleSearch: {} }] as any },
+         {
+           contents: [{ role: "user", parts: [{ text: blogPrompt }] }],
+           generationConfig: { temperature: 0.8, responseMimeType: "application/json" }
          }
-       });
+       );
 
-       let blogText = blogResult.response.text().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim();
-       const blogData = JSON.parse(blogText);
+       let rawText = blogResult.response.text();
+       let firstBrace = rawText.indexOf('{');
+       let lastBrace = rawText.lastIndexOf('}');
+       let blogText = rawText;
+       
+       if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
+           blogText = rawText.substring(firstBrace, lastBrace + 1);
+       }
+       
+       let blogData;
+       try {
+           blogData = JSON.parse(blogText);
+       } catch (error: any) {
+           console.error("JSON Parse Error Raw Output:", rawText);
+           throw new Error(`JSON Parse Hatası: ${error.message}. LLM Çıktısı (ilk 200 karakter): ${blogText.substring(0, 200)}...`);
+       }
 
        let sourceDetails = "";
        if (blogResult.response.candidates?.[0]?.groundingMetadata?.groundingChunks) {
@@ -220,15 +263,30 @@ KULLANILACAK JSON ŞABLONU:
 ${blogData.content}
 `;
 
-       const imgPromptModel = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
-       const imgPromptResult = await imgPromptModel.generateContent({
-         contents: [{ role: "user", parts: [{ text: imagePromptInstruction }] }],
-         generationConfig: { temperature: 0.7, responseMimeType: "application/json" }
-       });
+       const imgPromptResult = await generateContentWithFallback(
+         { model: "gemini-3.1-pro" },
+         {
+           contents: [{ role: "user", parts: [{ text: imagePromptInstruction }] }],
+           generationConfig: { temperature: 0.7, responseMimeType: "application/json" }
+         },
+         2 // Çizimlerde az deneme
+       );
 
-       let promptsText = imgPromptResult.response.text().replace(/^```(?:json)?s*/i, '').replace(/s*```$/i, '').trim();
-       let imagePromptsJSON = [];
-       try { imagePromptsJSON = JSON.parse(promptsText); } catch(e) {}
+       let promptsRawText = imgPromptResult.response.text();
+       let firstSquare = promptsRawText.indexOf('[');
+       let lastSquare = promptsRawText.lastIndexOf(']');
+       let promptsText = promptsRawText;
+       
+       if (firstSquare !== -1 && lastSquare !== -1 && lastSquare > firstSquare) {
+           promptsText = promptsRawText.substring(firstSquare, lastSquare + 1);
+       }
+       
+       let imagePromptsJSON: any[] = [];
+       try { 
+           imagePromptsJSON = JSON.parse(promptsText); 
+       } catch(e) {
+           console.error("Image Prompt JSON Parse Error Raw:", promptsRawText);
+       }
 
        const { generateAndUploadImage } = require('@/lib/generate-image');
        

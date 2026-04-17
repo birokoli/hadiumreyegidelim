@@ -17,7 +17,8 @@ export async function POST(request: Request) {
     });
 
     // Pipeline'ı ateşle (fire-and-forget — Vercel fonksiyon zaman aşımını beklemiyoruz)
-    fetch(`${protocol}://${host}/api/cron/auto-blog`, {
+    // force=true: günlük dedup'ı atla, manuel tetiklemede her zaman çalıştır
+    fetch(`${protocol}://${host}/api/cron/auto-blog?force=true`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${process.env.CRON_SECRET || ''}`,

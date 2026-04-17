@@ -6,12 +6,7 @@
     },
     {
       "path": "/api/cron/auto-blog",
-      "schedule": "0 12 * * *"
-    },
-    {
-      "path": "/api/cron/auto-blog",
-      "schedule": "0 18 * * *"
+      "schedule": "0 8 * * *"
     }
   ]
 }
-

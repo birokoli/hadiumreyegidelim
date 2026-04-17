@@ -2,52 +2,88 @@ import Link from "next/link";
 import Image from "next/image";
 import React from "react";
 import SeoCitiesFooter from "./SeoCitiesFooter";
+import { prisma } from "@/lib/prisma";
 
-export default function Footer({ logoUrl }: { logoUrl?: string }) {
+async function getSocialLinks() {
+  try {
+    const settings = await prisma.setting.findMany({
+      where: { key: { in: ['SOCIAL_INSTAGRAM', 'SOCIAL_FACEBOOK', 'SOCIAL_YOUTUBE', 'SOCIAL_TWITTER', 'SOCIAL_TIKTOK'] } }
+    });
+    return settings.reduce((acc: Record<string, string>, s) => { acc[s.key] = s.value; return acc; }, {});
+  } catch {
+    return {};
+  }
+}
+
+const SOCIAL_ICONS: Record<string, { icon: string; label: string }> = {
+  SOCIAL_INSTAGRAM: { icon: 'photo_camera',    label: 'Instagram' },
+  SOCIAL_FACEBOOK:  { icon: 'thumb_up',         label: 'Facebook'  },
+  SOCIAL_YOUTUBE:   { icon: 'play_circle',      label: 'YouTube'   },
+  SOCIAL_TWITTER:   { icon: 'alternate_email',  label: 'X/Twitter' },
+  SOCIAL_TIKTOK:    { icon: 'music_video',      label: 'TikTok'    },
+};
+
+export default async function Footer({ logoUrl }: { logoUrl?: string }) {
+  const socialLinks = await getSocialLinks();
+  const activeSocials = Object.entries(SOCIAL_ICONS).filter(([key]) => socialLinks[key]);
+
   return (
     <>
       <SeoCitiesFooter />
       <footer className="bg-surface-container-low w-full py-16 px-8 border-t border-slate-200">
         <div className="max-w-screen-2xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center space-y-12 md:space-y-0">
-        <div>
-          <div className="mb-4">
-            <Image src={logoUrl || "/logo.png"} alt="Hadi Umreye" width={240} height={80} className="h-16 w-auto object-contain" />
+          <div>
+            <div className="mb-4">
+              <Image src={logoUrl || "/logo.png"} alt="Hadi Umreye" width={240} height={80} className="h-16 w-auto object-contain" />
+            </div>
+            <p className="font-label text-xs uppercase tracking-widest text-on-surface-variant">
+              © {new Date().getFullYear()} Hadi Umreye - Butik ve Manevi Yolculuğunuz
+            </p>
           </div>
-          <p className="font-label text-xs uppercase tracking-widest text-on-surface-variant">
-            © {new Date().getFullYear()} Hadi Umreye - Butik ve Manevi Yolculuğunuz
-          </p>
+          <div className="flex flex-wrap gap-x-12 gap-y-6">
+            <Link className="font-label text-xs uppercase font-bold tracking-widest text-on-surface-variant hover:text-primary transition-all" href="/bireysel-umre">
+              Bireysel Umre
+            </Link>
+            <Link className="font-label text-xs uppercase font-bold tracking-widest text-on-surface-variant hover:text-primary transition-all" href="#">
+              Niyetimiz
+            </Link>
+            <Link className="font-label text-xs uppercase font-bold tracking-widest text-on-surface-variant hover:text-primary transition-all" href="#">
+              Yol Arkadaşlığı
+            </Link>
+            <Link className="font-label text-xs uppercase font-bold tracking-widest text-on-surface-variant hover:text-primary transition-all" href="/rehber">
+              Manevi Rehberlik
+            </Link>
+            <Link className="font-label text-xs uppercase font-bold tracking-widest text-on-surface-variant hover:text-primary transition-all" href="#">
+              Kullanım Şartları
+            </Link>
+          </div>
+          <div className="flex gap-3 flex-wrap">
+            {activeSocials.length > 0 ? (
+              activeSocials.map(([key, { icon, label }]) => (
+                <a
+                  key={key}
+                  href={socialLinks[key]}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title={label}
+                  className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-primary shadow-sm hover:scale-110 active:scale-95 transition-transform border border-outline-variant/30 hover:bg-primary hover:text-white"
+                >
+                  <span className="material-symbols-outlined text-[20px]">{icon}</span>
+                </a>
+              ))
+            ) : (
+              <>
+                <button className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-primary shadow-sm hover:scale-110 active:scale-95 transition-transform border border-outline-variant/30">
+                  <span className="material-symbols-outlined text-xl">share</span>
+                </button>
+                <button className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-primary shadow-sm hover:scale-110 active:scale-95 transition-transform border border-outline-variant/30">
+                  <span className="material-symbols-outlined text-xl">mail</span>
+                </button>
+              </>
+            )}
+          </div>
         </div>
-        <div className="flex flex-wrap gap-x-12 gap-y-6">
-          <Link className="font-label text-xs uppercase font-bold tracking-widest text-on-surface-variant hover:text-primary transition-all" href="/bireysel-umre">
-            Bireysel Umre
-          </Link>
-          <Link className="font-label text-xs uppercase font-bold tracking-widest text-on-surface-variant hover:text-primary transition-all" href="#">
-            Niyetimiz
-          </Link>
-          <Link className="font-label text-xs uppercase font-bold tracking-widest text-on-surface-variant hover:text-primary transition-all" href="#">
-            Yol Arkadaşlığı
-          </Link>
-          <Link className="font-label text-xs uppercase font-bold tracking-widest text-on-surface-variant hover:text-primary transition-all" href="/rehber">
-            Manevi Rehberlik
-          </Link>
-          <Link className="font-label text-xs uppercase font-bold tracking-widest text-on-surface-variant hover:text-primary transition-all" href="#">
-            Kullanım Şartları
-          </Link>
-        </div>
-        <div className="flex gap-4">
-          <button className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-primary shadow-sm hover:scale-110 active:scale-95 transition-transform border border-outline-variant/30">
-            <span className="material-symbols-outlined text-xl" data-icon="share">
-              share
-            </span>
-          </button>
-          <button className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-primary shadow-sm hover:scale-110 active:scale-95 transition-transform border border-outline-variant/30">
-            <span className="material-symbols-outlined text-xl" data-icon="mail">
-              mail
-            </span>
-          </button>
-        </div>
-      </div>
-    </footer>
+      </footer>
     </>
   );
 }

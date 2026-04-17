@@ -39,9 +39,10 @@ const menuGroups: { title: string; links: { href: string; icon: string; label: s
   {
     title: "Sistem & Ayarlar",
     links: [
-      { href: "/admin/media",    icon: "photo_library", label: "Medya Galerisi"  },
-      { href: "/admin/ai-logs",  icon: "memory",        label: "Yapay Zeka (AI)" },
-      { href: "/admin/settings", icon: "settings",      label: "Sistem Ayarları" },
+      { href: "/admin/analytics", icon: "analytics",     label: "Analytics"       },
+      { href: "/admin/media",     icon: "photo_library", label: "Medya Galerisi"  },
+      { href: "/admin/ai-logs",   icon: "memory",        label: "Yapay Zeka (AI)" },
+      { href: "/admin/settings",  icon: "settings",      label: "Sistem Ayarları" },
     ],
   },
 ];

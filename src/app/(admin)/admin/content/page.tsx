@@ -91,6 +91,11 @@ export default function ContentPage() {
 
   const [aiAnalysisResult, setAiAnalysisResult] = useState<any>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [showVersionHistory, setShowVersionHistory] = useState(false);
+  const [versions, setVersions] = useState<any[]>([]);
+  const [loadingVersions, setLoadingVersions] = useState(false);
+  const [postSearch, setPostSearch] = useState("");
+  const [selectedPosts, setSelectedPosts] = useState<Set<string>>(new Set());
 
   // Canlı SEO Skorlama Algoritması
   useEffect(() => {
@@ -312,6 +317,36 @@ export default function ContentPage() {
     setMediaMap({});
     setAiAnalysisResult(null);
     setViewMode('edit');
+    setShowVersionHistory(false);
+    setVersions([]);
+  };
+
+  const fetchVersions = async (postId: string) => {
+    setLoadingVersions(true);
+    try {
+      const res = await fetch(`/api/admin/post-versions?postId=${postId}`);
+      const data = await res.json();
+      if (Array.isArray(data)) setVersions(data);
+    } catch {}
+    finally { setLoadingVersions(false); }
+  };
+
+  const restoreVersion = async (version: any) => {
+    if (!confirm(`v${version.version} sürümü geri yüklensin mi? Mevcut içerik kaybolacak.`)) return;
+    // First fetch the full version content
+    const res = await fetch(`/api/admin/post-versions?postId=${editingPostId}`);
+    const allVersions = await res.json();
+    const full = allVersions.find((v: any) => v.id === version.id);
+    // Actually we need the content — let me fetch the full version
+    const res2 = await fetch(`/api/admin/post-versions?postId=${editingPostId}&id=${version.id}`);
+    if (res2.ok) {
+      const data = await res2.json();
+      if (data.content) {
+        setNewPost(prev => ({ ...prev, title: data.title || prev.title, content: data.content, description: data.description || prev.description }));
+        toast(`v${version.version} geri yüklendi.`, 'success');
+        setShowVersionHistory(false);
+      }
+    }
   };
 
   const handleEdit = (post: any) => {
@@ -367,6 +402,13 @@ export default function ContentPage() {
         body: JSON.stringify(payload),
       });
       if (res.ok) {
+        // Auto-save version on update
+        if (editingPostId) {
+          fetch('/api/admin/post-versions', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ postId: editingPostId, title: newPost.title, content: finalContent, description: newPost.description })
+          }).catch(() => {});
+        }
         toast(editingPostId ? "Blog yazısı başarıyla güncellendi!" : "Blog yazısı yayınlandı!", "success");
         handleCancel();
         fetchPosts();
@@ -590,9 +632,58 @@ export default function ContentPage() {
           </div>
 
           <form onSubmit={handleCreate} className="relative z-10 w-full space-y-8">
-            <h3 className="font-headline text-3xl text-primary border-b border-outline-variant/20 pb-4 mb-8">
-              {editingPostId ? 'İçerik Düzenle' : 'İçerik Detayları'}
-            </h3>
+            <div className="flex items-center justify-between border-b border-outline-variant/20 pb-4 mb-8">
+              <h3 className="font-headline text-3xl text-primary">
+                {editingPostId ? 'İçerik Düzenle' : 'İçerik Detayları'}
+              </h3>
+              {editingPostId && (
+                <button
+                  type="button"
+                  onClick={() => { setShowVersionHistory(!showVersionHistory); if (!showVersionHistory) fetchVersions(editingPostId); }}
+                  className="flex items-center gap-2 px-4 py-2 bg-surface-container-low text-on-surface-variant hover:bg-surface-container rounded-xl font-bold text-sm transition-colors border border-outline-variant/20"
+                >
+                  <span className="material-symbols-outlined text-[18px]">history</span>
+                  Sürüm Geçmişi
+                </button>
+              )}
+            </div>
+
+            {/* Version History Panel */}
+            {showVersionHistory && editingPostId && (
+              <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 mb-4">
+                <h4 className="font-bold text-primary mb-3 flex items-center gap-2">
+                  <span className="material-symbols-outlined text-[18px]">history</span>
+                  Sürüm Geçmişi (Son 20)
+                </h4>
+                {loadingVersions ? (
+                  <div className="flex items-center gap-2 text-sm text-slate-500"><span className="material-symbols-outlined animate-spin text-[16px]">sync</span> Yükleniyor...</div>
+                ) : versions.length === 0 ? (
+                  <p className="text-sm text-slate-500">Henüz sürüm kaydedilmemiş. İlk kaydetme sonrası otomatik oluşturulur.</p>
+                ) : (
+                  <div className="space-y-2 max-h-64 overflow-y-auto">
+                    {versions.map(v => (
+                      <div key={v.id} className="flex items-center justify-between bg-white border border-slate-100 rounded-xl px-4 py-3">
+                        <div>
+                          <span className="text-xs font-bold text-primary">v{v.version}</span>
+                          <span className="mx-2 text-slate-300">·</span>
+                          <span className="text-sm text-slate-700 font-medium">{v.title}</span>
+                          <span className="mx-2 text-slate-300">·</span>
+                          <span className="text-xs text-slate-400">{new Date(v.createdAt).toLocaleString('tr-TR')}</span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => restoreVersion(v)}
+                          className="text-xs font-bold text-primary hover:text-[#002f6c] transition-colors flex items-center gap-1"
+                        >
+                          <span className="material-symbols-outlined text-[14px]">restore</span>
+                          Geri Yükle
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
             
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-10 max-w-6xl">
               {/* Sol Sütun: Form Girdileri */}
@@ -1060,22 +1151,60 @@ export default function ContentPage() {
 
       {/* Existing Blogs Table */}
       <div className="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-[0px_32px_64px_-12px_rgba(0,55,129,0.06)] border border-outline-variant/10">
-        <div className="p-8 border-b border-outline-variant/10 bg-surface-container-low/30">
-          <h3 className="font-headline text-2xl text-primary font-bold">Yayındaki İçerikler</h3>
+        <div className="p-6 border-b border-outline-variant/10 bg-surface-container-low/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <h3 className="font-headline text-2xl text-primary font-bold">Tüm İçerikler ({posts.length})</h3>
+          <div className="flex items-center gap-2 w-full sm:w-auto">
+            {selectedPosts.size > 0 && (
+              <button
+                onClick={async () => {
+                  if (!confirm(`${selectedPosts.size} yazı silinsin mi?`)) return;
+                  for (const id of selectedPosts) {
+                    await fetch(`/api/posts?id=${id}`, { method: 'DELETE' });
+                  }
+                  setSelectedPosts(new Set());
+                  fetchPosts();
+                }}
+                className="flex items-center gap-1.5 px-3 py-2 bg-red-100 text-red-600 rounded-xl font-bold text-xs hover:bg-red-200 transition-colors"
+              >
+                <span className="material-symbols-outlined text-[16px]">delete_sweep</span>
+                {selectedPosts.size} Sil
+              </button>
+            )}
+            <div className="relative flex-1 sm:w-64">
+              <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[18px]">search</span>
+              <input
+                type="text"
+                placeholder="Başlık veya anahtar kelime..."
+                value={postSearch}
+                onChange={e => setPostSearch(e.target.value)}
+                className="w-full pl-9 pr-3 py-2.5 bg-white border border-outline-variant/20 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+              />
+            </div>
+          </div>
         </div>
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="bg-surface-container-low border-none">
+              <th className="px-4 py-5 w-10">
+                <input type="checkbox"
+                  checked={selectedPosts.size === posts.filter(p => !postSearch || p.title?.toLowerCase().includes(postSearch.toLowerCase())).length && posts.length > 0}
+                  onChange={e => setSelectedPosts(e.target.checked ? new Set(posts.map((p: any) => p.id)) : new Set())}
+                />
+              </th>
               <th className="px-8 py-5 text-[10px] font-bold tracking-widest text-outline uppercase">Başlık / Yazar</th>
               <th className="px-8 py-5 text-[10px] font-bold tracking-widest text-outline uppercase">Tarih</th>
               <th className="px-8 py-5 text-[10px] font-bold tracking-widest text-outline uppercase text-right">İşlem</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-surface-container">
-            {posts.map(post => (
-              <tr key={post.id} className="group hover:bg-surface-container-low/50 transition-colors">
+            {posts.filter((p: any) => !postSearch || p.title?.toLowerCase().includes(postSearch.toLowerCase()) || (p.focusKeyword || "").toLowerCase().includes(postSearch.toLowerCase())).map((post: any) => (
+              <tr key={post.id} className={`group hover:bg-surface-container-low/50 transition-colors ${selectedPosts.has(post.id) ? 'bg-primary/3' : ''}`}>
+                <td className="px-4 py-6"><input type="checkbox" checked={selectedPosts.has(post.id)} onChange={() => setSelectedPosts(prev => { const n = new Set(prev); n.has(post.id) ? n.delete(post.id) : n.add(post.id); return n; })} /></td>
                 <td className="px-8 py-6">
-                  <p className="font-bold text-primary font-headline text-lg mb-1">{post.title}</p>
+                  <div className="flex items-center gap-2 mb-1">
+                    <p className="font-bold text-primary font-headline text-lg">{post.title}</p>
+                    {!post.published && <span className="text-[10px] bg-amber-100 text-amber-700 font-bold px-2 py-0.5 rounded">Taslak</span>}
+                  </div>
                   <p className="text-xs text-tertiary font-bold tracking-widest uppercase mb-2">
                     {post.authorModel ? post.authorModel.name : post.author} {post.category && `• ${post.category.name}`}
                   </p>
@@ -1121,7 +1250,7 @@ export default function ContentPage() {
               </tr>
             ))}
             {posts.length === 0 && (
-              <tr><td colSpan={3} className="text-center py-16 text-outline font-medium flex-col flex items-center justify-center gap-3">
+              <tr><td colSpan={4} className="text-center py-16 text-outline font-medium flex-col flex items-center justify-center gap-3">
                 <span className="material-symbols-outlined text-4xl opacity-50">article</span>
                 Henüz yapay zeka ile veya manuel bir blog yazısı girmediniz.
               </td></tr>

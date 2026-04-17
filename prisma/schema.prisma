@@ -49,19 +49,20 @@ model Service {
 }
 
 model Guide {
-  id          String   @id @default(cuid())
-  slug        String?  @unique
-  name        String
-  title       String
-  price       Float
-  image       String?
-  biography   String?
-  quote       String?
-  youtubeUrl  String?
-  expertise   String?  // JSON string array for ["Siyer", "İslam Tarihi"]
-  publications String? // JSON string array for publications
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id             String   @id @default(cuid())
+  slug           String?  @unique
+  name           String
+  title          String
+  price          Float
+  image          String?
+  biography      String?
+  quote          String?
+  youtubeUrl     String?
+  expertise      String?  // JSON string array for ["Siyer", "İslam Tarihi"]
+  publications   String?  // JSON string array for publications
+  linkedPackages String?  // JSON string array of Package IDs (manual, optional)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 }
 
 model Category {
@@ -173,4 +174,15 @@ model ContactRequest {
   status    String   @default("UNREAD") // UNREAD, CONTACTED, RESOLVED
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model PostVersion {
+  id          String   @id @default(cuid())
+  postId      String
+  title       String
+  content     String
+  description String?
+  version     Int
+  savedBy     String?
+  createdAt   DateTime @default(now())
 }

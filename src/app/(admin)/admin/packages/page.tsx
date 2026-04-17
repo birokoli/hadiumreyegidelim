@@ -4,7 +4,9 @@ import React, { useState, useEffect } from "react";
 export default function PackagesPage() {
   const [packages, setPackages] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  
+  const [pkgSearch, setPkgSearch] = useState("");
+  const [selectedPkgs, setSelectedPkgs] = useState<Set<string>>(new Set());
+
   const [showAdd, setShowAdd] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [uploadingField, setUploadingField] = useState<string | null>(null);
@@ -344,10 +346,29 @@ export default function PackagesPage() {
         </section>
       )}
 
+      {/* Search + Bulk ops */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-4">
+        <div className="relative flex-1 max-w-sm">
+          <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[18px]">search</span>
+          <input type="text" placeholder="Paket adı ile ara..." value={pkgSearch} onChange={e => setPkgSearch(e.target.value)}
+            className="w-full pl-9 pr-3 py-2.5 bg-white border border-outline-variant/20 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20" />
+        </div>
+        {selectedPkgs.size > 0 && (
+          <button onClick={async () => {
+            if (!confirm(`${selectedPkgs.size} paket silinsin mi?`)) return;
+            for (const id of selectedPkgs) { await fetch(`/api/packages?id=${id}`, { method: 'DELETE' }); }
+            setSelectedPkgs(new Set()); fetchPackages();
+          }} className="flex items-center gap-1.5 px-4 py-2.5 bg-red-100 text-red-600 rounded-xl font-bold text-sm hover:bg-red-200 transition-colors">
+            <span className="material-symbols-outlined text-[18px]">delete_sweep</span>{selectedPkgs.size} Sil
+          </button>
+        )}
+      </div>
+
       <div className="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-[0px_32px_64px_-12px_rgba(0,55,129,0.06)] border border-outline-variant/10">
         <table className="w-full text-left border-collapse">
           <thead>
             <tr className="bg-surface-container-low border-none">
+              <th className="px-4 py-5 w-10"><input type="checkbox" onChange={e => setSelectedPkgs(e.target.checked ? new Set(packages.map(p => p.id)) : new Set())} /></th>
               <th className="px-8 py-5 text-[10px] font-bold tracking-widest text-outline uppercase">Görsel / Paket</th>
               <th className="px-8 py-5 text-[10px] font-bold tracking-widest text-outline uppercase">Süre / Fiyat</th>
               <th className="px-8 py-5 text-[10px] font-bold tracking-widest text-outline uppercase">Durum</th>
@@ -355,8 +376,9 @@ export default function PackagesPage() {
             </tr>
           </thead>
           <tbody className="divide-y divide-surface-container">
-            {packages.map(pkg => (
-              <tr key={pkg.id} className="group hover:bg-surface-container-low/50 transition-colors">
+            {packages.filter(pkg => !pkgSearch || pkg.title?.toLowerCase().includes(pkgSearch.toLowerCase())).map(pkg => (
+              <tr key={pkg.id} className={`group hover:bg-surface-container-low/50 transition-colors ${selectedPkgs.has(pkg.id) ? 'bg-primary/3' : ''}`}>
+                <td className="px-4 py-6"><input type="checkbox" checked={selectedPkgs.has(pkg.id)} onChange={() => setSelectedPkgs(prev => { const n = new Set(prev); n.has(pkg.id) ? n.delete(pkg.id) : n.add(pkg.id); return n; })} /></td>
                 <td className="px-8 py-6">
                   <div className="flex items-center gap-4">
                     {pkg.imageUrl ? (
@@ -397,9 +419,9 @@ export default function PackagesPage() {
                 </td>
               </tr>
             ))}
-            {packages.length === 0 && (
-              <tr><td colSpan={4} className="text-center py-16 text-outline font-medium">
-                Sistemde hiç paket bulunmuyor. Lütfen yeni bir tane ekleyin.
+            {packages.filter(pkg => !pkgSearch || pkg.title?.toLowerCase().includes(pkgSearch.toLowerCase())).length === 0 && (
+              <tr><td colSpan={5} className="text-center py-16 text-outline font-medium">
+                {pkgSearch ? 'Arama sonucu bulunamadı.' : 'Sistemde hiç paket bulunmuyor.'}
               </td></tr>
             )}
           </tbody>

@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import dynamic from "next/dynamic";
 import "react-quill-new/dist/quill.snow.css";
+import { useAdminContext } from "@/components/admin/AdminContext";
 
 // Rich text editörü Server-Side Rendering'de hata vermemesi için Next/Dynamic ile sarmalıyoruz
 const ReactQuill = dynamic(() => import("react-quill-new"), { 
@@ -62,10 +63,12 @@ const MediaUploader = ({ title, slug, onUploadComplete, currentUrl }: { title: s
 };
 
 export default function ContentPage() {
+  const { toast } = useAdminContext();
   const [posts, setPosts] = useState<any[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
   const [authors, setAuthors] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [deletingId, setDeletingId] = useState<string | null>(null); // inline silme onayı
   
   const [showAdd, setShowAdd] = useState(false);
   const [editingPostId, setEditingPostId] = useState<string | null>(null);
@@ -364,39 +367,40 @@ export default function ContentPage() {
         body: JSON.stringify(payload),
       });
       if (res.ok) {
-        alert(editingPostId ? "Blog yazısı başarıyla güncellendi!" : "Blog yazısı başarıyla eklendi ve yayınlandı!");
+        toast(editingPostId ? "Blog yazısı başarıyla güncellendi!" : "Blog yazısı yayınlandı!", "success");
         handleCancel();
         fetchPosts();
       } else {
         try {
           const errData = await res.json();
-          alert("Kaydedilirken hata oluştu: " + (errData.error || "Bilinmeyen sunucu hatası"));
+          toast("Kaydedilemedi: " + (errData.error || "Sunucu hatası"), "error");
         } catch {
-          alert("Kaydedilirken hata oluştu (Sunucu yanıt vermedi).");
+          toast("Kaydedilemedi — sunucu yanıt vermedi.", "error");
         }
       }
     } catch (e) {
-      alert("Sunucu hatası.");
+      toast("Sunucu hatası oluştu.", "error");
     }
   };
 
   const handleDelete = async (id: string) => {
-    if (!window.confirm("Bu içeriği silmek istediğinize emin misiniz? Geri alınamaz.")) return;
     try {
       const res = await fetch(`/api/posts?id=${id}`, { method: "DELETE" });
       if (res.ok) {
-        fetchPosts(); // Refresh list automatically
+        toast("Yazı silindi.", "success");
+        setDeletingId(null);
+        fetchPosts();
       } else {
-        alert("Silinirken hata oluştu (Sunucu Hatası)");
+        toast("Silinemedi — sunucu hatası.", "error");
       }
-    } catch (e) {
-      alert("Silinirken hata oluştu (Ağ Hatası)");
+    } catch {
+      toast("Silinemedi — ağ hatası.", "error");
     }
   };
 
   const handleGenerateAI = async () => {
     if (!aiTopic) {
-      alert("Lütfen yapay zeka için bir konu veya taslak girin.");
+      toast("Lütfen bir konu veya taslak girin.", "warning");
       return;
     }
     
@@ -415,13 +419,13 @@ export default function ContentPage() {
       
       if (!res.ok) {
         const contentType = res.headers.get("content-type");
-        if (contentType && contentType.includes("application/json")) {
+        if (contentType?.includes("application/json")) {
           const err = await res.json();
-          alert(err.error || "Yapay zeka hatası (Limit aşımı vs.).");
+          toast(err.error || "Yapay zeka hatası (limit aşımı vb.)", "error");
         } else {
           const errText = await res.text();
           console.error("Sunucu Hatası (HTML):", errText);
-          alert("Next.js sunucu hatası döndürdü, terminali kontrol edin.");
+          toast("Sunucu hatası — terminali kontrol et.", "error");
         }
         return;
       }
@@ -447,11 +451,9 @@ export default function ContentPage() {
         return nextState;
       });
       
-      alert("Yapay Zeka makaleyi başarıyla üretti! Lütfen formdaki eksik kısımları (Kategori, Yazar vb.) kontrol edip Yayınla butonuna basın.");
-
-      
+      toast("Claude makaleyi yazdı! Kategori ve Yazar alanlarını kontrol edip yayınlayabilirsiniz.", "success");
     } catch (e) {
-      alert("İçerik üretilirken hata oluştu.");
+      toast("İçerik üretilirken hata oluştu.", "error");
     } finally {
       setIsGenerating(false);
     }
@@ -459,11 +461,11 @@ export default function ContentPage() {
 
   const handleEditAI = async () => {
     if (!aiEditInstruction) {
-      alert("Lütfen yapay zekaya bir düzenleme talimatı verin.");
+      toast("Lütfen bir düzenleme talimatı girin.", "warning");
       return;
     }
     if (!newPost.content || newPost.content.length < 10) {
-      alert("Düzenlenecek yeterli içerik bulunmuyor.");
+      toast("Düzenlenecek yeterli içerik yok.", "warning");
       return;
     }
     
@@ -480,16 +482,14 @@ export default function ContentPage() {
       
       const data = await res.json();
       if (!res.ok) {
-        alert(data.error || "Yapay zeka düzenleme hatası.");
+        toast(data.error || "Yapay zeka düzenleme hatası.", "error");
         return;
       }
-      
       setNewPost(prev => ({ ...prev, content: data.optimizedContent }));
       setAiEditInstruction("");
-      alert("İçerik yapay zeka tarafından başarıyla güncellendi!");
-      
-    } catch (e) {
-      alert("İçerik düzenlenirken hata oluştu.");
+      toast("İçerik Claude tarafından güncellendi.", "success");
+    } catch {
+      toast("İçerik düzenlenirken hata oluştu.", "error");
     } finally {
       setIsAiEditing(false);
     }
@@ -497,8 +497,8 @@ export default function ContentPage() {
 
   const handleAnalyzeSEO = async () => {
     if (!newPost.focusKeyword || !newPost.content || !newPost.title) {
-        alert("Gelişmiş analiz için Başlık, İçerik ve Odak Anahtar Kelime zorunludur."); 
-        return;
+      toast("Analiz için Başlık, İçerik ve Odak Kelime zorunludur.", "warning");
+      return;
     }
     setIsAnalyzing(true);
     try {
@@ -512,10 +512,10 @@ export default function ContentPage() {
             })
         });
         const data = await res.json();
-        if (res.ok) setAiAnalysisResult(data);
-        else alert(data.error);
-    } catch (e) {
-        alert("Analiz sırasında hata oluştu.");
+        if (res.ok) { setAiAnalysisResult(data); toast("SEO analizi tamamlandı.", "success"); }
+        else toast(data.error || "Analiz hatası.", "error");
+    } catch {
+        toast("Analiz sırasında hata oluştu.", "error");
     } finally {
         setIsAnalyzing(false);
     }
@@ -529,7 +529,7 @@ export default function ContentPage() {
         <div>
           <span className="text-tertiary font-label text-[10px] tracking-[0.3em] uppercase block mb-2">Manevi Yönetim</span>
           <h2 className="font-headline text-4xl font-light text-primary tracking-tight">Görünüm ve İçerik Yönetimi</h2>
-          <p className="text-sm text-on-surface-variant mt-2 font-light">Gemini AI entegrasyonu ve zengin metin editörü ile blog içerikleri yönetin.</p>
+          <p className="text-sm text-on-surface-variant mt-2 font-light">Claude AI entegrasyonu ve zengin metin editörü ile blog içerikleri yönetin.</p>
         </div>
         <button 
           onClick={() => showAdd ? handleCancel() : setShowAdd(true)}
@@ -550,10 +550,10 @@ export default function ContentPage() {
             <div className="relative z-10">
               <h3 className="font-headline text-2xl text-blue-900 font-bold mb-2 flex items-center gap-2">
                 <span className="material-symbols-outlined text-blue-600">auto_awesome</span>
-                Gemini AI Asistanı
+                Claude AI Asistanı
               </h3>
               <p className="text-sm text-blue-800/70 mb-6 max-w-2xl">
-                Bireysel umre, ziyaret noktaları veya manevi deneyimler üzerine bir taslak verin. Gemini internette araştırma yapıp Google SEO standartlarında kusursuz bir makaleyi otomatik olarak editörde yazar.
+                Bireysel umre, ziyaret noktaları veya manevi deneyimler üzerine bir konu verin. Claude Opus eğitim verilerindeki güncel bilgilerle Google SEO standartlarında uzun ve kaliteli bir makaleyi otomatik olarak editörde yazar.
               </p>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 max-w-4xl">
@@ -1087,13 +1087,36 @@ export default function ContentPage() {
                 <td className="px-8 py-6 text-sm text-on-surface-variant font-medium">
                   {new Date(post.createdAt).toLocaleDateString('tr-TR')}
                 </td>
-                <td className="px-8 py-6 text-right flex items-center justify-end gap-2 text-nowrap">
-                  <button onClick={() => handleEdit(post)} className="p-2 bg-primary/10 text-primary hover:bg-primary hover:text-white rounded-lg transition-all" title="Yazıyı Düzenle">
-                    <span className="material-symbols-outlined text-lg block">edit</span>
-                  </button>
-                  <button onClick={() => handleDelete(post.id)} className="p-2 bg-error/10 text-error hover:bg-error hover:text-white rounded-lg transition-all" title="Yazıyı Sil">
-                    <span className="material-symbols-outlined text-lg block">delete</span>
-                  </button>
+                <td className="px-8 py-6 text-right">
+                  <div className="flex items-center justify-end gap-2">
+                    {deletingId === post.id ? (
+                      // Inline silme onayı
+                      <div className="flex items-center gap-2 bg-red-50 border border-red-200 rounded-xl px-3 py-2">
+                        <span className="text-xs font-bold text-red-600">Emin misin?</span>
+                        <button
+                          onClick={() => handleDelete(post.id)}
+                          className="px-3 py-1 bg-red-600 text-white text-xs font-bold rounded-lg hover:bg-red-700 transition-colors"
+                        >
+                          Sil
+                        </button>
+                        <button
+                          onClick={() => setDeletingId(null)}
+                          className="px-3 py-1 bg-slate-200 text-slate-700 text-xs font-bold rounded-lg hover:bg-slate-300 transition-colors"
+                        >
+                          İptal
+                        </button>
+                      </div>
+                    ) : (
+                      <>
+                        <button onClick={() => handleEdit(post)} className="p-2 bg-primary/10 text-primary hover:bg-primary hover:text-white rounded-lg transition-all" title="Yazıyı Düzenle">
+                          <span className="material-symbols-outlined text-lg block">edit</span>
+                        </button>
+                        <button onClick={() => setDeletingId(post.id)} className="p-2 bg-error/10 text-error hover:bg-error hover:text-white rounded-lg transition-all" title="Yazıyı Sil">
+                          <span className="material-symbols-outlined text-lg block">delete</span>
+                        </button>
+                      </>
+                    )}
+                  </div>
                 </td>
               </tr>
             ))}

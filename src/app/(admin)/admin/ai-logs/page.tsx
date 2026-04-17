@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
+import { useAdminContext } from "@/components/admin/AdminContext";
 
 type AILog = {
   id: string;
@@ -10,144 +11,170 @@ type AILog = {
   details: string | null;
   imageUrl: string | null;
   createdAt: string;
-  updatedAt: string;
   completedAt: string | null;
 };
 
+const STATUS_CONFIG: Record<string, { label: string; badge: string; dot: string; spinning?: boolean }> = {
+  WRITING_CONTENT:    { label: "Yazıyor",          badge: "bg-blue-50 text-blue-700",    dot: "bg-blue-500",    spinning: true },
+  GENERATING_IMAGES:  { label: "Görsel Üretiyor",  badge: "bg-purple-50 text-purple-700",dot: "bg-purple-500",  spinning: true },
+  INTERNET_SEARCH:    { label: "Araştırıyor",       badge: "bg-amber-50 text-amber-700",  dot: "bg-amber-500",   spinning: true },
+  RESEARCHING:        { label: "Araştırıyor",       badge: "bg-amber-50 text-amber-700",  dot: "bg-amber-500",   spinning: true },
+  DRAFT_READY:        { label: "Onay Bekliyor",     badge: "bg-yellow-50 text-yellow-700",dot: "bg-yellow-500"  },
+  COMPLETED:          { label: "Yayınlandı",        badge: "bg-emerald-50 text-emerald-700", dot: "bg-emerald-500" },
+  FAILED:             { label: "Başarısız",         badge: "bg-red-50 text-red-700",      dot: "bg-red-500"     },
+};
+
+function StatusBadge({ status }: { status: string }) {
+  const cfg = STATUS_CONFIG[status] ?? { label: status, badge: "bg-slate-100 text-slate-600", dot: "bg-slate-400" };
+  return (
+    <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${cfg.badge}`}>
+      <span className={`w-1.5 h-1.5 rounded-full shrink-0 ${cfg.dot} ${cfg.spinning ? 'animate-pulse' : ''}`} />
+      {cfg.label}
+    </span>
+  );
+}
+
 export default function AILogsPage() {
+  const { toast } = useAdminContext();
   const [logs, setLogs] = useState<AILog[]>([]);
   const [loading, setLoading] = useState(true);
+  const [triggering, setTriggering] = useState(false);
 
   const fetchLogs = async () => {
     try {
       const res = await fetch("/api/admin/ai-logs");
       const data = await res.json();
-      if (data.logs) {
-        setLogs(data.logs);
-      }
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
+      if (data.logs) setLogs(data.logs);
+    } catch {}
+    finally { setLoading(false); }
   };
 
   useEffect(() => {
     fetchLogs();
-    const interval = setInterval(fetchLogs, 5000); // refresh every 5 seconds
+    const interval = setInterval(fetchLogs, 5000);
     return () => clearInterval(interval);
   }, []);
 
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case "STARTING":
-      case "RESEARCHING":
-      case "OUTLINING":
-      case "INTERNET_SEARCH":
-      case "WRITING_CONTENT":
-      case "GENERATING_IMAGES":
-        return <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded w-fit flex items-center gap-1"><span className="animate-spin w-3 h-3 border-2 border-blue-600 border-t-transparent rounded-full"></span>{status}</span>;
-      case "DRAFT_READY":
-        return <span className="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded w-fit flex items-center gap-1"><span className="material-symbols-outlined text-[14px]">pause_circle</span>Yayına Hazır</span>;
-      case "COMPLETED":
-        return <span className="bg-green-100 text-green-800 text-xs px-2 py-1 rounded w-fit">COMPLETED</span>;
-      case "FAILED":
-        return <span className="bg-red-100 text-red-800 text-xs px-2 py-1 rounded w-fit">FAILED</span>;
-      default:
-        return <span className="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded w-fit">{status}</span>;
+  const handleTrigger = async () => {
+    setTriggering(true);
+    try {
+      const res = await fetch('/api/admin/trigger-ai', { method: 'POST' });
+      const data = await res.json();
+      if (data.success) {
+        toast("Pipeline ateşlendi! Loglar kısa sürede görünecek.", "success");
+        setTimeout(fetchLogs, 2000);
+      } else {
+        toast("Tetikleme başarısız.", "error");
+      }
+    } catch {
+      toast("Ağ hatası.", "error");
+    } finally {
+      setTriggering(false);
     }
   };
 
+  const running = logs.some(l => !['COMPLETED','FAILED'].includes(l.status));
+
   return (
-    <div className="p-8 max-w-7xl mx-auto min-h-screen pb-24">
-      <div className="mb-10 p-8 rounded-3xl bg-gradient-to-r from-slate-900 via-[#0B2545] to-slate-900 border border-white/10 shadow-2xl relative overflow-hidden">
-        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight text-white mb-3">AI Otonom İzleme Merkezi</h1>
-            <p className="text-blue-100/80 max-w-2xl text-lg font-light">
-              Günde 3 kez çalışan otonom SEO yapay zekasının canlı çalışma sürecini (İnternet Taraması, Görsel Çizimi, Metin Yazımı) buradan saniye saniye izleyebilirsiniz.
-            </p>
-          </div>
-          <button 
-            onClick={async () => {
-              const res = await fetch('/api/admin/trigger-ai', { method: 'POST' });
-              const data = await res.json();
-              if(data.success) alert("🚀 AI Ateşlendi! 1 dakika içinde loglar düşmeye başlayacak.");
-              else alert("Hata oluştu.");
-            }}
-            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-2xl font-bold transition-all shadow-lg hover:shadow-blue-500/30 whitespace-nowrap active:scale-95"
-          >
-            <span className="material-symbols-outlined text-[20px]">bolt</span>
-            Hemen AI Blog Üret (Zorla)
-          </button>
+    <div className="p-6 lg:p-8 max-w-7xl mx-auto space-y-6">
+
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-slate-900">AI Blog Motoru</h1>
+          <p className="text-sm text-slate-500 mt-0.5">
+            Claude Opus ile otomatik blog üretimi — günde 3 kez çalışır
+          </p>
         </div>
-        <div className="absolute -right-20 -top-20 opacity-20 hover:opacity-40 transition-opacity blur-sm">
-          <span className="material-symbols-outlined text-[300px] text-blue-300">memory</span>
-        </div>
+        <button
+          onClick={handleTrigger}
+          disabled={triggering || running}
+          className="flex items-center gap-2 bg-[#003781] hover:bg-[#002a5e] disabled:opacity-50 disabled:cursor-not-allowed text-white px-4 py-2.5 rounded-xl font-semibold text-sm transition-colors shadow-sm"
+        >
+          <span className={`material-symbols-outlined text-[18px] ${triggering ? 'animate-spin' : ''}`}>
+            {triggering ? 'sync' : 'bolt'}
+          </span>
+          {triggering ? 'Tetikleniyor...' : running ? 'Çalışıyor' : 'Şimdi Üret'}
+        </button>
       </div>
 
-      {loading && logs.length === 0 ? (
-        <div className="flex justify-center p-12">
-          <span className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full"></span>
-        </div>
-      ) : (
-        <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 p-6">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold flex items-center gap-2">
-              <span className="material-symbols-outlined text-green-500">sensors</span>
-              Canlı Aktivite Kayıtları
-            </h2>
-            <div className="flex items-center gap-2 text-sm text-slate-500 font-medium">
-              <span className="relative flex h-3 w-3">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
-              </span>
-              Canlı Bağlantı Aktif
-            </div>
-          </div>
-
-          <div className="space-y-4">
-            {logs.length === 0 ? (
-              <p className="text-slate-500 py-8 text-center italic">Henüz kaydedilmiş bir AI aktivitesi bulunmuyor.</p>
-            ) : (
-              logs.map((log) => (
-                <div key={log.id} className="p-5 rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 flex flex-col md:flex-row gap-6 transition-all hover:shadow-md">
-                  <div className="flex-1 flex flex-col gap-3">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        {getStatusBadge(log.status)}
-                        <span className="text-xs text-slate-400 font-medium">{new Date(log.createdAt).toLocaleString('tr-TR')}</span>
-                      </div>
-                    </div>
-                    {log.topic && (
-                      <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100">
-                        {log.topic}
-                      </h3>
-                    )}
-                    {(log.status !== 'COMPLETED' && log.status !== 'FAILED' && log.status !== 'DRAFT_READY') && (
-                      <div className="w-full bg-slate-200 rounded-full h-1.5 dark:bg-slate-800 mt-2">
-                        <div className="bg-blue-600 h-1.5 rounded-full animate-pulse" style={{ width: '60%' }}></div>
-                      </div>
-                    )}
-                    <p className="text-sm text-slate-600 dark:text-slate-400 font-medium bg-white dark:bg-black/20 p-3 rounded-lg border border-slate-100 dark:border-slate-800/50">
-                      {">"} {log.details}
-                    </p>
-                  </div>
-
-                  {log.imageUrl && (
-                    <div className="shrink-0 relative w-full md:w-48 h-32 rounded-xl overflow-hidden shadow border border-slate-200 dark:border-slate-700">
-                      <Image src={log.imageUrl} alt="AI Generated Graphic" fill className="object-cover" />
-                      <div className="absolute bottom-2 left-2 bg-black/60 backdrop-blur-md text-white text-[10px] px-2 py-0.5 rounded uppercase font-bold tracking-wider">
-                        Görsel Üretildi
-                      </div>
-                    </div>
-                  )}
-                </div>
-              ))
-            )}
-          </div>
+      {/* Status banner when running */}
+      {running && (
+        <div className="bg-blue-50 border border-blue-200 rounded-2xl px-5 py-4 flex items-center gap-3">
+          <span className="w-2.5 h-2.5 rounded-full bg-blue-500 animate-pulse shrink-0" />
+          <p className="text-sm font-medium text-blue-800">
+            Pipeline aktif — yazma, görsel üretimi ve yayınlama işlemi devam ediyor
+          </p>
         </div>
       )}
+
+      {/* Logs */}
+      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
+        <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+          <h2 className="font-semibold text-slate-900">Aktivite Geçmişi</h2>
+          <div className="flex items-center gap-2 text-xs text-slate-500 font-medium">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+            </span>
+            Canlı · 5s
+          </div>
+        </div>
+
+        {loading ? (
+          <div className="flex justify-center py-16">
+            <span className="w-7 h-7 border-[3px] border-[#003781] border-t-transparent rounded-full animate-spin" />
+          </div>
+        ) : logs.length === 0 ? (
+          <div className="py-16 flex flex-col items-center text-slate-400">
+            <span className="material-symbols-outlined text-5xl mb-3 opacity-40">history</span>
+            <p className="text-sm font-medium">Henüz AI aktivitesi yok</p>
+            <p className="text-xs mt-1">Yukarıdaki butona basarak ilk blog üretimini başlatın</p>
+          </div>
+        ) : (
+          <div className="divide-y divide-slate-50">
+            {logs.map(log => (
+              <div key={log.id} className="px-6 py-5 flex flex-col md:flex-row gap-4 hover:bg-slate-50/50 transition-colors">
+                <div className="flex-1 space-y-2 min-w-0">
+                  <div className="flex items-center gap-3 flex-wrap">
+                    <StatusBadge status={log.status} />
+                    <span className="text-xs text-slate-400">
+                      {new Date(log.createdAt).toLocaleString('tr-TR')}
+                    </span>
+                    {log.completedAt && (
+                      <span className="text-xs text-slate-400">
+                        · Tamamlandı {new Date(log.completedAt).toLocaleTimeString('tr-TR')}
+                      </span>
+                    )}
+                  </div>
+                  {log.topic && (
+                    <p className="font-semibold text-slate-900 text-sm">{log.topic}</p>
+                  )}
+                  {!['COMPLETED','FAILED'].includes(log.status) && (
+                    <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                      <div className="h-full bg-blue-500 rounded-full animate-pulse" style={{ width: '65%' }} />
+                    </div>
+                  )}
+                  {log.details && (
+                    <p className="text-xs text-slate-500 bg-slate-50 border border-slate-100 rounded-xl px-4 py-3 font-mono leading-relaxed">
+                      {log.details}
+                    </p>
+                  )}
+                </div>
+                {log.imageUrl && (
+                  <div className="shrink-0 relative w-full md:w-44 h-28 rounded-xl overflow-hidden border border-slate-100 shadow-sm">
+                    <Image src={log.imageUrl} alt="AI Generated" fill className="object-cover" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                    <span className="absolute bottom-2 left-2 text-[10px] font-bold text-white uppercase tracking-wider">
+                      Görsel
+                    </span>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

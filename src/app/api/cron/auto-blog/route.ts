@@ -257,7 +257,9 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: 'Yetkisiz' }, { status: 401 });
   }
 
-  const force = new URL(request.url).searchParams.get('force') === 'true';
+  const url = new URL(request.url);
+  const force = url.searchParams.get('force') === 'true';
+  const existingLogId = url.searchParams.get('logId') || null;
 
   // Auto-blog açık mı? (DB ayarı env var'a tercih edilir)
   let autoBlogEnabled = process.env.AUTO_BLOG_ENABLED === 'true';
@@ -282,13 +284,15 @@ export async function GET(request: Request) {
     }
   }
 
-  // Çalışan pipeline varsa durma (force modunda bile çakışmayı önle)
-  const running = await prisma.aILog.findFirst({
-    where: { status: { notIn: ['COMPLETED', 'FAILED'] } },
-    orderBy: { createdAt: 'desc' },
-  });
-  if (running) {
-    return NextResponse.json({ status: 'ALREADY_RUNNING', logId: running.id, topic: running.topic });
+  // Çalışan pipeline var mı? (existingLogId varsa o zaten "çalışıyor" sayılır)
+  if (!existingLogId) {
+    const running = await prisma.aILog.findFirst({
+      where: { status: { notIn: ['COMPLETED', 'FAILED'] } },
+      orderBy: { createdAt: 'desc' },
+    });
+    if (running) {
+      return NextResponse.json({ status: 'ALREADY_RUNNING', logId: running.id, topic: running.topic });
+    }
   }
 
   // ── Anahtar Kelime Seçimi ─────────────────────────────────────────────────
@@ -307,14 +311,26 @@ export async function GET(request: Request) {
     .slice(0, 8)
     .join(', ');
 
-  // ── Log Oluştur ───────────────────────────────────────────────────────────
-  const log = await prisma.aILog.create({
-    data: {
-      status: 'INTERNET_SEARCH',
-      topic: seedKeyword,
-      details: `"${seedKeyword}" anahtar kelimesi için araştırma başlıyor... (Cluster: ${cluster})`,
-    },
-  });
+  // ── Log: dışarıdan geldiyse güncelle, yoksa yeni oluştur ─────────────────
+  let log: { id: string };
+  if (existingLogId) {
+    log = await prisma.aILog.update({
+      where: { id: existingLogId },
+      data: {
+        status: 'INTERNET_SEARCH',
+        topic: seedKeyword,
+        details: `"${seedKeyword}" için araştırma başlıyor... (Cluster: ${cluster})`,
+      },
+    });
+  } else {
+    log = await prisma.aILog.create({
+      data: {
+        status: 'INTERNET_SEARCH',
+        topic: seedKeyword,
+        details: `"${seedKeyword}" anahtar kelimesi için araştırma başlıyor... (Cluster: ${cluster})`,
+      },
+    });
+  }
 
   const setStatus = (status: string, details: string) =>
     prisma.aILog.update({ where: { id: log.id }, data: { status, details } }).catch(() => {});

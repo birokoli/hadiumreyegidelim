@@ -18,6 +18,9 @@ const DEFAULTS = {
   WHATSAPP_MESSAGE: "Selamun Aleykum, Müsait misiniz? Umre paketleriniz için fiyat bilgisi alabilir miyim?",
   BRAND_PRIMARY: "#003781",
   BRAND_SECONDARY: "#236B40",
+  BRAND_SURFACE: "#f9f9f9",
+  BRAND_SURFACE_CARD: "#ffffff",
+  BRAND_TEXT: "#1a1c1c",
   SITE_LOGO: "/logo.png",
   BUTTON_RADIUS: "1rem",
   HOME_CTA: "NİYET ET VE PLANLA",
@@ -179,6 +182,39 @@ export default function SettingsPage() {
                   <input type="color" value={settings.BRAND_SECONDARY} onChange={e => handleChange('BRAND_SECONDARY', e.target.value)} className="w-12 h-12 rounded cursor-pointer border-0 p-0" />
                   <input type="text" value={settings.BRAND_SECONDARY} onChange={e => handleChange('BRAND_SECONDARY', e.target.value)} className={`${inp} font-mono uppercase`} />
                 </div>
+              </div>
+              <div>
+                <label className={lbl}>Arkaplan Rengi (Surface)</label>
+                <div className="flex items-center gap-3">
+                  <input type="color" value={settings.BRAND_SURFACE || '#f9f9f9'} onChange={e => handleChange('BRAND_SURFACE', e.target.value)} className="w-12 h-12 rounded cursor-pointer border-0 p-0" />
+                  <input type="text" value={settings.BRAND_SURFACE || '#f9f9f9'} onChange={e => handleChange('BRAND_SURFACE', e.target.value)} className={`${inp} font-mono uppercase`} />
+                </div>
+              </div>
+              <div>
+                <label className={lbl}>Kart Arkaplan (Surface Card)</label>
+                <div className="flex items-center gap-3">
+                  <input type="color" value={settings.BRAND_SURFACE_CARD || '#ffffff'} onChange={e => handleChange('BRAND_SURFACE_CARD', e.target.value)} className="w-12 h-12 rounded cursor-pointer border-0 p-0" />
+                  <input type="text" value={settings.BRAND_SURFACE_CARD || '#ffffff'} onChange={e => handleChange('BRAND_SURFACE_CARD', e.target.value)} className={`${inp} font-mono uppercase`} />
+                </div>
+              </div>
+              <div>
+                <label className={lbl}>Metin Rengi (Text)</label>
+                <div className="flex items-center gap-3">
+                  <input type="color" value={settings.BRAND_TEXT || '#1a1c1c'} onChange={e => handleChange('BRAND_TEXT', e.target.value)} className="w-12 h-12 rounded cursor-pointer border-0 p-0" />
+                  <input type="text" value={settings.BRAND_TEXT || '#1a1c1c'} onChange={e => handleChange('BRAND_TEXT', e.target.value)} className={`${inp} font-mono uppercase`} />
+                </div>
+              </div>
+              <div className="flex items-end">
+                <button type="button" onClick={() => {
+                  handleChange('BRAND_PRIMARY', '#003781');
+                  handleChange('BRAND_SECONDARY', '#236B40');
+                  handleChange('BRAND_SURFACE', '#f9f9f9');
+                  handleChange('BRAND_SURFACE_CARD', '#ffffff');
+                  handleChange('BRAND_TEXT', '#1a1c1c');
+                }} className="w-full py-3 px-4 border-2 border-dashed border-outline-variant/30 rounded-xl text-sm text-on-surface-variant hover:border-primary/30 hover:text-primary transition-all font-medium">
+                  <span className="material-symbols-outlined text-[16px] align-middle mr-1">restart_alt</span>
+                  Varsayılana Dön
+                </button>
               </div>
             </div>
             <div>

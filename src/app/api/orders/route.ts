@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { cookies } from 'next/headers';
 import { verifyToken } from '@/lib/jwt';
+import { rateLimit, getClientIp } from '@/lib/rate-limit';
 
 export async function GET() {
   try {
@@ -15,6 +16,15 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+  const ip = getClientIp(request);
+  const { allowed, retryAfterMs } = rateLimit(ip, 'orders', 5, 10 * 60 * 1000);
+  if (!allowed) {
+    return NextResponse.json(
+      { error: 'Çok fazla istek. Lütfen 10 dakika bekleyin.' },
+      { status: 429, headers: { 'Retry-After': String(Math.ceil(retryAfterMs / 1000)) } }
+    );
+  }
+
   try {
     const body = await request.json();
     

@@ -64,6 +64,9 @@ export default async function RootLayout({
 
   const colorPrimary = settings.BRAND_PRIMARY || "#003781";
   const colorSecondary = settings.BRAND_SECONDARY || "#236B40";
+  const colorSurface = settings.BRAND_SURFACE || "#f9f9f9";
+  const colorSurfaceCard = settings.BRAND_SURFACE_CARD || "#ffffff";
+  const colorText = settings.BRAND_TEXT || "#1a1c1c";
   const btnRadius = settings.BUTTON_RADIUS || "1rem";
 
   const jsonLd = [
@@ -133,6 +136,12 @@ export default async function RootLayout({
           :root {
             --color-primary: ${colorPrimary} !important;
             --color-secondary: ${colorSecondary} !important;
+            --color-surface: ${colorSurface} !important;
+            --color-background: ${colorSurface} !important;
+            --color-surface-bright: ${colorSurface} !important;
+            --color-surface-container-lowest: ${colorSurfaceCard} !important;
+            --color-on-surface: ${colorText} !important;
+            --color-on-background: ${colorText} !important;
           }
           
           /* Dynamic Button Radius Enforcement */

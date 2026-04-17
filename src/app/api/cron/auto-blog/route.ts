@@ -106,8 +106,15 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: 'Yetkisiz' }, { status: 401 });
   }
 
-  if (process.env.AUTO_BLOG_ENABLED !== 'true') {
-    return NextResponse.json({ success: true, message: 'Auto-blog devre dışı. AUTO_BLOG_ENABLED=true yapın.' });
+  // Check env var OR DB setting (DB takes precedence so it can be toggled without redeployment)
+  let autoBlogEnabled = process.env.AUTO_BLOG_ENABLED === 'true';
+  try {
+    const dbToggle = await prisma.setting.findUnique({ where: { key: 'AUTO_BLOG_ENABLED' } });
+    if (dbToggle) autoBlogEnabled = dbToggle.value === 'true';
+  } catch {}
+
+  if (!autoBlogEnabled) {
+    return NextResponse.json({ success: true, message: 'Auto-blog devre dışı.' });
   }
 
   if (!process.env.ANTHROPIC_API_KEY) {

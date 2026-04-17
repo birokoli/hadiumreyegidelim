@@ -39,6 +39,8 @@ export default function AILogsPage() {
   const [logs, setLogs] = useState<AILog[]>([]);
   const [loading, setLoading] = useState(true);
   const [triggering, setTriggering] = useState(false);
+  const [autoBlogEnabled, setAutoBlogEnabled] = useState(false);
+  const [togglingEnabled, setTogglingEnabled] = useState(false);
 
   const fetchLogs = async () => {
     try {
@@ -49,8 +51,37 @@ export default function AILogsPage() {
     finally { setLoading(false); }
   };
 
+  const fetchToggleState = async () => {
+    try {
+      const res = await fetch('/api/admin/auto-blog-toggle');
+      const data = await res.json();
+      setAutoBlogEnabled(!!data.enabled);
+    } catch {}
+  };
+
+  const handleToggleEnabled = async () => {
+    setTogglingEnabled(true);
+    try {
+      const res = await fetch('/api/admin/auto-blog-toggle', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ enabled: !autoBlogEnabled }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setAutoBlogEnabled(data.enabled);
+        toast(data.enabled ? 'Auto-blog aktif edildi' : 'Auto-blog durduruldu', 'success');
+      }
+    } catch {
+      toast('Güncelleme başarısız', 'error');
+    } finally {
+      setTogglingEnabled(false);
+    }
+  };
+
   useEffect(() => {
     fetchLogs();
+    fetchToggleState();
     const interval = setInterval(fetchLogs, 5000);
     return () => clearInterval(interval);
   }, []);
@@ -86,16 +117,34 @@ export default function AILogsPage() {
             Claude Opus ile otomatik blog üretimi — günde 3 kez çalışır
           </p>
         </div>
-        <button
-          onClick={handleTrigger}
-          disabled={triggering || running}
-          className="flex items-center gap-2 bg-[#003781] hover:bg-[#002a5e] disabled:opacity-50 disabled:cursor-not-allowed text-white px-4 py-2.5 rounded-xl font-semibold text-sm transition-colors shadow-sm"
-        >
-          <span className={`material-symbols-outlined text-[18px] ${triggering ? 'animate-spin' : ''}`}>
-            {triggering ? 'sync' : 'bolt'}
-          </span>
-          {triggering ? 'Tetikleniyor...' : running ? 'Çalışıyor' : 'Şimdi Üret'}
-        </button>
+        <div className="flex items-center gap-3">
+          {/* Auto-blog enable/disable toggle */}
+          <button
+            onClick={handleToggleEnabled}
+            disabled={togglingEnabled}
+            title={autoBlogEnabled ? 'Otomatik üretimi durdur' : 'Otomatik üretimi aktif et'}
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-sm transition-colors shadow-sm border ${
+              autoBlogEnabled
+                ? 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100'
+                : 'bg-slate-100 text-slate-500 border-slate-200 hover:bg-slate-200'
+            } disabled:opacity-50 disabled:cursor-not-allowed`}
+          >
+            <span className={`material-symbols-outlined text-[18px] ${togglingEnabled ? 'animate-spin' : ''}`}>
+              {togglingEnabled ? 'sync' : autoBlogEnabled ? 'toggle_on' : 'toggle_off'}
+            </span>
+            {autoBlogEnabled ? 'Otomatik Açık' : 'Otomatik Kapalı'}
+          </button>
+          <button
+            onClick={handleTrigger}
+            disabled={triggering || running}
+            className="flex items-center gap-2 bg-[#003781] hover:bg-[#002a5e] disabled:opacity-50 disabled:cursor-not-allowed text-white px-4 py-2.5 rounded-xl font-semibold text-sm transition-colors shadow-sm"
+          >
+            <span className={`material-symbols-outlined text-[18px] ${triggering ? 'animate-spin' : ''}`}>
+              {triggering ? 'sync' : 'bolt'}
+            </span>
+            {triggering ? 'Tetikleniyor...' : running ? 'Çalışıyor' : 'Şimdi Üret'}
+          </button>
+        </div>
       </div>
 
       {/* Status banner when running */}

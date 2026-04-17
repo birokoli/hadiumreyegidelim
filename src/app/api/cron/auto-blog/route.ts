@@ -1,421 +1,346 @@
 import { NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
-import { GoogleGenerativeAI, SchemaType } from '@google/generative-ai';
+import Anthropic from '@anthropic-ai/sdk';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 import { prisma } from '@/lib/prisma';
+import { generateAndUploadImage } from '@/lib/generate-image';
 
 export const dynamic = 'force-dynamic';
-export const maxDuration = 300; // 5 minutes max duration for Vercel
+export const maxDuration = 300;
 
+// Claude — blog yazımı ve görsel prompt üretimi için
+const claude = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+
+// Gemini — sadece görsel prompt JSON'unu structured çıktı olarak almak için (opsiyonel fallback)
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
 
-// RapidAPI kullanarak trend kelimeleri getiren fonksiyon
-async function fetchTrendingKeywords(seed: string = "umre") {
-  const rapidApiKey = process.env.RAPIDAPI_KEY || 'ad6f06ba50msh1e1f35b839023acp128c19jsnbc1187c6fff0';
-  const url = `https://google-keyword-insight1.p.rapidapi.com/keysuggest?keyword=${encodeURIComponent(seed)}&location=tr&lang=tr`;
-  const options = {
-    method: 'GET',
-    headers: {
-      'X-RapidAPI-Host': 'google-keyword-insight1.p.rapidapi.com',
-      'X-RapidAPI-Key': rapidApiKey
-    }
-  };
+const SEED_POOL = [
+  "2026 hac sonrası umre fiyatları",
+  "bireysel umre nasıl planlanır",
+  "umre vizesi nasıl alınır 2026",
+  "mekke otel tavsiye kabe yakını",
+  "medine ziyaret rehberi",
+  "umre hazırlık listesi",
+  "umre için en iyi ay",
+  "bireysel umre avantajları tur şirketine gerek yok",
+  "suudi arabistan seyahat ipuçları",
+  "umre maliyeti 2026 gerçekçi bütçe",
+];
 
+// 429 / 503 hatalarında bekleyip tekrar dener
+async function retryable<T>(fn: () => Promise<T>, label = ''): Promise<T> {
+  const MAX = 5;
+  let lastErr: any;
+  for (let i = 1; i <= MAX; i++) {
+    try {
+      return await fn();
+    } catch (err: any) {
+      lastErr = err;
+      const msg: string = err?.message ?? '';
+      if (msg.includes('429') || msg.includes('503') || msg.includes('overloaded')) {
+        console.warn(`[auto-blog] ${label} retry ${i}/${MAX}: ${msg}`);
+        await new Promise(r => setTimeout(r, i * 4000));
+        continue;
+      }
+      throw err;
+    }
+  }
+  throw lastErr;
+}
+
+// Ham metinden ilk { ... } bloğunu çıkarır
+function extractJsonObject(raw: string): any {
+  const start = raw.indexOf('{');
+  const end = raw.lastIndexOf('}');
+  if (start === -1 || end <= start) throw new Error(`JSON objesi bulunamadı. İlk 300 karakter: ${raw.slice(0, 300)}`);
+  return JSON.parse(raw.slice(start, end + 1));
+}
+
+// Ham metinden ilk [ ... ] bloğunu çıkarır
+function extractJsonArray(raw: string): any[] {
+  const start = raw.indexOf('[');
+  const end = raw.lastIndexOf(']');
+  if (start === -1 || end <= start) return [];
+  try { return JSON.parse(raw.slice(start, end + 1)); } catch { return []; }
+}
+
+// Başlıkların kapanış tag'ından hemen sonra resim tag'i ekler
+function injectImages(html: string, images: { heading: string; url: string }[]): string {
+  for (const { heading, url } of images) {
+    const idx = html.toLowerCase().indexOf(`>${heading.toLowerCase()}<`);
+    if (idx === -1) continue;
+    const closeH = html.indexOf('</h', idx);
+    if (closeH === -1) continue;
+    const closeEnd = html.indexOf('>', closeH) + 1;
+    const img = `\n<img src="${url}" alt="${heading}" style="width:100%;max-width:800px;margin:28px auto;border-radius:14px;display:block;box-shadow:0 6px 24px rgba(0,0,0,0.1);" loading="lazy" />\n`;
+    html = html.slice(0, closeEnd) + img + html.slice(closeEnd);
+  }
+  return html;
+}
+
+async function fetchTrendingKeywords(seed: string): Promise<string[]> {
+  const key = process.env.RAPIDAPI_KEY;
+  if (!key) return [];
   try {
-    const response = await fetch(url, options);
-    const result = await response.json();
-    return Array.isArray(result) ? result : [];
-  } catch (error) {
-    console.error("RapidAPI Error:", error);
+    const res = await fetch(
+      `https://google-keyword-insight1.p.rapidapi.com/keysuggest?keyword=${encodeURIComponent(seed)}&location=tr&lang=tr`,
+      { headers: { 'X-RapidAPI-Key': key, 'X-RapidAPI-Host': 'google-keyword-insight1.p.rapidapi.com' } }
+    );
+    if (!res.ok) return [];
+    const data = await res.json();
+    return Array.isArray(data)
+      ? data.filter((d: any) => d?.text && d.text.length > 4).map((d: any) => d.text as string)
+      : [];
+  } catch (e) {
+    console.error('[auto-blog] RapidAPI error:', e);
     return [];
   }
 }
 
-// API Yoğunlukları (503/429) durumunda bekleme mekanizması (ASLA MODEL DÜŞÜRMEZ)
-async function generateContentWithFallback(modelOpts: any, generateOpts: any, maxRetries = 8) {
-  const modelName = modelOpts.model || "gemini-3.1-pro";
-  let lastError: any = null;
-
-  for (let attempt = 1; attempt <= maxRetries; attempt++) {
-    try {
-      const model = genAI.getGenerativeModel(modelOpts);
-      return await model.generateContent(generateOpts);
-    } catch (error: any) {
-      lastError = error;
-      console.warn(`[Auto-Blog] AI Hata (Model: ${modelName}, Deneme: ${attempt}/${maxRetries}): ${error.message}`);
-      
-      if (error.message && (error.message.includes('503') || error.message.includes('429'))) {
-         // Sadece bekleyip tekrar deniyoruz (3s, 6s, 9s...) - ASLA modeli düşürme
-         await new Promise(res => setTimeout(res, attempt * 3000));
-      } else {
-         // Başka bir hataysa döngüyü kır ve patlat
-         throw error; 
-      }
-    }
-  }
-  throw new Error(`Google API sunucuları ${maxRetries} kez denendi fakat sonuç alınamadı. Son Hata: ${lastError?.message}`);
-}
-
+// ─────────────────────────────────────────────
+// Ana GET handler — Vercel Cron veya manuel trigger tarafından çağrılır
+// ─────────────────────────────────────────────
 export async function GET(request: Request) {
-  let currentAiLogId: string | null = null;
+  const authHeader = request.headers.get('authorization');
+  if (process.env.CRON_SECRET && authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+    return NextResponse.json({ error: 'Yetkisiz' }, { status: 401 });
+  }
+
+  if (process.env.AUTO_BLOG_ENABLED !== 'true') {
+    return NextResponse.json({ success: true, message: 'Auto-blog devre dışı. AUTO_BLOG_ENABLED=true yapın.' });
+  }
+
+  if (!process.env.ANTHROPIC_API_KEY) {
+    return NextResponse.json({ error: 'ANTHROPIC_API_KEY eksik' }, { status: 500 });
+  }
+
+  // Halihazırda çalışan bir işlem varsa başlama
+  const running = await prisma.aILog.findFirst({
+    where: { status: { notIn: ['COMPLETED', 'FAILED'] } },
+    orderBy: { createdAt: 'desc' },
+  });
+  if (running) {
+    return NextResponse.json({ status: 'ALREADY_RUNNING', logId: running.id, topic: running.topic });
+  }
+
+  // ── Anahtar Kelime Seçimi ──────────────────
+  const seed = SEED_POOL[Math.floor(Math.random() * SEED_POOL.length)];
+  const trendingKeywords = await fetchTrendingKeywords(seed);
+
+  const usedKeywords = new Set(
+    (await prisma.post.findMany({ select: { focusKeyword: true } }))
+      .map((p: any) => p.focusKeyword?.trim().toLowerCase())
+      .filter(Boolean)
+  );
+
+  const validKeywords = trendingKeywords.filter(k => {
+    const lower = k.toLowerCase();
+    return (
+      !usedKeywords.has(lower) &&
+      !lower.includes('2022') &&
+      !lower.includes('2023') &&
+      !lower.includes('2024')
+    );
+  });
+  const selectedKeyword = validKeywords[0] ?? `bireysel umre ${new Date().getFullYear()}`;
+
+  // ── Log Oluştur ────────────────────────────
+  const log = await prisma.aILog.create({
+    data: {
+      status: 'WRITING_CONTENT',
+      topic: selectedKeyword,
+      details: `"${selectedKeyword}" için Claude makale yazıyor...`,
+    },
+  });
+
+  const setStatus = (status: string, details: string) =>
+    prisma.aILog.update({ where: { id: log.id }, data: { status, details } }).catch(() => {});
+
   try {
-    const authHeader = request.headers.get('authorization');
-    if (process.env.CRON_SECRET && authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
+    const currentYear = new Date().getFullYear();
+    const [categories, authors] = await Promise.all([
+      prisma.category.findMany({ select: { id: true, name: true } }),
+      prisma.author.findMany({ select: { id: true, name: true, expertise: true } }),
+    ]);
 
-    if (!process.env.GEMINI_API_KEY) {
-      return NextResponse.json({ error: 'Gemini API key is missing' }, { status: 500 });
-    }
-
-    const url = new URL(request.url);
-    const phase = url.searchParams.get('phase');
-
-    const SEED_POOL = [
-      "2026 Hac sezonu bitti: Peki şimdi Umre fiyatları ne durumda?",
-      "Hac yoğunluğundan hemen sonra Umreye gitmenin kimsenin bilmediği avantajları",
-      "2026'da yenilenen Mescid-i Haram kuralları neleri değiştirdi?",
-      "Hacılar döndükten sonra Mekke'deki ilk sakin haftayı yakalama taktikleri",
-      "Ekim-Kasım 2026 Umre planı: Hava nasıl, kalabalık ne alemde?",
-      "Tur şirketine para vermeden baştan sona Bireysel Umre nasıl planlanır?",
-      "E-Vize ile bireysel Umre yapmanın adım adım ve hatasız rehberi",
-      "Booking veya Agoda'dan Kabe manzaralı ucuz otel kapatma taktikleri",
-      "Kendi programını yapmanın en büyük avantajı: İstediğin zaman ibadet özgürlüğü",
-      "Mekke ve Medine'deki eczane veya marketlerde uluslararası standartlarda bebek maması ve bezi temini",
-      "Bireysel planlamalarda Mekke ve Medine arasındaki gün dağılımı en ideal şekilde nasıl ayarlanmalıdır?"
-    ];
-    
-    let activeLog = await prisma.aILog.findFirst({
-       where: { status: { notIn: ['COMPLETED', 'FAILED'] } },
-       orderBy: { createdAt: 'desc' }
-    });
-
-    if (phase === 'start' || (!phase && !activeLog)) {
-         if (activeLog && activeLog.status !== 'FAILED') {
-            return NextResponse.json({ status: 'ALREADY_RUNNING', logId: activeLog.id });
-         }
-         
-         const existingPosts = await prisma.post.findMany({ select: { focusKeyword: true } });
-         const usedKeywords = existingPosts.map((p: any) => p.focusKeyword?.trim().toLowerCase());
-         const randomSeed = SEED_POOL[Math.floor(Math.random() * SEED_POOL.length)];
-         const trendingData = await fetchTrendingKeywords(randomSeed);
-         
-         const validKeywords = trendingData.filter((item: any) => {
-           if (!item || !item.text) return false;
-           const t = item.text.toLowerCase();
-           return !t.includes("2023") && !t.includes("2024") && !t.includes("2022") && t.length > 5;
-         });
-
-         let selectedKeyword: string | null = null;
-         for (const item of validKeywords) {
-           if (!usedKeywords.includes(item.text.toLowerCase())) {
-             selectedKeyword = item.text;
-             break;
-           }
-         }
-         if (!selectedKeyword) selectedKeyword = "umre turlari " + new Date().getFullYear();
-
-         const newLog = await prisma.aILog.create({
-           data: { 
-             status: 'RESEARCHING', 
-             topic: selectedKeyword,
-             details: `Hedef başlık: "${selectedKeyword}". Uluslararası kaynaklardan ve otoritelerden derinlemesine bilgi toplanıyor...` 
-           }
-         });
-         
-         return NextResponse.json({ success: true, phase: 'start', log: newLog });
-    }
-
-    if (!activeLog) {
-       return NextResponse.json({ error: 'No active AI Log process found to continue' }, { status: 400 });
-    }
-    currentAiLogId = activeLog.id;
-
-    if (phase === 'outline') {
-       if (activeLog.status !== 'RESEARCHING') return NextResponse.json({ status: activeLog.status });
-       await prisma.aILog.update({
-          where: { id: activeLog.id },
-          data: {
-            status: 'INTERNET_SEARCH',
-            details: `İnternet taraması tamamlandı, rakiplerin içerik analizleri yapıldı. Yazının zihinsel mimarisi çıkartılıyor...`
-          }
-       });
-       return NextResponse.json({ success: true, phase: 'outline' });
-    }
-
-    if (phase === 'draft' || (!phase && activeLog)) {
-       if (activeLog.status === 'DRAFT_READY' || activeLog.status === 'COMPLETED') return NextResponse.json({ status: activeLog.status });
-       
-       await prisma.aILog.update({
-          where: { id: activeLog.id },
-          data: { status: 'WRITING_CONTENT', details: `Metin yazımı ve tasarım promptları oluşturuluyor...` }
-       });
-
-       const categories = await prisma.category.findMany({ select: { id: true, name: true } });
-       const authors = await prisma.author.findMany({ select: { id: true, name: true } });
-       const currentYear = new Date().getFullYear();
-       const selectedKeyword = activeLog.topic || "umre";
-       const keywordsString = selectedKeyword + ", bireysel umre, umre turları";
-
-       const keywordsString = selectedKeyword + ", bireysel umre, umre turları";
-
-       const blogPrompt = `Sen, Suudi Arabistan'da uzun yıllar yaşamış, Mekke ve Medine'nin tüm pratik detaylarına hakim, üst düzey (VIP) ve Bireysel Umre organizasyonları konusunda uzmanlaşmış kıdemli bir İslami Seyahat Editörüsün. Yazdığın içerikler "Google Faydalı İçerik (Helpful Content)" standartlarının zirvesindedir. Okuyucuya asla internette bulunabilecek sıradan, mekanik ve sığ bilgileri vermezsin; tam aksine, sanki elinde bir kahve ile karşısındaki dostuna tavsiyeler veren bir yol arkadaşı gibi, tamamıyla (%100) YALIN, İNSANİ VE İÇTEN bir üslupla (biz dili/sen dili) yazarsın.
+    // ── FAZ 1: Claude ile blog içeriği yaz ────
+    // claude-opus-4-6 veya claude-sonnet-4-6 kullanılabilir.
+    // Kalite önceliği: opus. Hız/maliyet önceliği: sonnet.
+    const blogPrompt = `Sen, Suudi Arabistan'da uzun yıllar yaşamış, Mekke ve Medine'nin tüm pratik detaylarına hakim, üst düzey (VIP) ve Bireysel Umre organizasyonlarında uzmanlaşmış kıdemli bir İslami Seyahat Editörüsün.
 
 Odak Anahtar Kelime: "${selectedKeyword}"
-Ek Anahtar Kelimeler: "${keywordsString}"
+Ek Anahtar Kelimeler: "${selectedKeyword}, bireysel umre, umre turları ${currentYear}"
 Mevcut Kategoriler: ${JSON.stringify(categories)}
 Mevcut Yazarlar: ${JSON.stringify(authors)}
+Güncel Yıl: ${currentYear}
 
-YASAKLI YAPAY ZEKA JARGONU VE ÜSLUP (ÇOK ÖNEMLİ!):
-- ŞU KELİMELERİ ASLA KULLANMA: "Sonuç olarak", "özetlemek gerekirse", "bu makalede", "büyüleyici", "dalış yapalım", "gerçek bir mücevherdir", "unutulmamalıdır ki", "eşsiz", "hayati önem taşır", "gerekir".
-- YIL TEKRARI YOK: Papağan gibi "2026 Umre", "2026 sezonu" deyip durma, çok itici duruyor! Zaten 2026'da olduğumuzu biliyoruz. Odak kelimeyi sadece 1-2 kez geçirip bırak.
-- ZIRVALAMAK YASAK: "Mekke çok güzeldir, insanı büyüler, huzur doludur" gibi içi boş edebi zırvalıkları BİR KENARA BIRAK.
-- SOMUT VE GERÇEK BİLGİ VER: "Kral Fahd kapısından girerseniz...", "Ocak ayında Medine akşamları 12 derecedir...", "Taksi ücretleri ortalama 30 riyal tutar..." gibi tamamen GERÇEK, YAŞANMIŞ, hayat kurtaran niş bilgilerle doldur. Okuyan kişi "Bu adam gerçekten oralarda yaşamış ve her sokağını biliyor" demeli.
-- Üslup: Empatik, somut örneklere dayanan, sıcak ve sürükleyici bir dil. Örneğin "Oteller yakındır" demek yerine "Kabe'ye sıfır noktasındaki 5 yıldızlı odanızdan inip saniyeler içinde Mescid-i Haram'a geçebilirsiniz" gibi vizyoner kelimeler kullan. 
+YAZIM KURALLARI:
+- Cümle maksimum 15 kelime. Paragraf maksimum 3 cümle. Metni enterlarla sık böl.
+- Üslup: Sıcak, samimi, somut bilgilerle dolu. Bir dostuna kahve içerken anlatır gibi.
+- YASAKLI KELİMELER: "Sonuç olarak", "özetlemek gerekirse", "büyüleyici", "eşsiz", "hayati önem taşır", "unutulmamalıdır ki", "bu makalede"
+- SOMUT BİLGİ: "Oteller yakındır" değil → "Kabe Kapısı'ndan çıkıp 3 dakikada odanıza ulaşırsınız"
+- HTML içinde SADECE TEK TIRNAK (') kullan. Çift tırnak JSON yapısını bozar.
+- Yılı papağan gibi tekrarlama. "${currentYear}" ifadesini sadece 1-2 kez kullan.
+- Google Arama, Nusuk, Diyanet ve haj.gov.sa gibi kaynaklardan eğitim verilerindeki güncel bilgileri kullan.
 
+ZORUNLU SEO YAPISI:
+1. Odak kelimeyi H1 başlıkta, meta açıklamada, ilk 100 kelimede ve bir H2'de doğal akışla kullan.
+2. En az 2 adet <ul><li> listesi, bolca H2 ve H3 başlıkları kullan.
+3. İçeriğin can alıcı bir yerine şu linki göm: <a href='https://hadiumreyegidelim.com/bireysel-umre'>Bireysel Umre</a>
+4. Son bölüme 3 soruluk SSS ekle (H2 "Sıkça Sorulan Sorular", her soru H3).
+5. Makalenin en güçlü yerinde WhatsApp CTA: <strong>2026 VIP otel rezervasyonu ve kişisel proforma için sağ alttaki WhatsApp ikonuna tıklayın.</strong>
 
-ZAMAN VE BÜYÜME (GROWTH) SATIŞ STRATEJİSİ: 
-- CANLI İNTERNET ARAŞTIRMASI YAP (HAYATİ ÖNEMDE): Konuyla ilgili bilgileri internetten derinlemesine çekmek ZORUNDASIN. Google Arama motorunu kullanarak EN AZ 10 FARKLI OTORİTER SİTEDEN (haj.gov.sa, Nusuk, SPA, Okaz, Diyanet, Wikipedia ve global otel/haber sayfaları vb.) veri çekmelisin.
-- ŞU AN BULUNDUĞUMUZ YIL: ${currentYear}. Geçmiş yılları kesinlikle kullanma.
-- İÇERİK TARZI (ÇOK ÖNEMLİ): Düz makale yerine, Müşteri çekici (Lead Generation) "Fiyat Karşılaştırmaları", "Diyanet vs Bireysel Umre Farkları", "Listeler (Örn: Bebekle Umre İçin 5 Altın Kural)" formatlarında yaz. Hedef kitlen tamamen fiyat veya bireysel avantajları arayan SICAK MÜŞTERİLERDİR.
-- SATIŞI KAPAT VE WHATSAPP'A YÖNLENDİR (CTA): Makalenin en can alıcı noktasına kalın harflerle, okuyucunun doğrudan bizimle iletişime geçmesini sağlayacak çok güçlü bir metin koy. Örn: "**2026 sezonu güncel VIP otel fiyatları ve ailenize özel proforma almak için anında sağ alttaki Canlı Destek (WhatsApp) ikonuna tıklayın, ekibimiz süreci dakikalar içinde anlatsın.**"
-
-SEO VE İÇERİK MİMARİSİ (GOOGLE STANDARTLARI):
-1. ANAHTAR KELİME: Odak kelimeyi ("${selectedKeyword}") ana başlıkta, meta açıklamada, ilk 100 kelimede ve bir adet H2'de doğal akışı GÖZÜNE SOKMADAN geçir.
-2. OKUNABİLİRLİK: Flesch Okunabilirlik Kurallarına uy. Cümleler max 15 kelime, paragraflar max 2-3 cümle olsun. Sürekli enter'la metni böl.
-3. FORMAT: En az 2 yerde (<ul><li>) ile liste yap, bolca H2/H3 alt başlığı at.
-6. SSS VE KAYNAKLAR: En sona 'Sıkça Sorulan Sorular' (3 Soru) ekle. Metnin veya SSS'nin bitimine Diyanet veya Nusuk gibi sağlam sitelere 1-2 dış kaynak linki (href) ver.
-7. İÇ LİNKLEME (SEO GÜCÜ): Makalenin kalbinde, en organik ve can alıcı yerinde kesinlikle şu HTML linkini cümleye doğalca yedirerek kullanmak ZORUNDASIN: <a href="https://hadiumreyegidelim.com/bireysel-umre">Bireysel Umre</a>. Bu linki asla atlama.
-5. İÇ LİNKLEME: href="https://hadiumreyegidelim.com/bireysel-umre" yapısını kullanarak sitemize iç bağlantılar at.
-
-JSON ÇIKTISI KURALI: 
-Lütfen yanıtını SADECE geçerli bir JSON nesnesi (object) olarak ver. 
-ÖNEMLİ: HTML (content alanı) içinde kesinlikle çift tırnak (") KULLANMA! HTML nitelikleri için SADECE tek tırnak (') kullan (Örn: <a href='...'>). JSON yapısını bozmamak için metin içindeki alıntıları da tek tırnakla yap.
-Format şu şekilde olmalıdır:
+ÇIKTI KURALI: SADECE aşağıdaki formatta geçerli bir JSON objesi döndür. Başka hiçbir şey yazma, açıklama yapma, kod bloğu açma.
 {
   "title": "...",
-  "slug": "...",
-  "metaDescription": "...",
-  "keywords": "...",
+  "slug": "seo-uyumlu-tire-ile-ayrilmis-url",
+  "metaDescription": "150-160 karakter arası",
+  "keywords": "virgülle ayrılmış SEO kelimeleri",
   "focusKeyword": "${selectedKeyword}",
-  "categoryId": "Mevcut kategorilerden birinin ID'si",
-  "authorId": "Mevcut yazarlardan birinin ID'si",
-  "content": "HTML formatında blog metni (SADECE TEK TIRNAK İÇERİR)",
-  "personalExperience": "...",
-  "references": "..."
+  "categoryId": "mevcut kategorilerden birinin id'si",
+  "authorId": "mevcut yazarlardan birinin id'si",
+  "content": "<p>...</p><h2>...</h2>...",
+  "personalExperience": "Bizzat yaşanmış hissi veren 2-3 cümlelik yazar tecrübesi",
+  "references": "kullanılan kaynak URL'leri veya site adları"
 }`;
 
-       const blogResult = await generateContentWithFallback(
-         { model: "gemini-3.1-pro", tools: [{ googleSearch: {} }] as any },
-         {
-           contents: [{ role: "user", parts: [{ text: blogPrompt }] }],
-           generationConfig: { temperature: 0.8, responseMimeType: "application/json" }
-         }
-       );
+    const blogMessage = await retryable(
+      () => claude.messages.create({
+        model: 'claude-opus-4-6',
+        max_tokens: 8000,
+        messages: [{ role: 'user', content: blogPrompt }],
+      }),
+      'blog-yazımı'
+    );
 
-       let rawText = blogResult.response.text();
-       let firstBrace = rawText.indexOf('{');
-       let lastBrace = rawText.lastIndexOf('}');
-       let blogText = rawText;
-       
-       if (firstBrace !== -1 && lastBrace !== -1 && lastBrace > firstBrace) {
-           blogText = rawText.substring(firstBrace, lastBrace + 1);
-       }
-       
-       let blogData;
-       try {
-           blogData = JSON.parse(blogText);
-       } catch (error: any) {
-           console.error("JSON Parse Error Raw Output:", rawText);
-           throw new Error(`JSON Parse Hatası: ${error.message}. LLM Çıktısı (ilk 200 karakter): ${blogText.substring(0, 200)}...`);
-       }
+    const blogRawText = blogMessage.content[0].type === 'text' ? blogMessage.content[0].text : '';
+    const blogData = extractJsonObject(blogRawText);
 
-       let sourceDetails = "";
-       if (blogResult.response.candidates?.[0]?.groundingMetadata?.groundingChunks) {
-         const chunks = blogResult.response.candidates[0].groundingMetadata.groundingChunks;
-         const urls = chunks.filter((c: any) => c.web?.uri).map((c: any) => c.web.uri);
-         const uniqueUrls = Array.from(new Set(urls));
-         if (uniqueUrls.length > 0) sourceDetails = `| Kaynaklar: ${uniqueUrls.join(", ")}`;
-       }
+    // ── FAZ 2: Claude ile görsel promptları üret ──
+    await setStatus('GENERATING_IMAGES', 'Görsel promptları hazırlanıyor...');
 
-       await prisma.aILog.update({
-          where: { id: activeLog.id },
-          data: { status: 'GENERATING_IMAGES', details: `Metin yazıldı. ${sourceDetails} | '\${blogData.title}' için görseller üratiliyor...` }
-       });
+    const imgPromptMessage = await retryable(
+      () => claude.messages.create({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 2000,
+        messages: [{
+          role: 'user',
+          content: `Blog metnindeki başlıklar için Imagen 4'e gönderilecek görsel üretim JSON array'i oluştur. "SSS" / "Sıkça Sorulan Sorular" başlığını ve altındakileri atla. SADECE JSON array döndür, başka hiçbir şey yazma.
 
-       const imagePromptInstruction = `ÇALIŞMA KURALLARI:
-1. Başlık Analizi: Metni oku. Ana başlığı ve alt başlıkları tespit et. (SSS hariç)
-2. JSON Formatı Kuralı: Geçerli her bir başlık için aşağıdaki JSON şablonunu doldur. ÇIKTIYI SADECE JSON ARRAY OLARAK VER!
-3. Dil: Değişkenleri İngilizce doldur.
-4. Çıktı Düzeni: Sadece saf JSON Array formatında geri dön.
+Her başlık için şu şablonu kullan:
+{"heading":"[Başlığın tam Türkçe hali]","subject":{"primary_object":"[İngilizce ana obje]"},"scene":{"environment":"[İngilizce mekan]"},"aesthetic":{"mood":"luxurious, serene, spiritual","color_palette":"warm gold, ivory, soft beige"},"lighting":{"style":"soft golden hour lighting"},"camera":{"lens":"35mm"}}
 
-KULLANILACAK JSON ŞABLONU:
-{
-  "heading": "[Başlık Adı Türkçe Olarak]",
-  "task": "photorealistic_product_visual",
-  "input": { "reference_image": "USER_UPLOADED_IMAGE", "preserve_product_identity": true },
-  "scene": { "environment": "[Mekan]", "background": "[Arka plan]" },
-  "subject": { "primary_object": "[Odak obje]", "position": "perfectly centered" },
-  "lighting": { "style": "soft studio lighting" },
-  "aesthetic": { "style": "high-end editorial product photography" }
-}
+BLOG BAŞLIĞI: ${blogData.title}
+BLOG İÇERİĞİ:
+${blogData.content.slice(0, 4000)}`,
+        }],
+      }),
+      'görsel-promptları'
+    );
 
---- BLOG METNİ ---
-${blogData.content}
-`;
+    const imgPromptRaw = imgPromptMessage.content[0].type === 'text' ? imgPromptMessage.content[0].text : '[]';
+    const imagePrompts: any[] = extractJsonArray(imgPromptRaw);
 
-       const imgPromptResult = await generateContentWithFallback(
-         { model: "gemini-3.1-pro" },
-         {
-           contents: [{ role: "user", parts: [{ text: imagePromptInstruction }] }],
-           generationConfig: { temperature: 0.7, responseMimeType: "application/json" }
-         },
-         2 // Çizimlerde az deneme
-       );
+    // ── FAZ 3: Imagen 4 ile görseller üret ve Supabase'e yükle (paralel) ──
+    let finalImageUrl: string | null = null;
 
-       let promptsRawText = imgPromptResult.response.text();
-       let firstSquare = promptsRawText.indexOf('[');
-       let lastSquare = promptsRawText.lastIndexOf(']');
-       let promptsText = promptsRawText;
-       
-       if (firstSquare !== -1 && lastSquare !== -1 && lastSquare > firstSquare) {
-           promptsText = promptsRawText.substring(firstSquare, lastSquare + 1);
-       }
-       
-       let imagePromptsJSON: any[] = [];
-       try { 
-           imagePromptsJSON = JSON.parse(promptsText); 
-       } catch(e) {
-           console.error("Image Prompt JSON Parse Error Raw:", promptsRawText);
-       }
+    if (imagePrompts.length > 0) {
+      await setStatus('GENERATING_IMAGES', `${Math.min(imagePrompts.length, 5)} görsel paralel üretiliyor...`);
 
-       const { generateAndUploadImage } = require('@/lib/generate-image');
-       
-       let finalImageUrl: string | null = null;
-       if (imagePromptsJSON.length > 0) {
-         const imagePromises = imagePromptsJSON.map(async (promptObj: any) => {
-           const url = await generateAndUploadImage(promptObj, promptObj.heading || "cron-image");
-           return { heading: promptObj.heading, url };
-         });
-         
-         const results = await Promise.allSettled(imagePromises);
-         
-         results.forEach((res) => {
-           if (res.status === 'fulfilled' && res.value && res.value.url) {
-              const headingText = res.value.heading;
-              const imgUrl = res.value.url;
-              const index = blogData.content.toLowerCase().indexOf(`>${headingText.toLowerCase()}<`);
-              if (index !== -1) {
-                 const insertPosition = blogData.content.indexOf('</h', index);
-                 if (insertPosition !== -1) {
-                    const closingTagEnd = blogData.content.indexOf('>', insertPosition) + 1;
-                    const before = blogData.content.substring(0, closingTagEnd);
-                    const after = blogData.content.substring(closingTagEnd);
-                    const imgTag = `\n<img src="${imgUrl}" alt="${headingText}" style="width:100%; max-width: 500px; margin: 30px auto; border-radius:16px; display:block; box-shadow: 0 8px 25px rgba(0,0,0,0.08);" />\n`;
-                    blogData.content = before + imgTag + after;
-                 }
-              }
-              if (!finalImageUrl) finalImageUrl = imgUrl;
-           }
-         });
-       }
+      const imageResults = await Promise.allSettled(
+        imagePrompts.slice(0, 5).map(async (p: any) => ({
+          heading: p.heading as string,
+          url: await generateAndUploadImage(p, p.heading || 'umre-blog'),
+        }))
+      );
 
-       let validCategoryId = null;
-       let validAuthorId = null;
-       if (blogData.categoryId) {
-          const catExists = await prisma.category.findUnique({ where: { id: String(blogData.categoryId) } });
-          if (catExists) validCategoryId = catExists.id;
-       }
-       if (blogData.authorId) {
-          const authorExists = await prisma.author.findUnique({ where: { id: String(blogData.authorId) } });
-          if (authorExists) validAuthorId = authorExists.id;
-       }
-       if (!validAuthorId) {
-          const defaultAuthor = await prisma.author.findFirst({ where: { name: { contains: 'Yasin' } } }) || await prisma.author.findFirst();
-          if (defaultAuthor) validAuthorId = defaultAuthor.id;
-       }
+      const successImages = imageResults
+        .filter((r): r is PromiseFulfilledResult<{ heading: string; url: string | null }> =>
+          r.status === 'fulfilled' && r.value.url !== null
+        )
+        .map(r => ({ heading: r.value.heading, url: r.value.url as string }));
 
-       const newPost = await prisma.post.create({
-         data: {
-           title: blogData.title,
-           slug: blogData.slug,
-           description: blogData.metaDescription,
-           content: blogData.content,
-           focusKeyword: selectedKeyword as string,
-           keywords: Array.isArray(blogData.keywords) ? blogData.keywords.join(', ') : String(blogData.keywords || ''),
-           categoryId: validCategoryId,
-           authorId: validAuthorId,
-           personalExperience: blogData.personalExperience,
-           references: blogData.references,
-           published: false,
-           imageUrl: finalImageUrl,
-         }
-       });
-
-       await prisma.aILog.update({
-          where: { id: activeLog.id },
-          data: { 
-             status: 'DRAFT_READY', 
-             imageUrl: finalImageUrl, 
-             details: `Yayına Hazır Taslak onay bekliyor: ${newPost.title} (Post ID: ${newPost.id})`
-          }
-       });
-
-       return NextResponse.json({ success: true, phase: 'draft', post: newPost });
+      if (successImages.length > 0) {
+        blogData.content = injectImages(blogData.content, successImages);
+        finalImageUrl = successImages[0].url;
+      }
     }
 
-    if (phase === 'publish') {
-       if (activeLog.status === 'COMPLETED') return NextResponse.json({ status: 'COMPLETED' });
-       
-       const postIdMatch = activeLog.details?.match(/Post ID: (.*?)\)/);
-       let targetPostId = postIdMatch ? postIdMatch[1] : null;
+    // ── FAZ 4: Kategori ve Yazar ID'lerini doğrula ──
+    let validCategoryId: string | null = null;
+    let validAuthorId: string | null = null;
 
-       if (targetPostId) {
-          await prisma.post.update({
-             where: { id: targetPostId },
-             data: { published: true, createdAt: new Date() }
-          });
-       } else {
-          const lastDraft = await prisma.post.findFirst({
-             where: { published: false },
-             orderBy: { createdAt: 'desc' }
-          });
-          if (lastDraft) {
-             await prisma.post.update({
-                where: { id: lastDraft.id },
-                data: { published: true, createdAt: new Date() }
-             });
-          }
-       }
-
-       await prisma.aILog.update({
-          where: { id: activeLog.id },
-          data: { 
-             status: 'COMPLETED', 
-             details: `Makale canlı yayını tamamlandı!`,
-             completedAt: new Date()
-          }
-       });
-
-       try {
-         revalidatePath('/');
-         revalidatePath('/blog');
-       } catch (e) {}
-
-       return NextResponse.json({ success: true, phase: 'publish' });
+    if (blogData.categoryId) {
+      const cat = await prisma.category.findUnique({ where: { id: String(blogData.categoryId) } });
+      if (cat) validCategoryId = cat.id;
+    }
+    if (blogData.authorId) {
+      const author = await prisma.author.findUnique({ where: { id: String(blogData.authorId) } });
+      if (author) validAuthorId = author.id;
+    }
+    if (!validAuthorId) {
+      const fallback =
+        (await prisma.author.findFirst({ where: { name: { contains: 'Yasin' } } })) ??
+        (await prisma.author.findFirst());
+      if (fallback) validAuthorId = fallback.id;
     }
 
-    return NextResponse.json({ error: 'Invalid phase' }, { status: 400 });
+    // Slug çakışmasını önle
+    let slug = blogData.slug || selectedKeyword.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+    const existing = await prisma.post.findUnique({ where: { slug } });
+    if (existing) slug = `${slug}-${Date.now()}`;
 
-  } catch (error: any) {
-    console.error("Auto Cron Blog Error:", error);
-    if (currentAiLogId) {
-      try {
-        await prisma.aILog.update({
-          where: { id: currentAiLogId },
-          data: { status: 'FAILED', details: error?.message || String(error), completedAt: new Date() }
-        });
-      } catch (err) { }
-    }
-    return NextResponse.json({ error: error?.message || "Failed to run cron job" }, { status: 500 });
+    // ── FAZ 5: Kaydet ve yayınla ──
+    const post = await prisma.post.create({
+      data: {
+        title: blogData.title,
+        slug,
+        description: blogData.metaDescription,
+        content: blogData.content,
+        focusKeyword: selectedKeyword,
+        keywords: Array.isArray(blogData.keywords)
+          ? blogData.keywords.join(', ')
+          : String(blogData.keywords || ''),
+        categoryId: validCategoryId,
+        authorId: validAuthorId,
+        personalExperience: blogData.personalExperience,
+        references: blogData.references,
+        imageUrl: finalImageUrl,
+        published: true,
+      },
+    });
+
+    await prisma.aILog.update({
+      where: { id: log.id },
+      data: {
+        status: 'COMPLETED',
+        details: `Yayınlandı: "${post.title}"`,
+        imageUrl: finalImageUrl,
+        completedAt: new Date(),
+      },
+    });
+
+    try {
+      revalidatePath('/');
+      revalidatePath('/blog');
+    } catch {}
+
+    return NextResponse.json({
+      success: true,
+      post: { id: post.id, title: post.title, slug: post.slug },
+    });
+
+  } catch (err: any) {
+    console.error('[auto-blog] Pipeline hatası:', err);
+    await prisma.aILog.update({
+      where: { id: log.id },
+      data: {
+        status: 'FAILED',
+        details: err?.message ?? String(err),
+        completedAt: new Date(),
+      },
+    }).catch(() => {});
+
+    return NextResponse.json({ error: err?.message ?? 'Pipeline hatası' }, { status: 500 });
   }
 }

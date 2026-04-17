@@ -1,52 +1,44 @@
 import { NextResponse } from 'next/server';
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import Anthropic from '@anthropic-ai/sdk';
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
+const claude = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
 export async function POST(request: Request) {
   try {
-    if (!process.env.GEMINI_API_KEY) {
-      return NextResponse.json({ error: 'GEMINI_API_KEY is not defined.' }, { status: 500 });
+    if (!process.env.ANTHROPIC_API_KEY) {
+      return NextResponse.json({ error: 'ANTHROPIC_API_KEY tanımlı değil.' }, { status: 500 });
     }
 
     const { content, instruction } = await request.json();
-
     if (!content || !instruction) {
-      return NextResponse.json({ error: 'Content and instruction are required.' }, { status: 400 });
+      return NextResponse.json({ error: 'content ve instruction zorunludur.' }, { status: 400 });
     }
 
-    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+    const message = await claude.messages.create({
+      model: 'claude-sonnet-4-6',
+      max_tokens: 8000,
+      messages: [{
+        role: 'user',
+        content: `Sen uzman bir Editör, Metin Yazarı ve SEO Mühendisisin.
+Aşağıda bir blog makalesinin HTML içeriği ve kullanıcının düzenleme talimatı verilecek.
+Mevcut HTML yapısını (tag'leri, semantic yapıyı) bozmadan metni talimata göre düzenle.
+SADECE HTML kodunu döndür. Markdown işaretleyicisi veya açıklama yazma.
 
-    const prompt = `Sen uzman bir Editor, Metin Yazarı ve SEO Mühendisisin.
-Aşağıda sana bir blog makalesinin tamamı veya bir kısmı (HTML formatında) ve kullanıcının bu metni nasıl düzeltmek istediğine dair bir talimat (instruction) verilecektir.
-
-Lütfen mevcut HTML yapısını bozmadan (tagleri, semantic yapıyı koruyarak) metni talimata uygun olarak baştan aşağı düzenle, mükemmelleştir veya eklemeler yap.
-Geriye SADECE HTML kodunu döndür, markdown işaretleyicisi (\`\`\`html vs) veya ekstra bir ön konuşma yazma. 
-
---- MÜŞTERİNİN TALİMATI ---
+--- KULLANICININ TALİMATI ---
 ${instruction}
 
 --- MEVCUT HTML İÇERİK ---
-${content}
-`;
-
-    const result = await model.generateContent({
-      contents: [{ role: "user", parts: [{ text: prompt }] }],
-      generationConfig: {
-        temperature: 0.7,
-      }
+${content}`,
+      }],
     });
 
-    const response = result.response;
-    let text = response.text();
-    
-    // Clean markdown blocks if present
+    let text = message.content[0].type === 'text' ? message.content[0].text : '';
     text = text.replace(/^```(?:html|xml)?\s*/i, '').replace(/\s*```$/i, '').trim();
 
     return NextResponse.json({ optimizedContent: text });
 
   } catch (error: any) {
-    console.error("AI Edit Error:", error);
-    return NextResponse.json({ error: `Hata Detayı: ${error.message || 'Bilinmeyen hata'}` }, { status: 500 });
+    console.error('[edit-blog] Hata:', error);
+    return NextResponse.json({ error: `Hata: ${error.message || 'Bilinmeyen hata'}` }, { status: 500 });
   }
 }

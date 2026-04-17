@@ -441,6 +441,7 @@ export default function ContentPage() {
           references: data.references || data.References || prev.references,
           categoryId: data.categoryId || data.CategoryId || prev.categoryId,
           authorId: data.authorId || data.AuthorId || prev.authorId,
+          imageUrl: data.imageUrl || data.ImageUrl || prev.imageUrl,
         };
         console.log("AI PARSED DATA BINDING:", data, "=>", nextState);
         return nextState;

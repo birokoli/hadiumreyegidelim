@@ -104,7 +104,23 @@ export default function AILogsPage() {
     }
   };
 
+  // 20 dakikadan eski ve hâlâ çalışıyor görünen → takılı kalmış
+  const STALE_MS = 20 * 60 * 1000;
+  const stale = logs.find(l =>
+    !['COMPLETED', 'FAILED'].includes(l.status) &&
+    Date.now() - new Date(l.createdAt).getTime() > STALE_MS
+  );
   const running = logs.some(l => !['COMPLETED','FAILED'].includes(l.status));
+
+  const handleReset = async () => {
+    try {
+      await fetch('/api/admin/reset-pipeline', { method: 'POST' });
+      toast('Takılı pipeline temizlendi.', 'success');
+      setTimeout(fetchLogs, 500);
+    } catch {
+      toast('Sıfırlama başarısız.', 'error');
+    }
+  };
 
   return (
     <div className="p-6 lg:p-8 max-w-7xl mx-auto space-y-6">
@@ -147,8 +163,27 @@ export default function AILogsPage() {
         </div>
       </div>
 
+      {/* Takılı pipeline uyarısı */}
+      {stale && (
+        <div className="bg-amber-50 border border-amber-200 rounded-2xl px-5 py-4 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <span className="material-symbols-outlined text-amber-500 text-[22px]">warning</span>
+            <p className="text-sm font-medium text-amber-800">
+              Pipeline 20 dakikadan uzun süredir yanıt vermiyor — muhtemelen takıldı.
+            </p>
+          </div>
+          <button
+            onClick={handleReset}
+            className="flex items-center gap-1.5 bg-amber-100 hover:bg-amber-200 text-amber-800 px-4 py-2 rounded-xl text-sm font-semibold transition-colors shrink-0"
+          >
+            <span className="material-symbols-outlined text-[16px]">restart_alt</span>
+            Sıfırla
+          </button>
+        </div>
+      )}
+
       {/* Status banner when running */}
-      {running && (
+      {running && !stale && (
         <div className="bg-blue-50 border border-blue-200 rounded-2xl px-5 py-4 flex items-center gap-3">
           <span className="w-2.5 h-2.5 rounded-full bg-blue-500 animate-pulse shrink-0" />
           <p className="text-sm font-medium text-blue-800">
@@ -156,6 +191,7 @@ export default function AILogsPage() {
           </p>
         </div>
       )}
+
 
       {/* Logs */}
       <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">

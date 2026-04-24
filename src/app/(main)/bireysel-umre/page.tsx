@@ -3,7 +3,7 @@ import { Metadata } from "next";
 import BireyselUmreClient from "@/components/features/BireyselUmreClient";
 
 export const metadata: Metadata = {
-  title: "Bireysel Umre Turları ve Tasarlayıcı | Hadi Umreye Gidelim",
+  title: "Bireysel Umre Tasarlayıcı — Uçak + Otel + Rehber",
   description: "Kendi Bireysel Umre planınızı oluşturun. En ucuz Mekke ve Medine uçak biletleri, Kabe manzaralı lüks oteller ve VIP transfer seçenekleri.",
   alternates: {
     canonical: 'https://hadiumreyegidelim.com/bireysel-umre',

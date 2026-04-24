@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Manevi Rehberler & Gizli Mücevherler | Hadi Umre'ye Gidelim",
+  title: "Manevi Rehberler & Gizli Mücevherler",
   description: "Kutsal topraklardaki her adımınızı ilim ve hikmetle taçlandıran akademik rehberlerimiz ve kalabalıkların ötesindeki gizli ziyaret noktaları.",
   alternates: {
     canonical: "/rehberlik"

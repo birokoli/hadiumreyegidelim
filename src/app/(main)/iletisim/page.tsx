@@ -4,7 +4,7 @@ import ContactFormClient from '@/components/features/ContactFormClient';
 import { prisma } from "@/lib/prisma";
 
 export const metadata: Metadata = {
-  title: "İletişim & Randevu | Hadi Umre'ye Gidelim",
+  title: "İletişim & Umre Danışmanlığı",
   description: "Manevi yolculuğunuza ilk adımı birlikte atıyoruz. Umre danışmanlarımızla hemen iletişime geçin, size özel VIP Umre planınızı oluşturalım.",
   alternates: {
     canonical: "/iletisim"

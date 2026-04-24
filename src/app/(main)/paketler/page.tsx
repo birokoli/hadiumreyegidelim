@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Ayrıcalıklı Umre Paketleri 2026 | Hadi Umre'ye Gidelim",
+  title: "Umre Paketleri 2026 — Ekonomik & VIP Seçenekler",
   description: "Manevi yolculuğunuzu konfor ve huzur içinde geçirebilmeniz için her detayı düşünülmüş, VIP transferli ve özel rehberli Umre tur seçenekleri.",
   alternates: {
     canonical: "/paketler"
@@ -47,7 +47,7 @@ export default async function PackagesPage() {
       <section className="py-24 bg-surface-container-lowest">
         <div className="max-w-screen-2xl mx-auto px-8">
           <div className="text-center mb-16">
-            <h2 className="font-headline text-4xl text-primary font-bold mb-4">Müsait Turlarımız</h2>
+            <p className="font-label text-xs tracking-[0.3em] font-bold uppercase text-secondary mb-4">Müsait Turlarımız</p>
             <p className="text-on-surface-variant max-w-2xl mx-auto">Vize, konaklama, transfer ve manevi rehberlik dahil tüm süreçleri sizin yerinize yönetiyoruz.</p>
           </div>
 
@@ -81,7 +81,7 @@ export default async function PackagesPage() {
                   </div>
 
                   <div className="xl:w-3/5 p-8 md:p-10 flex flex-col">
-                    <h3 className="text-2xl font-headline font-bold text-primary mb-3">{pkg.title}</h3>
+                    <h2 className="text-2xl font-headline font-bold text-primary mb-3">{pkg.title}</h2>
                     <p className="text-on-surface-variant text-sm leading-relaxed mb-8 flex-grow">
                       {pkg.description ? pkg.description.split('|||ITINERARY|||')[0] : ''}
                     </p>
@@ -122,7 +122,7 @@ export default async function PackagesPage() {
           {packages.length === 0 && (
             <div className="bg-white rounded-3xl p-16 text-center border border-outline-variant/10 shadow-sm mt-8">
               <span className="material-symbols-outlined text-6xl text-outline mb-4">inventory_2</span>
-              <h3 className="text-2xl font-headline text-primary font-bold mb-2">Henüz Paket Bulunmuyor</h3>
+              <h2 className="text-2xl font-headline text-primary font-bold mb-2">Henüz Paket Bulunmuyor</h2>
               <p className="text-on-surface-variant max-w-lg mx-auto">Şu an için yayında olan bir umre paketi bulunmuyor. Tur planlamalarımız devam etmektedir, lütfen daha sonra tekrar kontrol edin.</p>
             </div>
           )}

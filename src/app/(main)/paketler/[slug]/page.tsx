@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const shortDesc = pkg.description ? pkg.description.substring(0, 150) + "..." : "Sınırlı kontenjanlı, ayrıcalıklı Umre paketimizi keşfedin.";
 
   return { 
-    title: `${pkg.title} | Hadi Umre'ye Gidelim`,
+    title: pkg.title,
     description: shortDesc,
     alternates: {
       canonical: `/paketler/${slug}`

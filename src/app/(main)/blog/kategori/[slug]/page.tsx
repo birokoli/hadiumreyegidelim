@@ -7,10 +7,10 @@ import { notFound } from 'next/navigation';
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const category = await prisma.category.findUnique({ where: { slug } });
-  if (!category) return { title: 'Kategori Bulunamadı | Ethereal Serenity' };
+  if (!category) return { title: 'Kategori Bulunamadı' };
   
   return {
-    title: `${category.name} | Blog Kategorisi | Hadi Umre'ye Gidelim`,
+    title: `${category.name} — Blog Kategorisi`,
     description: category.description || `${category.name} kategorisindeki ayrıcalıklı umre rehberlik yazıları.`,
     alternates: {
       canonical: `/blog/kategori/${slug}`

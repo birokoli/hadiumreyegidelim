@@ -9,11 +9,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const post = await prisma.post.findUnique({ where: { slug } });
   
   if (!post) {
-    return { title: 'Bulunamadı - Hadi Umreye Gidelim' };
+    return { title: 'Sayfa Bulunamadı' };
   }
   
   return {
-    title: `${post.title} | Hadi Umre'ye Gidelim`,
+    title: post.title,
     description: post.description,
     keywords: post.keywords?.split(',').map(k => k.trim()),
     alternates: {

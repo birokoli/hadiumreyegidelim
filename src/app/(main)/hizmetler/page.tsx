@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "VIP Hizmetler & Transfer | Hadi Umre'ye Gidelim",
+  title: "VIP Hizmetler & Transfer",
   description: "Kutsal topraklardaki her anınızın sınır tanımayan bir hizmet anlayışıyla geçmesi için özel otel rezervasyonu, VIP transfer ve uçuş ayarlamaları.",
   alternates: {
     canonical: "/hizmetler"

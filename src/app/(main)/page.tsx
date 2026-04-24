@@ -6,6 +6,8 @@ import { prisma } from "@/lib/prisma";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
+  title: { absolute: "Bireysel Umre 2026 — Kendi Umreni Tasarla | HadiUmreyeGidelim" },
+  description: "Diyanet turlarına veya kafilelere bağlı kalmadan, 2026 Özel Bireysel Umre ve VIP Aile umresi planlama platformu. En ucuz fiyatlar ve butik hizmet.",
   alternates: {
     canonical: "/",
   },

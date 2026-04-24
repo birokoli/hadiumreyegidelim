@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   return {
-    title: `${city.name} ${city.airportName} Çıkışlı VIP Bireysel Umre Turları 2026`,
+    title: `${city.name} Çıkışlı Bireysel Umre 2026 — Fiyat & Paketler`,
     description: `${city.name} çıkışlı, doğrudan Kabe manzaralı lüks oteller ve VIP transfer seçenekleri ile ailenize özel VIP Bireysel Umre planınızı hemen oluşturun.`,
     alternates: {
       canonical: `https://hadiumreyegidelim.com/${resolvedParams.slug}`,

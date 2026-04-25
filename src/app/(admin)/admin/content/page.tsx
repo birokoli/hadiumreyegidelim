@@ -78,12 +78,17 @@ export default function ContentPage() {
   const [viewMode, setViewMode] = useState<'edit' | 'preview'>('edit'); // Preview mode toggle
   const [newPost, setNewPost] = useState({
     title: "",
+    metaTitle: "",
     slug: "",
     description: "",
     keywords: "",
+    tags: "",
     focusKeyword: "",
     seoScore: 0,
     imageUrl: "",
+    imageAlt: "",
+    tldr: "",
+    faq: "[]",
     content: "",
     authorId: "",
     categoryId: "",
@@ -313,7 +318,7 @@ export default function ContentPage() {
   const handleCancel = () => {
     setShowAdd(false);
     setEditingPostId(null);
-    setNewPost({ title: "", slug: "", description: "", keywords: "", focusKeyword: "", seoScore: 0, imageUrl: "", content: "", authorId: "", categoryId: "", personalExperience: "", references: "", published: true });
+    setNewPost({ title: "", metaTitle: "", slug: "", description: "", keywords: "", tags: "", focusKeyword: "", seoScore: 0, imageUrl: "", imageAlt: "", tldr: "", faq: "[]", content: "", authorId: "", categoryId: "", personalExperience: "", references: "", published: true });
     setAiTopic("");
     setAiKeywords("");
     setAiEditInstruction("");
@@ -356,12 +361,17 @@ export default function ContentPage() {
     setEditingPostId(post.id);
     setNewPost({
       title: post.title || "",
+      metaTitle: post.metaTitle || "",
       slug: post.slug || "",
       description: post.description || "",
       keywords: post.keywords || "",
+      tags: post.tags || "",
       focusKeyword: post.focusKeyword || "",
       seoScore: post.seoScore || 0,
       imageUrl: post.imageUrl || "",
+      imageAlt: post.imageAlt || "",
+      tldr: post.tldr || "",
+      faq: post.faq || "[]",
       content: post.content || "",
       authorId: post.authorId || "",
       categoryId: post.categoryId || "",
@@ -708,12 +718,46 @@ export default function ContentPage() {
                   </div>
                 </div>
 
+                {/* Meta Title */}
                 <div className="space-y-2">
                   <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex justify-between items-center">
-                    SEO Meta Description <span className="text-secondary/60 lowercase italic font-normal tracking-normal flex items-center gap-1"><span className="material-symbols-outlined text-[12px]">auto_awesome</span> ai otomatik doldurur</span>
+                    SEO Meta Başlığı (Title Tag)
+                    <span className={`text-xs font-bold tabular-nums ${newPost.metaTitle.length > 60 ? 'text-error' : newPost.metaTitle.length >= 50 ? 'text-success' : 'text-outline'}`}>
+                      {newPost.metaTitle.length}/60
+                    </span>
                   </label>
-                  <textarea required className="w-full bg-surface border border-outline-variant/30 rounded-xl p-4 text-sm text-on-surface-variant min-h-[110px] focus:ring-primary focus:border-primary outline-none" 
+                  <input className="w-full bg-surface border border-outline-variant/30 rounded-xl p-4 text-secondary focus:ring-primary focus:border-primary outline-none"
+                    value={newPost.metaTitle} onChange={e => setNewPost(prev => ({...prev, metaTitle: e.target.value}))} placeholder="Boş bırakılırsa Başlık (H1) kullanılır — 50-60 karakter ideal" />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex justify-between items-center">
+                    SEO Meta Description
+                    <span className={`text-xs font-bold tabular-nums ${newPost.description.length > 160 ? 'text-error' : newPost.description.length >= 120 ? 'text-success' : 'text-outline'}`}>
+                      {newPost.description.length}/160
+                    </span>
+                  </label>
+                  <textarea required className="w-full bg-surface border border-outline-variant/30 rounded-xl p-4 text-sm text-on-surface-variant min-h-[110px] focus:ring-primary focus:border-primary outline-none"
                     value={newPost.description} onChange={e => setNewPost(prev => ({...prev, description: e.target.value}))} placeholder="Google'da göze çarpacak makale odak özeti. Maksimum 160 karakter önerilir." />
+                </div>
+
+                {/* Cover Image Alt Text */}
+                <div className="space-y-2">
+                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                    Kapak Görseli Alt Metni (imageAlt)
+                  </label>
+                  <input className="w-full bg-surface border border-outline-variant/30 rounded-xl p-4 text-sm text-secondary focus:ring-primary focus:border-primary outline-none"
+                    value={newPost.imageAlt} onChange={e => setNewPost(prev => ({...prev, imageAlt: e.target.value}))} placeholder="Örn: Medine'de Mescid-i Nebevi'nin havadan görünümü" />
+                </div>
+
+                {/* TL;DR */}
+                <div className="space-y-2">
+                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                    <span className="material-symbols-outlined text-[13px]">summarize</span>
+                    TL;DR — Kısa Özet (İçerik öncesi gösterilir)
+                  </label>
+                  <textarea className="w-full bg-surface border border-outline-variant/30 rounded-xl p-4 text-sm text-on-surface-variant min-h-[90px] focus:ring-primary focus:border-primary outline-none"
+                    value={newPost.tldr} onChange={e => setNewPost(prev => ({...prev, tldr: e.target.value}))} placeholder="Bu yazıyı okumak için 2 dakikan yoksa özetle: 3-4 madde veya kısa paragraf." />
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -769,6 +813,87 @@ export default function ContentPage() {
                       <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-[#003781] pointer-events-none">expand_more</span>
                     </div>
                   </div>
+                </div>
+
+                {/* Tags */}
+                <div className="space-y-2">
+                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                    <span className="material-symbols-outlined text-[13px]">label</span>
+                    Etiketler / Tags (virgülle ayır)
+                  </label>
+                  <input className="w-full bg-surface border border-outline-variant/30 rounded-xl p-4 text-sm text-secondary focus:ring-primary focus:border-primary outline-none"
+                    value={newPost.tags} onChange={e => setNewPost(prev => ({...prev, tags: e.target.value}))} placeholder="umre, mekke, medine, hac rehberi" />
+                  {newPost.tags && (
+                    <div className="flex flex-wrap gap-2 pt-1">
+                      {newPost.tags.split(',').map((t, i) => t.trim() && (
+                        <span key={i} className="bg-primary/10 text-primary text-[10px] font-bold px-3 py-1 rounded-full">{t.trim()}</span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* FAQ Builder */}
+                <div className="space-y-4 pt-6 border-t border-outline-variant/20">
+                  <div className="flex items-center justify-between">
+                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                      <span className="material-symbols-outlined text-[13px]">quiz</span>
+                      SSS / FAQ Oluşturucu (FAQPage Schema otomatik eklenir)
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const current = JSON.parse(newPost.faq || '[]');
+                        setNewPost(prev => ({...prev, faq: JSON.stringify([...current, {q: '', a: ''}])}));
+                      }}
+                      className="flex items-center gap-1 px-3 py-1.5 bg-primary text-white text-[10px] font-bold uppercase tracking-widest rounded-lg hover:bg-primary/80 transition-colors"
+                    >
+                      <span className="material-symbols-outlined text-[14px]">add</span>Soru Ekle
+                    </button>
+                  </div>
+                  {(() => {
+                    let items: {q: string; a: string}[] = [];
+                    try { items = JSON.parse(newPost.faq || '[]'); } catch {}
+                    return items.length === 0 ? (
+                      <p className="text-xs text-outline italic text-center py-4 bg-surface-container rounded-xl border border-dashed border-outline-variant/40">Henüz soru eklenmedi. "Soru Ekle" butonuna tıklayın.</p>
+                    ) : (
+                      <div className="space-y-4">
+                        {items.map((item, idx) => (
+                          <div key={idx} className="bg-surface-container rounded-2xl p-5 border border-outline-variant/20 space-y-3 relative">
+                            <button type="button" onClick={() => {
+                              const next = items.filter((_, i) => i !== idx);
+                              setNewPost(prev => ({...prev, faq: JSON.stringify(next)}));
+                            }} className="absolute top-3 right-3 text-outline hover:text-error transition-colors">
+                              <span className="material-symbols-outlined text-[18px]">close</span>
+                            </button>
+                            <div>
+                              <label className="text-[9px] font-bold text-primary uppercase tracking-widest mb-1 block">Soru {idx+1}</label>
+                              <input
+                                className="w-full bg-surface border border-outline-variant/30 rounded-xl p-3 text-sm text-secondary focus:ring-primary focus:border-primary outline-none"
+                                value={item.q}
+                                onChange={e => {
+                                  const next = [...items]; next[idx] = {...next[idx], q: e.target.value};
+                                  setNewPost(prev => ({...prev, faq: JSON.stringify(next)}));
+                                }}
+                                placeholder="Örn: Bireysel umre vizesi nasıl alınır?"
+                              />
+                            </div>
+                            <div>
+                              <label className="text-[9px] font-bold text-primary uppercase tracking-widest mb-1 block">Cevap {idx+1}</label>
+                              <textarea
+                                className="w-full bg-surface border border-outline-variant/30 rounded-xl p-3 text-sm text-on-surface-variant min-h-[80px] focus:ring-primary focus:border-primary outline-none"
+                                value={item.a}
+                                onChange={e => {
+                                  const next = [...items]; next[idx] = {...next[idx], a: e.target.value};
+                                  setNewPost(prev => ({...prev, faq: JSON.stringify(next)}));
+                                }}
+                                placeholder="Detaylı ve bilgilendirici bir cevap yazın..."
+                              />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    );
+                  })()}
                 </div>
 
                 {/* E-E-A-T Advanced Modules (Experience & Network) */}

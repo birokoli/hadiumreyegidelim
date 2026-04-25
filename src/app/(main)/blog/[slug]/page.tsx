@@ -12,15 +12,17 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     return { title: 'Sayfa Bulunamadı' };
   }
   
+  const seoTitle = (post as any).metaTitle || post.title;
+
   return {
-    title: post.title,
+    title: { absolute: seoTitle },
     description: post.description,
     keywords: post.keywords?.split(',').map(k => k.trim()),
     alternates: {
       canonical: `/blog/${slug}`,
     },
     openGraph: {
-      title: post.title,
+      title: seoTitle,
       description: post.description || undefined,
       type: 'article',
       publishedTime: post.createdAt.toISOString(),
@@ -31,7 +33,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     },
     twitter: {
       card: 'summary_large_image',
-      title: post.title,
+      title: seoTitle,
       description: post.description || undefined,
       images: post.imageUrl ? [post.imageUrl] : [],
     }
@@ -111,6 +113,19 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     }]
   };
 
+  // FAQPage JSON-LD
+  let faqItems: {q: string; a: string}[] = [];
+  try { faqItems = JSON.parse((post as any).faq || '[]'); } catch {}
+  const faqJsonLd = faqItems.length > 0 ? {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqItems.map(item => ({
+      '@type': 'Question',
+      name: item.q,
+      acceptedAnswer: { '@type': 'Answer', text: item.a }
+    }))
+  } : null;
+
   // Breadcrumb Schema for Blog Post
   const breadcrumbJsonLd = {
     '@context': 'https://schema.org',
@@ -127,6 +142,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     <main className="pt-32 pb-24 min-h-screen bg-surface">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      {faqJsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />}
       <article className="max-w-3xl mx-auto px-6">
         <header className="mb-12">
           {/* Visual Breadcrumbs */}
@@ -158,7 +174,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
           {post.imageUrl && (
             <div className="w-full h-[400px] mb-10 rounded-3xl overflow-hidden shadow-[0px_32px_64px_-12px_rgba(0,55,129,0.06)] border border-outline-variant/10">
-              <img src={post.imageUrl} alt={post.title} className="w-full h-full object-cover" />
+              <img src={post.imageUrl} alt={(post as any).imageAlt || post.title} className="w-full h-full object-cover" />
             </div>
           )}
           <div className="flex flex-wrap items-center gap-4 text-xs text-outline mb-6 uppercase tracking-[0.2em] font-bold">
@@ -212,6 +228,17 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           </nav>
         )}
 
+        {/* TL;DR Özet Kutusu */}
+        {(post as any).tldr && (
+          <div className="my-10 bg-amber-50 border border-amber-200 rounded-2xl p-6 shadow-sm">
+            <div className="flex items-center gap-2 mb-3">
+              <span className="material-symbols-outlined text-amber-600 text-[18px]">bolt</span>
+              <span className="text-amber-700 font-bold text-[10px] uppercase tracking-widest">TL;DR — Kısa Özet</span>
+            </div>
+            <p className="text-[#334155] text-base leading-relaxed whitespace-pre-wrap">{(post as any).tldr}</p>
+          </div>
+        )}
+
         {/* E-E-A-T Experience Injection */}
         {post.personalExperience && (
           <div className="my-10 bg-[#f8fafc] border-l-4 border-secondary p-8 rounded-r-3xl shadow-sm italic relative">
@@ -253,6 +280,32 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         </div>
       )}
       
+      {/* FAQ Bölümü */}
+      {faqItems.length > 0 && (
+        <section className="max-w-3xl mx-auto px-6 mt-16 pt-10 border-t border-outline-variant/20">
+          <h2 className="font-headline text-3xl text-primary font-bold tracking-tight mb-8 flex items-center gap-3">
+            <span className="material-symbols-outlined text-secondary text-3xl">quiz</span>
+            Sıkça Sorulan Sorular
+          </h2>
+          <div className="space-y-4">
+            {faqItems.map((item, idx) => (
+              <details key={idx} className="group bg-surface-container-low border border-outline-variant/20 rounded-2xl overflow-hidden">
+                <summary className="flex items-center justify-between p-6 cursor-pointer list-none font-bold text-primary text-base hover:bg-surface-container transition-colors">
+                  <span className="flex items-center gap-3">
+                    <span className="bg-primary/10 text-primary text-xs font-black w-6 h-6 rounded-full flex items-center justify-center shrink-0">{idx + 1}</span>
+                    {item.q}
+                  </span>
+                  <span className="material-symbols-outlined text-outline group-open:rotate-180 transition-transform">expand_more</span>
+                </summary>
+                <div className="px-6 pb-6 text-[#334155] text-base leading-relaxed border-t border-outline-variant/10 pt-4">
+                  {item.a}
+                </div>
+              </details>
+            ))}
+          </div>
+        </section>
+      )}
+
       {/* 5. Otoriter İçerik Alanı Alt Bilgi (Author Box) */}
       <div className="max-w-3xl mx-auto px-6 mt-12 pt-10 border-t border-outline-variant/20">
         <div className="bg-surface-container-lowest p-8 rounded-3xl flex flex-col md:flex-row items-center md:items-start gap-8 border border-outline-variant/10 shadow-[0_8px_30px_rgb(0,0,0,0.04)] relative overflow-hidden">

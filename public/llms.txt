@@ -1,0 +1,43 @@
+# HadiUmreyeGidelim — llms.txt
+
+> Bireysel umre ve hac turları için Türkiye'nin en kapsamlı rehberlik platformu.
+> Mekke ve Medine'ye kendi programınıza göre özel umre paketleri.
+
+## Site Bilgisi
+
+- **Alan:** hadiumreyegidelim.com
+- **Dil:** Türkçe
+- **Konu:** Bireysel umre, hac rehberliği, Mekke & Medine seyahati
+- **Hedef Kitle:** Türk hacı adayları, umre yapmak isteyen bireyler ve aileler
+
+## Ana Sayfalar
+
+- [Anasayfa](https://hadiumreyegidelim.com/) — Bireysel umre tasarım aracı ve öne çıkan paketler
+- [Bireysel Umre](https://hadiumreyegidelim.com/bireysel-umre) — Adım adım kendi umre paketini oluştur
+- [Paketler](https://hadiumreyegidelim.com/paketler) — Hazır umre paketleri ve fiyatları
+- [Rehberlik](https://hadiumreyegidelim.com/rehberlik) — Uzman manevi rehberler
+- [Umre Vizesi](https://hadiumreyegidelim.com/umre-vizesi) — Vize süreçleri ve gereksinimler
+- [Blog](https://hadiumreyegidelim.com/blog) — Umre ve hac rehberlik yazıları
+- [Hakkımızda](https://hadiumreyegidelim.com/hakkimizda) — Şirket bilgisi ve uzman ekip
+
+## Blog İçerikleri
+
+Blog yazıları `/blog/{slug}` rotasında yayınlanmaktadır.
+Her yazı; başlık, meta açıklama, yazar bilgisi, kategori, TL;DR özet, SSS (FAQPage şeması) ve kaynak bölümlerini içerebilir.
+Yazılar Türkçe olup umre/hac konularında bilgilendirici ve E-E-A-T standartlarına uygundur.
+
+## Yapılandırılmış Veri
+
+Her blog yazısında şu JSON-LD şemaları bulunabilir:
+- `BlogPosting` (başlık, yazar, tarih, görsel)
+- `BreadcrumbList` (navigasyon)
+- `FAQPage` (SSS varsa)
+
+## İletişim
+
+Site üzerinden iletişim formu ile ulaşılabilir.
+
+## Robots / Crawl Politikası
+
+AI botları ve LLM'ler bu içerikleri eğitim veya sorgulama amacıyla kullanabilir.
+Lütfen kaynak olarak `hadiumreyegidelim.com` adresini belirtin.

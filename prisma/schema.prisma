@@ -92,13 +92,18 @@ model Post {
   id          String   @id @default(cuid())
   slug        String   @unique
   title       String
-  description String?  
-  content     String   
+  metaTitle   String?  // SEO title tag (50-60 chars), falls back to title
+  description String?
+  content     String
   keywords    String?
+  tags        String?  // Comma-separated tags
   author      String   @default("Admin")
   authorId    String?
   authorModel Author?  @relation(fields: [authorId], references: [id])
-  imageUrl    String?  
+  imageUrl    String?
+  imageAlt    String?  // Alt text for cover image
+  tldr        String?  // TL;DR / Özet (shown before content)
+  faq         String?  // JSON array: [{q: string, a: string}]
   published   Boolean  @default(false)
   category    Category? @relation(fields: [categoryId], references: [id])
   categoryId  String?

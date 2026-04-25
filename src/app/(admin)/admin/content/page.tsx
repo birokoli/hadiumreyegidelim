@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import dynamic from "next/dynamic";
 import "react-quill-new/dist/quill.snow.css";
+import { marked } from "marked";
 import { useAdminContext } from "@/components/admin/AdminContext";
 
 // Rich text editörü Server-Side Rendering'de hata vermemesi için Next/Dynamic ile sarmalıyoruz
@@ -64,6 +65,8 @@ const MediaUploader = ({ title, slug, onUploadComplete, currentUrl }: { title: s
 
 export default function ContentPage() {
   const { toast } = useAdminContext();
+  const [showMarkdownPaste, setShowMarkdownPaste] = useState(false);
+  const [markdownInput, setMarkdownInput] = useState("");
   const [posts, setPosts] = useState<any[]>([]);
   const [categories, setCategories] = useState<any[]>([]);
   const [authors, setAuthors] = useState<any[]>([]);
@@ -1038,11 +1041,79 @@ export default function ContentPage() {
                      </button>
                    </div>
                    
+                   {/* Claude / Markdown Yapıştır Paneli */}
+                   <div className="rounded-xl border border-dashed border-violet-300 bg-violet-50/50 p-4 mb-2">
+                     <div className="flex items-center justify-between mb-3">
+                       <div className="flex items-center gap-2">
+                         <span className="material-symbols-outlined text-violet-600 text-[20px]">smart_toy</span>
+                         <span className="font-bold text-sm text-violet-700 uppercase tracking-widest">Claude'dan Yapıştır</span>
+                         <span className="text-[10px] text-violet-500 font-medium">Markdown → HTML otomatik çevrilir</span>
+                       </div>
+                       <button
+                         type="button"
+                         onClick={() => setShowMarkdownPaste(v => !v)}
+                         className="text-[10px] font-bold uppercase tracking-widest text-violet-600 hover:text-violet-800 flex items-center gap-1 transition-colors"
+                       >
+                         <span className="material-symbols-outlined text-[16px]">{showMarkdownPaste ? 'expand_less' : 'expand_more'}</span>
+                         {showMarkdownPaste ? 'Kapat' : 'Aç'}
+                       </button>
+                     </div>
+                     {showMarkdownPaste && (
+                       <div className="space-y-3">
+                         <textarea
+                           value={markdownInput}
+                           onChange={e => setMarkdownInput(e.target.value)}
+                           placeholder="Claude'un ürettiği markdown içeriği buraya yapıştır..."
+                           className="w-full h-64 p-4 text-sm font-mono border border-violet-200 rounded-lg bg-white resize-y focus:outline-none focus:ring-2 focus:ring-violet-400 text-slate-700 placeholder:text-slate-400"
+                         />
+                         <div className="flex gap-3">
+                           <button
+                             type="button"
+                             onClick={() => {
+                               if (!markdownInput.trim()) return;
+                               const html = marked.parse(markdownInput) as string;
+                               setNewPost(prev => ({ ...prev, content: prev.content ? prev.content + html : html }));
+                               setMarkdownInput("");
+                               setShowMarkdownPaste(false);
+                               toast("Markdown başarıyla HTML'e çevrildi ve editöre eklendi!", "success");
+                             }}
+                             className="flex items-center gap-2 bg-violet-600 hover:bg-violet-700 text-white px-5 py-2.5 rounded-lg font-bold text-xs uppercase tracking-widest transition-all shadow-md shadow-violet-200"
+                           >
+                             <span className="material-symbols-outlined text-[16px]">transform</span>
+                             Çevir & Ekle
+                           </button>
+                           <button
+                             type="button"
+                             onClick={() => {
+                               if (!markdownInput.trim()) return;
+                               const html = marked.parse(markdownInput) as string;
+                               setNewPost(prev => ({ ...prev, content: html }));
+                               setMarkdownInput("");
+                               setShowMarkdownPaste(false);
+                               toast("Markdown çevrildi — mevcut içerik değiştirildi.", "success");
+                             }}
+                             className="flex items-center gap-2 bg-white border border-violet-300 hover:bg-violet-50 text-violet-700 px-5 py-2.5 rounded-lg font-bold text-xs uppercase tracking-widest transition-all"
+                           >
+                             <span className="material-symbols-outlined text-[16px]">swap_horiz</span>
+                             Değiştir
+                           </button>
+                           <button
+                             type="button"
+                             onClick={() => { setMarkdownInput(""); }}
+                             className="text-xs text-slate-400 hover:text-slate-600 px-3 py-2 rounded-lg hover:bg-slate-100 transition-colors"
+                           >
+                             Temizle
+                           </button>
+                         </div>
+                       </div>
+                     )}
+                   </div>
+
                    <div className="bg-white rounded-xl overflow-hidden border border-outline-variant/30 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/10 transition-all">
-                     <ReactQuill 
-                       theme="snow" 
-                       value={newPost.content} 
-                       onChange={(val) => setNewPost(prev => ({...prev, content: val}))} 
+                     <ReactQuill
+                       theme="snow"
+                       value={newPost.content}
+                       onChange={(val) => setNewPost(prev => ({...prev, content: val}))}
                        modules={modules}
                        className="min-h-[700px] mb-2 text-lg"
                        placeholder="Yazınızı buraya yazın veya yapay zeka ile otomatik doldurun..."

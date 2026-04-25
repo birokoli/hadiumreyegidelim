@@ -38,14 +38,59 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   };
 }
 
+function getReadTime(content: string) {
+  const words = content.replace(/<[^>]*>/g, ' ').split(/\s+/).filter(Boolean).length;
+  return Math.max(2, Math.ceil(words / 200));
+}
+
+function extractToc(content: string) {
+  const regex = /<h([23])[^>]*>(.*?)<\/h\1>/gi;
+  const items: { level: number; text: string; id: string }[] = [];
+  let match;
+  while ((match = regex.exec(content)) !== null) {
+    const text = match[2].replace(/<[^>]*>/g, '').trim();
+    if (text.length > 2) {
+      items.push({
+        level: parseInt(match[1]),
+        text,
+        id: text.toLowerCase().replace(/[^a-z0-9ğüşöçı]/gi, '-').replace(/(^-|-$)+/g, ''),
+      });
+    }
+  }
+  return items;
+}
+
+function injectHeadingIds(content: string) {
+  return content.replace(/<h([23])([^>]*)>(.*?)<\/h\1>/gi, (_, level, attrs, inner) => {
+    const text = inner.replace(/<[^>]*>/g, '').trim();
+    const id = text.toLowerCase().replace(/[^a-z0-9ğüşöçı]/gi, '-').replace(/(^-|-$)+/g, '');
+    return `<h${level}${attrs} id="${id}">${inner}</h${level}>`;
+  });
+}
+
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const post = await prisma.post.findUnique({ 
+  const post = await prisma.post.findUnique({
     where: { slug },
     include: { category: true, authorModel: true }
   });
-  
+
   if (!post) notFound();
+
+  const readTime = getReadTime(post.content);
+  const toc = extractToc(post.content);
+  const contentWithIds = injectHeadingIds(post.content);
+
+  const relatedPosts = await prisma.post.findMany({
+    where: {
+      published: true,
+      id: { not: post.id },
+      ...(post.categoryId ? { categoryId: post.categoryId } : {}),
+    },
+    orderBy: { createdAt: 'desc' },
+    take: 3,
+    select: { slug: true, title: true, imageUrl: true, description: true, createdAt: true },
+  });
 
   // 3. Yapılandırılmış Veri (Schema Markup) - BlogPosting JSON-LD & Person (E-E-A-T)
   const jsonLd = {
@@ -118,16 +163,22 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           )}
           <div className="flex flex-wrap items-center gap-4 text-xs text-outline mb-6 uppercase tracking-[0.2em] font-bold">
             {post.category && (
-              <span className="bg-primary text-white px-3 py-1.5 rounded-full shadow-sm">{post.category.name}</span>
+              <Link href={`/blog/kategori/${post.category.slug}`}>
+                <span className="bg-primary text-white px-3 py-1.5 rounded-full shadow-sm hover:bg-primary/80 transition-colors">{post.category.name}</span>
+              </Link>
             )}
             <span className="bg-primary/5 text-primary px-3 py-1.5 rounded-full">
-              Yayın: {new Date(post.createdAt).toLocaleDateString('tr-TR')}
+              {new Date(post.createdAt).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' })}
             </span>
             {post.updatedAt.getTime() - post.createdAt.getTime() > 86400000 && (
-              <span className="bg-secondary/10 text-secondary px-3 py-1.5 rounded-full" title="İçerik güncelliği okuyucu güvenini artırır (E-E-A-T)">
-                Son Güncelleme: {new Date(post.updatedAt).toLocaleDateString('tr-TR')}
+              <span className="bg-secondary/10 text-secondary px-3 py-1.5 rounded-full">
+                Güncelleme: {new Date(post.updatedAt).toLocaleDateString('tr-TR')}
               </span>
             )}
+            <span className="flex items-center gap-1 bg-slate-100 text-slate-600 px-3 py-1.5 rounded-full normal-case font-medium">
+              <span className="material-symbols-outlined text-[14px]">schedule</span>
+              {readTime} dk okuma
+            </span>
             <span className="w-1.5 h-1.5 bg-outline-variant rounded-full"></span>
             <span>Kaleme Alan: {post.authorModel?.name || post.author}</span>
           </div>
@@ -137,6 +188,29 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             {post.title}
           </h1>
         </header>
+
+        {/* İçindekiler Tablosu (TOC) */}
+        {toc.length >= 3 && (
+          <nav className="my-10 bg-slate-50 border border-slate-200 rounded-2xl p-6" aria-label="İçindekiler">
+            <h2 className="font-headline font-bold text-primary text-base mb-4 flex items-center gap-2 uppercase tracking-widest text-sm">
+              <span className="material-symbols-outlined text-[18px]">toc</span>
+              İçindekiler
+            </h2>
+            <ol className="space-y-2">
+              {toc.map((item, i) => (
+                <li key={i} className={item.level === 3 ? 'pl-5' : ''}>
+                  <a
+                    href={`#${item.id}`}
+                    className="text-sm text-slate-600 hover:text-primary transition-colors flex items-start gap-2 group"
+                  >
+                    <span className="text-primary/40 font-bold text-xs mt-0.5 shrink-0">{item.level === 2 ? `${i + 1}.` : '—'}</span>
+                    <span className="group-hover:underline underline-offset-2">{item.text}</span>
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </nav>
+        )}
 
         {/* E-E-A-T Experience Injection */}
         {post.personalExperience && (
@@ -150,8 +224,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           </div>
         )}
 
-        {/* CSS Typography Hiyerarşisi Kusursuz Tasarım Breathtaking Styles */}
-        <div 
+        {/* İçerik */}
+        <div
           className="
             w-full max-w-full overflow-hidden
             [&>h2]:whitespace-normal [&>h2]:break-words [&>h2]:font-headline [&>h2]:text-3xl [&>h2]:md:text-4xl [&>h2]:text-primary [&>h2]:mt-20 [&>h2]:mb-8 [&>h2]:font-bold [&>h2]:tracking-tight [&>h2]:border-b [&>h2]:border-outline-variant/20 [&>h2]:pb-4
@@ -163,7 +237,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             [&>blockquote]:whitespace-normal [&>blockquote]:break-words [&>blockquote]:border-l-4 [&>blockquote]:border-secondary [&>blockquote]:bg-secondary/5 [&>blockquote]:p-8 [&>blockquote]:rounded-r-3xl [&>blockquote]:italic [&>blockquote]:my-12 [&>blockquote]:text-xl [&>blockquote]:text-primary/90 [&>blockquote]:font-headline [&>blockquote]:shadow-sm
             [&>img]:w-full [&>img]:h-auto [&>img]:rounded-[2rem] [&>img]:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.15)] [&>img]:my-16 [&>img]:object-cover [&>img]:border [&>img]:border-outline-variant/10 [&>img]:max-h-[600px]
           "
-          dangerouslySetInnerHTML={{ __html: post.content }} 
+          dangerouslySetInnerHTML={{ __html: contentWithIds }}
         />
       </article>
 
@@ -219,6 +293,42 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           </div>
         </div>
       </div>
+
+      {/* İlgili Yazılar */}
+      {relatedPosts.length > 0 && (
+        <section className="max-w-3xl mx-auto px-6 mt-16 pt-10 border-t border-outline-variant/20">
+          <h2 className="font-headline text-2xl text-primary font-bold mb-8 flex items-center gap-2">
+            <span className="material-symbols-outlined text-secondary">auto_stories</span>
+            İlgili Yazılar
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            {relatedPosts.map((related) => (
+              <Link key={related.slug} href={`/blog/${related.slug}`} className="group">
+                <article className="bg-white rounded-2xl overflow-hidden border border-outline-variant/10 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 h-full flex flex-col">
+                  {related.imageUrl && (
+                    <div className="h-36 overflow-hidden">
+                      <img
+                        src={related.imageUrl}
+                        alt={related.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                    </div>
+                  )}
+                  <div className="p-4 flex flex-col flex-1">
+                    <h3 className="font-headline font-bold text-primary text-sm leading-snug mb-2 line-clamp-2 group-hover:text-secondary transition-colors">
+                      {related.title}
+                    </h3>
+                    <p className="text-xs text-on-surface-variant line-clamp-2 flex-1">{related.description}</p>
+                    <span className="text-[10px] text-outline font-medium mt-3 uppercase tracking-widest">
+                      {new Date(related.createdAt).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long' })}
+                    </span>
+                  </div>
+                </article>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
     </main>
   );
 }

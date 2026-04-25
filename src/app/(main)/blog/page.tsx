@@ -5,8 +5,9 @@ import BrandImageFallback from '@/components/ui/BrandImageFallback';
 import { prisma } from '@/lib/prisma';
 
 export const metadata = {
-  title: 'Blog & Manevi Rehberlik | Ethereal Serenity',
-  description: 'Manevi yolculuğunuzda size rehberlik edecek yazılar, Medine ve Mekke hakkında derinlemesine bilgiler ve AI destekli rotalar.',
+  title: { absolute: 'Manevi Rehberlik Blogu — Umre & Hac Yazıları | HadiUmreyeGidelim' },
+  description: 'Umre ve hac yolculuğunuzda size rehberlik edecek yazılar, Mekke ve Medine hakkında derinlemesine bilgiler, pratik ipuçları ve bireysel deneyimler.',
+  alternates: { canonical: '/blog' },
 };
 
 export const revalidate = 60;

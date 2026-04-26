@@ -8,6 +8,12 @@ const nextConfig: any = {
         destination: '/bireysel-umre',
         permanent: true,
       },
+      // Yanlış slug prefix düzeltmesi: /blog/blog/:slug → /blog/:slug
+      {
+        source: '/blog/blog/:slug*',
+        destination: '/blog/:slug*',
+        permanent: true,
+      },
     ];
   },
   images: {

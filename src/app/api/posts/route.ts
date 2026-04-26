@@ -25,7 +25,9 @@ export async function POST(request: Request) {
     
     if (body.categoryId === "") body.categoryId = null;
     if (body.authorId === "") body.authorId = null;
-    
+    // Slug'tan /blog/ /blog gibi yanlış prefix'leri temizle
+    if (body.slug) body.slug = body.slug.replace(/^\/?(blog\/)+/i, "").replace(/^\/+|\/+$/g, "");
+
     const post = await prisma.post.create({ data: body });
     return NextResponse.json(post);
   } catch (error: any) {
@@ -42,7 +44,8 @@ export async function PUT(request: NextRequest) {
     
     if (body.categoryId === "") body.categoryId = null;
     if (body.authorId === "") body.authorId = null;
-    
+    if (body.slug) body.slug = body.slug.replace(/^\/?(blog\/)+/i, "").replace(/^\/+|\/+$/g, "");
+
     const post = await prisma.post.update({ where: { id }, data: body });
     return NextResponse.json(post);
   } catch (error: any) {

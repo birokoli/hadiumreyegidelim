@@ -18,19 +18,34 @@ const MediaUploader = ({ title, slug, onUploadComplete, currentUrl }: { title: s
     const file = e.target.files?.[0];
     if (!file) return;
     setUploading(true);
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("headingSlug", slug);
     try {
-      const res = await fetch("/api/upload", { method: "POST", body: formData });
-      let data: any;
-      const rawText = await res.text();
-      try { data = JSON.parse(rawText); } catch {
-        alert(`Sunucu hatası (${res.status}):\n${rawText.slice(0, 300)}`);
+      const ext = file.name.split(".").pop() || "jpg";
+
+      // 1. Sunucudan imzalı URL al (küçük JSON isteği — Vercel limitine takılmaz)
+      const signRes = await fetch("/api/upload-sign", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ headingSlug: slug, ext, contentType: file.type }),
+      });
+      const signData = await signRes.json();
+      if (!signRes.ok || !signData.signedURL) {
+        alert("İmzalı URL alınamadı:\n" + (signData.error || signRes.status));
         return;
       }
-      if (data.success) onUploadComplete(data.url);
-      else alert("Yükleme başarısız:\n" + data.error);
+
+      // 2. Dosyayı direkt Supabase'e yükle (Vercel'e dokunmuyor)
+      const uploadRes = await fetch(signData.signedURL, {
+        method: "PUT",
+        headers: { "Content-Type": file.type || "application/octet-stream" },
+        body: file,
+      });
+      if (!uploadRes.ok) {
+        const txt = await uploadRes.text();
+        alert(`Supabase yükleme hatası (${uploadRes.status}):\n${txt.slice(0, 300)}`);
+        return;
+      }
+
+      onUploadComplete(signData.publicUrl);
     } catch (err: any) {
       alert("Ağ hatası:\n" + (err?.message || String(err)));
     } finally {

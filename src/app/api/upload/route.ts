@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
+export const maxDuration = 60;
+
+// Next.js App Router default body limit'i aşmak için
+export const dynamic = "force-dynamic";
 
 export async function POST(req: Request) {
   try {
@@ -26,9 +30,19 @@ export async function POST(req: Request) {
       throw new Error("Supabase Storage ayarları eksik.");
     }
 
-    // File → ArrayBuffer → Buffer (Next.js App Router / Node.js zorunluluğu)
+    // File → ArrayBuffer → Uint8Array (en geniş fetch uyumluluğu)
     const arrayBuffer = await file.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
+    const uint8Array = new Uint8Array(arrayBuffer);
+
+    // Content-Type'ı uzantıdan çıkar (file.type bazen boş gelir)
+    const mimeMap: Record<string, string> = {
+      jpg: "image/jpeg",
+      jpeg: "image/jpeg",
+      png: "image/png",
+      webp: "image/webp",
+      gif: "image/gif",
+    };
+    const contentType = file.type || mimeMap[ext] || "application/octet-stream";
 
     const uploadRes = await fetch(
       `${supabaseUrl}/storage/v1/object/uploads/${filename}`,
@@ -37,11 +51,10 @@ export async function POST(req: Request) {
         headers: {
           Authorization: `Bearer ${supabaseKey}`,
           apikey: supabaseKey,
-          "Content-Type": file.type || "application/octet-stream",
-          "Content-Length": String(buffer.length),
+          "Content-Type": contentType,
           "x-upsert": "true",
         },
-        body: buffer,
+        body: uint8Array,
       }
     );
 

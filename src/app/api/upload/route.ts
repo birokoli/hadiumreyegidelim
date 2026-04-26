@@ -2,9 +2,22 @@ import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
-
-// Next.js App Router default body limit'i aşmak için
 export const dynamic = "force-dynamic";
+
+// Türkçe harfleri ASCII'ye çevir, ardından alfanümerik dışını tire yap
+function toSafeSlug(raw: string): string {
+  return raw
+    .replace(/ğ/g, "g").replace(/Ğ/g, "g")
+    .replace(/ü/g, "u").replace(/Ü/g, "u")
+    .replace(/ş/g, "s").replace(/Ş/g, "s")
+    .replace(/ö/g, "o").replace(/Ö/g, "o")
+    .replace(/ç/g, "c").replace(/Ç/g, "c")
+    .replace(/ı/g, "i").replace(/İ/g, "i")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")   // alfanümerik dışı → tire
+    .replace(/^-+|-+$/g, "")        // baş/son tireleri kaldır
+    .substring(0, 40);
+}
 
 export async function POST(req: Request) {
   try {
@@ -16,28 +29,30 @@ export async function POST(req: Request) {
     }
 
     const headingSlug = (data.get("headingSlug") as string) || "";
-    const cleanPrefix = headingSlug
-      ? `${headingSlug.replace(/[^a-z0-9]+/g, "-").substring(0, 40)}-`
-      : "gorsel-";
+    const safePrefix = headingSlug ? toSafeSlug(headingSlug) : "";
+    const cleanPrefix = safePrefix ? `${safePrefix}-` : "gorsel-";
+
     const uniqueSuffix = Date.now();
-    const ext = (file.name.split(".").pop() || "jpg").toLowerCase();
+    const rawExt = (file.name.split(".").pop() || "jpg").toLowerCase();
+    // Uzantıyı da güvene al (sadece bilinen resim uzantıları)
+    const allowedExts: Record<string, string> = {
+      jpg: "jpg", jpeg: "jpg", png: "png", webp: "webp", gif: "gif",
+    };
+    const ext = allowedExts[rawExt] || "jpg";
     const filename = `${cleanPrefix}${uniqueSuffix}.${ext}`;
 
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
     if (!supabaseUrl || !supabaseKey) {
-      throw new Error("Supabase Storage ayarları eksik.");
+      throw new Error("Supabase Storage ayarları eksik (env var eksik).");
     }
 
-    // File → ArrayBuffer → Uint8Array (en geniş fetch uyumluluğu)
     const arrayBuffer = await file.arrayBuffer();
     const uint8Array = new Uint8Array(arrayBuffer);
 
-    // Content-Type'ı uzantıdan çıkar (file.type bazen boş gelir)
     const mimeMap: Record<string, string> = {
       jpg: "image/jpeg",
-      jpeg: "image/jpeg",
       png: "image/png",
       webp: "image/webp",
       gif: "image/gif",

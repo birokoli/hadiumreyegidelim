@@ -11,41 +11,62 @@ const ReactQuill = dynamic(() => import("react-quill-new"), {
   loading: () => <div className="h-96 w-full flex items-center justify-center bg-surface-container rounded-xl border border-outline-variant/30 text-outline">Gelişmiş Editör Yükleniyor...</div> 
 });
 
+// Görseli canvas ile sıkıştır — Vercel 4.5MB limitini aşmamak için
+async function compressImage(file: File, maxMB = 3.5): Promise<Blob> {
+  return new Promise((resolve) => {
+    const img = new Image();
+    const objectUrl = URL.createObjectURL(file);
+    img.onload = () => {
+      URL.revokeObjectURL(objectUrl);
+      let { width, height } = img;
+      const MAX_DIM = 2400;
+      if (width > MAX_DIM || height > MAX_DIM) {
+        if (width >= height) { height = Math.round(height * MAX_DIM / width); width = MAX_DIM; }
+        else { width = Math.round(width * MAX_DIM / height); height = MAX_DIM; }
+      }
+      const canvas = document.createElement("canvas");
+      canvas.width = width; canvas.height = height;
+      canvas.getContext("2d")!.drawImage(img, 0, 0, width, height);
+      // Kaliteyi kademeli düşürerek hedef boyuta ulaş
+      const tryQuality = (q: number) => {
+        canvas.toBlob((blob) => {
+          if (!blob) { resolve(new Blob([file], { type: "image/jpeg" })); return; }
+          if (blob.size > maxMB * 1024 * 1024 && q > 0.4) tryQuality(q - 0.1);
+          else resolve(blob);
+        }, "image/jpeg", q);
+      };
+      tryQuality(0.85);
+    };
+    img.onerror = () => { URL.revokeObjectURL(objectUrl); resolve(file); };
+    img.src = objectUrl;
+  });
+}
+
 const MediaUploader = ({ title, slug, onUploadComplete, currentUrl }: { title: string, slug: string, onUploadComplete: (url: string) => void, currentUrl: string }) => {
   const [uploading, setUploading] = useState(false);
-  
+
   const handleUpload = async (e: any) => {
     const file = e.target.files?.[0];
     if (!file) return;
     setUploading(true);
     try {
-      const ext = file.name.split(".").pop() || "jpg";
+      // Client'ta sıkıştır (Vercel 4.5MB limitini aşmamak için)
+      const compressed = await compressImage(file);
+      const compressedFile = new File([compressed], file.name.replace(/\.[^.]+$/, ".jpg"), { type: "image/jpeg" });
 
-      // 1. Sunucudan imzalı URL al (küçük JSON isteği — Vercel limitine takılmaz)
-      const signRes = await fetch("/api/upload-sign", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ headingSlug: slug, ext, contentType: file.type }),
-      });
-      const signData = await signRes.json();
-      if (!signRes.ok || !signData.signedURL) {
-        alert("İmzalı URL alınamadı:\n" + (signData.error || signRes.status));
+      const formData = new FormData();
+      formData.append("file", compressedFile);
+      formData.append("headingSlug", slug);
+
+      const res = await fetch("/api/upload", { method: "POST", body: formData });
+      let data: any;
+      const rawText = await res.text();
+      try { data = JSON.parse(rawText); } catch {
+        alert(`Sunucu hatası (${res.status}):\n${rawText.slice(0, 300)}`);
         return;
       }
-
-      // 2. Dosyayı direkt Supabase'e yükle (Vercel'e dokunmuyor)
-      const uploadRes = await fetch(signData.signedURL, {
-        method: "PUT",
-        headers: { "Content-Type": file.type || "application/octet-stream" },
-        body: file,
-      });
-      if (!uploadRes.ok) {
-        const txt = await uploadRes.text();
-        alert(`Supabase yükleme hatası (${uploadRes.status}):\n${txt.slice(0, 300)}`);
-        return;
-      }
-
-      onUploadComplete(signData.publicUrl);
+      if (data.success) onUploadComplete(data.url);
+      else alert("Yükleme başarısız:\n" + data.error);
     } catch (err: any) {
       alert("Ağ hatası:\n" + (err?.message || String(err)));
     } finally {

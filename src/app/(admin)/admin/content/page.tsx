@@ -23,11 +23,16 @@ const MediaUploader = ({ title, slug, onUploadComplete, currentUrl }: { title: s
     formData.append("headingSlug", slug);
     try {
       const res = await fetch("/api/upload", { method: "POST", body: formData });
-      const data = await res.json();
+      let data: any;
+      const rawText = await res.text();
+      try { data = JSON.parse(rawText); } catch {
+        alert(`Sunucu hatası (${res.status}):\n${rawText.slice(0, 300)}`);
+        return;
+      }
       if (data.success) onUploadComplete(data.url);
-      else alert("Hata: " + data.error);
-    } catch {
-      alert("Yükleme hatası.");
+      else alert("Yükleme başarısız:\n" + data.error);
+    } catch (err: any) {
+      alert("Ağ hatası:\n" + (err?.message || String(err)));
     } finally {
       setUploading(false);
     }

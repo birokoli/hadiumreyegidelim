@@ -1375,10 +1375,24 @@ export default function ContentPage() {
                )}
             </div>
 
-            <div className="pt-10 flex justify-end gap-6 items-center border-t border-outline-variant/20 mt-12">
-               <span className="text-xs text-outline italic">SEO tagleri, URL rotaları ve Schema işaretleri otomatik uygulanır.</span>
+            <div className="pt-10 flex flex-wrap justify-between gap-6 items-center border-t border-outline-variant/20 mt-12">
+               <label className="flex items-center gap-3 cursor-pointer select-none group">
+                 <div className="relative">
+                   <input
+                     type="checkbox"
+                     className="sr-only peer"
+                     checked={newPost.published}
+                     onChange={e => setNewPost(prev => ({...prev, published: e.target.checked}))}
+                   />
+                   <div className="w-12 h-6 bg-slate-200 peer-checked:bg-success rounded-full transition-colors"></div>
+                   <div className="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform peer-checked:translate-x-6"></div>
+                 </div>
+                 <span className="text-sm font-bold text-slate-600">
+                   {newPost.published ? <span className="text-success">Yayında</span> : <span className="text-amber-600">Taslak (gizli)</span>}
+                 </span>
+               </label>
                <button type="submit" className="bg-primary hover:bg-[#002f6c] text-white px-10 py-4 rounded-xl font-bold tracking-widest uppercase shadow-lg shadow-primary/30 transition-all flex items-center gap-2">
-                 <span className="material-symbols-outlined text-lg block">{editingPostId ? 'save' : 'publish'}</span> 
+                 <span className="material-symbols-outlined text-lg block">{editingPostId ? 'save' : 'publish'}</span>
                  {editingPostId ? 'GÜNCELLE' : 'BLOGU YAYINLA'}
                </button>
             </div>

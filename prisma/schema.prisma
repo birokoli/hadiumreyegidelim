@@ -112,6 +112,7 @@ model Post {
   personalExperience String?
   references  String?
   imagePrompts String?
+  scheduledAt DateTime? // Zamanlanmış yayın tarihi
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }

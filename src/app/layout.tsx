@@ -8,8 +8,8 @@ const notoSerif = Noto_Serif({ subsets: ["latin"], weight: ["400", "700"], style
 export const metadata: Metadata = {
   metadataBase: new URL("https://hadiumreyegidelim.com"),
   title: {
-    template: "%s | Hadi Umreye Gidelim",
-    default: "Bireysel Umre Nasıl Yapılır? Vize ve Özel Paket Fiyatları 2026",
+    template: "%s | Hadi Umre'ye Gidelim",
+    default: "Hadi Umre'ye Gidelim | Umrenizi Kolayca Planlayın",
   },
   description: "Bireysel umre vizesi nasıl alınır? Diyanete veya turlara bağımlı kalmadan, 2026 Özel Bireysel Umre ve VIP Aile umresi fiyatları hakkında şeffaf rehber.",
   keywords: ["bireysel umre", "bireysel umre vizesi", "bireysel umre nasıl yapılır", "bireysel umre vizesi nasıl alınır", "diyanetsiz umre", "umre fiyatları 2026", "özel umre", "kendi imkanlarıyla umre", "vip umre"],
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     title: "Bireysel Umre Rehberi | Suudi Arabistan e-Vize & Özel Fiyatlar 2026",
     description: "Bireysel umre vizesi nasıl alınır? Diyanet turlarına bağlanmadan, Mescid-i Haram'a sıfır, sadece ailenize özel butik umre organizasyonu kurun ve tasarruf edin.",
     url: 'https://hadiumreyegidelim.com',
-    siteName: "Hadi Umreye Gidelim",
+    siteName: "Hadi Umre'ye Gidelim",
     images: [
       {
         url: 'https://images.unsplash.com/photo-1565552645632-d725f8bfc19a?q=80&w=2600&auto=format&fit=crop',
@@ -72,8 +72,19 @@ export default async function RootLayout({
   const jsonLd = [
     {
       "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Hadi Umre'ye Gidelim",
+      "url": "https://hadiumreyegidelim.com",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://hadiumreyegidelim.com/blog?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
+      "@context": "https://schema.org",
       "@type": "Organization",
-      "name": "Hadi Umreye Gidelim",
+      "name": "Hadi Umre'ye Gidelim",
       "image": `https://hadiumreyegidelim.com${settings.SITE_LOGO || '/logo.png'}`,
       "@id": "https://hadiumreyegidelim.com",
       "url": "https://hadiumreyegidelim.com",

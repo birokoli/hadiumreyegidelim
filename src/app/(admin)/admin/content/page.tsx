@@ -104,6 +104,14 @@ const MediaUploader = ({ title, slug, onUploadComplete, currentUrl }: { title: s
   );
 };
 
+const TR_MONTHS = ['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
+const TR_DAYS_SHORT = ['Pt','Sa','Ça','Pe','Cu','Ct','Pz'];
+
+function calFirstDow(y: number, m: number) {
+  const d = new Date(y, m, 1).getDay(); return d === 0 ? 6 : d - 1;
+}
+function calDaysInMonth(y: number, m: number) { return new Date(y, m + 1, 0).getDate(); }
+
 export default function ContentPage() {
   const { toast } = useAdminContext();
   const [showMarkdownPaste, setShowMarkdownPaste] = useState(false);
@@ -136,7 +144,14 @@ export default function ContentPage() {
     personalExperience: "",
     references: "",
     published: true,
+    scheduledAt: "" as string,
   });
+
+  const [publishMode, setPublishMode] = useState<'immediate' | 'scheduled'>('immediate');
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [pickerDate, setPickerDate] = useState(() => new Date());
+  const [pickerTime, setPickerTime] = useState("09:00");
+  const [pickerViewMonth, setPickerViewMonth] = useState(() => { const d = new Date(); return { y: d.getFullYear(), m: d.getMonth() }; });
 
   const [aiAnalysisResult, setAiAnalysisResult] = useState<any>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -359,7 +374,7 @@ export default function ContentPage() {
   const handleCancel = () => {
     setShowAdd(false);
     setEditingPostId(null);
-    setNewPost({ title: "", metaTitle: "", slug: "", description: "", keywords: "", tags: "", focusKeyword: "", seoScore: 0, imageUrl: "", imageAlt: "", tldr: "", faq: "[]", content: "", authorId: "", categoryId: "", personalExperience: "", references: "", published: true });
+    setNewPost({ title: "", metaTitle: "", slug: "", description: "", keywords: "", tags: "", focusKeyword: "", seoScore: 0, imageUrl: "", imageAlt: "", tldr: "", faq: "[]", content: "", authorId: "", categoryId: "", personalExperience: "", references: "", published: true, scheduledAt: "" });
     setAiTopic("");
     setAiKeywords("");
     setAiEditInstruction("");
@@ -368,6 +383,10 @@ export default function ContentPage() {
     setViewMode('edit');
     setShowVersionHistory(false);
     setVersions([]);
+    setPublishMode('immediate');
+    setPickerDate(new Date());
+    setPickerTime("09:00");
+    setPickerViewMonth(() => { const d = new Date(); return { y: d.getFullYear(), m: d.getMonth() }; });
   };
 
   const fetchVersions = async (postId: string) => {
@@ -419,7 +438,18 @@ export default function ContentPage() {
       personalExperience: post.personalExperience || "",
       references: post.references || "",
       published: post.published ?? true,
+      scheduledAt: post.scheduledAt || "",
     });
+    // Restore scheduling state if post has a future scheduledAt
+    if (post.scheduledAt && !post.published) {
+      const dt = new Date(post.scheduledAt);
+      setPublishMode('scheduled');
+      setPickerDate(dt);
+      setPickerTime(`${String(dt.getHours()).padStart(2,'0')}:${String(dt.getMinutes()).padStart(2,'0')}`);
+      setPickerViewMonth({ y: dt.getFullYear(), m: dt.getMonth() });
+    } else {
+      setPublishMode('immediate');
+    }
     setAiTopic("");
     setAiKeywords("");
     setAiEditInstruction("");
@@ -445,7 +475,16 @@ export default function ContentPage() {
       });
 
       const slugToUse = newPost.slug || newPost.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
-      const payload = { ...newPost, content: finalContent, slug: slugToUse };
+      let scheduledAt: string | null = null;
+      let publishedFlag = newPost.published;
+      if (publishMode === 'scheduled') {
+        const [h, min] = pickerTime.split(':').map(Number);
+        const dt = new Date(pickerDate);
+        dt.setHours(h, min, 0, 0);
+        scheduledAt = dt.toISOString();
+        publishedFlag = false; // will be published by cron at scheduled time
+      }
+      const payload = { ...newPost, content: finalContent, slug: slugToUse, published: publishedFlag, scheduledAt: scheduledAt || null };
       
       const url = editingPostId ? `/api/posts?id=${editingPostId}` : "/api/posts";
       const method = editingPostId ? "PUT" : "POST";
@@ -463,7 +502,14 @@ export default function ContentPage() {
             body: JSON.stringify({ postId: editingPostId, title: newPost.title, content: finalContent, description: newPost.description })
           }).catch(() => {});
         }
-        toast(editingPostId ? "Blog yazısı başarıyla güncellendi!" : "Blog yazısı yayınlandı!", "success");
+        toast(
+          editingPostId
+            ? "Blog yazısı başarıyla güncellendi!"
+            : publishMode === 'scheduled'
+              ? `Blog zamanlandı — ${new Date(scheduledAt!).toLocaleString('tr-TR', { dateStyle: 'medium', timeStyle: 'short' })} tarihinde yayına alınacak.`
+              : "Blog yazısı yayınlandı!",
+          "success"
+        );
         handleCancel();
         fetchPosts();
       } else {
@@ -1235,9 +1281,9 @@ export default function ContentPage() {
                          <div className="flex gap-3">
                            <button
                              type="button"
-                             onClick={() => {
+                             onClick={async () => {
                                if (!markdownInput.trim()) return;
-                               const html = marked.parse(markdownInput) as string;
+                               const html = await marked.parse(markdownInput);
                                setNewPost(prev => ({ ...prev, content: prev.content ? prev.content + html : html }));
                                setMarkdownInput("");
                                setShowMarkdownPaste(false);
@@ -1250,9 +1296,9 @@ export default function ContentPage() {
                            </button>
                            <button
                              type="button"
-                             onClick={() => {
+                             onClick={async () => {
                                if (!markdownInput.trim()) return;
-                               const html = marked.parse(markdownInput) as string;
+                               const html = await marked.parse(markdownInput);
                                setNewPost(prev => ({ ...prev, content: html }));
                                setMarkdownInput("");
                                setShowMarkdownPaste(false);
@@ -1375,26 +1421,146 @@ export default function ContentPage() {
                )}
             </div>
 
-            <div className="pt-10 flex flex-wrap justify-between gap-6 items-center border-t border-outline-variant/20 mt-12">
-               <label className="flex items-center gap-3 cursor-pointer select-none group">
-                 <div className="relative">
-                   <input
-                     type="checkbox"
-                     className="sr-only peer"
-                     checked={newPost.published}
-                     onChange={e => setNewPost(prev => ({...prev, published: e.target.checked}))}
-                   />
-                   <div className="w-12 h-6 bg-slate-200 peer-checked:bg-success rounded-full transition-colors"></div>
-                   <div className="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform peer-checked:translate-x-6"></div>
-                 </div>
-                 <span className="text-sm font-bold text-slate-600">
-                   {newPost.published ? <span className="text-success">Yayında</span> : <span className="text-amber-600">Taslak (gizli)</span>}
-                 </span>
-               </label>
-               <button type="submit" className="bg-primary hover:bg-[#002f6c] text-white px-10 py-4 rounded-xl font-bold tracking-widest uppercase shadow-lg shadow-primary/30 transition-all flex items-center gap-2">
-                 <span className="material-symbols-outlined text-lg block">{editingPostId ? 'save' : 'publish'}</span>
-                 {editingPostId ? 'GÜNCELLE' : 'BLOGU YAYINLA'}
-               </button>
+            <div className="pt-10 border-t border-outline-variant/20 mt-12 space-y-6">
+              {/* ── Yayın Modu Seçici ── */}
+              <div className="flex flex-wrap items-center gap-4">
+                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Yayın Modu</span>
+                <div className="flex rounded-xl overflow-hidden border border-outline-variant/30 shadow-sm">
+                  <button
+                    type="button"
+                    onClick={() => { setPublishMode('immediate'); setNewPost(p => ({ ...p, published: true, scheduledAt: "" })); }}
+                    className={`flex items-center gap-2 px-5 py-2.5 text-xs font-bold uppercase tracking-widest transition-colors ${publishMode === 'immediate' ? 'bg-success text-white' : 'bg-surface text-slate-500 hover:bg-surface-container'}`}
+                  >
+                    <span className="material-symbols-outlined text-[16px]">rocket_launch</span> Hemen Yayınla
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => { setPublishMode('scheduled'); setNewPost(p => ({ ...p, published: false })); }}
+                    className={`flex items-center gap-2 px-5 py-2.5 text-xs font-bold uppercase tracking-widest transition-colors border-l border-outline-variant/30 ${publishMode === 'scheduled' ? 'bg-primary text-white' : 'bg-surface text-slate-500 hover:bg-surface-container'}`}
+                  >
+                    <span className="material-symbols-outlined text-[16px]">schedule</span> Zamanla
+                  </button>
+                </div>
+
+                {/* Taslak toggle — sadece hemen yayınla modunda göster */}
+                {publishMode === 'immediate' && (
+                  <label className="flex items-center gap-3 cursor-pointer select-none ml-2">
+                    <div className="relative">
+                      <input type="checkbox" className="sr-only peer" checked={newPost.published}
+                        onChange={e => setNewPost(prev => ({ ...prev, published: e.target.checked }))} />
+                      <div className="w-12 h-6 bg-slate-200 peer-checked:bg-success rounded-full transition-colors"></div>
+                      <div className="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform peer-checked:translate-x-6"></div>
+                    </div>
+                    <span className="text-sm font-bold">
+                      {newPost.published ? <span className="text-success">Yayında</span> : <span className="text-amber-600">Taslak (gizli)</span>}
+                    </span>
+                  </label>
+                )}
+              </div>
+
+              {/* ── Takvim & Saat Seçici ── */}
+              {publishMode === 'scheduled' && (() => {
+                const today = new Date(); today.setHours(0,0,0,0);
+                const { y, m } = pickerViewMonth;
+                const firstDow = calFirstDow(y, m);
+                const daysInMonth = calDaysInMonth(y, m);
+                const prevMonth = () => setPickerViewMonth(prev => prev.m === 0 ? { y: prev.y - 1, m: 11 } : { y: prev.y, m: prev.m - 1 });
+                const nextMonth = () => setPickerViewMonth(prev => prev.m === 11 ? { y: prev.y + 1, m: 0 } : { y: prev.y, m: prev.m + 1 });
+                const isSelected = (d: number) => pickerDate.getFullYear() === y && pickerDate.getMonth() === m && pickerDate.getDate() === d;
+                const isPast = (d: number) => new Date(y, m, d) < today;
+                const isToday = (d: number) => new Date(y, m, d).toDateString() === today.toDateString();
+
+                return (
+                  <div className="bg-white border border-primary/20 rounded-2xl p-6 max-w-sm shadow-[0_8px_30px_rgba(0,55,129,0.08)] space-y-5">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="material-symbols-outlined text-primary text-[20px]">event</span>
+                      <span className="text-sm font-bold text-primary">Yayın Tarihi ve Saati Seç</span>
+                    </div>
+
+                    {/* Ay navigasyon */}
+                    <div className="flex items-center justify-between">
+                      <button type="button" onClick={prevMonth} className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-surface-container transition-colors text-outline">
+                        <span className="material-symbols-outlined text-[18px]">chevron_left</span>
+                      </button>
+                      <span className="font-bold text-sm text-primary">{TR_MONTHS[m]} {y}</span>
+                      <button type="button" onClick={nextMonth} className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-surface-container transition-colors text-outline">
+                        <span className="material-symbols-outlined text-[18px]">chevron_right</span>
+                      </button>
+                    </div>
+
+                    {/* Gün isimleri */}
+                    <div className="grid grid-cols-7 gap-0.5">
+                      {TR_DAYS_SHORT.map(d => (
+                        <div key={d} className="text-center text-[10px] font-bold text-outline uppercase py-1">{d}</div>
+                      ))}
+                      {/* Boş hücreler (ayın başındaki boşluklar) */}
+                      {Array.from({ length: firstDow }).map((_, i) => <div key={`e-${i}`} />)}
+                      {/* Günler */}
+                      {Array.from({ length: daysInMonth }).map((_, i) => {
+                        const day = i + 1;
+                        const past = isPast(day);
+                        const sel = isSelected(day);
+                        const todayDay = isToday(day);
+                        return (
+                          <button
+                            key={day}
+                            type="button"
+                            disabled={past}
+                            onClick={() => {
+                              const nd = new Date(y, m, day);
+                              setPickerDate(nd);
+                            }}
+                            className={`
+                              aspect-square w-full flex items-center justify-center rounded-full text-[13px] font-bold transition-colors
+                              ${sel ? 'bg-primary text-white shadow-md' : ''}
+                              ${!sel && todayDay ? 'border-2 border-primary text-primary' : ''}
+                              ${!sel && !todayDay && !past ? 'text-slate-700 hover:bg-primary/10' : ''}
+                              ${past ? 'text-slate-300 cursor-not-allowed' : ''}
+                            `}
+                          >
+                            {day}
+                          </button>
+                        );
+                      })}
+                    </div>
+
+                    {/* Saat seçici */}
+                    <div className="flex items-center gap-3 pt-2 border-t border-outline-variant/20">
+                      <span className="material-symbols-outlined text-outline text-[18px]">schedule</span>
+                      <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Saat</label>
+                      <input
+                        type="time"
+                        value={pickerTime}
+                        onChange={e => setPickerTime(e.target.value)}
+                        className="bg-surface border border-outline-variant/30 rounded-lg px-3 py-2 text-sm font-bold text-primary focus:outline-none focus:ring-2 focus:ring-primary/30 ml-auto"
+                      />
+                    </div>
+
+                    {/* Seçilen tarih özeti */}
+                    {pickerDate && (
+                      <div className="bg-primary/5 rounded-xl px-4 py-3 flex items-center gap-2">
+                        <span className="material-symbols-outlined text-primary text-[16px]">calendar_clock</span>
+                        <span className="text-xs font-bold text-primary">
+                          {new Date(
+                            pickerDate.getFullYear(), pickerDate.getMonth(), pickerDate.getDate(),
+                            ...pickerTime.split(':').map(Number) as [number, number]
+                          ).toLocaleString('tr-TR', { dateStyle: 'long', timeStyle: 'short' })} tarihinde yayına alınacak
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                );
+              })()}
+
+              {/* ── Submit Butonu ── */}
+              <div className="flex justify-end pt-2">
+                <button type="submit" className="bg-primary hover:bg-[#002f6c] text-white px-10 py-4 rounded-xl font-bold tracking-widest uppercase shadow-lg shadow-primary/30 transition-all flex items-center gap-2">
+                  <span className="material-symbols-outlined text-lg block">
+                    {publishMode === 'scheduled' ? 'schedule' : editingPostId ? 'save' : 'publish'}
+                  </span>
+                  {publishMode === 'scheduled' ? 'ZAMANLA' : editingPostId ? 'GÜNCELLE' : 'BLOGU YAYINLA'}
+                </button>
+              </div>
             </div>
           </form>
         </section>

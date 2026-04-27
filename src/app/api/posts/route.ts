@@ -19,16 +19,23 @@ export async function GET() {
   }
 }
 
+function buildPostData(body: any) {
+  const { authorId, categoryId, ...rest } = body;
+  if (rest.slug) rest.slug = rest.slug.replace(/^\/?(blog\/)+/i, "").replace(/^\/+|\/+$/g, "");
+  if (rest.scheduledAt === "" || rest.scheduledAt === null) rest.scheduledAt = null;
+  else if (rest.scheduledAt) rest.scheduledAt = new Date(rest.scheduledAt);
+
+  return {
+    ...rest,
+    ...(authorId ? { authorModel: { connect: { id: authorId } } } : { authorModel: undefined }),
+    ...(categoryId ? { category: { connect: { id: categoryId } } } : { category: undefined }),
+  };
+}
+
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    
-    if (body.categoryId === "") body.categoryId = null;
-    if (body.authorId === "") body.authorId = null;
-    // Slug'tan /blog/ /blog gibi yanlış prefix'leri temizle
-    if (body.slug) body.slug = body.slug.replace(/^\/?(blog\/)+/i, "").replace(/^\/+|\/+$/g, "");
-
-    const post = await prisma.post.create({ data: body });
+    const post = await prisma.post.create({ data: buildPostData(body) });
     return NextResponse.json(post);
   } catch (error: any) {
     console.error("POST /api/posts Error:", error);
@@ -41,12 +48,19 @@ export async function PUT(request: NextRequest) {
     const id = request.nextUrl.searchParams.get('id');
     const body = await request.json();
     if (!id) return NextResponse.json({ error: 'ID required' }, { status: 400 });
-    
-    if (body.categoryId === "") body.categoryId = null;
-    if (body.authorId === "") body.authorId = null;
-    if (body.slug) body.slug = body.slug.replace(/^\/?(blog\/)+/i, "").replace(/^\/+|\/+$/g, "");
 
-    const post = await prisma.post.update({ where: { id }, data: body });
+    const { authorId, categoryId, ...rest } = body;
+    if (rest.slug) rest.slug = rest.slug.replace(/^\/?(blog\/)+/i, "").replace(/^\/+|\/+$/g, "");
+    if (rest.scheduledAt === "" || rest.scheduledAt === null) rest.scheduledAt = null;
+    else if (rest.scheduledAt) rest.scheduledAt = new Date(rest.scheduledAt);
+
+    const data: any = {
+      ...rest,
+      ...(authorId ? { authorModel: { connect: { id: authorId } } } : { authorModel: { disconnect: true } }),
+      ...(categoryId ? { category: { connect: { id: categoryId } } } : { category: { disconnect: true } }),
+    };
+
+    const post = await prisma.post.update({ where: { id }, data });
     return NextResponse.json(post);
   } catch (error: any) {
     console.error("PUT /api/posts Error:", error);

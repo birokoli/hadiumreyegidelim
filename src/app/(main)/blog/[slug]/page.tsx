@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
+import { marked } from 'marked';
 
 export const dynamic = 'force-dynamic';
 
@@ -47,18 +48,36 @@ function getReadTime(content: string) {
   return Math.max(2, Math.ceil(words / 200));
 }
 
+// HTML entity decode (özellikle &nbsp; → boşluk, &amp; → &)
+function decodeEntities(str: string): string {
+  return str
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#(\d+);/g, (_, n) => String.fromCharCode(parseInt(n)))
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function toHeadingId(text: string): string {
+  return decodeEntities(text)
+    .toLowerCase()
+    .replace(/[^a-z0-9ğüşöçı\s]/gi, '')
+    .replace(/\s+/g, '-')
+    .replace(/(^-|-$)+/g, '');
+}
+
 function extractToc(content: string) {
   const regex = /<h([23])[^>]*>(.*?)<\/h\1>/gi;
   const items: { level: number; text: string; id: string }[] = [];
   let match;
   while ((match = regex.exec(content)) !== null) {
-    const text = match[2].replace(/<[^>]*>/g, '').trim();
+    const raw = match[2].replace(/<[^>]*>/g, '');
+    const text = decodeEntities(raw);
     if (text.length > 2) {
-      items.push({
-        level: parseInt(match[1]),
-        text,
-        id: text.toLowerCase().replace(/[^a-z0-9ğüşöçı]/gi, '-').replace(/(^-|-$)+/g, ''),
-      });
+      items.push({ level: parseInt(match[1]), text, id: toHeadingId(raw) });
     }
   }
   return items;
@@ -66,8 +85,8 @@ function extractToc(content: string) {
 
 function injectHeadingIds(content: string) {
   return content.replace(/<h([23])([^>]*)>(.*?)<\/h\1>/gi, (_, level, attrs, inner) => {
-    const text = inner.replace(/<[^>]*>/g, '').trim();
-    const id = text.toLowerCase().replace(/[^a-z0-9ğüşöçı]/gi, '-').replace(/(^-|-$)+/g, '');
+    const text = inner.replace(/<[^>]*>/g, '');
+    const id = toHeadingId(text);
     return `<h${level}${attrs} id="${id}">${inner}</h${level}>`;
   });
 }
@@ -84,6 +103,11 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   const readTime = getReadTime(post.content);
   const toc = extractToc(post.content);
   const contentWithIds = injectHeadingIds(post.content);
+
+  // personalExperience markdown → HTML (## başlıklar, listeler vb. temiz görünsün)
+  const personalExperienceHtml = post.personalExperience
+    ? await marked.parse(post.personalExperience)
+    : null;
 
   const relatedPosts = await prisma.post.findMany({
     where: {
@@ -242,14 +266,16 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         )}
 
         {/* E-E-A-T Experience Injection */}
-        {post.personalExperience && (
-          <div className="my-10 bg-[#f8fafc] border-l-4 border-secondary p-8 rounded-r-3xl shadow-sm italic relative">
-            <span className="material-symbols-outlined absolute top-4 right-6 text-slate-200 text-6xl opacity-30 select-none">format_quote</span>
-            <div className="flex items-center gap-2 mb-3">
-               <span className="material-symbols-outlined text-secondary text-[18px]">verified_user</span>
+        {personalExperienceHtml && (
+          <div className="my-10 bg-[#f8fafc] border-l-4 border-secondary p-8 rounded-r-3xl shadow-sm relative">
+            <div className="flex items-center gap-2 mb-4">
+               <span className="material-symbols-outlined text-secondary text-[18px]" aria-hidden="true">verified_user</span>
                <span className="text-secondary font-bold text-[10px] uppercase tracking-widest font-headline">Yazarın Kişisel Deneyimi</span>
             </div>
-            <p className="text-[#334155] text-lg leading-relaxed relative z-10 font-body">"{post.personalExperience}"</p>
+            <div
+              className="text-[#334155] text-base leading-relaxed relative z-10 font-body [&>h2]:font-bold [&>h2]:text-lg [&>h2]:text-primary [&>h2]:mt-4 [&>h2]:mb-2 [&>h3]:font-bold [&>h3]:text-base [&>h3]:text-secondary [&>h3]:mt-3 [&>h3]:mb-1 [&>p]:mb-3 [&>ul]:list-disc [&>ul]:pl-5 [&>ul]:mb-3 [&>ul>li]:mb-1"
+              dangerouslySetInnerHTML={{ __html: personalExperienceHtml }}
+            />
           </div>
         )}
 
@@ -265,6 +291,13 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             [&>ul>li::before]:content-[''] [&>ul>li::before]:absolute [&>ul>li::before]:left-0 [&>ul>li::before]:top-[0.6em] [&>ul>li::before]:w-3 [&>ul>li::before]:h-3 [&>ul>li::before]:bg-secondary/40 [&>ul>li::before]:rounded-full
             [&>blockquote]:whitespace-normal [&>blockquote]:break-words [&>blockquote]:border-l-4 [&>blockquote]:border-secondary [&>blockquote]:bg-secondary/5 [&>blockquote]:p-8 [&>blockquote]:rounded-r-3xl [&>blockquote]:italic [&>blockquote]:my-12 [&>blockquote]:text-xl [&>blockquote]:text-primary/90 [&>blockquote]:font-headline [&>blockquote]:shadow-sm
             [&>img]:w-full [&>img]:h-auto [&>img]:rounded-[2rem] [&>img]:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.15)] [&>img]:my-16 [&>img]:object-cover [&>img]:border [&>img]:border-outline-variant/10 [&>img]:max-h-[600px]
+            [&>table]:w-full [&>table]:my-10 [&>table]:border-collapse [&>table]:text-sm [&>table]:rounded-2xl [&>table]:overflow-hidden [&>table]:shadow-sm
+            [&>table>thead]:bg-primary [&>table>thead>tr>th]:text-white [&>table>thead>tr>th]:font-bold [&>table>thead>tr>th]:px-5 [&>table>thead>tr>th]:py-3 [&>table>thead>tr>th]:text-left [&>table>thead>tr>th]:text-[13px] [&>table>thead>tr>th]:tracking-wide
+            [&>table>tbody>tr]:border-b [&>table>tbody>tr]:border-slate-100 [&>table>tbody>tr:nth-child(even)]:bg-slate-50
+            [&>table>tbody>tr>td]:px-5 [&>table>tbody>tr>td]:py-3 [&>table>tbody>tr>td]:text-[#334155] [&>table>tbody>tr>td]:align-top
+            [&>ol]:list-none [&>ol]:pl-0 [&>ol]:mb-10 [&>ol]:counter-reset-[item] [&>ol>li]:relative [&>ol>li]:pl-10 [&>ol>li]:mb-4 [&>ol>li]:text-[#334155] [&>ol>li]:leading-[1.8]
+            [&>strong]:font-bold [&>strong]:text-primary
+            [&>hr]:border-0 [&>hr]:border-t [&>hr]:border-slate-200 [&>hr]:my-12
           "
           dangerouslySetInnerHTML={{ __html: contentWithIds }}
         />

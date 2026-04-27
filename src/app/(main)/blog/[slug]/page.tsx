@@ -141,7 +141,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
   // FAQPage JSON-LD
   let faqItems: {q: string; a: string}[] = [];
-  try { faqItems = JSON.parse((post as any).faq || '[]'); } catch {}
+  try { faqItems = JSON.parse(post.faq || '[]'); } catch {}
   const faqJsonLd = faqItems.length > 0 ? {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',

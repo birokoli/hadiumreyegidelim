@@ -10,21 +10,21 @@ datasource db {
 }
 
 model Order {
-  id        String   @id @default(cuid())
-  pax       Int
-  totalUSD  Float
-  status    String   @default("PENDING")
-  
-  flight    String?  // JSON string
-  hotel     String?  // JSON string
-  transfer  String?  // JSON string
-  guide     String?  // JSON string
-  extras    String?  // JSON string
+  id       String @id @default(cuid())
+  pax      Int
+  totalUSD Float
+  status   String @default("PENDING")
+
+  flight   String? // JSON string
+  hotel    String? // JSON string
+  transfer String? // JSON string
+  guide    String? // JSON string
+  extras   String? // JSON string
 
   contactInfo String? // JSON string: name, email, phone
-  
-  user        User?    @relation(fields: [userId], references: [id])
-  userId      String?
+
+  user   User?   @relation(fields: [userId], references: [id])
+  userId String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -40,11 +40,11 @@ model Setting {
 
 model Service {
   id          String   @id @default(cuid())
-  type        String   // FLIGHT, HOTEL, TRANSFER, EXTRA
+  type        String // FLIGHT, HOTEL, TRANSFER, EXTRA
   name        String
   description String?
   price       Float
-  extraData   String?  // JSON for additional info
+  extraData   String? // JSON for additional info
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -59,9 +59,9 @@ model Guide {
   biography      String?
   quote          String?
   youtubeUrl     String?
-  expertise      String?  // JSON string array for ["Siyer", "İslam Tarihi"]
-  publications   String?  // JSON string array for publications
-  linkedPackages String?  // JSON string array of Package IDs (manual, optional)
+  expertise      String? // JSON string array for ["Siyer", "İslam Tarihi"]
+  publications   String? // JSON string array for publications
+  linkedPackages String? // JSON string array of Package IDs (manual, optional)
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 }
@@ -90,32 +90,32 @@ model Author {
 }
 
 model Post {
-  id          String   @id @default(cuid())
-  slug        String   @unique
-  title       String
-  metaTitle   String?  // SEO title tag (50-60 chars), falls back to title
-  description String?
-  content     String
-  keywords    String?
-  tags        String?  // Comma-separated tags
-  author      String   @default("Admin")
-  authorId    String?
-  authorModel Author?  @relation(fields: [authorId], references: [id])
-  imageUrl    String?
-  imageAlt    String?  // Alt text for cover image
-  tldr        String?  // TL;DR / Özet (shown before content)
-  faq         String?  // JSON array: [{q: string, a: string}]
-  published   Boolean  @default(false)
-  category    Category? @relation(fields: [categoryId], references: [id])
-  categoryId  String?
-  focusKeyword String?
-  seoScore    Int?
+  id                 String    @id @default(cuid())
+  slug               String    @unique
+  title              String
+  metaTitle          String? // SEO title tag (50-60 chars), falls back to title
+  description        String?
+  content            String
+  keywords           String?
+  tags               String? // Comma-separated tags
+  author             String    @default("Admin")
+  authorId           String?
+  authorModel        Author?   @relation(fields: [authorId], references: [id])
+  imageUrl           String?
+  imageAlt           String? // Alt text for cover image
+  tldr               String? // TL;DR / Özet (shown before content)
+  faq                String? // JSON array: [{q: string, a: string}]
+  published          Boolean   @default(false)
+  category           Category? @relation(fields: [categoryId], references: [id])
+  categoryId         String?
+  focusKeyword       String?
+  seoScore           Int?
   personalExperience String?
-  references  String?
-  imagePrompts String?
-  scheduledAt DateTime? // Zamanlanmış yayın tarihi
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  references         String?
+  imagePrompts       String?
+  scheduledAt        DateTime? // Zamanlanmış yayın tarihi
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
 }
 
 model Package {
@@ -127,8 +127,8 @@ model Package {
   currency    String   @default("USD")
   duration    String
   imageUrl    String?
-  gallery     String?  // JSON string array for up to 5 additional images
-  includes    String?  // JSON string array for included features
+  gallery     String? // JSON string array for up to 5 additional images
+  includes    String? // JSON string array for included features
   isPopular   Boolean  @default(false)
   published   Boolean  @default(true)
   createdAt   DateTime @default(now())
@@ -138,26 +138,26 @@ model Package {
 model Hotel {
   id             String   @id @default(cuid())
   name           String
-  city           String   @default("Mekke (Makkah)") 
+  city           String   @default("Mekke (Makkah)")
   price          Float
   stars          Int      @default(5)
   distanceMeters Int      @default(100)
   distanceText   String
   description    String?
-  images         String?  // JSON string
+  images         String? // JSON string
   isActive       Boolean  @default(true)
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 }
 
 model AILog {
-  id          String   @id @default(cuid())
+  id          String    @id @default(cuid())
   topic       String?
-  status      String   @default("STARTING") // STARTING, INTERNET_SEARCH, WRITING_CONTENT, GENERATING_IMAGES, COMPLETED, FAILED
-  details     String?  // JSON string for logs/errors
-  imageUrl    String?  // Saved generated image preview
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  status      String    @default("STARTING") // STARTING, INTERNET_SEARCH, WRITING_CONTENT, GENERATING_IMAGES, COMPLETED, FAILED
+  details     String? // JSON string for logs/errors
+  imageUrl    String? // Saved generated image preview
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
   completedAt DateTime?
 }
 
@@ -165,7 +165,7 @@ model User {
   id        String   @id @default(cuid())
   name      String
   email     String   @unique
-  password  String   // Hashed payload
+  password  String // Hashed payload
   phone     String?
   orders    Order[]
   createdAt DateTime @default(now())

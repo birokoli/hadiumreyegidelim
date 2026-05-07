@@ -91,6 +91,28 @@ function injectHeadingIds(content: string) {
   });
 }
 
+// Excel/Quill'den gelen tabloları temizle: inline style'ları sil, responsive wrapper ekle
+function cleanAndWrapTables(content: string): string {
+  // Tüm table etiketlerinden inline style, width, bgcolor, cellpadding, cellspacing, border sıfırla
+  const stripTableAttrs = (html: string) =>
+    html.replace(/<(table|thead|tbody|tfoot|tr|td|th|colgroup|col)(\s[^>]*)?>/gi, (_, tag, attrs = '') => {
+      const cleaned = attrs
+        .replace(/\s*style\s*=\s*["'][^"']*["']/gi, '')
+        .replace(/\s*(width|height|bgcolor|align|valign|cellpadding|cellspacing|border)\s*=\s*["'][^"']*["']/gi, '')
+        .replace(/\s*(width|height|bgcolor|align|valign|cellpadding|cellspacing|border)\s*=\s*\S+/gi, '')
+        .trim();
+      return `<${tag}${cleaned ? ' ' + cleaned : ''}>`;
+    });
+
+  // Her <table>...</table> bloğunu scroll wrapper'a al
+  const wrapped = content.replace(/<table[\s\S]*?<\/table>/gi, (match) => {
+    const clean = stripTableAttrs(match);
+    return `<div class="table-scroll-wrapper">${clean}</div>`;
+  });
+
+  return wrapped;
+}
+
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const post = await prisma.post.findUnique({
@@ -102,7 +124,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
   const readTime = getReadTime(post.content);
   const toc = extractToc(post.content);
-  const contentWithIds = injectHeadingIds(post.content);
+  const contentWithIds = cleanAndWrapTables(injectHeadingIds(post.content));
 
   // personalExperience markdown → HTML (## başlıklar, listeler vb. temiz görünsün)
   const personalExperienceHtml = post.personalExperience
@@ -282,22 +304,19 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         {/* İçerik */}
         <div
           className="
-            w-full max-w-full overflow-hidden
-            [&>h2]:whitespace-normal [&>h2]:break-words [&>h2]:font-headline [&>h2]:text-3xl [&>h2]:md:text-4xl [&>h2]:text-primary [&>h2]:mt-20 [&>h2]:mb-8 [&>h2]:font-bold [&>h2]:tracking-tight [&>h2]:border-b [&>h2]:border-outline-variant/20 [&>h2]:pb-4
-            [&>h3]:whitespace-normal [&>h3]:break-words [&>h3]:font-headline [&>h3]:text-2xl [&>h3]:text-secondary [&>h3]:mt-12 [&>h3]:mb-6 [&>h3]:font-bold [&>h3]:italic
-            [&>p]:whitespace-normal [&>p]:text-[#334155] [&>p]:leading-[2.2] [&>p]:mb-8 [&>p]:font-body [&>p]:text-[1.125rem] [&>p]:tracking-wide [&>p]:break-words
-            [&_a]:text-blue-600 [&_a]:font-bold [&_a]:underline [&_a]:underline-offset-[3px] [&_a]:decoration-blue-600/30 [&_a]:hover:decoration-blue-600 [&_a]:hover:text-blue-800 [&_a]:transition-all [&_a]:break-words [&_a]:bg-blue-50/50 [&_a]:px-1 [&_a]:rounded-md
-            [&>ul]:list-none [&>ul]:pl-0 [&>ul]:mb-10 [&>ul>li]:relative [&>ul>li]:pl-8 [&>ul>li]:mb-4 [&>ul>li]:text-[#334155] [&>ul>li]:leading-[1.8] [&>ul>li]:break-words [&>ul>li]:whitespace-normal
-            [&>ul>li::before]:content-[''] [&>ul>li::before]:absolute [&>ul>li::before]:left-0 [&>ul>li::before]:top-[0.6em] [&>ul>li::before]:w-3 [&>ul>li::before]:h-3 [&>ul>li::before]:bg-secondary/40 [&>ul>li::before]:rounded-full
-            [&>blockquote]:whitespace-normal [&>blockquote]:break-words [&>blockquote]:border-l-4 [&>blockquote]:border-secondary [&>blockquote]:bg-secondary/5 [&>blockquote]:p-8 [&>blockquote]:rounded-r-3xl [&>blockquote]:italic [&>blockquote]:my-12 [&>blockquote]:text-xl [&>blockquote]:text-primary/90 [&>blockquote]:font-headline [&>blockquote]:shadow-sm
-            [&>img]:w-full [&>img]:h-auto [&>img]:rounded-[2rem] [&>img]:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.15)] [&>img]:my-16 [&>img]:object-cover [&>img]:border [&>img]:border-outline-variant/10 [&>img]:max-h-[600px]
-            [&>table]:w-full [&>table]:my-10 [&>table]:border-collapse [&>table]:text-sm [&>table]:rounded-2xl [&>table]:overflow-hidden [&>table]:shadow-sm
-            [&>table>thead]:bg-primary [&>table>thead>tr>th]:text-white [&>table>thead>tr>th]:font-bold [&>table>thead>tr>th]:px-5 [&>table>thead>tr>th]:py-3 [&>table>thead>tr>th]:text-left [&>table>thead>tr>th]:text-[13px] [&>table>thead>tr>th]:tracking-wide
-            [&>table>tbody>tr]:border-b [&>table>tbody>tr]:border-slate-100 [&>table>tbody>tr:nth-child(even)]:bg-slate-50
-            [&>table>tbody>tr>td]:px-5 [&>table>tbody>tr>td]:py-3 [&>table>tbody>tr>td]:text-[#334155] [&>table>tbody>tr>td]:align-top
-            [&>ol]:list-none [&>ol]:pl-0 [&>ol]:mb-10 [&>ol]:counter-reset-[item] [&>ol>li]:relative [&>ol>li]:pl-10 [&>ol>li]:mb-4 [&>ol>li]:text-[#334155] [&>ol>li]:leading-[1.8]
-            [&>strong]:font-bold [&>strong]:text-primary
-            [&>hr]:border-0 [&>hr]:border-t [&>hr]:border-slate-200 [&>hr]:my-12
+            blog-content
+            w-full max-w-full
+            [&_h2]:font-headline [&_h2]:text-3xl [&_h2]:md:text-4xl [&_h2]:text-primary [&_h2]:mt-20 [&_h2]:mb-8 [&_h2]:font-bold [&_h2]:tracking-tight [&_h2]:border-b [&_h2]:border-outline-variant/20 [&_h2]:pb-4
+            [&_h3]:font-headline [&_h3]:text-2xl [&_h3]:text-secondary [&_h3]:mt-12 [&_h3]:mb-6 [&_h3]:font-bold [&_h3]:italic
+            [&_p]:text-[#334155] [&_p]:leading-[2.2] [&_p]:mb-8 [&_p]:font-body [&_p]:text-[1.125rem] [&_p]:tracking-wide
+            [&_a]:text-blue-600 [&_a]:font-bold [&_a]:underline [&_a]:underline-offset-[3px] [&_a]:decoration-blue-600/30 [&_a]:hover:decoration-blue-600 [&_a]:hover:text-blue-800 [&_a]:transition-all [&_a]:bg-blue-50/50 [&_a]:px-1 [&_a]:rounded-md
+            [&_ul]:list-none [&_ul]:pl-0 [&_ul]:mb-10 [&_ul_li]:relative [&_ul_li]:pl-8 [&_ul_li]:mb-4 [&_ul_li]:text-[#334155] [&_ul_li]:leading-[1.8]
+            [&_ul_li::before]:content-[''] [&_ul_li::before]:absolute [&_ul_li::before]:left-0 [&_ul_li::before]:top-[0.6em] [&_ul_li::before]:w-3 [&_ul_li::before]:h-3 [&_ul_li::before]:bg-secondary/40 [&_ul_li::before]:rounded-full
+            [&_blockquote]:border-l-4 [&_blockquote]:border-secondary [&_blockquote]:bg-secondary/5 [&_blockquote]:p-8 [&_blockquote]:rounded-r-3xl [&_blockquote]:italic [&_blockquote]:my-12 [&_blockquote]:text-xl [&_blockquote]:text-primary/90 [&_blockquote]:font-headline [&_blockquote]:shadow-sm
+            [&_img]:w-full [&_img]:h-auto [&_img]:rounded-[2rem] [&_img]:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.15)] [&_img]:my-16 [&_img]:object-cover [&_img]:border [&_img]:border-outline-variant/10 [&_img]:max-h-[600px]
+            [&_ol]:list-none [&_ol]:pl-0 [&_ol]:mb-10 [&_ol_li]:relative [&_ol_li]:pl-10 [&_ol_li]:mb-4 [&_ol_li]:text-[#334155] [&_ol_li]:leading-[1.8]
+            [&_strong]:font-bold [&_strong]:text-primary
+            [&_hr]:border-0 [&_hr]:border-t [&_hr]:border-slate-200 [&_hr]:my-12
           "
           dangerouslySetInnerHTML={{ __html: contentWithIds }}
         />

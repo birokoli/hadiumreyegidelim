@@ -351,22 +351,24 @@ export default function ContentPage() {
     [&>img]:w-full [&>img]:h-auto [&>img]:rounded-[2rem] [&>img]:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.15)] [&>img]:my-16 [&>img]:object-cover [&>img]:border [&>img]:border-outline-variant/10 [&>img]:max-h-[600px]
   `;
 
-  // Yeni 2030 editörü manuel görsel yüklemeyi içte değil dışta tutar! Handlerlara gerek yok.
-  // Yeni 2030 editörü manuel görsel yüklemeyi içte değil dışta tutar! Handlerlara gerek yok.
   const modules = useMemo(
     () => ({
       toolbar: {
         container: [
           [{ header: [2, 3, 4, false] }],
-          ["bold", "italic", "underline", "strike", "blockquote"],
+          ["bold", "italic", "underline", "strike"],
+          ["blockquote", "code-block"],
           [{ color: [] }, { background: [] }],
           [{ align: [] }],
-          [{ list: "ordered" }, { list: "bullet" }],
-          ["link", "image", "video"],
+          [{ list: "ordered" }, { list: "bullet" }, { indent: "-1" }, { indent: "+1" }],
+          ["link", "image"],
           ["clean"],
         ],
       },
-      clipboard: { matchVisual: false }
+      clipboard: {
+        // Excel/Word yapıştırmada inline style'ları temizle
+        matchVisual: false,
+      },
     }),
     []
   );
@@ -1321,13 +1323,13 @@ export default function ContentPage() {
                      )}
                    </div>
 
-                   <div className="bg-white rounded-xl overflow-hidden border border-outline-variant/30 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/10 transition-all">
+                   <div className="bg-white rounded-xl border border-outline-variant/30 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/10 transition-all">
                      <ReactQuill
                        theme="snow"
                        value={newPost.content}
                        onChange={(val) => setNewPost(prev => ({...prev, content: val}))}
                        modules={modules}
-                       className="min-h-[700px] mb-2 text-lg"
+                       className="min-h-[700px] text-lg"
                        placeholder="Yazınızı buraya yazın veya yapay zeka ile otomatik doldurun..."
                      />
                    </div>

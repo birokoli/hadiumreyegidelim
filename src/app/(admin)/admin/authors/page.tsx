@@ -1,10 +1,12 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 export default function AuthorsPage() {
   const [authors, setAuthors] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  
+  const [uploadingPhoto, setUploadingPhoto] = useState(false);
+  const photoInputRef = useRef<HTMLInputElement>(null);
+
   const [showAdd, setShowAdd] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [newAuthor, setNewAuthor] = useState({
@@ -15,6 +17,29 @@ export default function AuthorsPage() {
     linkedin: "",
     twitter: "",
   });
+
+  const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingPhoto(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("headingSlug", `yazar-${newAuthor.name || "profil"}`);
+      const res = await fetch("/api/upload", { method: "POST", body: formData });
+      const data = await res.json();
+      if (data.success) {
+        setNewAuthor(prev => ({ ...prev, image: data.url }));
+      } else {
+        alert("Yükleme başarısız: " + data.error);
+      }
+    } catch (err: any) {
+      alert("Ağ hatası: " + (err?.message || String(err)));
+    } finally {
+      setUploadingPhoto(false);
+      if (photoInputRef.current) photoInputRef.current.value = "";
+    }
+  };
 
   const fetchAuthors = async () => {
     try {
@@ -128,13 +153,54 @@ export default function AuthorsPage() {
               </div>
             </div>
 
-            <div className="space-y-2">
+            {/* Profil Fotoğrafı Yükleme */}
+            <div className="space-y-3">
               <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center justify-between">
-                <span>Yazar Profil Görseli URL</span>
-                <span className="text-[10px] font-normal italic lowercase">(Kare profil fotoğrafı önerilir)</span>
+                <span>Profil Fotoğrafı</span>
+                <span className="text-[10px] font-normal italic lowercase text-outline">WebP · JPEG · PNG — kare önerilir</span>
               </label>
-              <input className="w-full bg-white border border-outline-variant/30 rounded-xl p-4 text-sm text-secondary focus:ring-primary focus:border-primary outline-none" 
-                value={newAuthor.image} onChange={e => setNewAuthor({...newAuthor, image: e.target.value})} placeholder="https://example.com/profil.jpg" />
+              <div className="flex items-center gap-6">
+                {/* Önizleme */}
+                <div className="w-20 h-20 rounded-full bg-primary/10 border-2 border-primary/20 overflow-hidden flex items-center justify-center shrink-0 shadow-sm">
+                  {newAuthor.image ? (
+                    <img src={newAuthor.image} alt="Profil" className="w-full h-full object-cover" />
+                  ) : (
+                    <span className="material-symbols-outlined text-primary/40 text-3xl">person</span>
+                  )}
+                </div>
+                {/* Yükleme Butonu */}
+                <div className="flex flex-col gap-2 flex-1">
+                  <button
+                    type="button"
+                    onClick={() => photoInputRef.current?.click()}
+                    disabled={uploadingPhoto}
+                    className="flex items-center gap-2 px-5 py-3 bg-primary/5 hover:bg-primary/10 border border-primary/20 hover:border-primary/40 text-primary rounded-xl font-bold text-xs uppercase tracking-widest transition-all disabled:opacity-60 w-fit"
+                  >
+                    {uploadingPhoto ? (
+                      <span className="material-symbols-outlined animate-spin text-[18px]">sync</span>
+                    ) : (
+                      <span className="material-symbols-outlined text-[18px]">upload</span>
+                    )}
+                    {uploadingPhoto ? "Yükleniyor..." : "Fotoğraf Yükle"}
+                  </button>
+                  {newAuthor.image && (
+                    <button
+                      type="button"
+                      onClick={() => setNewAuthor(prev => ({ ...prev, image: "" }))}
+                      className="text-[10px] text-error/70 hover:text-error font-bold uppercase tracking-widest transition-colors w-fit"
+                    >
+                      Fotoğrafı Kaldır
+                    </button>
+                  )}
+                </div>
+                <input
+                  ref={photoInputRef}
+                  type="file"
+                  accept="image/webp,image/jpeg,image/png"
+                  className="hidden"
+                  onChange={handlePhotoUpload}
+                />
+              </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

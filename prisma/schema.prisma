@@ -4,9 +4,8 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
 }
 
 model Order {
@@ -14,7 +13,7 @@ model Order {
   pax       Int
   totalUSD  Float
   status    String   @default("PENDING")
-  
+
   flight    String?  // JSON string
   hotel     String?  // JSON string
   transfer  String?  // JSON string
@@ -22,7 +21,7 @@ model Order {
   extras    String?  // JSON string
 
   contactInfo String? // JSON string: name, email, phone
-  
+
   user        User?    @relation(fields: [userId], references: [id])
   userId      String?
 
@@ -59,9 +58,9 @@ model Guide {
   biography      String?
   quote          String?
   youtubeUrl     String?
-  expertise      String?  // JSON string array for ["Siyer", "İslam Tarihi"]
-  publications   String?  // JSON string array for publications
-  linkedPackages String?  // JSON string array of Package IDs (manual, optional)
+  expertise      String?
+  publications   String?
+  linkedPackages String?
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 }
@@ -93,18 +92,18 @@ model Post {
   id          String   @id @default(cuid())
   slug        String   @unique
   title       String
-  metaTitle   String?  // SEO title tag (50-60 chars), falls back to title
+  metaTitle   String?
   description String?
   content     String
   keywords    String?
-  tags        String?  // Comma-separated tags
+  tags        String?
   author      String   @default("Admin")
   authorId    String?
   authorModel Author?  @relation(fields: [authorId], references: [id])
   imageUrl    String?
-  imageAlt    String?  // Alt text for cover image
-  tldr        String?  // TL;DR / Özet (shown before content)
-  faq         String?  // JSON array: [{q: string, a: string}]
+  imageAlt    String?
+  tldr        String?
+  faq         String?
   published   Boolean  @default(false)
   category    Category? @relation(fields: [categoryId], references: [id])
   categoryId  String?
@@ -113,7 +112,7 @@ model Post {
   personalExperience String?
   references  String?
   imagePrompts String?
-  scheduledAt DateTime? // Zamanlanmış yayın tarihi
+  scheduledAt DateTime?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -127,8 +126,8 @@ model Package {
   currency    String   @default("USD")
   duration    String
   imageUrl    String?
-  gallery     String?  // JSON string array for up to 5 additional images
-  includes    String?  // JSON string array for included features
+  gallery     String?
+  includes    String?
   isPopular   Boolean  @default(false)
   published   Boolean  @default(true)
   createdAt   DateTime @default(now())
@@ -138,13 +137,13 @@ model Package {
 model Hotel {
   id             String   @id @default(cuid())
   name           String
-  city           String   @default("Mekke (Makkah)") 
+  city           String   @default("Mekke (Makkah)")
   price          Float
   stars          Int      @default(5)
   distanceMeters Int      @default(100)
   distanceText   String
   description    String?
-  images         String?  // JSON string
+  images         String?
   isActive       Boolean  @default(true)
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
@@ -153,9 +152,9 @@ model Hotel {
 model AILog {
   id          String   @id @default(cuid())
   topic       String?
-  status      String   @default("STARTING") // STARTING, INTERNET_SEARCH, WRITING_CONTENT, GENERATING_IMAGES, COMPLETED, FAILED
-  details     String?  // JSON string for logs/errors
-  imageUrl    String?  // Saved generated image preview
+  status      String   @default("STARTING")
+  details     String?
+  imageUrl    String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   completedAt DateTime?
@@ -165,7 +164,7 @@ model User {
   id        String   @id @default(cuid())
   name      String
   email     String   @unique
-  password  String   // Hashed payload
+  password  String
   phone     String?
   orders    Order[]
   createdAt DateTime @default(now())
@@ -178,7 +177,7 @@ model ContactRequest {
   phone     String
   package   String?
   message   String?
-  status    String   @default("UNREAD") // UNREAD, CONTACTED, RESOLVED
+  status    String   @default("UNREAD")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -192,4 +191,213 @@ model PostVersion {
   version     Int
   savedBy     String?
   createdAt   DateTime @default(now())
+}
+
+// ─────────────────────────────────────────────────────────
+// INFLUENCER MARKETING SİSTEMİ
+// ─────────────────────────────────────────────────────────
+
+model Influencer {
+  id              String   @id @default(cuid())
+  // Kişisel
+  fullName        String
+  email           String   @unique
+  password        String
+  phone           String
+  tcNo            String?
+  birthDate       String?
+  avatarUrl       String?
+  // Sosyal medya
+  instagramHandle String?
+  instagramFollowers Int?  @default(0)
+  tiktokHandle    String?
+  youtubeHandle   String?
+  // Sistem
+  tier            String   @default("davetci")  // eci | rehber | davetci
+  uniqueCode      String   @unique              // Kupon kodu: AHMETHOCA100
+  uniqueUrl       String   @unique              // /r/ahmethoca
+  status          String   @default("pending")  // pending | active | passive | rejected
+  rejectReason    String?
+  // Ödeme
+  bankIban        String?
+  bankName        String?
+  bankAccountName String?
+  // İstatistik (cache)
+  totalSales      Int      @default(0)
+  totalEarnings   Float    @default(0)
+  pendingEarnings Float    @default(0)
+  totalClicks     Int      @default(0)
+  // İlişkiler
+  shares          Share[]
+  customers       Customer[]
+  sales           Sale[]
+  payments        Payment[]
+  linkClicks      LinkClick[]
+  campaigns       CampaignParticipant[]
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Share {
+  id              String   @id @default(cuid())
+  influencer      Influencer @relation(fields: [influencerId], references: [id])
+  influencerId    String
+  platform        String   // instagram_story | instagram_reel | instagram_post | tiktok | youtube | x | other
+  shareUrl        String?
+  screenshotUrl   String?
+  shareDate       String
+  description     String?
+  status          String   @default("pending")  // pending | approved | rejected
+  rejectReason    String?
+  viewCount       Int      @default(0)
+  clickCount      Int      @default(0)
+  saleCount       Int      @default(0)
+  approvedAt      DateTime?
+  approvedBy      String?  // admin id
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  linkClicks      LinkClick[]
+}
+
+model Customer {
+  id              String   @id @default(cuid())
+  fullName        String
+  phone           String
+  email           String?
+  tcNo            String?
+  source          String   @default("link")  // link | coupon | manual_phone | manual_branch
+  influencer      Influencer? @relation(fields: [influencerId], references: [id])
+  influencerId    String?
+  referrerUrl     String?
+  couponUsed      String?
+  firstSeenAt     DateTime @default(now())
+  status          String   @default("clicked")  // clicked | contacted | in_discussion | contracted | paid | completed | cancelled
+  assignedOperatorId String?
+  notes           String?
+  sales           Sale[]
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Sale {
+  id               String   @id @default(cuid())
+  customer         Customer @relation(fields: [customerId], references: [id])
+  customerId       String
+  influencer       Influencer? @relation(fields: [influencerId], references: [id])
+  influencerId     String?
+  umrePackage      String?
+  saleAmount       Float
+  commissionRate   Float    @default(0.05)  // %5
+  commissionAmount Float
+  commissionStatus String   @default("pending")  // pending | earned | paid | refunded
+  saleDate         DateTime @default(now())
+  completionDate   DateTime?
+  refundDeadline   DateTime?
+  notes            String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  payments         PaymentSale[]
+}
+
+model Payment {
+  id            String   @id @default(cuid())
+  influencer    Influencer @relation(fields: [influencerId], references: [id])
+  influencerId  String
+  periodMonth   String   // "2026-01"
+  totalAmount   Float
+  taxDeduction  Float    @default(0)
+  netAmount     Float
+  status        String   @default("pending")  // pending | approved | paid | cancelled
+  approvedBy    String?
+  approvedAt    DateTime?
+  paidAt        DateTime?
+  bankReference String?
+  notes         String?
+  sales         PaymentSale[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model PaymentSale {
+  payment   Payment @relation(fields: [paymentId], references: [id])
+  paymentId String
+  sale      Sale    @relation(fields: [saleId], references: [id])
+  saleId    String
+  @@id([paymentId, saleId])
+}
+
+model LinkClick {
+  id           String   @id @default(cuid())
+  influencer   Influencer @relation(fields: [influencerId], references: [id])
+  influencerId String
+  share        Share?   @relation(fields: [shareId], references: [id])
+  shareId      String?
+  ipAddress    String?
+  userAgent    String?
+  referrer     String?
+  country      String?
+  utmSource    String?
+  utmContent   String?
+  isBot        Boolean  @default(false)
+  clickedAt    DateTime @default(now())
+}
+
+model AttributionOverride {
+  id              String   @id @default(cuid())
+  customerId      String
+  oldInfluencerId String?
+  newInfluencerId String?
+  reason          String?
+  overriddenBy    String   // admin id
+  overriddenAt    DateTime @default(now())
+}
+
+// ─────────────────────────────────────────────────────────
+// KAMPANYA SİSTEMİ
+// ─────────────────────────────────────────────────────────
+
+model Campaign {
+  id              String   @id @default(cuid())
+  title           String                        // "Transfer %10 İndirim"
+  slug            String   @unique              // "transfer-10"
+  description     String?
+  type            String                        // package | transfer | hotel | flight | all
+  discountType    String   @default("percent")  // percent | fixed
+  discountValue   Float                         // 10 = %10 veya 500 = 500TL sabit
+  codeTemplate    String                        // "Transfer10" → koda eklenir → "YasinTransfer10"
+  status          String   @default("active")   // active | paused | ended
+  startDate       DateTime?
+  endDate         DateTime?
+  maxParticipants Int?                          // null = sınırsız
+  imageUrl        String?
+  createdBy       String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  participants    CampaignParticipant[]
+  codeUsages      CampaignCodeUsage[]
+}
+
+model CampaignParticipant {
+  id             String   @id @default(cuid())
+  campaign       Campaign   @relation(fields: [campaignId], references: [id])
+  campaignId     String
+  influencer     Influencer @relation(fields: [influencerId], references: [id])
+  influencerId   String
+  uniqueCode     String   @unique  // "YasinTransfer10"
+  joinedAt       DateTime @default(now())
+  usageCount     Int      @default(0)
+  @@unique([campaignId, influencerId])
+  codeUsages     CampaignCodeUsage[]
+}
+
+model CampaignCodeUsage {
+  id              String   @id @default(cuid())
+  campaign        Campaign  @relation(fields: [campaignId], references: [id])
+  campaignId      String
+  participant     CampaignParticipant @relation(fields: [participantId], references: [id])
+  participantId   String
+  customerName    String?
+  customerPhone   String?
+  note            String?
+  usedAt          DateTime @default(now())
 }

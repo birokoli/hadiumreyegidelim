@@ -115,9 +115,6 @@ Prisma.NullTypes = {
  */
 
 exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
-  ReadUncommitted: 'ReadUncommitted',
-  ReadCommitted: 'ReadCommitted',
-  RepeatableRead: 'RepeatableRead',
   Serializable: 'Serializable'
 });
 
@@ -296,14 +293,176 @@ exports.Prisma.PostVersionScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.InfluencerScalarFieldEnum = {
+  id: 'id',
+  fullName: 'fullName',
+  email: 'email',
+  password: 'password',
+  phone: 'phone',
+  tcNo: 'tcNo',
+  birthDate: 'birthDate',
+  avatarUrl: 'avatarUrl',
+  instagramHandle: 'instagramHandle',
+  instagramFollowers: 'instagramFollowers',
+  tiktokHandle: 'tiktokHandle',
+  youtubeHandle: 'youtubeHandle',
+  tier: 'tier',
+  uniqueCode: 'uniqueCode',
+  uniqueUrl: 'uniqueUrl',
+  status: 'status',
+  rejectReason: 'rejectReason',
+  bankIban: 'bankIban',
+  bankName: 'bankName',
+  bankAccountName: 'bankAccountName',
+  totalSales: 'totalSales',
+  totalEarnings: 'totalEarnings',
+  pendingEarnings: 'pendingEarnings',
+  totalClicks: 'totalClicks',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ShareScalarFieldEnum = {
+  id: 'id',
+  influencerId: 'influencerId',
+  platform: 'platform',
+  shareUrl: 'shareUrl',
+  screenshotUrl: 'screenshotUrl',
+  shareDate: 'shareDate',
+  description: 'description',
+  status: 'status',
+  rejectReason: 'rejectReason',
+  viewCount: 'viewCount',
+  clickCount: 'clickCount',
+  saleCount: 'saleCount',
+  approvedAt: 'approvedAt',
+  approvedBy: 'approvedBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.CustomerScalarFieldEnum = {
+  id: 'id',
+  fullName: 'fullName',
+  phone: 'phone',
+  email: 'email',
+  tcNo: 'tcNo',
+  source: 'source',
+  influencerId: 'influencerId',
+  referrerUrl: 'referrerUrl',
+  couponUsed: 'couponUsed',
+  firstSeenAt: 'firstSeenAt',
+  status: 'status',
+  assignedOperatorId: 'assignedOperatorId',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.SaleScalarFieldEnum = {
+  id: 'id',
+  customerId: 'customerId',
+  influencerId: 'influencerId',
+  umrePackage: 'umrePackage',
+  saleAmount: 'saleAmount',
+  commissionRate: 'commissionRate',
+  commissionAmount: 'commissionAmount',
+  commissionStatus: 'commissionStatus',
+  saleDate: 'saleDate',
+  completionDate: 'completionDate',
+  refundDeadline: 'refundDeadline',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.PaymentScalarFieldEnum = {
+  id: 'id',
+  influencerId: 'influencerId',
+  periodMonth: 'periodMonth',
+  totalAmount: 'totalAmount',
+  taxDeduction: 'taxDeduction',
+  netAmount: 'netAmount',
+  status: 'status',
+  approvedBy: 'approvedBy',
+  approvedAt: 'approvedAt',
+  paidAt: 'paidAt',
+  bankReference: 'bankReference',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.PaymentSaleScalarFieldEnum = {
+  paymentId: 'paymentId',
+  saleId: 'saleId'
+};
+
+exports.Prisma.LinkClickScalarFieldEnum = {
+  id: 'id',
+  influencerId: 'influencerId',
+  shareId: 'shareId',
+  ipAddress: 'ipAddress',
+  userAgent: 'userAgent',
+  referrer: 'referrer',
+  country: 'country',
+  utmSource: 'utmSource',
+  utmContent: 'utmContent',
+  isBot: 'isBot',
+  clickedAt: 'clickedAt'
+};
+
+exports.Prisma.AttributionOverrideScalarFieldEnum = {
+  id: 'id',
+  customerId: 'customerId',
+  oldInfluencerId: 'oldInfluencerId',
+  newInfluencerId: 'newInfluencerId',
+  reason: 'reason',
+  overriddenBy: 'overriddenBy',
+  overriddenAt: 'overriddenAt'
+};
+
+exports.Prisma.CampaignScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  slug: 'slug',
+  description: 'description',
+  type: 'type',
+  discountType: 'discountType',
+  discountValue: 'discountValue',
+  codeTemplate: 'codeTemplate',
+  status: 'status',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  maxParticipants: 'maxParticipants',
+  imageUrl: 'imageUrl',
+  createdBy: 'createdBy',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.CampaignParticipantScalarFieldEnum = {
+  id: 'id',
+  campaignId: 'campaignId',
+  influencerId: 'influencerId',
+  uniqueCode: 'uniqueCode',
+  joinedAt: 'joinedAt',
+  usageCount: 'usageCount'
+};
+
+exports.Prisma.CampaignCodeUsageScalarFieldEnum = {
+  id: 'id',
+  campaignId: 'campaignId',
+  participantId: 'participantId',
+  customerName: 'customerName',
+  customerPhone: 'customerPhone',
+  note: 'note',
+  usedAt: 'usedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
-};
-
-exports.Prisma.QueryMode = {
-  default: 'default',
-  insensitive: 'insensitive'
 };
 
 exports.Prisma.NullsOrder = {
@@ -325,7 +484,18 @@ exports.Prisma.ModelName = {
   AILog: 'AILog',
   User: 'User',
   ContactRequest: 'ContactRequest',
-  PostVersion: 'PostVersion'
+  PostVersion: 'PostVersion',
+  Influencer: 'Influencer',
+  Share: 'Share',
+  Customer: 'Customer',
+  Sale: 'Sale',
+  Payment: 'Payment',
+  PaymentSale: 'PaymentSale',
+  LinkClick: 'LinkClick',
+  AttributionOverride: 'AttributionOverride',
+  Campaign: 'Campaign',
+  CampaignParticipant: 'CampaignParticipant',
+  CampaignCodeUsage: 'CampaignCodeUsage'
 };
 
 /**

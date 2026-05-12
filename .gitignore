@@ -43,3 +43,7 @@ next-env.d.ts
 src/generated/prisma/*.dylib.node
 src/generated/prisma/*.so.node
 src/generated/prisma/*.dll.node
+
+# SQLite local DB
+prisma/dev.db
+prisma/dev.db-journal

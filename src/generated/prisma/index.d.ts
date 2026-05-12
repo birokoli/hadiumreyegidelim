@@ -78,6 +78,61 @@ export type ContactRequest = $Result.DefaultSelection<Prisma.$ContactRequestPayl
  * 
  */
 export type PostVersion = $Result.DefaultSelection<Prisma.$PostVersionPayload>
+/**
+ * Model Influencer
+ * 
+ */
+export type Influencer = $Result.DefaultSelection<Prisma.$InfluencerPayload>
+/**
+ * Model Share
+ * 
+ */
+export type Share = $Result.DefaultSelection<Prisma.$SharePayload>
+/**
+ * Model Customer
+ * 
+ */
+export type Customer = $Result.DefaultSelection<Prisma.$CustomerPayload>
+/**
+ * Model Sale
+ * 
+ */
+export type Sale = $Result.DefaultSelection<Prisma.$SalePayload>
+/**
+ * Model Payment
+ * 
+ */
+export type Payment = $Result.DefaultSelection<Prisma.$PaymentPayload>
+/**
+ * Model PaymentSale
+ * 
+ */
+export type PaymentSale = $Result.DefaultSelection<Prisma.$PaymentSalePayload>
+/**
+ * Model LinkClick
+ * 
+ */
+export type LinkClick = $Result.DefaultSelection<Prisma.$LinkClickPayload>
+/**
+ * Model AttributionOverride
+ * 
+ */
+export type AttributionOverride = $Result.DefaultSelection<Prisma.$AttributionOverridePayload>
+/**
+ * Model Campaign
+ * 
+ */
+export type Campaign = $Result.DefaultSelection<Prisma.$CampaignPayload>
+/**
+ * Model CampaignParticipant
+ * 
+ */
+export type CampaignParticipant = $Result.DefaultSelection<Prisma.$CampaignParticipantPayload>
+/**
+ * Model CampaignCodeUsage
+ * 
+ */
+export type CampaignCodeUsage = $Result.DefaultSelection<Prisma.$CampaignCodeUsagePayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -326,6 +381,116 @@ export class PrismaClient<
     * ```
     */
   get postVersion(): Prisma.PostVersionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.influencer`: Exposes CRUD operations for the **Influencer** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Influencers
+    * const influencers = await prisma.influencer.findMany()
+    * ```
+    */
+  get influencer(): Prisma.InfluencerDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.share`: Exposes CRUD operations for the **Share** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Shares
+    * const shares = await prisma.share.findMany()
+    * ```
+    */
+  get share(): Prisma.ShareDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.customer`: Exposes CRUD operations for the **Customer** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Customers
+    * const customers = await prisma.customer.findMany()
+    * ```
+    */
+  get customer(): Prisma.CustomerDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.sale`: Exposes CRUD operations for the **Sale** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Sales
+    * const sales = await prisma.sale.findMany()
+    * ```
+    */
+  get sale(): Prisma.SaleDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.payment`: Exposes CRUD operations for the **Payment** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Payments
+    * const payments = await prisma.payment.findMany()
+    * ```
+    */
+  get payment(): Prisma.PaymentDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.paymentSale`: Exposes CRUD operations for the **PaymentSale** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PaymentSales
+    * const paymentSales = await prisma.paymentSale.findMany()
+    * ```
+    */
+  get paymentSale(): Prisma.PaymentSaleDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.linkClick`: Exposes CRUD operations for the **LinkClick** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more LinkClicks
+    * const linkClicks = await prisma.linkClick.findMany()
+    * ```
+    */
+  get linkClick(): Prisma.LinkClickDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.attributionOverride`: Exposes CRUD operations for the **AttributionOverride** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AttributionOverrides
+    * const attributionOverrides = await prisma.attributionOverride.findMany()
+    * ```
+    */
+  get attributionOverride(): Prisma.AttributionOverrideDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.campaign`: Exposes CRUD operations for the **Campaign** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Campaigns
+    * const campaigns = await prisma.campaign.findMany()
+    * ```
+    */
+  get campaign(): Prisma.CampaignDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.campaignParticipant`: Exposes CRUD operations for the **CampaignParticipant** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more CampaignParticipants
+    * const campaignParticipants = await prisma.campaignParticipant.findMany()
+    * ```
+    */
+  get campaignParticipant(): Prisma.CampaignParticipantDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.campaignCodeUsage`: Exposes CRUD operations for the **CampaignCodeUsage** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more CampaignCodeUsages
+    * const campaignCodeUsages = await prisma.campaignCodeUsage.findMany()
+    * ```
+    */
+  get campaignCodeUsage(): Prisma.CampaignCodeUsageDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -779,7 +944,18 @@ export namespace Prisma {
     AILog: 'AILog',
     User: 'User',
     ContactRequest: 'ContactRequest',
-    PostVersion: 'PostVersion'
+    PostVersion: 'PostVersion',
+    Influencer: 'Influencer',
+    Share: 'Share',
+    Customer: 'Customer',
+    Sale: 'Sale',
+    Payment: 'Payment',
+    PaymentSale: 'PaymentSale',
+    LinkClick: 'LinkClick',
+    AttributionOverride: 'AttributionOverride',
+    Campaign: 'Campaign',
+    CampaignParticipant: 'CampaignParticipant',
+    CampaignCodeUsage: 'CampaignCodeUsage'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -798,7 +974,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "order" | "setting" | "service" | "guide" | "category" | "author" | "post" | "package" | "hotel" | "aILog" | "user" | "contactRequest" | "postVersion"
+      modelProps: "order" | "setting" | "service" | "guide" | "category" | "author" | "post" | "package" | "hotel" | "aILog" | "user" | "contactRequest" | "postVersion" | "influencer" | "share" | "customer" | "sale" | "payment" | "paymentSale" | "linkClick" | "attributionOverride" | "campaign" | "campaignParticipant" | "campaignCodeUsage"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1764,6 +1940,820 @@ export namespace Prisma {
           }
         }
       }
+      Influencer: {
+        payload: Prisma.$InfluencerPayload<ExtArgs>
+        fields: Prisma.InfluencerFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.InfluencerFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InfluencerPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.InfluencerFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InfluencerPayload>
+          }
+          findFirst: {
+            args: Prisma.InfluencerFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InfluencerPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.InfluencerFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InfluencerPayload>
+          }
+          findMany: {
+            args: Prisma.InfluencerFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InfluencerPayload>[]
+          }
+          create: {
+            args: Prisma.InfluencerCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InfluencerPayload>
+          }
+          createMany: {
+            args: Prisma.InfluencerCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.InfluencerCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InfluencerPayload>[]
+          }
+          delete: {
+            args: Prisma.InfluencerDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InfluencerPayload>
+          }
+          update: {
+            args: Prisma.InfluencerUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InfluencerPayload>
+          }
+          deleteMany: {
+            args: Prisma.InfluencerDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.InfluencerUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.InfluencerUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InfluencerPayload>[]
+          }
+          upsert: {
+            args: Prisma.InfluencerUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InfluencerPayload>
+          }
+          aggregate: {
+            args: Prisma.InfluencerAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateInfluencer>
+          }
+          groupBy: {
+            args: Prisma.InfluencerGroupByArgs<ExtArgs>
+            result: $Utils.Optional<InfluencerGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.InfluencerCountArgs<ExtArgs>
+            result: $Utils.Optional<InfluencerCountAggregateOutputType> | number
+          }
+        }
+      }
+      Share: {
+        payload: Prisma.$SharePayload<ExtArgs>
+        fields: Prisma.ShareFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ShareFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SharePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ShareFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SharePayload>
+          }
+          findFirst: {
+            args: Prisma.ShareFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SharePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ShareFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SharePayload>
+          }
+          findMany: {
+            args: Prisma.ShareFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SharePayload>[]
+          }
+          create: {
+            args: Prisma.ShareCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SharePayload>
+          }
+          createMany: {
+            args: Prisma.ShareCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ShareCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SharePayload>[]
+          }
+          delete: {
+            args: Prisma.ShareDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SharePayload>
+          }
+          update: {
+            args: Prisma.ShareUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SharePayload>
+          }
+          deleteMany: {
+            args: Prisma.ShareDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ShareUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ShareUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SharePayload>[]
+          }
+          upsert: {
+            args: Prisma.ShareUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SharePayload>
+          }
+          aggregate: {
+            args: Prisma.ShareAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateShare>
+          }
+          groupBy: {
+            args: Prisma.ShareGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ShareGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ShareCountArgs<ExtArgs>
+            result: $Utils.Optional<ShareCountAggregateOutputType> | number
+          }
+        }
+      }
+      Customer: {
+        payload: Prisma.$CustomerPayload<ExtArgs>
+        fields: Prisma.CustomerFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CustomerFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CustomerPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CustomerFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CustomerPayload>
+          }
+          findFirst: {
+            args: Prisma.CustomerFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CustomerPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CustomerFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CustomerPayload>
+          }
+          findMany: {
+            args: Prisma.CustomerFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CustomerPayload>[]
+          }
+          create: {
+            args: Prisma.CustomerCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CustomerPayload>
+          }
+          createMany: {
+            args: Prisma.CustomerCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.CustomerCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CustomerPayload>[]
+          }
+          delete: {
+            args: Prisma.CustomerDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CustomerPayload>
+          }
+          update: {
+            args: Prisma.CustomerUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CustomerPayload>
+          }
+          deleteMany: {
+            args: Prisma.CustomerDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CustomerUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.CustomerUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CustomerPayload>[]
+          }
+          upsert: {
+            args: Prisma.CustomerUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CustomerPayload>
+          }
+          aggregate: {
+            args: Prisma.CustomerAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCustomer>
+          }
+          groupBy: {
+            args: Prisma.CustomerGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CustomerGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CustomerCountArgs<ExtArgs>
+            result: $Utils.Optional<CustomerCountAggregateOutputType> | number
+          }
+        }
+      }
+      Sale: {
+        payload: Prisma.$SalePayload<ExtArgs>
+        fields: Prisma.SaleFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SaleFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SaleFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalePayload>
+          }
+          findFirst: {
+            args: Prisma.SaleFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SaleFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalePayload>
+          }
+          findMany: {
+            args: Prisma.SaleFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalePayload>[]
+          }
+          create: {
+            args: Prisma.SaleCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalePayload>
+          }
+          createMany: {
+            args: Prisma.SaleCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SaleCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalePayload>[]
+          }
+          delete: {
+            args: Prisma.SaleDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalePayload>
+          }
+          update: {
+            args: Prisma.SaleUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalePayload>
+          }
+          deleteMany: {
+            args: Prisma.SaleDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SaleUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SaleUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalePayload>[]
+          }
+          upsert: {
+            args: Prisma.SaleUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SalePayload>
+          }
+          aggregate: {
+            args: Prisma.SaleAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSale>
+          }
+          groupBy: {
+            args: Prisma.SaleGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SaleGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SaleCountArgs<ExtArgs>
+            result: $Utils.Optional<SaleCountAggregateOutputType> | number
+          }
+        }
+      }
+      Payment: {
+        payload: Prisma.$PaymentPayload<ExtArgs>
+        fields: Prisma.PaymentFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PaymentFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PaymentFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentPayload>
+          }
+          findFirst: {
+            args: Prisma.PaymentFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PaymentFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentPayload>
+          }
+          findMany: {
+            args: Prisma.PaymentFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentPayload>[]
+          }
+          create: {
+            args: Prisma.PaymentCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentPayload>
+          }
+          createMany: {
+            args: Prisma.PaymentCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PaymentCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentPayload>[]
+          }
+          delete: {
+            args: Prisma.PaymentDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentPayload>
+          }
+          update: {
+            args: Prisma.PaymentUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentPayload>
+          }
+          deleteMany: {
+            args: Prisma.PaymentDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PaymentUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PaymentUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentPayload>[]
+          }
+          upsert: {
+            args: Prisma.PaymentUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentPayload>
+          }
+          aggregate: {
+            args: Prisma.PaymentAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePayment>
+          }
+          groupBy: {
+            args: Prisma.PaymentGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PaymentGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PaymentCountArgs<ExtArgs>
+            result: $Utils.Optional<PaymentCountAggregateOutputType> | number
+          }
+        }
+      }
+      PaymentSale: {
+        payload: Prisma.$PaymentSalePayload<ExtArgs>
+        fields: Prisma.PaymentSaleFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PaymentSaleFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentSalePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PaymentSaleFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentSalePayload>
+          }
+          findFirst: {
+            args: Prisma.PaymentSaleFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentSalePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PaymentSaleFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentSalePayload>
+          }
+          findMany: {
+            args: Prisma.PaymentSaleFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentSalePayload>[]
+          }
+          create: {
+            args: Prisma.PaymentSaleCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentSalePayload>
+          }
+          createMany: {
+            args: Prisma.PaymentSaleCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PaymentSaleCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentSalePayload>[]
+          }
+          delete: {
+            args: Prisma.PaymentSaleDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentSalePayload>
+          }
+          update: {
+            args: Prisma.PaymentSaleUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentSalePayload>
+          }
+          deleteMany: {
+            args: Prisma.PaymentSaleDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PaymentSaleUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PaymentSaleUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentSalePayload>[]
+          }
+          upsert: {
+            args: Prisma.PaymentSaleUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PaymentSalePayload>
+          }
+          aggregate: {
+            args: Prisma.PaymentSaleAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePaymentSale>
+          }
+          groupBy: {
+            args: Prisma.PaymentSaleGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PaymentSaleGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PaymentSaleCountArgs<ExtArgs>
+            result: $Utils.Optional<PaymentSaleCountAggregateOutputType> | number
+          }
+        }
+      }
+      LinkClick: {
+        payload: Prisma.$LinkClickPayload<ExtArgs>
+        fields: Prisma.LinkClickFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.LinkClickFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LinkClickPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.LinkClickFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LinkClickPayload>
+          }
+          findFirst: {
+            args: Prisma.LinkClickFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LinkClickPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.LinkClickFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LinkClickPayload>
+          }
+          findMany: {
+            args: Prisma.LinkClickFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LinkClickPayload>[]
+          }
+          create: {
+            args: Prisma.LinkClickCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LinkClickPayload>
+          }
+          createMany: {
+            args: Prisma.LinkClickCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.LinkClickCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LinkClickPayload>[]
+          }
+          delete: {
+            args: Prisma.LinkClickDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LinkClickPayload>
+          }
+          update: {
+            args: Prisma.LinkClickUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LinkClickPayload>
+          }
+          deleteMany: {
+            args: Prisma.LinkClickDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.LinkClickUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.LinkClickUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LinkClickPayload>[]
+          }
+          upsert: {
+            args: Prisma.LinkClickUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$LinkClickPayload>
+          }
+          aggregate: {
+            args: Prisma.LinkClickAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateLinkClick>
+          }
+          groupBy: {
+            args: Prisma.LinkClickGroupByArgs<ExtArgs>
+            result: $Utils.Optional<LinkClickGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.LinkClickCountArgs<ExtArgs>
+            result: $Utils.Optional<LinkClickCountAggregateOutputType> | number
+          }
+        }
+      }
+      AttributionOverride: {
+        payload: Prisma.$AttributionOverridePayload<ExtArgs>
+        fields: Prisma.AttributionOverrideFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AttributionOverrideFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AttributionOverridePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AttributionOverrideFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AttributionOverridePayload>
+          }
+          findFirst: {
+            args: Prisma.AttributionOverrideFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AttributionOverridePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AttributionOverrideFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AttributionOverridePayload>
+          }
+          findMany: {
+            args: Prisma.AttributionOverrideFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AttributionOverridePayload>[]
+          }
+          create: {
+            args: Prisma.AttributionOverrideCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AttributionOverridePayload>
+          }
+          createMany: {
+            args: Prisma.AttributionOverrideCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AttributionOverrideCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AttributionOverridePayload>[]
+          }
+          delete: {
+            args: Prisma.AttributionOverrideDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AttributionOverridePayload>
+          }
+          update: {
+            args: Prisma.AttributionOverrideUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AttributionOverridePayload>
+          }
+          deleteMany: {
+            args: Prisma.AttributionOverrideDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AttributionOverrideUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AttributionOverrideUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AttributionOverridePayload>[]
+          }
+          upsert: {
+            args: Prisma.AttributionOverrideUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AttributionOverridePayload>
+          }
+          aggregate: {
+            args: Prisma.AttributionOverrideAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAttributionOverride>
+          }
+          groupBy: {
+            args: Prisma.AttributionOverrideGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AttributionOverrideGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AttributionOverrideCountArgs<ExtArgs>
+            result: $Utils.Optional<AttributionOverrideCountAggregateOutputType> | number
+          }
+        }
+      }
+      Campaign: {
+        payload: Prisma.$CampaignPayload<ExtArgs>
+        fields: Prisma.CampaignFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CampaignFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CampaignPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CampaignFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CampaignPayload>
+          }
+          findFirst: {
+            args: Prisma.CampaignFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CampaignPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CampaignFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CampaignPayload>
+          }
+          findMany: {
+            args: Prisma.CampaignFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CampaignPayload>[]
+          }
+          create: {
+            args: Prisma.CampaignCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CampaignPayload>
+          }
+          createMany: {
+            args: Prisma.CampaignCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.CampaignCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CampaignPayload>[]
+          }
+          delete: {
+            args: Prisma.CampaignDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CampaignPayload>
+          }
+          update: {
+            args: Prisma.CampaignUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CampaignPayload>
+          }
+          deleteMany: {
+            args: Prisma.CampaignDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CampaignUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.CampaignUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CampaignPayload>[]
+          }
+          upsert: {
+            args: Prisma.CampaignUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CampaignPayload>
+          }
+          aggregate: {
+            args: Prisma.CampaignAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCampaign>
+          }
+          groupBy: {
+            args: Prisma.CampaignGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CampaignGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CampaignCountArgs<ExtArgs>
+            result: $Utils.Optional<CampaignCountAggregateOutputType> | number
+          }
+        }
+      }
+      CampaignParticipant: {
+        payload: Prisma.$CampaignParticipantPayload<ExtArgs>
+        fields: Prisma.CampaignParticipantFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CampaignParticipantFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CampaignParticipantPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CampaignParticipantFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CampaignParticipantPayload>
+          }
+          findFirst: {
+            args: Prisma.CampaignParticipantFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CampaignParticipantPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CampaignParticipantFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CampaignParticipantPayload>
+          }
+          findMany: {
+            args: Prisma.CampaignParticipantFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CampaignParticipantPayload>[]
+          }
+          create: {
+            args: Prisma.CampaignParticipantCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CampaignParticipantPayload>
+          }
+          createMany: {
+            args: Prisma.CampaignParticipantCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.CampaignParticipantCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CampaignParticipantPayload>[]
+          }
+          delete: {
+            args: Prisma.CampaignParticipantDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CampaignParticipantPayload>
+          }
+          update: {
+            args: Prisma.CampaignParticipantUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CampaignParticipantPayload>
+          }
+          deleteMany: {
+            args: Prisma.CampaignParticipantDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CampaignParticipantUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.CampaignParticipantUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CampaignParticipantPayload>[]
+          }
+          upsert: {
+            args: Prisma.CampaignParticipantUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CampaignParticipantPayload>
+          }
+          aggregate: {
+            args: Prisma.CampaignParticipantAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCampaignParticipant>
+          }
+          groupBy: {
+            args: Prisma.CampaignParticipantGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CampaignParticipantGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CampaignParticipantCountArgs<ExtArgs>
+            result: $Utils.Optional<CampaignParticipantCountAggregateOutputType> | number
+          }
+        }
+      }
+      CampaignCodeUsage: {
+        payload: Prisma.$CampaignCodeUsagePayload<ExtArgs>
+        fields: Prisma.CampaignCodeUsageFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CampaignCodeUsageFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CampaignCodeUsagePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CampaignCodeUsageFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CampaignCodeUsagePayload>
+          }
+          findFirst: {
+            args: Prisma.CampaignCodeUsageFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CampaignCodeUsagePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CampaignCodeUsageFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CampaignCodeUsagePayload>
+          }
+          findMany: {
+            args: Prisma.CampaignCodeUsageFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CampaignCodeUsagePayload>[]
+          }
+          create: {
+            args: Prisma.CampaignCodeUsageCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CampaignCodeUsagePayload>
+          }
+          createMany: {
+            args: Prisma.CampaignCodeUsageCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.CampaignCodeUsageCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CampaignCodeUsagePayload>[]
+          }
+          delete: {
+            args: Prisma.CampaignCodeUsageDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CampaignCodeUsagePayload>
+          }
+          update: {
+            args: Prisma.CampaignCodeUsageUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CampaignCodeUsagePayload>
+          }
+          deleteMany: {
+            args: Prisma.CampaignCodeUsageDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CampaignCodeUsageUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.CampaignCodeUsageUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CampaignCodeUsagePayload>[]
+          }
+          upsert: {
+            args: Prisma.CampaignCodeUsageUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CampaignCodeUsagePayload>
+          }
+          aggregate: {
+            args: Prisma.CampaignCodeUsageAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCampaignCodeUsage>
+          }
+          groupBy: {
+            args: Prisma.CampaignCodeUsageGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CampaignCodeUsageGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CampaignCodeUsageCountArgs<ExtArgs>
+            result: $Utils.Optional<CampaignCodeUsageCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1873,6 +2863,17 @@ export namespace Prisma {
     user?: UserOmit
     contactRequest?: ContactRequestOmit
     postVersion?: PostVersionOmit
+    influencer?: InfluencerOmit
+    share?: ShareOmit
+    customer?: CustomerOmit
+    sale?: SaleOmit
+    payment?: PaymentOmit
+    paymentSale?: PaymentSaleOmit
+    linkClick?: LinkClickOmit
+    attributionOverride?: AttributionOverrideOmit
+    campaign?: CampaignOmit
+    campaignParticipant?: CampaignParticipantOmit
+    campaignCodeUsage?: CampaignCodeUsageOmit
   }
 
   /* Types for Logging */
@@ -2038,6 +3039,277 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountOrdersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: OrderWhereInput
+  }
+
+
+  /**
+   * Count Type InfluencerCountOutputType
+   */
+
+  export type InfluencerCountOutputType = {
+    shares: number
+    customers: number
+    sales: number
+    payments: number
+    linkClicks: number
+    campaigns: number
+  }
+
+  export type InfluencerCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    shares?: boolean | InfluencerCountOutputTypeCountSharesArgs
+    customers?: boolean | InfluencerCountOutputTypeCountCustomersArgs
+    sales?: boolean | InfluencerCountOutputTypeCountSalesArgs
+    payments?: boolean | InfluencerCountOutputTypeCountPaymentsArgs
+    linkClicks?: boolean | InfluencerCountOutputTypeCountLinkClicksArgs
+    campaigns?: boolean | InfluencerCountOutputTypeCountCampaignsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * InfluencerCountOutputType without action
+   */
+  export type InfluencerCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InfluencerCountOutputType
+     */
+    select?: InfluencerCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * InfluencerCountOutputType without action
+   */
+  export type InfluencerCountOutputTypeCountSharesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ShareWhereInput
+  }
+
+  /**
+   * InfluencerCountOutputType without action
+   */
+  export type InfluencerCountOutputTypeCountCustomersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CustomerWhereInput
+  }
+
+  /**
+   * InfluencerCountOutputType without action
+   */
+  export type InfluencerCountOutputTypeCountSalesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SaleWhereInput
+  }
+
+  /**
+   * InfluencerCountOutputType without action
+   */
+  export type InfluencerCountOutputTypeCountPaymentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PaymentWhereInput
+  }
+
+  /**
+   * InfluencerCountOutputType without action
+   */
+  export type InfluencerCountOutputTypeCountLinkClicksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LinkClickWhereInput
+  }
+
+  /**
+   * InfluencerCountOutputType without action
+   */
+  export type InfluencerCountOutputTypeCountCampaignsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CampaignParticipantWhereInput
+  }
+
+
+  /**
+   * Count Type ShareCountOutputType
+   */
+
+  export type ShareCountOutputType = {
+    linkClicks: number
+  }
+
+  export type ShareCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    linkClicks?: boolean | ShareCountOutputTypeCountLinkClicksArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * ShareCountOutputType without action
+   */
+  export type ShareCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ShareCountOutputType
+     */
+    select?: ShareCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ShareCountOutputType without action
+   */
+  export type ShareCountOutputTypeCountLinkClicksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LinkClickWhereInput
+  }
+
+
+  /**
+   * Count Type CustomerCountOutputType
+   */
+
+  export type CustomerCountOutputType = {
+    sales: number
+  }
+
+  export type CustomerCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    sales?: boolean | CustomerCountOutputTypeCountSalesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * CustomerCountOutputType without action
+   */
+  export type CustomerCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CustomerCountOutputType
+     */
+    select?: CustomerCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * CustomerCountOutputType without action
+   */
+  export type CustomerCountOutputTypeCountSalesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SaleWhereInput
+  }
+
+
+  /**
+   * Count Type SaleCountOutputType
+   */
+
+  export type SaleCountOutputType = {
+    payments: number
+  }
+
+  export type SaleCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    payments?: boolean | SaleCountOutputTypeCountPaymentsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * SaleCountOutputType without action
+   */
+  export type SaleCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SaleCountOutputType
+     */
+    select?: SaleCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * SaleCountOutputType without action
+   */
+  export type SaleCountOutputTypeCountPaymentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PaymentSaleWhereInput
+  }
+
+
+  /**
+   * Count Type PaymentCountOutputType
+   */
+
+  export type PaymentCountOutputType = {
+    sales: number
+  }
+
+  export type PaymentCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    sales?: boolean | PaymentCountOutputTypeCountSalesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * PaymentCountOutputType without action
+   */
+  export type PaymentCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentCountOutputType
+     */
+    select?: PaymentCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * PaymentCountOutputType without action
+   */
+  export type PaymentCountOutputTypeCountSalesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PaymentSaleWhereInput
+  }
+
+
+  /**
+   * Count Type CampaignCountOutputType
+   */
+
+  export type CampaignCountOutputType = {
+    participants: number
+    codeUsages: number
+  }
+
+  export type CampaignCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    participants?: boolean | CampaignCountOutputTypeCountParticipantsArgs
+    codeUsages?: boolean | CampaignCountOutputTypeCountCodeUsagesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * CampaignCountOutputType without action
+   */
+  export type CampaignCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CampaignCountOutputType
+     */
+    select?: CampaignCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * CampaignCountOutputType without action
+   */
+  export type CampaignCountOutputTypeCountParticipantsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CampaignParticipantWhereInput
+  }
+
+  /**
+   * CampaignCountOutputType without action
+   */
+  export type CampaignCountOutputTypeCountCodeUsagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CampaignCodeUsageWhereInput
+  }
+
+
+  /**
+   * Count Type CampaignParticipantCountOutputType
+   */
+
+  export type CampaignParticipantCountOutputType = {
+    codeUsages: number
+  }
+
+  export type CampaignParticipantCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    codeUsages?: boolean | CampaignParticipantCountOutputTypeCountCodeUsagesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * CampaignParticipantCountOutputType without action
+   */
+  export type CampaignParticipantCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CampaignParticipantCountOutputType
+     */
+    select?: CampaignParticipantCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * CampaignParticipantCountOutputType without action
+   */
+  export type CampaignParticipantCountOutputTypeCountCodeUsagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CampaignCodeUsageWhereInput
   }
 
 
@@ -3060,7 +4332,6 @@ export namespace Prisma {
      * The data used to create many Orders.
      */
     data: OrderCreateManyInput | OrderCreateManyInput[]
-    skipDuplicates?: boolean
   }
 
   /**
@@ -3079,7 +4350,6 @@ export namespace Prisma {
      * The data used to create many Orders.
      */
     data: OrderCreateManyInput | OrderCreateManyInput[]
-    skipDuplicates?: boolean
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -4098,7 +5368,6 @@ export namespace Prisma {
      * The data used to create many Settings.
      */
     data: SettingCreateManyInput | SettingCreateManyInput[]
-    skipDuplicates?: boolean
   }
 
   /**
@@ -4117,7 +5386,6 @@ export namespace Prisma {
      * The data used to create many Settings.
      */
     data: SettingCreateManyInput | SettingCreateManyInput[]
-    skipDuplicates?: boolean
   }
 
   /**
@@ -5166,7 +6434,6 @@ export namespace Prisma {
      * The data used to create many Services.
      */
     data: ServiceCreateManyInput | ServiceCreateManyInput[]
-    skipDuplicates?: boolean
   }
 
   /**
@@ -5185,7 +6452,6 @@ export namespace Prisma {
      * The data used to create many Services.
      */
     data: ServiceCreateManyInput | ServiceCreateManyInput[]
-    skipDuplicates?: boolean
   }
 
   /**
@@ -6312,7 +7578,6 @@ export namespace Prisma {
      * The data used to create many Guides.
      */
     data: GuideCreateManyInput | GuideCreateManyInput[]
-    skipDuplicates?: boolean
   }
 
   /**
@@ -6331,7 +7596,6 @@ export namespace Prisma {
      * The data used to create many Guides.
      */
     data: GuideCreateManyInput | GuideCreateManyInput[]
-    skipDuplicates?: boolean
   }
 
   /**
@@ -7355,7 +8619,6 @@ export namespace Prisma {
      * The data used to create many Categories.
      */
     data: CategoryCreateManyInput | CategoryCreateManyInput[]
-    skipDuplicates?: boolean
   }
 
   /**
@@ -7374,7 +8637,6 @@ export namespace Prisma {
      * The data used to create many Categories.
      */
     data: CategoryCreateManyInput | CategoryCreateManyInput[]
-    skipDuplicates?: boolean
   }
 
   /**
@@ -8477,7 +9739,6 @@ export namespace Prisma {
      * The data used to create many Authors.
      */
     data: AuthorCreateManyInput | AuthorCreateManyInput[]
-    skipDuplicates?: boolean
   }
 
   /**
@@ -8496,7 +9757,6 @@ export namespace Prisma {
      * The data used to create many Authors.
      */
     data: AuthorCreateManyInput | AuthorCreateManyInput[]
-    skipDuplicates?: boolean
   }
 
   /**
@@ -9840,7 +11100,6 @@ export namespace Prisma {
      * The data used to create many Posts.
      */
     data: PostCreateManyInput | PostCreateManyInput[]
-    skipDuplicates?: boolean
   }
 
   /**
@@ -9859,7 +11118,6 @@ export namespace Prisma {
      * The data used to create many Posts.
      */
     data: PostCreateManyInput | PostCreateManyInput[]
-    skipDuplicates?: boolean
     /**
      * Choose, which related nodes to fetch as well
      */
@@ -11048,7 +12306,6 @@ export namespace Prisma {
      * The data used to create many Packages.
      */
     data: PackageCreateManyInput | PackageCreateManyInput[]
-    skipDuplicates?: boolean
   }
 
   /**
@@ -11067,7 +12324,6 @@ export namespace Prisma {
      * The data used to create many Packages.
      */
     data: PackageCreateManyInput | PackageCreateManyInput[]
-    skipDuplicates?: boolean
   }
 
   /**
@@ -12176,7 +13432,6 @@ export namespace Prisma {
      * The data used to create many Hotels.
      */
     data: HotelCreateManyInput | HotelCreateManyInput[]
-    skipDuplicates?: boolean
   }
 
   /**
@@ -12195,7 +13450,6 @@ export namespace Prisma {
      * The data used to create many Hotels.
      */
     data: HotelCreateManyInput | HotelCreateManyInput[]
-    skipDuplicates?: boolean
   }
 
   /**
@@ -13210,7 +14464,6 @@ export namespace Prisma {
      * The data used to create many AILogs.
      */
     data: AILogCreateManyInput | AILogCreateManyInput[]
-    skipDuplicates?: boolean
   }
 
   /**
@@ -13229,7 +14482,6 @@ export namespace Prisma {
      * The data used to create many AILogs.
      */
     data: AILogCreateManyInput | AILogCreateManyInput[]
-    skipDuplicates?: boolean
   }
 
   /**
@@ -14266,7 +15518,6 @@ export namespace Prisma {
      * The data used to create many Users.
      */
     data: UserCreateManyInput | UserCreateManyInput[]
-    skipDuplicates?: boolean
   }
 
   /**
@@ -14285,7 +15536,6 @@ export namespace Prisma {
      * The data used to create many Users.
      */
     data: UserCreateManyInput | UserCreateManyInput[]
-    skipDuplicates?: boolean
   }
 
   /**
@@ -15340,7 +16590,6 @@ export namespace Prisma {
      * The data used to create many ContactRequests.
      */
     data: ContactRequestCreateManyInput | ContactRequestCreateManyInput[]
-    skipDuplicates?: boolean
   }
 
   /**
@@ -15359,7 +16608,6 @@ export namespace Prisma {
      * The data used to create many ContactRequests.
      */
     data: ContactRequestCreateManyInput | ContactRequestCreateManyInput[]
-    skipDuplicates?: boolean
   }
 
   /**
@@ -16408,7 +17656,6 @@ export namespace Prisma {
      * The data used to create many PostVersions.
      */
     data: PostVersionCreateManyInput | PostVersionCreateManyInput[]
-    skipDuplicates?: boolean
   }
 
   /**
@@ -16427,7 +17674,6 @@ export namespace Prisma {
      * The data used to create many PostVersions.
      */
     data: PostVersionCreateManyInput | PostVersionCreateManyInput[]
-    skipDuplicates?: boolean
   }
 
   /**
@@ -16570,13 +17816,13277 @@ export namespace Prisma {
 
 
   /**
+   * Model Influencer
+   */
+
+  export type AggregateInfluencer = {
+    _count: InfluencerCountAggregateOutputType | null
+    _avg: InfluencerAvgAggregateOutputType | null
+    _sum: InfluencerSumAggregateOutputType | null
+    _min: InfluencerMinAggregateOutputType | null
+    _max: InfluencerMaxAggregateOutputType | null
+  }
+
+  export type InfluencerAvgAggregateOutputType = {
+    instagramFollowers: number | null
+    totalSales: number | null
+    totalEarnings: number | null
+    pendingEarnings: number | null
+    totalClicks: number | null
+  }
+
+  export type InfluencerSumAggregateOutputType = {
+    instagramFollowers: number | null
+    totalSales: number | null
+    totalEarnings: number | null
+    pendingEarnings: number | null
+    totalClicks: number | null
+  }
+
+  export type InfluencerMinAggregateOutputType = {
+    id: string | null
+    fullName: string | null
+    email: string | null
+    password: string | null
+    phone: string | null
+    tcNo: string | null
+    birthDate: string | null
+    avatarUrl: string | null
+    instagramHandle: string | null
+    instagramFollowers: number | null
+    tiktokHandle: string | null
+    youtubeHandle: string | null
+    tier: string | null
+    uniqueCode: string | null
+    uniqueUrl: string | null
+    status: string | null
+    rejectReason: string | null
+    bankIban: string | null
+    bankName: string | null
+    bankAccountName: string | null
+    totalSales: number | null
+    totalEarnings: number | null
+    pendingEarnings: number | null
+    totalClicks: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type InfluencerMaxAggregateOutputType = {
+    id: string | null
+    fullName: string | null
+    email: string | null
+    password: string | null
+    phone: string | null
+    tcNo: string | null
+    birthDate: string | null
+    avatarUrl: string | null
+    instagramHandle: string | null
+    instagramFollowers: number | null
+    tiktokHandle: string | null
+    youtubeHandle: string | null
+    tier: string | null
+    uniqueCode: string | null
+    uniqueUrl: string | null
+    status: string | null
+    rejectReason: string | null
+    bankIban: string | null
+    bankName: string | null
+    bankAccountName: string | null
+    totalSales: number | null
+    totalEarnings: number | null
+    pendingEarnings: number | null
+    totalClicks: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type InfluencerCountAggregateOutputType = {
+    id: number
+    fullName: number
+    email: number
+    password: number
+    phone: number
+    tcNo: number
+    birthDate: number
+    avatarUrl: number
+    instagramHandle: number
+    instagramFollowers: number
+    tiktokHandle: number
+    youtubeHandle: number
+    tier: number
+    uniqueCode: number
+    uniqueUrl: number
+    status: number
+    rejectReason: number
+    bankIban: number
+    bankName: number
+    bankAccountName: number
+    totalSales: number
+    totalEarnings: number
+    pendingEarnings: number
+    totalClicks: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type InfluencerAvgAggregateInputType = {
+    instagramFollowers?: true
+    totalSales?: true
+    totalEarnings?: true
+    pendingEarnings?: true
+    totalClicks?: true
+  }
+
+  export type InfluencerSumAggregateInputType = {
+    instagramFollowers?: true
+    totalSales?: true
+    totalEarnings?: true
+    pendingEarnings?: true
+    totalClicks?: true
+  }
+
+  export type InfluencerMinAggregateInputType = {
+    id?: true
+    fullName?: true
+    email?: true
+    password?: true
+    phone?: true
+    tcNo?: true
+    birthDate?: true
+    avatarUrl?: true
+    instagramHandle?: true
+    instagramFollowers?: true
+    tiktokHandle?: true
+    youtubeHandle?: true
+    tier?: true
+    uniqueCode?: true
+    uniqueUrl?: true
+    status?: true
+    rejectReason?: true
+    bankIban?: true
+    bankName?: true
+    bankAccountName?: true
+    totalSales?: true
+    totalEarnings?: true
+    pendingEarnings?: true
+    totalClicks?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type InfluencerMaxAggregateInputType = {
+    id?: true
+    fullName?: true
+    email?: true
+    password?: true
+    phone?: true
+    tcNo?: true
+    birthDate?: true
+    avatarUrl?: true
+    instagramHandle?: true
+    instagramFollowers?: true
+    tiktokHandle?: true
+    youtubeHandle?: true
+    tier?: true
+    uniqueCode?: true
+    uniqueUrl?: true
+    status?: true
+    rejectReason?: true
+    bankIban?: true
+    bankName?: true
+    bankAccountName?: true
+    totalSales?: true
+    totalEarnings?: true
+    pendingEarnings?: true
+    totalClicks?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type InfluencerCountAggregateInputType = {
+    id?: true
+    fullName?: true
+    email?: true
+    password?: true
+    phone?: true
+    tcNo?: true
+    birthDate?: true
+    avatarUrl?: true
+    instagramHandle?: true
+    instagramFollowers?: true
+    tiktokHandle?: true
+    youtubeHandle?: true
+    tier?: true
+    uniqueCode?: true
+    uniqueUrl?: true
+    status?: true
+    rejectReason?: true
+    bankIban?: true
+    bankName?: true
+    bankAccountName?: true
+    totalSales?: true
+    totalEarnings?: true
+    pendingEarnings?: true
+    totalClicks?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type InfluencerAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Influencer to aggregate.
+     */
+    where?: InfluencerWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Influencers to fetch.
+     */
+    orderBy?: InfluencerOrderByWithRelationInput | InfluencerOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: InfluencerWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Influencers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Influencers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Influencers
+    **/
+    _count?: true | InfluencerCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: InfluencerAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: InfluencerSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: InfluencerMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: InfluencerMaxAggregateInputType
+  }
+
+  export type GetInfluencerAggregateType<T extends InfluencerAggregateArgs> = {
+        [P in keyof T & keyof AggregateInfluencer]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateInfluencer[P]>
+      : GetScalarType<T[P], AggregateInfluencer[P]>
+  }
+
+
+
+
+  export type InfluencerGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: InfluencerWhereInput
+    orderBy?: InfluencerOrderByWithAggregationInput | InfluencerOrderByWithAggregationInput[]
+    by: InfluencerScalarFieldEnum[] | InfluencerScalarFieldEnum
+    having?: InfluencerScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: InfluencerCountAggregateInputType | true
+    _avg?: InfluencerAvgAggregateInputType
+    _sum?: InfluencerSumAggregateInputType
+    _min?: InfluencerMinAggregateInputType
+    _max?: InfluencerMaxAggregateInputType
+  }
+
+  export type InfluencerGroupByOutputType = {
+    id: string
+    fullName: string
+    email: string
+    password: string
+    phone: string
+    tcNo: string | null
+    birthDate: string | null
+    avatarUrl: string | null
+    instagramHandle: string | null
+    instagramFollowers: number | null
+    tiktokHandle: string | null
+    youtubeHandle: string | null
+    tier: string
+    uniqueCode: string
+    uniqueUrl: string
+    status: string
+    rejectReason: string | null
+    bankIban: string | null
+    bankName: string | null
+    bankAccountName: string | null
+    totalSales: number
+    totalEarnings: number
+    pendingEarnings: number
+    totalClicks: number
+    createdAt: Date
+    updatedAt: Date
+    _count: InfluencerCountAggregateOutputType | null
+    _avg: InfluencerAvgAggregateOutputType | null
+    _sum: InfluencerSumAggregateOutputType | null
+    _min: InfluencerMinAggregateOutputType | null
+    _max: InfluencerMaxAggregateOutputType | null
+  }
+
+  type GetInfluencerGroupByPayload<T extends InfluencerGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<InfluencerGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof InfluencerGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], InfluencerGroupByOutputType[P]>
+            : GetScalarType<T[P], InfluencerGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type InfluencerSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    fullName?: boolean
+    email?: boolean
+    password?: boolean
+    phone?: boolean
+    tcNo?: boolean
+    birthDate?: boolean
+    avatarUrl?: boolean
+    instagramHandle?: boolean
+    instagramFollowers?: boolean
+    tiktokHandle?: boolean
+    youtubeHandle?: boolean
+    tier?: boolean
+    uniqueCode?: boolean
+    uniqueUrl?: boolean
+    status?: boolean
+    rejectReason?: boolean
+    bankIban?: boolean
+    bankName?: boolean
+    bankAccountName?: boolean
+    totalSales?: boolean
+    totalEarnings?: boolean
+    pendingEarnings?: boolean
+    totalClicks?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    shares?: boolean | Influencer$sharesArgs<ExtArgs>
+    customers?: boolean | Influencer$customersArgs<ExtArgs>
+    sales?: boolean | Influencer$salesArgs<ExtArgs>
+    payments?: boolean | Influencer$paymentsArgs<ExtArgs>
+    linkClicks?: boolean | Influencer$linkClicksArgs<ExtArgs>
+    campaigns?: boolean | Influencer$campaignsArgs<ExtArgs>
+    _count?: boolean | InfluencerCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["influencer"]>
+
+  export type InfluencerSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    fullName?: boolean
+    email?: boolean
+    password?: boolean
+    phone?: boolean
+    tcNo?: boolean
+    birthDate?: boolean
+    avatarUrl?: boolean
+    instagramHandle?: boolean
+    instagramFollowers?: boolean
+    tiktokHandle?: boolean
+    youtubeHandle?: boolean
+    tier?: boolean
+    uniqueCode?: boolean
+    uniqueUrl?: boolean
+    status?: boolean
+    rejectReason?: boolean
+    bankIban?: boolean
+    bankName?: boolean
+    bankAccountName?: boolean
+    totalSales?: boolean
+    totalEarnings?: boolean
+    pendingEarnings?: boolean
+    totalClicks?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["influencer"]>
+
+  export type InfluencerSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    fullName?: boolean
+    email?: boolean
+    password?: boolean
+    phone?: boolean
+    tcNo?: boolean
+    birthDate?: boolean
+    avatarUrl?: boolean
+    instagramHandle?: boolean
+    instagramFollowers?: boolean
+    tiktokHandle?: boolean
+    youtubeHandle?: boolean
+    tier?: boolean
+    uniqueCode?: boolean
+    uniqueUrl?: boolean
+    status?: boolean
+    rejectReason?: boolean
+    bankIban?: boolean
+    bankName?: boolean
+    bankAccountName?: boolean
+    totalSales?: boolean
+    totalEarnings?: boolean
+    pendingEarnings?: boolean
+    totalClicks?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["influencer"]>
+
+  export type InfluencerSelectScalar = {
+    id?: boolean
+    fullName?: boolean
+    email?: boolean
+    password?: boolean
+    phone?: boolean
+    tcNo?: boolean
+    birthDate?: boolean
+    avatarUrl?: boolean
+    instagramHandle?: boolean
+    instagramFollowers?: boolean
+    tiktokHandle?: boolean
+    youtubeHandle?: boolean
+    tier?: boolean
+    uniqueCode?: boolean
+    uniqueUrl?: boolean
+    status?: boolean
+    rejectReason?: boolean
+    bankIban?: boolean
+    bankName?: boolean
+    bankAccountName?: boolean
+    totalSales?: boolean
+    totalEarnings?: boolean
+    pendingEarnings?: boolean
+    totalClicks?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type InfluencerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "fullName" | "email" | "password" | "phone" | "tcNo" | "birthDate" | "avatarUrl" | "instagramHandle" | "instagramFollowers" | "tiktokHandle" | "youtubeHandle" | "tier" | "uniqueCode" | "uniqueUrl" | "status" | "rejectReason" | "bankIban" | "bankName" | "bankAccountName" | "totalSales" | "totalEarnings" | "pendingEarnings" | "totalClicks" | "createdAt" | "updatedAt", ExtArgs["result"]["influencer"]>
+  export type InfluencerInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    shares?: boolean | Influencer$sharesArgs<ExtArgs>
+    customers?: boolean | Influencer$customersArgs<ExtArgs>
+    sales?: boolean | Influencer$salesArgs<ExtArgs>
+    payments?: boolean | Influencer$paymentsArgs<ExtArgs>
+    linkClicks?: boolean | Influencer$linkClicksArgs<ExtArgs>
+    campaigns?: boolean | Influencer$campaignsArgs<ExtArgs>
+    _count?: boolean | InfluencerCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type InfluencerIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type InfluencerIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $InfluencerPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Influencer"
+    objects: {
+      shares: Prisma.$SharePayload<ExtArgs>[]
+      customers: Prisma.$CustomerPayload<ExtArgs>[]
+      sales: Prisma.$SalePayload<ExtArgs>[]
+      payments: Prisma.$PaymentPayload<ExtArgs>[]
+      linkClicks: Prisma.$LinkClickPayload<ExtArgs>[]
+      campaigns: Prisma.$CampaignParticipantPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      fullName: string
+      email: string
+      password: string
+      phone: string
+      tcNo: string | null
+      birthDate: string | null
+      avatarUrl: string | null
+      instagramHandle: string | null
+      instagramFollowers: number | null
+      tiktokHandle: string | null
+      youtubeHandle: string | null
+      tier: string
+      uniqueCode: string
+      uniqueUrl: string
+      status: string
+      rejectReason: string | null
+      bankIban: string | null
+      bankName: string | null
+      bankAccountName: string | null
+      totalSales: number
+      totalEarnings: number
+      pendingEarnings: number
+      totalClicks: number
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["influencer"]>
+    composites: {}
+  }
+
+  type InfluencerGetPayload<S extends boolean | null | undefined | InfluencerDefaultArgs> = $Result.GetResult<Prisma.$InfluencerPayload, S>
+
+  type InfluencerCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<InfluencerFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: InfluencerCountAggregateInputType | true
+    }
+
+  export interface InfluencerDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Influencer'], meta: { name: 'Influencer' } }
+    /**
+     * Find zero or one Influencer that matches the filter.
+     * @param {InfluencerFindUniqueArgs} args - Arguments to find a Influencer
+     * @example
+     * // Get one Influencer
+     * const influencer = await prisma.influencer.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends InfluencerFindUniqueArgs>(args: SelectSubset<T, InfluencerFindUniqueArgs<ExtArgs>>): Prisma__InfluencerClient<$Result.GetResult<Prisma.$InfluencerPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Influencer that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {InfluencerFindUniqueOrThrowArgs} args - Arguments to find a Influencer
+     * @example
+     * // Get one Influencer
+     * const influencer = await prisma.influencer.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends InfluencerFindUniqueOrThrowArgs>(args: SelectSubset<T, InfluencerFindUniqueOrThrowArgs<ExtArgs>>): Prisma__InfluencerClient<$Result.GetResult<Prisma.$InfluencerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Influencer that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InfluencerFindFirstArgs} args - Arguments to find a Influencer
+     * @example
+     * // Get one Influencer
+     * const influencer = await prisma.influencer.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends InfluencerFindFirstArgs>(args?: SelectSubset<T, InfluencerFindFirstArgs<ExtArgs>>): Prisma__InfluencerClient<$Result.GetResult<Prisma.$InfluencerPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Influencer that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InfluencerFindFirstOrThrowArgs} args - Arguments to find a Influencer
+     * @example
+     * // Get one Influencer
+     * const influencer = await prisma.influencer.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends InfluencerFindFirstOrThrowArgs>(args?: SelectSubset<T, InfluencerFindFirstOrThrowArgs<ExtArgs>>): Prisma__InfluencerClient<$Result.GetResult<Prisma.$InfluencerPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Influencers that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InfluencerFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Influencers
+     * const influencers = await prisma.influencer.findMany()
+     * 
+     * // Get first 10 Influencers
+     * const influencers = await prisma.influencer.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const influencerWithIdOnly = await prisma.influencer.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends InfluencerFindManyArgs>(args?: SelectSubset<T, InfluencerFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InfluencerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Influencer.
+     * @param {InfluencerCreateArgs} args - Arguments to create a Influencer.
+     * @example
+     * // Create one Influencer
+     * const Influencer = await prisma.influencer.create({
+     *   data: {
+     *     // ... data to create a Influencer
+     *   }
+     * })
+     * 
+     */
+    create<T extends InfluencerCreateArgs>(args: SelectSubset<T, InfluencerCreateArgs<ExtArgs>>): Prisma__InfluencerClient<$Result.GetResult<Prisma.$InfluencerPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Influencers.
+     * @param {InfluencerCreateManyArgs} args - Arguments to create many Influencers.
+     * @example
+     * // Create many Influencers
+     * const influencer = await prisma.influencer.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends InfluencerCreateManyArgs>(args?: SelectSubset<T, InfluencerCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Influencers and returns the data saved in the database.
+     * @param {InfluencerCreateManyAndReturnArgs} args - Arguments to create many Influencers.
+     * @example
+     * // Create many Influencers
+     * const influencer = await prisma.influencer.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Influencers and only return the `id`
+     * const influencerWithIdOnly = await prisma.influencer.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends InfluencerCreateManyAndReturnArgs>(args?: SelectSubset<T, InfluencerCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InfluencerPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Influencer.
+     * @param {InfluencerDeleteArgs} args - Arguments to delete one Influencer.
+     * @example
+     * // Delete one Influencer
+     * const Influencer = await prisma.influencer.delete({
+     *   where: {
+     *     // ... filter to delete one Influencer
+     *   }
+     * })
+     * 
+     */
+    delete<T extends InfluencerDeleteArgs>(args: SelectSubset<T, InfluencerDeleteArgs<ExtArgs>>): Prisma__InfluencerClient<$Result.GetResult<Prisma.$InfluencerPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Influencer.
+     * @param {InfluencerUpdateArgs} args - Arguments to update one Influencer.
+     * @example
+     * // Update one Influencer
+     * const influencer = await prisma.influencer.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends InfluencerUpdateArgs>(args: SelectSubset<T, InfluencerUpdateArgs<ExtArgs>>): Prisma__InfluencerClient<$Result.GetResult<Prisma.$InfluencerPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Influencers.
+     * @param {InfluencerDeleteManyArgs} args - Arguments to filter Influencers to delete.
+     * @example
+     * // Delete a few Influencers
+     * const { count } = await prisma.influencer.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends InfluencerDeleteManyArgs>(args?: SelectSubset<T, InfluencerDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Influencers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InfluencerUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Influencers
+     * const influencer = await prisma.influencer.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends InfluencerUpdateManyArgs>(args: SelectSubset<T, InfluencerUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Influencers and returns the data updated in the database.
+     * @param {InfluencerUpdateManyAndReturnArgs} args - Arguments to update many Influencers.
+     * @example
+     * // Update many Influencers
+     * const influencer = await prisma.influencer.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Influencers and only return the `id`
+     * const influencerWithIdOnly = await prisma.influencer.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends InfluencerUpdateManyAndReturnArgs>(args: SelectSubset<T, InfluencerUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InfluencerPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Influencer.
+     * @param {InfluencerUpsertArgs} args - Arguments to update or create a Influencer.
+     * @example
+     * // Update or create a Influencer
+     * const influencer = await prisma.influencer.upsert({
+     *   create: {
+     *     // ... data to create a Influencer
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Influencer we want to update
+     *   }
+     * })
+     */
+    upsert<T extends InfluencerUpsertArgs>(args: SelectSubset<T, InfluencerUpsertArgs<ExtArgs>>): Prisma__InfluencerClient<$Result.GetResult<Prisma.$InfluencerPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Influencers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InfluencerCountArgs} args - Arguments to filter Influencers to count.
+     * @example
+     * // Count the number of Influencers
+     * const count = await prisma.influencer.count({
+     *   where: {
+     *     // ... the filter for the Influencers we want to count
+     *   }
+     * })
+    **/
+    count<T extends InfluencerCountArgs>(
+      args?: Subset<T, InfluencerCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], InfluencerCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Influencer.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InfluencerAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends InfluencerAggregateArgs>(args: Subset<T, InfluencerAggregateArgs>): Prisma.PrismaPromise<GetInfluencerAggregateType<T>>
+
+    /**
+     * Group by Influencer.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InfluencerGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends InfluencerGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: InfluencerGroupByArgs['orderBy'] }
+        : { orderBy?: InfluencerGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, InfluencerGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetInfluencerGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Influencer model
+   */
+  readonly fields: InfluencerFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Influencer.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__InfluencerClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    shares<T extends Influencer$sharesArgs<ExtArgs> = {}>(args?: Subset<T, Influencer$sharesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SharePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    customers<T extends Influencer$customersArgs<ExtArgs> = {}>(args?: Subset<T, Influencer$customersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CustomerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    sales<T extends Influencer$salesArgs<ExtArgs> = {}>(args?: Subset<T, Influencer$salesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    payments<T extends Influencer$paymentsArgs<ExtArgs> = {}>(args?: Subset<T, Influencer$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    linkClicks<T extends Influencer$linkClicksArgs<ExtArgs> = {}>(args?: Subset<T, Influencer$linkClicksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LinkClickPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    campaigns<T extends Influencer$campaignsArgs<ExtArgs> = {}>(args?: Subset<T, Influencer$campaignsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CampaignParticipantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Influencer model
+   */
+  interface InfluencerFieldRefs {
+    readonly id: FieldRef<"Influencer", 'String'>
+    readonly fullName: FieldRef<"Influencer", 'String'>
+    readonly email: FieldRef<"Influencer", 'String'>
+    readonly password: FieldRef<"Influencer", 'String'>
+    readonly phone: FieldRef<"Influencer", 'String'>
+    readonly tcNo: FieldRef<"Influencer", 'String'>
+    readonly birthDate: FieldRef<"Influencer", 'String'>
+    readonly avatarUrl: FieldRef<"Influencer", 'String'>
+    readonly instagramHandle: FieldRef<"Influencer", 'String'>
+    readonly instagramFollowers: FieldRef<"Influencer", 'Int'>
+    readonly tiktokHandle: FieldRef<"Influencer", 'String'>
+    readonly youtubeHandle: FieldRef<"Influencer", 'String'>
+    readonly tier: FieldRef<"Influencer", 'String'>
+    readonly uniqueCode: FieldRef<"Influencer", 'String'>
+    readonly uniqueUrl: FieldRef<"Influencer", 'String'>
+    readonly status: FieldRef<"Influencer", 'String'>
+    readonly rejectReason: FieldRef<"Influencer", 'String'>
+    readonly bankIban: FieldRef<"Influencer", 'String'>
+    readonly bankName: FieldRef<"Influencer", 'String'>
+    readonly bankAccountName: FieldRef<"Influencer", 'String'>
+    readonly totalSales: FieldRef<"Influencer", 'Int'>
+    readonly totalEarnings: FieldRef<"Influencer", 'Float'>
+    readonly pendingEarnings: FieldRef<"Influencer", 'Float'>
+    readonly totalClicks: FieldRef<"Influencer", 'Int'>
+    readonly createdAt: FieldRef<"Influencer", 'DateTime'>
+    readonly updatedAt: FieldRef<"Influencer", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Influencer findUnique
+   */
+  export type InfluencerFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Influencer
+     */
+    select?: InfluencerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Influencer
+     */
+    omit?: InfluencerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InfluencerInclude<ExtArgs> | null
+    /**
+     * Filter, which Influencer to fetch.
+     */
+    where: InfluencerWhereUniqueInput
+  }
+
+  /**
+   * Influencer findUniqueOrThrow
+   */
+  export type InfluencerFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Influencer
+     */
+    select?: InfluencerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Influencer
+     */
+    omit?: InfluencerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InfluencerInclude<ExtArgs> | null
+    /**
+     * Filter, which Influencer to fetch.
+     */
+    where: InfluencerWhereUniqueInput
+  }
+
+  /**
+   * Influencer findFirst
+   */
+  export type InfluencerFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Influencer
+     */
+    select?: InfluencerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Influencer
+     */
+    omit?: InfluencerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InfluencerInclude<ExtArgs> | null
+    /**
+     * Filter, which Influencer to fetch.
+     */
+    where?: InfluencerWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Influencers to fetch.
+     */
+    orderBy?: InfluencerOrderByWithRelationInput | InfluencerOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Influencers.
+     */
+    cursor?: InfluencerWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Influencers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Influencers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Influencers.
+     */
+    distinct?: InfluencerScalarFieldEnum | InfluencerScalarFieldEnum[]
+  }
+
+  /**
+   * Influencer findFirstOrThrow
+   */
+  export type InfluencerFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Influencer
+     */
+    select?: InfluencerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Influencer
+     */
+    omit?: InfluencerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InfluencerInclude<ExtArgs> | null
+    /**
+     * Filter, which Influencer to fetch.
+     */
+    where?: InfluencerWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Influencers to fetch.
+     */
+    orderBy?: InfluencerOrderByWithRelationInput | InfluencerOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Influencers.
+     */
+    cursor?: InfluencerWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Influencers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Influencers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Influencers.
+     */
+    distinct?: InfluencerScalarFieldEnum | InfluencerScalarFieldEnum[]
+  }
+
+  /**
+   * Influencer findMany
+   */
+  export type InfluencerFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Influencer
+     */
+    select?: InfluencerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Influencer
+     */
+    omit?: InfluencerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InfluencerInclude<ExtArgs> | null
+    /**
+     * Filter, which Influencers to fetch.
+     */
+    where?: InfluencerWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Influencers to fetch.
+     */
+    orderBy?: InfluencerOrderByWithRelationInput | InfluencerOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Influencers.
+     */
+    cursor?: InfluencerWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Influencers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Influencers.
+     */
+    skip?: number
+    distinct?: InfluencerScalarFieldEnum | InfluencerScalarFieldEnum[]
+  }
+
+  /**
+   * Influencer create
+   */
+  export type InfluencerCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Influencer
+     */
+    select?: InfluencerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Influencer
+     */
+    omit?: InfluencerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InfluencerInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Influencer.
+     */
+    data: XOR<InfluencerCreateInput, InfluencerUncheckedCreateInput>
+  }
+
+  /**
+   * Influencer createMany
+   */
+  export type InfluencerCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Influencers.
+     */
+    data: InfluencerCreateManyInput | InfluencerCreateManyInput[]
+  }
+
+  /**
+   * Influencer createManyAndReturn
+   */
+  export type InfluencerCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Influencer
+     */
+    select?: InfluencerSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Influencer
+     */
+    omit?: InfluencerOmit<ExtArgs> | null
+    /**
+     * The data used to create many Influencers.
+     */
+    data: InfluencerCreateManyInput | InfluencerCreateManyInput[]
+  }
+
+  /**
+   * Influencer update
+   */
+  export type InfluencerUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Influencer
+     */
+    select?: InfluencerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Influencer
+     */
+    omit?: InfluencerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InfluencerInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Influencer.
+     */
+    data: XOR<InfluencerUpdateInput, InfluencerUncheckedUpdateInput>
+    /**
+     * Choose, which Influencer to update.
+     */
+    where: InfluencerWhereUniqueInput
+  }
+
+  /**
+   * Influencer updateMany
+   */
+  export type InfluencerUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Influencers.
+     */
+    data: XOR<InfluencerUpdateManyMutationInput, InfluencerUncheckedUpdateManyInput>
+    /**
+     * Filter which Influencers to update
+     */
+    where?: InfluencerWhereInput
+    /**
+     * Limit how many Influencers to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Influencer updateManyAndReturn
+   */
+  export type InfluencerUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Influencer
+     */
+    select?: InfluencerSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Influencer
+     */
+    omit?: InfluencerOmit<ExtArgs> | null
+    /**
+     * The data used to update Influencers.
+     */
+    data: XOR<InfluencerUpdateManyMutationInput, InfluencerUncheckedUpdateManyInput>
+    /**
+     * Filter which Influencers to update
+     */
+    where?: InfluencerWhereInput
+    /**
+     * Limit how many Influencers to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Influencer upsert
+   */
+  export type InfluencerUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Influencer
+     */
+    select?: InfluencerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Influencer
+     */
+    omit?: InfluencerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InfluencerInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Influencer to update in case it exists.
+     */
+    where: InfluencerWhereUniqueInput
+    /**
+     * In case the Influencer found by the `where` argument doesn't exist, create a new Influencer with this data.
+     */
+    create: XOR<InfluencerCreateInput, InfluencerUncheckedCreateInput>
+    /**
+     * In case the Influencer was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<InfluencerUpdateInput, InfluencerUncheckedUpdateInput>
+  }
+
+  /**
+   * Influencer delete
+   */
+  export type InfluencerDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Influencer
+     */
+    select?: InfluencerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Influencer
+     */
+    omit?: InfluencerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InfluencerInclude<ExtArgs> | null
+    /**
+     * Filter which Influencer to delete.
+     */
+    where: InfluencerWhereUniqueInput
+  }
+
+  /**
+   * Influencer deleteMany
+   */
+  export type InfluencerDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Influencers to delete
+     */
+    where?: InfluencerWhereInput
+    /**
+     * Limit how many Influencers to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Influencer.shares
+   */
+  export type Influencer$sharesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Share
+     */
+    select?: ShareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Share
+     */
+    omit?: ShareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShareInclude<ExtArgs> | null
+    where?: ShareWhereInput
+    orderBy?: ShareOrderByWithRelationInput | ShareOrderByWithRelationInput[]
+    cursor?: ShareWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ShareScalarFieldEnum | ShareScalarFieldEnum[]
+  }
+
+  /**
+   * Influencer.customers
+   */
+  export type Influencer$customersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Customer
+     */
+    select?: CustomerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Customer
+     */
+    omit?: CustomerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CustomerInclude<ExtArgs> | null
+    where?: CustomerWhereInput
+    orderBy?: CustomerOrderByWithRelationInput | CustomerOrderByWithRelationInput[]
+    cursor?: CustomerWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CustomerScalarFieldEnum | CustomerScalarFieldEnum[]
+  }
+
+  /**
+   * Influencer.sales
+   */
+  export type Influencer$salesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Sale
+     */
+    select?: SaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Sale
+     */
+    omit?: SaleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SaleInclude<ExtArgs> | null
+    where?: SaleWhereInput
+    orderBy?: SaleOrderByWithRelationInput | SaleOrderByWithRelationInput[]
+    cursor?: SaleWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SaleScalarFieldEnum | SaleScalarFieldEnum[]
+  }
+
+  /**
+   * Influencer.payments
+   */
+  export type Influencer$paymentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Payment
+     */
+    select?: PaymentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Payment
+     */
+    omit?: PaymentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentInclude<ExtArgs> | null
+    where?: PaymentWhereInput
+    orderBy?: PaymentOrderByWithRelationInput | PaymentOrderByWithRelationInput[]
+    cursor?: PaymentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PaymentScalarFieldEnum | PaymentScalarFieldEnum[]
+  }
+
+  /**
+   * Influencer.linkClicks
+   */
+  export type Influencer$linkClicksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LinkClick
+     */
+    select?: LinkClickSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LinkClick
+     */
+    omit?: LinkClickOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LinkClickInclude<ExtArgs> | null
+    where?: LinkClickWhereInput
+    orderBy?: LinkClickOrderByWithRelationInput | LinkClickOrderByWithRelationInput[]
+    cursor?: LinkClickWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: LinkClickScalarFieldEnum | LinkClickScalarFieldEnum[]
+  }
+
+  /**
+   * Influencer.campaigns
+   */
+  export type Influencer$campaignsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CampaignParticipant
+     */
+    select?: CampaignParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CampaignParticipant
+     */
+    omit?: CampaignParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CampaignParticipantInclude<ExtArgs> | null
+    where?: CampaignParticipantWhereInput
+    orderBy?: CampaignParticipantOrderByWithRelationInput | CampaignParticipantOrderByWithRelationInput[]
+    cursor?: CampaignParticipantWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CampaignParticipantScalarFieldEnum | CampaignParticipantScalarFieldEnum[]
+  }
+
+  /**
+   * Influencer without action
+   */
+  export type InfluencerDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Influencer
+     */
+    select?: InfluencerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Influencer
+     */
+    omit?: InfluencerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InfluencerInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Share
+   */
+
+  export type AggregateShare = {
+    _count: ShareCountAggregateOutputType | null
+    _avg: ShareAvgAggregateOutputType | null
+    _sum: ShareSumAggregateOutputType | null
+    _min: ShareMinAggregateOutputType | null
+    _max: ShareMaxAggregateOutputType | null
+  }
+
+  export type ShareAvgAggregateOutputType = {
+    viewCount: number | null
+    clickCount: number | null
+    saleCount: number | null
+  }
+
+  export type ShareSumAggregateOutputType = {
+    viewCount: number | null
+    clickCount: number | null
+    saleCount: number | null
+  }
+
+  export type ShareMinAggregateOutputType = {
+    id: string | null
+    influencerId: string | null
+    platform: string | null
+    shareUrl: string | null
+    screenshotUrl: string | null
+    shareDate: string | null
+    description: string | null
+    status: string | null
+    rejectReason: string | null
+    viewCount: number | null
+    clickCount: number | null
+    saleCount: number | null
+    approvedAt: Date | null
+    approvedBy: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ShareMaxAggregateOutputType = {
+    id: string | null
+    influencerId: string | null
+    platform: string | null
+    shareUrl: string | null
+    screenshotUrl: string | null
+    shareDate: string | null
+    description: string | null
+    status: string | null
+    rejectReason: string | null
+    viewCount: number | null
+    clickCount: number | null
+    saleCount: number | null
+    approvedAt: Date | null
+    approvedBy: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ShareCountAggregateOutputType = {
+    id: number
+    influencerId: number
+    platform: number
+    shareUrl: number
+    screenshotUrl: number
+    shareDate: number
+    description: number
+    status: number
+    rejectReason: number
+    viewCount: number
+    clickCount: number
+    saleCount: number
+    approvedAt: number
+    approvedBy: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ShareAvgAggregateInputType = {
+    viewCount?: true
+    clickCount?: true
+    saleCount?: true
+  }
+
+  export type ShareSumAggregateInputType = {
+    viewCount?: true
+    clickCount?: true
+    saleCount?: true
+  }
+
+  export type ShareMinAggregateInputType = {
+    id?: true
+    influencerId?: true
+    platform?: true
+    shareUrl?: true
+    screenshotUrl?: true
+    shareDate?: true
+    description?: true
+    status?: true
+    rejectReason?: true
+    viewCount?: true
+    clickCount?: true
+    saleCount?: true
+    approvedAt?: true
+    approvedBy?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ShareMaxAggregateInputType = {
+    id?: true
+    influencerId?: true
+    platform?: true
+    shareUrl?: true
+    screenshotUrl?: true
+    shareDate?: true
+    description?: true
+    status?: true
+    rejectReason?: true
+    viewCount?: true
+    clickCount?: true
+    saleCount?: true
+    approvedAt?: true
+    approvedBy?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ShareCountAggregateInputType = {
+    id?: true
+    influencerId?: true
+    platform?: true
+    shareUrl?: true
+    screenshotUrl?: true
+    shareDate?: true
+    description?: true
+    status?: true
+    rejectReason?: true
+    viewCount?: true
+    clickCount?: true
+    saleCount?: true
+    approvedAt?: true
+    approvedBy?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ShareAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Share to aggregate.
+     */
+    where?: ShareWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Shares to fetch.
+     */
+    orderBy?: ShareOrderByWithRelationInput | ShareOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ShareWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Shares from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Shares.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Shares
+    **/
+    _count?: true | ShareCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ShareAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ShareSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ShareMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ShareMaxAggregateInputType
+  }
+
+  export type GetShareAggregateType<T extends ShareAggregateArgs> = {
+        [P in keyof T & keyof AggregateShare]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateShare[P]>
+      : GetScalarType<T[P], AggregateShare[P]>
+  }
+
+
+
+
+  export type ShareGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ShareWhereInput
+    orderBy?: ShareOrderByWithAggregationInput | ShareOrderByWithAggregationInput[]
+    by: ShareScalarFieldEnum[] | ShareScalarFieldEnum
+    having?: ShareScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ShareCountAggregateInputType | true
+    _avg?: ShareAvgAggregateInputType
+    _sum?: ShareSumAggregateInputType
+    _min?: ShareMinAggregateInputType
+    _max?: ShareMaxAggregateInputType
+  }
+
+  export type ShareGroupByOutputType = {
+    id: string
+    influencerId: string
+    platform: string
+    shareUrl: string | null
+    screenshotUrl: string | null
+    shareDate: string
+    description: string | null
+    status: string
+    rejectReason: string | null
+    viewCount: number
+    clickCount: number
+    saleCount: number
+    approvedAt: Date | null
+    approvedBy: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: ShareCountAggregateOutputType | null
+    _avg: ShareAvgAggregateOutputType | null
+    _sum: ShareSumAggregateOutputType | null
+    _min: ShareMinAggregateOutputType | null
+    _max: ShareMaxAggregateOutputType | null
+  }
+
+  type GetShareGroupByPayload<T extends ShareGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ShareGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ShareGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ShareGroupByOutputType[P]>
+            : GetScalarType<T[P], ShareGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ShareSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    influencerId?: boolean
+    platform?: boolean
+    shareUrl?: boolean
+    screenshotUrl?: boolean
+    shareDate?: boolean
+    description?: boolean
+    status?: boolean
+    rejectReason?: boolean
+    viewCount?: boolean
+    clickCount?: boolean
+    saleCount?: boolean
+    approvedAt?: boolean
+    approvedBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    influencer?: boolean | InfluencerDefaultArgs<ExtArgs>
+    linkClicks?: boolean | Share$linkClicksArgs<ExtArgs>
+    _count?: boolean | ShareCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["share"]>
+
+  export type ShareSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    influencerId?: boolean
+    platform?: boolean
+    shareUrl?: boolean
+    screenshotUrl?: boolean
+    shareDate?: boolean
+    description?: boolean
+    status?: boolean
+    rejectReason?: boolean
+    viewCount?: boolean
+    clickCount?: boolean
+    saleCount?: boolean
+    approvedAt?: boolean
+    approvedBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    influencer?: boolean | InfluencerDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["share"]>
+
+  export type ShareSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    influencerId?: boolean
+    platform?: boolean
+    shareUrl?: boolean
+    screenshotUrl?: boolean
+    shareDate?: boolean
+    description?: boolean
+    status?: boolean
+    rejectReason?: boolean
+    viewCount?: boolean
+    clickCount?: boolean
+    saleCount?: boolean
+    approvedAt?: boolean
+    approvedBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    influencer?: boolean | InfluencerDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["share"]>
+
+  export type ShareSelectScalar = {
+    id?: boolean
+    influencerId?: boolean
+    platform?: boolean
+    shareUrl?: boolean
+    screenshotUrl?: boolean
+    shareDate?: boolean
+    description?: boolean
+    status?: boolean
+    rejectReason?: boolean
+    viewCount?: boolean
+    clickCount?: boolean
+    saleCount?: boolean
+    approvedAt?: boolean
+    approvedBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type ShareOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "influencerId" | "platform" | "shareUrl" | "screenshotUrl" | "shareDate" | "description" | "status" | "rejectReason" | "viewCount" | "clickCount" | "saleCount" | "approvedAt" | "approvedBy" | "createdAt" | "updatedAt", ExtArgs["result"]["share"]>
+  export type ShareInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    influencer?: boolean | InfluencerDefaultArgs<ExtArgs>
+    linkClicks?: boolean | Share$linkClicksArgs<ExtArgs>
+    _count?: boolean | ShareCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type ShareIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    influencer?: boolean | InfluencerDefaultArgs<ExtArgs>
+  }
+  export type ShareIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    influencer?: boolean | InfluencerDefaultArgs<ExtArgs>
+  }
+
+  export type $SharePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Share"
+    objects: {
+      influencer: Prisma.$InfluencerPayload<ExtArgs>
+      linkClicks: Prisma.$LinkClickPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      influencerId: string
+      platform: string
+      shareUrl: string | null
+      screenshotUrl: string | null
+      shareDate: string
+      description: string | null
+      status: string
+      rejectReason: string | null
+      viewCount: number
+      clickCount: number
+      saleCount: number
+      approvedAt: Date | null
+      approvedBy: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["share"]>
+    composites: {}
+  }
+
+  type ShareGetPayload<S extends boolean | null | undefined | ShareDefaultArgs> = $Result.GetResult<Prisma.$SharePayload, S>
+
+  type ShareCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ShareFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ShareCountAggregateInputType | true
+    }
+
+  export interface ShareDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Share'], meta: { name: 'Share' } }
+    /**
+     * Find zero or one Share that matches the filter.
+     * @param {ShareFindUniqueArgs} args - Arguments to find a Share
+     * @example
+     * // Get one Share
+     * const share = await prisma.share.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ShareFindUniqueArgs>(args: SelectSubset<T, ShareFindUniqueArgs<ExtArgs>>): Prisma__ShareClient<$Result.GetResult<Prisma.$SharePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Share that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ShareFindUniqueOrThrowArgs} args - Arguments to find a Share
+     * @example
+     * // Get one Share
+     * const share = await prisma.share.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ShareFindUniqueOrThrowArgs>(args: SelectSubset<T, ShareFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ShareClient<$Result.GetResult<Prisma.$SharePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Share that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ShareFindFirstArgs} args - Arguments to find a Share
+     * @example
+     * // Get one Share
+     * const share = await prisma.share.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ShareFindFirstArgs>(args?: SelectSubset<T, ShareFindFirstArgs<ExtArgs>>): Prisma__ShareClient<$Result.GetResult<Prisma.$SharePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Share that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ShareFindFirstOrThrowArgs} args - Arguments to find a Share
+     * @example
+     * // Get one Share
+     * const share = await prisma.share.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ShareFindFirstOrThrowArgs>(args?: SelectSubset<T, ShareFindFirstOrThrowArgs<ExtArgs>>): Prisma__ShareClient<$Result.GetResult<Prisma.$SharePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Shares that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ShareFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Shares
+     * const shares = await prisma.share.findMany()
+     * 
+     * // Get first 10 Shares
+     * const shares = await prisma.share.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const shareWithIdOnly = await prisma.share.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ShareFindManyArgs>(args?: SelectSubset<T, ShareFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SharePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Share.
+     * @param {ShareCreateArgs} args - Arguments to create a Share.
+     * @example
+     * // Create one Share
+     * const Share = await prisma.share.create({
+     *   data: {
+     *     // ... data to create a Share
+     *   }
+     * })
+     * 
+     */
+    create<T extends ShareCreateArgs>(args: SelectSubset<T, ShareCreateArgs<ExtArgs>>): Prisma__ShareClient<$Result.GetResult<Prisma.$SharePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Shares.
+     * @param {ShareCreateManyArgs} args - Arguments to create many Shares.
+     * @example
+     * // Create many Shares
+     * const share = await prisma.share.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ShareCreateManyArgs>(args?: SelectSubset<T, ShareCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Shares and returns the data saved in the database.
+     * @param {ShareCreateManyAndReturnArgs} args - Arguments to create many Shares.
+     * @example
+     * // Create many Shares
+     * const share = await prisma.share.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Shares and only return the `id`
+     * const shareWithIdOnly = await prisma.share.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ShareCreateManyAndReturnArgs>(args?: SelectSubset<T, ShareCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SharePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Share.
+     * @param {ShareDeleteArgs} args - Arguments to delete one Share.
+     * @example
+     * // Delete one Share
+     * const Share = await prisma.share.delete({
+     *   where: {
+     *     // ... filter to delete one Share
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ShareDeleteArgs>(args: SelectSubset<T, ShareDeleteArgs<ExtArgs>>): Prisma__ShareClient<$Result.GetResult<Prisma.$SharePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Share.
+     * @param {ShareUpdateArgs} args - Arguments to update one Share.
+     * @example
+     * // Update one Share
+     * const share = await prisma.share.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ShareUpdateArgs>(args: SelectSubset<T, ShareUpdateArgs<ExtArgs>>): Prisma__ShareClient<$Result.GetResult<Prisma.$SharePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Shares.
+     * @param {ShareDeleteManyArgs} args - Arguments to filter Shares to delete.
+     * @example
+     * // Delete a few Shares
+     * const { count } = await prisma.share.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ShareDeleteManyArgs>(args?: SelectSubset<T, ShareDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Shares.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ShareUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Shares
+     * const share = await prisma.share.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ShareUpdateManyArgs>(args: SelectSubset<T, ShareUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Shares and returns the data updated in the database.
+     * @param {ShareUpdateManyAndReturnArgs} args - Arguments to update many Shares.
+     * @example
+     * // Update many Shares
+     * const share = await prisma.share.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Shares and only return the `id`
+     * const shareWithIdOnly = await prisma.share.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ShareUpdateManyAndReturnArgs>(args: SelectSubset<T, ShareUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SharePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Share.
+     * @param {ShareUpsertArgs} args - Arguments to update or create a Share.
+     * @example
+     * // Update or create a Share
+     * const share = await prisma.share.upsert({
+     *   create: {
+     *     // ... data to create a Share
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Share we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ShareUpsertArgs>(args: SelectSubset<T, ShareUpsertArgs<ExtArgs>>): Prisma__ShareClient<$Result.GetResult<Prisma.$SharePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Shares.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ShareCountArgs} args - Arguments to filter Shares to count.
+     * @example
+     * // Count the number of Shares
+     * const count = await prisma.share.count({
+     *   where: {
+     *     // ... the filter for the Shares we want to count
+     *   }
+     * })
+    **/
+    count<T extends ShareCountArgs>(
+      args?: Subset<T, ShareCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ShareCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Share.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ShareAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ShareAggregateArgs>(args: Subset<T, ShareAggregateArgs>): Prisma.PrismaPromise<GetShareAggregateType<T>>
+
+    /**
+     * Group by Share.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ShareGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ShareGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ShareGroupByArgs['orderBy'] }
+        : { orderBy?: ShareGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ShareGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetShareGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Share model
+   */
+  readonly fields: ShareFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Share.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ShareClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    influencer<T extends InfluencerDefaultArgs<ExtArgs> = {}>(args?: Subset<T, InfluencerDefaultArgs<ExtArgs>>): Prisma__InfluencerClient<$Result.GetResult<Prisma.$InfluencerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    linkClicks<T extends Share$linkClicksArgs<ExtArgs> = {}>(args?: Subset<T, Share$linkClicksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LinkClickPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Share model
+   */
+  interface ShareFieldRefs {
+    readonly id: FieldRef<"Share", 'String'>
+    readonly influencerId: FieldRef<"Share", 'String'>
+    readonly platform: FieldRef<"Share", 'String'>
+    readonly shareUrl: FieldRef<"Share", 'String'>
+    readonly screenshotUrl: FieldRef<"Share", 'String'>
+    readonly shareDate: FieldRef<"Share", 'String'>
+    readonly description: FieldRef<"Share", 'String'>
+    readonly status: FieldRef<"Share", 'String'>
+    readonly rejectReason: FieldRef<"Share", 'String'>
+    readonly viewCount: FieldRef<"Share", 'Int'>
+    readonly clickCount: FieldRef<"Share", 'Int'>
+    readonly saleCount: FieldRef<"Share", 'Int'>
+    readonly approvedAt: FieldRef<"Share", 'DateTime'>
+    readonly approvedBy: FieldRef<"Share", 'String'>
+    readonly createdAt: FieldRef<"Share", 'DateTime'>
+    readonly updatedAt: FieldRef<"Share", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Share findUnique
+   */
+  export type ShareFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Share
+     */
+    select?: ShareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Share
+     */
+    omit?: ShareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShareInclude<ExtArgs> | null
+    /**
+     * Filter, which Share to fetch.
+     */
+    where: ShareWhereUniqueInput
+  }
+
+  /**
+   * Share findUniqueOrThrow
+   */
+  export type ShareFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Share
+     */
+    select?: ShareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Share
+     */
+    omit?: ShareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShareInclude<ExtArgs> | null
+    /**
+     * Filter, which Share to fetch.
+     */
+    where: ShareWhereUniqueInput
+  }
+
+  /**
+   * Share findFirst
+   */
+  export type ShareFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Share
+     */
+    select?: ShareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Share
+     */
+    omit?: ShareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShareInclude<ExtArgs> | null
+    /**
+     * Filter, which Share to fetch.
+     */
+    where?: ShareWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Shares to fetch.
+     */
+    orderBy?: ShareOrderByWithRelationInput | ShareOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Shares.
+     */
+    cursor?: ShareWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Shares from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Shares.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Shares.
+     */
+    distinct?: ShareScalarFieldEnum | ShareScalarFieldEnum[]
+  }
+
+  /**
+   * Share findFirstOrThrow
+   */
+  export type ShareFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Share
+     */
+    select?: ShareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Share
+     */
+    omit?: ShareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShareInclude<ExtArgs> | null
+    /**
+     * Filter, which Share to fetch.
+     */
+    where?: ShareWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Shares to fetch.
+     */
+    orderBy?: ShareOrderByWithRelationInput | ShareOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Shares.
+     */
+    cursor?: ShareWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Shares from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Shares.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Shares.
+     */
+    distinct?: ShareScalarFieldEnum | ShareScalarFieldEnum[]
+  }
+
+  /**
+   * Share findMany
+   */
+  export type ShareFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Share
+     */
+    select?: ShareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Share
+     */
+    omit?: ShareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShareInclude<ExtArgs> | null
+    /**
+     * Filter, which Shares to fetch.
+     */
+    where?: ShareWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Shares to fetch.
+     */
+    orderBy?: ShareOrderByWithRelationInput | ShareOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Shares.
+     */
+    cursor?: ShareWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Shares from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Shares.
+     */
+    skip?: number
+    distinct?: ShareScalarFieldEnum | ShareScalarFieldEnum[]
+  }
+
+  /**
+   * Share create
+   */
+  export type ShareCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Share
+     */
+    select?: ShareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Share
+     */
+    omit?: ShareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShareInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Share.
+     */
+    data: XOR<ShareCreateInput, ShareUncheckedCreateInput>
+  }
+
+  /**
+   * Share createMany
+   */
+  export type ShareCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Shares.
+     */
+    data: ShareCreateManyInput | ShareCreateManyInput[]
+  }
+
+  /**
+   * Share createManyAndReturn
+   */
+  export type ShareCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Share
+     */
+    select?: ShareSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Share
+     */
+    omit?: ShareOmit<ExtArgs> | null
+    /**
+     * The data used to create many Shares.
+     */
+    data: ShareCreateManyInput | ShareCreateManyInput[]
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShareIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Share update
+   */
+  export type ShareUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Share
+     */
+    select?: ShareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Share
+     */
+    omit?: ShareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShareInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Share.
+     */
+    data: XOR<ShareUpdateInput, ShareUncheckedUpdateInput>
+    /**
+     * Choose, which Share to update.
+     */
+    where: ShareWhereUniqueInput
+  }
+
+  /**
+   * Share updateMany
+   */
+  export type ShareUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Shares.
+     */
+    data: XOR<ShareUpdateManyMutationInput, ShareUncheckedUpdateManyInput>
+    /**
+     * Filter which Shares to update
+     */
+    where?: ShareWhereInput
+    /**
+     * Limit how many Shares to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Share updateManyAndReturn
+   */
+  export type ShareUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Share
+     */
+    select?: ShareSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Share
+     */
+    omit?: ShareOmit<ExtArgs> | null
+    /**
+     * The data used to update Shares.
+     */
+    data: XOR<ShareUpdateManyMutationInput, ShareUncheckedUpdateManyInput>
+    /**
+     * Filter which Shares to update
+     */
+    where?: ShareWhereInput
+    /**
+     * Limit how many Shares to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShareIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Share upsert
+   */
+  export type ShareUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Share
+     */
+    select?: ShareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Share
+     */
+    omit?: ShareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShareInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Share to update in case it exists.
+     */
+    where: ShareWhereUniqueInput
+    /**
+     * In case the Share found by the `where` argument doesn't exist, create a new Share with this data.
+     */
+    create: XOR<ShareCreateInput, ShareUncheckedCreateInput>
+    /**
+     * In case the Share was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ShareUpdateInput, ShareUncheckedUpdateInput>
+  }
+
+  /**
+   * Share delete
+   */
+  export type ShareDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Share
+     */
+    select?: ShareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Share
+     */
+    omit?: ShareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShareInclude<ExtArgs> | null
+    /**
+     * Filter which Share to delete.
+     */
+    where: ShareWhereUniqueInput
+  }
+
+  /**
+   * Share deleteMany
+   */
+  export type ShareDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Shares to delete
+     */
+    where?: ShareWhereInput
+    /**
+     * Limit how many Shares to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Share.linkClicks
+   */
+  export type Share$linkClicksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LinkClick
+     */
+    select?: LinkClickSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LinkClick
+     */
+    omit?: LinkClickOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LinkClickInclude<ExtArgs> | null
+    where?: LinkClickWhereInput
+    orderBy?: LinkClickOrderByWithRelationInput | LinkClickOrderByWithRelationInput[]
+    cursor?: LinkClickWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: LinkClickScalarFieldEnum | LinkClickScalarFieldEnum[]
+  }
+
+  /**
+   * Share without action
+   */
+  export type ShareDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Share
+     */
+    select?: ShareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Share
+     */
+    omit?: ShareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShareInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Customer
+   */
+
+  export type AggregateCustomer = {
+    _count: CustomerCountAggregateOutputType | null
+    _min: CustomerMinAggregateOutputType | null
+    _max: CustomerMaxAggregateOutputType | null
+  }
+
+  export type CustomerMinAggregateOutputType = {
+    id: string | null
+    fullName: string | null
+    phone: string | null
+    email: string | null
+    tcNo: string | null
+    source: string | null
+    influencerId: string | null
+    referrerUrl: string | null
+    couponUsed: string | null
+    firstSeenAt: Date | null
+    status: string | null
+    assignedOperatorId: string | null
+    notes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CustomerMaxAggregateOutputType = {
+    id: string | null
+    fullName: string | null
+    phone: string | null
+    email: string | null
+    tcNo: string | null
+    source: string | null
+    influencerId: string | null
+    referrerUrl: string | null
+    couponUsed: string | null
+    firstSeenAt: Date | null
+    status: string | null
+    assignedOperatorId: string | null
+    notes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CustomerCountAggregateOutputType = {
+    id: number
+    fullName: number
+    phone: number
+    email: number
+    tcNo: number
+    source: number
+    influencerId: number
+    referrerUrl: number
+    couponUsed: number
+    firstSeenAt: number
+    status: number
+    assignedOperatorId: number
+    notes: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type CustomerMinAggregateInputType = {
+    id?: true
+    fullName?: true
+    phone?: true
+    email?: true
+    tcNo?: true
+    source?: true
+    influencerId?: true
+    referrerUrl?: true
+    couponUsed?: true
+    firstSeenAt?: true
+    status?: true
+    assignedOperatorId?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CustomerMaxAggregateInputType = {
+    id?: true
+    fullName?: true
+    phone?: true
+    email?: true
+    tcNo?: true
+    source?: true
+    influencerId?: true
+    referrerUrl?: true
+    couponUsed?: true
+    firstSeenAt?: true
+    status?: true
+    assignedOperatorId?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CustomerCountAggregateInputType = {
+    id?: true
+    fullName?: true
+    phone?: true
+    email?: true
+    tcNo?: true
+    source?: true
+    influencerId?: true
+    referrerUrl?: true
+    couponUsed?: true
+    firstSeenAt?: true
+    status?: true
+    assignedOperatorId?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type CustomerAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Customer to aggregate.
+     */
+    where?: CustomerWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Customers to fetch.
+     */
+    orderBy?: CustomerOrderByWithRelationInput | CustomerOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CustomerWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Customers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Customers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Customers
+    **/
+    _count?: true | CustomerCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CustomerMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CustomerMaxAggregateInputType
+  }
+
+  export type GetCustomerAggregateType<T extends CustomerAggregateArgs> = {
+        [P in keyof T & keyof AggregateCustomer]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCustomer[P]>
+      : GetScalarType<T[P], AggregateCustomer[P]>
+  }
+
+
+
+
+  export type CustomerGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CustomerWhereInput
+    orderBy?: CustomerOrderByWithAggregationInput | CustomerOrderByWithAggregationInput[]
+    by: CustomerScalarFieldEnum[] | CustomerScalarFieldEnum
+    having?: CustomerScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CustomerCountAggregateInputType | true
+    _min?: CustomerMinAggregateInputType
+    _max?: CustomerMaxAggregateInputType
+  }
+
+  export type CustomerGroupByOutputType = {
+    id: string
+    fullName: string
+    phone: string
+    email: string | null
+    tcNo: string | null
+    source: string
+    influencerId: string | null
+    referrerUrl: string | null
+    couponUsed: string | null
+    firstSeenAt: Date
+    status: string
+    assignedOperatorId: string | null
+    notes: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: CustomerCountAggregateOutputType | null
+    _min: CustomerMinAggregateOutputType | null
+    _max: CustomerMaxAggregateOutputType | null
+  }
+
+  type GetCustomerGroupByPayload<T extends CustomerGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CustomerGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CustomerGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CustomerGroupByOutputType[P]>
+            : GetScalarType<T[P], CustomerGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CustomerSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    fullName?: boolean
+    phone?: boolean
+    email?: boolean
+    tcNo?: boolean
+    source?: boolean
+    influencerId?: boolean
+    referrerUrl?: boolean
+    couponUsed?: boolean
+    firstSeenAt?: boolean
+    status?: boolean
+    assignedOperatorId?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    influencer?: boolean | Customer$influencerArgs<ExtArgs>
+    sales?: boolean | Customer$salesArgs<ExtArgs>
+    _count?: boolean | CustomerCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["customer"]>
+
+  export type CustomerSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    fullName?: boolean
+    phone?: boolean
+    email?: boolean
+    tcNo?: boolean
+    source?: boolean
+    influencerId?: boolean
+    referrerUrl?: boolean
+    couponUsed?: boolean
+    firstSeenAt?: boolean
+    status?: boolean
+    assignedOperatorId?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    influencer?: boolean | Customer$influencerArgs<ExtArgs>
+  }, ExtArgs["result"]["customer"]>
+
+  export type CustomerSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    fullName?: boolean
+    phone?: boolean
+    email?: boolean
+    tcNo?: boolean
+    source?: boolean
+    influencerId?: boolean
+    referrerUrl?: boolean
+    couponUsed?: boolean
+    firstSeenAt?: boolean
+    status?: boolean
+    assignedOperatorId?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    influencer?: boolean | Customer$influencerArgs<ExtArgs>
+  }, ExtArgs["result"]["customer"]>
+
+  export type CustomerSelectScalar = {
+    id?: boolean
+    fullName?: boolean
+    phone?: boolean
+    email?: boolean
+    tcNo?: boolean
+    source?: boolean
+    influencerId?: boolean
+    referrerUrl?: boolean
+    couponUsed?: boolean
+    firstSeenAt?: boolean
+    status?: boolean
+    assignedOperatorId?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type CustomerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "fullName" | "phone" | "email" | "tcNo" | "source" | "influencerId" | "referrerUrl" | "couponUsed" | "firstSeenAt" | "status" | "assignedOperatorId" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["customer"]>
+  export type CustomerInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    influencer?: boolean | Customer$influencerArgs<ExtArgs>
+    sales?: boolean | Customer$salesArgs<ExtArgs>
+    _count?: boolean | CustomerCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type CustomerIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    influencer?: boolean | Customer$influencerArgs<ExtArgs>
+  }
+  export type CustomerIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    influencer?: boolean | Customer$influencerArgs<ExtArgs>
+  }
+
+  export type $CustomerPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Customer"
+    objects: {
+      influencer: Prisma.$InfluencerPayload<ExtArgs> | null
+      sales: Prisma.$SalePayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      fullName: string
+      phone: string
+      email: string | null
+      tcNo: string | null
+      source: string
+      influencerId: string | null
+      referrerUrl: string | null
+      couponUsed: string | null
+      firstSeenAt: Date
+      status: string
+      assignedOperatorId: string | null
+      notes: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["customer"]>
+    composites: {}
+  }
+
+  type CustomerGetPayload<S extends boolean | null | undefined | CustomerDefaultArgs> = $Result.GetResult<Prisma.$CustomerPayload, S>
+
+  type CustomerCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CustomerFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CustomerCountAggregateInputType | true
+    }
+
+  export interface CustomerDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Customer'], meta: { name: 'Customer' } }
+    /**
+     * Find zero or one Customer that matches the filter.
+     * @param {CustomerFindUniqueArgs} args - Arguments to find a Customer
+     * @example
+     * // Get one Customer
+     * const customer = await prisma.customer.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CustomerFindUniqueArgs>(args: SelectSubset<T, CustomerFindUniqueArgs<ExtArgs>>): Prisma__CustomerClient<$Result.GetResult<Prisma.$CustomerPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Customer that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CustomerFindUniqueOrThrowArgs} args - Arguments to find a Customer
+     * @example
+     * // Get one Customer
+     * const customer = await prisma.customer.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CustomerFindUniqueOrThrowArgs>(args: SelectSubset<T, CustomerFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CustomerClient<$Result.GetResult<Prisma.$CustomerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Customer that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CustomerFindFirstArgs} args - Arguments to find a Customer
+     * @example
+     * // Get one Customer
+     * const customer = await prisma.customer.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CustomerFindFirstArgs>(args?: SelectSubset<T, CustomerFindFirstArgs<ExtArgs>>): Prisma__CustomerClient<$Result.GetResult<Prisma.$CustomerPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Customer that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CustomerFindFirstOrThrowArgs} args - Arguments to find a Customer
+     * @example
+     * // Get one Customer
+     * const customer = await prisma.customer.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CustomerFindFirstOrThrowArgs>(args?: SelectSubset<T, CustomerFindFirstOrThrowArgs<ExtArgs>>): Prisma__CustomerClient<$Result.GetResult<Prisma.$CustomerPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Customers that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CustomerFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Customers
+     * const customers = await prisma.customer.findMany()
+     * 
+     * // Get first 10 Customers
+     * const customers = await prisma.customer.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const customerWithIdOnly = await prisma.customer.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends CustomerFindManyArgs>(args?: SelectSubset<T, CustomerFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CustomerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Customer.
+     * @param {CustomerCreateArgs} args - Arguments to create a Customer.
+     * @example
+     * // Create one Customer
+     * const Customer = await prisma.customer.create({
+     *   data: {
+     *     // ... data to create a Customer
+     *   }
+     * })
+     * 
+     */
+    create<T extends CustomerCreateArgs>(args: SelectSubset<T, CustomerCreateArgs<ExtArgs>>): Prisma__CustomerClient<$Result.GetResult<Prisma.$CustomerPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Customers.
+     * @param {CustomerCreateManyArgs} args - Arguments to create many Customers.
+     * @example
+     * // Create many Customers
+     * const customer = await prisma.customer.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CustomerCreateManyArgs>(args?: SelectSubset<T, CustomerCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Customers and returns the data saved in the database.
+     * @param {CustomerCreateManyAndReturnArgs} args - Arguments to create many Customers.
+     * @example
+     * // Create many Customers
+     * const customer = await prisma.customer.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Customers and only return the `id`
+     * const customerWithIdOnly = await prisma.customer.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends CustomerCreateManyAndReturnArgs>(args?: SelectSubset<T, CustomerCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CustomerPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Customer.
+     * @param {CustomerDeleteArgs} args - Arguments to delete one Customer.
+     * @example
+     * // Delete one Customer
+     * const Customer = await prisma.customer.delete({
+     *   where: {
+     *     // ... filter to delete one Customer
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CustomerDeleteArgs>(args: SelectSubset<T, CustomerDeleteArgs<ExtArgs>>): Prisma__CustomerClient<$Result.GetResult<Prisma.$CustomerPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Customer.
+     * @param {CustomerUpdateArgs} args - Arguments to update one Customer.
+     * @example
+     * // Update one Customer
+     * const customer = await prisma.customer.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CustomerUpdateArgs>(args: SelectSubset<T, CustomerUpdateArgs<ExtArgs>>): Prisma__CustomerClient<$Result.GetResult<Prisma.$CustomerPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Customers.
+     * @param {CustomerDeleteManyArgs} args - Arguments to filter Customers to delete.
+     * @example
+     * // Delete a few Customers
+     * const { count } = await prisma.customer.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CustomerDeleteManyArgs>(args?: SelectSubset<T, CustomerDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Customers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CustomerUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Customers
+     * const customer = await prisma.customer.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CustomerUpdateManyArgs>(args: SelectSubset<T, CustomerUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Customers and returns the data updated in the database.
+     * @param {CustomerUpdateManyAndReturnArgs} args - Arguments to update many Customers.
+     * @example
+     * // Update many Customers
+     * const customer = await prisma.customer.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Customers and only return the `id`
+     * const customerWithIdOnly = await prisma.customer.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends CustomerUpdateManyAndReturnArgs>(args: SelectSubset<T, CustomerUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CustomerPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Customer.
+     * @param {CustomerUpsertArgs} args - Arguments to update or create a Customer.
+     * @example
+     * // Update or create a Customer
+     * const customer = await prisma.customer.upsert({
+     *   create: {
+     *     // ... data to create a Customer
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Customer we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CustomerUpsertArgs>(args: SelectSubset<T, CustomerUpsertArgs<ExtArgs>>): Prisma__CustomerClient<$Result.GetResult<Prisma.$CustomerPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Customers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CustomerCountArgs} args - Arguments to filter Customers to count.
+     * @example
+     * // Count the number of Customers
+     * const count = await prisma.customer.count({
+     *   where: {
+     *     // ... the filter for the Customers we want to count
+     *   }
+     * })
+    **/
+    count<T extends CustomerCountArgs>(
+      args?: Subset<T, CustomerCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CustomerCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Customer.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CustomerAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CustomerAggregateArgs>(args: Subset<T, CustomerAggregateArgs>): Prisma.PrismaPromise<GetCustomerAggregateType<T>>
+
+    /**
+     * Group by Customer.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CustomerGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CustomerGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CustomerGroupByArgs['orderBy'] }
+        : { orderBy?: CustomerGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CustomerGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCustomerGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Customer model
+   */
+  readonly fields: CustomerFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Customer.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CustomerClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    influencer<T extends Customer$influencerArgs<ExtArgs> = {}>(args?: Subset<T, Customer$influencerArgs<ExtArgs>>): Prisma__InfluencerClient<$Result.GetResult<Prisma.$InfluencerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    sales<T extends Customer$salesArgs<ExtArgs> = {}>(args?: Subset<T, Customer$salesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Customer model
+   */
+  interface CustomerFieldRefs {
+    readonly id: FieldRef<"Customer", 'String'>
+    readonly fullName: FieldRef<"Customer", 'String'>
+    readonly phone: FieldRef<"Customer", 'String'>
+    readonly email: FieldRef<"Customer", 'String'>
+    readonly tcNo: FieldRef<"Customer", 'String'>
+    readonly source: FieldRef<"Customer", 'String'>
+    readonly influencerId: FieldRef<"Customer", 'String'>
+    readonly referrerUrl: FieldRef<"Customer", 'String'>
+    readonly couponUsed: FieldRef<"Customer", 'String'>
+    readonly firstSeenAt: FieldRef<"Customer", 'DateTime'>
+    readonly status: FieldRef<"Customer", 'String'>
+    readonly assignedOperatorId: FieldRef<"Customer", 'String'>
+    readonly notes: FieldRef<"Customer", 'String'>
+    readonly createdAt: FieldRef<"Customer", 'DateTime'>
+    readonly updatedAt: FieldRef<"Customer", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Customer findUnique
+   */
+  export type CustomerFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Customer
+     */
+    select?: CustomerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Customer
+     */
+    omit?: CustomerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CustomerInclude<ExtArgs> | null
+    /**
+     * Filter, which Customer to fetch.
+     */
+    where: CustomerWhereUniqueInput
+  }
+
+  /**
+   * Customer findUniqueOrThrow
+   */
+  export type CustomerFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Customer
+     */
+    select?: CustomerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Customer
+     */
+    omit?: CustomerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CustomerInclude<ExtArgs> | null
+    /**
+     * Filter, which Customer to fetch.
+     */
+    where: CustomerWhereUniqueInput
+  }
+
+  /**
+   * Customer findFirst
+   */
+  export type CustomerFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Customer
+     */
+    select?: CustomerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Customer
+     */
+    omit?: CustomerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CustomerInclude<ExtArgs> | null
+    /**
+     * Filter, which Customer to fetch.
+     */
+    where?: CustomerWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Customers to fetch.
+     */
+    orderBy?: CustomerOrderByWithRelationInput | CustomerOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Customers.
+     */
+    cursor?: CustomerWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Customers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Customers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Customers.
+     */
+    distinct?: CustomerScalarFieldEnum | CustomerScalarFieldEnum[]
+  }
+
+  /**
+   * Customer findFirstOrThrow
+   */
+  export type CustomerFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Customer
+     */
+    select?: CustomerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Customer
+     */
+    omit?: CustomerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CustomerInclude<ExtArgs> | null
+    /**
+     * Filter, which Customer to fetch.
+     */
+    where?: CustomerWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Customers to fetch.
+     */
+    orderBy?: CustomerOrderByWithRelationInput | CustomerOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Customers.
+     */
+    cursor?: CustomerWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Customers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Customers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Customers.
+     */
+    distinct?: CustomerScalarFieldEnum | CustomerScalarFieldEnum[]
+  }
+
+  /**
+   * Customer findMany
+   */
+  export type CustomerFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Customer
+     */
+    select?: CustomerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Customer
+     */
+    omit?: CustomerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CustomerInclude<ExtArgs> | null
+    /**
+     * Filter, which Customers to fetch.
+     */
+    where?: CustomerWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Customers to fetch.
+     */
+    orderBy?: CustomerOrderByWithRelationInput | CustomerOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Customers.
+     */
+    cursor?: CustomerWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Customers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Customers.
+     */
+    skip?: number
+    distinct?: CustomerScalarFieldEnum | CustomerScalarFieldEnum[]
+  }
+
+  /**
+   * Customer create
+   */
+  export type CustomerCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Customer
+     */
+    select?: CustomerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Customer
+     */
+    omit?: CustomerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CustomerInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Customer.
+     */
+    data: XOR<CustomerCreateInput, CustomerUncheckedCreateInput>
+  }
+
+  /**
+   * Customer createMany
+   */
+  export type CustomerCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Customers.
+     */
+    data: CustomerCreateManyInput | CustomerCreateManyInput[]
+  }
+
+  /**
+   * Customer createManyAndReturn
+   */
+  export type CustomerCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Customer
+     */
+    select?: CustomerSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Customer
+     */
+    omit?: CustomerOmit<ExtArgs> | null
+    /**
+     * The data used to create many Customers.
+     */
+    data: CustomerCreateManyInput | CustomerCreateManyInput[]
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CustomerIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Customer update
+   */
+  export type CustomerUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Customer
+     */
+    select?: CustomerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Customer
+     */
+    omit?: CustomerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CustomerInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Customer.
+     */
+    data: XOR<CustomerUpdateInput, CustomerUncheckedUpdateInput>
+    /**
+     * Choose, which Customer to update.
+     */
+    where: CustomerWhereUniqueInput
+  }
+
+  /**
+   * Customer updateMany
+   */
+  export type CustomerUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Customers.
+     */
+    data: XOR<CustomerUpdateManyMutationInput, CustomerUncheckedUpdateManyInput>
+    /**
+     * Filter which Customers to update
+     */
+    where?: CustomerWhereInput
+    /**
+     * Limit how many Customers to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Customer updateManyAndReturn
+   */
+  export type CustomerUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Customer
+     */
+    select?: CustomerSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Customer
+     */
+    omit?: CustomerOmit<ExtArgs> | null
+    /**
+     * The data used to update Customers.
+     */
+    data: XOR<CustomerUpdateManyMutationInput, CustomerUncheckedUpdateManyInput>
+    /**
+     * Filter which Customers to update
+     */
+    where?: CustomerWhereInput
+    /**
+     * Limit how many Customers to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CustomerIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Customer upsert
+   */
+  export type CustomerUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Customer
+     */
+    select?: CustomerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Customer
+     */
+    omit?: CustomerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CustomerInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Customer to update in case it exists.
+     */
+    where: CustomerWhereUniqueInput
+    /**
+     * In case the Customer found by the `where` argument doesn't exist, create a new Customer with this data.
+     */
+    create: XOR<CustomerCreateInput, CustomerUncheckedCreateInput>
+    /**
+     * In case the Customer was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CustomerUpdateInput, CustomerUncheckedUpdateInput>
+  }
+
+  /**
+   * Customer delete
+   */
+  export type CustomerDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Customer
+     */
+    select?: CustomerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Customer
+     */
+    omit?: CustomerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CustomerInclude<ExtArgs> | null
+    /**
+     * Filter which Customer to delete.
+     */
+    where: CustomerWhereUniqueInput
+  }
+
+  /**
+   * Customer deleteMany
+   */
+  export type CustomerDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Customers to delete
+     */
+    where?: CustomerWhereInput
+    /**
+     * Limit how many Customers to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Customer.influencer
+   */
+  export type Customer$influencerArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Influencer
+     */
+    select?: InfluencerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Influencer
+     */
+    omit?: InfluencerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InfluencerInclude<ExtArgs> | null
+    where?: InfluencerWhereInput
+  }
+
+  /**
+   * Customer.sales
+   */
+  export type Customer$salesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Sale
+     */
+    select?: SaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Sale
+     */
+    omit?: SaleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SaleInclude<ExtArgs> | null
+    where?: SaleWhereInput
+    orderBy?: SaleOrderByWithRelationInput | SaleOrderByWithRelationInput[]
+    cursor?: SaleWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SaleScalarFieldEnum | SaleScalarFieldEnum[]
+  }
+
+  /**
+   * Customer without action
+   */
+  export type CustomerDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Customer
+     */
+    select?: CustomerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Customer
+     */
+    omit?: CustomerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CustomerInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Sale
+   */
+
+  export type AggregateSale = {
+    _count: SaleCountAggregateOutputType | null
+    _avg: SaleAvgAggregateOutputType | null
+    _sum: SaleSumAggregateOutputType | null
+    _min: SaleMinAggregateOutputType | null
+    _max: SaleMaxAggregateOutputType | null
+  }
+
+  export type SaleAvgAggregateOutputType = {
+    saleAmount: number | null
+    commissionRate: number | null
+    commissionAmount: number | null
+  }
+
+  export type SaleSumAggregateOutputType = {
+    saleAmount: number | null
+    commissionRate: number | null
+    commissionAmount: number | null
+  }
+
+  export type SaleMinAggregateOutputType = {
+    id: string | null
+    customerId: string | null
+    influencerId: string | null
+    umrePackage: string | null
+    saleAmount: number | null
+    commissionRate: number | null
+    commissionAmount: number | null
+    commissionStatus: string | null
+    saleDate: Date | null
+    completionDate: Date | null
+    refundDeadline: Date | null
+    notes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type SaleMaxAggregateOutputType = {
+    id: string | null
+    customerId: string | null
+    influencerId: string | null
+    umrePackage: string | null
+    saleAmount: number | null
+    commissionRate: number | null
+    commissionAmount: number | null
+    commissionStatus: string | null
+    saleDate: Date | null
+    completionDate: Date | null
+    refundDeadline: Date | null
+    notes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type SaleCountAggregateOutputType = {
+    id: number
+    customerId: number
+    influencerId: number
+    umrePackage: number
+    saleAmount: number
+    commissionRate: number
+    commissionAmount: number
+    commissionStatus: number
+    saleDate: number
+    completionDate: number
+    refundDeadline: number
+    notes: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type SaleAvgAggregateInputType = {
+    saleAmount?: true
+    commissionRate?: true
+    commissionAmount?: true
+  }
+
+  export type SaleSumAggregateInputType = {
+    saleAmount?: true
+    commissionRate?: true
+    commissionAmount?: true
+  }
+
+  export type SaleMinAggregateInputType = {
+    id?: true
+    customerId?: true
+    influencerId?: true
+    umrePackage?: true
+    saleAmount?: true
+    commissionRate?: true
+    commissionAmount?: true
+    commissionStatus?: true
+    saleDate?: true
+    completionDate?: true
+    refundDeadline?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type SaleMaxAggregateInputType = {
+    id?: true
+    customerId?: true
+    influencerId?: true
+    umrePackage?: true
+    saleAmount?: true
+    commissionRate?: true
+    commissionAmount?: true
+    commissionStatus?: true
+    saleDate?: true
+    completionDate?: true
+    refundDeadline?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type SaleCountAggregateInputType = {
+    id?: true
+    customerId?: true
+    influencerId?: true
+    umrePackage?: true
+    saleAmount?: true
+    commissionRate?: true
+    commissionAmount?: true
+    commissionStatus?: true
+    saleDate?: true
+    completionDate?: true
+    refundDeadline?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type SaleAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Sale to aggregate.
+     */
+    where?: SaleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Sales to fetch.
+     */
+    orderBy?: SaleOrderByWithRelationInput | SaleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SaleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Sales from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Sales.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Sales
+    **/
+    _count?: true | SaleCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: SaleAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: SaleSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SaleMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SaleMaxAggregateInputType
+  }
+
+  export type GetSaleAggregateType<T extends SaleAggregateArgs> = {
+        [P in keyof T & keyof AggregateSale]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSale[P]>
+      : GetScalarType<T[P], AggregateSale[P]>
+  }
+
+
+
+
+  export type SaleGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SaleWhereInput
+    orderBy?: SaleOrderByWithAggregationInput | SaleOrderByWithAggregationInput[]
+    by: SaleScalarFieldEnum[] | SaleScalarFieldEnum
+    having?: SaleScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SaleCountAggregateInputType | true
+    _avg?: SaleAvgAggregateInputType
+    _sum?: SaleSumAggregateInputType
+    _min?: SaleMinAggregateInputType
+    _max?: SaleMaxAggregateInputType
+  }
+
+  export type SaleGroupByOutputType = {
+    id: string
+    customerId: string
+    influencerId: string | null
+    umrePackage: string | null
+    saleAmount: number
+    commissionRate: number
+    commissionAmount: number
+    commissionStatus: string
+    saleDate: Date
+    completionDate: Date | null
+    refundDeadline: Date | null
+    notes: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: SaleCountAggregateOutputType | null
+    _avg: SaleAvgAggregateOutputType | null
+    _sum: SaleSumAggregateOutputType | null
+    _min: SaleMinAggregateOutputType | null
+    _max: SaleMaxAggregateOutputType | null
+  }
+
+  type GetSaleGroupByPayload<T extends SaleGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SaleGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SaleGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SaleGroupByOutputType[P]>
+            : GetScalarType<T[P], SaleGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SaleSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    customerId?: boolean
+    influencerId?: boolean
+    umrePackage?: boolean
+    saleAmount?: boolean
+    commissionRate?: boolean
+    commissionAmount?: boolean
+    commissionStatus?: boolean
+    saleDate?: boolean
+    completionDate?: boolean
+    refundDeadline?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    customer?: boolean | CustomerDefaultArgs<ExtArgs>
+    influencer?: boolean | Sale$influencerArgs<ExtArgs>
+    payments?: boolean | Sale$paymentsArgs<ExtArgs>
+    _count?: boolean | SaleCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["sale"]>
+
+  export type SaleSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    customerId?: boolean
+    influencerId?: boolean
+    umrePackage?: boolean
+    saleAmount?: boolean
+    commissionRate?: boolean
+    commissionAmount?: boolean
+    commissionStatus?: boolean
+    saleDate?: boolean
+    completionDate?: boolean
+    refundDeadline?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    customer?: boolean | CustomerDefaultArgs<ExtArgs>
+    influencer?: boolean | Sale$influencerArgs<ExtArgs>
+  }, ExtArgs["result"]["sale"]>
+
+  export type SaleSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    customerId?: boolean
+    influencerId?: boolean
+    umrePackage?: boolean
+    saleAmount?: boolean
+    commissionRate?: boolean
+    commissionAmount?: boolean
+    commissionStatus?: boolean
+    saleDate?: boolean
+    completionDate?: boolean
+    refundDeadline?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    customer?: boolean | CustomerDefaultArgs<ExtArgs>
+    influencer?: boolean | Sale$influencerArgs<ExtArgs>
+  }, ExtArgs["result"]["sale"]>
+
+  export type SaleSelectScalar = {
+    id?: boolean
+    customerId?: boolean
+    influencerId?: boolean
+    umrePackage?: boolean
+    saleAmount?: boolean
+    commissionRate?: boolean
+    commissionAmount?: boolean
+    commissionStatus?: boolean
+    saleDate?: boolean
+    completionDate?: boolean
+    refundDeadline?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type SaleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "customerId" | "influencerId" | "umrePackage" | "saleAmount" | "commissionRate" | "commissionAmount" | "commissionStatus" | "saleDate" | "completionDate" | "refundDeadline" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["sale"]>
+  export type SaleInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    customer?: boolean | CustomerDefaultArgs<ExtArgs>
+    influencer?: boolean | Sale$influencerArgs<ExtArgs>
+    payments?: boolean | Sale$paymentsArgs<ExtArgs>
+    _count?: boolean | SaleCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type SaleIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    customer?: boolean | CustomerDefaultArgs<ExtArgs>
+    influencer?: boolean | Sale$influencerArgs<ExtArgs>
+  }
+  export type SaleIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    customer?: boolean | CustomerDefaultArgs<ExtArgs>
+    influencer?: boolean | Sale$influencerArgs<ExtArgs>
+  }
+
+  export type $SalePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Sale"
+    objects: {
+      customer: Prisma.$CustomerPayload<ExtArgs>
+      influencer: Prisma.$InfluencerPayload<ExtArgs> | null
+      payments: Prisma.$PaymentSalePayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      customerId: string
+      influencerId: string | null
+      umrePackage: string | null
+      saleAmount: number
+      commissionRate: number
+      commissionAmount: number
+      commissionStatus: string
+      saleDate: Date
+      completionDate: Date | null
+      refundDeadline: Date | null
+      notes: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["sale"]>
+    composites: {}
+  }
+
+  type SaleGetPayload<S extends boolean | null | undefined | SaleDefaultArgs> = $Result.GetResult<Prisma.$SalePayload, S>
+
+  type SaleCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SaleFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SaleCountAggregateInputType | true
+    }
+
+  export interface SaleDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Sale'], meta: { name: 'Sale' } }
+    /**
+     * Find zero or one Sale that matches the filter.
+     * @param {SaleFindUniqueArgs} args - Arguments to find a Sale
+     * @example
+     * // Get one Sale
+     * const sale = await prisma.sale.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SaleFindUniqueArgs>(args: SelectSubset<T, SaleFindUniqueArgs<ExtArgs>>): Prisma__SaleClient<$Result.GetResult<Prisma.$SalePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Sale that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SaleFindUniqueOrThrowArgs} args - Arguments to find a Sale
+     * @example
+     * // Get one Sale
+     * const sale = await prisma.sale.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SaleFindUniqueOrThrowArgs>(args: SelectSubset<T, SaleFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SaleClient<$Result.GetResult<Prisma.$SalePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Sale that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SaleFindFirstArgs} args - Arguments to find a Sale
+     * @example
+     * // Get one Sale
+     * const sale = await prisma.sale.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SaleFindFirstArgs>(args?: SelectSubset<T, SaleFindFirstArgs<ExtArgs>>): Prisma__SaleClient<$Result.GetResult<Prisma.$SalePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Sale that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SaleFindFirstOrThrowArgs} args - Arguments to find a Sale
+     * @example
+     * // Get one Sale
+     * const sale = await prisma.sale.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SaleFindFirstOrThrowArgs>(args?: SelectSubset<T, SaleFindFirstOrThrowArgs<ExtArgs>>): Prisma__SaleClient<$Result.GetResult<Prisma.$SalePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Sales that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SaleFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Sales
+     * const sales = await prisma.sale.findMany()
+     * 
+     * // Get first 10 Sales
+     * const sales = await prisma.sale.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const saleWithIdOnly = await prisma.sale.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SaleFindManyArgs>(args?: SelectSubset<T, SaleFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Sale.
+     * @param {SaleCreateArgs} args - Arguments to create a Sale.
+     * @example
+     * // Create one Sale
+     * const Sale = await prisma.sale.create({
+     *   data: {
+     *     // ... data to create a Sale
+     *   }
+     * })
+     * 
+     */
+    create<T extends SaleCreateArgs>(args: SelectSubset<T, SaleCreateArgs<ExtArgs>>): Prisma__SaleClient<$Result.GetResult<Prisma.$SalePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Sales.
+     * @param {SaleCreateManyArgs} args - Arguments to create many Sales.
+     * @example
+     * // Create many Sales
+     * const sale = await prisma.sale.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SaleCreateManyArgs>(args?: SelectSubset<T, SaleCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Sales and returns the data saved in the database.
+     * @param {SaleCreateManyAndReturnArgs} args - Arguments to create many Sales.
+     * @example
+     * // Create many Sales
+     * const sale = await prisma.sale.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Sales and only return the `id`
+     * const saleWithIdOnly = await prisma.sale.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SaleCreateManyAndReturnArgs>(args?: SelectSubset<T, SaleCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Sale.
+     * @param {SaleDeleteArgs} args - Arguments to delete one Sale.
+     * @example
+     * // Delete one Sale
+     * const Sale = await prisma.sale.delete({
+     *   where: {
+     *     // ... filter to delete one Sale
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SaleDeleteArgs>(args: SelectSubset<T, SaleDeleteArgs<ExtArgs>>): Prisma__SaleClient<$Result.GetResult<Prisma.$SalePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Sale.
+     * @param {SaleUpdateArgs} args - Arguments to update one Sale.
+     * @example
+     * // Update one Sale
+     * const sale = await prisma.sale.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SaleUpdateArgs>(args: SelectSubset<T, SaleUpdateArgs<ExtArgs>>): Prisma__SaleClient<$Result.GetResult<Prisma.$SalePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Sales.
+     * @param {SaleDeleteManyArgs} args - Arguments to filter Sales to delete.
+     * @example
+     * // Delete a few Sales
+     * const { count } = await prisma.sale.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SaleDeleteManyArgs>(args?: SelectSubset<T, SaleDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Sales.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SaleUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Sales
+     * const sale = await prisma.sale.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SaleUpdateManyArgs>(args: SelectSubset<T, SaleUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Sales and returns the data updated in the database.
+     * @param {SaleUpdateManyAndReturnArgs} args - Arguments to update many Sales.
+     * @example
+     * // Update many Sales
+     * const sale = await prisma.sale.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Sales and only return the `id`
+     * const saleWithIdOnly = await prisma.sale.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SaleUpdateManyAndReturnArgs>(args: SelectSubset<T, SaleUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SalePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Sale.
+     * @param {SaleUpsertArgs} args - Arguments to update or create a Sale.
+     * @example
+     * // Update or create a Sale
+     * const sale = await prisma.sale.upsert({
+     *   create: {
+     *     // ... data to create a Sale
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Sale we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SaleUpsertArgs>(args: SelectSubset<T, SaleUpsertArgs<ExtArgs>>): Prisma__SaleClient<$Result.GetResult<Prisma.$SalePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Sales.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SaleCountArgs} args - Arguments to filter Sales to count.
+     * @example
+     * // Count the number of Sales
+     * const count = await prisma.sale.count({
+     *   where: {
+     *     // ... the filter for the Sales we want to count
+     *   }
+     * })
+    **/
+    count<T extends SaleCountArgs>(
+      args?: Subset<T, SaleCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SaleCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Sale.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SaleAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SaleAggregateArgs>(args: Subset<T, SaleAggregateArgs>): Prisma.PrismaPromise<GetSaleAggregateType<T>>
+
+    /**
+     * Group by Sale.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SaleGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SaleGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SaleGroupByArgs['orderBy'] }
+        : { orderBy?: SaleGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SaleGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSaleGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Sale model
+   */
+  readonly fields: SaleFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Sale.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SaleClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    customer<T extends CustomerDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CustomerDefaultArgs<ExtArgs>>): Prisma__CustomerClient<$Result.GetResult<Prisma.$CustomerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    influencer<T extends Sale$influencerArgs<ExtArgs> = {}>(args?: Subset<T, Sale$influencerArgs<ExtArgs>>): Prisma__InfluencerClient<$Result.GetResult<Prisma.$InfluencerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    payments<T extends Sale$paymentsArgs<ExtArgs> = {}>(args?: Subset<T, Sale$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentSalePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Sale model
+   */
+  interface SaleFieldRefs {
+    readonly id: FieldRef<"Sale", 'String'>
+    readonly customerId: FieldRef<"Sale", 'String'>
+    readonly influencerId: FieldRef<"Sale", 'String'>
+    readonly umrePackage: FieldRef<"Sale", 'String'>
+    readonly saleAmount: FieldRef<"Sale", 'Float'>
+    readonly commissionRate: FieldRef<"Sale", 'Float'>
+    readonly commissionAmount: FieldRef<"Sale", 'Float'>
+    readonly commissionStatus: FieldRef<"Sale", 'String'>
+    readonly saleDate: FieldRef<"Sale", 'DateTime'>
+    readonly completionDate: FieldRef<"Sale", 'DateTime'>
+    readonly refundDeadline: FieldRef<"Sale", 'DateTime'>
+    readonly notes: FieldRef<"Sale", 'String'>
+    readonly createdAt: FieldRef<"Sale", 'DateTime'>
+    readonly updatedAt: FieldRef<"Sale", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Sale findUnique
+   */
+  export type SaleFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Sale
+     */
+    select?: SaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Sale
+     */
+    omit?: SaleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SaleInclude<ExtArgs> | null
+    /**
+     * Filter, which Sale to fetch.
+     */
+    where: SaleWhereUniqueInput
+  }
+
+  /**
+   * Sale findUniqueOrThrow
+   */
+  export type SaleFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Sale
+     */
+    select?: SaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Sale
+     */
+    omit?: SaleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SaleInclude<ExtArgs> | null
+    /**
+     * Filter, which Sale to fetch.
+     */
+    where: SaleWhereUniqueInput
+  }
+
+  /**
+   * Sale findFirst
+   */
+  export type SaleFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Sale
+     */
+    select?: SaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Sale
+     */
+    omit?: SaleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SaleInclude<ExtArgs> | null
+    /**
+     * Filter, which Sale to fetch.
+     */
+    where?: SaleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Sales to fetch.
+     */
+    orderBy?: SaleOrderByWithRelationInput | SaleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Sales.
+     */
+    cursor?: SaleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Sales from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Sales.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Sales.
+     */
+    distinct?: SaleScalarFieldEnum | SaleScalarFieldEnum[]
+  }
+
+  /**
+   * Sale findFirstOrThrow
+   */
+  export type SaleFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Sale
+     */
+    select?: SaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Sale
+     */
+    omit?: SaleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SaleInclude<ExtArgs> | null
+    /**
+     * Filter, which Sale to fetch.
+     */
+    where?: SaleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Sales to fetch.
+     */
+    orderBy?: SaleOrderByWithRelationInput | SaleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Sales.
+     */
+    cursor?: SaleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Sales from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Sales.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Sales.
+     */
+    distinct?: SaleScalarFieldEnum | SaleScalarFieldEnum[]
+  }
+
+  /**
+   * Sale findMany
+   */
+  export type SaleFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Sale
+     */
+    select?: SaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Sale
+     */
+    omit?: SaleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SaleInclude<ExtArgs> | null
+    /**
+     * Filter, which Sales to fetch.
+     */
+    where?: SaleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Sales to fetch.
+     */
+    orderBy?: SaleOrderByWithRelationInput | SaleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Sales.
+     */
+    cursor?: SaleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Sales from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Sales.
+     */
+    skip?: number
+    distinct?: SaleScalarFieldEnum | SaleScalarFieldEnum[]
+  }
+
+  /**
+   * Sale create
+   */
+  export type SaleCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Sale
+     */
+    select?: SaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Sale
+     */
+    omit?: SaleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SaleInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Sale.
+     */
+    data: XOR<SaleCreateInput, SaleUncheckedCreateInput>
+  }
+
+  /**
+   * Sale createMany
+   */
+  export type SaleCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Sales.
+     */
+    data: SaleCreateManyInput | SaleCreateManyInput[]
+  }
+
+  /**
+   * Sale createManyAndReturn
+   */
+  export type SaleCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Sale
+     */
+    select?: SaleSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Sale
+     */
+    omit?: SaleOmit<ExtArgs> | null
+    /**
+     * The data used to create many Sales.
+     */
+    data: SaleCreateManyInput | SaleCreateManyInput[]
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SaleIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Sale update
+   */
+  export type SaleUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Sale
+     */
+    select?: SaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Sale
+     */
+    omit?: SaleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SaleInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Sale.
+     */
+    data: XOR<SaleUpdateInput, SaleUncheckedUpdateInput>
+    /**
+     * Choose, which Sale to update.
+     */
+    where: SaleWhereUniqueInput
+  }
+
+  /**
+   * Sale updateMany
+   */
+  export type SaleUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Sales.
+     */
+    data: XOR<SaleUpdateManyMutationInput, SaleUncheckedUpdateManyInput>
+    /**
+     * Filter which Sales to update
+     */
+    where?: SaleWhereInput
+    /**
+     * Limit how many Sales to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Sale updateManyAndReturn
+   */
+  export type SaleUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Sale
+     */
+    select?: SaleSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Sale
+     */
+    omit?: SaleOmit<ExtArgs> | null
+    /**
+     * The data used to update Sales.
+     */
+    data: XOR<SaleUpdateManyMutationInput, SaleUncheckedUpdateManyInput>
+    /**
+     * Filter which Sales to update
+     */
+    where?: SaleWhereInput
+    /**
+     * Limit how many Sales to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SaleIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Sale upsert
+   */
+  export type SaleUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Sale
+     */
+    select?: SaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Sale
+     */
+    omit?: SaleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SaleInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Sale to update in case it exists.
+     */
+    where: SaleWhereUniqueInput
+    /**
+     * In case the Sale found by the `where` argument doesn't exist, create a new Sale with this data.
+     */
+    create: XOR<SaleCreateInput, SaleUncheckedCreateInput>
+    /**
+     * In case the Sale was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SaleUpdateInput, SaleUncheckedUpdateInput>
+  }
+
+  /**
+   * Sale delete
+   */
+  export type SaleDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Sale
+     */
+    select?: SaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Sale
+     */
+    omit?: SaleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SaleInclude<ExtArgs> | null
+    /**
+     * Filter which Sale to delete.
+     */
+    where: SaleWhereUniqueInput
+  }
+
+  /**
+   * Sale deleteMany
+   */
+  export type SaleDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Sales to delete
+     */
+    where?: SaleWhereInput
+    /**
+     * Limit how many Sales to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Sale.influencer
+   */
+  export type Sale$influencerArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Influencer
+     */
+    select?: InfluencerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Influencer
+     */
+    omit?: InfluencerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: InfluencerInclude<ExtArgs> | null
+    where?: InfluencerWhereInput
+  }
+
+  /**
+   * Sale.payments
+   */
+  export type Sale$paymentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentSale
+     */
+    select?: PaymentSaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentSale
+     */
+    omit?: PaymentSaleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentSaleInclude<ExtArgs> | null
+    where?: PaymentSaleWhereInput
+    orderBy?: PaymentSaleOrderByWithRelationInput | PaymentSaleOrderByWithRelationInput[]
+    cursor?: PaymentSaleWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PaymentSaleScalarFieldEnum | PaymentSaleScalarFieldEnum[]
+  }
+
+  /**
+   * Sale without action
+   */
+  export type SaleDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Sale
+     */
+    select?: SaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Sale
+     */
+    omit?: SaleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SaleInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Payment
+   */
+
+  export type AggregatePayment = {
+    _count: PaymentCountAggregateOutputType | null
+    _avg: PaymentAvgAggregateOutputType | null
+    _sum: PaymentSumAggregateOutputType | null
+    _min: PaymentMinAggregateOutputType | null
+    _max: PaymentMaxAggregateOutputType | null
+  }
+
+  export type PaymentAvgAggregateOutputType = {
+    totalAmount: number | null
+    taxDeduction: number | null
+    netAmount: number | null
+  }
+
+  export type PaymentSumAggregateOutputType = {
+    totalAmount: number | null
+    taxDeduction: number | null
+    netAmount: number | null
+  }
+
+  export type PaymentMinAggregateOutputType = {
+    id: string | null
+    influencerId: string | null
+    periodMonth: string | null
+    totalAmount: number | null
+    taxDeduction: number | null
+    netAmount: number | null
+    status: string | null
+    approvedBy: string | null
+    approvedAt: Date | null
+    paidAt: Date | null
+    bankReference: string | null
+    notes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PaymentMaxAggregateOutputType = {
+    id: string | null
+    influencerId: string | null
+    periodMonth: string | null
+    totalAmount: number | null
+    taxDeduction: number | null
+    netAmount: number | null
+    status: string | null
+    approvedBy: string | null
+    approvedAt: Date | null
+    paidAt: Date | null
+    bankReference: string | null
+    notes: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type PaymentCountAggregateOutputType = {
+    id: number
+    influencerId: number
+    periodMonth: number
+    totalAmount: number
+    taxDeduction: number
+    netAmount: number
+    status: number
+    approvedBy: number
+    approvedAt: number
+    paidAt: number
+    bankReference: number
+    notes: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type PaymentAvgAggregateInputType = {
+    totalAmount?: true
+    taxDeduction?: true
+    netAmount?: true
+  }
+
+  export type PaymentSumAggregateInputType = {
+    totalAmount?: true
+    taxDeduction?: true
+    netAmount?: true
+  }
+
+  export type PaymentMinAggregateInputType = {
+    id?: true
+    influencerId?: true
+    periodMonth?: true
+    totalAmount?: true
+    taxDeduction?: true
+    netAmount?: true
+    status?: true
+    approvedBy?: true
+    approvedAt?: true
+    paidAt?: true
+    bankReference?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PaymentMaxAggregateInputType = {
+    id?: true
+    influencerId?: true
+    periodMonth?: true
+    totalAmount?: true
+    taxDeduction?: true
+    netAmount?: true
+    status?: true
+    approvedBy?: true
+    approvedAt?: true
+    paidAt?: true
+    bankReference?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type PaymentCountAggregateInputType = {
+    id?: true
+    influencerId?: true
+    periodMonth?: true
+    totalAmount?: true
+    taxDeduction?: true
+    netAmount?: true
+    status?: true
+    approvedBy?: true
+    approvedAt?: true
+    paidAt?: true
+    bankReference?: true
+    notes?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type PaymentAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Payment to aggregate.
+     */
+    where?: PaymentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Payments to fetch.
+     */
+    orderBy?: PaymentOrderByWithRelationInput | PaymentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PaymentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Payments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Payments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Payments
+    **/
+    _count?: true | PaymentCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: PaymentAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PaymentSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PaymentMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PaymentMaxAggregateInputType
+  }
+
+  export type GetPaymentAggregateType<T extends PaymentAggregateArgs> = {
+        [P in keyof T & keyof AggregatePayment]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePayment[P]>
+      : GetScalarType<T[P], AggregatePayment[P]>
+  }
+
+
+
+
+  export type PaymentGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PaymentWhereInput
+    orderBy?: PaymentOrderByWithAggregationInput | PaymentOrderByWithAggregationInput[]
+    by: PaymentScalarFieldEnum[] | PaymentScalarFieldEnum
+    having?: PaymentScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PaymentCountAggregateInputType | true
+    _avg?: PaymentAvgAggregateInputType
+    _sum?: PaymentSumAggregateInputType
+    _min?: PaymentMinAggregateInputType
+    _max?: PaymentMaxAggregateInputType
+  }
+
+  export type PaymentGroupByOutputType = {
+    id: string
+    influencerId: string
+    periodMonth: string
+    totalAmount: number
+    taxDeduction: number
+    netAmount: number
+    status: string
+    approvedBy: string | null
+    approvedAt: Date | null
+    paidAt: Date | null
+    bankReference: string | null
+    notes: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: PaymentCountAggregateOutputType | null
+    _avg: PaymentAvgAggregateOutputType | null
+    _sum: PaymentSumAggregateOutputType | null
+    _min: PaymentMinAggregateOutputType | null
+    _max: PaymentMaxAggregateOutputType | null
+  }
+
+  type GetPaymentGroupByPayload<T extends PaymentGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PaymentGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PaymentGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PaymentGroupByOutputType[P]>
+            : GetScalarType<T[P], PaymentGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PaymentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    influencerId?: boolean
+    periodMonth?: boolean
+    totalAmount?: boolean
+    taxDeduction?: boolean
+    netAmount?: boolean
+    status?: boolean
+    approvedBy?: boolean
+    approvedAt?: boolean
+    paidAt?: boolean
+    bankReference?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    influencer?: boolean | InfluencerDefaultArgs<ExtArgs>
+    sales?: boolean | Payment$salesArgs<ExtArgs>
+    _count?: boolean | PaymentCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["payment"]>
+
+  export type PaymentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    influencerId?: boolean
+    periodMonth?: boolean
+    totalAmount?: boolean
+    taxDeduction?: boolean
+    netAmount?: boolean
+    status?: boolean
+    approvedBy?: boolean
+    approvedAt?: boolean
+    paidAt?: boolean
+    bankReference?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    influencer?: boolean | InfluencerDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["payment"]>
+
+  export type PaymentSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    influencerId?: boolean
+    periodMonth?: boolean
+    totalAmount?: boolean
+    taxDeduction?: boolean
+    netAmount?: boolean
+    status?: boolean
+    approvedBy?: boolean
+    approvedAt?: boolean
+    paidAt?: boolean
+    bankReference?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    influencer?: boolean | InfluencerDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["payment"]>
+
+  export type PaymentSelectScalar = {
+    id?: boolean
+    influencerId?: boolean
+    periodMonth?: boolean
+    totalAmount?: boolean
+    taxDeduction?: boolean
+    netAmount?: boolean
+    status?: boolean
+    approvedBy?: boolean
+    approvedAt?: boolean
+    paidAt?: boolean
+    bankReference?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type PaymentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "influencerId" | "periodMonth" | "totalAmount" | "taxDeduction" | "netAmount" | "status" | "approvedBy" | "approvedAt" | "paidAt" | "bankReference" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["payment"]>
+  export type PaymentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    influencer?: boolean | InfluencerDefaultArgs<ExtArgs>
+    sales?: boolean | Payment$salesArgs<ExtArgs>
+    _count?: boolean | PaymentCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type PaymentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    influencer?: boolean | InfluencerDefaultArgs<ExtArgs>
+  }
+  export type PaymentIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    influencer?: boolean | InfluencerDefaultArgs<ExtArgs>
+  }
+
+  export type $PaymentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Payment"
+    objects: {
+      influencer: Prisma.$InfluencerPayload<ExtArgs>
+      sales: Prisma.$PaymentSalePayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      influencerId: string
+      periodMonth: string
+      totalAmount: number
+      taxDeduction: number
+      netAmount: number
+      status: string
+      approvedBy: string | null
+      approvedAt: Date | null
+      paidAt: Date | null
+      bankReference: string | null
+      notes: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["payment"]>
+    composites: {}
+  }
+
+  type PaymentGetPayload<S extends boolean | null | undefined | PaymentDefaultArgs> = $Result.GetResult<Prisma.$PaymentPayload, S>
+
+  type PaymentCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PaymentFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PaymentCountAggregateInputType | true
+    }
+
+  export interface PaymentDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Payment'], meta: { name: 'Payment' } }
+    /**
+     * Find zero or one Payment that matches the filter.
+     * @param {PaymentFindUniqueArgs} args - Arguments to find a Payment
+     * @example
+     * // Get one Payment
+     * const payment = await prisma.payment.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PaymentFindUniqueArgs>(args: SelectSubset<T, PaymentFindUniqueArgs<ExtArgs>>): Prisma__PaymentClient<$Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Payment that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PaymentFindUniqueOrThrowArgs} args - Arguments to find a Payment
+     * @example
+     * // Get one Payment
+     * const payment = await prisma.payment.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PaymentFindUniqueOrThrowArgs>(args: SelectSubset<T, PaymentFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PaymentClient<$Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Payment that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentFindFirstArgs} args - Arguments to find a Payment
+     * @example
+     * // Get one Payment
+     * const payment = await prisma.payment.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PaymentFindFirstArgs>(args?: SelectSubset<T, PaymentFindFirstArgs<ExtArgs>>): Prisma__PaymentClient<$Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Payment that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentFindFirstOrThrowArgs} args - Arguments to find a Payment
+     * @example
+     * // Get one Payment
+     * const payment = await prisma.payment.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PaymentFindFirstOrThrowArgs>(args?: SelectSubset<T, PaymentFindFirstOrThrowArgs<ExtArgs>>): Prisma__PaymentClient<$Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Payments that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Payments
+     * const payments = await prisma.payment.findMany()
+     * 
+     * // Get first 10 Payments
+     * const payments = await prisma.payment.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const paymentWithIdOnly = await prisma.payment.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PaymentFindManyArgs>(args?: SelectSubset<T, PaymentFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Payment.
+     * @param {PaymentCreateArgs} args - Arguments to create a Payment.
+     * @example
+     * // Create one Payment
+     * const Payment = await prisma.payment.create({
+     *   data: {
+     *     // ... data to create a Payment
+     *   }
+     * })
+     * 
+     */
+    create<T extends PaymentCreateArgs>(args: SelectSubset<T, PaymentCreateArgs<ExtArgs>>): Prisma__PaymentClient<$Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Payments.
+     * @param {PaymentCreateManyArgs} args - Arguments to create many Payments.
+     * @example
+     * // Create many Payments
+     * const payment = await prisma.payment.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PaymentCreateManyArgs>(args?: SelectSubset<T, PaymentCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Payments and returns the data saved in the database.
+     * @param {PaymentCreateManyAndReturnArgs} args - Arguments to create many Payments.
+     * @example
+     * // Create many Payments
+     * const payment = await prisma.payment.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Payments and only return the `id`
+     * const paymentWithIdOnly = await prisma.payment.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PaymentCreateManyAndReturnArgs>(args?: SelectSubset<T, PaymentCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Payment.
+     * @param {PaymentDeleteArgs} args - Arguments to delete one Payment.
+     * @example
+     * // Delete one Payment
+     * const Payment = await prisma.payment.delete({
+     *   where: {
+     *     // ... filter to delete one Payment
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PaymentDeleteArgs>(args: SelectSubset<T, PaymentDeleteArgs<ExtArgs>>): Prisma__PaymentClient<$Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Payment.
+     * @param {PaymentUpdateArgs} args - Arguments to update one Payment.
+     * @example
+     * // Update one Payment
+     * const payment = await prisma.payment.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PaymentUpdateArgs>(args: SelectSubset<T, PaymentUpdateArgs<ExtArgs>>): Prisma__PaymentClient<$Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Payments.
+     * @param {PaymentDeleteManyArgs} args - Arguments to filter Payments to delete.
+     * @example
+     * // Delete a few Payments
+     * const { count } = await prisma.payment.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PaymentDeleteManyArgs>(args?: SelectSubset<T, PaymentDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Payments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Payments
+     * const payment = await prisma.payment.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PaymentUpdateManyArgs>(args: SelectSubset<T, PaymentUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Payments and returns the data updated in the database.
+     * @param {PaymentUpdateManyAndReturnArgs} args - Arguments to update many Payments.
+     * @example
+     * // Update many Payments
+     * const payment = await prisma.payment.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Payments and only return the `id`
+     * const paymentWithIdOnly = await prisma.payment.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PaymentUpdateManyAndReturnArgs>(args: SelectSubset<T, PaymentUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Payment.
+     * @param {PaymentUpsertArgs} args - Arguments to update or create a Payment.
+     * @example
+     * // Update or create a Payment
+     * const payment = await prisma.payment.upsert({
+     *   create: {
+     *     // ... data to create a Payment
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Payment we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PaymentUpsertArgs>(args: SelectSubset<T, PaymentUpsertArgs<ExtArgs>>): Prisma__PaymentClient<$Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Payments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentCountArgs} args - Arguments to filter Payments to count.
+     * @example
+     * // Count the number of Payments
+     * const count = await prisma.payment.count({
+     *   where: {
+     *     // ... the filter for the Payments we want to count
+     *   }
+     * })
+    **/
+    count<T extends PaymentCountArgs>(
+      args?: Subset<T, PaymentCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PaymentCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Payment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PaymentAggregateArgs>(args: Subset<T, PaymentAggregateArgs>): Prisma.PrismaPromise<GetPaymentAggregateType<T>>
+
+    /**
+     * Group by Payment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PaymentGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PaymentGroupByArgs['orderBy'] }
+        : { orderBy?: PaymentGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PaymentGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPaymentGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Payment model
+   */
+  readonly fields: PaymentFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Payment.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PaymentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    influencer<T extends InfluencerDefaultArgs<ExtArgs> = {}>(args?: Subset<T, InfluencerDefaultArgs<ExtArgs>>): Prisma__InfluencerClient<$Result.GetResult<Prisma.$InfluencerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    sales<T extends Payment$salesArgs<ExtArgs> = {}>(args?: Subset<T, Payment$salesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentSalePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Payment model
+   */
+  interface PaymentFieldRefs {
+    readonly id: FieldRef<"Payment", 'String'>
+    readonly influencerId: FieldRef<"Payment", 'String'>
+    readonly periodMonth: FieldRef<"Payment", 'String'>
+    readonly totalAmount: FieldRef<"Payment", 'Float'>
+    readonly taxDeduction: FieldRef<"Payment", 'Float'>
+    readonly netAmount: FieldRef<"Payment", 'Float'>
+    readonly status: FieldRef<"Payment", 'String'>
+    readonly approvedBy: FieldRef<"Payment", 'String'>
+    readonly approvedAt: FieldRef<"Payment", 'DateTime'>
+    readonly paidAt: FieldRef<"Payment", 'DateTime'>
+    readonly bankReference: FieldRef<"Payment", 'String'>
+    readonly notes: FieldRef<"Payment", 'String'>
+    readonly createdAt: FieldRef<"Payment", 'DateTime'>
+    readonly updatedAt: FieldRef<"Payment", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Payment findUnique
+   */
+  export type PaymentFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Payment
+     */
+    select?: PaymentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Payment
+     */
+    omit?: PaymentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentInclude<ExtArgs> | null
+    /**
+     * Filter, which Payment to fetch.
+     */
+    where: PaymentWhereUniqueInput
+  }
+
+  /**
+   * Payment findUniqueOrThrow
+   */
+  export type PaymentFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Payment
+     */
+    select?: PaymentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Payment
+     */
+    omit?: PaymentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentInclude<ExtArgs> | null
+    /**
+     * Filter, which Payment to fetch.
+     */
+    where: PaymentWhereUniqueInput
+  }
+
+  /**
+   * Payment findFirst
+   */
+  export type PaymentFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Payment
+     */
+    select?: PaymentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Payment
+     */
+    omit?: PaymentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentInclude<ExtArgs> | null
+    /**
+     * Filter, which Payment to fetch.
+     */
+    where?: PaymentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Payments to fetch.
+     */
+    orderBy?: PaymentOrderByWithRelationInput | PaymentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Payments.
+     */
+    cursor?: PaymentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Payments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Payments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Payments.
+     */
+    distinct?: PaymentScalarFieldEnum | PaymentScalarFieldEnum[]
+  }
+
+  /**
+   * Payment findFirstOrThrow
+   */
+  export type PaymentFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Payment
+     */
+    select?: PaymentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Payment
+     */
+    omit?: PaymentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentInclude<ExtArgs> | null
+    /**
+     * Filter, which Payment to fetch.
+     */
+    where?: PaymentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Payments to fetch.
+     */
+    orderBy?: PaymentOrderByWithRelationInput | PaymentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Payments.
+     */
+    cursor?: PaymentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Payments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Payments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Payments.
+     */
+    distinct?: PaymentScalarFieldEnum | PaymentScalarFieldEnum[]
+  }
+
+  /**
+   * Payment findMany
+   */
+  export type PaymentFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Payment
+     */
+    select?: PaymentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Payment
+     */
+    omit?: PaymentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentInclude<ExtArgs> | null
+    /**
+     * Filter, which Payments to fetch.
+     */
+    where?: PaymentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Payments to fetch.
+     */
+    orderBy?: PaymentOrderByWithRelationInput | PaymentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Payments.
+     */
+    cursor?: PaymentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Payments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Payments.
+     */
+    skip?: number
+    distinct?: PaymentScalarFieldEnum | PaymentScalarFieldEnum[]
+  }
+
+  /**
+   * Payment create
+   */
+  export type PaymentCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Payment
+     */
+    select?: PaymentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Payment
+     */
+    omit?: PaymentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Payment.
+     */
+    data: XOR<PaymentCreateInput, PaymentUncheckedCreateInput>
+  }
+
+  /**
+   * Payment createMany
+   */
+  export type PaymentCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Payments.
+     */
+    data: PaymentCreateManyInput | PaymentCreateManyInput[]
+  }
+
+  /**
+   * Payment createManyAndReturn
+   */
+  export type PaymentCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Payment
+     */
+    select?: PaymentSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Payment
+     */
+    omit?: PaymentOmit<ExtArgs> | null
+    /**
+     * The data used to create many Payments.
+     */
+    data: PaymentCreateManyInput | PaymentCreateManyInput[]
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Payment update
+   */
+  export type PaymentUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Payment
+     */
+    select?: PaymentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Payment
+     */
+    omit?: PaymentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Payment.
+     */
+    data: XOR<PaymentUpdateInput, PaymentUncheckedUpdateInput>
+    /**
+     * Choose, which Payment to update.
+     */
+    where: PaymentWhereUniqueInput
+  }
+
+  /**
+   * Payment updateMany
+   */
+  export type PaymentUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Payments.
+     */
+    data: XOR<PaymentUpdateManyMutationInput, PaymentUncheckedUpdateManyInput>
+    /**
+     * Filter which Payments to update
+     */
+    where?: PaymentWhereInput
+    /**
+     * Limit how many Payments to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Payment updateManyAndReturn
+   */
+  export type PaymentUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Payment
+     */
+    select?: PaymentSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Payment
+     */
+    omit?: PaymentOmit<ExtArgs> | null
+    /**
+     * The data used to update Payments.
+     */
+    data: XOR<PaymentUpdateManyMutationInput, PaymentUncheckedUpdateManyInput>
+    /**
+     * Filter which Payments to update
+     */
+    where?: PaymentWhereInput
+    /**
+     * Limit how many Payments to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Payment upsert
+   */
+  export type PaymentUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Payment
+     */
+    select?: PaymentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Payment
+     */
+    omit?: PaymentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Payment to update in case it exists.
+     */
+    where: PaymentWhereUniqueInput
+    /**
+     * In case the Payment found by the `where` argument doesn't exist, create a new Payment with this data.
+     */
+    create: XOR<PaymentCreateInput, PaymentUncheckedCreateInput>
+    /**
+     * In case the Payment was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PaymentUpdateInput, PaymentUncheckedUpdateInput>
+  }
+
+  /**
+   * Payment delete
+   */
+  export type PaymentDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Payment
+     */
+    select?: PaymentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Payment
+     */
+    omit?: PaymentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentInclude<ExtArgs> | null
+    /**
+     * Filter which Payment to delete.
+     */
+    where: PaymentWhereUniqueInput
+  }
+
+  /**
+   * Payment deleteMany
+   */
+  export type PaymentDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Payments to delete
+     */
+    where?: PaymentWhereInput
+    /**
+     * Limit how many Payments to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Payment.sales
+   */
+  export type Payment$salesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentSale
+     */
+    select?: PaymentSaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentSale
+     */
+    omit?: PaymentSaleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentSaleInclude<ExtArgs> | null
+    where?: PaymentSaleWhereInput
+    orderBy?: PaymentSaleOrderByWithRelationInput | PaymentSaleOrderByWithRelationInput[]
+    cursor?: PaymentSaleWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PaymentSaleScalarFieldEnum | PaymentSaleScalarFieldEnum[]
+  }
+
+  /**
+   * Payment without action
+   */
+  export type PaymentDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Payment
+     */
+    select?: PaymentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Payment
+     */
+    omit?: PaymentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model PaymentSale
+   */
+
+  export type AggregatePaymentSale = {
+    _count: PaymentSaleCountAggregateOutputType | null
+    _min: PaymentSaleMinAggregateOutputType | null
+    _max: PaymentSaleMaxAggregateOutputType | null
+  }
+
+  export type PaymentSaleMinAggregateOutputType = {
+    paymentId: string | null
+    saleId: string | null
+  }
+
+  export type PaymentSaleMaxAggregateOutputType = {
+    paymentId: string | null
+    saleId: string | null
+  }
+
+  export type PaymentSaleCountAggregateOutputType = {
+    paymentId: number
+    saleId: number
+    _all: number
+  }
+
+
+  export type PaymentSaleMinAggregateInputType = {
+    paymentId?: true
+    saleId?: true
+  }
+
+  export type PaymentSaleMaxAggregateInputType = {
+    paymentId?: true
+    saleId?: true
+  }
+
+  export type PaymentSaleCountAggregateInputType = {
+    paymentId?: true
+    saleId?: true
+    _all?: true
+  }
+
+  export type PaymentSaleAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PaymentSale to aggregate.
+     */
+    where?: PaymentSaleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PaymentSales to fetch.
+     */
+    orderBy?: PaymentSaleOrderByWithRelationInput | PaymentSaleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PaymentSaleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PaymentSales from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PaymentSales.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PaymentSales
+    **/
+    _count?: true | PaymentSaleCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PaymentSaleMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PaymentSaleMaxAggregateInputType
+  }
+
+  export type GetPaymentSaleAggregateType<T extends PaymentSaleAggregateArgs> = {
+        [P in keyof T & keyof AggregatePaymentSale]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePaymentSale[P]>
+      : GetScalarType<T[P], AggregatePaymentSale[P]>
+  }
+
+
+
+
+  export type PaymentSaleGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PaymentSaleWhereInput
+    orderBy?: PaymentSaleOrderByWithAggregationInput | PaymentSaleOrderByWithAggregationInput[]
+    by: PaymentSaleScalarFieldEnum[] | PaymentSaleScalarFieldEnum
+    having?: PaymentSaleScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PaymentSaleCountAggregateInputType | true
+    _min?: PaymentSaleMinAggregateInputType
+    _max?: PaymentSaleMaxAggregateInputType
+  }
+
+  export type PaymentSaleGroupByOutputType = {
+    paymentId: string
+    saleId: string
+    _count: PaymentSaleCountAggregateOutputType | null
+    _min: PaymentSaleMinAggregateOutputType | null
+    _max: PaymentSaleMaxAggregateOutputType | null
+  }
+
+  type GetPaymentSaleGroupByPayload<T extends PaymentSaleGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PaymentSaleGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PaymentSaleGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PaymentSaleGroupByOutputType[P]>
+            : GetScalarType<T[P], PaymentSaleGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PaymentSaleSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    paymentId?: boolean
+    saleId?: boolean
+    payment?: boolean | PaymentDefaultArgs<ExtArgs>
+    sale?: boolean | SaleDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["paymentSale"]>
+
+  export type PaymentSaleSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    paymentId?: boolean
+    saleId?: boolean
+    payment?: boolean | PaymentDefaultArgs<ExtArgs>
+    sale?: boolean | SaleDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["paymentSale"]>
+
+  export type PaymentSaleSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    paymentId?: boolean
+    saleId?: boolean
+    payment?: boolean | PaymentDefaultArgs<ExtArgs>
+    sale?: boolean | SaleDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["paymentSale"]>
+
+  export type PaymentSaleSelectScalar = {
+    paymentId?: boolean
+    saleId?: boolean
+  }
+
+  export type PaymentSaleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"paymentId" | "saleId", ExtArgs["result"]["paymentSale"]>
+  export type PaymentSaleInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    payment?: boolean | PaymentDefaultArgs<ExtArgs>
+    sale?: boolean | SaleDefaultArgs<ExtArgs>
+  }
+  export type PaymentSaleIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    payment?: boolean | PaymentDefaultArgs<ExtArgs>
+    sale?: boolean | SaleDefaultArgs<ExtArgs>
+  }
+  export type PaymentSaleIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    payment?: boolean | PaymentDefaultArgs<ExtArgs>
+    sale?: boolean | SaleDefaultArgs<ExtArgs>
+  }
+
+  export type $PaymentSalePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PaymentSale"
+    objects: {
+      payment: Prisma.$PaymentPayload<ExtArgs>
+      sale: Prisma.$SalePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      paymentId: string
+      saleId: string
+    }, ExtArgs["result"]["paymentSale"]>
+    composites: {}
+  }
+
+  type PaymentSaleGetPayload<S extends boolean | null | undefined | PaymentSaleDefaultArgs> = $Result.GetResult<Prisma.$PaymentSalePayload, S>
+
+  type PaymentSaleCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PaymentSaleFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PaymentSaleCountAggregateInputType | true
+    }
+
+  export interface PaymentSaleDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PaymentSale'], meta: { name: 'PaymentSale' } }
+    /**
+     * Find zero or one PaymentSale that matches the filter.
+     * @param {PaymentSaleFindUniqueArgs} args - Arguments to find a PaymentSale
+     * @example
+     * // Get one PaymentSale
+     * const paymentSale = await prisma.paymentSale.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PaymentSaleFindUniqueArgs>(args: SelectSubset<T, PaymentSaleFindUniqueArgs<ExtArgs>>): Prisma__PaymentSaleClient<$Result.GetResult<Prisma.$PaymentSalePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PaymentSale that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PaymentSaleFindUniqueOrThrowArgs} args - Arguments to find a PaymentSale
+     * @example
+     * // Get one PaymentSale
+     * const paymentSale = await prisma.paymentSale.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PaymentSaleFindUniqueOrThrowArgs>(args: SelectSubset<T, PaymentSaleFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PaymentSaleClient<$Result.GetResult<Prisma.$PaymentSalePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PaymentSale that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentSaleFindFirstArgs} args - Arguments to find a PaymentSale
+     * @example
+     * // Get one PaymentSale
+     * const paymentSale = await prisma.paymentSale.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PaymentSaleFindFirstArgs>(args?: SelectSubset<T, PaymentSaleFindFirstArgs<ExtArgs>>): Prisma__PaymentSaleClient<$Result.GetResult<Prisma.$PaymentSalePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PaymentSale that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentSaleFindFirstOrThrowArgs} args - Arguments to find a PaymentSale
+     * @example
+     * // Get one PaymentSale
+     * const paymentSale = await prisma.paymentSale.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PaymentSaleFindFirstOrThrowArgs>(args?: SelectSubset<T, PaymentSaleFindFirstOrThrowArgs<ExtArgs>>): Prisma__PaymentSaleClient<$Result.GetResult<Prisma.$PaymentSalePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PaymentSales that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentSaleFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PaymentSales
+     * const paymentSales = await prisma.paymentSale.findMany()
+     * 
+     * // Get first 10 PaymentSales
+     * const paymentSales = await prisma.paymentSale.findMany({ take: 10 })
+     * 
+     * // Only select the `paymentId`
+     * const paymentSaleWithPaymentIdOnly = await prisma.paymentSale.findMany({ select: { paymentId: true } })
+     * 
+     */
+    findMany<T extends PaymentSaleFindManyArgs>(args?: SelectSubset<T, PaymentSaleFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentSalePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PaymentSale.
+     * @param {PaymentSaleCreateArgs} args - Arguments to create a PaymentSale.
+     * @example
+     * // Create one PaymentSale
+     * const PaymentSale = await prisma.paymentSale.create({
+     *   data: {
+     *     // ... data to create a PaymentSale
+     *   }
+     * })
+     * 
+     */
+    create<T extends PaymentSaleCreateArgs>(args: SelectSubset<T, PaymentSaleCreateArgs<ExtArgs>>): Prisma__PaymentSaleClient<$Result.GetResult<Prisma.$PaymentSalePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PaymentSales.
+     * @param {PaymentSaleCreateManyArgs} args - Arguments to create many PaymentSales.
+     * @example
+     * // Create many PaymentSales
+     * const paymentSale = await prisma.paymentSale.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PaymentSaleCreateManyArgs>(args?: SelectSubset<T, PaymentSaleCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PaymentSales and returns the data saved in the database.
+     * @param {PaymentSaleCreateManyAndReturnArgs} args - Arguments to create many PaymentSales.
+     * @example
+     * // Create many PaymentSales
+     * const paymentSale = await prisma.paymentSale.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PaymentSales and only return the `paymentId`
+     * const paymentSaleWithPaymentIdOnly = await prisma.paymentSale.createManyAndReturn({
+     *   select: { paymentId: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PaymentSaleCreateManyAndReturnArgs>(args?: SelectSubset<T, PaymentSaleCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentSalePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a PaymentSale.
+     * @param {PaymentSaleDeleteArgs} args - Arguments to delete one PaymentSale.
+     * @example
+     * // Delete one PaymentSale
+     * const PaymentSale = await prisma.paymentSale.delete({
+     *   where: {
+     *     // ... filter to delete one PaymentSale
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PaymentSaleDeleteArgs>(args: SelectSubset<T, PaymentSaleDeleteArgs<ExtArgs>>): Prisma__PaymentSaleClient<$Result.GetResult<Prisma.$PaymentSalePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PaymentSale.
+     * @param {PaymentSaleUpdateArgs} args - Arguments to update one PaymentSale.
+     * @example
+     * // Update one PaymentSale
+     * const paymentSale = await prisma.paymentSale.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PaymentSaleUpdateArgs>(args: SelectSubset<T, PaymentSaleUpdateArgs<ExtArgs>>): Prisma__PaymentSaleClient<$Result.GetResult<Prisma.$PaymentSalePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PaymentSales.
+     * @param {PaymentSaleDeleteManyArgs} args - Arguments to filter PaymentSales to delete.
+     * @example
+     * // Delete a few PaymentSales
+     * const { count } = await prisma.paymentSale.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PaymentSaleDeleteManyArgs>(args?: SelectSubset<T, PaymentSaleDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PaymentSales.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentSaleUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PaymentSales
+     * const paymentSale = await prisma.paymentSale.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PaymentSaleUpdateManyArgs>(args: SelectSubset<T, PaymentSaleUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PaymentSales and returns the data updated in the database.
+     * @param {PaymentSaleUpdateManyAndReturnArgs} args - Arguments to update many PaymentSales.
+     * @example
+     * // Update many PaymentSales
+     * const paymentSale = await prisma.paymentSale.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more PaymentSales and only return the `paymentId`
+     * const paymentSaleWithPaymentIdOnly = await prisma.paymentSale.updateManyAndReturn({
+     *   select: { paymentId: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PaymentSaleUpdateManyAndReturnArgs>(args: SelectSubset<T, PaymentSaleUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PaymentSalePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one PaymentSale.
+     * @param {PaymentSaleUpsertArgs} args - Arguments to update or create a PaymentSale.
+     * @example
+     * // Update or create a PaymentSale
+     * const paymentSale = await prisma.paymentSale.upsert({
+     *   create: {
+     *     // ... data to create a PaymentSale
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PaymentSale we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PaymentSaleUpsertArgs>(args: SelectSubset<T, PaymentSaleUpsertArgs<ExtArgs>>): Prisma__PaymentSaleClient<$Result.GetResult<Prisma.$PaymentSalePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PaymentSales.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentSaleCountArgs} args - Arguments to filter PaymentSales to count.
+     * @example
+     * // Count the number of PaymentSales
+     * const count = await prisma.paymentSale.count({
+     *   where: {
+     *     // ... the filter for the PaymentSales we want to count
+     *   }
+     * })
+    **/
+    count<T extends PaymentSaleCountArgs>(
+      args?: Subset<T, PaymentSaleCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PaymentSaleCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PaymentSale.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentSaleAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PaymentSaleAggregateArgs>(args: Subset<T, PaymentSaleAggregateArgs>): Prisma.PrismaPromise<GetPaymentSaleAggregateType<T>>
+
+    /**
+     * Group by PaymentSale.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PaymentSaleGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PaymentSaleGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PaymentSaleGroupByArgs['orderBy'] }
+        : { orderBy?: PaymentSaleGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PaymentSaleGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPaymentSaleGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PaymentSale model
+   */
+  readonly fields: PaymentSaleFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PaymentSale.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PaymentSaleClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    payment<T extends PaymentDefaultArgs<ExtArgs> = {}>(args?: Subset<T, PaymentDefaultArgs<ExtArgs>>): Prisma__PaymentClient<$Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    sale<T extends SaleDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SaleDefaultArgs<ExtArgs>>): Prisma__SaleClient<$Result.GetResult<Prisma.$SalePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PaymentSale model
+   */
+  interface PaymentSaleFieldRefs {
+    readonly paymentId: FieldRef<"PaymentSale", 'String'>
+    readonly saleId: FieldRef<"PaymentSale", 'String'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PaymentSale findUnique
+   */
+  export type PaymentSaleFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentSale
+     */
+    select?: PaymentSaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentSale
+     */
+    omit?: PaymentSaleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentSaleInclude<ExtArgs> | null
+    /**
+     * Filter, which PaymentSale to fetch.
+     */
+    where: PaymentSaleWhereUniqueInput
+  }
+
+  /**
+   * PaymentSale findUniqueOrThrow
+   */
+  export type PaymentSaleFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentSale
+     */
+    select?: PaymentSaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentSale
+     */
+    omit?: PaymentSaleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentSaleInclude<ExtArgs> | null
+    /**
+     * Filter, which PaymentSale to fetch.
+     */
+    where: PaymentSaleWhereUniqueInput
+  }
+
+  /**
+   * PaymentSale findFirst
+   */
+  export type PaymentSaleFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentSale
+     */
+    select?: PaymentSaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentSale
+     */
+    omit?: PaymentSaleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentSaleInclude<ExtArgs> | null
+    /**
+     * Filter, which PaymentSale to fetch.
+     */
+    where?: PaymentSaleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PaymentSales to fetch.
+     */
+    orderBy?: PaymentSaleOrderByWithRelationInput | PaymentSaleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PaymentSales.
+     */
+    cursor?: PaymentSaleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PaymentSales from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PaymentSales.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PaymentSales.
+     */
+    distinct?: PaymentSaleScalarFieldEnum | PaymentSaleScalarFieldEnum[]
+  }
+
+  /**
+   * PaymentSale findFirstOrThrow
+   */
+  export type PaymentSaleFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentSale
+     */
+    select?: PaymentSaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentSale
+     */
+    omit?: PaymentSaleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentSaleInclude<ExtArgs> | null
+    /**
+     * Filter, which PaymentSale to fetch.
+     */
+    where?: PaymentSaleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PaymentSales to fetch.
+     */
+    orderBy?: PaymentSaleOrderByWithRelationInput | PaymentSaleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PaymentSales.
+     */
+    cursor?: PaymentSaleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PaymentSales from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PaymentSales.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PaymentSales.
+     */
+    distinct?: PaymentSaleScalarFieldEnum | PaymentSaleScalarFieldEnum[]
+  }
+
+  /**
+   * PaymentSale findMany
+   */
+  export type PaymentSaleFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentSale
+     */
+    select?: PaymentSaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentSale
+     */
+    omit?: PaymentSaleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentSaleInclude<ExtArgs> | null
+    /**
+     * Filter, which PaymentSales to fetch.
+     */
+    where?: PaymentSaleWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PaymentSales to fetch.
+     */
+    orderBy?: PaymentSaleOrderByWithRelationInput | PaymentSaleOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PaymentSales.
+     */
+    cursor?: PaymentSaleWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PaymentSales from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PaymentSales.
+     */
+    skip?: number
+    distinct?: PaymentSaleScalarFieldEnum | PaymentSaleScalarFieldEnum[]
+  }
+
+  /**
+   * PaymentSale create
+   */
+  export type PaymentSaleCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentSale
+     */
+    select?: PaymentSaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentSale
+     */
+    omit?: PaymentSaleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentSaleInclude<ExtArgs> | null
+    /**
+     * The data needed to create a PaymentSale.
+     */
+    data: XOR<PaymentSaleCreateInput, PaymentSaleUncheckedCreateInput>
+  }
+
+  /**
+   * PaymentSale createMany
+   */
+  export type PaymentSaleCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PaymentSales.
+     */
+    data: PaymentSaleCreateManyInput | PaymentSaleCreateManyInput[]
+  }
+
+  /**
+   * PaymentSale createManyAndReturn
+   */
+  export type PaymentSaleCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentSale
+     */
+    select?: PaymentSaleSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentSale
+     */
+    omit?: PaymentSaleOmit<ExtArgs> | null
+    /**
+     * The data used to create many PaymentSales.
+     */
+    data: PaymentSaleCreateManyInput | PaymentSaleCreateManyInput[]
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentSaleIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PaymentSale update
+   */
+  export type PaymentSaleUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentSale
+     */
+    select?: PaymentSaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentSale
+     */
+    omit?: PaymentSaleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentSaleInclude<ExtArgs> | null
+    /**
+     * The data needed to update a PaymentSale.
+     */
+    data: XOR<PaymentSaleUpdateInput, PaymentSaleUncheckedUpdateInput>
+    /**
+     * Choose, which PaymentSale to update.
+     */
+    where: PaymentSaleWhereUniqueInput
+  }
+
+  /**
+   * PaymentSale updateMany
+   */
+  export type PaymentSaleUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PaymentSales.
+     */
+    data: XOR<PaymentSaleUpdateManyMutationInput, PaymentSaleUncheckedUpdateManyInput>
+    /**
+     * Filter which PaymentSales to update
+     */
+    where?: PaymentSaleWhereInput
+    /**
+     * Limit how many PaymentSales to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PaymentSale updateManyAndReturn
+   */
+  export type PaymentSaleUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentSale
+     */
+    select?: PaymentSaleSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentSale
+     */
+    omit?: PaymentSaleOmit<ExtArgs> | null
+    /**
+     * The data used to update PaymentSales.
+     */
+    data: XOR<PaymentSaleUpdateManyMutationInput, PaymentSaleUncheckedUpdateManyInput>
+    /**
+     * Filter which PaymentSales to update
+     */
+    where?: PaymentSaleWhereInput
+    /**
+     * Limit how many PaymentSales to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentSaleIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PaymentSale upsert
+   */
+  export type PaymentSaleUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentSale
+     */
+    select?: PaymentSaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentSale
+     */
+    omit?: PaymentSaleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentSaleInclude<ExtArgs> | null
+    /**
+     * The filter to search for the PaymentSale to update in case it exists.
+     */
+    where: PaymentSaleWhereUniqueInput
+    /**
+     * In case the PaymentSale found by the `where` argument doesn't exist, create a new PaymentSale with this data.
+     */
+    create: XOR<PaymentSaleCreateInput, PaymentSaleUncheckedCreateInput>
+    /**
+     * In case the PaymentSale was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PaymentSaleUpdateInput, PaymentSaleUncheckedUpdateInput>
+  }
+
+  /**
+   * PaymentSale delete
+   */
+  export type PaymentSaleDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentSale
+     */
+    select?: PaymentSaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentSale
+     */
+    omit?: PaymentSaleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentSaleInclude<ExtArgs> | null
+    /**
+     * Filter which PaymentSale to delete.
+     */
+    where: PaymentSaleWhereUniqueInput
+  }
+
+  /**
+   * PaymentSale deleteMany
+   */
+  export type PaymentSaleDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PaymentSales to delete
+     */
+    where?: PaymentSaleWhereInput
+    /**
+     * Limit how many PaymentSales to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PaymentSale without action
+   */
+  export type PaymentSaleDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PaymentSale
+     */
+    select?: PaymentSaleSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PaymentSale
+     */
+    omit?: PaymentSaleOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PaymentSaleInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model LinkClick
+   */
+
+  export type AggregateLinkClick = {
+    _count: LinkClickCountAggregateOutputType | null
+    _min: LinkClickMinAggregateOutputType | null
+    _max: LinkClickMaxAggregateOutputType | null
+  }
+
+  export type LinkClickMinAggregateOutputType = {
+    id: string | null
+    influencerId: string | null
+    shareId: string | null
+    ipAddress: string | null
+    userAgent: string | null
+    referrer: string | null
+    country: string | null
+    utmSource: string | null
+    utmContent: string | null
+    isBot: boolean | null
+    clickedAt: Date | null
+  }
+
+  export type LinkClickMaxAggregateOutputType = {
+    id: string | null
+    influencerId: string | null
+    shareId: string | null
+    ipAddress: string | null
+    userAgent: string | null
+    referrer: string | null
+    country: string | null
+    utmSource: string | null
+    utmContent: string | null
+    isBot: boolean | null
+    clickedAt: Date | null
+  }
+
+  export type LinkClickCountAggregateOutputType = {
+    id: number
+    influencerId: number
+    shareId: number
+    ipAddress: number
+    userAgent: number
+    referrer: number
+    country: number
+    utmSource: number
+    utmContent: number
+    isBot: number
+    clickedAt: number
+    _all: number
+  }
+
+
+  export type LinkClickMinAggregateInputType = {
+    id?: true
+    influencerId?: true
+    shareId?: true
+    ipAddress?: true
+    userAgent?: true
+    referrer?: true
+    country?: true
+    utmSource?: true
+    utmContent?: true
+    isBot?: true
+    clickedAt?: true
+  }
+
+  export type LinkClickMaxAggregateInputType = {
+    id?: true
+    influencerId?: true
+    shareId?: true
+    ipAddress?: true
+    userAgent?: true
+    referrer?: true
+    country?: true
+    utmSource?: true
+    utmContent?: true
+    isBot?: true
+    clickedAt?: true
+  }
+
+  export type LinkClickCountAggregateInputType = {
+    id?: true
+    influencerId?: true
+    shareId?: true
+    ipAddress?: true
+    userAgent?: true
+    referrer?: true
+    country?: true
+    utmSource?: true
+    utmContent?: true
+    isBot?: true
+    clickedAt?: true
+    _all?: true
+  }
+
+  export type LinkClickAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which LinkClick to aggregate.
+     */
+    where?: LinkClickWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LinkClicks to fetch.
+     */
+    orderBy?: LinkClickOrderByWithRelationInput | LinkClickOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: LinkClickWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LinkClicks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LinkClicks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned LinkClicks
+    **/
+    _count?: true | LinkClickCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: LinkClickMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: LinkClickMaxAggregateInputType
+  }
+
+  export type GetLinkClickAggregateType<T extends LinkClickAggregateArgs> = {
+        [P in keyof T & keyof AggregateLinkClick]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateLinkClick[P]>
+      : GetScalarType<T[P], AggregateLinkClick[P]>
+  }
+
+
+
+
+  export type LinkClickGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: LinkClickWhereInput
+    orderBy?: LinkClickOrderByWithAggregationInput | LinkClickOrderByWithAggregationInput[]
+    by: LinkClickScalarFieldEnum[] | LinkClickScalarFieldEnum
+    having?: LinkClickScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: LinkClickCountAggregateInputType | true
+    _min?: LinkClickMinAggregateInputType
+    _max?: LinkClickMaxAggregateInputType
+  }
+
+  export type LinkClickGroupByOutputType = {
+    id: string
+    influencerId: string
+    shareId: string | null
+    ipAddress: string | null
+    userAgent: string | null
+    referrer: string | null
+    country: string | null
+    utmSource: string | null
+    utmContent: string | null
+    isBot: boolean
+    clickedAt: Date
+    _count: LinkClickCountAggregateOutputType | null
+    _min: LinkClickMinAggregateOutputType | null
+    _max: LinkClickMaxAggregateOutputType | null
+  }
+
+  type GetLinkClickGroupByPayload<T extends LinkClickGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<LinkClickGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof LinkClickGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], LinkClickGroupByOutputType[P]>
+            : GetScalarType<T[P], LinkClickGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type LinkClickSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    influencerId?: boolean
+    shareId?: boolean
+    ipAddress?: boolean
+    userAgent?: boolean
+    referrer?: boolean
+    country?: boolean
+    utmSource?: boolean
+    utmContent?: boolean
+    isBot?: boolean
+    clickedAt?: boolean
+    influencer?: boolean | InfluencerDefaultArgs<ExtArgs>
+    share?: boolean | LinkClick$shareArgs<ExtArgs>
+  }, ExtArgs["result"]["linkClick"]>
+
+  export type LinkClickSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    influencerId?: boolean
+    shareId?: boolean
+    ipAddress?: boolean
+    userAgent?: boolean
+    referrer?: boolean
+    country?: boolean
+    utmSource?: boolean
+    utmContent?: boolean
+    isBot?: boolean
+    clickedAt?: boolean
+    influencer?: boolean | InfluencerDefaultArgs<ExtArgs>
+    share?: boolean | LinkClick$shareArgs<ExtArgs>
+  }, ExtArgs["result"]["linkClick"]>
+
+  export type LinkClickSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    influencerId?: boolean
+    shareId?: boolean
+    ipAddress?: boolean
+    userAgent?: boolean
+    referrer?: boolean
+    country?: boolean
+    utmSource?: boolean
+    utmContent?: boolean
+    isBot?: boolean
+    clickedAt?: boolean
+    influencer?: boolean | InfluencerDefaultArgs<ExtArgs>
+    share?: boolean | LinkClick$shareArgs<ExtArgs>
+  }, ExtArgs["result"]["linkClick"]>
+
+  export type LinkClickSelectScalar = {
+    id?: boolean
+    influencerId?: boolean
+    shareId?: boolean
+    ipAddress?: boolean
+    userAgent?: boolean
+    referrer?: boolean
+    country?: boolean
+    utmSource?: boolean
+    utmContent?: boolean
+    isBot?: boolean
+    clickedAt?: boolean
+  }
+
+  export type LinkClickOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "influencerId" | "shareId" | "ipAddress" | "userAgent" | "referrer" | "country" | "utmSource" | "utmContent" | "isBot" | "clickedAt", ExtArgs["result"]["linkClick"]>
+  export type LinkClickInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    influencer?: boolean | InfluencerDefaultArgs<ExtArgs>
+    share?: boolean | LinkClick$shareArgs<ExtArgs>
+  }
+  export type LinkClickIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    influencer?: boolean | InfluencerDefaultArgs<ExtArgs>
+    share?: boolean | LinkClick$shareArgs<ExtArgs>
+  }
+  export type LinkClickIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    influencer?: boolean | InfluencerDefaultArgs<ExtArgs>
+    share?: boolean | LinkClick$shareArgs<ExtArgs>
+  }
+
+  export type $LinkClickPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "LinkClick"
+    objects: {
+      influencer: Prisma.$InfluencerPayload<ExtArgs>
+      share: Prisma.$SharePayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      influencerId: string
+      shareId: string | null
+      ipAddress: string | null
+      userAgent: string | null
+      referrer: string | null
+      country: string | null
+      utmSource: string | null
+      utmContent: string | null
+      isBot: boolean
+      clickedAt: Date
+    }, ExtArgs["result"]["linkClick"]>
+    composites: {}
+  }
+
+  type LinkClickGetPayload<S extends boolean | null | undefined | LinkClickDefaultArgs> = $Result.GetResult<Prisma.$LinkClickPayload, S>
+
+  type LinkClickCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<LinkClickFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: LinkClickCountAggregateInputType | true
+    }
+
+  export interface LinkClickDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['LinkClick'], meta: { name: 'LinkClick' } }
+    /**
+     * Find zero or one LinkClick that matches the filter.
+     * @param {LinkClickFindUniqueArgs} args - Arguments to find a LinkClick
+     * @example
+     * // Get one LinkClick
+     * const linkClick = await prisma.linkClick.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends LinkClickFindUniqueArgs>(args: SelectSubset<T, LinkClickFindUniqueArgs<ExtArgs>>): Prisma__LinkClickClient<$Result.GetResult<Prisma.$LinkClickPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one LinkClick that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {LinkClickFindUniqueOrThrowArgs} args - Arguments to find a LinkClick
+     * @example
+     * // Get one LinkClick
+     * const linkClick = await prisma.linkClick.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends LinkClickFindUniqueOrThrowArgs>(args: SelectSubset<T, LinkClickFindUniqueOrThrowArgs<ExtArgs>>): Prisma__LinkClickClient<$Result.GetResult<Prisma.$LinkClickPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first LinkClick that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LinkClickFindFirstArgs} args - Arguments to find a LinkClick
+     * @example
+     * // Get one LinkClick
+     * const linkClick = await prisma.linkClick.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends LinkClickFindFirstArgs>(args?: SelectSubset<T, LinkClickFindFirstArgs<ExtArgs>>): Prisma__LinkClickClient<$Result.GetResult<Prisma.$LinkClickPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first LinkClick that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LinkClickFindFirstOrThrowArgs} args - Arguments to find a LinkClick
+     * @example
+     * // Get one LinkClick
+     * const linkClick = await prisma.linkClick.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends LinkClickFindFirstOrThrowArgs>(args?: SelectSubset<T, LinkClickFindFirstOrThrowArgs<ExtArgs>>): Prisma__LinkClickClient<$Result.GetResult<Prisma.$LinkClickPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more LinkClicks that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LinkClickFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all LinkClicks
+     * const linkClicks = await prisma.linkClick.findMany()
+     * 
+     * // Get first 10 LinkClicks
+     * const linkClicks = await prisma.linkClick.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const linkClickWithIdOnly = await prisma.linkClick.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends LinkClickFindManyArgs>(args?: SelectSubset<T, LinkClickFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LinkClickPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a LinkClick.
+     * @param {LinkClickCreateArgs} args - Arguments to create a LinkClick.
+     * @example
+     * // Create one LinkClick
+     * const LinkClick = await prisma.linkClick.create({
+     *   data: {
+     *     // ... data to create a LinkClick
+     *   }
+     * })
+     * 
+     */
+    create<T extends LinkClickCreateArgs>(args: SelectSubset<T, LinkClickCreateArgs<ExtArgs>>): Prisma__LinkClickClient<$Result.GetResult<Prisma.$LinkClickPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many LinkClicks.
+     * @param {LinkClickCreateManyArgs} args - Arguments to create many LinkClicks.
+     * @example
+     * // Create many LinkClicks
+     * const linkClick = await prisma.linkClick.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends LinkClickCreateManyArgs>(args?: SelectSubset<T, LinkClickCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many LinkClicks and returns the data saved in the database.
+     * @param {LinkClickCreateManyAndReturnArgs} args - Arguments to create many LinkClicks.
+     * @example
+     * // Create many LinkClicks
+     * const linkClick = await prisma.linkClick.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many LinkClicks and only return the `id`
+     * const linkClickWithIdOnly = await prisma.linkClick.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends LinkClickCreateManyAndReturnArgs>(args?: SelectSubset<T, LinkClickCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LinkClickPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a LinkClick.
+     * @param {LinkClickDeleteArgs} args - Arguments to delete one LinkClick.
+     * @example
+     * // Delete one LinkClick
+     * const LinkClick = await prisma.linkClick.delete({
+     *   where: {
+     *     // ... filter to delete one LinkClick
+     *   }
+     * })
+     * 
+     */
+    delete<T extends LinkClickDeleteArgs>(args: SelectSubset<T, LinkClickDeleteArgs<ExtArgs>>): Prisma__LinkClickClient<$Result.GetResult<Prisma.$LinkClickPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one LinkClick.
+     * @param {LinkClickUpdateArgs} args - Arguments to update one LinkClick.
+     * @example
+     * // Update one LinkClick
+     * const linkClick = await prisma.linkClick.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends LinkClickUpdateArgs>(args: SelectSubset<T, LinkClickUpdateArgs<ExtArgs>>): Prisma__LinkClickClient<$Result.GetResult<Prisma.$LinkClickPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more LinkClicks.
+     * @param {LinkClickDeleteManyArgs} args - Arguments to filter LinkClicks to delete.
+     * @example
+     * // Delete a few LinkClicks
+     * const { count } = await prisma.linkClick.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends LinkClickDeleteManyArgs>(args?: SelectSubset<T, LinkClickDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more LinkClicks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LinkClickUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many LinkClicks
+     * const linkClick = await prisma.linkClick.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends LinkClickUpdateManyArgs>(args: SelectSubset<T, LinkClickUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more LinkClicks and returns the data updated in the database.
+     * @param {LinkClickUpdateManyAndReturnArgs} args - Arguments to update many LinkClicks.
+     * @example
+     * // Update many LinkClicks
+     * const linkClick = await prisma.linkClick.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more LinkClicks and only return the `id`
+     * const linkClickWithIdOnly = await prisma.linkClick.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends LinkClickUpdateManyAndReturnArgs>(args: SelectSubset<T, LinkClickUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LinkClickPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one LinkClick.
+     * @param {LinkClickUpsertArgs} args - Arguments to update or create a LinkClick.
+     * @example
+     * // Update or create a LinkClick
+     * const linkClick = await prisma.linkClick.upsert({
+     *   create: {
+     *     // ... data to create a LinkClick
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the LinkClick we want to update
+     *   }
+     * })
+     */
+    upsert<T extends LinkClickUpsertArgs>(args: SelectSubset<T, LinkClickUpsertArgs<ExtArgs>>): Prisma__LinkClickClient<$Result.GetResult<Prisma.$LinkClickPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of LinkClicks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LinkClickCountArgs} args - Arguments to filter LinkClicks to count.
+     * @example
+     * // Count the number of LinkClicks
+     * const count = await prisma.linkClick.count({
+     *   where: {
+     *     // ... the filter for the LinkClicks we want to count
+     *   }
+     * })
+    **/
+    count<T extends LinkClickCountArgs>(
+      args?: Subset<T, LinkClickCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], LinkClickCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a LinkClick.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LinkClickAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends LinkClickAggregateArgs>(args: Subset<T, LinkClickAggregateArgs>): Prisma.PrismaPromise<GetLinkClickAggregateType<T>>
+
+    /**
+     * Group by LinkClick.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {LinkClickGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends LinkClickGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: LinkClickGroupByArgs['orderBy'] }
+        : { orderBy?: LinkClickGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, LinkClickGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetLinkClickGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the LinkClick model
+   */
+  readonly fields: LinkClickFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for LinkClick.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__LinkClickClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    influencer<T extends InfluencerDefaultArgs<ExtArgs> = {}>(args?: Subset<T, InfluencerDefaultArgs<ExtArgs>>): Prisma__InfluencerClient<$Result.GetResult<Prisma.$InfluencerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    share<T extends LinkClick$shareArgs<ExtArgs> = {}>(args?: Subset<T, LinkClick$shareArgs<ExtArgs>>): Prisma__ShareClient<$Result.GetResult<Prisma.$SharePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the LinkClick model
+   */
+  interface LinkClickFieldRefs {
+    readonly id: FieldRef<"LinkClick", 'String'>
+    readonly influencerId: FieldRef<"LinkClick", 'String'>
+    readonly shareId: FieldRef<"LinkClick", 'String'>
+    readonly ipAddress: FieldRef<"LinkClick", 'String'>
+    readonly userAgent: FieldRef<"LinkClick", 'String'>
+    readonly referrer: FieldRef<"LinkClick", 'String'>
+    readonly country: FieldRef<"LinkClick", 'String'>
+    readonly utmSource: FieldRef<"LinkClick", 'String'>
+    readonly utmContent: FieldRef<"LinkClick", 'String'>
+    readonly isBot: FieldRef<"LinkClick", 'Boolean'>
+    readonly clickedAt: FieldRef<"LinkClick", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * LinkClick findUnique
+   */
+  export type LinkClickFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LinkClick
+     */
+    select?: LinkClickSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LinkClick
+     */
+    omit?: LinkClickOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LinkClickInclude<ExtArgs> | null
+    /**
+     * Filter, which LinkClick to fetch.
+     */
+    where: LinkClickWhereUniqueInput
+  }
+
+  /**
+   * LinkClick findUniqueOrThrow
+   */
+  export type LinkClickFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LinkClick
+     */
+    select?: LinkClickSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LinkClick
+     */
+    omit?: LinkClickOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LinkClickInclude<ExtArgs> | null
+    /**
+     * Filter, which LinkClick to fetch.
+     */
+    where: LinkClickWhereUniqueInput
+  }
+
+  /**
+   * LinkClick findFirst
+   */
+  export type LinkClickFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LinkClick
+     */
+    select?: LinkClickSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LinkClick
+     */
+    omit?: LinkClickOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LinkClickInclude<ExtArgs> | null
+    /**
+     * Filter, which LinkClick to fetch.
+     */
+    where?: LinkClickWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LinkClicks to fetch.
+     */
+    orderBy?: LinkClickOrderByWithRelationInput | LinkClickOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for LinkClicks.
+     */
+    cursor?: LinkClickWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LinkClicks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LinkClicks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of LinkClicks.
+     */
+    distinct?: LinkClickScalarFieldEnum | LinkClickScalarFieldEnum[]
+  }
+
+  /**
+   * LinkClick findFirstOrThrow
+   */
+  export type LinkClickFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LinkClick
+     */
+    select?: LinkClickSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LinkClick
+     */
+    omit?: LinkClickOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LinkClickInclude<ExtArgs> | null
+    /**
+     * Filter, which LinkClick to fetch.
+     */
+    where?: LinkClickWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LinkClicks to fetch.
+     */
+    orderBy?: LinkClickOrderByWithRelationInput | LinkClickOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for LinkClicks.
+     */
+    cursor?: LinkClickWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LinkClicks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LinkClicks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of LinkClicks.
+     */
+    distinct?: LinkClickScalarFieldEnum | LinkClickScalarFieldEnum[]
+  }
+
+  /**
+   * LinkClick findMany
+   */
+  export type LinkClickFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LinkClick
+     */
+    select?: LinkClickSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LinkClick
+     */
+    omit?: LinkClickOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LinkClickInclude<ExtArgs> | null
+    /**
+     * Filter, which LinkClicks to fetch.
+     */
+    where?: LinkClickWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of LinkClicks to fetch.
+     */
+    orderBy?: LinkClickOrderByWithRelationInput | LinkClickOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing LinkClicks.
+     */
+    cursor?: LinkClickWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` LinkClicks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` LinkClicks.
+     */
+    skip?: number
+    distinct?: LinkClickScalarFieldEnum | LinkClickScalarFieldEnum[]
+  }
+
+  /**
+   * LinkClick create
+   */
+  export type LinkClickCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LinkClick
+     */
+    select?: LinkClickSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LinkClick
+     */
+    omit?: LinkClickOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LinkClickInclude<ExtArgs> | null
+    /**
+     * The data needed to create a LinkClick.
+     */
+    data: XOR<LinkClickCreateInput, LinkClickUncheckedCreateInput>
+  }
+
+  /**
+   * LinkClick createMany
+   */
+  export type LinkClickCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many LinkClicks.
+     */
+    data: LinkClickCreateManyInput | LinkClickCreateManyInput[]
+  }
+
+  /**
+   * LinkClick createManyAndReturn
+   */
+  export type LinkClickCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LinkClick
+     */
+    select?: LinkClickSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the LinkClick
+     */
+    omit?: LinkClickOmit<ExtArgs> | null
+    /**
+     * The data used to create many LinkClicks.
+     */
+    data: LinkClickCreateManyInput | LinkClickCreateManyInput[]
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LinkClickIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * LinkClick update
+   */
+  export type LinkClickUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LinkClick
+     */
+    select?: LinkClickSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LinkClick
+     */
+    omit?: LinkClickOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LinkClickInclude<ExtArgs> | null
+    /**
+     * The data needed to update a LinkClick.
+     */
+    data: XOR<LinkClickUpdateInput, LinkClickUncheckedUpdateInput>
+    /**
+     * Choose, which LinkClick to update.
+     */
+    where: LinkClickWhereUniqueInput
+  }
+
+  /**
+   * LinkClick updateMany
+   */
+  export type LinkClickUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update LinkClicks.
+     */
+    data: XOR<LinkClickUpdateManyMutationInput, LinkClickUncheckedUpdateManyInput>
+    /**
+     * Filter which LinkClicks to update
+     */
+    where?: LinkClickWhereInput
+    /**
+     * Limit how many LinkClicks to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * LinkClick updateManyAndReturn
+   */
+  export type LinkClickUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LinkClick
+     */
+    select?: LinkClickSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the LinkClick
+     */
+    omit?: LinkClickOmit<ExtArgs> | null
+    /**
+     * The data used to update LinkClicks.
+     */
+    data: XOR<LinkClickUpdateManyMutationInput, LinkClickUncheckedUpdateManyInput>
+    /**
+     * Filter which LinkClicks to update
+     */
+    where?: LinkClickWhereInput
+    /**
+     * Limit how many LinkClicks to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LinkClickIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * LinkClick upsert
+   */
+  export type LinkClickUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LinkClick
+     */
+    select?: LinkClickSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LinkClick
+     */
+    omit?: LinkClickOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LinkClickInclude<ExtArgs> | null
+    /**
+     * The filter to search for the LinkClick to update in case it exists.
+     */
+    where: LinkClickWhereUniqueInput
+    /**
+     * In case the LinkClick found by the `where` argument doesn't exist, create a new LinkClick with this data.
+     */
+    create: XOR<LinkClickCreateInput, LinkClickUncheckedCreateInput>
+    /**
+     * In case the LinkClick was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<LinkClickUpdateInput, LinkClickUncheckedUpdateInput>
+  }
+
+  /**
+   * LinkClick delete
+   */
+  export type LinkClickDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LinkClick
+     */
+    select?: LinkClickSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LinkClick
+     */
+    omit?: LinkClickOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LinkClickInclude<ExtArgs> | null
+    /**
+     * Filter which LinkClick to delete.
+     */
+    where: LinkClickWhereUniqueInput
+  }
+
+  /**
+   * LinkClick deleteMany
+   */
+  export type LinkClickDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which LinkClicks to delete
+     */
+    where?: LinkClickWhereInput
+    /**
+     * Limit how many LinkClicks to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * LinkClick.share
+   */
+  export type LinkClick$shareArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Share
+     */
+    select?: ShareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Share
+     */
+    omit?: ShareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ShareInclude<ExtArgs> | null
+    where?: ShareWhereInput
+  }
+
+  /**
+   * LinkClick without action
+   */
+  export type LinkClickDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the LinkClick
+     */
+    select?: LinkClickSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the LinkClick
+     */
+    omit?: LinkClickOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: LinkClickInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model AttributionOverride
+   */
+
+  export type AggregateAttributionOverride = {
+    _count: AttributionOverrideCountAggregateOutputType | null
+    _min: AttributionOverrideMinAggregateOutputType | null
+    _max: AttributionOverrideMaxAggregateOutputType | null
+  }
+
+  export type AttributionOverrideMinAggregateOutputType = {
+    id: string | null
+    customerId: string | null
+    oldInfluencerId: string | null
+    newInfluencerId: string | null
+    reason: string | null
+    overriddenBy: string | null
+    overriddenAt: Date | null
+  }
+
+  export type AttributionOverrideMaxAggregateOutputType = {
+    id: string | null
+    customerId: string | null
+    oldInfluencerId: string | null
+    newInfluencerId: string | null
+    reason: string | null
+    overriddenBy: string | null
+    overriddenAt: Date | null
+  }
+
+  export type AttributionOverrideCountAggregateOutputType = {
+    id: number
+    customerId: number
+    oldInfluencerId: number
+    newInfluencerId: number
+    reason: number
+    overriddenBy: number
+    overriddenAt: number
+    _all: number
+  }
+
+
+  export type AttributionOverrideMinAggregateInputType = {
+    id?: true
+    customerId?: true
+    oldInfluencerId?: true
+    newInfluencerId?: true
+    reason?: true
+    overriddenBy?: true
+    overriddenAt?: true
+  }
+
+  export type AttributionOverrideMaxAggregateInputType = {
+    id?: true
+    customerId?: true
+    oldInfluencerId?: true
+    newInfluencerId?: true
+    reason?: true
+    overriddenBy?: true
+    overriddenAt?: true
+  }
+
+  export type AttributionOverrideCountAggregateInputType = {
+    id?: true
+    customerId?: true
+    oldInfluencerId?: true
+    newInfluencerId?: true
+    reason?: true
+    overriddenBy?: true
+    overriddenAt?: true
+    _all?: true
+  }
+
+  export type AttributionOverrideAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AttributionOverride to aggregate.
+     */
+    where?: AttributionOverrideWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AttributionOverrides to fetch.
+     */
+    orderBy?: AttributionOverrideOrderByWithRelationInput | AttributionOverrideOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AttributionOverrideWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AttributionOverrides from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AttributionOverrides.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AttributionOverrides
+    **/
+    _count?: true | AttributionOverrideCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AttributionOverrideMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AttributionOverrideMaxAggregateInputType
+  }
+
+  export type GetAttributionOverrideAggregateType<T extends AttributionOverrideAggregateArgs> = {
+        [P in keyof T & keyof AggregateAttributionOverride]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAttributionOverride[P]>
+      : GetScalarType<T[P], AggregateAttributionOverride[P]>
+  }
+
+
+
+
+  export type AttributionOverrideGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AttributionOverrideWhereInput
+    orderBy?: AttributionOverrideOrderByWithAggregationInput | AttributionOverrideOrderByWithAggregationInput[]
+    by: AttributionOverrideScalarFieldEnum[] | AttributionOverrideScalarFieldEnum
+    having?: AttributionOverrideScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AttributionOverrideCountAggregateInputType | true
+    _min?: AttributionOverrideMinAggregateInputType
+    _max?: AttributionOverrideMaxAggregateInputType
+  }
+
+  export type AttributionOverrideGroupByOutputType = {
+    id: string
+    customerId: string
+    oldInfluencerId: string | null
+    newInfluencerId: string | null
+    reason: string | null
+    overriddenBy: string
+    overriddenAt: Date
+    _count: AttributionOverrideCountAggregateOutputType | null
+    _min: AttributionOverrideMinAggregateOutputType | null
+    _max: AttributionOverrideMaxAggregateOutputType | null
+  }
+
+  type GetAttributionOverrideGroupByPayload<T extends AttributionOverrideGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AttributionOverrideGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AttributionOverrideGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AttributionOverrideGroupByOutputType[P]>
+            : GetScalarType<T[P], AttributionOverrideGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AttributionOverrideSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    customerId?: boolean
+    oldInfluencerId?: boolean
+    newInfluencerId?: boolean
+    reason?: boolean
+    overriddenBy?: boolean
+    overriddenAt?: boolean
+  }, ExtArgs["result"]["attributionOverride"]>
+
+  export type AttributionOverrideSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    customerId?: boolean
+    oldInfluencerId?: boolean
+    newInfluencerId?: boolean
+    reason?: boolean
+    overriddenBy?: boolean
+    overriddenAt?: boolean
+  }, ExtArgs["result"]["attributionOverride"]>
+
+  export type AttributionOverrideSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    customerId?: boolean
+    oldInfluencerId?: boolean
+    newInfluencerId?: boolean
+    reason?: boolean
+    overriddenBy?: boolean
+    overriddenAt?: boolean
+  }, ExtArgs["result"]["attributionOverride"]>
+
+  export type AttributionOverrideSelectScalar = {
+    id?: boolean
+    customerId?: boolean
+    oldInfluencerId?: boolean
+    newInfluencerId?: boolean
+    reason?: boolean
+    overriddenBy?: boolean
+    overriddenAt?: boolean
+  }
+
+  export type AttributionOverrideOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "customerId" | "oldInfluencerId" | "newInfluencerId" | "reason" | "overriddenBy" | "overriddenAt", ExtArgs["result"]["attributionOverride"]>
+
+  export type $AttributionOverridePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AttributionOverride"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      customerId: string
+      oldInfluencerId: string | null
+      newInfluencerId: string | null
+      reason: string | null
+      overriddenBy: string
+      overriddenAt: Date
+    }, ExtArgs["result"]["attributionOverride"]>
+    composites: {}
+  }
+
+  type AttributionOverrideGetPayload<S extends boolean | null | undefined | AttributionOverrideDefaultArgs> = $Result.GetResult<Prisma.$AttributionOverridePayload, S>
+
+  type AttributionOverrideCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AttributionOverrideFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AttributionOverrideCountAggregateInputType | true
+    }
+
+  export interface AttributionOverrideDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AttributionOverride'], meta: { name: 'AttributionOverride' } }
+    /**
+     * Find zero or one AttributionOverride that matches the filter.
+     * @param {AttributionOverrideFindUniqueArgs} args - Arguments to find a AttributionOverride
+     * @example
+     * // Get one AttributionOverride
+     * const attributionOverride = await prisma.attributionOverride.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AttributionOverrideFindUniqueArgs>(args: SelectSubset<T, AttributionOverrideFindUniqueArgs<ExtArgs>>): Prisma__AttributionOverrideClient<$Result.GetResult<Prisma.$AttributionOverridePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AttributionOverride that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AttributionOverrideFindUniqueOrThrowArgs} args - Arguments to find a AttributionOverride
+     * @example
+     * // Get one AttributionOverride
+     * const attributionOverride = await prisma.attributionOverride.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AttributionOverrideFindUniqueOrThrowArgs>(args: SelectSubset<T, AttributionOverrideFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AttributionOverrideClient<$Result.GetResult<Prisma.$AttributionOverridePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AttributionOverride that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AttributionOverrideFindFirstArgs} args - Arguments to find a AttributionOverride
+     * @example
+     * // Get one AttributionOverride
+     * const attributionOverride = await prisma.attributionOverride.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AttributionOverrideFindFirstArgs>(args?: SelectSubset<T, AttributionOverrideFindFirstArgs<ExtArgs>>): Prisma__AttributionOverrideClient<$Result.GetResult<Prisma.$AttributionOverridePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AttributionOverride that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AttributionOverrideFindFirstOrThrowArgs} args - Arguments to find a AttributionOverride
+     * @example
+     * // Get one AttributionOverride
+     * const attributionOverride = await prisma.attributionOverride.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AttributionOverrideFindFirstOrThrowArgs>(args?: SelectSubset<T, AttributionOverrideFindFirstOrThrowArgs<ExtArgs>>): Prisma__AttributionOverrideClient<$Result.GetResult<Prisma.$AttributionOverridePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AttributionOverrides that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AttributionOverrideFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AttributionOverrides
+     * const attributionOverrides = await prisma.attributionOverride.findMany()
+     * 
+     * // Get first 10 AttributionOverrides
+     * const attributionOverrides = await prisma.attributionOverride.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const attributionOverrideWithIdOnly = await prisma.attributionOverride.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AttributionOverrideFindManyArgs>(args?: SelectSubset<T, AttributionOverrideFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AttributionOverridePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AttributionOverride.
+     * @param {AttributionOverrideCreateArgs} args - Arguments to create a AttributionOverride.
+     * @example
+     * // Create one AttributionOverride
+     * const AttributionOverride = await prisma.attributionOverride.create({
+     *   data: {
+     *     // ... data to create a AttributionOverride
+     *   }
+     * })
+     * 
+     */
+    create<T extends AttributionOverrideCreateArgs>(args: SelectSubset<T, AttributionOverrideCreateArgs<ExtArgs>>): Prisma__AttributionOverrideClient<$Result.GetResult<Prisma.$AttributionOverridePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AttributionOverrides.
+     * @param {AttributionOverrideCreateManyArgs} args - Arguments to create many AttributionOverrides.
+     * @example
+     * // Create many AttributionOverrides
+     * const attributionOverride = await prisma.attributionOverride.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AttributionOverrideCreateManyArgs>(args?: SelectSubset<T, AttributionOverrideCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AttributionOverrides and returns the data saved in the database.
+     * @param {AttributionOverrideCreateManyAndReturnArgs} args - Arguments to create many AttributionOverrides.
+     * @example
+     * // Create many AttributionOverrides
+     * const attributionOverride = await prisma.attributionOverride.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AttributionOverrides and only return the `id`
+     * const attributionOverrideWithIdOnly = await prisma.attributionOverride.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AttributionOverrideCreateManyAndReturnArgs>(args?: SelectSubset<T, AttributionOverrideCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AttributionOverridePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AttributionOverride.
+     * @param {AttributionOverrideDeleteArgs} args - Arguments to delete one AttributionOverride.
+     * @example
+     * // Delete one AttributionOverride
+     * const AttributionOverride = await prisma.attributionOverride.delete({
+     *   where: {
+     *     // ... filter to delete one AttributionOverride
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AttributionOverrideDeleteArgs>(args: SelectSubset<T, AttributionOverrideDeleteArgs<ExtArgs>>): Prisma__AttributionOverrideClient<$Result.GetResult<Prisma.$AttributionOverridePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AttributionOverride.
+     * @param {AttributionOverrideUpdateArgs} args - Arguments to update one AttributionOverride.
+     * @example
+     * // Update one AttributionOverride
+     * const attributionOverride = await prisma.attributionOverride.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AttributionOverrideUpdateArgs>(args: SelectSubset<T, AttributionOverrideUpdateArgs<ExtArgs>>): Prisma__AttributionOverrideClient<$Result.GetResult<Prisma.$AttributionOverridePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AttributionOverrides.
+     * @param {AttributionOverrideDeleteManyArgs} args - Arguments to filter AttributionOverrides to delete.
+     * @example
+     * // Delete a few AttributionOverrides
+     * const { count } = await prisma.attributionOverride.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AttributionOverrideDeleteManyArgs>(args?: SelectSubset<T, AttributionOverrideDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AttributionOverrides.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AttributionOverrideUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AttributionOverrides
+     * const attributionOverride = await prisma.attributionOverride.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AttributionOverrideUpdateManyArgs>(args: SelectSubset<T, AttributionOverrideUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AttributionOverrides and returns the data updated in the database.
+     * @param {AttributionOverrideUpdateManyAndReturnArgs} args - Arguments to update many AttributionOverrides.
+     * @example
+     * // Update many AttributionOverrides
+     * const attributionOverride = await prisma.attributionOverride.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AttributionOverrides and only return the `id`
+     * const attributionOverrideWithIdOnly = await prisma.attributionOverride.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AttributionOverrideUpdateManyAndReturnArgs>(args: SelectSubset<T, AttributionOverrideUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AttributionOverridePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AttributionOverride.
+     * @param {AttributionOverrideUpsertArgs} args - Arguments to update or create a AttributionOverride.
+     * @example
+     * // Update or create a AttributionOverride
+     * const attributionOverride = await prisma.attributionOverride.upsert({
+     *   create: {
+     *     // ... data to create a AttributionOverride
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AttributionOverride we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AttributionOverrideUpsertArgs>(args: SelectSubset<T, AttributionOverrideUpsertArgs<ExtArgs>>): Prisma__AttributionOverrideClient<$Result.GetResult<Prisma.$AttributionOverridePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AttributionOverrides.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AttributionOverrideCountArgs} args - Arguments to filter AttributionOverrides to count.
+     * @example
+     * // Count the number of AttributionOverrides
+     * const count = await prisma.attributionOverride.count({
+     *   where: {
+     *     // ... the filter for the AttributionOverrides we want to count
+     *   }
+     * })
+    **/
+    count<T extends AttributionOverrideCountArgs>(
+      args?: Subset<T, AttributionOverrideCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AttributionOverrideCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AttributionOverride.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AttributionOverrideAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AttributionOverrideAggregateArgs>(args: Subset<T, AttributionOverrideAggregateArgs>): Prisma.PrismaPromise<GetAttributionOverrideAggregateType<T>>
+
+    /**
+     * Group by AttributionOverride.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AttributionOverrideGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AttributionOverrideGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AttributionOverrideGroupByArgs['orderBy'] }
+        : { orderBy?: AttributionOverrideGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AttributionOverrideGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAttributionOverrideGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AttributionOverride model
+   */
+  readonly fields: AttributionOverrideFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AttributionOverride.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AttributionOverrideClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AttributionOverride model
+   */
+  interface AttributionOverrideFieldRefs {
+    readonly id: FieldRef<"AttributionOverride", 'String'>
+    readonly customerId: FieldRef<"AttributionOverride", 'String'>
+    readonly oldInfluencerId: FieldRef<"AttributionOverride", 'String'>
+    readonly newInfluencerId: FieldRef<"AttributionOverride", 'String'>
+    readonly reason: FieldRef<"AttributionOverride", 'String'>
+    readonly overriddenBy: FieldRef<"AttributionOverride", 'String'>
+    readonly overriddenAt: FieldRef<"AttributionOverride", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AttributionOverride findUnique
+   */
+  export type AttributionOverrideFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AttributionOverride
+     */
+    select?: AttributionOverrideSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AttributionOverride
+     */
+    omit?: AttributionOverrideOmit<ExtArgs> | null
+    /**
+     * Filter, which AttributionOverride to fetch.
+     */
+    where: AttributionOverrideWhereUniqueInput
+  }
+
+  /**
+   * AttributionOverride findUniqueOrThrow
+   */
+  export type AttributionOverrideFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AttributionOverride
+     */
+    select?: AttributionOverrideSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AttributionOverride
+     */
+    omit?: AttributionOverrideOmit<ExtArgs> | null
+    /**
+     * Filter, which AttributionOverride to fetch.
+     */
+    where: AttributionOverrideWhereUniqueInput
+  }
+
+  /**
+   * AttributionOverride findFirst
+   */
+  export type AttributionOverrideFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AttributionOverride
+     */
+    select?: AttributionOverrideSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AttributionOverride
+     */
+    omit?: AttributionOverrideOmit<ExtArgs> | null
+    /**
+     * Filter, which AttributionOverride to fetch.
+     */
+    where?: AttributionOverrideWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AttributionOverrides to fetch.
+     */
+    orderBy?: AttributionOverrideOrderByWithRelationInput | AttributionOverrideOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AttributionOverrides.
+     */
+    cursor?: AttributionOverrideWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AttributionOverrides from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AttributionOverrides.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AttributionOverrides.
+     */
+    distinct?: AttributionOverrideScalarFieldEnum | AttributionOverrideScalarFieldEnum[]
+  }
+
+  /**
+   * AttributionOverride findFirstOrThrow
+   */
+  export type AttributionOverrideFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AttributionOverride
+     */
+    select?: AttributionOverrideSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AttributionOverride
+     */
+    omit?: AttributionOverrideOmit<ExtArgs> | null
+    /**
+     * Filter, which AttributionOverride to fetch.
+     */
+    where?: AttributionOverrideWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AttributionOverrides to fetch.
+     */
+    orderBy?: AttributionOverrideOrderByWithRelationInput | AttributionOverrideOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AttributionOverrides.
+     */
+    cursor?: AttributionOverrideWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AttributionOverrides from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AttributionOverrides.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AttributionOverrides.
+     */
+    distinct?: AttributionOverrideScalarFieldEnum | AttributionOverrideScalarFieldEnum[]
+  }
+
+  /**
+   * AttributionOverride findMany
+   */
+  export type AttributionOverrideFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AttributionOverride
+     */
+    select?: AttributionOverrideSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AttributionOverride
+     */
+    omit?: AttributionOverrideOmit<ExtArgs> | null
+    /**
+     * Filter, which AttributionOverrides to fetch.
+     */
+    where?: AttributionOverrideWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AttributionOverrides to fetch.
+     */
+    orderBy?: AttributionOverrideOrderByWithRelationInput | AttributionOverrideOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AttributionOverrides.
+     */
+    cursor?: AttributionOverrideWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AttributionOverrides from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AttributionOverrides.
+     */
+    skip?: number
+    distinct?: AttributionOverrideScalarFieldEnum | AttributionOverrideScalarFieldEnum[]
+  }
+
+  /**
+   * AttributionOverride create
+   */
+  export type AttributionOverrideCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AttributionOverride
+     */
+    select?: AttributionOverrideSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AttributionOverride
+     */
+    omit?: AttributionOverrideOmit<ExtArgs> | null
+    /**
+     * The data needed to create a AttributionOverride.
+     */
+    data: XOR<AttributionOverrideCreateInput, AttributionOverrideUncheckedCreateInput>
+  }
+
+  /**
+   * AttributionOverride createMany
+   */
+  export type AttributionOverrideCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AttributionOverrides.
+     */
+    data: AttributionOverrideCreateManyInput | AttributionOverrideCreateManyInput[]
+  }
+
+  /**
+   * AttributionOverride createManyAndReturn
+   */
+  export type AttributionOverrideCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AttributionOverride
+     */
+    select?: AttributionOverrideSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AttributionOverride
+     */
+    omit?: AttributionOverrideOmit<ExtArgs> | null
+    /**
+     * The data used to create many AttributionOverrides.
+     */
+    data: AttributionOverrideCreateManyInput | AttributionOverrideCreateManyInput[]
+  }
+
+  /**
+   * AttributionOverride update
+   */
+  export type AttributionOverrideUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AttributionOverride
+     */
+    select?: AttributionOverrideSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AttributionOverride
+     */
+    omit?: AttributionOverrideOmit<ExtArgs> | null
+    /**
+     * The data needed to update a AttributionOverride.
+     */
+    data: XOR<AttributionOverrideUpdateInput, AttributionOverrideUncheckedUpdateInput>
+    /**
+     * Choose, which AttributionOverride to update.
+     */
+    where: AttributionOverrideWhereUniqueInput
+  }
+
+  /**
+   * AttributionOverride updateMany
+   */
+  export type AttributionOverrideUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AttributionOverrides.
+     */
+    data: XOR<AttributionOverrideUpdateManyMutationInput, AttributionOverrideUncheckedUpdateManyInput>
+    /**
+     * Filter which AttributionOverrides to update
+     */
+    where?: AttributionOverrideWhereInput
+    /**
+     * Limit how many AttributionOverrides to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AttributionOverride updateManyAndReturn
+   */
+  export type AttributionOverrideUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AttributionOverride
+     */
+    select?: AttributionOverrideSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AttributionOverride
+     */
+    omit?: AttributionOverrideOmit<ExtArgs> | null
+    /**
+     * The data used to update AttributionOverrides.
+     */
+    data: XOR<AttributionOverrideUpdateManyMutationInput, AttributionOverrideUncheckedUpdateManyInput>
+    /**
+     * Filter which AttributionOverrides to update
+     */
+    where?: AttributionOverrideWhereInput
+    /**
+     * Limit how many AttributionOverrides to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AttributionOverride upsert
+   */
+  export type AttributionOverrideUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AttributionOverride
+     */
+    select?: AttributionOverrideSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AttributionOverride
+     */
+    omit?: AttributionOverrideOmit<ExtArgs> | null
+    /**
+     * The filter to search for the AttributionOverride to update in case it exists.
+     */
+    where: AttributionOverrideWhereUniqueInput
+    /**
+     * In case the AttributionOverride found by the `where` argument doesn't exist, create a new AttributionOverride with this data.
+     */
+    create: XOR<AttributionOverrideCreateInput, AttributionOverrideUncheckedCreateInput>
+    /**
+     * In case the AttributionOverride was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AttributionOverrideUpdateInput, AttributionOverrideUncheckedUpdateInput>
+  }
+
+  /**
+   * AttributionOverride delete
+   */
+  export type AttributionOverrideDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AttributionOverride
+     */
+    select?: AttributionOverrideSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AttributionOverride
+     */
+    omit?: AttributionOverrideOmit<ExtArgs> | null
+    /**
+     * Filter which AttributionOverride to delete.
+     */
+    where: AttributionOverrideWhereUniqueInput
+  }
+
+  /**
+   * AttributionOverride deleteMany
+   */
+  export type AttributionOverrideDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AttributionOverrides to delete
+     */
+    where?: AttributionOverrideWhereInput
+    /**
+     * Limit how many AttributionOverrides to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AttributionOverride without action
+   */
+  export type AttributionOverrideDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AttributionOverride
+     */
+    select?: AttributionOverrideSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AttributionOverride
+     */
+    omit?: AttributionOverrideOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Campaign
+   */
+
+  export type AggregateCampaign = {
+    _count: CampaignCountAggregateOutputType | null
+    _avg: CampaignAvgAggregateOutputType | null
+    _sum: CampaignSumAggregateOutputType | null
+    _min: CampaignMinAggregateOutputType | null
+    _max: CampaignMaxAggregateOutputType | null
+  }
+
+  export type CampaignAvgAggregateOutputType = {
+    discountValue: number | null
+    maxParticipants: number | null
+  }
+
+  export type CampaignSumAggregateOutputType = {
+    discountValue: number | null
+    maxParticipants: number | null
+  }
+
+  export type CampaignMinAggregateOutputType = {
+    id: string | null
+    title: string | null
+    slug: string | null
+    description: string | null
+    type: string | null
+    discountType: string | null
+    discountValue: number | null
+    codeTemplate: string | null
+    status: string | null
+    startDate: Date | null
+    endDate: Date | null
+    maxParticipants: number | null
+    imageUrl: string | null
+    createdBy: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CampaignMaxAggregateOutputType = {
+    id: string | null
+    title: string | null
+    slug: string | null
+    description: string | null
+    type: string | null
+    discountType: string | null
+    discountValue: number | null
+    codeTemplate: string | null
+    status: string | null
+    startDate: Date | null
+    endDate: Date | null
+    maxParticipants: number | null
+    imageUrl: string | null
+    createdBy: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CampaignCountAggregateOutputType = {
+    id: number
+    title: number
+    slug: number
+    description: number
+    type: number
+    discountType: number
+    discountValue: number
+    codeTemplate: number
+    status: number
+    startDate: number
+    endDate: number
+    maxParticipants: number
+    imageUrl: number
+    createdBy: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type CampaignAvgAggregateInputType = {
+    discountValue?: true
+    maxParticipants?: true
+  }
+
+  export type CampaignSumAggregateInputType = {
+    discountValue?: true
+    maxParticipants?: true
+  }
+
+  export type CampaignMinAggregateInputType = {
+    id?: true
+    title?: true
+    slug?: true
+    description?: true
+    type?: true
+    discountType?: true
+    discountValue?: true
+    codeTemplate?: true
+    status?: true
+    startDate?: true
+    endDate?: true
+    maxParticipants?: true
+    imageUrl?: true
+    createdBy?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CampaignMaxAggregateInputType = {
+    id?: true
+    title?: true
+    slug?: true
+    description?: true
+    type?: true
+    discountType?: true
+    discountValue?: true
+    codeTemplate?: true
+    status?: true
+    startDate?: true
+    endDate?: true
+    maxParticipants?: true
+    imageUrl?: true
+    createdBy?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CampaignCountAggregateInputType = {
+    id?: true
+    title?: true
+    slug?: true
+    description?: true
+    type?: true
+    discountType?: true
+    discountValue?: true
+    codeTemplate?: true
+    status?: true
+    startDate?: true
+    endDate?: true
+    maxParticipants?: true
+    imageUrl?: true
+    createdBy?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type CampaignAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Campaign to aggregate.
+     */
+    where?: CampaignWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Campaigns to fetch.
+     */
+    orderBy?: CampaignOrderByWithRelationInput | CampaignOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CampaignWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Campaigns from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Campaigns.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Campaigns
+    **/
+    _count?: true | CampaignCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: CampaignAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: CampaignSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CampaignMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CampaignMaxAggregateInputType
+  }
+
+  export type GetCampaignAggregateType<T extends CampaignAggregateArgs> = {
+        [P in keyof T & keyof AggregateCampaign]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCampaign[P]>
+      : GetScalarType<T[P], AggregateCampaign[P]>
+  }
+
+
+
+
+  export type CampaignGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CampaignWhereInput
+    orderBy?: CampaignOrderByWithAggregationInput | CampaignOrderByWithAggregationInput[]
+    by: CampaignScalarFieldEnum[] | CampaignScalarFieldEnum
+    having?: CampaignScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CampaignCountAggregateInputType | true
+    _avg?: CampaignAvgAggregateInputType
+    _sum?: CampaignSumAggregateInputType
+    _min?: CampaignMinAggregateInputType
+    _max?: CampaignMaxAggregateInputType
+  }
+
+  export type CampaignGroupByOutputType = {
+    id: string
+    title: string
+    slug: string
+    description: string | null
+    type: string
+    discountType: string
+    discountValue: number
+    codeTemplate: string
+    status: string
+    startDate: Date | null
+    endDate: Date | null
+    maxParticipants: number | null
+    imageUrl: string | null
+    createdBy: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: CampaignCountAggregateOutputType | null
+    _avg: CampaignAvgAggregateOutputType | null
+    _sum: CampaignSumAggregateOutputType | null
+    _min: CampaignMinAggregateOutputType | null
+    _max: CampaignMaxAggregateOutputType | null
+  }
+
+  type GetCampaignGroupByPayload<T extends CampaignGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CampaignGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CampaignGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CampaignGroupByOutputType[P]>
+            : GetScalarType<T[P], CampaignGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CampaignSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    slug?: boolean
+    description?: boolean
+    type?: boolean
+    discountType?: boolean
+    discountValue?: boolean
+    codeTemplate?: boolean
+    status?: boolean
+    startDate?: boolean
+    endDate?: boolean
+    maxParticipants?: boolean
+    imageUrl?: boolean
+    createdBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    participants?: boolean | Campaign$participantsArgs<ExtArgs>
+    codeUsages?: boolean | Campaign$codeUsagesArgs<ExtArgs>
+    _count?: boolean | CampaignCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["campaign"]>
+
+  export type CampaignSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    slug?: boolean
+    description?: boolean
+    type?: boolean
+    discountType?: boolean
+    discountValue?: boolean
+    codeTemplate?: boolean
+    status?: boolean
+    startDate?: boolean
+    endDate?: boolean
+    maxParticipants?: boolean
+    imageUrl?: boolean
+    createdBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["campaign"]>
+
+  export type CampaignSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    slug?: boolean
+    description?: boolean
+    type?: boolean
+    discountType?: boolean
+    discountValue?: boolean
+    codeTemplate?: boolean
+    status?: boolean
+    startDate?: boolean
+    endDate?: boolean
+    maxParticipants?: boolean
+    imageUrl?: boolean
+    createdBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["campaign"]>
+
+  export type CampaignSelectScalar = {
+    id?: boolean
+    title?: boolean
+    slug?: boolean
+    description?: boolean
+    type?: boolean
+    discountType?: boolean
+    discountValue?: boolean
+    codeTemplate?: boolean
+    status?: boolean
+    startDate?: boolean
+    endDate?: boolean
+    maxParticipants?: boolean
+    imageUrl?: boolean
+    createdBy?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type CampaignOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "slug" | "description" | "type" | "discountType" | "discountValue" | "codeTemplate" | "status" | "startDate" | "endDate" | "maxParticipants" | "imageUrl" | "createdBy" | "createdAt" | "updatedAt", ExtArgs["result"]["campaign"]>
+  export type CampaignInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    participants?: boolean | Campaign$participantsArgs<ExtArgs>
+    codeUsages?: boolean | Campaign$codeUsagesArgs<ExtArgs>
+    _count?: boolean | CampaignCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type CampaignIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type CampaignIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $CampaignPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Campaign"
+    objects: {
+      participants: Prisma.$CampaignParticipantPayload<ExtArgs>[]
+      codeUsages: Prisma.$CampaignCodeUsagePayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      title: string
+      slug: string
+      description: string | null
+      type: string
+      discountType: string
+      discountValue: number
+      codeTemplate: string
+      status: string
+      startDate: Date | null
+      endDate: Date | null
+      maxParticipants: number | null
+      imageUrl: string | null
+      createdBy: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["campaign"]>
+    composites: {}
+  }
+
+  type CampaignGetPayload<S extends boolean | null | undefined | CampaignDefaultArgs> = $Result.GetResult<Prisma.$CampaignPayload, S>
+
+  type CampaignCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CampaignFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CampaignCountAggregateInputType | true
+    }
+
+  export interface CampaignDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Campaign'], meta: { name: 'Campaign' } }
+    /**
+     * Find zero or one Campaign that matches the filter.
+     * @param {CampaignFindUniqueArgs} args - Arguments to find a Campaign
+     * @example
+     * // Get one Campaign
+     * const campaign = await prisma.campaign.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CampaignFindUniqueArgs>(args: SelectSubset<T, CampaignFindUniqueArgs<ExtArgs>>): Prisma__CampaignClient<$Result.GetResult<Prisma.$CampaignPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Campaign that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CampaignFindUniqueOrThrowArgs} args - Arguments to find a Campaign
+     * @example
+     * // Get one Campaign
+     * const campaign = await prisma.campaign.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CampaignFindUniqueOrThrowArgs>(args: SelectSubset<T, CampaignFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CampaignClient<$Result.GetResult<Prisma.$CampaignPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Campaign that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CampaignFindFirstArgs} args - Arguments to find a Campaign
+     * @example
+     * // Get one Campaign
+     * const campaign = await prisma.campaign.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CampaignFindFirstArgs>(args?: SelectSubset<T, CampaignFindFirstArgs<ExtArgs>>): Prisma__CampaignClient<$Result.GetResult<Prisma.$CampaignPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Campaign that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CampaignFindFirstOrThrowArgs} args - Arguments to find a Campaign
+     * @example
+     * // Get one Campaign
+     * const campaign = await prisma.campaign.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CampaignFindFirstOrThrowArgs>(args?: SelectSubset<T, CampaignFindFirstOrThrowArgs<ExtArgs>>): Prisma__CampaignClient<$Result.GetResult<Prisma.$CampaignPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Campaigns that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CampaignFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Campaigns
+     * const campaigns = await prisma.campaign.findMany()
+     * 
+     * // Get first 10 Campaigns
+     * const campaigns = await prisma.campaign.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const campaignWithIdOnly = await prisma.campaign.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends CampaignFindManyArgs>(args?: SelectSubset<T, CampaignFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CampaignPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Campaign.
+     * @param {CampaignCreateArgs} args - Arguments to create a Campaign.
+     * @example
+     * // Create one Campaign
+     * const Campaign = await prisma.campaign.create({
+     *   data: {
+     *     // ... data to create a Campaign
+     *   }
+     * })
+     * 
+     */
+    create<T extends CampaignCreateArgs>(args: SelectSubset<T, CampaignCreateArgs<ExtArgs>>): Prisma__CampaignClient<$Result.GetResult<Prisma.$CampaignPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Campaigns.
+     * @param {CampaignCreateManyArgs} args - Arguments to create many Campaigns.
+     * @example
+     * // Create many Campaigns
+     * const campaign = await prisma.campaign.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CampaignCreateManyArgs>(args?: SelectSubset<T, CampaignCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Campaigns and returns the data saved in the database.
+     * @param {CampaignCreateManyAndReturnArgs} args - Arguments to create many Campaigns.
+     * @example
+     * // Create many Campaigns
+     * const campaign = await prisma.campaign.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Campaigns and only return the `id`
+     * const campaignWithIdOnly = await prisma.campaign.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends CampaignCreateManyAndReturnArgs>(args?: SelectSubset<T, CampaignCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CampaignPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Campaign.
+     * @param {CampaignDeleteArgs} args - Arguments to delete one Campaign.
+     * @example
+     * // Delete one Campaign
+     * const Campaign = await prisma.campaign.delete({
+     *   where: {
+     *     // ... filter to delete one Campaign
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CampaignDeleteArgs>(args: SelectSubset<T, CampaignDeleteArgs<ExtArgs>>): Prisma__CampaignClient<$Result.GetResult<Prisma.$CampaignPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Campaign.
+     * @param {CampaignUpdateArgs} args - Arguments to update one Campaign.
+     * @example
+     * // Update one Campaign
+     * const campaign = await prisma.campaign.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CampaignUpdateArgs>(args: SelectSubset<T, CampaignUpdateArgs<ExtArgs>>): Prisma__CampaignClient<$Result.GetResult<Prisma.$CampaignPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Campaigns.
+     * @param {CampaignDeleteManyArgs} args - Arguments to filter Campaigns to delete.
+     * @example
+     * // Delete a few Campaigns
+     * const { count } = await prisma.campaign.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CampaignDeleteManyArgs>(args?: SelectSubset<T, CampaignDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Campaigns.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CampaignUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Campaigns
+     * const campaign = await prisma.campaign.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CampaignUpdateManyArgs>(args: SelectSubset<T, CampaignUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Campaigns and returns the data updated in the database.
+     * @param {CampaignUpdateManyAndReturnArgs} args - Arguments to update many Campaigns.
+     * @example
+     * // Update many Campaigns
+     * const campaign = await prisma.campaign.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Campaigns and only return the `id`
+     * const campaignWithIdOnly = await prisma.campaign.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends CampaignUpdateManyAndReturnArgs>(args: SelectSubset<T, CampaignUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CampaignPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Campaign.
+     * @param {CampaignUpsertArgs} args - Arguments to update or create a Campaign.
+     * @example
+     * // Update or create a Campaign
+     * const campaign = await prisma.campaign.upsert({
+     *   create: {
+     *     // ... data to create a Campaign
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Campaign we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CampaignUpsertArgs>(args: SelectSubset<T, CampaignUpsertArgs<ExtArgs>>): Prisma__CampaignClient<$Result.GetResult<Prisma.$CampaignPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Campaigns.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CampaignCountArgs} args - Arguments to filter Campaigns to count.
+     * @example
+     * // Count the number of Campaigns
+     * const count = await prisma.campaign.count({
+     *   where: {
+     *     // ... the filter for the Campaigns we want to count
+     *   }
+     * })
+    **/
+    count<T extends CampaignCountArgs>(
+      args?: Subset<T, CampaignCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CampaignCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Campaign.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CampaignAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CampaignAggregateArgs>(args: Subset<T, CampaignAggregateArgs>): Prisma.PrismaPromise<GetCampaignAggregateType<T>>
+
+    /**
+     * Group by Campaign.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CampaignGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CampaignGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CampaignGroupByArgs['orderBy'] }
+        : { orderBy?: CampaignGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CampaignGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCampaignGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Campaign model
+   */
+  readonly fields: CampaignFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Campaign.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CampaignClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    participants<T extends Campaign$participantsArgs<ExtArgs> = {}>(args?: Subset<T, Campaign$participantsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CampaignParticipantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    codeUsages<T extends Campaign$codeUsagesArgs<ExtArgs> = {}>(args?: Subset<T, Campaign$codeUsagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CampaignCodeUsagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Campaign model
+   */
+  interface CampaignFieldRefs {
+    readonly id: FieldRef<"Campaign", 'String'>
+    readonly title: FieldRef<"Campaign", 'String'>
+    readonly slug: FieldRef<"Campaign", 'String'>
+    readonly description: FieldRef<"Campaign", 'String'>
+    readonly type: FieldRef<"Campaign", 'String'>
+    readonly discountType: FieldRef<"Campaign", 'String'>
+    readonly discountValue: FieldRef<"Campaign", 'Float'>
+    readonly codeTemplate: FieldRef<"Campaign", 'String'>
+    readonly status: FieldRef<"Campaign", 'String'>
+    readonly startDate: FieldRef<"Campaign", 'DateTime'>
+    readonly endDate: FieldRef<"Campaign", 'DateTime'>
+    readonly maxParticipants: FieldRef<"Campaign", 'Int'>
+    readonly imageUrl: FieldRef<"Campaign", 'String'>
+    readonly createdBy: FieldRef<"Campaign", 'String'>
+    readonly createdAt: FieldRef<"Campaign", 'DateTime'>
+    readonly updatedAt: FieldRef<"Campaign", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Campaign findUnique
+   */
+  export type CampaignFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Campaign
+     */
+    select?: CampaignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Campaign
+     */
+    omit?: CampaignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CampaignInclude<ExtArgs> | null
+    /**
+     * Filter, which Campaign to fetch.
+     */
+    where: CampaignWhereUniqueInput
+  }
+
+  /**
+   * Campaign findUniqueOrThrow
+   */
+  export type CampaignFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Campaign
+     */
+    select?: CampaignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Campaign
+     */
+    omit?: CampaignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CampaignInclude<ExtArgs> | null
+    /**
+     * Filter, which Campaign to fetch.
+     */
+    where: CampaignWhereUniqueInput
+  }
+
+  /**
+   * Campaign findFirst
+   */
+  export type CampaignFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Campaign
+     */
+    select?: CampaignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Campaign
+     */
+    omit?: CampaignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CampaignInclude<ExtArgs> | null
+    /**
+     * Filter, which Campaign to fetch.
+     */
+    where?: CampaignWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Campaigns to fetch.
+     */
+    orderBy?: CampaignOrderByWithRelationInput | CampaignOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Campaigns.
+     */
+    cursor?: CampaignWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Campaigns from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Campaigns.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Campaigns.
+     */
+    distinct?: CampaignScalarFieldEnum | CampaignScalarFieldEnum[]
+  }
+
+  /**
+   * Campaign findFirstOrThrow
+   */
+  export type CampaignFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Campaign
+     */
+    select?: CampaignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Campaign
+     */
+    omit?: CampaignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CampaignInclude<ExtArgs> | null
+    /**
+     * Filter, which Campaign to fetch.
+     */
+    where?: CampaignWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Campaigns to fetch.
+     */
+    orderBy?: CampaignOrderByWithRelationInput | CampaignOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Campaigns.
+     */
+    cursor?: CampaignWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Campaigns from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Campaigns.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Campaigns.
+     */
+    distinct?: CampaignScalarFieldEnum | CampaignScalarFieldEnum[]
+  }
+
+  /**
+   * Campaign findMany
+   */
+  export type CampaignFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Campaign
+     */
+    select?: CampaignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Campaign
+     */
+    omit?: CampaignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CampaignInclude<ExtArgs> | null
+    /**
+     * Filter, which Campaigns to fetch.
+     */
+    where?: CampaignWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Campaigns to fetch.
+     */
+    orderBy?: CampaignOrderByWithRelationInput | CampaignOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Campaigns.
+     */
+    cursor?: CampaignWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Campaigns from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Campaigns.
+     */
+    skip?: number
+    distinct?: CampaignScalarFieldEnum | CampaignScalarFieldEnum[]
+  }
+
+  /**
+   * Campaign create
+   */
+  export type CampaignCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Campaign
+     */
+    select?: CampaignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Campaign
+     */
+    omit?: CampaignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CampaignInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Campaign.
+     */
+    data: XOR<CampaignCreateInput, CampaignUncheckedCreateInput>
+  }
+
+  /**
+   * Campaign createMany
+   */
+  export type CampaignCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Campaigns.
+     */
+    data: CampaignCreateManyInput | CampaignCreateManyInput[]
+  }
+
+  /**
+   * Campaign createManyAndReturn
+   */
+  export type CampaignCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Campaign
+     */
+    select?: CampaignSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Campaign
+     */
+    omit?: CampaignOmit<ExtArgs> | null
+    /**
+     * The data used to create many Campaigns.
+     */
+    data: CampaignCreateManyInput | CampaignCreateManyInput[]
+  }
+
+  /**
+   * Campaign update
+   */
+  export type CampaignUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Campaign
+     */
+    select?: CampaignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Campaign
+     */
+    omit?: CampaignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CampaignInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Campaign.
+     */
+    data: XOR<CampaignUpdateInput, CampaignUncheckedUpdateInput>
+    /**
+     * Choose, which Campaign to update.
+     */
+    where: CampaignWhereUniqueInput
+  }
+
+  /**
+   * Campaign updateMany
+   */
+  export type CampaignUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Campaigns.
+     */
+    data: XOR<CampaignUpdateManyMutationInput, CampaignUncheckedUpdateManyInput>
+    /**
+     * Filter which Campaigns to update
+     */
+    where?: CampaignWhereInput
+    /**
+     * Limit how many Campaigns to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Campaign updateManyAndReturn
+   */
+  export type CampaignUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Campaign
+     */
+    select?: CampaignSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Campaign
+     */
+    omit?: CampaignOmit<ExtArgs> | null
+    /**
+     * The data used to update Campaigns.
+     */
+    data: XOR<CampaignUpdateManyMutationInput, CampaignUncheckedUpdateManyInput>
+    /**
+     * Filter which Campaigns to update
+     */
+    where?: CampaignWhereInput
+    /**
+     * Limit how many Campaigns to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Campaign upsert
+   */
+  export type CampaignUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Campaign
+     */
+    select?: CampaignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Campaign
+     */
+    omit?: CampaignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CampaignInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Campaign to update in case it exists.
+     */
+    where: CampaignWhereUniqueInput
+    /**
+     * In case the Campaign found by the `where` argument doesn't exist, create a new Campaign with this data.
+     */
+    create: XOR<CampaignCreateInput, CampaignUncheckedCreateInput>
+    /**
+     * In case the Campaign was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CampaignUpdateInput, CampaignUncheckedUpdateInput>
+  }
+
+  /**
+   * Campaign delete
+   */
+  export type CampaignDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Campaign
+     */
+    select?: CampaignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Campaign
+     */
+    omit?: CampaignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CampaignInclude<ExtArgs> | null
+    /**
+     * Filter which Campaign to delete.
+     */
+    where: CampaignWhereUniqueInput
+  }
+
+  /**
+   * Campaign deleteMany
+   */
+  export type CampaignDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Campaigns to delete
+     */
+    where?: CampaignWhereInput
+    /**
+     * Limit how many Campaigns to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Campaign.participants
+   */
+  export type Campaign$participantsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CampaignParticipant
+     */
+    select?: CampaignParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CampaignParticipant
+     */
+    omit?: CampaignParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CampaignParticipantInclude<ExtArgs> | null
+    where?: CampaignParticipantWhereInput
+    orderBy?: CampaignParticipantOrderByWithRelationInput | CampaignParticipantOrderByWithRelationInput[]
+    cursor?: CampaignParticipantWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CampaignParticipantScalarFieldEnum | CampaignParticipantScalarFieldEnum[]
+  }
+
+  /**
+   * Campaign.codeUsages
+   */
+  export type Campaign$codeUsagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CampaignCodeUsage
+     */
+    select?: CampaignCodeUsageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CampaignCodeUsage
+     */
+    omit?: CampaignCodeUsageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CampaignCodeUsageInclude<ExtArgs> | null
+    where?: CampaignCodeUsageWhereInput
+    orderBy?: CampaignCodeUsageOrderByWithRelationInput | CampaignCodeUsageOrderByWithRelationInput[]
+    cursor?: CampaignCodeUsageWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CampaignCodeUsageScalarFieldEnum | CampaignCodeUsageScalarFieldEnum[]
+  }
+
+  /**
+   * Campaign without action
+   */
+  export type CampaignDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Campaign
+     */
+    select?: CampaignSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Campaign
+     */
+    omit?: CampaignOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CampaignInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model CampaignParticipant
+   */
+
+  export type AggregateCampaignParticipant = {
+    _count: CampaignParticipantCountAggregateOutputType | null
+    _avg: CampaignParticipantAvgAggregateOutputType | null
+    _sum: CampaignParticipantSumAggregateOutputType | null
+    _min: CampaignParticipantMinAggregateOutputType | null
+    _max: CampaignParticipantMaxAggregateOutputType | null
+  }
+
+  export type CampaignParticipantAvgAggregateOutputType = {
+    usageCount: number | null
+  }
+
+  export type CampaignParticipantSumAggregateOutputType = {
+    usageCount: number | null
+  }
+
+  export type CampaignParticipantMinAggregateOutputType = {
+    id: string | null
+    campaignId: string | null
+    influencerId: string | null
+    uniqueCode: string | null
+    joinedAt: Date | null
+    usageCount: number | null
+  }
+
+  export type CampaignParticipantMaxAggregateOutputType = {
+    id: string | null
+    campaignId: string | null
+    influencerId: string | null
+    uniqueCode: string | null
+    joinedAt: Date | null
+    usageCount: number | null
+  }
+
+  export type CampaignParticipantCountAggregateOutputType = {
+    id: number
+    campaignId: number
+    influencerId: number
+    uniqueCode: number
+    joinedAt: number
+    usageCount: number
+    _all: number
+  }
+
+
+  export type CampaignParticipantAvgAggregateInputType = {
+    usageCount?: true
+  }
+
+  export type CampaignParticipantSumAggregateInputType = {
+    usageCount?: true
+  }
+
+  export type CampaignParticipantMinAggregateInputType = {
+    id?: true
+    campaignId?: true
+    influencerId?: true
+    uniqueCode?: true
+    joinedAt?: true
+    usageCount?: true
+  }
+
+  export type CampaignParticipantMaxAggregateInputType = {
+    id?: true
+    campaignId?: true
+    influencerId?: true
+    uniqueCode?: true
+    joinedAt?: true
+    usageCount?: true
+  }
+
+  export type CampaignParticipantCountAggregateInputType = {
+    id?: true
+    campaignId?: true
+    influencerId?: true
+    uniqueCode?: true
+    joinedAt?: true
+    usageCount?: true
+    _all?: true
+  }
+
+  export type CampaignParticipantAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CampaignParticipant to aggregate.
+     */
+    where?: CampaignParticipantWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CampaignParticipants to fetch.
+     */
+    orderBy?: CampaignParticipantOrderByWithRelationInput | CampaignParticipantOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CampaignParticipantWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CampaignParticipants from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CampaignParticipants.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned CampaignParticipants
+    **/
+    _count?: true | CampaignParticipantCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: CampaignParticipantAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: CampaignParticipantSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CampaignParticipantMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CampaignParticipantMaxAggregateInputType
+  }
+
+  export type GetCampaignParticipantAggregateType<T extends CampaignParticipantAggregateArgs> = {
+        [P in keyof T & keyof AggregateCampaignParticipant]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCampaignParticipant[P]>
+      : GetScalarType<T[P], AggregateCampaignParticipant[P]>
+  }
+
+
+
+
+  export type CampaignParticipantGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CampaignParticipantWhereInput
+    orderBy?: CampaignParticipantOrderByWithAggregationInput | CampaignParticipantOrderByWithAggregationInput[]
+    by: CampaignParticipantScalarFieldEnum[] | CampaignParticipantScalarFieldEnum
+    having?: CampaignParticipantScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CampaignParticipantCountAggregateInputType | true
+    _avg?: CampaignParticipantAvgAggregateInputType
+    _sum?: CampaignParticipantSumAggregateInputType
+    _min?: CampaignParticipantMinAggregateInputType
+    _max?: CampaignParticipantMaxAggregateInputType
+  }
+
+  export type CampaignParticipantGroupByOutputType = {
+    id: string
+    campaignId: string
+    influencerId: string
+    uniqueCode: string
+    joinedAt: Date
+    usageCount: number
+    _count: CampaignParticipantCountAggregateOutputType | null
+    _avg: CampaignParticipantAvgAggregateOutputType | null
+    _sum: CampaignParticipantSumAggregateOutputType | null
+    _min: CampaignParticipantMinAggregateOutputType | null
+    _max: CampaignParticipantMaxAggregateOutputType | null
+  }
+
+  type GetCampaignParticipantGroupByPayload<T extends CampaignParticipantGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CampaignParticipantGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CampaignParticipantGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CampaignParticipantGroupByOutputType[P]>
+            : GetScalarType<T[P], CampaignParticipantGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CampaignParticipantSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    campaignId?: boolean
+    influencerId?: boolean
+    uniqueCode?: boolean
+    joinedAt?: boolean
+    usageCount?: boolean
+    campaign?: boolean | CampaignDefaultArgs<ExtArgs>
+    influencer?: boolean | InfluencerDefaultArgs<ExtArgs>
+    codeUsages?: boolean | CampaignParticipant$codeUsagesArgs<ExtArgs>
+    _count?: boolean | CampaignParticipantCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["campaignParticipant"]>
+
+  export type CampaignParticipantSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    campaignId?: boolean
+    influencerId?: boolean
+    uniqueCode?: boolean
+    joinedAt?: boolean
+    usageCount?: boolean
+    campaign?: boolean | CampaignDefaultArgs<ExtArgs>
+    influencer?: boolean | InfluencerDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["campaignParticipant"]>
+
+  export type CampaignParticipantSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    campaignId?: boolean
+    influencerId?: boolean
+    uniqueCode?: boolean
+    joinedAt?: boolean
+    usageCount?: boolean
+    campaign?: boolean | CampaignDefaultArgs<ExtArgs>
+    influencer?: boolean | InfluencerDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["campaignParticipant"]>
+
+  export type CampaignParticipantSelectScalar = {
+    id?: boolean
+    campaignId?: boolean
+    influencerId?: boolean
+    uniqueCode?: boolean
+    joinedAt?: boolean
+    usageCount?: boolean
+  }
+
+  export type CampaignParticipantOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "campaignId" | "influencerId" | "uniqueCode" | "joinedAt" | "usageCount", ExtArgs["result"]["campaignParticipant"]>
+  export type CampaignParticipantInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    campaign?: boolean | CampaignDefaultArgs<ExtArgs>
+    influencer?: boolean | InfluencerDefaultArgs<ExtArgs>
+    codeUsages?: boolean | CampaignParticipant$codeUsagesArgs<ExtArgs>
+    _count?: boolean | CampaignParticipantCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type CampaignParticipantIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    campaign?: boolean | CampaignDefaultArgs<ExtArgs>
+    influencer?: boolean | InfluencerDefaultArgs<ExtArgs>
+  }
+  export type CampaignParticipantIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    campaign?: boolean | CampaignDefaultArgs<ExtArgs>
+    influencer?: boolean | InfluencerDefaultArgs<ExtArgs>
+  }
+
+  export type $CampaignParticipantPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "CampaignParticipant"
+    objects: {
+      campaign: Prisma.$CampaignPayload<ExtArgs>
+      influencer: Prisma.$InfluencerPayload<ExtArgs>
+      codeUsages: Prisma.$CampaignCodeUsagePayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      campaignId: string
+      influencerId: string
+      uniqueCode: string
+      joinedAt: Date
+      usageCount: number
+    }, ExtArgs["result"]["campaignParticipant"]>
+    composites: {}
+  }
+
+  type CampaignParticipantGetPayload<S extends boolean | null | undefined | CampaignParticipantDefaultArgs> = $Result.GetResult<Prisma.$CampaignParticipantPayload, S>
+
+  type CampaignParticipantCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CampaignParticipantFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CampaignParticipantCountAggregateInputType | true
+    }
+
+  export interface CampaignParticipantDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CampaignParticipant'], meta: { name: 'CampaignParticipant' } }
+    /**
+     * Find zero or one CampaignParticipant that matches the filter.
+     * @param {CampaignParticipantFindUniqueArgs} args - Arguments to find a CampaignParticipant
+     * @example
+     * // Get one CampaignParticipant
+     * const campaignParticipant = await prisma.campaignParticipant.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CampaignParticipantFindUniqueArgs>(args: SelectSubset<T, CampaignParticipantFindUniqueArgs<ExtArgs>>): Prisma__CampaignParticipantClient<$Result.GetResult<Prisma.$CampaignParticipantPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one CampaignParticipant that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CampaignParticipantFindUniqueOrThrowArgs} args - Arguments to find a CampaignParticipant
+     * @example
+     * // Get one CampaignParticipant
+     * const campaignParticipant = await prisma.campaignParticipant.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CampaignParticipantFindUniqueOrThrowArgs>(args: SelectSubset<T, CampaignParticipantFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CampaignParticipantClient<$Result.GetResult<Prisma.$CampaignParticipantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CampaignParticipant that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CampaignParticipantFindFirstArgs} args - Arguments to find a CampaignParticipant
+     * @example
+     * // Get one CampaignParticipant
+     * const campaignParticipant = await prisma.campaignParticipant.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CampaignParticipantFindFirstArgs>(args?: SelectSubset<T, CampaignParticipantFindFirstArgs<ExtArgs>>): Prisma__CampaignParticipantClient<$Result.GetResult<Prisma.$CampaignParticipantPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CampaignParticipant that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CampaignParticipantFindFirstOrThrowArgs} args - Arguments to find a CampaignParticipant
+     * @example
+     * // Get one CampaignParticipant
+     * const campaignParticipant = await prisma.campaignParticipant.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CampaignParticipantFindFirstOrThrowArgs>(args?: SelectSubset<T, CampaignParticipantFindFirstOrThrowArgs<ExtArgs>>): Prisma__CampaignParticipantClient<$Result.GetResult<Prisma.$CampaignParticipantPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more CampaignParticipants that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CampaignParticipantFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all CampaignParticipants
+     * const campaignParticipants = await prisma.campaignParticipant.findMany()
+     * 
+     * // Get first 10 CampaignParticipants
+     * const campaignParticipants = await prisma.campaignParticipant.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const campaignParticipantWithIdOnly = await prisma.campaignParticipant.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends CampaignParticipantFindManyArgs>(args?: SelectSubset<T, CampaignParticipantFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CampaignParticipantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a CampaignParticipant.
+     * @param {CampaignParticipantCreateArgs} args - Arguments to create a CampaignParticipant.
+     * @example
+     * // Create one CampaignParticipant
+     * const CampaignParticipant = await prisma.campaignParticipant.create({
+     *   data: {
+     *     // ... data to create a CampaignParticipant
+     *   }
+     * })
+     * 
+     */
+    create<T extends CampaignParticipantCreateArgs>(args: SelectSubset<T, CampaignParticipantCreateArgs<ExtArgs>>): Prisma__CampaignParticipantClient<$Result.GetResult<Prisma.$CampaignParticipantPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many CampaignParticipants.
+     * @param {CampaignParticipantCreateManyArgs} args - Arguments to create many CampaignParticipants.
+     * @example
+     * // Create many CampaignParticipants
+     * const campaignParticipant = await prisma.campaignParticipant.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CampaignParticipantCreateManyArgs>(args?: SelectSubset<T, CampaignParticipantCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many CampaignParticipants and returns the data saved in the database.
+     * @param {CampaignParticipantCreateManyAndReturnArgs} args - Arguments to create many CampaignParticipants.
+     * @example
+     * // Create many CampaignParticipants
+     * const campaignParticipant = await prisma.campaignParticipant.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many CampaignParticipants and only return the `id`
+     * const campaignParticipantWithIdOnly = await prisma.campaignParticipant.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends CampaignParticipantCreateManyAndReturnArgs>(args?: SelectSubset<T, CampaignParticipantCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CampaignParticipantPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a CampaignParticipant.
+     * @param {CampaignParticipantDeleteArgs} args - Arguments to delete one CampaignParticipant.
+     * @example
+     * // Delete one CampaignParticipant
+     * const CampaignParticipant = await prisma.campaignParticipant.delete({
+     *   where: {
+     *     // ... filter to delete one CampaignParticipant
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CampaignParticipantDeleteArgs>(args: SelectSubset<T, CampaignParticipantDeleteArgs<ExtArgs>>): Prisma__CampaignParticipantClient<$Result.GetResult<Prisma.$CampaignParticipantPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one CampaignParticipant.
+     * @param {CampaignParticipantUpdateArgs} args - Arguments to update one CampaignParticipant.
+     * @example
+     * // Update one CampaignParticipant
+     * const campaignParticipant = await prisma.campaignParticipant.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CampaignParticipantUpdateArgs>(args: SelectSubset<T, CampaignParticipantUpdateArgs<ExtArgs>>): Prisma__CampaignParticipantClient<$Result.GetResult<Prisma.$CampaignParticipantPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more CampaignParticipants.
+     * @param {CampaignParticipantDeleteManyArgs} args - Arguments to filter CampaignParticipants to delete.
+     * @example
+     * // Delete a few CampaignParticipants
+     * const { count } = await prisma.campaignParticipant.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CampaignParticipantDeleteManyArgs>(args?: SelectSubset<T, CampaignParticipantDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CampaignParticipants.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CampaignParticipantUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many CampaignParticipants
+     * const campaignParticipant = await prisma.campaignParticipant.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CampaignParticipantUpdateManyArgs>(args: SelectSubset<T, CampaignParticipantUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CampaignParticipants and returns the data updated in the database.
+     * @param {CampaignParticipantUpdateManyAndReturnArgs} args - Arguments to update many CampaignParticipants.
+     * @example
+     * // Update many CampaignParticipants
+     * const campaignParticipant = await prisma.campaignParticipant.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more CampaignParticipants and only return the `id`
+     * const campaignParticipantWithIdOnly = await prisma.campaignParticipant.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends CampaignParticipantUpdateManyAndReturnArgs>(args: SelectSubset<T, CampaignParticipantUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CampaignParticipantPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one CampaignParticipant.
+     * @param {CampaignParticipantUpsertArgs} args - Arguments to update or create a CampaignParticipant.
+     * @example
+     * // Update or create a CampaignParticipant
+     * const campaignParticipant = await prisma.campaignParticipant.upsert({
+     *   create: {
+     *     // ... data to create a CampaignParticipant
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the CampaignParticipant we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CampaignParticipantUpsertArgs>(args: SelectSubset<T, CampaignParticipantUpsertArgs<ExtArgs>>): Prisma__CampaignParticipantClient<$Result.GetResult<Prisma.$CampaignParticipantPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of CampaignParticipants.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CampaignParticipantCountArgs} args - Arguments to filter CampaignParticipants to count.
+     * @example
+     * // Count the number of CampaignParticipants
+     * const count = await prisma.campaignParticipant.count({
+     *   where: {
+     *     // ... the filter for the CampaignParticipants we want to count
+     *   }
+     * })
+    **/
+    count<T extends CampaignParticipantCountArgs>(
+      args?: Subset<T, CampaignParticipantCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CampaignParticipantCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a CampaignParticipant.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CampaignParticipantAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CampaignParticipantAggregateArgs>(args: Subset<T, CampaignParticipantAggregateArgs>): Prisma.PrismaPromise<GetCampaignParticipantAggregateType<T>>
+
+    /**
+     * Group by CampaignParticipant.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CampaignParticipantGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CampaignParticipantGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CampaignParticipantGroupByArgs['orderBy'] }
+        : { orderBy?: CampaignParticipantGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CampaignParticipantGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCampaignParticipantGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the CampaignParticipant model
+   */
+  readonly fields: CampaignParticipantFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for CampaignParticipant.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CampaignParticipantClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    campaign<T extends CampaignDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CampaignDefaultArgs<ExtArgs>>): Prisma__CampaignClient<$Result.GetResult<Prisma.$CampaignPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    influencer<T extends InfluencerDefaultArgs<ExtArgs> = {}>(args?: Subset<T, InfluencerDefaultArgs<ExtArgs>>): Prisma__InfluencerClient<$Result.GetResult<Prisma.$InfluencerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    codeUsages<T extends CampaignParticipant$codeUsagesArgs<ExtArgs> = {}>(args?: Subset<T, CampaignParticipant$codeUsagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CampaignCodeUsagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the CampaignParticipant model
+   */
+  interface CampaignParticipantFieldRefs {
+    readonly id: FieldRef<"CampaignParticipant", 'String'>
+    readonly campaignId: FieldRef<"CampaignParticipant", 'String'>
+    readonly influencerId: FieldRef<"CampaignParticipant", 'String'>
+    readonly uniqueCode: FieldRef<"CampaignParticipant", 'String'>
+    readonly joinedAt: FieldRef<"CampaignParticipant", 'DateTime'>
+    readonly usageCount: FieldRef<"CampaignParticipant", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * CampaignParticipant findUnique
+   */
+  export type CampaignParticipantFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CampaignParticipant
+     */
+    select?: CampaignParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CampaignParticipant
+     */
+    omit?: CampaignParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CampaignParticipantInclude<ExtArgs> | null
+    /**
+     * Filter, which CampaignParticipant to fetch.
+     */
+    where: CampaignParticipantWhereUniqueInput
+  }
+
+  /**
+   * CampaignParticipant findUniqueOrThrow
+   */
+  export type CampaignParticipantFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CampaignParticipant
+     */
+    select?: CampaignParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CampaignParticipant
+     */
+    omit?: CampaignParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CampaignParticipantInclude<ExtArgs> | null
+    /**
+     * Filter, which CampaignParticipant to fetch.
+     */
+    where: CampaignParticipantWhereUniqueInput
+  }
+
+  /**
+   * CampaignParticipant findFirst
+   */
+  export type CampaignParticipantFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CampaignParticipant
+     */
+    select?: CampaignParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CampaignParticipant
+     */
+    omit?: CampaignParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CampaignParticipantInclude<ExtArgs> | null
+    /**
+     * Filter, which CampaignParticipant to fetch.
+     */
+    where?: CampaignParticipantWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CampaignParticipants to fetch.
+     */
+    orderBy?: CampaignParticipantOrderByWithRelationInput | CampaignParticipantOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CampaignParticipants.
+     */
+    cursor?: CampaignParticipantWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CampaignParticipants from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CampaignParticipants.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CampaignParticipants.
+     */
+    distinct?: CampaignParticipantScalarFieldEnum | CampaignParticipantScalarFieldEnum[]
+  }
+
+  /**
+   * CampaignParticipant findFirstOrThrow
+   */
+  export type CampaignParticipantFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CampaignParticipant
+     */
+    select?: CampaignParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CampaignParticipant
+     */
+    omit?: CampaignParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CampaignParticipantInclude<ExtArgs> | null
+    /**
+     * Filter, which CampaignParticipant to fetch.
+     */
+    where?: CampaignParticipantWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CampaignParticipants to fetch.
+     */
+    orderBy?: CampaignParticipantOrderByWithRelationInput | CampaignParticipantOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CampaignParticipants.
+     */
+    cursor?: CampaignParticipantWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CampaignParticipants from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CampaignParticipants.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CampaignParticipants.
+     */
+    distinct?: CampaignParticipantScalarFieldEnum | CampaignParticipantScalarFieldEnum[]
+  }
+
+  /**
+   * CampaignParticipant findMany
+   */
+  export type CampaignParticipantFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CampaignParticipant
+     */
+    select?: CampaignParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CampaignParticipant
+     */
+    omit?: CampaignParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CampaignParticipantInclude<ExtArgs> | null
+    /**
+     * Filter, which CampaignParticipants to fetch.
+     */
+    where?: CampaignParticipantWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CampaignParticipants to fetch.
+     */
+    orderBy?: CampaignParticipantOrderByWithRelationInput | CampaignParticipantOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing CampaignParticipants.
+     */
+    cursor?: CampaignParticipantWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CampaignParticipants from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CampaignParticipants.
+     */
+    skip?: number
+    distinct?: CampaignParticipantScalarFieldEnum | CampaignParticipantScalarFieldEnum[]
+  }
+
+  /**
+   * CampaignParticipant create
+   */
+  export type CampaignParticipantCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CampaignParticipant
+     */
+    select?: CampaignParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CampaignParticipant
+     */
+    omit?: CampaignParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CampaignParticipantInclude<ExtArgs> | null
+    /**
+     * The data needed to create a CampaignParticipant.
+     */
+    data: XOR<CampaignParticipantCreateInput, CampaignParticipantUncheckedCreateInput>
+  }
+
+  /**
+   * CampaignParticipant createMany
+   */
+  export type CampaignParticipantCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many CampaignParticipants.
+     */
+    data: CampaignParticipantCreateManyInput | CampaignParticipantCreateManyInput[]
+  }
+
+  /**
+   * CampaignParticipant createManyAndReturn
+   */
+  export type CampaignParticipantCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CampaignParticipant
+     */
+    select?: CampaignParticipantSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CampaignParticipant
+     */
+    omit?: CampaignParticipantOmit<ExtArgs> | null
+    /**
+     * The data used to create many CampaignParticipants.
+     */
+    data: CampaignParticipantCreateManyInput | CampaignParticipantCreateManyInput[]
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CampaignParticipantIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CampaignParticipant update
+   */
+  export type CampaignParticipantUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CampaignParticipant
+     */
+    select?: CampaignParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CampaignParticipant
+     */
+    omit?: CampaignParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CampaignParticipantInclude<ExtArgs> | null
+    /**
+     * The data needed to update a CampaignParticipant.
+     */
+    data: XOR<CampaignParticipantUpdateInput, CampaignParticipantUncheckedUpdateInput>
+    /**
+     * Choose, which CampaignParticipant to update.
+     */
+    where: CampaignParticipantWhereUniqueInput
+  }
+
+  /**
+   * CampaignParticipant updateMany
+   */
+  export type CampaignParticipantUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update CampaignParticipants.
+     */
+    data: XOR<CampaignParticipantUpdateManyMutationInput, CampaignParticipantUncheckedUpdateManyInput>
+    /**
+     * Filter which CampaignParticipants to update
+     */
+    where?: CampaignParticipantWhereInput
+    /**
+     * Limit how many CampaignParticipants to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * CampaignParticipant updateManyAndReturn
+   */
+  export type CampaignParticipantUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CampaignParticipant
+     */
+    select?: CampaignParticipantSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CampaignParticipant
+     */
+    omit?: CampaignParticipantOmit<ExtArgs> | null
+    /**
+     * The data used to update CampaignParticipants.
+     */
+    data: XOR<CampaignParticipantUpdateManyMutationInput, CampaignParticipantUncheckedUpdateManyInput>
+    /**
+     * Filter which CampaignParticipants to update
+     */
+    where?: CampaignParticipantWhereInput
+    /**
+     * Limit how many CampaignParticipants to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CampaignParticipantIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CampaignParticipant upsert
+   */
+  export type CampaignParticipantUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CampaignParticipant
+     */
+    select?: CampaignParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CampaignParticipant
+     */
+    omit?: CampaignParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CampaignParticipantInclude<ExtArgs> | null
+    /**
+     * The filter to search for the CampaignParticipant to update in case it exists.
+     */
+    where: CampaignParticipantWhereUniqueInput
+    /**
+     * In case the CampaignParticipant found by the `where` argument doesn't exist, create a new CampaignParticipant with this data.
+     */
+    create: XOR<CampaignParticipantCreateInput, CampaignParticipantUncheckedCreateInput>
+    /**
+     * In case the CampaignParticipant was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CampaignParticipantUpdateInput, CampaignParticipantUncheckedUpdateInput>
+  }
+
+  /**
+   * CampaignParticipant delete
+   */
+  export type CampaignParticipantDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CampaignParticipant
+     */
+    select?: CampaignParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CampaignParticipant
+     */
+    omit?: CampaignParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CampaignParticipantInclude<ExtArgs> | null
+    /**
+     * Filter which CampaignParticipant to delete.
+     */
+    where: CampaignParticipantWhereUniqueInput
+  }
+
+  /**
+   * CampaignParticipant deleteMany
+   */
+  export type CampaignParticipantDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CampaignParticipants to delete
+     */
+    where?: CampaignParticipantWhereInput
+    /**
+     * Limit how many CampaignParticipants to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * CampaignParticipant.codeUsages
+   */
+  export type CampaignParticipant$codeUsagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CampaignCodeUsage
+     */
+    select?: CampaignCodeUsageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CampaignCodeUsage
+     */
+    omit?: CampaignCodeUsageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CampaignCodeUsageInclude<ExtArgs> | null
+    where?: CampaignCodeUsageWhereInput
+    orderBy?: CampaignCodeUsageOrderByWithRelationInput | CampaignCodeUsageOrderByWithRelationInput[]
+    cursor?: CampaignCodeUsageWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CampaignCodeUsageScalarFieldEnum | CampaignCodeUsageScalarFieldEnum[]
+  }
+
+  /**
+   * CampaignParticipant without action
+   */
+  export type CampaignParticipantDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CampaignParticipant
+     */
+    select?: CampaignParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CampaignParticipant
+     */
+    omit?: CampaignParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CampaignParticipantInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model CampaignCodeUsage
+   */
+
+  export type AggregateCampaignCodeUsage = {
+    _count: CampaignCodeUsageCountAggregateOutputType | null
+    _min: CampaignCodeUsageMinAggregateOutputType | null
+    _max: CampaignCodeUsageMaxAggregateOutputType | null
+  }
+
+  export type CampaignCodeUsageMinAggregateOutputType = {
+    id: string | null
+    campaignId: string | null
+    participantId: string | null
+    customerName: string | null
+    customerPhone: string | null
+    note: string | null
+    usedAt: Date | null
+  }
+
+  export type CampaignCodeUsageMaxAggregateOutputType = {
+    id: string | null
+    campaignId: string | null
+    participantId: string | null
+    customerName: string | null
+    customerPhone: string | null
+    note: string | null
+    usedAt: Date | null
+  }
+
+  export type CampaignCodeUsageCountAggregateOutputType = {
+    id: number
+    campaignId: number
+    participantId: number
+    customerName: number
+    customerPhone: number
+    note: number
+    usedAt: number
+    _all: number
+  }
+
+
+  export type CampaignCodeUsageMinAggregateInputType = {
+    id?: true
+    campaignId?: true
+    participantId?: true
+    customerName?: true
+    customerPhone?: true
+    note?: true
+    usedAt?: true
+  }
+
+  export type CampaignCodeUsageMaxAggregateInputType = {
+    id?: true
+    campaignId?: true
+    participantId?: true
+    customerName?: true
+    customerPhone?: true
+    note?: true
+    usedAt?: true
+  }
+
+  export type CampaignCodeUsageCountAggregateInputType = {
+    id?: true
+    campaignId?: true
+    participantId?: true
+    customerName?: true
+    customerPhone?: true
+    note?: true
+    usedAt?: true
+    _all?: true
+  }
+
+  export type CampaignCodeUsageAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CampaignCodeUsage to aggregate.
+     */
+    where?: CampaignCodeUsageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CampaignCodeUsages to fetch.
+     */
+    orderBy?: CampaignCodeUsageOrderByWithRelationInput | CampaignCodeUsageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CampaignCodeUsageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CampaignCodeUsages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CampaignCodeUsages.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned CampaignCodeUsages
+    **/
+    _count?: true | CampaignCodeUsageCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CampaignCodeUsageMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CampaignCodeUsageMaxAggregateInputType
+  }
+
+  export type GetCampaignCodeUsageAggregateType<T extends CampaignCodeUsageAggregateArgs> = {
+        [P in keyof T & keyof AggregateCampaignCodeUsage]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCampaignCodeUsage[P]>
+      : GetScalarType<T[P], AggregateCampaignCodeUsage[P]>
+  }
+
+
+
+
+  export type CampaignCodeUsageGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CampaignCodeUsageWhereInput
+    orderBy?: CampaignCodeUsageOrderByWithAggregationInput | CampaignCodeUsageOrderByWithAggregationInput[]
+    by: CampaignCodeUsageScalarFieldEnum[] | CampaignCodeUsageScalarFieldEnum
+    having?: CampaignCodeUsageScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CampaignCodeUsageCountAggregateInputType | true
+    _min?: CampaignCodeUsageMinAggregateInputType
+    _max?: CampaignCodeUsageMaxAggregateInputType
+  }
+
+  export type CampaignCodeUsageGroupByOutputType = {
+    id: string
+    campaignId: string
+    participantId: string
+    customerName: string | null
+    customerPhone: string | null
+    note: string | null
+    usedAt: Date
+    _count: CampaignCodeUsageCountAggregateOutputType | null
+    _min: CampaignCodeUsageMinAggregateOutputType | null
+    _max: CampaignCodeUsageMaxAggregateOutputType | null
+  }
+
+  type GetCampaignCodeUsageGroupByPayload<T extends CampaignCodeUsageGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CampaignCodeUsageGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CampaignCodeUsageGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CampaignCodeUsageGroupByOutputType[P]>
+            : GetScalarType<T[P], CampaignCodeUsageGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CampaignCodeUsageSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    campaignId?: boolean
+    participantId?: boolean
+    customerName?: boolean
+    customerPhone?: boolean
+    note?: boolean
+    usedAt?: boolean
+    campaign?: boolean | CampaignDefaultArgs<ExtArgs>
+    participant?: boolean | CampaignParticipantDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["campaignCodeUsage"]>
+
+  export type CampaignCodeUsageSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    campaignId?: boolean
+    participantId?: boolean
+    customerName?: boolean
+    customerPhone?: boolean
+    note?: boolean
+    usedAt?: boolean
+    campaign?: boolean | CampaignDefaultArgs<ExtArgs>
+    participant?: boolean | CampaignParticipantDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["campaignCodeUsage"]>
+
+  export type CampaignCodeUsageSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    campaignId?: boolean
+    participantId?: boolean
+    customerName?: boolean
+    customerPhone?: boolean
+    note?: boolean
+    usedAt?: boolean
+    campaign?: boolean | CampaignDefaultArgs<ExtArgs>
+    participant?: boolean | CampaignParticipantDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["campaignCodeUsage"]>
+
+  export type CampaignCodeUsageSelectScalar = {
+    id?: boolean
+    campaignId?: boolean
+    participantId?: boolean
+    customerName?: boolean
+    customerPhone?: boolean
+    note?: boolean
+    usedAt?: boolean
+  }
+
+  export type CampaignCodeUsageOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "campaignId" | "participantId" | "customerName" | "customerPhone" | "note" | "usedAt", ExtArgs["result"]["campaignCodeUsage"]>
+  export type CampaignCodeUsageInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    campaign?: boolean | CampaignDefaultArgs<ExtArgs>
+    participant?: boolean | CampaignParticipantDefaultArgs<ExtArgs>
+  }
+  export type CampaignCodeUsageIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    campaign?: boolean | CampaignDefaultArgs<ExtArgs>
+    participant?: boolean | CampaignParticipantDefaultArgs<ExtArgs>
+  }
+  export type CampaignCodeUsageIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    campaign?: boolean | CampaignDefaultArgs<ExtArgs>
+    participant?: boolean | CampaignParticipantDefaultArgs<ExtArgs>
+  }
+
+  export type $CampaignCodeUsagePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "CampaignCodeUsage"
+    objects: {
+      campaign: Prisma.$CampaignPayload<ExtArgs>
+      participant: Prisma.$CampaignParticipantPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      campaignId: string
+      participantId: string
+      customerName: string | null
+      customerPhone: string | null
+      note: string | null
+      usedAt: Date
+    }, ExtArgs["result"]["campaignCodeUsage"]>
+    composites: {}
+  }
+
+  type CampaignCodeUsageGetPayload<S extends boolean | null | undefined | CampaignCodeUsageDefaultArgs> = $Result.GetResult<Prisma.$CampaignCodeUsagePayload, S>
+
+  type CampaignCodeUsageCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CampaignCodeUsageFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CampaignCodeUsageCountAggregateInputType | true
+    }
+
+  export interface CampaignCodeUsageDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CampaignCodeUsage'], meta: { name: 'CampaignCodeUsage' } }
+    /**
+     * Find zero or one CampaignCodeUsage that matches the filter.
+     * @param {CampaignCodeUsageFindUniqueArgs} args - Arguments to find a CampaignCodeUsage
+     * @example
+     * // Get one CampaignCodeUsage
+     * const campaignCodeUsage = await prisma.campaignCodeUsage.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CampaignCodeUsageFindUniqueArgs>(args: SelectSubset<T, CampaignCodeUsageFindUniqueArgs<ExtArgs>>): Prisma__CampaignCodeUsageClient<$Result.GetResult<Prisma.$CampaignCodeUsagePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one CampaignCodeUsage that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CampaignCodeUsageFindUniqueOrThrowArgs} args - Arguments to find a CampaignCodeUsage
+     * @example
+     * // Get one CampaignCodeUsage
+     * const campaignCodeUsage = await prisma.campaignCodeUsage.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CampaignCodeUsageFindUniqueOrThrowArgs>(args: SelectSubset<T, CampaignCodeUsageFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CampaignCodeUsageClient<$Result.GetResult<Prisma.$CampaignCodeUsagePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CampaignCodeUsage that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CampaignCodeUsageFindFirstArgs} args - Arguments to find a CampaignCodeUsage
+     * @example
+     * // Get one CampaignCodeUsage
+     * const campaignCodeUsage = await prisma.campaignCodeUsage.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CampaignCodeUsageFindFirstArgs>(args?: SelectSubset<T, CampaignCodeUsageFindFirstArgs<ExtArgs>>): Prisma__CampaignCodeUsageClient<$Result.GetResult<Prisma.$CampaignCodeUsagePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CampaignCodeUsage that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CampaignCodeUsageFindFirstOrThrowArgs} args - Arguments to find a CampaignCodeUsage
+     * @example
+     * // Get one CampaignCodeUsage
+     * const campaignCodeUsage = await prisma.campaignCodeUsage.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CampaignCodeUsageFindFirstOrThrowArgs>(args?: SelectSubset<T, CampaignCodeUsageFindFirstOrThrowArgs<ExtArgs>>): Prisma__CampaignCodeUsageClient<$Result.GetResult<Prisma.$CampaignCodeUsagePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more CampaignCodeUsages that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CampaignCodeUsageFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all CampaignCodeUsages
+     * const campaignCodeUsages = await prisma.campaignCodeUsage.findMany()
+     * 
+     * // Get first 10 CampaignCodeUsages
+     * const campaignCodeUsages = await prisma.campaignCodeUsage.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const campaignCodeUsageWithIdOnly = await prisma.campaignCodeUsage.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends CampaignCodeUsageFindManyArgs>(args?: SelectSubset<T, CampaignCodeUsageFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CampaignCodeUsagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a CampaignCodeUsage.
+     * @param {CampaignCodeUsageCreateArgs} args - Arguments to create a CampaignCodeUsage.
+     * @example
+     * // Create one CampaignCodeUsage
+     * const CampaignCodeUsage = await prisma.campaignCodeUsage.create({
+     *   data: {
+     *     // ... data to create a CampaignCodeUsage
+     *   }
+     * })
+     * 
+     */
+    create<T extends CampaignCodeUsageCreateArgs>(args: SelectSubset<T, CampaignCodeUsageCreateArgs<ExtArgs>>): Prisma__CampaignCodeUsageClient<$Result.GetResult<Prisma.$CampaignCodeUsagePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many CampaignCodeUsages.
+     * @param {CampaignCodeUsageCreateManyArgs} args - Arguments to create many CampaignCodeUsages.
+     * @example
+     * // Create many CampaignCodeUsages
+     * const campaignCodeUsage = await prisma.campaignCodeUsage.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CampaignCodeUsageCreateManyArgs>(args?: SelectSubset<T, CampaignCodeUsageCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many CampaignCodeUsages and returns the data saved in the database.
+     * @param {CampaignCodeUsageCreateManyAndReturnArgs} args - Arguments to create many CampaignCodeUsages.
+     * @example
+     * // Create many CampaignCodeUsages
+     * const campaignCodeUsage = await prisma.campaignCodeUsage.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many CampaignCodeUsages and only return the `id`
+     * const campaignCodeUsageWithIdOnly = await prisma.campaignCodeUsage.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends CampaignCodeUsageCreateManyAndReturnArgs>(args?: SelectSubset<T, CampaignCodeUsageCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CampaignCodeUsagePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a CampaignCodeUsage.
+     * @param {CampaignCodeUsageDeleteArgs} args - Arguments to delete one CampaignCodeUsage.
+     * @example
+     * // Delete one CampaignCodeUsage
+     * const CampaignCodeUsage = await prisma.campaignCodeUsage.delete({
+     *   where: {
+     *     // ... filter to delete one CampaignCodeUsage
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CampaignCodeUsageDeleteArgs>(args: SelectSubset<T, CampaignCodeUsageDeleteArgs<ExtArgs>>): Prisma__CampaignCodeUsageClient<$Result.GetResult<Prisma.$CampaignCodeUsagePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one CampaignCodeUsage.
+     * @param {CampaignCodeUsageUpdateArgs} args - Arguments to update one CampaignCodeUsage.
+     * @example
+     * // Update one CampaignCodeUsage
+     * const campaignCodeUsage = await prisma.campaignCodeUsage.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CampaignCodeUsageUpdateArgs>(args: SelectSubset<T, CampaignCodeUsageUpdateArgs<ExtArgs>>): Prisma__CampaignCodeUsageClient<$Result.GetResult<Prisma.$CampaignCodeUsagePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more CampaignCodeUsages.
+     * @param {CampaignCodeUsageDeleteManyArgs} args - Arguments to filter CampaignCodeUsages to delete.
+     * @example
+     * // Delete a few CampaignCodeUsages
+     * const { count } = await prisma.campaignCodeUsage.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CampaignCodeUsageDeleteManyArgs>(args?: SelectSubset<T, CampaignCodeUsageDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CampaignCodeUsages.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CampaignCodeUsageUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many CampaignCodeUsages
+     * const campaignCodeUsage = await prisma.campaignCodeUsage.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CampaignCodeUsageUpdateManyArgs>(args: SelectSubset<T, CampaignCodeUsageUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CampaignCodeUsages and returns the data updated in the database.
+     * @param {CampaignCodeUsageUpdateManyAndReturnArgs} args - Arguments to update many CampaignCodeUsages.
+     * @example
+     * // Update many CampaignCodeUsages
+     * const campaignCodeUsage = await prisma.campaignCodeUsage.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more CampaignCodeUsages and only return the `id`
+     * const campaignCodeUsageWithIdOnly = await prisma.campaignCodeUsage.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends CampaignCodeUsageUpdateManyAndReturnArgs>(args: SelectSubset<T, CampaignCodeUsageUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CampaignCodeUsagePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one CampaignCodeUsage.
+     * @param {CampaignCodeUsageUpsertArgs} args - Arguments to update or create a CampaignCodeUsage.
+     * @example
+     * // Update or create a CampaignCodeUsage
+     * const campaignCodeUsage = await prisma.campaignCodeUsage.upsert({
+     *   create: {
+     *     // ... data to create a CampaignCodeUsage
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the CampaignCodeUsage we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CampaignCodeUsageUpsertArgs>(args: SelectSubset<T, CampaignCodeUsageUpsertArgs<ExtArgs>>): Prisma__CampaignCodeUsageClient<$Result.GetResult<Prisma.$CampaignCodeUsagePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of CampaignCodeUsages.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CampaignCodeUsageCountArgs} args - Arguments to filter CampaignCodeUsages to count.
+     * @example
+     * // Count the number of CampaignCodeUsages
+     * const count = await prisma.campaignCodeUsage.count({
+     *   where: {
+     *     // ... the filter for the CampaignCodeUsages we want to count
+     *   }
+     * })
+    **/
+    count<T extends CampaignCodeUsageCountArgs>(
+      args?: Subset<T, CampaignCodeUsageCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CampaignCodeUsageCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a CampaignCodeUsage.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CampaignCodeUsageAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CampaignCodeUsageAggregateArgs>(args: Subset<T, CampaignCodeUsageAggregateArgs>): Prisma.PrismaPromise<GetCampaignCodeUsageAggregateType<T>>
+
+    /**
+     * Group by CampaignCodeUsage.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CampaignCodeUsageGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CampaignCodeUsageGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CampaignCodeUsageGroupByArgs['orderBy'] }
+        : { orderBy?: CampaignCodeUsageGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CampaignCodeUsageGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCampaignCodeUsageGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the CampaignCodeUsage model
+   */
+  readonly fields: CampaignCodeUsageFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for CampaignCodeUsage.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CampaignCodeUsageClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    campaign<T extends CampaignDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CampaignDefaultArgs<ExtArgs>>): Prisma__CampaignClient<$Result.GetResult<Prisma.$CampaignPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    participant<T extends CampaignParticipantDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CampaignParticipantDefaultArgs<ExtArgs>>): Prisma__CampaignParticipantClient<$Result.GetResult<Prisma.$CampaignParticipantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the CampaignCodeUsage model
+   */
+  interface CampaignCodeUsageFieldRefs {
+    readonly id: FieldRef<"CampaignCodeUsage", 'String'>
+    readonly campaignId: FieldRef<"CampaignCodeUsage", 'String'>
+    readonly participantId: FieldRef<"CampaignCodeUsage", 'String'>
+    readonly customerName: FieldRef<"CampaignCodeUsage", 'String'>
+    readonly customerPhone: FieldRef<"CampaignCodeUsage", 'String'>
+    readonly note: FieldRef<"CampaignCodeUsage", 'String'>
+    readonly usedAt: FieldRef<"CampaignCodeUsage", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * CampaignCodeUsage findUnique
+   */
+  export type CampaignCodeUsageFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CampaignCodeUsage
+     */
+    select?: CampaignCodeUsageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CampaignCodeUsage
+     */
+    omit?: CampaignCodeUsageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CampaignCodeUsageInclude<ExtArgs> | null
+    /**
+     * Filter, which CampaignCodeUsage to fetch.
+     */
+    where: CampaignCodeUsageWhereUniqueInput
+  }
+
+  /**
+   * CampaignCodeUsage findUniqueOrThrow
+   */
+  export type CampaignCodeUsageFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CampaignCodeUsage
+     */
+    select?: CampaignCodeUsageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CampaignCodeUsage
+     */
+    omit?: CampaignCodeUsageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CampaignCodeUsageInclude<ExtArgs> | null
+    /**
+     * Filter, which CampaignCodeUsage to fetch.
+     */
+    where: CampaignCodeUsageWhereUniqueInput
+  }
+
+  /**
+   * CampaignCodeUsage findFirst
+   */
+  export type CampaignCodeUsageFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CampaignCodeUsage
+     */
+    select?: CampaignCodeUsageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CampaignCodeUsage
+     */
+    omit?: CampaignCodeUsageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CampaignCodeUsageInclude<ExtArgs> | null
+    /**
+     * Filter, which CampaignCodeUsage to fetch.
+     */
+    where?: CampaignCodeUsageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CampaignCodeUsages to fetch.
+     */
+    orderBy?: CampaignCodeUsageOrderByWithRelationInput | CampaignCodeUsageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CampaignCodeUsages.
+     */
+    cursor?: CampaignCodeUsageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CampaignCodeUsages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CampaignCodeUsages.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CampaignCodeUsages.
+     */
+    distinct?: CampaignCodeUsageScalarFieldEnum | CampaignCodeUsageScalarFieldEnum[]
+  }
+
+  /**
+   * CampaignCodeUsage findFirstOrThrow
+   */
+  export type CampaignCodeUsageFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CampaignCodeUsage
+     */
+    select?: CampaignCodeUsageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CampaignCodeUsage
+     */
+    omit?: CampaignCodeUsageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CampaignCodeUsageInclude<ExtArgs> | null
+    /**
+     * Filter, which CampaignCodeUsage to fetch.
+     */
+    where?: CampaignCodeUsageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CampaignCodeUsages to fetch.
+     */
+    orderBy?: CampaignCodeUsageOrderByWithRelationInput | CampaignCodeUsageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CampaignCodeUsages.
+     */
+    cursor?: CampaignCodeUsageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CampaignCodeUsages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CampaignCodeUsages.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CampaignCodeUsages.
+     */
+    distinct?: CampaignCodeUsageScalarFieldEnum | CampaignCodeUsageScalarFieldEnum[]
+  }
+
+  /**
+   * CampaignCodeUsage findMany
+   */
+  export type CampaignCodeUsageFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CampaignCodeUsage
+     */
+    select?: CampaignCodeUsageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CampaignCodeUsage
+     */
+    omit?: CampaignCodeUsageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CampaignCodeUsageInclude<ExtArgs> | null
+    /**
+     * Filter, which CampaignCodeUsages to fetch.
+     */
+    where?: CampaignCodeUsageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CampaignCodeUsages to fetch.
+     */
+    orderBy?: CampaignCodeUsageOrderByWithRelationInput | CampaignCodeUsageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing CampaignCodeUsages.
+     */
+    cursor?: CampaignCodeUsageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CampaignCodeUsages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CampaignCodeUsages.
+     */
+    skip?: number
+    distinct?: CampaignCodeUsageScalarFieldEnum | CampaignCodeUsageScalarFieldEnum[]
+  }
+
+  /**
+   * CampaignCodeUsage create
+   */
+  export type CampaignCodeUsageCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CampaignCodeUsage
+     */
+    select?: CampaignCodeUsageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CampaignCodeUsage
+     */
+    omit?: CampaignCodeUsageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CampaignCodeUsageInclude<ExtArgs> | null
+    /**
+     * The data needed to create a CampaignCodeUsage.
+     */
+    data: XOR<CampaignCodeUsageCreateInput, CampaignCodeUsageUncheckedCreateInput>
+  }
+
+  /**
+   * CampaignCodeUsage createMany
+   */
+  export type CampaignCodeUsageCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many CampaignCodeUsages.
+     */
+    data: CampaignCodeUsageCreateManyInput | CampaignCodeUsageCreateManyInput[]
+  }
+
+  /**
+   * CampaignCodeUsage createManyAndReturn
+   */
+  export type CampaignCodeUsageCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CampaignCodeUsage
+     */
+    select?: CampaignCodeUsageSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CampaignCodeUsage
+     */
+    omit?: CampaignCodeUsageOmit<ExtArgs> | null
+    /**
+     * The data used to create many CampaignCodeUsages.
+     */
+    data: CampaignCodeUsageCreateManyInput | CampaignCodeUsageCreateManyInput[]
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CampaignCodeUsageIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CampaignCodeUsage update
+   */
+  export type CampaignCodeUsageUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CampaignCodeUsage
+     */
+    select?: CampaignCodeUsageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CampaignCodeUsage
+     */
+    omit?: CampaignCodeUsageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CampaignCodeUsageInclude<ExtArgs> | null
+    /**
+     * The data needed to update a CampaignCodeUsage.
+     */
+    data: XOR<CampaignCodeUsageUpdateInput, CampaignCodeUsageUncheckedUpdateInput>
+    /**
+     * Choose, which CampaignCodeUsage to update.
+     */
+    where: CampaignCodeUsageWhereUniqueInput
+  }
+
+  /**
+   * CampaignCodeUsage updateMany
+   */
+  export type CampaignCodeUsageUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update CampaignCodeUsages.
+     */
+    data: XOR<CampaignCodeUsageUpdateManyMutationInput, CampaignCodeUsageUncheckedUpdateManyInput>
+    /**
+     * Filter which CampaignCodeUsages to update
+     */
+    where?: CampaignCodeUsageWhereInput
+    /**
+     * Limit how many CampaignCodeUsages to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * CampaignCodeUsage updateManyAndReturn
+   */
+  export type CampaignCodeUsageUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CampaignCodeUsage
+     */
+    select?: CampaignCodeUsageSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CampaignCodeUsage
+     */
+    omit?: CampaignCodeUsageOmit<ExtArgs> | null
+    /**
+     * The data used to update CampaignCodeUsages.
+     */
+    data: XOR<CampaignCodeUsageUpdateManyMutationInput, CampaignCodeUsageUncheckedUpdateManyInput>
+    /**
+     * Filter which CampaignCodeUsages to update
+     */
+    where?: CampaignCodeUsageWhereInput
+    /**
+     * Limit how many CampaignCodeUsages to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CampaignCodeUsageIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CampaignCodeUsage upsert
+   */
+  export type CampaignCodeUsageUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CampaignCodeUsage
+     */
+    select?: CampaignCodeUsageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CampaignCodeUsage
+     */
+    omit?: CampaignCodeUsageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CampaignCodeUsageInclude<ExtArgs> | null
+    /**
+     * The filter to search for the CampaignCodeUsage to update in case it exists.
+     */
+    where: CampaignCodeUsageWhereUniqueInput
+    /**
+     * In case the CampaignCodeUsage found by the `where` argument doesn't exist, create a new CampaignCodeUsage with this data.
+     */
+    create: XOR<CampaignCodeUsageCreateInput, CampaignCodeUsageUncheckedCreateInput>
+    /**
+     * In case the CampaignCodeUsage was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CampaignCodeUsageUpdateInput, CampaignCodeUsageUncheckedUpdateInput>
+  }
+
+  /**
+   * CampaignCodeUsage delete
+   */
+  export type CampaignCodeUsageDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CampaignCodeUsage
+     */
+    select?: CampaignCodeUsageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CampaignCodeUsage
+     */
+    omit?: CampaignCodeUsageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CampaignCodeUsageInclude<ExtArgs> | null
+    /**
+     * Filter which CampaignCodeUsage to delete.
+     */
+    where: CampaignCodeUsageWhereUniqueInput
+  }
+
+  /**
+   * CampaignCodeUsage deleteMany
+   */
+  export type CampaignCodeUsageDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CampaignCodeUsages to delete
+     */
+    where?: CampaignCodeUsageWhereInput
+    /**
+     * Limit how many CampaignCodeUsages to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * CampaignCodeUsage without action
+   */
+  export type CampaignCodeUsageDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CampaignCodeUsage
+     */
+    select?: CampaignCodeUsageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CampaignCodeUsage
+     */
+    omit?: CampaignCodeUsageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CampaignCodeUsageInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
   export const TransactionIsolationLevel: {
-    ReadUncommitted: 'ReadUncommitted',
-    ReadCommitted: 'ReadCommitted',
-    RepeatableRead: 'RepeatableRead',
     Serializable: 'Serializable'
   };
 
@@ -16797,20 +31307,212 @@ export namespace Prisma {
   export type PostVersionScalarFieldEnum = (typeof PostVersionScalarFieldEnum)[keyof typeof PostVersionScalarFieldEnum]
 
 
+  export const InfluencerScalarFieldEnum: {
+    id: 'id',
+    fullName: 'fullName',
+    email: 'email',
+    password: 'password',
+    phone: 'phone',
+    tcNo: 'tcNo',
+    birthDate: 'birthDate',
+    avatarUrl: 'avatarUrl',
+    instagramHandle: 'instagramHandle',
+    instagramFollowers: 'instagramFollowers',
+    tiktokHandle: 'tiktokHandle',
+    youtubeHandle: 'youtubeHandle',
+    tier: 'tier',
+    uniqueCode: 'uniqueCode',
+    uniqueUrl: 'uniqueUrl',
+    status: 'status',
+    rejectReason: 'rejectReason',
+    bankIban: 'bankIban',
+    bankName: 'bankName',
+    bankAccountName: 'bankAccountName',
+    totalSales: 'totalSales',
+    totalEarnings: 'totalEarnings',
+    pendingEarnings: 'pendingEarnings',
+    totalClicks: 'totalClicks',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type InfluencerScalarFieldEnum = (typeof InfluencerScalarFieldEnum)[keyof typeof InfluencerScalarFieldEnum]
+
+
+  export const ShareScalarFieldEnum: {
+    id: 'id',
+    influencerId: 'influencerId',
+    platform: 'platform',
+    shareUrl: 'shareUrl',
+    screenshotUrl: 'screenshotUrl',
+    shareDate: 'shareDate',
+    description: 'description',
+    status: 'status',
+    rejectReason: 'rejectReason',
+    viewCount: 'viewCount',
+    clickCount: 'clickCount',
+    saleCount: 'saleCount',
+    approvedAt: 'approvedAt',
+    approvedBy: 'approvedBy',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type ShareScalarFieldEnum = (typeof ShareScalarFieldEnum)[keyof typeof ShareScalarFieldEnum]
+
+
+  export const CustomerScalarFieldEnum: {
+    id: 'id',
+    fullName: 'fullName',
+    phone: 'phone',
+    email: 'email',
+    tcNo: 'tcNo',
+    source: 'source',
+    influencerId: 'influencerId',
+    referrerUrl: 'referrerUrl',
+    couponUsed: 'couponUsed',
+    firstSeenAt: 'firstSeenAt',
+    status: 'status',
+    assignedOperatorId: 'assignedOperatorId',
+    notes: 'notes',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type CustomerScalarFieldEnum = (typeof CustomerScalarFieldEnum)[keyof typeof CustomerScalarFieldEnum]
+
+
+  export const SaleScalarFieldEnum: {
+    id: 'id',
+    customerId: 'customerId',
+    influencerId: 'influencerId',
+    umrePackage: 'umrePackage',
+    saleAmount: 'saleAmount',
+    commissionRate: 'commissionRate',
+    commissionAmount: 'commissionAmount',
+    commissionStatus: 'commissionStatus',
+    saleDate: 'saleDate',
+    completionDate: 'completionDate',
+    refundDeadline: 'refundDeadline',
+    notes: 'notes',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type SaleScalarFieldEnum = (typeof SaleScalarFieldEnum)[keyof typeof SaleScalarFieldEnum]
+
+
+  export const PaymentScalarFieldEnum: {
+    id: 'id',
+    influencerId: 'influencerId',
+    periodMonth: 'periodMonth',
+    totalAmount: 'totalAmount',
+    taxDeduction: 'taxDeduction',
+    netAmount: 'netAmount',
+    status: 'status',
+    approvedBy: 'approvedBy',
+    approvedAt: 'approvedAt',
+    paidAt: 'paidAt',
+    bankReference: 'bankReference',
+    notes: 'notes',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
+
+
+  export const PaymentSaleScalarFieldEnum: {
+    paymentId: 'paymentId',
+    saleId: 'saleId'
+  };
+
+  export type PaymentSaleScalarFieldEnum = (typeof PaymentSaleScalarFieldEnum)[keyof typeof PaymentSaleScalarFieldEnum]
+
+
+  export const LinkClickScalarFieldEnum: {
+    id: 'id',
+    influencerId: 'influencerId',
+    shareId: 'shareId',
+    ipAddress: 'ipAddress',
+    userAgent: 'userAgent',
+    referrer: 'referrer',
+    country: 'country',
+    utmSource: 'utmSource',
+    utmContent: 'utmContent',
+    isBot: 'isBot',
+    clickedAt: 'clickedAt'
+  };
+
+  export type LinkClickScalarFieldEnum = (typeof LinkClickScalarFieldEnum)[keyof typeof LinkClickScalarFieldEnum]
+
+
+  export const AttributionOverrideScalarFieldEnum: {
+    id: 'id',
+    customerId: 'customerId',
+    oldInfluencerId: 'oldInfluencerId',
+    newInfluencerId: 'newInfluencerId',
+    reason: 'reason',
+    overriddenBy: 'overriddenBy',
+    overriddenAt: 'overriddenAt'
+  };
+
+  export type AttributionOverrideScalarFieldEnum = (typeof AttributionOverrideScalarFieldEnum)[keyof typeof AttributionOverrideScalarFieldEnum]
+
+
+  export const CampaignScalarFieldEnum: {
+    id: 'id',
+    title: 'title',
+    slug: 'slug',
+    description: 'description',
+    type: 'type',
+    discountType: 'discountType',
+    discountValue: 'discountValue',
+    codeTemplate: 'codeTemplate',
+    status: 'status',
+    startDate: 'startDate',
+    endDate: 'endDate',
+    maxParticipants: 'maxParticipants',
+    imageUrl: 'imageUrl',
+    createdBy: 'createdBy',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type CampaignScalarFieldEnum = (typeof CampaignScalarFieldEnum)[keyof typeof CampaignScalarFieldEnum]
+
+
+  export const CampaignParticipantScalarFieldEnum: {
+    id: 'id',
+    campaignId: 'campaignId',
+    influencerId: 'influencerId',
+    uniqueCode: 'uniqueCode',
+    joinedAt: 'joinedAt',
+    usageCount: 'usageCount'
+  };
+
+  export type CampaignParticipantScalarFieldEnum = (typeof CampaignParticipantScalarFieldEnum)[keyof typeof CampaignParticipantScalarFieldEnum]
+
+
+  export const CampaignCodeUsageScalarFieldEnum: {
+    id: 'id',
+    campaignId: 'campaignId',
+    participantId: 'participantId',
+    customerName: 'customerName',
+    customerPhone: 'customerPhone',
+    note: 'note',
+    usedAt: 'usedAt'
+  };
+
+  export type CampaignCodeUsageScalarFieldEnum = (typeof CampaignCodeUsageScalarFieldEnum)[keyof typeof CampaignCodeUsageScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
   };
 
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
-
-
-  export const QueryMode: {
-    default: 'default',
-    insensitive: 'insensitive'
-  };
-
-  export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
 
 
   export const NullsOrder: {
@@ -16834,23 +31536,9 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'String[]'
-   */
-  export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String[]'>
-    
-
-
-  /**
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-    
-
-
-  /**
-   * Reference to a field of type 'Int[]'
-   */
-  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
     
 
 
@@ -16862,23 +31550,9 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Float[]'
-   */
-  export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
-    
-
-
-  /**
    * Reference to a field of type 'DateTime'
    */
   export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
-    
-
-
-  /**
-   * Reference to a field of type 'DateTime[]'
-   */
-  export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime[]'>
     
 
 
@@ -17953,6 +32627,1065 @@ export namespace Prisma {
     version?: IntWithAggregatesFilter<"PostVersion"> | number
     savedBy?: StringNullableWithAggregatesFilter<"PostVersion"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"PostVersion"> | Date | string
+  }
+
+  export type InfluencerWhereInput = {
+    AND?: InfluencerWhereInput | InfluencerWhereInput[]
+    OR?: InfluencerWhereInput[]
+    NOT?: InfluencerWhereInput | InfluencerWhereInput[]
+    id?: StringFilter<"Influencer"> | string
+    fullName?: StringFilter<"Influencer"> | string
+    email?: StringFilter<"Influencer"> | string
+    password?: StringFilter<"Influencer"> | string
+    phone?: StringFilter<"Influencer"> | string
+    tcNo?: StringNullableFilter<"Influencer"> | string | null
+    birthDate?: StringNullableFilter<"Influencer"> | string | null
+    avatarUrl?: StringNullableFilter<"Influencer"> | string | null
+    instagramHandle?: StringNullableFilter<"Influencer"> | string | null
+    instagramFollowers?: IntNullableFilter<"Influencer"> | number | null
+    tiktokHandle?: StringNullableFilter<"Influencer"> | string | null
+    youtubeHandle?: StringNullableFilter<"Influencer"> | string | null
+    tier?: StringFilter<"Influencer"> | string
+    uniqueCode?: StringFilter<"Influencer"> | string
+    uniqueUrl?: StringFilter<"Influencer"> | string
+    status?: StringFilter<"Influencer"> | string
+    rejectReason?: StringNullableFilter<"Influencer"> | string | null
+    bankIban?: StringNullableFilter<"Influencer"> | string | null
+    bankName?: StringNullableFilter<"Influencer"> | string | null
+    bankAccountName?: StringNullableFilter<"Influencer"> | string | null
+    totalSales?: IntFilter<"Influencer"> | number
+    totalEarnings?: FloatFilter<"Influencer"> | number
+    pendingEarnings?: FloatFilter<"Influencer"> | number
+    totalClicks?: IntFilter<"Influencer"> | number
+    createdAt?: DateTimeFilter<"Influencer"> | Date | string
+    updatedAt?: DateTimeFilter<"Influencer"> | Date | string
+    shares?: ShareListRelationFilter
+    customers?: CustomerListRelationFilter
+    sales?: SaleListRelationFilter
+    payments?: PaymentListRelationFilter
+    linkClicks?: LinkClickListRelationFilter
+    campaigns?: CampaignParticipantListRelationFilter
+  }
+
+  export type InfluencerOrderByWithRelationInput = {
+    id?: SortOrder
+    fullName?: SortOrder
+    email?: SortOrder
+    password?: SortOrder
+    phone?: SortOrder
+    tcNo?: SortOrderInput | SortOrder
+    birthDate?: SortOrderInput | SortOrder
+    avatarUrl?: SortOrderInput | SortOrder
+    instagramHandle?: SortOrderInput | SortOrder
+    instagramFollowers?: SortOrderInput | SortOrder
+    tiktokHandle?: SortOrderInput | SortOrder
+    youtubeHandle?: SortOrderInput | SortOrder
+    tier?: SortOrder
+    uniqueCode?: SortOrder
+    uniqueUrl?: SortOrder
+    status?: SortOrder
+    rejectReason?: SortOrderInput | SortOrder
+    bankIban?: SortOrderInput | SortOrder
+    bankName?: SortOrderInput | SortOrder
+    bankAccountName?: SortOrderInput | SortOrder
+    totalSales?: SortOrder
+    totalEarnings?: SortOrder
+    pendingEarnings?: SortOrder
+    totalClicks?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    shares?: ShareOrderByRelationAggregateInput
+    customers?: CustomerOrderByRelationAggregateInput
+    sales?: SaleOrderByRelationAggregateInput
+    payments?: PaymentOrderByRelationAggregateInput
+    linkClicks?: LinkClickOrderByRelationAggregateInput
+    campaigns?: CampaignParticipantOrderByRelationAggregateInput
+  }
+
+  export type InfluencerWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    email?: string
+    uniqueCode?: string
+    uniqueUrl?: string
+    AND?: InfluencerWhereInput | InfluencerWhereInput[]
+    OR?: InfluencerWhereInput[]
+    NOT?: InfluencerWhereInput | InfluencerWhereInput[]
+    fullName?: StringFilter<"Influencer"> | string
+    password?: StringFilter<"Influencer"> | string
+    phone?: StringFilter<"Influencer"> | string
+    tcNo?: StringNullableFilter<"Influencer"> | string | null
+    birthDate?: StringNullableFilter<"Influencer"> | string | null
+    avatarUrl?: StringNullableFilter<"Influencer"> | string | null
+    instagramHandle?: StringNullableFilter<"Influencer"> | string | null
+    instagramFollowers?: IntNullableFilter<"Influencer"> | number | null
+    tiktokHandle?: StringNullableFilter<"Influencer"> | string | null
+    youtubeHandle?: StringNullableFilter<"Influencer"> | string | null
+    tier?: StringFilter<"Influencer"> | string
+    status?: StringFilter<"Influencer"> | string
+    rejectReason?: StringNullableFilter<"Influencer"> | string | null
+    bankIban?: StringNullableFilter<"Influencer"> | string | null
+    bankName?: StringNullableFilter<"Influencer"> | string | null
+    bankAccountName?: StringNullableFilter<"Influencer"> | string | null
+    totalSales?: IntFilter<"Influencer"> | number
+    totalEarnings?: FloatFilter<"Influencer"> | number
+    pendingEarnings?: FloatFilter<"Influencer"> | number
+    totalClicks?: IntFilter<"Influencer"> | number
+    createdAt?: DateTimeFilter<"Influencer"> | Date | string
+    updatedAt?: DateTimeFilter<"Influencer"> | Date | string
+    shares?: ShareListRelationFilter
+    customers?: CustomerListRelationFilter
+    sales?: SaleListRelationFilter
+    payments?: PaymentListRelationFilter
+    linkClicks?: LinkClickListRelationFilter
+    campaigns?: CampaignParticipantListRelationFilter
+  }, "id" | "email" | "uniqueCode" | "uniqueUrl">
+
+  export type InfluencerOrderByWithAggregationInput = {
+    id?: SortOrder
+    fullName?: SortOrder
+    email?: SortOrder
+    password?: SortOrder
+    phone?: SortOrder
+    tcNo?: SortOrderInput | SortOrder
+    birthDate?: SortOrderInput | SortOrder
+    avatarUrl?: SortOrderInput | SortOrder
+    instagramHandle?: SortOrderInput | SortOrder
+    instagramFollowers?: SortOrderInput | SortOrder
+    tiktokHandle?: SortOrderInput | SortOrder
+    youtubeHandle?: SortOrderInput | SortOrder
+    tier?: SortOrder
+    uniqueCode?: SortOrder
+    uniqueUrl?: SortOrder
+    status?: SortOrder
+    rejectReason?: SortOrderInput | SortOrder
+    bankIban?: SortOrderInput | SortOrder
+    bankName?: SortOrderInput | SortOrder
+    bankAccountName?: SortOrderInput | SortOrder
+    totalSales?: SortOrder
+    totalEarnings?: SortOrder
+    pendingEarnings?: SortOrder
+    totalClicks?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: InfluencerCountOrderByAggregateInput
+    _avg?: InfluencerAvgOrderByAggregateInput
+    _max?: InfluencerMaxOrderByAggregateInput
+    _min?: InfluencerMinOrderByAggregateInput
+    _sum?: InfluencerSumOrderByAggregateInput
+  }
+
+  export type InfluencerScalarWhereWithAggregatesInput = {
+    AND?: InfluencerScalarWhereWithAggregatesInput | InfluencerScalarWhereWithAggregatesInput[]
+    OR?: InfluencerScalarWhereWithAggregatesInput[]
+    NOT?: InfluencerScalarWhereWithAggregatesInput | InfluencerScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Influencer"> | string
+    fullName?: StringWithAggregatesFilter<"Influencer"> | string
+    email?: StringWithAggregatesFilter<"Influencer"> | string
+    password?: StringWithAggregatesFilter<"Influencer"> | string
+    phone?: StringWithAggregatesFilter<"Influencer"> | string
+    tcNo?: StringNullableWithAggregatesFilter<"Influencer"> | string | null
+    birthDate?: StringNullableWithAggregatesFilter<"Influencer"> | string | null
+    avatarUrl?: StringNullableWithAggregatesFilter<"Influencer"> | string | null
+    instagramHandle?: StringNullableWithAggregatesFilter<"Influencer"> | string | null
+    instagramFollowers?: IntNullableWithAggregatesFilter<"Influencer"> | number | null
+    tiktokHandle?: StringNullableWithAggregatesFilter<"Influencer"> | string | null
+    youtubeHandle?: StringNullableWithAggregatesFilter<"Influencer"> | string | null
+    tier?: StringWithAggregatesFilter<"Influencer"> | string
+    uniqueCode?: StringWithAggregatesFilter<"Influencer"> | string
+    uniqueUrl?: StringWithAggregatesFilter<"Influencer"> | string
+    status?: StringWithAggregatesFilter<"Influencer"> | string
+    rejectReason?: StringNullableWithAggregatesFilter<"Influencer"> | string | null
+    bankIban?: StringNullableWithAggregatesFilter<"Influencer"> | string | null
+    bankName?: StringNullableWithAggregatesFilter<"Influencer"> | string | null
+    bankAccountName?: StringNullableWithAggregatesFilter<"Influencer"> | string | null
+    totalSales?: IntWithAggregatesFilter<"Influencer"> | number
+    totalEarnings?: FloatWithAggregatesFilter<"Influencer"> | number
+    pendingEarnings?: FloatWithAggregatesFilter<"Influencer"> | number
+    totalClicks?: IntWithAggregatesFilter<"Influencer"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"Influencer"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Influencer"> | Date | string
+  }
+
+  export type ShareWhereInput = {
+    AND?: ShareWhereInput | ShareWhereInput[]
+    OR?: ShareWhereInput[]
+    NOT?: ShareWhereInput | ShareWhereInput[]
+    id?: StringFilter<"Share"> | string
+    influencerId?: StringFilter<"Share"> | string
+    platform?: StringFilter<"Share"> | string
+    shareUrl?: StringNullableFilter<"Share"> | string | null
+    screenshotUrl?: StringNullableFilter<"Share"> | string | null
+    shareDate?: StringFilter<"Share"> | string
+    description?: StringNullableFilter<"Share"> | string | null
+    status?: StringFilter<"Share"> | string
+    rejectReason?: StringNullableFilter<"Share"> | string | null
+    viewCount?: IntFilter<"Share"> | number
+    clickCount?: IntFilter<"Share"> | number
+    saleCount?: IntFilter<"Share"> | number
+    approvedAt?: DateTimeNullableFilter<"Share"> | Date | string | null
+    approvedBy?: StringNullableFilter<"Share"> | string | null
+    createdAt?: DateTimeFilter<"Share"> | Date | string
+    updatedAt?: DateTimeFilter<"Share"> | Date | string
+    influencer?: XOR<InfluencerScalarRelationFilter, InfluencerWhereInput>
+    linkClicks?: LinkClickListRelationFilter
+  }
+
+  export type ShareOrderByWithRelationInput = {
+    id?: SortOrder
+    influencerId?: SortOrder
+    platform?: SortOrder
+    shareUrl?: SortOrderInput | SortOrder
+    screenshotUrl?: SortOrderInput | SortOrder
+    shareDate?: SortOrder
+    description?: SortOrderInput | SortOrder
+    status?: SortOrder
+    rejectReason?: SortOrderInput | SortOrder
+    viewCount?: SortOrder
+    clickCount?: SortOrder
+    saleCount?: SortOrder
+    approvedAt?: SortOrderInput | SortOrder
+    approvedBy?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    influencer?: InfluencerOrderByWithRelationInput
+    linkClicks?: LinkClickOrderByRelationAggregateInput
+  }
+
+  export type ShareWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: ShareWhereInput | ShareWhereInput[]
+    OR?: ShareWhereInput[]
+    NOT?: ShareWhereInput | ShareWhereInput[]
+    influencerId?: StringFilter<"Share"> | string
+    platform?: StringFilter<"Share"> | string
+    shareUrl?: StringNullableFilter<"Share"> | string | null
+    screenshotUrl?: StringNullableFilter<"Share"> | string | null
+    shareDate?: StringFilter<"Share"> | string
+    description?: StringNullableFilter<"Share"> | string | null
+    status?: StringFilter<"Share"> | string
+    rejectReason?: StringNullableFilter<"Share"> | string | null
+    viewCount?: IntFilter<"Share"> | number
+    clickCount?: IntFilter<"Share"> | number
+    saleCount?: IntFilter<"Share"> | number
+    approvedAt?: DateTimeNullableFilter<"Share"> | Date | string | null
+    approvedBy?: StringNullableFilter<"Share"> | string | null
+    createdAt?: DateTimeFilter<"Share"> | Date | string
+    updatedAt?: DateTimeFilter<"Share"> | Date | string
+    influencer?: XOR<InfluencerScalarRelationFilter, InfluencerWhereInput>
+    linkClicks?: LinkClickListRelationFilter
+  }, "id">
+
+  export type ShareOrderByWithAggregationInput = {
+    id?: SortOrder
+    influencerId?: SortOrder
+    platform?: SortOrder
+    shareUrl?: SortOrderInput | SortOrder
+    screenshotUrl?: SortOrderInput | SortOrder
+    shareDate?: SortOrder
+    description?: SortOrderInput | SortOrder
+    status?: SortOrder
+    rejectReason?: SortOrderInput | SortOrder
+    viewCount?: SortOrder
+    clickCount?: SortOrder
+    saleCount?: SortOrder
+    approvedAt?: SortOrderInput | SortOrder
+    approvedBy?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ShareCountOrderByAggregateInput
+    _avg?: ShareAvgOrderByAggregateInput
+    _max?: ShareMaxOrderByAggregateInput
+    _min?: ShareMinOrderByAggregateInput
+    _sum?: ShareSumOrderByAggregateInput
+  }
+
+  export type ShareScalarWhereWithAggregatesInput = {
+    AND?: ShareScalarWhereWithAggregatesInput | ShareScalarWhereWithAggregatesInput[]
+    OR?: ShareScalarWhereWithAggregatesInput[]
+    NOT?: ShareScalarWhereWithAggregatesInput | ShareScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Share"> | string
+    influencerId?: StringWithAggregatesFilter<"Share"> | string
+    platform?: StringWithAggregatesFilter<"Share"> | string
+    shareUrl?: StringNullableWithAggregatesFilter<"Share"> | string | null
+    screenshotUrl?: StringNullableWithAggregatesFilter<"Share"> | string | null
+    shareDate?: StringWithAggregatesFilter<"Share"> | string
+    description?: StringNullableWithAggregatesFilter<"Share"> | string | null
+    status?: StringWithAggregatesFilter<"Share"> | string
+    rejectReason?: StringNullableWithAggregatesFilter<"Share"> | string | null
+    viewCount?: IntWithAggregatesFilter<"Share"> | number
+    clickCount?: IntWithAggregatesFilter<"Share"> | number
+    saleCount?: IntWithAggregatesFilter<"Share"> | number
+    approvedAt?: DateTimeNullableWithAggregatesFilter<"Share"> | Date | string | null
+    approvedBy?: StringNullableWithAggregatesFilter<"Share"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Share"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Share"> | Date | string
+  }
+
+  export type CustomerWhereInput = {
+    AND?: CustomerWhereInput | CustomerWhereInput[]
+    OR?: CustomerWhereInput[]
+    NOT?: CustomerWhereInput | CustomerWhereInput[]
+    id?: StringFilter<"Customer"> | string
+    fullName?: StringFilter<"Customer"> | string
+    phone?: StringFilter<"Customer"> | string
+    email?: StringNullableFilter<"Customer"> | string | null
+    tcNo?: StringNullableFilter<"Customer"> | string | null
+    source?: StringFilter<"Customer"> | string
+    influencerId?: StringNullableFilter<"Customer"> | string | null
+    referrerUrl?: StringNullableFilter<"Customer"> | string | null
+    couponUsed?: StringNullableFilter<"Customer"> | string | null
+    firstSeenAt?: DateTimeFilter<"Customer"> | Date | string
+    status?: StringFilter<"Customer"> | string
+    assignedOperatorId?: StringNullableFilter<"Customer"> | string | null
+    notes?: StringNullableFilter<"Customer"> | string | null
+    createdAt?: DateTimeFilter<"Customer"> | Date | string
+    updatedAt?: DateTimeFilter<"Customer"> | Date | string
+    influencer?: XOR<InfluencerNullableScalarRelationFilter, InfluencerWhereInput> | null
+    sales?: SaleListRelationFilter
+  }
+
+  export type CustomerOrderByWithRelationInput = {
+    id?: SortOrder
+    fullName?: SortOrder
+    phone?: SortOrder
+    email?: SortOrderInput | SortOrder
+    tcNo?: SortOrderInput | SortOrder
+    source?: SortOrder
+    influencerId?: SortOrderInput | SortOrder
+    referrerUrl?: SortOrderInput | SortOrder
+    couponUsed?: SortOrderInput | SortOrder
+    firstSeenAt?: SortOrder
+    status?: SortOrder
+    assignedOperatorId?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    influencer?: InfluencerOrderByWithRelationInput
+    sales?: SaleOrderByRelationAggregateInput
+  }
+
+  export type CustomerWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: CustomerWhereInput | CustomerWhereInput[]
+    OR?: CustomerWhereInput[]
+    NOT?: CustomerWhereInput | CustomerWhereInput[]
+    fullName?: StringFilter<"Customer"> | string
+    phone?: StringFilter<"Customer"> | string
+    email?: StringNullableFilter<"Customer"> | string | null
+    tcNo?: StringNullableFilter<"Customer"> | string | null
+    source?: StringFilter<"Customer"> | string
+    influencerId?: StringNullableFilter<"Customer"> | string | null
+    referrerUrl?: StringNullableFilter<"Customer"> | string | null
+    couponUsed?: StringNullableFilter<"Customer"> | string | null
+    firstSeenAt?: DateTimeFilter<"Customer"> | Date | string
+    status?: StringFilter<"Customer"> | string
+    assignedOperatorId?: StringNullableFilter<"Customer"> | string | null
+    notes?: StringNullableFilter<"Customer"> | string | null
+    createdAt?: DateTimeFilter<"Customer"> | Date | string
+    updatedAt?: DateTimeFilter<"Customer"> | Date | string
+    influencer?: XOR<InfluencerNullableScalarRelationFilter, InfluencerWhereInput> | null
+    sales?: SaleListRelationFilter
+  }, "id">
+
+  export type CustomerOrderByWithAggregationInput = {
+    id?: SortOrder
+    fullName?: SortOrder
+    phone?: SortOrder
+    email?: SortOrderInput | SortOrder
+    tcNo?: SortOrderInput | SortOrder
+    source?: SortOrder
+    influencerId?: SortOrderInput | SortOrder
+    referrerUrl?: SortOrderInput | SortOrder
+    couponUsed?: SortOrderInput | SortOrder
+    firstSeenAt?: SortOrder
+    status?: SortOrder
+    assignedOperatorId?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: CustomerCountOrderByAggregateInput
+    _max?: CustomerMaxOrderByAggregateInput
+    _min?: CustomerMinOrderByAggregateInput
+  }
+
+  export type CustomerScalarWhereWithAggregatesInput = {
+    AND?: CustomerScalarWhereWithAggregatesInput | CustomerScalarWhereWithAggregatesInput[]
+    OR?: CustomerScalarWhereWithAggregatesInput[]
+    NOT?: CustomerScalarWhereWithAggregatesInput | CustomerScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Customer"> | string
+    fullName?: StringWithAggregatesFilter<"Customer"> | string
+    phone?: StringWithAggregatesFilter<"Customer"> | string
+    email?: StringNullableWithAggregatesFilter<"Customer"> | string | null
+    tcNo?: StringNullableWithAggregatesFilter<"Customer"> | string | null
+    source?: StringWithAggregatesFilter<"Customer"> | string
+    influencerId?: StringNullableWithAggregatesFilter<"Customer"> | string | null
+    referrerUrl?: StringNullableWithAggregatesFilter<"Customer"> | string | null
+    couponUsed?: StringNullableWithAggregatesFilter<"Customer"> | string | null
+    firstSeenAt?: DateTimeWithAggregatesFilter<"Customer"> | Date | string
+    status?: StringWithAggregatesFilter<"Customer"> | string
+    assignedOperatorId?: StringNullableWithAggregatesFilter<"Customer"> | string | null
+    notes?: StringNullableWithAggregatesFilter<"Customer"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Customer"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Customer"> | Date | string
+  }
+
+  export type SaleWhereInput = {
+    AND?: SaleWhereInput | SaleWhereInput[]
+    OR?: SaleWhereInput[]
+    NOT?: SaleWhereInput | SaleWhereInput[]
+    id?: StringFilter<"Sale"> | string
+    customerId?: StringFilter<"Sale"> | string
+    influencerId?: StringNullableFilter<"Sale"> | string | null
+    umrePackage?: StringNullableFilter<"Sale"> | string | null
+    saleAmount?: FloatFilter<"Sale"> | number
+    commissionRate?: FloatFilter<"Sale"> | number
+    commissionAmount?: FloatFilter<"Sale"> | number
+    commissionStatus?: StringFilter<"Sale"> | string
+    saleDate?: DateTimeFilter<"Sale"> | Date | string
+    completionDate?: DateTimeNullableFilter<"Sale"> | Date | string | null
+    refundDeadline?: DateTimeNullableFilter<"Sale"> | Date | string | null
+    notes?: StringNullableFilter<"Sale"> | string | null
+    createdAt?: DateTimeFilter<"Sale"> | Date | string
+    updatedAt?: DateTimeFilter<"Sale"> | Date | string
+    customer?: XOR<CustomerScalarRelationFilter, CustomerWhereInput>
+    influencer?: XOR<InfluencerNullableScalarRelationFilter, InfluencerWhereInput> | null
+    payments?: PaymentSaleListRelationFilter
+  }
+
+  export type SaleOrderByWithRelationInput = {
+    id?: SortOrder
+    customerId?: SortOrder
+    influencerId?: SortOrderInput | SortOrder
+    umrePackage?: SortOrderInput | SortOrder
+    saleAmount?: SortOrder
+    commissionRate?: SortOrder
+    commissionAmount?: SortOrder
+    commissionStatus?: SortOrder
+    saleDate?: SortOrder
+    completionDate?: SortOrderInput | SortOrder
+    refundDeadline?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    customer?: CustomerOrderByWithRelationInput
+    influencer?: InfluencerOrderByWithRelationInput
+    payments?: PaymentSaleOrderByRelationAggregateInput
+  }
+
+  export type SaleWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: SaleWhereInput | SaleWhereInput[]
+    OR?: SaleWhereInput[]
+    NOT?: SaleWhereInput | SaleWhereInput[]
+    customerId?: StringFilter<"Sale"> | string
+    influencerId?: StringNullableFilter<"Sale"> | string | null
+    umrePackage?: StringNullableFilter<"Sale"> | string | null
+    saleAmount?: FloatFilter<"Sale"> | number
+    commissionRate?: FloatFilter<"Sale"> | number
+    commissionAmount?: FloatFilter<"Sale"> | number
+    commissionStatus?: StringFilter<"Sale"> | string
+    saleDate?: DateTimeFilter<"Sale"> | Date | string
+    completionDate?: DateTimeNullableFilter<"Sale"> | Date | string | null
+    refundDeadline?: DateTimeNullableFilter<"Sale"> | Date | string | null
+    notes?: StringNullableFilter<"Sale"> | string | null
+    createdAt?: DateTimeFilter<"Sale"> | Date | string
+    updatedAt?: DateTimeFilter<"Sale"> | Date | string
+    customer?: XOR<CustomerScalarRelationFilter, CustomerWhereInput>
+    influencer?: XOR<InfluencerNullableScalarRelationFilter, InfluencerWhereInput> | null
+    payments?: PaymentSaleListRelationFilter
+  }, "id">
+
+  export type SaleOrderByWithAggregationInput = {
+    id?: SortOrder
+    customerId?: SortOrder
+    influencerId?: SortOrderInput | SortOrder
+    umrePackage?: SortOrderInput | SortOrder
+    saleAmount?: SortOrder
+    commissionRate?: SortOrder
+    commissionAmount?: SortOrder
+    commissionStatus?: SortOrder
+    saleDate?: SortOrder
+    completionDate?: SortOrderInput | SortOrder
+    refundDeadline?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: SaleCountOrderByAggregateInput
+    _avg?: SaleAvgOrderByAggregateInput
+    _max?: SaleMaxOrderByAggregateInput
+    _min?: SaleMinOrderByAggregateInput
+    _sum?: SaleSumOrderByAggregateInput
+  }
+
+  export type SaleScalarWhereWithAggregatesInput = {
+    AND?: SaleScalarWhereWithAggregatesInput | SaleScalarWhereWithAggregatesInput[]
+    OR?: SaleScalarWhereWithAggregatesInput[]
+    NOT?: SaleScalarWhereWithAggregatesInput | SaleScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Sale"> | string
+    customerId?: StringWithAggregatesFilter<"Sale"> | string
+    influencerId?: StringNullableWithAggregatesFilter<"Sale"> | string | null
+    umrePackage?: StringNullableWithAggregatesFilter<"Sale"> | string | null
+    saleAmount?: FloatWithAggregatesFilter<"Sale"> | number
+    commissionRate?: FloatWithAggregatesFilter<"Sale"> | number
+    commissionAmount?: FloatWithAggregatesFilter<"Sale"> | number
+    commissionStatus?: StringWithAggregatesFilter<"Sale"> | string
+    saleDate?: DateTimeWithAggregatesFilter<"Sale"> | Date | string
+    completionDate?: DateTimeNullableWithAggregatesFilter<"Sale"> | Date | string | null
+    refundDeadline?: DateTimeNullableWithAggregatesFilter<"Sale"> | Date | string | null
+    notes?: StringNullableWithAggregatesFilter<"Sale"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Sale"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Sale"> | Date | string
+  }
+
+  export type PaymentWhereInput = {
+    AND?: PaymentWhereInput | PaymentWhereInput[]
+    OR?: PaymentWhereInput[]
+    NOT?: PaymentWhereInput | PaymentWhereInput[]
+    id?: StringFilter<"Payment"> | string
+    influencerId?: StringFilter<"Payment"> | string
+    periodMonth?: StringFilter<"Payment"> | string
+    totalAmount?: FloatFilter<"Payment"> | number
+    taxDeduction?: FloatFilter<"Payment"> | number
+    netAmount?: FloatFilter<"Payment"> | number
+    status?: StringFilter<"Payment"> | string
+    approvedBy?: StringNullableFilter<"Payment"> | string | null
+    approvedAt?: DateTimeNullableFilter<"Payment"> | Date | string | null
+    paidAt?: DateTimeNullableFilter<"Payment"> | Date | string | null
+    bankReference?: StringNullableFilter<"Payment"> | string | null
+    notes?: StringNullableFilter<"Payment"> | string | null
+    createdAt?: DateTimeFilter<"Payment"> | Date | string
+    updatedAt?: DateTimeFilter<"Payment"> | Date | string
+    influencer?: XOR<InfluencerScalarRelationFilter, InfluencerWhereInput>
+    sales?: PaymentSaleListRelationFilter
+  }
+
+  export type PaymentOrderByWithRelationInput = {
+    id?: SortOrder
+    influencerId?: SortOrder
+    periodMonth?: SortOrder
+    totalAmount?: SortOrder
+    taxDeduction?: SortOrder
+    netAmount?: SortOrder
+    status?: SortOrder
+    approvedBy?: SortOrderInput | SortOrder
+    approvedAt?: SortOrderInput | SortOrder
+    paidAt?: SortOrderInput | SortOrder
+    bankReference?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    influencer?: InfluencerOrderByWithRelationInput
+    sales?: PaymentSaleOrderByRelationAggregateInput
+  }
+
+  export type PaymentWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: PaymentWhereInput | PaymentWhereInput[]
+    OR?: PaymentWhereInput[]
+    NOT?: PaymentWhereInput | PaymentWhereInput[]
+    influencerId?: StringFilter<"Payment"> | string
+    periodMonth?: StringFilter<"Payment"> | string
+    totalAmount?: FloatFilter<"Payment"> | number
+    taxDeduction?: FloatFilter<"Payment"> | number
+    netAmount?: FloatFilter<"Payment"> | number
+    status?: StringFilter<"Payment"> | string
+    approvedBy?: StringNullableFilter<"Payment"> | string | null
+    approvedAt?: DateTimeNullableFilter<"Payment"> | Date | string | null
+    paidAt?: DateTimeNullableFilter<"Payment"> | Date | string | null
+    bankReference?: StringNullableFilter<"Payment"> | string | null
+    notes?: StringNullableFilter<"Payment"> | string | null
+    createdAt?: DateTimeFilter<"Payment"> | Date | string
+    updatedAt?: DateTimeFilter<"Payment"> | Date | string
+    influencer?: XOR<InfluencerScalarRelationFilter, InfluencerWhereInput>
+    sales?: PaymentSaleListRelationFilter
+  }, "id">
+
+  export type PaymentOrderByWithAggregationInput = {
+    id?: SortOrder
+    influencerId?: SortOrder
+    periodMonth?: SortOrder
+    totalAmount?: SortOrder
+    taxDeduction?: SortOrder
+    netAmount?: SortOrder
+    status?: SortOrder
+    approvedBy?: SortOrderInput | SortOrder
+    approvedAt?: SortOrderInput | SortOrder
+    paidAt?: SortOrderInput | SortOrder
+    bankReference?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: PaymentCountOrderByAggregateInput
+    _avg?: PaymentAvgOrderByAggregateInput
+    _max?: PaymentMaxOrderByAggregateInput
+    _min?: PaymentMinOrderByAggregateInput
+    _sum?: PaymentSumOrderByAggregateInput
+  }
+
+  export type PaymentScalarWhereWithAggregatesInput = {
+    AND?: PaymentScalarWhereWithAggregatesInput | PaymentScalarWhereWithAggregatesInput[]
+    OR?: PaymentScalarWhereWithAggregatesInput[]
+    NOT?: PaymentScalarWhereWithAggregatesInput | PaymentScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Payment"> | string
+    influencerId?: StringWithAggregatesFilter<"Payment"> | string
+    periodMonth?: StringWithAggregatesFilter<"Payment"> | string
+    totalAmount?: FloatWithAggregatesFilter<"Payment"> | number
+    taxDeduction?: FloatWithAggregatesFilter<"Payment"> | number
+    netAmount?: FloatWithAggregatesFilter<"Payment"> | number
+    status?: StringWithAggregatesFilter<"Payment"> | string
+    approvedBy?: StringNullableWithAggregatesFilter<"Payment"> | string | null
+    approvedAt?: DateTimeNullableWithAggregatesFilter<"Payment"> | Date | string | null
+    paidAt?: DateTimeNullableWithAggregatesFilter<"Payment"> | Date | string | null
+    bankReference?: StringNullableWithAggregatesFilter<"Payment"> | string | null
+    notes?: StringNullableWithAggregatesFilter<"Payment"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Payment"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Payment"> | Date | string
+  }
+
+  export type PaymentSaleWhereInput = {
+    AND?: PaymentSaleWhereInput | PaymentSaleWhereInput[]
+    OR?: PaymentSaleWhereInput[]
+    NOT?: PaymentSaleWhereInput | PaymentSaleWhereInput[]
+    paymentId?: StringFilter<"PaymentSale"> | string
+    saleId?: StringFilter<"PaymentSale"> | string
+    payment?: XOR<PaymentScalarRelationFilter, PaymentWhereInput>
+    sale?: XOR<SaleScalarRelationFilter, SaleWhereInput>
+  }
+
+  export type PaymentSaleOrderByWithRelationInput = {
+    paymentId?: SortOrder
+    saleId?: SortOrder
+    payment?: PaymentOrderByWithRelationInput
+    sale?: SaleOrderByWithRelationInput
+  }
+
+  export type PaymentSaleWhereUniqueInput = Prisma.AtLeast<{
+    paymentId_saleId?: PaymentSalePaymentIdSaleIdCompoundUniqueInput
+    AND?: PaymentSaleWhereInput | PaymentSaleWhereInput[]
+    OR?: PaymentSaleWhereInput[]
+    NOT?: PaymentSaleWhereInput | PaymentSaleWhereInput[]
+    paymentId?: StringFilter<"PaymentSale"> | string
+    saleId?: StringFilter<"PaymentSale"> | string
+    payment?: XOR<PaymentScalarRelationFilter, PaymentWhereInput>
+    sale?: XOR<SaleScalarRelationFilter, SaleWhereInput>
+  }, "paymentId_saleId">
+
+  export type PaymentSaleOrderByWithAggregationInput = {
+    paymentId?: SortOrder
+    saleId?: SortOrder
+    _count?: PaymentSaleCountOrderByAggregateInput
+    _max?: PaymentSaleMaxOrderByAggregateInput
+    _min?: PaymentSaleMinOrderByAggregateInput
+  }
+
+  export type PaymentSaleScalarWhereWithAggregatesInput = {
+    AND?: PaymentSaleScalarWhereWithAggregatesInput | PaymentSaleScalarWhereWithAggregatesInput[]
+    OR?: PaymentSaleScalarWhereWithAggregatesInput[]
+    NOT?: PaymentSaleScalarWhereWithAggregatesInput | PaymentSaleScalarWhereWithAggregatesInput[]
+    paymentId?: StringWithAggregatesFilter<"PaymentSale"> | string
+    saleId?: StringWithAggregatesFilter<"PaymentSale"> | string
+  }
+
+  export type LinkClickWhereInput = {
+    AND?: LinkClickWhereInput | LinkClickWhereInput[]
+    OR?: LinkClickWhereInput[]
+    NOT?: LinkClickWhereInput | LinkClickWhereInput[]
+    id?: StringFilter<"LinkClick"> | string
+    influencerId?: StringFilter<"LinkClick"> | string
+    shareId?: StringNullableFilter<"LinkClick"> | string | null
+    ipAddress?: StringNullableFilter<"LinkClick"> | string | null
+    userAgent?: StringNullableFilter<"LinkClick"> | string | null
+    referrer?: StringNullableFilter<"LinkClick"> | string | null
+    country?: StringNullableFilter<"LinkClick"> | string | null
+    utmSource?: StringNullableFilter<"LinkClick"> | string | null
+    utmContent?: StringNullableFilter<"LinkClick"> | string | null
+    isBot?: BoolFilter<"LinkClick"> | boolean
+    clickedAt?: DateTimeFilter<"LinkClick"> | Date | string
+    influencer?: XOR<InfluencerScalarRelationFilter, InfluencerWhereInput>
+    share?: XOR<ShareNullableScalarRelationFilter, ShareWhereInput> | null
+  }
+
+  export type LinkClickOrderByWithRelationInput = {
+    id?: SortOrder
+    influencerId?: SortOrder
+    shareId?: SortOrderInput | SortOrder
+    ipAddress?: SortOrderInput | SortOrder
+    userAgent?: SortOrderInput | SortOrder
+    referrer?: SortOrderInput | SortOrder
+    country?: SortOrderInput | SortOrder
+    utmSource?: SortOrderInput | SortOrder
+    utmContent?: SortOrderInput | SortOrder
+    isBot?: SortOrder
+    clickedAt?: SortOrder
+    influencer?: InfluencerOrderByWithRelationInput
+    share?: ShareOrderByWithRelationInput
+  }
+
+  export type LinkClickWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: LinkClickWhereInput | LinkClickWhereInput[]
+    OR?: LinkClickWhereInput[]
+    NOT?: LinkClickWhereInput | LinkClickWhereInput[]
+    influencerId?: StringFilter<"LinkClick"> | string
+    shareId?: StringNullableFilter<"LinkClick"> | string | null
+    ipAddress?: StringNullableFilter<"LinkClick"> | string | null
+    userAgent?: StringNullableFilter<"LinkClick"> | string | null
+    referrer?: StringNullableFilter<"LinkClick"> | string | null
+    country?: StringNullableFilter<"LinkClick"> | string | null
+    utmSource?: StringNullableFilter<"LinkClick"> | string | null
+    utmContent?: StringNullableFilter<"LinkClick"> | string | null
+    isBot?: BoolFilter<"LinkClick"> | boolean
+    clickedAt?: DateTimeFilter<"LinkClick"> | Date | string
+    influencer?: XOR<InfluencerScalarRelationFilter, InfluencerWhereInput>
+    share?: XOR<ShareNullableScalarRelationFilter, ShareWhereInput> | null
+  }, "id">
+
+  export type LinkClickOrderByWithAggregationInput = {
+    id?: SortOrder
+    influencerId?: SortOrder
+    shareId?: SortOrderInput | SortOrder
+    ipAddress?: SortOrderInput | SortOrder
+    userAgent?: SortOrderInput | SortOrder
+    referrer?: SortOrderInput | SortOrder
+    country?: SortOrderInput | SortOrder
+    utmSource?: SortOrderInput | SortOrder
+    utmContent?: SortOrderInput | SortOrder
+    isBot?: SortOrder
+    clickedAt?: SortOrder
+    _count?: LinkClickCountOrderByAggregateInput
+    _max?: LinkClickMaxOrderByAggregateInput
+    _min?: LinkClickMinOrderByAggregateInput
+  }
+
+  export type LinkClickScalarWhereWithAggregatesInput = {
+    AND?: LinkClickScalarWhereWithAggregatesInput | LinkClickScalarWhereWithAggregatesInput[]
+    OR?: LinkClickScalarWhereWithAggregatesInput[]
+    NOT?: LinkClickScalarWhereWithAggregatesInput | LinkClickScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"LinkClick"> | string
+    influencerId?: StringWithAggregatesFilter<"LinkClick"> | string
+    shareId?: StringNullableWithAggregatesFilter<"LinkClick"> | string | null
+    ipAddress?: StringNullableWithAggregatesFilter<"LinkClick"> | string | null
+    userAgent?: StringNullableWithAggregatesFilter<"LinkClick"> | string | null
+    referrer?: StringNullableWithAggregatesFilter<"LinkClick"> | string | null
+    country?: StringNullableWithAggregatesFilter<"LinkClick"> | string | null
+    utmSource?: StringNullableWithAggregatesFilter<"LinkClick"> | string | null
+    utmContent?: StringNullableWithAggregatesFilter<"LinkClick"> | string | null
+    isBot?: BoolWithAggregatesFilter<"LinkClick"> | boolean
+    clickedAt?: DateTimeWithAggregatesFilter<"LinkClick"> | Date | string
+  }
+
+  export type AttributionOverrideWhereInput = {
+    AND?: AttributionOverrideWhereInput | AttributionOverrideWhereInput[]
+    OR?: AttributionOverrideWhereInput[]
+    NOT?: AttributionOverrideWhereInput | AttributionOverrideWhereInput[]
+    id?: StringFilter<"AttributionOverride"> | string
+    customerId?: StringFilter<"AttributionOverride"> | string
+    oldInfluencerId?: StringNullableFilter<"AttributionOverride"> | string | null
+    newInfluencerId?: StringNullableFilter<"AttributionOverride"> | string | null
+    reason?: StringNullableFilter<"AttributionOverride"> | string | null
+    overriddenBy?: StringFilter<"AttributionOverride"> | string
+    overriddenAt?: DateTimeFilter<"AttributionOverride"> | Date | string
+  }
+
+  export type AttributionOverrideOrderByWithRelationInput = {
+    id?: SortOrder
+    customerId?: SortOrder
+    oldInfluencerId?: SortOrderInput | SortOrder
+    newInfluencerId?: SortOrderInput | SortOrder
+    reason?: SortOrderInput | SortOrder
+    overriddenBy?: SortOrder
+    overriddenAt?: SortOrder
+  }
+
+  export type AttributionOverrideWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: AttributionOverrideWhereInput | AttributionOverrideWhereInput[]
+    OR?: AttributionOverrideWhereInput[]
+    NOT?: AttributionOverrideWhereInput | AttributionOverrideWhereInput[]
+    customerId?: StringFilter<"AttributionOverride"> | string
+    oldInfluencerId?: StringNullableFilter<"AttributionOverride"> | string | null
+    newInfluencerId?: StringNullableFilter<"AttributionOverride"> | string | null
+    reason?: StringNullableFilter<"AttributionOverride"> | string | null
+    overriddenBy?: StringFilter<"AttributionOverride"> | string
+    overriddenAt?: DateTimeFilter<"AttributionOverride"> | Date | string
+  }, "id">
+
+  export type AttributionOverrideOrderByWithAggregationInput = {
+    id?: SortOrder
+    customerId?: SortOrder
+    oldInfluencerId?: SortOrderInput | SortOrder
+    newInfluencerId?: SortOrderInput | SortOrder
+    reason?: SortOrderInput | SortOrder
+    overriddenBy?: SortOrder
+    overriddenAt?: SortOrder
+    _count?: AttributionOverrideCountOrderByAggregateInput
+    _max?: AttributionOverrideMaxOrderByAggregateInput
+    _min?: AttributionOverrideMinOrderByAggregateInput
+  }
+
+  export type AttributionOverrideScalarWhereWithAggregatesInput = {
+    AND?: AttributionOverrideScalarWhereWithAggregatesInput | AttributionOverrideScalarWhereWithAggregatesInput[]
+    OR?: AttributionOverrideScalarWhereWithAggregatesInput[]
+    NOT?: AttributionOverrideScalarWhereWithAggregatesInput | AttributionOverrideScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AttributionOverride"> | string
+    customerId?: StringWithAggregatesFilter<"AttributionOverride"> | string
+    oldInfluencerId?: StringNullableWithAggregatesFilter<"AttributionOverride"> | string | null
+    newInfluencerId?: StringNullableWithAggregatesFilter<"AttributionOverride"> | string | null
+    reason?: StringNullableWithAggregatesFilter<"AttributionOverride"> | string | null
+    overriddenBy?: StringWithAggregatesFilter<"AttributionOverride"> | string
+    overriddenAt?: DateTimeWithAggregatesFilter<"AttributionOverride"> | Date | string
+  }
+
+  export type CampaignWhereInput = {
+    AND?: CampaignWhereInput | CampaignWhereInput[]
+    OR?: CampaignWhereInput[]
+    NOT?: CampaignWhereInput | CampaignWhereInput[]
+    id?: StringFilter<"Campaign"> | string
+    title?: StringFilter<"Campaign"> | string
+    slug?: StringFilter<"Campaign"> | string
+    description?: StringNullableFilter<"Campaign"> | string | null
+    type?: StringFilter<"Campaign"> | string
+    discountType?: StringFilter<"Campaign"> | string
+    discountValue?: FloatFilter<"Campaign"> | number
+    codeTemplate?: StringFilter<"Campaign"> | string
+    status?: StringFilter<"Campaign"> | string
+    startDate?: DateTimeNullableFilter<"Campaign"> | Date | string | null
+    endDate?: DateTimeNullableFilter<"Campaign"> | Date | string | null
+    maxParticipants?: IntNullableFilter<"Campaign"> | number | null
+    imageUrl?: StringNullableFilter<"Campaign"> | string | null
+    createdBy?: StringNullableFilter<"Campaign"> | string | null
+    createdAt?: DateTimeFilter<"Campaign"> | Date | string
+    updatedAt?: DateTimeFilter<"Campaign"> | Date | string
+    participants?: CampaignParticipantListRelationFilter
+    codeUsages?: CampaignCodeUsageListRelationFilter
+  }
+
+  export type CampaignOrderByWithRelationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    slug?: SortOrder
+    description?: SortOrderInput | SortOrder
+    type?: SortOrder
+    discountType?: SortOrder
+    discountValue?: SortOrder
+    codeTemplate?: SortOrder
+    status?: SortOrder
+    startDate?: SortOrderInput | SortOrder
+    endDate?: SortOrderInput | SortOrder
+    maxParticipants?: SortOrderInput | SortOrder
+    imageUrl?: SortOrderInput | SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    participants?: CampaignParticipantOrderByRelationAggregateInput
+    codeUsages?: CampaignCodeUsageOrderByRelationAggregateInput
+  }
+
+  export type CampaignWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    slug?: string
+    AND?: CampaignWhereInput | CampaignWhereInput[]
+    OR?: CampaignWhereInput[]
+    NOT?: CampaignWhereInput | CampaignWhereInput[]
+    title?: StringFilter<"Campaign"> | string
+    description?: StringNullableFilter<"Campaign"> | string | null
+    type?: StringFilter<"Campaign"> | string
+    discountType?: StringFilter<"Campaign"> | string
+    discountValue?: FloatFilter<"Campaign"> | number
+    codeTemplate?: StringFilter<"Campaign"> | string
+    status?: StringFilter<"Campaign"> | string
+    startDate?: DateTimeNullableFilter<"Campaign"> | Date | string | null
+    endDate?: DateTimeNullableFilter<"Campaign"> | Date | string | null
+    maxParticipants?: IntNullableFilter<"Campaign"> | number | null
+    imageUrl?: StringNullableFilter<"Campaign"> | string | null
+    createdBy?: StringNullableFilter<"Campaign"> | string | null
+    createdAt?: DateTimeFilter<"Campaign"> | Date | string
+    updatedAt?: DateTimeFilter<"Campaign"> | Date | string
+    participants?: CampaignParticipantListRelationFilter
+    codeUsages?: CampaignCodeUsageListRelationFilter
+  }, "id" | "slug">
+
+  export type CampaignOrderByWithAggregationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    slug?: SortOrder
+    description?: SortOrderInput | SortOrder
+    type?: SortOrder
+    discountType?: SortOrder
+    discountValue?: SortOrder
+    codeTemplate?: SortOrder
+    status?: SortOrder
+    startDate?: SortOrderInput | SortOrder
+    endDate?: SortOrderInput | SortOrder
+    maxParticipants?: SortOrderInput | SortOrder
+    imageUrl?: SortOrderInput | SortOrder
+    createdBy?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: CampaignCountOrderByAggregateInput
+    _avg?: CampaignAvgOrderByAggregateInput
+    _max?: CampaignMaxOrderByAggregateInput
+    _min?: CampaignMinOrderByAggregateInput
+    _sum?: CampaignSumOrderByAggregateInput
+  }
+
+  export type CampaignScalarWhereWithAggregatesInput = {
+    AND?: CampaignScalarWhereWithAggregatesInput | CampaignScalarWhereWithAggregatesInput[]
+    OR?: CampaignScalarWhereWithAggregatesInput[]
+    NOT?: CampaignScalarWhereWithAggregatesInput | CampaignScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Campaign"> | string
+    title?: StringWithAggregatesFilter<"Campaign"> | string
+    slug?: StringWithAggregatesFilter<"Campaign"> | string
+    description?: StringNullableWithAggregatesFilter<"Campaign"> | string | null
+    type?: StringWithAggregatesFilter<"Campaign"> | string
+    discountType?: StringWithAggregatesFilter<"Campaign"> | string
+    discountValue?: FloatWithAggregatesFilter<"Campaign"> | number
+    codeTemplate?: StringWithAggregatesFilter<"Campaign"> | string
+    status?: StringWithAggregatesFilter<"Campaign"> | string
+    startDate?: DateTimeNullableWithAggregatesFilter<"Campaign"> | Date | string | null
+    endDate?: DateTimeNullableWithAggregatesFilter<"Campaign"> | Date | string | null
+    maxParticipants?: IntNullableWithAggregatesFilter<"Campaign"> | number | null
+    imageUrl?: StringNullableWithAggregatesFilter<"Campaign"> | string | null
+    createdBy?: StringNullableWithAggregatesFilter<"Campaign"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Campaign"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Campaign"> | Date | string
+  }
+
+  export type CampaignParticipantWhereInput = {
+    AND?: CampaignParticipantWhereInput | CampaignParticipantWhereInput[]
+    OR?: CampaignParticipantWhereInput[]
+    NOT?: CampaignParticipantWhereInput | CampaignParticipantWhereInput[]
+    id?: StringFilter<"CampaignParticipant"> | string
+    campaignId?: StringFilter<"CampaignParticipant"> | string
+    influencerId?: StringFilter<"CampaignParticipant"> | string
+    uniqueCode?: StringFilter<"CampaignParticipant"> | string
+    joinedAt?: DateTimeFilter<"CampaignParticipant"> | Date | string
+    usageCount?: IntFilter<"CampaignParticipant"> | number
+    campaign?: XOR<CampaignScalarRelationFilter, CampaignWhereInput>
+    influencer?: XOR<InfluencerScalarRelationFilter, InfluencerWhereInput>
+    codeUsages?: CampaignCodeUsageListRelationFilter
+  }
+
+  export type CampaignParticipantOrderByWithRelationInput = {
+    id?: SortOrder
+    campaignId?: SortOrder
+    influencerId?: SortOrder
+    uniqueCode?: SortOrder
+    joinedAt?: SortOrder
+    usageCount?: SortOrder
+    campaign?: CampaignOrderByWithRelationInput
+    influencer?: InfluencerOrderByWithRelationInput
+    codeUsages?: CampaignCodeUsageOrderByRelationAggregateInput
+  }
+
+  export type CampaignParticipantWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    uniqueCode?: string
+    campaignId_influencerId?: CampaignParticipantCampaignIdInfluencerIdCompoundUniqueInput
+    AND?: CampaignParticipantWhereInput | CampaignParticipantWhereInput[]
+    OR?: CampaignParticipantWhereInput[]
+    NOT?: CampaignParticipantWhereInput | CampaignParticipantWhereInput[]
+    campaignId?: StringFilter<"CampaignParticipant"> | string
+    influencerId?: StringFilter<"CampaignParticipant"> | string
+    joinedAt?: DateTimeFilter<"CampaignParticipant"> | Date | string
+    usageCount?: IntFilter<"CampaignParticipant"> | number
+    campaign?: XOR<CampaignScalarRelationFilter, CampaignWhereInput>
+    influencer?: XOR<InfluencerScalarRelationFilter, InfluencerWhereInput>
+    codeUsages?: CampaignCodeUsageListRelationFilter
+  }, "id" | "uniqueCode" | "campaignId_influencerId">
+
+  export type CampaignParticipantOrderByWithAggregationInput = {
+    id?: SortOrder
+    campaignId?: SortOrder
+    influencerId?: SortOrder
+    uniqueCode?: SortOrder
+    joinedAt?: SortOrder
+    usageCount?: SortOrder
+    _count?: CampaignParticipantCountOrderByAggregateInput
+    _avg?: CampaignParticipantAvgOrderByAggregateInput
+    _max?: CampaignParticipantMaxOrderByAggregateInput
+    _min?: CampaignParticipantMinOrderByAggregateInput
+    _sum?: CampaignParticipantSumOrderByAggregateInput
+  }
+
+  export type CampaignParticipantScalarWhereWithAggregatesInput = {
+    AND?: CampaignParticipantScalarWhereWithAggregatesInput | CampaignParticipantScalarWhereWithAggregatesInput[]
+    OR?: CampaignParticipantScalarWhereWithAggregatesInput[]
+    NOT?: CampaignParticipantScalarWhereWithAggregatesInput | CampaignParticipantScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"CampaignParticipant"> | string
+    campaignId?: StringWithAggregatesFilter<"CampaignParticipant"> | string
+    influencerId?: StringWithAggregatesFilter<"CampaignParticipant"> | string
+    uniqueCode?: StringWithAggregatesFilter<"CampaignParticipant"> | string
+    joinedAt?: DateTimeWithAggregatesFilter<"CampaignParticipant"> | Date | string
+    usageCount?: IntWithAggregatesFilter<"CampaignParticipant"> | number
+  }
+
+  export type CampaignCodeUsageWhereInput = {
+    AND?: CampaignCodeUsageWhereInput | CampaignCodeUsageWhereInput[]
+    OR?: CampaignCodeUsageWhereInput[]
+    NOT?: CampaignCodeUsageWhereInput | CampaignCodeUsageWhereInput[]
+    id?: StringFilter<"CampaignCodeUsage"> | string
+    campaignId?: StringFilter<"CampaignCodeUsage"> | string
+    participantId?: StringFilter<"CampaignCodeUsage"> | string
+    customerName?: StringNullableFilter<"CampaignCodeUsage"> | string | null
+    customerPhone?: StringNullableFilter<"CampaignCodeUsage"> | string | null
+    note?: StringNullableFilter<"CampaignCodeUsage"> | string | null
+    usedAt?: DateTimeFilter<"CampaignCodeUsage"> | Date | string
+    campaign?: XOR<CampaignScalarRelationFilter, CampaignWhereInput>
+    participant?: XOR<CampaignParticipantScalarRelationFilter, CampaignParticipantWhereInput>
+  }
+
+  export type CampaignCodeUsageOrderByWithRelationInput = {
+    id?: SortOrder
+    campaignId?: SortOrder
+    participantId?: SortOrder
+    customerName?: SortOrderInput | SortOrder
+    customerPhone?: SortOrderInput | SortOrder
+    note?: SortOrderInput | SortOrder
+    usedAt?: SortOrder
+    campaign?: CampaignOrderByWithRelationInput
+    participant?: CampaignParticipantOrderByWithRelationInput
+  }
+
+  export type CampaignCodeUsageWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: CampaignCodeUsageWhereInput | CampaignCodeUsageWhereInput[]
+    OR?: CampaignCodeUsageWhereInput[]
+    NOT?: CampaignCodeUsageWhereInput | CampaignCodeUsageWhereInput[]
+    campaignId?: StringFilter<"CampaignCodeUsage"> | string
+    participantId?: StringFilter<"CampaignCodeUsage"> | string
+    customerName?: StringNullableFilter<"CampaignCodeUsage"> | string | null
+    customerPhone?: StringNullableFilter<"CampaignCodeUsage"> | string | null
+    note?: StringNullableFilter<"CampaignCodeUsage"> | string | null
+    usedAt?: DateTimeFilter<"CampaignCodeUsage"> | Date | string
+    campaign?: XOR<CampaignScalarRelationFilter, CampaignWhereInput>
+    participant?: XOR<CampaignParticipantScalarRelationFilter, CampaignParticipantWhereInput>
+  }, "id">
+
+  export type CampaignCodeUsageOrderByWithAggregationInput = {
+    id?: SortOrder
+    campaignId?: SortOrder
+    participantId?: SortOrder
+    customerName?: SortOrderInput | SortOrder
+    customerPhone?: SortOrderInput | SortOrder
+    note?: SortOrderInput | SortOrder
+    usedAt?: SortOrder
+    _count?: CampaignCodeUsageCountOrderByAggregateInput
+    _max?: CampaignCodeUsageMaxOrderByAggregateInput
+    _min?: CampaignCodeUsageMinOrderByAggregateInput
+  }
+
+  export type CampaignCodeUsageScalarWhereWithAggregatesInput = {
+    AND?: CampaignCodeUsageScalarWhereWithAggregatesInput | CampaignCodeUsageScalarWhereWithAggregatesInput[]
+    OR?: CampaignCodeUsageScalarWhereWithAggregatesInput[]
+    NOT?: CampaignCodeUsageScalarWhereWithAggregatesInput | CampaignCodeUsageScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"CampaignCodeUsage"> | string
+    campaignId?: StringWithAggregatesFilter<"CampaignCodeUsage"> | string
+    participantId?: StringWithAggregatesFilter<"CampaignCodeUsage"> | string
+    customerName?: StringNullableWithAggregatesFilter<"CampaignCodeUsage"> | string | null
+    customerPhone?: StringNullableWithAggregatesFilter<"CampaignCodeUsage"> | string | null
+    note?: StringNullableWithAggregatesFilter<"CampaignCodeUsage"> | string | null
+    usedAt?: DateTimeWithAggregatesFilter<"CampaignCodeUsage"> | Date | string
   }
 
   export type OrderCreateInput = {
@@ -19189,10 +34922,1219 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type InfluencerCreateInput = {
+    id?: string
+    fullName: string
+    email: string
+    password: string
+    phone: string
+    tcNo?: string | null
+    birthDate?: string | null
+    avatarUrl?: string | null
+    instagramHandle?: string | null
+    instagramFollowers?: number | null
+    tiktokHandle?: string | null
+    youtubeHandle?: string | null
+    tier?: string
+    uniqueCode: string
+    uniqueUrl: string
+    status?: string
+    rejectReason?: string | null
+    bankIban?: string | null
+    bankName?: string | null
+    bankAccountName?: string | null
+    totalSales?: number
+    totalEarnings?: number
+    pendingEarnings?: number
+    totalClicks?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    shares?: ShareCreateNestedManyWithoutInfluencerInput
+    customers?: CustomerCreateNestedManyWithoutInfluencerInput
+    sales?: SaleCreateNestedManyWithoutInfluencerInput
+    payments?: PaymentCreateNestedManyWithoutInfluencerInput
+    linkClicks?: LinkClickCreateNestedManyWithoutInfluencerInput
+    campaigns?: CampaignParticipantCreateNestedManyWithoutInfluencerInput
+  }
+
+  export type InfluencerUncheckedCreateInput = {
+    id?: string
+    fullName: string
+    email: string
+    password: string
+    phone: string
+    tcNo?: string | null
+    birthDate?: string | null
+    avatarUrl?: string | null
+    instagramHandle?: string | null
+    instagramFollowers?: number | null
+    tiktokHandle?: string | null
+    youtubeHandle?: string | null
+    tier?: string
+    uniqueCode: string
+    uniqueUrl: string
+    status?: string
+    rejectReason?: string | null
+    bankIban?: string | null
+    bankName?: string | null
+    bankAccountName?: string | null
+    totalSales?: number
+    totalEarnings?: number
+    pendingEarnings?: number
+    totalClicks?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    shares?: ShareUncheckedCreateNestedManyWithoutInfluencerInput
+    customers?: CustomerUncheckedCreateNestedManyWithoutInfluencerInput
+    sales?: SaleUncheckedCreateNestedManyWithoutInfluencerInput
+    payments?: PaymentUncheckedCreateNestedManyWithoutInfluencerInput
+    linkClicks?: LinkClickUncheckedCreateNestedManyWithoutInfluencerInput
+    campaigns?: CampaignParticipantUncheckedCreateNestedManyWithoutInfluencerInput
+  }
+
+  export type InfluencerUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    tcNo?: NullableStringFieldUpdateOperationsInput | string | null
+    birthDate?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramFollowers?: NullableIntFieldUpdateOperationsInput | number | null
+    tiktokHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    youtubeHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    tier?: StringFieldUpdateOperationsInput | string
+    uniqueCode?: StringFieldUpdateOperationsInput | string
+    uniqueUrl?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    rejectReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bankIban?: NullableStringFieldUpdateOperationsInput | string | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountName?: NullableStringFieldUpdateOperationsInput | string | null
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalEarnings?: FloatFieldUpdateOperationsInput | number
+    pendingEarnings?: FloatFieldUpdateOperationsInput | number
+    totalClicks?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shares?: ShareUpdateManyWithoutInfluencerNestedInput
+    customers?: CustomerUpdateManyWithoutInfluencerNestedInput
+    sales?: SaleUpdateManyWithoutInfluencerNestedInput
+    payments?: PaymentUpdateManyWithoutInfluencerNestedInput
+    linkClicks?: LinkClickUpdateManyWithoutInfluencerNestedInput
+    campaigns?: CampaignParticipantUpdateManyWithoutInfluencerNestedInput
+  }
+
+  export type InfluencerUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    tcNo?: NullableStringFieldUpdateOperationsInput | string | null
+    birthDate?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramFollowers?: NullableIntFieldUpdateOperationsInput | number | null
+    tiktokHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    youtubeHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    tier?: StringFieldUpdateOperationsInput | string
+    uniqueCode?: StringFieldUpdateOperationsInput | string
+    uniqueUrl?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    rejectReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bankIban?: NullableStringFieldUpdateOperationsInput | string | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountName?: NullableStringFieldUpdateOperationsInput | string | null
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalEarnings?: FloatFieldUpdateOperationsInput | number
+    pendingEarnings?: FloatFieldUpdateOperationsInput | number
+    totalClicks?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shares?: ShareUncheckedUpdateManyWithoutInfluencerNestedInput
+    customers?: CustomerUncheckedUpdateManyWithoutInfluencerNestedInput
+    sales?: SaleUncheckedUpdateManyWithoutInfluencerNestedInput
+    payments?: PaymentUncheckedUpdateManyWithoutInfluencerNestedInput
+    linkClicks?: LinkClickUncheckedUpdateManyWithoutInfluencerNestedInput
+    campaigns?: CampaignParticipantUncheckedUpdateManyWithoutInfluencerNestedInput
+  }
+
+  export type InfluencerCreateManyInput = {
+    id?: string
+    fullName: string
+    email: string
+    password: string
+    phone: string
+    tcNo?: string | null
+    birthDate?: string | null
+    avatarUrl?: string | null
+    instagramHandle?: string | null
+    instagramFollowers?: number | null
+    tiktokHandle?: string | null
+    youtubeHandle?: string | null
+    tier?: string
+    uniqueCode: string
+    uniqueUrl: string
+    status?: string
+    rejectReason?: string | null
+    bankIban?: string | null
+    bankName?: string | null
+    bankAccountName?: string | null
+    totalSales?: number
+    totalEarnings?: number
+    pendingEarnings?: number
+    totalClicks?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type InfluencerUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    tcNo?: NullableStringFieldUpdateOperationsInput | string | null
+    birthDate?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramFollowers?: NullableIntFieldUpdateOperationsInput | number | null
+    tiktokHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    youtubeHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    tier?: StringFieldUpdateOperationsInput | string
+    uniqueCode?: StringFieldUpdateOperationsInput | string
+    uniqueUrl?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    rejectReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bankIban?: NullableStringFieldUpdateOperationsInput | string | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountName?: NullableStringFieldUpdateOperationsInput | string | null
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalEarnings?: FloatFieldUpdateOperationsInput | number
+    pendingEarnings?: FloatFieldUpdateOperationsInput | number
+    totalClicks?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InfluencerUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    tcNo?: NullableStringFieldUpdateOperationsInput | string | null
+    birthDate?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramFollowers?: NullableIntFieldUpdateOperationsInput | number | null
+    tiktokHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    youtubeHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    tier?: StringFieldUpdateOperationsInput | string
+    uniqueCode?: StringFieldUpdateOperationsInput | string
+    uniqueUrl?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    rejectReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bankIban?: NullableStringFieldUpdateOperationsInput | string | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountName?: NullableStringFieldUpdateOperationsInput | string | null
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalEarnings?: FloatFieldUpdateOperationsInput | number
+    pendingEarnings?: FloatFieldUpdateOperationsInput | number
+    totalClicks?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ShareCreateInput = {
+    id?: string
+    platform: string
+    shareUrl?: string | null
+    screenshotUrl?: string | null
+    shareDate: string
+    description?: string | null
+    status?: string
+    rejectReason?: string | null
+    viewCount?: number
+    clickCount?: number
+    saleCount?: number
+    approvedAt?: Date | string | null
+    approvedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    influencer: InfluencerCreateNestedOneWithoutSharesInput
+    linkClicks?: LinkClickCreateNestedManyWithoutShareInput
+  }
+
+  export type ShareUncheckedCreateInput = {
+    id?: string
+    influencerId: string
+    platform: string
+    shareUrl?: string | null
+    screenshotUrl?: string | null
+    shareDate: string
+    description?: string | null
+    status?: string
+    rejectReason?: string | null
+    viewCount?: number
+    clickCount?: number
+    saleCount?: number
+    approvedAt?: Date | string | null
+    approvedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    linkClicks?: LinkClickUncheckedCreateNestedManyWithoutShareInput
+  }
+
+  export type ShareUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    platform?: StringFieldUpdateOperationsInput | string
+    shareUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    shareDate?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    rejectReason?: NullableStringFieldUpdateOperationsInput | string | null
+    viewCount?: IntFieldUpdateOperationsInput | number
+    clickCount?: IntFieldUpdateOperationsInput | number
+    saleCount?: IntFieldUpdateOperationsInput | number
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    influencer?: InfluencerUpdateOneRequiredWithoutSharesNestedInput
+    linkClicks?: LinkClickUpdateManyWithoutShareNestedInput
+  }
+
+  export type ShareUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    influencerId?: StringFieldUpdateOperationsInput | string
+    platform?: StringFieldUpdateOperationsInput | string
+    shareUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    shareDate?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    rejectReason?: NullableStringFieldUpdateOperationsInput | string | null
+    viewCount?: IntFieldUpdateOperationsInput | number
+    clickCount?: IntFieldUpdateOperationsInput | number
+    saleCount?: IntFieldUpdateOperationsInput | number
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    linkClicks?: LinkClickUncheckedUpdateManyWithoutShareNestedInput
+  }
+
+  export type ShareCreateManyInput = {
+    id?: string
+    influencerId: string
+    platform: string
+    shareUrl?: string | null
+    screenshotUrl?: string | null
+    shareDate: string
+    description?: string | null
+    status?: string
+    rejectReason?: string | null
+    viewCount?: number
+    clickCount?: number
+    saleCount?: number
+    approvedAt?: Date | string | null
+    approvedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ShareUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    platform?: StringFieldUpdateOperationsInput | string
+    shareUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    shareDate?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    rejectReason?: NullableStringFieldUpdateOperationsInput | string | null
+    viewCount?: IntFieldUpdateOperationsInput | number
+    clickCount?: IntFieldUpdateOperationsInput | number
+    saleCount?: IntFieldUpdateOperationsInput | number
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ShareUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    influencerId?: StringFieldUpdateOperationsInput | string
+    platform?: StringFieldUpdateOperationsInput | string
+    shareUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    shareDate?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    rejectReason?: NullableStringFieldUpdateOperationsInput | string | null
+    viewCount?: IntFieldUpdateOperationsInput | number
+    clickCount?: IntFieldUpdateOperationsInput | number
+    saleCount?: IntFieldUpdateOperationsInput | number
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CustomerCreateInput = {
+    id?: string
+    fullName: string
+    phone: string
+    email?: string | null
+    tcNo?: string | null
+    source?: string
+    referrerUrl?: string | null
+    couponUsed?: string | null
+    firstSeenAt?: Date | string
+    status?: string
+    assignedOperatorId?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    influencer?: InfluencerCreateNestedOneWithoutCustomersInput
+    sales?: SaleCreateNestedManyWithoutCustomerInput
+  }
+
+  export type CustomerUncheckedCreateInput = {
+    id?: string
+    fullName: string
+    phone: string
+    email?: string | null
+    tcNo?: string | null
+    source?: string
+    influencerId?: string | null
+    referrerUrl?: string | null
+    couponUsed?: string | null
+    firstSeenAt?: Date | string
+    status?: string
+    assignedOperatorId?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sales?: SaleUncheckedCreateNestedManyWithoutCustomerInput
+  }
+
+  export type CustomerUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    tcNo?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: StringFieldUpdateOperationsInput | string
+    referrerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    couponUsed?: NullableStringFieldUpdateOperationsInput | string | null
+    firstSeenAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
+    assignedOperatorId?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    influencer?: InfluencerUpdateOneWithoutCustomersNestedInput
+    sales?: SaleUpdateManyWithoutCustomerNestedInput
+  }
+
+  export type CustomerUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    tcNo?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: StringFieldUpdateOperationsInput | string
+    influencerId?: NullableStringFieldUpdateOperationsInput | string | null
+    referrerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    couponUsed?: NullableStringFieldUpdateOperationsInput | string | null
+    firstSeenAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
+    assignedOperatorId?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sales?: SaleUncheckedUpdateManyWithoutCustomerNestedInput
+  }
+
+  export type CustomerCreateManyInput = {
+    id?: string
+    fullName: string
+    phone: string
+    email?: string | null
+    tcNo?: string | null
+    source?: string
+    influencerId?: string | null
+    referrerUrl?: string | null
+    couponUsed?: string | null
+    firstSeenAt?: Date | string
+    status?: string
+    assignedOperatorId?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CustomerUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    tcNo?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: StringFieldUpdateOperationsInput | string
+    referrerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    couponUsed?: NullableStringFieldUpdateOperationsInput | string | null
+    firstSeenAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
+    assignedOperatorId?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CustomerUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    tcNo?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: StringFieldUpdateOperationsInput | string
+    influencerId?: NullableStringFieldUpdateOperationsInput | string | null
+    referrerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    couponUsed?: NullableStringFieldUpdateOperationsInput | string | null
+    firstSeenAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
+    assignedOperatorId?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SaleCreateInput = {
+    id?: string
+    umrePackage?: string | null
+    saleAmount: number
+    commissionRate?: number
+    commissionAmount: number
+    commissionStatus?: string
+    saleDate?: Date | string
+    completionDate?: Date | string | null
+    refundDeadline?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    customer: CustomerCreateNestedOneWithoutSalesInput
+    influencer?: InfluencerCreateNestedOneWithoutSalesInput
+    payments?: PaymentSaleCreateNestedManyWithoutSaleInput
+  }
+
+  export type SaleUncheckedCreateInput = {
+    id?: string
+    customerId: string
+    influencerId?: string | null
+    umrePackage?: string | null
+    saleAmount: number
+    commissionRate?: number
+    commissionAmount: number
+    commissionStatus?: string
+    saleDate?: Date | string
+    completionDate?: Date | string | null
+    refundDeadline?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    payments?: PaymentSaleUncheckedCreateNestedManyWithoutSaleInput
+  }
+
+  export type SaleUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    umrePackage?: NullableStringFieldUpdateOperationsInput | string | null
+    saleAmount?: FloatFieldUpdateOperationsInput | number
+    commissionRate?: FloatFieldUpdateOperationsInput | number
+    commissionAmount?: FloatFieldUpdateOperationsInput | number
+    commissionStatus?: StringFieldUpdateOperationsInput | string
+    saleDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    completionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refundDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    customer?: CustomerUpdateOneRequiredWithoutSalesNestedInput
+    influencer?: InfluencerUpdateOneWithoutSalesNestedInput
+    payments?: PaymentSaleUpdateManyWithoutSaleNestedInput
+  }
+
+  export type SaleUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    customerId?: StringFieldUpdateOperationsInput | string
+    influencerId?: NullableStringFieldUpdateOperationsInput | string | null
+    umrePackage?: NullableStringFieldUpdateOperationsInput | string | null
+    saleAmount?: FloatFieldUpdateOperationsInput | number
+    commissionRate?: FloatFieldUpdateOperationsInput | number
+    commissionAmount?: FloatFieldUpdateOperationsInput | number
+    commissionStatus?: StringFieldUpdateOperationsInput | string
+    saleDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    completionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refundDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    payments?: PaymentSaleUncheckedUpdateManyWithoutSaleNestedInput
+  }
+
+  export type SaleCreateManyInput = {
+    id?: string
+    customerId: string
+    influencerId?: string | null
+    umrePackage?: string | null
+    saleAmount: number
+    commissionRate?: number
+    commissionAmount: number
+    commissionStatus?: string
+    saleDate?: Date | string
+    completionDate?: Date | string | null
+    refundDeadline?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SaleUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    umrePackage?: NullableStringFieldUpdateOperationsInput | string | null
+    saleAmount?: FloatFieldUpdateOperationsInput | number
+    commissionRate?: FloatFieldUpdateOperationsInput | number
+    commissionAmount?: FloatFieldUpdateOperationsInput | number
+    commissionStatus?: StringFieldUpdateOperationsInput | string
+    saleDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    completionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refundDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SaleUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    customerId?: StringFieldUpdateOperationsInput | string
+    influencerId?: NullableStringFieldUpdateOperationsInput | string | null
+    umrePackage?: NullableStringFieldUpdateOperationsInput | string | null
+    saleAmount?: FloatFieldUpdateOperationsInput | number
+    commissionRate?: FloatFieldUpdateOperationsInput | number
+    commissionAmount?: FloatFieldUpdateOperationsInput | number
+    commissionStatus?: StringFieldUpdateOperationsInput | string
+    saleDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    completionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refundDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PaymentCreateInput = {
+    id?: string
+    periodMonth: string
+    totalAmount: number
+    taxDeduction?: number
+    netAmount: number
+    status?: string
+    approvedBy?: string | null
+    approvedAt?: Date | string | null
+    paidAt?: Date | string | null
+    bankReference?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    influencer: InfluencerCreateNestedOneWithoutPaymentsInput
+    sales?: PaymentSaleCreateNestedManyWithoutPaymentInput
+  }
+
+  export type PaymentUncheckedCreateInput = {
+    id?: string
+    influencerId: string
+    periodMonth: string
+    totalAmount: number
+    taxDeduction?: number
+    netAmount: number
+    status?: string
+    approvedBy?: string | null
+    approvedAt?: Date | string | null
+    paidAt?: Date | string | null
+    bankReference?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sales?: PaymentSaleUncheckedCreateNestedManyWithoutPaymentInput
+  }
+
+  export type PaymentUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    periodMonth?: StringFieldUpdateOperationsInput | string
+    totalAmount?: FloatFieldUpdateOperationsInput | number
+    taxDeduction?: FloatFieldUpdateOperationsInput | number
+    netAmount?: FloatFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bankReference?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    influencer?: InfluencerUpdateOneRequiredWithoutPaymentsNestedInput
+    sales?: PaymentSaleUpdateManyWithoutPaymentNestedInput
+  }
+
+  export type PaymentUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    influencerId?: StringFieldUpdateOperationsInput | string
+    periodMonth?: StringFieldUpdateOperationsInput | string
+    totalAmount?: FloatFieldUpdateOperationsInput | number
+    taxDeduction?: FloatFieldUpdateOperationsInput | number
+    netAmount?: FloatFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bankReference?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sales?: PaymentSaleUncheckedUpdateManyWithoutPaymentNestedInput
+  }
+
+  export type PaymentCreateManyInput = {
+    id?: string
+    influencerId: string
+    periodMonth: string
+    totalAmount: number
+    taxDeduction?: number
+    netAmount: number
+    status?: string
+    approvedBy?: string | null
+    approvedAt?: Date | string | null
+    paidAt?: Date | string | null
+    bankReference?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PaymentUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    periodMonth?: StringFieldUpdateOperationsInput | string
+    totalAmount?: FloatFieldUpdateOperationsInput | number
+    taxDeduction?: FloatFieldUpdateOperationsInput | number
+    netAmount?: FloatFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bankReference?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PaymentUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    influencerId?: StringFieldUpdateOperationsInput | string
+    periodMonth?: StringFieldUpdateOperationsInput | string
+    totalAmount?: FloatFieldUpdateOperationsInput | number
+    taxDeduction?: FloatFieldUpdateOperationsInput | number
+    netAmount?: FloatFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bankReference?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PaymentSaleCreateInput = {
+    payment: PaymentCreateNestedOneWithoutSalesInput
+    sale: SaleCreateNestedOneWithoutPaymentsInput
+  }
+
+  export type PaymentSaleUncheckedCreateInput = {
+    paymentId: string
+    saleId: string
+  }
+
+  export type PaymentSaleUpdateInput = {
+    payment?: PaymentUpdateOneRequiredWithoutSalesNestedInput
+    sale?: SaleUpdateOneRequiredWithoutPaymentsNestedInput
+  }
+
+  export type PaymentSaleUncheckedUpdateInput = {
+    paymentId?: StringFieldUpdateOperationsInput | string
+    saleId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type PaymentSaleCreateManyInput = {
+    paymentId: string
+    saleId: string
+  }
+
+  export type PaymentSaleUpdateManyMutationInput = {
+
+  }
+
+  export type PaymentSaleUncheckedUpdateManyInput = {
+    paymentId?: StringFieldUpdateOperationsInput | string
+    saleId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type LinkClickCreateInput = {
+    id?: string
+    ipAddress?: string | null
+    userAgent?: string | null
+    referrer?: string | null
+    country?: string | null
+    utmSource?: string | null
+    utmContent?: string | null
+    isBot?: boolean
+    clickedAt?: Date | string
+    influencer: InfluencerCreateNestedOneWithoutLinkClicksInput
+    share?: ShareCreateNestedOneWithoutLinkClicksInput
+  }
+
+  export type LinkClickUncheckedCreateInput = {
+    id?: string
+    influencerId: string
+    shareId?: string | null
+    ipAddress?: string | null
+    userAgent?: string | null
+    referrer?: string | null
+    country?: string | null
+    utmSource?: string | null
+    utmContent?: string | null
+    isBot?: boolean
+    clickedAt?: Date | string
+  }
+
+  export type LinkClickUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    referrer?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    utmSource?: NullableStringFieldUpdateOperationsInput | string | null
+    utmContent?: NullableStringFieldUpdateOperationsInput | string | null
+    isBot?: BoolFieldUpdateOperationsInput | boolean
+    clickedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    influencer?: InfluencerUpdateOneRequiredWithoutLinkClicksNestedInput
+    share?: ShareUpdateOneWithoutLinkClicksNestedInput
+  }
+
+  export type LinkClickUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    influencerId?: StringFieldUpdateOperationsInput | string
+    shareId?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    referrer?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    utmSource?: NullableStringFieldUpdateOperationsInput | string | null
+    utmContent?: NullableStringFieldUpdateOperationsInput | string | null
+    isBot?: BoolFieldUpdateOperationsInput | boolean
+    clickedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LinkClickCreateManyInput = {
+    id?: string
+    influencerId: string
+    shareId?: string | null
+    ipAddress?: string | null
+    userAgent?: string | null
+    referrer?: string | null
+    country?: string | null
+    utmSource?: string | null
+    utmContent?: string | null
+    isBot?: boolean
+    clickedAt?: Date | string
+  }
+
+  export type LinkClickUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    referrer?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    utmSource?: NullableStringFieldUpdateOperationsInput | string | null
+    utmContent?: NullableStringFieldUpdateOperationsInput | string | null
+    isBot?: BoolFieldUpdateOperationsInput | boolean
+    clickedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LinkClickUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    influencerId?: StringFieldUpdateOperationsInput | string
+    shareId?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    referrer?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    utmSource?: NullableStringFieldUpdateOperationsInput | string | null
+    utmContent?: NullableStringFieldUpdateOperationsInput | string | null
+    isBot?: BoolFieldUpdateOperationsInput | boolean
+    clickedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AttributionOverrideCreateInput = {
+    id?: string
+    customerId: string
+    oldInfluencerId?: string | null
+    newInfluencerId?: string | null
+    reason?: string | null
+    overriddenBy: string
+    overriddenAt?: Date | string
+  }
+
+  export type AttributionOverrideUncheckedCreateInput = {
+    id?: string
+    customerId: string
+    oldInfluencerId?: string | null
+    newInfluencerId?: string | null
+    reason?: string | null
+    overriddenBy: string
+    overriddenAt?: Date | string
+  }
+
+  export type AttributionOverrideUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    customerId?: StringFieldUpdateOperationsInput | string
+    oldInfluencerId?: NullableStringFieldUpdateOperationsInput | string | null
+    newInfluencerId?: NullableStringFieldUpdateOperationsInput | string | null
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    overriddenBy?: StringFieldUpdateOperationsInput | string
+    overriddenAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AttributionOverrideUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    customerId?: StringFieldUpdateOperationsInput | string
+    oldInfluencerId?: NullableStringFieldUpdateOperationsInput | string | null
+    newInfluencerId?: NullableStringFieldUpdateOperationsInput | string | null
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    overriddenBy?: StringFieldUpdateOperationsInput | string
+    overriddenAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AttributionOverrideCreateManyInput = {
+    id?: string
+    customerId: string
+    oldInfluencerId?: string | null
+    newInfluencerId?: string | null
+    reason?: string | null
+    overriddenBy: string
+    overriddenAt?: Date | string
+  }
+
+  export type AttributionOverrideUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    customerId?: StringFieldUpdateOperationsInput | string
+    oldInfluencerId?: NullableStringFieldUpdateOperationsInput | string | null
+    newInfluencerId?: NullableStringFieldUpdateOperationsInput | string | null
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    overriddenBy?: StringFieldUpdateOperationsInput | string
+    overriddenAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AttributionOverrideUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    customerId?: StringFieldUpdateOperationsInput | string
+    oldInfluencerId?: NullableStringFieldUpdateOperationsInput | string | null
+    newInfluencerId?: NullableStringFieldUpdateOperationsInput | string | null
+    reason?: NullableStringFieldUpdateOperationsInput | string | null
+    overriddenBy?: StringFieldUpdateOperationsInput | string
+    overriddenAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CampaignCreateInput = {
+    id?: string
+    title: string
+    slug: string
+    description?: string | null
+    type: string
+    discountType?: string
+    discountValue: number
+    codeTemplate: string
+    status?: string
+    startDate?: Date | string | null
+    endDate?: Date | string | null
+    maxParticipants?: number | null
+    imageUrl?: string | null
+    createdBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    participants?: CampaignParticipantCreateNestedManyWithoutCampaignInput
+    codeUsages?: CampaignCodeUsageCreateNestedManyWithoutCampaignInput
+  }
+
+  export type CampaignUncheckedCreateInput = {
+    id?: string
+    title: string
+    slug: string
+    description?: string | null
+    type: string
+    discountType?: string
+    discountValue: number
+    codeTemplate: string
+    status?: string
+    startDate?: Date | string | null
+    endDate?: Date | string | null
+    maxParticipants?: number | null
+    imageUrl?: string | null
+    createdBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    participants?: CampaignParticipantUncheckedCreateNestedManyWithoutCampaignInput
+    codeUsages?: CampaignCodeUsageUncheckedCreateNestedManyWithoutCampaignInput
+  }
+
+  export type CampaignUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    discountType?: StringFieldUpdateOperationsInput | string
+    discountValue?: FloatFieldUpdateOperationsInput | number
+    codeTemplate?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    maxParticipants?: NullableIntFieldUpdateOperationsInput | number | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    participants?: CampaignParticipantUpdateManyWithoutCampaignNestedInput
+    codeUsages?: CampaignCodeUsageUpdateManyWithoutCampaignNestedInput
+  }
+
+  export type CampaignUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    discountType?: StringFieldUpdateOperationsInput | string
+    discountValue?: FloatFieldUpdateOperationsInput | number
+    codeTemplate?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    maxParticipants?: NullableIntFieldUpdateOperationsInput | number | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    participants?: CampaignParticipantUncheckedUpdateManyWithoutCampaignNestedInput
+    codeUsages?: CampaignCodeUsageUncheckedUpdateManyWithoutCampaignNestedInput
+  }
+
+  export type CampaignCreateManyInput = {
+    id?: string
+    title: string
+    slug: string
+    description?: string | null
+    type: string
+    discountType?: string
+    discountValue: number
+    codeTemplate: string
+    status?: string
+    startDate?: Date | string | null
+    endDate?: Date | string | null
+    maxParticipants?: number | null
+    imageUrl?: string | null
+    createdBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CampaignUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    discountType?: StringFieldUpdateOperationsInput | string
+    discountValue?: FloatFieldUpdateOperationsInput | number
+    codeTemplate?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    maxParticipants?: NullableIntFieldUpdateOperationsInput | number | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CampaignUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    discountType?: StringFieldUpdateOperationsInput | string
+    discountValue?: FloatFieldUpdateOperationsInput | number
+    codeTemplate?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    maxParticipants?: NullableIntFieldUpdateOperationsInput | number | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CampaignParticipantCreateInput = {
+    id?: string
+    uniqueCode: string
+    joinedAt?: Date | string
+    usageCount?: number
+    campaign: CampaignCreateNestedOneWithoutParticipantsInput
+    influencer: InfluencerCreateNestedOneWithoutCampaignsInput
+    codeUsages?: CampaignCodeUsageCreateNestedManyWithoutParticipantInput
+  }
+
+  export type CampaignParticipantUncheckedCreateInput = {
+    id?: string
+    campaignId: string
+    influencerId: string
+    uniqueCode: string
+    joinedAt?: Date | string
+    usageCount?: number
+    codeUsages?: CampaignCodeUsageUncheckedCreateNestedManyWithoutParticipantInput
+  }
+
+  export type CampaignParticipantUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    uniqueCode?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usageCount?: IntFieldUpdateOperationsInput | number
+    campaign?: CampaignUpdateOneRequiredWithoutParticipantsNestedInput
+    influencer?: InfluencerUpdateOneRequiredWithoutCampaignsNestedInput
+    codeUsages?: CampaignCodeUsageUpdateManyWithoutParticipantNestedInput
+  }
+
+  export type CampaignParticipantUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    campaignId?: StringFieldUpdateOperationsInput | string
+    influencerId?: StringFieldUpdateOperationsInput | string
+    uniqueCode?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usageCount?: IntFieldUpdateOperationsInput | number
+    codeUsages?: CampaignCodeUsageUncheckedUpdateManyWithoutParticipantNestedInput
+  }
+
+  export type CampaignParticipantCreateManyInput = {
+    id?: string
+    campaignId: string
+    influencerId: string
+    uniqueCode: string
+    joinedAt?: Date | string
+    usageCount?: number
+  }
+
+  export type CampaignParticipantUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    uniqueCode?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usageCount?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type CampaignParticipantUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    campaignId?: StringFieldUpdateOperationsInput | string
+    influencerId?: StringFieldUpdateOperationsInput | string
+    uniqueCode?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usageCount?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type CampaignCodeUsageCreateInput = {
+    id?: string
+    customerName?: string | null
+    customerPhone?: string | null
+    note?: string | null
+    usedAt?: Date | string
+    campaign: CampaignCreateNestedOneWithoutCodeUsagesInput
+    participant: CampaignParticipantCreateNestedOneWithoutCodeUsagesInput
+  }
+
+  export type CampaignCodeUsageUncheckedCreateInput = {
+    id?: string
+    campaignId: string
+    participantId: string
+    customerName?: string | null
+    customerPhone?: string | null
+    note?: string | null
+    usedAt?: Date | string
+  }
+
+  export type CampaignCodeUsageUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    customerName?: NullableStringFieldUpdateOperationsInput | string | null
+    customerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    usedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    campaign?: CampaignUpdateOneRequiredWithoutCodeUsagesNestedInput
+    participant?: CampaignParticipantUpdateOneRequiredWithoutCodeUsagesNestedInput
+  }
+
+  export type CampaignCodeUsageUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    campaignId?: StringFieldUpdateOperationsInput | string
+    participantId?: StringFieldUpdateOperationsInput | string
+    customerName?: NullableStringFieldUpdateOperationsInput | string | null
+    customerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    usedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CampaignCodeUsageCreateManyInput = {
+    id?: string
+    campaignId: string
+    participantId: string
+    customerName?: string | null
+    customerPhone?: string | null
+    note?: string | null
+    usedAt?: Date | string
+  }
+
+  export type CampaignCodeUsageUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    customerName?: NullableStringFieldUpdateOperationsInput | string | null
+    customerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    usedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CampaignCodeUsageUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    campaignId?: StringFieldUpdateOperationsInput | string
+    participantId?: StringFieldUpdateOperationsInput | string
+    customerName?: NullableStringFieldUpdateOperationsInput | string | null
+    customerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    usedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[] | ListStringFieldRefInput<$PrismaModel>
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
+    in?: string[]
+    notIn?: string[]
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -19200,14 +36142,13 @@ export namespace Prisma {
     contains?: string | StringFieldRefInput<$PrismaModel>
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
   export type IntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
     lt?: number | IntFieldRefInput<$PrismaModel>
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
@@ -19217,8 +36158,8 @@ export namespace Prisma {
 
   export type FloatFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
     lt?: number | FloatFieldRefInput<$PrismaModel>
     lte?: number | FloatFieldRefInput<$PrismaModel>
     gt?: number | FloatFieldRefInput<$PrismaModel>
@@ -19228,8 +36169,8 @@ export namespace Prisma {
 
   export type StringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -19237,14 +36178,13 @@ export namespace Prisma {
     contains?: string | StringFieldRefInput<$PrismaModel>
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
   export type DateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[]
+    notIn?: Date[] | string[]
     lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
@@ -19322,8 +36262,8 @@ export namespace Prisma {
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[] | ListStringFieldRefInput<$PrismaModel>
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
+    in?: string[]
+    notIn?: string[]
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -19331,7 +36271,6 @@ export namespace Prisma {
     contains?: string | StringFieldRefInput<$PrismaModel>
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
     not?: NestedStringWithAggregatesFilter<$PrismaModel> | string
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedStringFilter<$PrismaModel>
@@ -19340,8 +36279,8 @@ export namespace Prisma {
 
   export type IntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
     lt?: number | IntFieldRefInput<$PrismaModel>
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
@@ -19356,8 +36295,8 @@ export namespace Prisma {
 
   export type FloatWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
     lt?: number | FloatFieldRefInput<$PrismaModel>
     lte?: number | FloatFieldRefInput<$PrismaModel>
     gt?: number | FloatFieldRefInput<$PrismaModel>
@@ -19372,8 +36311,8 @@ export namespace Prisma {
 
   export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -19381,7 +36320,6 @@ export namespace Prisma {
     contains?: string | StringFieldRefInput<$PrismaModel>
     startsWith?: string | StringFieldRefInput<$PrismaModel>
     endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
     not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
     _count?: NestedIntNullableFilter<$PrismaModel>
     _min?: NestedStringNullableFilter<$PrismaModel>
@@ -19390,8 +36328,8 @@ export namespace Prisma {
 
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[]
+    notIn?: Date[] | string[]
     lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
@@ -19606,8 +36544,8 @@ export namespace Prisma {
 
   export type IntNullableFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
     lt?: number | IntFieldRefInput<$PrismaModel>
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
@@ -19617,8 +36555,8 @@ export namespace Prisma {
 
   export type DateTimeNullableFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | null
+    notIn?: Date[] | string[] | null
     lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
@@ -19735,8 +36673,8 @@ export namespace Prisma {
 
   export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
     lt?: number | IntFieldRefInput<$PrismaModel>
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
@@ -19751,8 +36689,8 @@ export namespace Prisma {
 
   export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | null
+    notIn?: Date[] | string[] | null
     lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
@@ -20026,6 +36964,707 @@ export namespace Prisma {
     version?: SortOrder
   }
 
+  export type ShareListRelationFilter = {
+    every?: ShareWhereInput
+    some?: ShareWhereInput
+    none?: ShareWhereInput
+  }
+
+  export type CustomerListRelationFilter = {
+    every?: CustomerWhereInput
+    some?: CustomerWhereInput
+    none?: CustomerWhereInput
+  }
+
+  export type SaleListRelationFilter = {
+    every?: SaleWhereInput
+    some?: SaleWhereInput
+    none?: SaleWhereInput
+  }
+
+  export type PaymentListRelationFilter = {
+    every?: PaymentWhereInput
+    some?: PaymentWhereInput
+    none?: PaymentWhereInput
+  }
+
+  export type LinkClickListRelationFilter = {
+    every?: LinkClickWhereInput
+    some?: LinkClickWhereInput
+    none?: LinkClickWhereInput
+  }
+
+  export type CampaignParticipantListRelationFilter = {
+    every?: CampaignParticipantWhereInput
+    some?: CampaignParticipantWhereInput
+    none?: CampaignParticipantWhereInput
+  }
+
+  export type ShareOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CustomerOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SaleOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type PaymentOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type LinkClickOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CampaignParticipantOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type InfluencerCountOrderByAggregateInput = {
+    id?: SortOrder
+    fullName?: SortOrder
+    email?: SortOrder
+    password?: SortOrder
+    phone?: SortOrder
+    tcNo?: SortOrder
+    birthDate?: SortOrder
+    avatarUrl?: SortOrder
+    instagramHandle?: SortOrder
+    instagramFollowers?: SortOrder
+    tiktokHandle?: SortOrder
+    youtubeHandle?: SortOrder
+    tier?: SortOrder
+    uniqueCode?: SortOrder
+    uniqueUrl?: SortOrder
+    status?: SortOrder
+    rejectReason?: SortOrder
+    bankIban?: SortOrder
+    bankName?: SortOrder
+    bankAccountName?: SortOrder
+    totalSales?: SortOrder
+    totalEarnings?: SortOrder
+    pendingEarnings?: SortOrder
+    totalClicks?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type InfluencerAvgOrderByAggregateInput = {
+    instagramFollowers?: SortOrder
+    totalSales?: SortOrder
+    totalEarnings?: SortOrder
+    pendingEarnings?: SortOrder
+    totalClicks?: SortOrder
+  }
+
+  export type InfluencerMaxOrderByAggregateInput = {
+    id?: SortOrder
+    fullName?: SortOrder
+    email?: SortOrder
+    password?: SortOrder
+    phone?: SortOrder
+    tcNo?: SortOrder
+    birthDate?: SortOrder
+    avatarUrl?: SortOrder
+    instagramHandle?: SortOrder
+    instagramFollowers?: SortOrder
+    tiktokHandle?: SortOrder
+    youtubeHandle?: SortOrder
+    tier?: SortOrder
+    uniqueCode?: SortOrder
+    uniqueUrl?: SortOrder
+    status?: SortOrder
+    rejectReason?: SortOrder
+    bankIban?: SortOrder
+    bankName?: SortOrder
+    bankAccountName?: SortOrder
+    totalSales?: SortOrder
+    totalEarnings?: SortOrder
+    pendingEarnings?: SortOrder
+    totalClicks?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type InfluencerMinOrderByAggregateInput = {
+    id?: SortOrder
+    fullName?: SortOrder
+    email?: SortOrder
+    password?: SortOrder
+    phone?: SortOrder
+    tcNo?: SortOrder
+    birthDate?: SortOrder
+    avatarUrl?: SortOrder
+    instagramHandle?: SortOrder
+    instagramFollowers?: SortOrder
+    tiktokHandle?: SortOrder
+    youtubeHandle?: SortOrder
+    tier?: SortOrder
+    uniqueCode?: SortOrder
+    uniqueUrl?: SortOrder
+    status?: SortOrder
+    rejectReason?: SortOrder
+    bankIban?: SortOrder
+    bankName?: SortOrder
+    bankAccountName?: SortOrder
+    totalSales?: SortOrder
+    totalEarnings?: SortOrder
+    pendingEarnings?: SortOrder
+    totalClicks?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type InfluencerSumOrderByAggregateInput = {
+    instagramFollowers?: SortOrder
+    totalSales?: SortOrder
+    totalEarnings?: SortOrder
+    pendingEarnings?: SortOrder
+    totalClicks?: SortOrder
+  }
+
+  export type InfluencerScalarRelationFilter = {
+    is?: InfluencerWhereInput
+    isNot?: InfluencerWhereInput
+  }
+
+  export type ShareCountOrderByAggregateInput = {
+    id?: SortOrder
+    influencerId?: SortOrder
+    platform?: SortOrder
+    shareUrl?: SortOrder
+    screenshotUrl?: SortOrder
+    shareDate?: SortOrder
+    description?: SortOrder
+    status?: SortOrder
+    rejectReason?: SortOrder
+    viewCount?: SortOrder
+    clickCount?: SortOrder
+    saleCount?: SortOrder
+    approvedAt?: SortOrder
+    approvedBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ShareAvgOrderByAggregateInput = {
+    viewCount?: SortOrder
+    clickCount?: SortOrder
+    saleCount?: SortOrder
+  }
+
+  export type ShareMaxOrderByAggregateInput = {
+    id?: SortOrder
+    influencerId?: SortOrder
+    platform?: SortOrder
+    shareUrl?: SortOrder
+    screenshotUrl?: SortOrder
+    shareDate?: SortOrder
+    description?: SortOrder
+    status?: SortOrder
+    rejectReason?: SortOrder
+    viewCount?: SortOrder
+    clickCount?: SortOrder
+    saleCount?: SortOrder
+    approvedAt?: SortOrder
+    approvedBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ShareMinOrderByAggregateInput = {
+    id?: SortOrder
+    influencerId?: SortOrder
+    platform?: SortOrder
+    shareUrl?: SortOrder
+    screenshotUrl?: SortOrder
+    shareDate?: SortOrder
+    description?: SortOrder
+    status?: SortOrder
+    rejectReason?: SortOrder
+    viewCount?: SortOrder
+    clickCount?: SortOrder
+    saleCount?: SortOrder
+    approvedAt?: SortOrder
+    approvedBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ShareSumOrderByAggregateInput = {
+    viewCount?: SortOrder
+    clickCount?: SortOrder
+    saleCount?: SortOrder
+  }
+
+  export type InfluencerNullableScalarRelationFilter = {
+    is?: InfluencerWhereInput | null
+    isNot?: InfluencerWhereInput | null
+  }
+
+  export type CustomerCountOrderByAggregateInput = {
+    id?: SortOrder
+    fullName?: SortOrder
+    phone?: SortOrder
+    email?: SortOrder
+    tcNo?: SortOrder
+    source?: SortOrder
+    influencerId?: SortOrder
+    referrerUrl?: SortOrder
+    couponUsed?: SortOrder
+    firstSeenAt?: SortOrder
+    status?: SortOrder
+    assignedOperatorId?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CustomerMaxOrderByAggregateInput = {
+    id?: SortOrder
+    fullName?: SortOrder
+    phone?: SortOrder
+    email?: SortOrder
+    tcNo?: SortOrder
+    source?: SortOrder
+    influencerId?: SortOrder
+    referrerUrl?: SortOrder
+    couponUsed?: SortOrder
+    firstSeenAt?: SortOrder
+    status?: SortOrder
+    assignedOperatorId?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CustomerMinOrderByAggregateInput = {
+    id?: SortOrder
+    fullName?: SortOrder
+    phone?: SortOrder
+    email?: SortOrder
+    tcNo?: SortOrder
+    source?: SortOrder
+    influencerId?: SortOrder
+    referrerUrl?: SortOrder
+    couponUsed?: SortOrder
+    firstSeenAt?: SortOrder
+    status?: SortOrder
+    assignedOperatorId?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CustomerScalarRelationFilter = {
+    is?: CustomerWhereInput
+    isNot?: CustomerWhereInput
+  }
+
+  export type PaymentSaleListRelationFilter = {
+    every?: PaymentSaleWhereInput
+    some?: PaymentSaleWhereInput
+    none?: PaymentSaleWhereInput
+  }
+
+  export type PaymentSaleOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SaleCountOrderByAggregateInput = {
+    id?: SortOrder
+    customerId?: SortOrder
+    influencerId?: SortOrder
+    umrePackage?: SortOrder
+    saleAmount?: SortOrder
+    commissionRate?: SortOrder
+    commissionAmount?: SortOrder
+    commissionStatus?: SortOrder
+    saleDate?: SortOrder
+    completionDate?: SortOrder
+    refundDeadline?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SaleAvgOrderByAggregateInput = {
+    saleAmount?: SortOrder
+    commissionRate?: SortOrder
+    commissionAmount?: SortOrder
+  }
+
+  export type SaleMaxOrderByAggregateInput = {
+    id?: SortOrder
+    customerId?: SortOrder
+    influencerId?: SortOrder
+    umrePackage?: SortOrder
+    saleAmount?: SortOrder
+    commissionRate?: SortOrder
+    commissionAmount?: SortOrder
+    commissionStatus?: SortOrder
+    saleDate?: SortOrder
+    completionDate?: SortOrder
+    refundDeadline?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SaleMinOrderByAggregateInput = {
+    id?: SortOrder
+    customerId?: SortOrder
+    influencerId?: SortOrder
+    umrePackage?: SortOrder
+    saleAmount?: SortOrder
+    commissionRate?: SortOrder
+    commissionAmount?: SortOrder
+    commissionStatus?: SortOrder
+    saleDate?: SortOrder
+    completionDate?: SortOrder
+    refundDeadline?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type SaleSumOrderByAggregateInput = {
+    saleAmount?: SortOrder
+    commissionRate?: SortOrder
+    commissionAmount?: SortOrder
+  }
+
+  export type PaymentCountOrderByAggregateInput = {
+    id?: SortOrder
+    influencerId?: SortOrder
+    periodMonth?: SortOrder
+    totalAmount?: SortOrder
+    taxDeduction?: SortOrder
+    netAmount?: SortOrder
+    status?: SortOrder
+    approvedBy?: SortOrder
+    approvedAt?: SortOrder
+    paidAt?: SortOrder
+    bankReference?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PaymentAvgOrderByAggregateInput = {
+    totalAmount?: SortOrder
+    taxDeduction?: SortOrder
+    netAmount?: SortOrder
+  }
+
+  export type PaymentMaxOrderByAggregateInput = {
+    id?: SortOrder
+    influencerId?: SortOrder
+    periodMonth?: SortOrder
+    totalAmount?: SortOrder
+    taxDeduction?: SortOrder
+    netAmount?: SortOrder
+    status?: SortOrder
+    approvedBy?: SortOrder
+    approvedAt?: SortOrder
+    paidAt?: SortOrder
+    bankReference?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PaymentMinOrderByAggregateInput = {
+    id?: SortOrder
+    influencerId?: SortOrder
+    periodMonth?: SortOrder
+    totalAmount?: SortOrder
+    taxDeduction?: SortOrder
+    netAmount?: SortOrder
+    status?: SortOrder
+    approvedBy?: SortOrder
+    approvedAt?: SortOrder
+    paidAt?: SortOrder
+    bankReference?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PaymentSumOrderByAggregateInput = {
+    totalAmount?: SortOrder
+    taxDeduction?: SortOrder
+    netAmount?: SortOrder
+  }
+
+  export type PaymentScalarRelationFilter = {
+    is?: PaymentWhereInput
+    isNot?: PaymentWhereInput
+  }
+
+  export type SaleScalarRelationFilter = {
+    is?: SaleWhereInput
+    isNot?: SaleWhereInput
+  }
+
+  export type PaymentSalePaymentIdSaleIdCompoundUniqueInput = {
+    paymentId: string
+    saleId: string
+  }
+
+  export type PaymentSaleCountOrderByAggregateInput = {
+    paymentId?: SortOrder
+    saleId?: SortOrder
+  }
+
+  export type PaymentSaleMaxOrderByAggregateInput = {
+    paymentId?: SortOrder
+    saleId?: SortOrder
+  }
+
+  export type PaymentSaleMinOrderByAggregateInput = {
+    paymentId?: SortOrder
+    saleId?: SortOrder
+  }
+
+  export type ShareNullableScalarRelationFilter = {
+    is?: ShareWhereInput | null
+    isNot?: ShareWhereInput | null
+  }
+
+  export type LinkClickCountOrderByAggregateInput = {
+    id?: SortOrder
+    influencerId?: SortOrder
+    shareId?: SortOrder
+    ipAddress?: SortOrder
+    userAgent?: SortOrder
+    referrer?: SortOrder
+    country?: SortOrder
+    utmSource?: SortOrder
+    utmContent?: SortOrder
+    isBot?: SortOrder
+    clickedAt?: SortOrder
+  }
+
+  export type LinkClickMaxOrderByAggregateInput = {
+    id?: SortOrder
+    influencerId?: SortOrder
+    shareId?: SortOrder
+    ipAddress?: SortOrder
+    userAgent?: SortOrder
+    referrer?: SortOrder
+    country?: SortOrder
+    utmSource?: SortOrder
+    utmContent?: SortOrder
+    isBot?: SortOrder
+    clickedAt?: SortOrder
+  }
+
+  export type LinkClickMinOrderByAggregateInput = {
+    id?: SortOrder
+    influencerId?: SortOrder
+    shareId?: SortOrder
+    ipAddress?: SortOrder
+    userAgent?: SortOrder
+    referrer?: SortOrder
+    country?: SortOrder
+    utmSource?: SortOrder
+    utmContent?: SortOrder
+    isBot?: SortOrder
+    clickedAt?: SortOrder
+  }
+
+  export type AttributionOverrideCountOrderByAggregateInput = {
+    id?: SortOrder
+    customerId?: SortOrder
+    oldInfluencerId?: SortOrder
+    newInfluencerId?: SortOrder
+    reason?: SortOrder
+    overriddenBy?: SortOrder
+    overriddenAt?: SortOrder
+  }
+
+  export type AttributionOverrideMaxOrderByAggregateInput = {
+    id?: SortOrder
+    customerId?: SortOrder
+    oldInfluencerId?: SortOrder
+    newInfluencerId?: SortOrder
+    reason?: SortOrder
+    overriddenBy?: SortOrder
+    overriddenAt?: SortOrder
+  }
+
+  export type AttributionOverrideMinOrderByAggregateInput = {
+    id?: SortOrder
+    customerId?: SortOrder
+    oldInfluencerId?: SortOrder
+    newInfluencerId?: SortOrder
+    reason?: SortOrder
+    overriddenBy?: SortOrder
+    overriddenAt?: SortOrder
+  }
+
+  export type CampaignCodeUsageListRelationFilter = {
+    every?: CampaignCodeUsageWhereInput
+    some?: CampaignCodeUsageWhereInput
+    none?: CampaignCodeUsageWhereInput
+  }
+
+  export type CampaignCodeUsageOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CampaignCountOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    slug?: SortOrder
+    description?: SortOrder
+    type?: SortOrder
+    discountType?: SortOrder
+    discountValue?: SortOrder
+    codeTemplate?: SortOrder
+    status?: SortOrder
+    startDate?: SortOrder
+    endDate?: SortOrder
+    maxParticipants?: SortOrder
+    imageUrl?: SortOrder
+    createdBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CampaignAvgOrderByAggregateInput = {
+    discountValue?: SortOrder
+    maxParticipants?: SortOrder
+  }
+
+  export type CampaignMaxOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    slug?: SortOrder
+    description?: SortOrder
+    type?: SortOrder
+    discountType?: SortOrder
+    discountValue?: SortOrder
+    codeTemplate?: SortOrder
+    status?: SortOrder
+    startDate?: SortOrder
+    endDate?: SortOrder
+    maxParticipants?: SortOrder
+    imageUrl?: SortOrder
+    createdBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CampaignMinOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    slug?: SortOrder
+    description?: SortOrder
+    type?: SortOrder
+    discountType?: SortOrder
+    discountValue?: SortOrder
+    codeTemplate?: SortOrder
+    status?: SortOrder
+    startDate?: SortOrder
+    endDate?: SortOrder
+    maxParticipants?: SortOrder
+    imageUrl?: SortOrder
+    createdBy?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CampaignSumOrderByAggregateInput = {
+    discountValue?: SortOrder
+    maxParticipants?: SortOrder
+  }
+
+  export type CampaignScalarRelationFilter = {
+    is?: CampaignWhereInput
+    isNot?: CampaignWhereInput
+  }
+
+  export type CampaignParticipantCampaignIdInfluencerIdCompoundUniqueInput = {
+    campaignId: string
+    influencerId: string
+  }
+
+  export type CampaignParticipantCountOrderByAggregateInput = {
+    id?: SortOrder
+    campaignId?: SortOrder
+    influencerId?: SortOrder
+    uniqueCode?: SortOrder
+    joinedAt?: SortOrder
+    usageCount?: SortOrder
+  }
+
+  export type CampaignParticipantAvgOrderByAggregateInput = {
+    usageCount?: SortOrder
+  }
+
+  export type CampaignParticipantMaxOrderByAggregateInput = {
+    id?: SortOrder
+    campaignId?: SortOrder
+    influencerId?: SortOrder
+    uniqueCode?: SortOrder
+    joinedAt?: SortOrder
+    usageCount?: SortOrder
+  }
+
+  export type CampaignParticipantMinOrderByAggregateInput = {
+    id?: SortOrder
+    campaignId?: SortOrder
+    influencerId?: SortOrder
+    uniqueCode?: SortOrder
+    joinedAt?: SortOrder
+    usageCount?: SortOrder
+  }
+
+  export type CampaignParticipantSumOrderByAggregateInput = {
+    usageCount?: SortOrder
+  }
+
+  export type CampaignParticipantScalarRelationFilter = {
+    is?: CampaignParticipantWhereInput
+    isNot?: CampaignParticipantWhereInput
+  }
+
+  export type CampaignCodeUsageCountOrderByAggregateInput = {
+    id?: SortOrder
+    campaignId?: SortOrder
+    participantId?: SortOrder
+    customerName?: SortOrder
+    customerPhone?: SortOrder
+    note?: SortOrder
+    usedAt?: SortOrder
+  }
+
+  export type CampaignCodeUsageMaxOrderByAggregateInput = {
+    id?: SortOrder
+    campaignId?: SortOrder
+    participantId?: SortOrder
+    customerName?: SortOrder
+    customerPhone?: SortOrder
+    note?: SortOrder
+    usedAt?: SortOrder
+  }
+
+  export type CampaignCodeUsageMinOrderByAggregateInput = {
+    id?: SortOrder
+    campaignId?: SortOrder
+    participantId?: SortOrder
+    customerName?: SortOrder
+    customerPhone?: SortOrder
+    note?: SortOrder
+    usedAt?: SortOrder
+  }
+
   export type UserCreateNestedOneWithoutOrdersInput = {
     create?: XOR<UserCreateWithoutOrdersInput, UserUncheckedCreateWithoutOrdersInput>
     connectOrCreate?: UserCreateOrConnectWithoutOrdersInput
@@ -20244,10 +37883,744 @@ export namespace Prisma {
     deleteMany?: OrderScalarWhereInput | OrderScalarWhereInput[]
   }
 
+  export type ShareCreateNestedManyWithoutInfluencerInput = {
+    create?: XOR<ShareCreateWithoutInfluencerInput, ShareUncheckedCreateWithoutInfluencerInput> | ShareCreateWithoutInfluencerInput[] | ShareUncheckedCreateWithoutInfluencerInput[]
+    connectOrCreate?: ShareCreateOrConnectWithoutInfluencerInput | ShareCreateOrConnectWithoutInfluencerInput[]
+    createMany?: ShareCreateManyInfluencerInputEnvelope
+    connect?: ShareWhereUniqueInput | ShareWhereUniqueInput[]
+  }
+
+  export type CustomerCreateNestedManyWithoutInfluencerInput = {
+    create?: XOR<CustomerCreateWithoutInfluencerInput, CustomerUncheckedCreateWithoutInfluencerInput> | CustomerCreateWithoutInfluencerInput[] | CustomerUncheckedCreateWithoutInfluencerInput[]
+    connectOrCreate?: CustomerCreateOrConnectWithoutInfluencerInput | CustomerCreateOrConnectWithoutInfluencerInput[]
+    createMany?: CustomerCreateManyInfluencerInputEnvelope
+    connect?: CustomerWhereUniqueInput | CustomerWhereUniqueInput[]
+  }
+
+  export type SaleCreateNestedManyWithoutInfluencerInput = {
+    create?: XOR<SaleCreateWithoutInfluencerInput, SaleUncheckedCreateWithoutInfluencerInput> | SaleCreateWithoutInfluencerInput[] | SaleUncheckedCreateWithoutInfluencerInput[]
+    connectOrCreate?: SaleCreateOrConnectWithoutInfluencerInput | SaleCreateOrConnectWithoutInfluencerInput[]
+    createMany?: SaleCreateManyInfluencerInputEnvelope
+    connect?: SaleWhereUniqueInput | SaleWhereUniqueInput[]
+  }
+
+  export type PaymentCreateNestedManyWithoutInfluencerInput = {
+    create?: XOR<PaymentCreateWithoutInfluencerInput, PaymentUncheckedCreateWithoutInfluencerInput> | PaymentCreateWithoutInfluencerInput[] | PaymentUncheckedCreateWithoutInfluencerInput[]
+    connectOrCreate?: PaymentCreateOrConnectWithoutInfluencerInput | PaymentCreateOrConnectWithoutInfluencerInput[]
+    createMany?: PaymentCreateManyInfluencerInputEnvelope
+    connect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+  }
+
+  export type LinkClickCreateNestedManyWithoutInfluencerInput = {
+    create?: XOR<LinkClickCreateWithoutInfluencerInput, LinkClickUncheckedCreateWithoutInfluencerInput> | LinkClickCreateWithoutInfluencerInput[] | LinkClickUncheckedCreateWithoutInfluencerInput[]
+    connectOrCreate?: LinkClickCreateOrConnectWithoutInfluencerInput | LinkClickCreateOrConnectWithoutInfluencerInput[]
+    createMany?: LinkClickCreateManyInfluencerInputEnvelope
+    connect?: LinkClickWhereUniqueInput | LinkClickWhereUniqueInput[]
+  }
+
+  export type CampaignParticipantCreateNestedManyWithoutInfluencerInput = {
+    create?: XOR<CampaignParticipantCreateWithoutInfluencerInput, CampaignParticipantUncheckedCreateWithoutInfluencerInput> | CampaignParticipantCreateWithoutInfluencerInput[] | CampaignParticipantUncheckedCreateWithoutInfluencerInput[]
+    connectOrCreate?: CampaignParticipantCreateOrConnectWithoutInfluencerInput | CampaignParticipantCreateOrConnectWithoutInfluencerInput[]
+    createMany?: CampaignParticipantCreateManyInfluencerInputEnvelope
+    connect?: CampaignParticipantWhereUniqueInput | CampaignParticipantWhereUniqueInput[]
+  }
+
+  export type ShareUncheckedCreateNestedManyWithoutInfluencerInput = {
+    create?: XOR<ShareCreateWithoutInfluencerInput, ShareUncheckedCreateWithoutInfluencerInput> | ShareCreateWithoutInfluencerInput[] | ShareUncheckedCreateWithoutInfluencerInput[]
+    connectOrCreate?: ShareCreateOrConnectWithoutInfluencerInput | ShareCreateOrConnectWithoutInfluencerInput[]
+    createMany?: ShareCreateManyInfluencerInputEnvelope
+    connect?: ShareWhereUniqueInput | ShareWhereUniqueInput[]
+  }
+
+  export type CustomerUncheckedCreateNestedManyWithoutInfluencerInput = {
+    create?: XOR<CustomerCreateWithoutInfluencerInput, CustomerUncheckedCreateWithoutInfluencerInput> | CustomerCreateWithoutInfluencerInput[] | CustomerUncheckedCreateWithoutInfluencerInput[]
+    connectOrCreate?: CustomerCreateOrConnectWithoutInfluencerInput | CustomerCreateOrConnectWithoutInfluencerInput[]
+    createMany?: CustomerCreateManyInfluencerInputEnvelope
+    connect?: CustomerWhereUniqueInput | CustomerWhereUniqueInput[]
+  }
+
+  export type SaleUncheckedCreateNestedManyWithoutInfluencerInput = {
+    create?: XOR<SaleCreateWithoutInfluencerInput, SaleUncheckedCreateWithoutInfluencerInput> | SaleCreateWithoutInfluencerInput[] | SaleUncheckedCreateWithoutInfluencerInput[]
+    connectOrCreate?: SaleCreateOrConnectWithoutInfluencerInput | SaleCreateOrConnectWithoutInfluencerInput[]
+    createMany?: SaleCreateManyInfluencerInputEnvelope
+    connect?: SaleWhereUniqueInput | SaleWhereUniqueInput[]
+  }
+
+  export type PaymentUncheckedCreateNestedManyWithoutInfluencerInput = {
+    create?: XOR<PaymentCreateWithoutInfluencerInput, PaymentUncheckedCreateWithoutInfluencerInput> | PaymentCreateWithoutInfluencerInput[] | PaymentUncheckedCreateWithoutInfluencerInput[]
+    connectOrCreate?: PaymentCreateOrConnectWithoutInfluencerInput | PaymentCreateOrConnectWithoutInfluencerInput[]
+    createMany?: PaymentCreateManyInfluencerInputEnvelope
+    connect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+  }
+
+  export type LinkClickUncheckedCreateNestedManyWithoutInfluencerInput = {
+    create?: XOR<LinkClickCreateWithoutInfluencerInput, LinkClickUncheckedCreateWithoutInfluencerInput> | LinkClickCreateWithoutInfluencerInput[] | LinkClickUncheckedCreateWithoutInfluencerInput[]
+    connectOrCreate?: LinkClickCreateOrConnectWithoutInfluencerInput | LinkClickCreateOrConnectWithoutInfluencerInput[]
+    createMany?: LinkClickCreateManyInfluencerInputEnvelope
+    connect?: LinkClickWhereUniqueInput | LinkClickWhereUniqueInput[]
+  }
+
+  export type CampaignParticipantUncheckedCreateNestedManyWithoutInfluencerInput = {
+    create?: XOR<CampaignParticipantCreateWithoutInfluencerInput, CampaignParticipantUncheckedCreateWithoutInfluencerInput> | CampaignParticipantCreateWithoutInfluencerInput[] | CampaignParticipantUncheckedCreateWithoutInfluencerInput[]
+    connectOrCreate?: CampaignParticipantCreateOrConnectWithoutInfluencerInput | CampaignParticipantCreateOrConnectWithoutInfluencerInput[]
+    createMany?: CampaignParticipantCreateManyInfluencerInputEnvelope
+    connect?: CampaignParticipantWhereUniqueInput | CampaignParticipantWhereUniqueInput[]
+  }
+
+  export type ShareUpdateManyWithoutInfluencerNestedInput = {
+    create?: XOR<ShareCreateWithoutInfluencerInput, ShareUncheckedCreateWithoutInfluencerInput> | ShareCreateWithoutInfluencerInput[] | ShareUncheckedCreateWithoutInfluencerInput[]
+    connectOrCreate?: ShareCreateOrConnectWithoutInfluencerInput | ShareCreateOrConnectWithoutInfluencerInput[]
+    upsert?: ShareUpsertWithWhereUniqueWithoutInfluencerInput | ShareUpsertWithWhereUniqueWithoutInfluencerInput[]
+    createMany?: ShareCreateManyInfluencerInputEnvelope
+    set?: ShareWhereUniqueInput | ShareWhereUniqueInput[]
+    disconnect?: ShareWhereUniqueInput | ShareWhereUniqueInput[]
+    delete?: ShareWhereUniqueInput | ShareWhereUniqueInput[]
+    connect?: ShareWhereUniqueInput | ShareWhereUniqueInput[]
+    update?: ShareUpdateWithWhereUniqueWithoutInfluencerInput | ShareUpdateWithWhereUniqueWithoutInfluencerInput[]
+    updateMany?: ShareUpdateManyWithWhereWithoutInfluencerInput | ShareUpdateManyWithWhereWithoutInfluencerInput[]
+    deleteMany?: ShareScalarWhereInput | ShareScalarWhereInput[]
+  }
+
+  export type CustomerUpdateManyWithoutInfluencerNestedInput = {
+    create?: XOR<CustomerCreateWithoutInfluencerInput, CustomerUncheckedCreateWithoutInfluencerInput> | CustomerCreateWithoutInfluencerInput[] | CustomerUncheckedCreateWithoutInfluencerInput[]
+    connectOrCreate?: CustomerCreateOrConnectWithoutInfluencerInput | CustomerCreateOrConnectWithoutInfluencerInput[]
+    upsert?: CustomerUpsertWithWhereUniqueWithoutInfluencerInput | CustomerUpsertWithWhereUniqueWithoutInfluencerInput[]
+    createMany?: CustomerCreateManyInfluencerInputEnvelope
+    set?: CustomerWhereUniqueInput | CustomerWhereUniqueInput[]
+    disconnect?: CustomerWhereUniqueInput | CustomerWhereUniqueInput[]
+    delete?: CustomerWhereUniqueInput | CustomerWhereUniqueInput[]
+    connect?: CustomerWhereUniqueInput | CustomerWhereUniqueInput[]
+    update?: CustomerUpdateWithWhereUniqueWithoutInfluencerInput | CustomerUpdateWithWhereUniqueWithoutInfluencerInput[]
+    updateMany?: CustomerUpdateManyWithWhereWithoutInfluencerInput | CustomerUpdateManyWithWhereWithoutInfluencerInput[]
+    deleteMany?: CustomerScalarWhereInput | CustomerScalarWhereInput[]
+  }
+
+  export type SaleUpdateManyWithoutInfluencerNestedInput = {
+    create?: XOR<SaleCreateWithoutInfluencerInput, SaleUncheckedCreateWithoutInfluencerInput> | SaleCreateWithoutInfluencerInput[] | SaleUncheckedCreateWithoutInfluencerInput[]
+    connectOrCreate?: SaleCreateOrConnectWithoutInfluencerInput | SaleCreateOrConnectWithoutInfluencerInput[]
+    upsert?: SaleUpsertWithWhereUniqueWithoutInfluencerInput | SaleUpsertWithWhereUniqueWithoutInfluencerInput[]
+    createMany?: SaleCreateManyInfluencerInputEnvelope
+    set?: SaleWhereUniqueInput | SaleWhereUniqueInput[]
+    disconnect?: SaleWhereUniqueInput | SaleWhereUniqueInput[]
+    delete?: SaleWhereUniqueInput | SaleWhereUniqueInput[]
+    connect?: SaleWhereUniqueInput | SaleWhereUniqueInput[]
+    update?: SaleUpdateWithWhereUniqueWithoutInfluencerInput | SaleUpdateWithWhereUniqueWithoutInfluencerInput[]
+    updateMany?: SaleUpdateManyWithWhereWithoutInfluencerInput | SaleUpdateManyWithWhereWithoutInfluencerInput[]
+    deleteMany?: SaleScalarWhereInput | SaleScalarWhereInput[]
+  }
+
+  export type PaymentUpdateManyWithoutInfluencerNestedInput = {
+    create?: XOR<PaymentCreateWithoutInfluencerInput, PaymentUncheckedCreateWithoutInfluencerInput> | PaymentCreateWithoutInfluencerInput[] | PaymentUncheckedCreateWithoutInfluencerInput[]
+    connectOrCreate?: PaymentCreateOrConnectWithoutInfluencerInput | PaymentCreateOrConnectWithoutInfluencerInput[]
+    upsert?: PaymentUpsertWithWhereUniqueWithoutInfluencerInput | PaymentUpsertWithWhereUniqueWithoutInfluencerInput[]
+    createMany?: PaymentCreateManyInfluencerInputEnvelope
+    set?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    disconnect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    delete?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    connect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    update?: PaymentUpdateWithWhereUniqueWithoutInfluencerInput | PaymentUpdateWithWhereUniqueWithoutInfluencerInput[]
+    updateMany?: PaymentUpdateManyWithWhereWithoutInfluencerInput | PaymentUpdateManyWithWhereWithoutInfluencerInput[]
+    deleteMany?: PaymentScalarWhereInput | PaymentScalarWhereInput[]
+  }
+
+  export type LinkClickUpdateManyWithoutInfluencerNestedInput = {
+    create?: XOR<LinkClickCreateWithoutInfluencerInput, LinkClickUncheckedCreateWithoutInfluencerInput> | LinkClickCreateWithoutInfluencerInput[] | LinkClickUncheckedCreateWithoutInfluencerInput[]
+    connectOrCreate?: LinkClickCreateOrConnectWithoutInfluencerInput | LinkClickCreateOrConnectWithoutInfluencerInput[]
+    upsert?: LinkClickUpsertWithWhereUniqueWithoutInfluencerInput | LinkClickUpsertWithWhereUniqueWithoutInfluencerInput[]
+    createMany?: LinkClickCreateManyInfluencerInputEnvelope
+    set?: LinkClickWhereUniqueInput | LinkClickWhereUniqueInput[]
+    disconnect?: LinkClickWhereUniqueInput | LinkClickWhereUniqueInput[]
+    delete?: LinkClickWhereUniqueInput | LinkClickWhereUniqueInput[]
+    connect?: LinkClickWhereUniqueInput | LinkClickWhereUniqueInput[]
+    update?: LinkClickUpdateWithWhereUniqueWithoutInfluencerInput | LinkClickUpdateWithWhereUniqueWithoutInfluencerInput[]
+    updateMany?: LinkClickUpdateManyWithWhereWithoutInfluencerInput | LinkClickUpdateManyWithWhereWithoutInfluencerInput[]
+    deleteMany?: LinkClickScalarWhereInput | LinkClickScalarWhereInput[]
+  }
+
+  export type CampaignParticipantUpdateManyWithoutInfluencerNestedInput = {
+    create?: XOR<CampaignParticipantCreateWithoutInfluencerInput, CampaignParticipantUncheckedCreateWithoutInfluencerInput> | CampaignParticipantCreateWithoutInfluencerInput[] | CampaignParticipantUncheckedCreateWithoutInfluencerInput[]
+    connectOrCreate?: CampaignParticipantCreateOrConnectWithoutInfluencerInput | CampaignParticipantCreateOrConnectWithoutInfluencerInput[]
+    upsert?: CampaignParticipantUpsertWithWhereUniqueWithoutInfluencerInput | CampaignParticipantUpsertWithWhereUniqueWithoutInfluencerInput[]
+    createMany?: CampaignParticipantCreateManyInfluencerInputEnvelope
+    set?: CampaignParticipantWhereUniqueInput | CampaignParticipantWhereUniqueInput[]
+    disconnect?: CampaignParticipantWhereUniqueInput | CampaignParticipantWhereUniqueInput[]
+    delete?: CampaignParticipantWhereUniqueInput | CampaignParticipantWhereUniqueInput[]
+    connect?: CampaignParticipantWhereUniqueInput | CampaignParticipantWhereUniqueInput[]
+    update?: CampaignParticipantUpdateWithWhereUniqueWithoutInfluencerInput | CampaignParticipantUpdateWithWhereUniqueWithoutInfluencerInput[]
+    updateMany?: CampaignParticipantUpdateManyWithWhereWithoutInfluencerInput | CampaignParticipantUpdateManyWithWhereWithoutInfluencerInput[]
+    deleteMany?: CampaignParticipantScalarWhereInput | CampaignParticipantScalarWhereInput[]
+  }
+
+  export type ShareUncheckedUpdateManyWithoutInfluencerNestedInput = {
+    create?: XOR<ShareCreateWithoutInfluencerInput, ShareUncheckedCreateWithoutInfluencerInput> | ShareCreateWithoutInfluencerInput[] | ShareUncheckedCreateWithoutInfluencerInput[]
+    connectOrCreate?: ShareCreateOrConnectWithoutInfluencerInput | ShareCreateOrConnectWithoutInfluencerInput[]
+    upsert?: ShareUpsertWithWhereUniqueWithoutInfluencerInput | ShareUpsertWithWhereUniqueWithoutInfluencerInput[]
+    createMany?: ShareCreateManyInfluencerInputEnvelope
+    set?: ShareWhereUniqueInput | ShareWhereUniqueInput[]
+    disconnect?: ShareWhereUniqueInput | ShareWhereUniqueInput[]
+    delete?: ShareWhereUniqueInput | ShareWhereUniqueInput[]
+    connect?: ShareWhereUniqueInput | ShareWhereUniqueInput[]
+    update?: ShareUpdateWithWhereUniqueWithoutInfluencerInput | ShareUpdateWithWhereUniqueWithoutInfluencerInput[]
+    updateMany?: ShareUpdateManyWithWhereWithoutInfluencerInput | ShareUpdateManyWithWhereWithoutInfluencerInput[]
+    deleteMany?: ShareScalarWhereInput | ShareScalarWhereInput[]
+  }
+
+  export type CustomerUncheckedUpdateManyWithoutInfluencerNestedInput = {
+    create?: XOR<CustomerCreateWithoutInfluencerInput, CustomerUncheckedCreateWithoutInfluencerInput> | CustomerCreateWithoutInfluencerInput[] | CustomerUncheckedCreateWithoutInfluencerInput[]
+    connectOrCreate?: CustomerCreateOrConnectWithoutInfluencerInput | CustomerCreateOrConnectWithoutInfluencerInput[]
+    upsert?: CustomerUpsertWithWhereUniqueWithoutInfluencerInput | CustomerUpsertWithWhereUniqueWithoutInfluencerInput[]
+    createMany?: CustomerCreateManyInfluencerInputEnvelope
+    set?: CustomerWhereUniqueInput | CustomerWhereUniqueInput[]
+    disconnect?: CustomerWhereUniqueInput | CustomerWhereUniqueInput[]
+    delete?: CustomerWhereUniqueInput | CustomerWhereUniqueInput[]
+    connect?: CustomerWhereUniqueInput | CustomerWhereUniqueInput[]
+    update?: CustomerUpdateWithWhereUniqueWithoutInfluencerInput | CustomerUpdateWithWhereUniqueWithoutInfluencerInput[]
+    updateMany?: CustomerUpdateManyWithWhereWithoutInfluencerInput | CustomerUpdateManyWithWhereWithoutInfluencerInput[]
+    deleteMany?: CustomerScalarWhereInput | CustomerScalarWhereInput[]
+  }
+
+  export type SaleUncheckedUpdateManyWithoutInfluencerNestedInput = {
+    create?: XOR<SaleCreateWithoutInfluencerInput, SaleUncheckedCreateWithoutInfluencerInput> | SaleCreateWithoutInfluencerInput[] | SaleUncheckedCreateWithoutInfluencerInput[]
+    connectOrCreate?: SaleCreateOrConnectWithoutInfluencerInput | SaleCreateOrConnectWithoutInfluencerInput[]
+    upsert?: SaleUpsertWithWhereUniqueWithoutInfluencerInput | SaleUpsertWithWhereUniqueWithoutInfluencerInput[]
+    createMany?: SaleCreateManyInfluencerInputEnvelope
+    set?: SaleWhereUniqueInput | SaleWhereUniqueInput[]
+    disconnect?: SaleWhereUniqueInput | SaleWhereUniqueInput[]
+    delete?: SaleWhereUniqueInput | SaleWhereUniqueInput[]
+    connect?: SaleWhereUniqueInput | SaleWhereUniqueInput[]
+    update?: SaleUpdateWithWhereUniqueWithoutInfluencerInput | SaleUpdateWithWhereUniqueWithoutInfluencerInput[]
+    updateMany?: SaleUpdateManyWithWhereWithoutInfluencerInput | SaleUpdateManyWithWhereWithoutInfluencerInput[]
+    deleteMany?: SaleScalarWhereInput | SaleScalarWhereInput[]
+  }
+
+  export type PaymentUncheckedUpdateManyWithoutInfluencerNestedInput = {
+    create?: XOR<PaymentCreateWithoutInfluencerInput, PaymentUncheckedCreateWithoutInfluencerInput> | PaymentCreateWithoutInfluencerInput[] | PaymentUncheckedCreateWithoutInfluencerInput[]
+    connectOrCreate?: PaymentCreateOrConnectWithoutInfluencerInput | PaymentCreateOrConnectWithoutInfluencerInput[]
+    upsert?: PaymentUpsertWithWhereUniqueWithoutInfluencerInput | PaymentUpsertWithWhereUniqueWithoutInfluencerInput[]
+    createMany?: PaymentCreateManyInfluencerInputEnvelope
+    set?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    disconnect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    delete?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    connect?: PaymentWhereUniqueInput | PaymentWhereUniqueInput[]
+    update?: PaymentUpdateWithWhereUniqueWithoutInfluencerInput | PaymentUpdateWithWhereUniqueWithoutInfluencerInput[]
+    updateMany?: PaymentUpdateManyWithWhereWithoutInfluencerInput | PaymentUpdateManyWithWhereWithoutInfluencerInput[]
+    deleteMany?: PaymentScalarWhereInput | PaymentScalarWhereInput[]
+  }
+
+  export type LinkClickUncheckedUpdateManyWithoutInfluencerNestedInput = {
+    create?: XOR<LinkClickCreateWithoutInfluencerInput, LinkClickUncheckedCreateWithoutInfluencerInput> | LinkClickCreateWithoutInfluencerInput[] | LinkClickUncheckedCreateWithoutInfluencerInput[]
+    connectOrCreate?: LinkClickCreateOrConnectWithoutInfluencerInput | LinkClickCreateOrConnectWithoutInfluencerInput[]
+    upsert?: LinkClickUpsertWithWhereUniqueWithoutInfluencerInput | LinkClickUpsertWithWhereUniqueWithoutInfluencerInput[]
+    createMany?: LinkClickCreateManyInfluencerInputEnvelope
+    set?: LinkClickWhereUniqueInput | LinkClickWhereUniqueInput[]
+    disconnect?: LinkClickWhereUniqueInput | LinkClickWhereUniqueInput[]
+    delete?: LinkClickWhereUniqueInput | LinkClickWhereUniqueInput[]
+    connect?: LinkClickWhereUniqueInput | LinkClickWhereUniqueInput[]
+    update?: LinkClickUpdateWithWhereUniqueWithoutInfluencerInput | LinkClickUpdateWithWhereUniqueWithoutInfluencerInput[]
+    updateMany?: LinkClickUpdateManyWithWhereWithoutInfluencerInput | LinkClickUpdateManyWithWhereWithoutInfluencerInput[]
+    deleteMany?: LinkClickScalarWhereInput | LinkClickScalarWhereInput[]
+  }
+
+  export type CampaignParticipantUncheckedUpdateManyWithoutInfluencerNestedInput = {
+    create?: XOR<CampaignParticipantCreateWithoutInfluencerInput, CampaignParticipantUncheckedCreateWithoutInfluencerInput> | CampaignParticipantCreateWithoutInfluencerInput[] | CampaignParticipantUncheckedCreateWithoutInfluencerInput[]
+    connectOrCreate?: CampaignParticipantCreateOrConnectWithoutInfluencerInput | CampaignParticipantCreateOrConnectWithoutInfluencerInput[]
+    upsert?: CampaignParticipantUpsertWithWhereUniqueWithoutInfluencerInput | CampaignParticipantUpsertWithWhereUniqueWithoutInfluencerInput[]
+    createMany?: CampaignParticipantCreateManyInfluencerInputEnvelope
+    set?: CampaignParticipantWhereUniqueInput | CampaignParticipantWhereUniqueInput[]
+    disconnect?: CampaignParticipantWhereUniqueInput | CampaignParticipantWhereUniqueInput[]
+    delete?: CampaignParticipantWhereUniqueInput | CampaignParticipantWhereUniqueInput[]
+    connect?: CampaignParticipantWhereUniqueInput | CampaignParticipantWhereUniqueInput[]
+    update?: CampaignParticipantUpdateWithWhereUniqueWithoutInfluencerInput | CampaignParticipantUpdateWithWhereUniqueWithoutInfluencerInput[]
+    updateMany?: CampaignParticipantUpdateManyWithWhereWithoutInfluencerInput | CampaignParticipantUpdateManyWithWhereWithoutInfluencerInput[]
+    deleteMany?: CampaignParticipantScalarWhereInput | CampaignParticipantScalarWhereInput[]
+  }
+
+  export type InfluencerCreateNestedOneWithoutSharesInput = {
+    create?: XOR<InfluencerCreateWithoutSharesInput, InfluencerUncheckedCreateWithoutSharesInput>
+    connectOrCreate?: InfluencerCreateOrConnectWithoutSharesInput
+    connect?: InfluencerWhereUniqueInput
+  }
+
+  export type LinkClickCreateNestedManyWithoutShareInput = {
+    create?: XOR<LinkClickCreateWithoutShareInput, LinkClickUncheckedCreateWithoutShareInput> | LinkClickCreateWithoutShareInput[] | LinkClickUncheckedCreateWithoutShareInput[]
+    connectOrCreate?: LinkClickCreateOrConnectWithoutShareInput | LinkClickCreateOrConnectWithoutShareInput[]
+    createMany?: LinkClickCreateManyShareInputEnvelope
+    connect?: LinkClickWhereUniqueInput | LinkClickWhereUniqueInput[]
+  }
+
+  export type LinkClickUncheckedCreateNestedManyWithoutShareInput = {
+    create?: XOR<LinkClickCreateWithoutShareInput, LinkClickUncheckedCreateWithoutShareInput> | LinkClickCreateWithoutShareInput[] | LinkClickUncheckedCreateWithoutShareInput[]
+    connectOrCreate?: LinkClickCreateOrConnectWithoutShareInput | LinkClickCreateOrConnectWithoutShareInput[]
+    createMany?: LinkClickCreateManyShareInputEnvelope
+    connect?: LinkClickWhereUniqueInput | LinkClickWhereUniqueInput[]
+  }
+
+  export type InfluencerUpdateOneRequiredWithoutSharesNestedInput = {
+    create?: XOR<InfluencerCreateWithoutSharesInput, InfluencerUncheckedCreateWithoutSharesInput>
+    connectOrCreate?: InfluencerCreateOrConnectWithoutSharesInput
+    upsert?: InfluencerUpsertWithoutSharesInput
+    connect?: InfluencerWhereUniqueInput
+    update?: XOR<XOR<InfluencerUpdateToOneWithWhereWithoutSharesInput, InfluencerUpdateWithoutSharesInput>, InfluencerUncheckedUpdateWithoutSharesInput>
+  }
+
+  export type LinkClickUpdateManyWithoutShareNestedInput = {
+    create?: XOR<LinkClickCreateWithoutShareInput, LinkClickUncheckedCreateWithoutShareInput> | LinkClickCreateWithoutShareInput[] | LinkClickUncheckedCreateWithoutShareInput[]
+    connectOrCreate?: LinkClickCreateOrConnectWithoutShareInput | LinkClickCreateOrConnectWithoutShareInput[]
+    upsert?: LinkClickUpsertWithWhereUniqueWithoutShareInput | LinkClickUpsertWithWhereUniqueWithoutShareInput[]
+    createMany?: LinkClickCreateManyShareInputEnvelope
+    set?: LinkClickWhereUniqueInput | LinkClickWhereUniqueInput[]
+    disconnect?: LinkClickWhereUniqueInput | LinkClickWhereUniqueInput[]
+    delete?: LinkClickWhereUniqueInput | LinkClickWhereUniqueInput[]
+    connect?: LinkClickWhereUniqueInput | LinkClickWhereUniqueInput[]
+    update?: LinkClickUpdateWithWhereUniqueWithoutShareInput | LinkClickUpdateWithWhereUniqueWithoutShareInput[]
+    updateMany?: LinkClickUpdateManyWithWhereWithoutShareInput | LinkClickUpdateManyWithWhereWithoutShareInput[]
+    deleteMany?: LinkClickScalarWhereInput | LinkClickScalarWhereInput[]
+  }
+
+  export type LinkClickUncheckedUpdateManyWithoutShareNestedInput = {
+    create?: XOR<LinkClickCreateWithoutShareInput, LinkClickUncheckedCreateWithoutShareInput> | LinkClickCreateWithoutShareInput[] | LinkClickUncheckedCreateWithoutShareInput[]
+    connectOrCreate?: LinkClickCreateOrConnectWithoutShareInput | LinkClickCreateOrConnectWithoutShareInput[]
+    upsert?: LinkClickUpsertWithWhereUniqueWithoutShareInput | LinkClickUpsertWithWhereUniqueWithoutShareInput[]
+    createMany?: LinkClickCreateManyShareInputEnvelope
+    set?: LinkClickWhereUniqueInput | LinkClickWhereUniqueInput[]
+    disconnect?: LinkClickWhereUniqueInput | LinkClickWhereUniqueInput[]
+    delete?: LinkClickWhereUniqueInput | LinkClickWhereUniqueInput[]
+    connect?: LinkClickWhereUniqueInput | LinkClickWhereUniqueInput[]
+    update?: LinkClickUpdateWithWhereUniqueWithoutShareInput | LinkClickUpdateWithWhereUniqueWithoutShareInput[]
+    updateMany?: LinkClickUpdateManyWithWhereWithoutShareInput | LinkClickUpdateManyWithWhereWithoutShareInput[]
+    deleteMany?: LinkClickScalarWhereInput | LinkClickScalarWhereInput[]
+  }
+
+  export type InfluencerCreateNestedOneWithoutCustomersInput = {
+    create?: XOR<InfluencerCreateWithoutCustomersInput, InfluencerUncheckedCreateWithoutCustomersInput>
+    connectOrCreate?: InfluencerCreateOrConnectWithoutCustomersInput
+    connect?: InfluencerWhereUniqueInput
+  }
+
+  export type SaleCreateNestedManyWithoutCustomerInput = {
+    create?: XOR<SaleCreateWithoutCustomerInput, SaleUncheckedCreateWithoutCustomerInput> | SaleCreateWithoutCustomerInput[] | SaleUncheckedCreateWithoutCustomerInput[]
+    connectOrCreate?: SaleCreateOrConnectWithoutCustomerInput | SaleCreateOrConnectWithoutCustomerInput[]
+    createMany?: SaleCreateManyCustomerInputEnvelope
+    connect?: SaleWhereUniqueInput | SaleWhereUniqueInput[]
+  }
+
+  export type SaleUncheckedCreateNestedManyWithoutCustomerInput = {
+    create?: XOR<SaleCreateWithoutCustomerInput, SaleUncheckedCreateWithoutCustomerInput> | SaleCreateWithoutCustomerInput[] | SaleUncheckedCreateWithoutCustomerInput[]
+    connectOrCreate?: SaleCreateOrConnectWithoutCustomerInput | SaleCreateOrConnectWithoutCustomerInput[]
+    createMany?: SaleCreateManyCustomerInputEnvelope
+    connect?: SaleWhereUniqueInput | SaleWhereUniqueInput[]
+  }
+
+  export type InfluencerUpdateOneWithoutCustomersNestedInput = {
+    create?: XOR<InfluencerCreateWithoutCustomersInput, InfluencerUncheckedCreateWithoutCustomersInput>
+    connectOrCreate?: InfluencerCreateOrConnectWithoutCustomersInput
+    upsert?: InfluencerUpsertWithoutCustomersInput
+    disconnect?: InfluencerWhereInput | boolean
+    delete?: InfluencerWhereInput | boolean
+    connect?: InfluencerWhereUniqueInput
+    update?: XOR<XOR<InfluencerUpdateToOneWithWhereWithoutCustomersInput, InfluencerUpdateWithoutCustomersInput>, InfluencerUncheckedUpdateWithoutCustomersInput>
+  }
+
+  export type SaleUpdateManyWithoutCustomerNestedInput = {
+    create?: XOR<SaleCreateWithoutCustomerInput, SaleUncheckedCreateWithoutCustomerInput> | SaleCreateWithoutCustomerInput[] | SaleUncheckedCreateWithoutCustomerInput[]
+    connectOrCreate?: SaleCreateOrConnectWithoutCustomerInput | SaleCreateOrConnectWithoutCustomerInput[]
+    upsert?: SaleUpsertWithWhereUniqueWithoutCustomerInput | SaleUpsertWithWhereUniqueWithoutCustomerInput[]
+    createMany?: SaleCreateManyCustomerInputEnvelope
+    set?: SaleWhereUniqueInput | SaleWhereUniqueInput[]
+    disconnect?: SaleWhereUniqueInput | SaleWhereUniqueInput[]
+    delete?: SaleWhereUniqueInput | SaleWhereUniqueInput[]
+    connect?: SaleWhereUniqueInput | SaleWhereUniqueInput[]
+    update?: SaleUpdateWithWhereUniqueWithoutCustomerInput | SaleUpdateWithWhereUniqueWithoutCustomerInput[]
+    updateMany?: SaleUpdateManyWithWhereWithoutCustomerInput | SaleUpdateManyWithWhereWithoutCustomerInput[]
+    deleteMany?: SaleScalarWhereInput | SaleScalarWhereInput[]
+  }
+
+  export type SaleUncheckedUpdateManyWithoutCustomerNestedInput = {
+    create?: XOR<SaleCreateWithoutCustomerInput, SaleUncheckedCreateWithoutCustomerInput> | SaleCreateWithoutCustomerInput[] | SaleUncheckedCreateWithoutCustomerInput[]
+    connectOrCreate?: SaleCreateOrConnectWithoutCustomerInput | SaleCreateOrConnectWithoutCustomerInput[]
+    upsert?: SaleUpsertWithWhereUniqueWithoutCustomerInput | SaleUpsertWithWhereUniqueWithoutCustomerInput[]
+    createMany?: SaleCreateManyCustomerInputEnvelope
+    set?: SaleWhereUniqueInput | SaleWhereUniqueInput[]
+    disconnect?: SaleWhereUniqueInput | SaleWhereUniqueInput[]
+    delete?: SaleWhereUniqueInput | SaleWhereUniqueInput[]
+    connect?: SaleWhereUniqueInput | SaleWhereUniqueInput[]
+    update?: SaleUpdateWithWhereUniqueWithoutCustomerInput | SaleUpdateWithWhereUniqueWithoutCustomerInput[]
+    updateMany?: SaleUpdateManyWithWhereWithoutCustomerInput | SaleUpdateManyWithWhereWithoutCustomerInput[]
+    deleteMany?: SaleScalarWhereInput | SaleScalarWhereInput[]
+  }
+
+  export type CustomerCreateNestedOneWithoutSalesInput = {
+    create?: XOR<CustomerCreateWithoutSalesInput, CustomerUncheckedCreateWithoutSalesInput>
+    connectOrCreate?: CustomerCreateOrConnectWithoutSalesInput
+    connect?: CustomerWhereUniqueInput
+  }
+
+  export type InfluencerCreateNestedOneWithoutSalesInput = {
+    create?: XOR<InfluencerCreateWithoutSalesInput, InfluencerUncheckedCreateWithoutSalesInput>
+    connectOrCreate?: InfluencerCreateOrConnectWithoutSalesInput
+    connect?: InfluencerWhereUniqueInput
+  }
+
+  export type PaymentSaleCreateNestedManyWithoutSaleInput = {
+    create?: XOR<PaymentSaleCreateWithoutSaleInput, PaymentSaleUncheckedCreateWithoutSaleInput> | PaymentSaleCreateWithoutSaleInput[] | PaymentSaleUncheckedCreateWithoutSaleInput[]
+    connectOrCreate?: PaymentSaleCreateOrConnectWithoutSaleInput | PaymentSaleCreateOrConnectWithoutSaleInput[]
+    createMany?: PaymentSaleCreateManySaleInputEnvelope
+    connect?: PaymentSaleWhereUniqueInput | PaymentSaleWhereUniqueInput[]
+  }
+
+  export type PaymentSaleUncheckedCreateNestedManyWithoutSaleInput = {
+    create?: XOR<PaymentSaleCreateWithoutSaleInput, PaymentSaleUncheckedCreateWithoutSaleInput> | PaymentSaleCreateWithoutSaleInput[] | PaymentSaleUncheckedCreateWithoutSaleInput[]
+    connectOrCreate?: PaymentSaleCreateOrConnectWithoutSaleInput | PaymentSaleCreateOrConnectWithoutSaleInput[]
+    createMany?: PaymentSaleCreateManySaleInputEnvelope
+    connect?: PaymentSaleWhereUniqueInput | PaymentSaleWhereUniqueInput[]
+  }
+
+  export type CustomerUpdateOneRequiredWithoutSalesNestedInput = {
+    create?: XOR<CustomerCreateWithoutSalesInput, CustomerUncheckedCreateWithoutSalesInput>
+    connectOrCreate?: CustomerCreateOrConnectWithoutSalesInput
+    upsert?: CustomerUpsertWithoutSalesInput
+    connect?: CustomerWhereUniqueInput
+    update?: XOR<XOR<CustomerUpdateToOneWithWhereWithoutSalesInput, CustomerUpdateWithoutSalesInput>, CustomerUncheckedUpdateWithoutSalesInput>
+  }
+
+  export type InfluencerUpdateOneWithoutSalesNestedInput = {
+    create?: XOR<InfluencerCreateWithoutSalesInput, InfluencerUncheckedCreateWithoutSalesInput>
+    connectOrCreate?: InfluencerCreateOrConnectWithoutSalesInput
+    upsert?: InfluencerUpsertWithoutSalesInput
+    disconnect?: InfluencerWhereInput | boolean
+    delete?: InfluencerWhereInput | boolean
+    connect?: InfluencerWhereUniqueInput
+    update?: XOR<XOR<InfluencerUpdateToOneWithWhereWithoutSalesInput, InfluencerUpdateWithoutSalesInput>, InfluencerUncheckedUpdateWithoutSalesInput>
+  }
+
+  export type PaymentSaleUpdateManyWithoutSaleNestedInput = {
+    create?: XOR<PaymentSaleCreateWithoutSaleInput, PaymentSaleUncheckedCreateWithoutSaleInput> | PaymentSaleCreateWithoutSaleInput[] | PaymentSaleUncheckedCreateWithoutSaleInput[]
+    connectOrCreate?: PaymentSaleCreateOrConnectWithoutSaleInput | PaymentSaleCreateOrConnectWithoutSaleInput[]
+    upsert?: PaymentSaleUpsertWithWhereUniqueWithoutSaleInput | PaymentSaleUpsertWithWhereUniqueWithoutSaleInput[]
+    createMany?: PaymentSaleCreateManySaleInputEnvelope
+    set?: PaymentSaleWhereUniqueInput | PaymentSaleWhereUniqueInput[]
+    disconnect?: PaymentSaleWhereUniqueInput | PaymentSaleWhereUniqueInput[]
+    delete?: PaymentSaleWhereUniqueInput | PaymentSaleWhereUniqueInput[]
+    connect?: PaymentSaleWhereUniqueInput | PaymentSaleWhereUniqueInput[]
+    update?: PaymentSaleUpdateWithWhereUniqueWithoutSaleInput | PaymentSaleUpdateWithWhereUniqueWithoutSaleInput[]
+    updateMany?: PaymentSaleUpdateManyWithWhereWithoutSaleInput | PaymentSaleUpdateManyWithWhereWithoutSaleInput[]
+    deleteMany?: PaymentSaleScalarWhereInput | PaymentSaleScalarWhereInput[]
+  }
+
+  export type PaymentSaleUncheckedUpdateManyWithoutSaleNestedInput = {
+    create?: XOR<PaymentSaleCreateWithoutSaleInput, PaymentSaleUncheckedCreateWithoutSaleInput> | PaymentSaleCreateWithoutSaleInput[] | PaymentSaleUncheckedCreateWithoutSaleInput[]
+    connectOrCreate?: PaymentSaleCreateOrConnectWithoutSaleInput | PaymentSaleCreateOrConnectWithoutSaleInput[]
+    upsert?: PaymentSaleUpsertWithWhereUniqueWithoutSaleInput | PaymentSaleUpsertWithWhereUniqueWithoutSaleInput[]
+    createMany?: PaymentSaleCreateManySaleInputEnvelope
+    set?: PaymentSaleWhereUniqueInput | PaymentSaleWhereUniqueInput[]
+    disconnect?: PaymentSaleWhereUniqueInput | PaymentSaleWhereUniqueInput[]
+    delete?: PaymentSaleWhereUniqueInput | PaymentSaleWhereUniqueInput[]
+    connect?: PaymentSaleWhereUniqueInput | PaymentSaleWhereUniqueInput[]
+    update?: PaymentSaleUpdateWithWhereUniqueWithoutSaleInput | PaymentSaleUpdateWithWhereUniqueWithoutSaleInput[]
+    updateMany?: PaymentSaleUpdateManyWithWhereWithoutSaleInput | PaymentSaleUpdateManyWithWhereWithoutSaleInput[]
+    deleteMany?: PaymentSaleScalarWhereInput | PaymentSaleScalarWhereInput[]
+  }
+
+  export type InfluencerCreateNestedOneWithoutPaymentsInput = {
+    create?: XOR<InfluencerCreateWithoutPaymentsInput, InfluencerUncheckedCreateWithoutPaymentsInput>
+    connectOrCreate?: InfluencerCreateOrConnectWithoutPaymentsInput
+    connect?: InfluencerWhereUniqueInput
+  }
+
+  export type PaymentSaleCreateNestedManyWithoutPaymentInput = {
+    create?: XOR<PaymentSaleCreateWithoutPaymentInput, PaymentSaleUncheckedCreateWithoutPaymentInput> | PaymentSaleCreateWithoutPaymentInput[] | PaymentSaleUncheckedCreateWithoutPaymentInput[]
+    connectOrCreate?: PaymentSaleCreateOrConnectWithoutPaymentInput | PaymentSaleCreateOrConnectWithoutPaymentInput[]
+    createMany?: PaymentSaleCreateManyPaymentInputEnvelope
+    connect?: PaymentSaleWhereUniqueInput | PaymentSaleWhereUniqueInput[]
+  }
+
+  export type PaymentSaleUncheckedCreateNestedManyWithoutPaymentInput = {
+    create?: XOR<PaymentSaleCreateWithoutPaymentInput, PaymentSaleUncheckedCreateWithoutPaymentInput> | PaymentSaleCreateWithoutPaymentInput[] | PaymentSaleUncheckedCreateWithoutPaymentInput[]
+    connectOrCreate?: PaymentSaleCreateOrConnectWithoutPaymentInput | PaymentSaleCreateOrConnectWithoutPaymentInput[]
+    createMany?: PaymentSaleCreateManyPaymentInputEnvelope
+    connect?: PaymentSaleWhereUniqueInput | PaymentSaleWhereUniqueInput[]
+  }
+
+  export type InfluencerUpdateOneRequiredWithoutPaymentsNestedInput = {
+    create?: XOR<InfluencerCreateWithoutPaymentsInput, InfluencerUncheckedCreateWithoutPaymentsInput>
+    connectOrCreate?: InfluencerCreateOrConnectWithoutPaymentsInput
+    upsert?: InfluencerUpsertWithoutPaymentsInput
+    connect?: InfluencerWhereUniqueInput
+    update?: XOR<XOR<InfluencerUpdateToOneWithWhereWithoutPaymentsInput, InfluencerUpdateWithoutPaymentsInput>, InfluencerUncheckedUpdateWithoutPaymentsInput>
+  }
+
+  export type PaymentSaleUpdateManyWithoutPaymentNestedInput = {
+    create?: XOR<PaymentSaleCreateWithoutPaymentInput, PaymentSaleUncheckedCreateWithoutPaymentInput> | PaymentSaleCreateWithoutPaymentInput[] | PaymentSaleUncheckedCreateWithoutPaymentInput[]
+    connectOrCreate?: PaymentSaleCreateOrConnectWithoutPaymentInput | PaymentSaleCreateOrConnectWithoutPaymentInput[]
+    upsert?: PaymentSaleUpsertWithWhereUniqueWithoutPaymentInput | PaymentSaleUpsertWithWhereUniqueWithoutPaymentInput[]
+    createMany?: PaymentSaleCreateManyPaymentInputEnvelope
+    set?: PaymentSaleWhereUniqueInput | PaymentSaleWhereUniqueInput[]
+    disconnect?: PaymentSaleWhereUniqueInput | PaymentSaleWhereUniqueInput[]
+    delete?: PaymentSaleWhereUniqueInput | PaymentSaleWhereUniqueInput[]
+    connect?: PaymentSaleWhereUniqueInput | PaymentSaleWhereUniqueInput[]
+    update?: PaymentSaleUpdateWithWhereUniqueWithoutPaymentInput | PaymentSaleUpdateWithWhereUniqueWithoutPaymentInput[]
+    updateMany?: PaymentSaleUpdateManyWithWhereWithoutPaymentInput | PaymentSaleUpdateManyWithWhereWithoutPaymentInput[]
+    deleteMany?: PaymentSaleScalarWhereInput | PaymentSaleScalarWhereInput[]
+  }
+
+  export type PaymentSaleUncheckedUpdateManyWithoutPaymentNestedInput = {
+    create?: XOR<PaymentSaleCreateWithoutPaymentInput, PaymentSaleUncheckedCreateWithoutPaymentInput> | PaymentSaleCreateWithoutPaymentInput[] | PaymentSaleUncheckedCreateWithoutPaymentInput[]
+    connectOrCreate?: PaymentSaleCreateOrConnectWithoutPaymentInput | PaymentSaleCreateOrConnectWithoutPaymentInput[]
+    upsert?: PaymentSaleUpsertWithWhereUniqueWithoutPaymentInput | PaymentSaleUpsertWithWhereUniqueWithoutPaymentInput[]
+    createMany?: PaymentSaleCreateManyPaymentInputEnvelope
+    set?: PaymentSaleWhereUniqueInput | PaymentSaleWhereUniqueInput[]
+    disconnect?: PaymentSaleWhereUniqueInput | PaymentSaleWhereUniqueInput[]
+    delete?: PaymentSaleWhereUniqueInput | PaymentSaleWhereUniqueInput[]
+    connect?: PaymentSaleWhereUniqueInput | PaymentSaleWhereUniqueInput[]
+    update?: PaymentSaleUpdateWithWhereUniqueWithoutPaymentInput | PaymentSaleUpdateWithWhereUniqueWithoutPaymentInput[]
+    updateMany?: PaymentSaleUpdateManyWithWhereWithoutPaymentInput | PaymentSaleUpdateManyWithWhereWithoutPaymentInput[]
+    deleteMany?: PaymentSaleScalarWhereInput | PaymentSaleScalarWhereInput[]
+  }
+
+  export type PaymentCreateNestedOneWithoutSalesInput = {
+    create?: XOR<PaymentCreateWithoutSalesInput, PaymentUncheckedCreateWithoutSalesInput>
+    connectOrCreate?: PaymentCreateOrConnectWithoutSalesInput
+    connect?: PaymentWhereUniqueInput
+  }
+
+  export type SaleCreateNestedOneWithoutPaymentsInput = {
+    create?: XOR<SaleCreateWithoutPaymentsInput, SaleUncheckedCreateWithoutPaymentsInput>
+    connectOrCreate?: SaleCreateOrConnectWithoutPaymentsInput
+    connect?: SaleWhereUniqueInput
+  }
+
+  export type PaymentUpdateOneRequiredWithoutSalesNestedInput = {
+    create?: XOR<PaymentCreateWithoutSalesInput, PaymentUncheckedCreateWithoutSalesInput>
+    connectOrCreate?: PaymentCreateOrConnectWithoutSalesInput
+    upsert?: PaymentUpsertWithoutSalesInput
+    connect?: PaymentWhereUniqueInput
+    update?: XOR<XOR<PaymentUpdateToOneWithWhereWithoutSalesInput, PaymentUpdateWithoutSalesInput>, PaymentUncheckedUpdateWithoutSalesInput>
+  }
+
+  export type SaleUpdateOneRequiredWithoutPaymentsNestedInput = {
+    create?: XOR<SaleCreateWithoutPaymentsInput, SaleUncheckedCreateWithoutPaymentsInput>
+    connectOrCreate?: SaleCreateOrConnectWithoutPaymentsInput
+    upsert?: SaleUpsertWithoutPaymentsInput
+    connect?: SaleWhereUniqueInput
+    update?: XOR<XOR<SaleUpdateToOneWithWhereWithoutPaymentsInput, SaleUpdateWithoutPaymentsInput>, SaleUncheckedUpdateWithoutPaymentsInput>
+  }
+
+  export type InfluencerCreateNestedOneWithoutLinkClicksInput = {
+    create?: XOR<InfluencerCreateWithoutLinkClicksInput, InfluencerUncheckedCreateWithoutLinkClicksInput>
+    connectOrCreate?: InfluencerCreateOrConnectWithoutLinkClicksInput
+    connect?: InfluencerWhereUniqueInput
+  }
+
+  export type ShareCreateNestedOneWithoutLinkClicksInput = {
+    create?: XOR<ShareCreateWithoutLinkClicksInput, ShareUncheckedCreateWithoutLinkClicksInput>
+    connectOrCreate?: ShareCreateOrConnectWithoutLinkClicksInput
+    connect?: ShareWhereUniqueInput
+  }
+
+  export type InfluencerUpdateOneRequiredWithoutLinkClicksNestedInput = {
+    create?: XOR<InfluencerCreateWithoutLinkClicksInput, InfluencerUncheckedCreateWithoutLinkClicksInput>
+    connectOrCreate?: InfluencerCreateOrConnectWithoutLinkClicksInput
+    upsert?: InfluencerUpsertWithoutLinkClicksInput
+    connect?: InfluencerWhereUniqueInput
+    update?: XOR<XOR<InfluencerUpdateToOneWithWhereWithoutLinkClicksInput, InfluencerUpdateWithoutLinkClicksInput>, InfluencerUncheckedUpdateWithoutLinkClicksInput>
+  }
+
+  export type ShareUpdateOneWithoutLinkClicksNestedInput = {
+    create?: XOR<ShareCreateWithoutLinkClicksInput, ShareUncheckedCreateWithoutLinkClicksInput>
+    connectOrCreate?: ShareCreateOrConnectWithoutLinkClicksInput
+    upsert?: ShareUpsertWithoutLinkClicksInput
+    disconnect?: ShareWhereInput | boolean
+    delete?: ShareWhereInput | boolean
+    connect?: ShareWhereUniqueInput
+    update?: XOR<XOR<ShareUpdateToOneWithWhereWithoutLinkClicksInput, ShareUpdateWithoutLinkClicksInput>, ShareUncheckedUpdateWithoutLinkClicksInput>
+  }
+
+  export type CampaignParticipantCreateNestedManyWithoutCampaignInput = {
+    create?: XOR<CampaignParticipantCreateWithoutCampaignInput, CampaignParticipantUncheckedCreateWithoutCampaignInput> | CampaignParticipantCreateWithoutCampaignInput[] | CampaignParticipantUncheckedCreateWithoutCampaignInput[]
+    connectOrCreate?: CampaignParticipantCreateOrConnectWithoutCampaignInput | CampaignParticipantCreateOrConnectWithoutCampaignInput[]
+    createMany?: CampaignParticipantCreateManyCampaignInputEnvelope
+    connect?: CampaignParticipantWhereUniqueInput | CampaignParticipantWhereUniqueInput[]
+  }
+
+  export type CampaignCodeUsageCreateNestedManyWithoutCampaignInput = {
+    create?: XOR<CampaignCodeUsageCreateWithoutCampaignInput, CampaignCodeUsageUncheckedCreateWithoutCampaignInput> | CampaignCodeUsageCreateWithoutCampaignInput[] | CampaignCodeUsageUncheckedCreateWithoutCampaignInput[]
+    connectOrCreate?: CampaignCodeUsageCreateOrConnectWithoutCampaignInput | CampaignCodeUsageCreateOrConnectWithoutCampaignInput[]
+    createMany?: CampaignCodeUsageCreateManyCampaignInputEnvelope
+    connect?: CampaignCodeUsageWhereUniqueInput | CampaignCodeUsageWhereUniqueInput[]
+  }
+
+  export type CampaignParticipantUncheckedCreateNestedManyWithoutCampaignInput = {
+    create?: XOR<CampaignParticipantCreateWithoutCampaignInput, CampaignParticipantUncheckedCreateWithoutCampaignInput> | CampaignParticipantCreateWithoutCampaignInput[] | CampaignParticipantUncheckedCreateWithoutCampaignInput[]
+    connectOrCreate?: CampaignParticipantCreateOrConnectWithoutCampaignInput | CampaignParticipantCreateOrConnectWithoutCampaignInput[]
+    createMany?: CampaignParticipantCreateManyCampaignInputEnvelope
+    connect?: CampaignParticipantWhereUniqueInput | CampaignParticipantWhereUniqueInput[]
+  }
+
+  export type CampaignCodeUsageUncheckedCreateNestedManyWithoutCampaignInput = {
+    create?: XOR<CampaignCodeUsageCreateWithoutCampaignInput, CampaignCodeUsageUncheckedCreateWithoutCampaignInput> | CampaignCodeUsageCreateWithoutCampaignInput[] | CampaignCodeUsageUncheckedCreateWithoutCampaignInput[]
+    connectOrCreate?: CampaignCodeUsageCreateOrConnectWithoutCampaignInput | CampaignCodeUsageCreateOrConnectWithoutCampaignInput[]
+    createMany?: CampaignCodeUsageCreateManyCampaignInputEnvelope
+    connect?: CampaignCodeUsageWhereUniqueInput | CampaignCodeUsageWhereUniqueInput[]
+  }
+
+  export type CampaignParticipantUpdateManyWithoutCampaignNestedInput = {
+    create?: XOR<CampaignParticipantCreateWithoutCampaignInput, CampaignParticipantUncheckedCreateWithoutCampaignInput> | CampaignParticipantCreateWithoutCampaignInput[] | CampaignParticipantUncheckedCreateWithoutCampaignInput[]
+    connectOrCreate?: CampaignParticipantCreateOrConnectWithoutCampaignInput | CampaignParticipantCreateOrConnectWithoutCampaignInput[]
+    upsert?: CampaignParticipantUpsertWithWhereUniqueWithoutCampaignInput | CampaignParticipantUpsertWithWhereUniqueWithoutCampaignInput[]
+    createMany?: CampaignParticipantCreateManyCampaignInputEnvelope
+    set?: CampaignParticipantWhereUniqueInput | CampaignParticipantWhereUniqueInput[]
+    disconnect?: CampaignParticipantWhereUniqueInput | CampaignParticipantWhereUniqueInput[]
+    delete?: CampaignParticipantWhereUniqueInput | CampaignParticipantWhereUniqueInput[]
+    connect?: CampaignParticipantWhereUniqueInput | CampaignParticipantWhereUniqueInput[]
+    update?: CampaignParticipantUpdateWithWhereUniqueWithoutCampaignInput | CampaignParticipantUpdateWithWhereUniqueWithoutCampaignInput[]
+    updateMany?: CampaignParticipantUpdateManyWithWhereWithoutCampaignInput | CampaignParticipantUpdateManyWithWhereWithoutCampaignInput[]
+    deleteMany?: CampaignParticipantScalarWhereInput | CampaignParticipantScalarWhereInput[]
+  }
+
+  export type CampaignCodeUsageUpdateManyWithoutCampaignNestedInput = {
+    create?: XOR<CampaignCodeUsageCreateWithoutCampaignInput, CampaignCodeUsageUncheckedCreateWithoutCampaignInput> | CampaignCodeUsageCreateWithoutCampaignInput[] | CampaignCodeUsageUncheckedCreateWithoutCampaignInput[]
+    connectOrCreate?: CampaignCodeUsageCreateOrConnectWithoutCampaignInput | CampaignCodeUsageCreateOrConnectWithoutCampaignInput[]
+    upsert?: CampaignCodeUsageUpsertWithWhereUniqueWithoutCampaignInput | CampaignCodeUsageUpsertWithWhereUniqueWithoutCampaignInput[]
+    createMany?: CampaignCodeUsageCreateManyCampaignInputEnvelope
+    set?: CampaignCodeUsageWhereUniqueInput | CampaignCodeUsageWhereUniqueInput[]
+    disconnect?: CampaignCodeUsageWhereUniqueInput | CampaignCodeUsageWhereUniqueInput[]
+    delete?: CampaignCodeUsageWhereUniqueInput | CampaignCodeUsageWhereUniqueInput[]
+    connect?: CampaignCodeUsageWhereUniqueInput | CampaignCodeUsageWhereUniqueInput[]
+    update?: CampaignCodeUsageUpdateWithWhereUniqueWithoutCampaignInput | CampaignCodeUsageUpdateWithWhereUniqueWithoutCampaignInput[]
+    updateMany?: CampaignCodeUsageUpdateManyWithWhereWithoutCampaignInput | CampaignCodeUsageUpdateManyWithWhereWithoutCampaignInput[]
+    deleteMany?: CampaignCodeUsageScalarWhereInput | CampaignCodeUsageScalarWhereInput[]
+  }
+
+  export type CampaignParticipantUncheckedUpdateManyWithoutCampaignNestedInput = {
+    create?: XOR<CampaignParticipantCreateWithoutCampaignInput, CampaignParticipantUncheckedCreateWithoutCampaignInput> | CampaignParticipantCreateWithoutCampaignInput[] | CampaignParticipantUncheckedCreateWithoutCampaignInput[]
+    connectOrCreate?: CampaignParticipantCreateOrConnectWithoutCampaignInput | CampaignParticipantCreateOrConnectWithoutCampaignInput[]
+    upsert?: CampaignParticipantUpsertWithWhereUniqueWithoutCampaignInput | CampaignParticipantUpsertWithWhereUniqueWithoutCampaignInput[]
+    createMany?: CampaignParticipantCreateManyCampaignInputEnvelope
+    set?: CampaignParticipantWhereUniqueInput | CampaignParticipantWhereUniqueInput[]
+    disconnect?: CampaignParticipantWhereUniqueInput | CampaignParticipantWhereUniqueInput[]
+    delete?: CampaignParticipantWhereUniqueInput | CampaignParticipantWhereUniqueInput[]
+    connect?: CampaignParticipantWhereUniqueInput | CampaignParticipantWhereUniqueInput[]
+    update?: CampaignParticipantUpdateWithWhereUniqueWithoutCampaignInput | CampaignParticipantUpdateWithWhereUniqueWithoutCampaignInput[]
+    updateMany?: CampaignParticipantUpdateManyWithWhereWithoutCampaignInput | CampaignParticipantUpdateManyWithWhereWithoutCampaignInput[]
+    deleteMany?: CampaignParticipantScalarWhereInput | CampaignParticipantScalarWhereInput[]
+  }
+
+  export type CampaignCodeUsageUncheckedUpdateManyWithoutCampaignNestedInput = {
+    create?: XOR<CampaignCodeUsageCreateWithoutCampaignInput, CampaignCodeUsageUncheckedCreateWithoutCampaignInput> | CampaignCodeUsageCreateWithoutCampaignInput[] | CampaignCodeUsageUncheckedCreateWithoutCampaignInput[]
+    connectOrCreate?: CampaignCodeUsageCreateOrConnectWithoutCampaignInput | CampaignCodeUsageCreateOrConnectWithoutCampaignInput[]
+    upsert?: CampaignCodeUsageUpsertWithWhereUniqueWithoutCampaignInput | CampaignCodeUsageUpsertWithWhereUniqueWithoutCampaignInput[]
+    createMany?: CampaignCodeUsageCreateManyCampaignInputEnvelope
+    set?: CampaignCodeUsageWhereUniqueInput | CampaignCodeUsageWhereUniqueInput[]
+    disconnect?: CampaignCodeUsageWhereUniqueInput | CampaignCodeUsageWhereUniqueInput[]
+    delete?: CampaignCodeUsageWhereUniqueInput | CampaignCodeUsageWhereUniqueInput[]
+    connect?: CampaignCodeUsageWhereUniqueInput | CampaignCodeUsageWhereUniqueInput[]
+    update?: CampaignCodeUsageUpdateWithWhereUniqueWithoutCampaignInput | CampaignCodeUsageUpdateWithWhereUniqueWithoutCampaignInput[]
+    updateMany?: CampaignCodeUsageUpdateManyWithWhereWithoutCampaignInput | CampaignCodeUsageUpdateManyWithWhereWithoutCampaignInput[]
+    deleteMany?: CampaignCodeUsageScalarWhereInput | CampaignCodeUsageScalarWhereInput[]
+  }
+
+  export type CampaignCreateNestedOneWithoutParticipantsInput = {
+    create?: XOR<CampaignCreateWithoutParticipantsInput, CampaignUncheckedCreateWithoutParticipantsInput>
+    connectOrCreate?: CampaignCreateOrConnectWithoutParticipantsInput
+    connect?: CampaignWhereUniqueInput
+  }
+
+  export type InfluencerCreateNestedOneWithoutCampaignsInput = {
+    create?: XOR<InfluencerCreateWithoutCampaignsInput, InfluencerUncheckedCreateWithoutCampaignsInput>
+    connectOrCreate?: InfluencerCreateOrConnectWithoutCampaignsInput
+    connect?: InfluencerWhereUniqueInput
+  }
+
+  export type CampaignCodeUsageCreateNestedManyWithoutParticipantInput = {
+    create?: XOR<CampaignCodeUsageCreateWithoutParticipantInput, CampaignCodeUsageUncheckedCreateWithoutParticipantInput> | CampaignCodeUsageCreateWithoutParticipantInput[] | CampaignCodeUsageUncheckedCreateWithoutParticipantInput[]
+    connectOrCreate?: CampaignCodeUsageCreateOrConnectWithoutParticipantInput | CampaignCodeUsageCreateOrConnectWithoutParticipantInput[]
+    createMany?: CampaignCodeUsageCreateManyParticipantInputEnvelope
+    connect?: CampaignCodeUsageWhereUniqueInput | CampaignCodeUsageWhereUniqueInput[]
+  }
+
+  export type CampaignCodeUsageUncheckedCreateNestedManyWithoutParticipantInput = {
+    create?: XOR<CampaignCodeUsageCreateWithoutParticipantInput, CampaignCodeUsageUncheckedCreateWithoutParticipantInput> | CampaignCodeUsageCreateWithoutParticipantInput[] | CampaignCodeUsageUncheckedCreateWithoutParticipantInput[]
+    connectOrCreate?: CampaignCodeUsageCreateOrConnectWithoutParticipantInput | CampaignCodeUsageCreateOrConnectWithoutParticipantInput[]
+    createMany?: CampaignCodeUsageCreateManyParticipantInputEnvelope
+    connect?: CampaignCodeUsageWhereUniqueInput | CampaignCodeUsageWhereUniqueInput[]
+  }
+
+  export type CampaignUpdateOneRequiredWithoutParticipantsNestedInput = {
+    create?: XOR<CampaignCreateWithoutParticipantsInput, CampaignUncheckedCreateWithoutParticipantsInput>
+    connectOrCreate?: CampaignCreateOrConnectWithoutParticipantsInput
+    upsert?: CampaignUpsertWithoutParticipantsInput
+    connect?: CampaignWhereUniqueInput
+    update?: XOR<XOR<CampaignUpdateToOneWithWhereWithoutParticipantsInput, CampaignUpdateWithoutParticipantsInput>, CampaignUncheckedUpdateWithoutParticipantsInput>
+  }
+
+  export type InfluencerUpdateOneRequiredWithoutCampaignsNestedInput = {
+    create?: XOR<InfluencerCreateWithoutCampaignsInput, InfluencerUncheckedCreateWithoutCampaignsInput>
+    connectOrCreate?: InfluencerCreateOrConnectWithoutCampaignsInput
+    upsert?: InfluencerUpsertWithoutCampaignsInput
+    connect?: InfluencerWhereUniqueInput
+    update?: XOR<XOR<InfluencerUpdateToOneWithWhereWithoutCampaignsInput, InfluencerUpdateWithoutCampaignsInput>, InfluencerUncheckedUpdateWithoutCampaignsInput>
+  }
+
+  export type CampaignCodeUsageUpdateManyWithoutParticipantNestedInput = {
+    create?: XOR<CampaignCodeUsageCreateWithoutParticipantInput, CampaignCodeUsageUncheckedCreateWithoutParticipantInput> | CampaignCodeUsageCreateWithoutParticipantInput[] | CampaignCodeUsageUncheckedCreateWithoutParticipantInput[]
+    connectOrCreate?: CampaignCodeUsageCreateOrConnectWithoutParticipantInput | CampaignCodeUsageCreateOrConnectWithoutParticipantInput[]
+    upsert?: CampaignCodeUsageUpsertWithWhereUniqueWithoutParticipantInput | CampaignCodeUsageUpsertWithWhereUniqueWithoutParticipantInput[]
+    createMany?: CampaignCodeUsageCreateManyParticipantInputEnvelope
+    set?: CampaignCodeUsageWhereUniqueInput | CampaignCodeUsageWhereUniqueInput[]
+    disconnect?: CampaignCodeUsageWhereUniqueInput | CampaignCodeUsageWhereUniqueInput[]
+    delete?: CampaignCodeUsageWhereUniqueInput | CampaignCodeUsageWhereUniqueInput[]
+    connect?: CampaignCodeUsageWhereUniqueInput | CampaignCodeUsageWhereUniqueInput[]
+    update?: CampaignCodeUsageUpdateWithWhereUniqueWithoutParticipantInput | CampaignCodeUsageUpdateWithWhereUniqueWithoutParticipantInput[]
+    updateMany?: CampaignCodeUsageUpdateManyWithWhereWithoutParticipantInput | CampaignCodeUsageUpdateManyWithWhereWithoutParticipantInput[]
+    deleteMany?: CampaignCodeUsageScalarWhereInput | CampaignCodeUsageScalarWhereInput[]
+  }
+
+  export type CampaignCodeUsageUncheckedUpdateManyWithoutParticipantNestedInput = {
+    create?: XOR<CampaignCodeUsageCreateWithoutParticipantInput, CampaignCodeUsageUncheckedCreateWithoutParticipantInput> | CampaignCodeUsageCreateWithoutParticipantInput[] | CampaignCodeUsageUncheckedCreateWithoutParticipantInput[]
+    connectOrCreate?: CampaignCodeUsageCreateOrConnectWithoutParticipantInput | CampaignCodeUsageCreateOrConnectWithoutParticipantInput[]
+    upsert?: CampaignCodeUsageUpsertWithWhereUniqueWithoutParticipantInput | CampaignCodeUsageUpsertWithWhereUniqueWithoutParticipantInput[]
+    createMany?: CampaignCodeUsageCreateManyParticipantInputEnvelope
+    set?: CampaignCodeUsageWhereUniqueInput | CampaignCodeUsageWhereUniqueInput[]
+    disconnect?: CampaignCodeUsageWhereUniqueInput | CampaignCodeUsageWhereUniqueInput[]
+    delete?: CampaignCodeUsageWhereUniqueInput | CampaignCodeUsageWhereUniqueInput[]
+    connect?: CampaignCodeUsageWhereUniqueInput | CampaignCodeUsageWhereUniqueInput[]
+    update?: CampaignCodeUsageUpdateWithWhereUniqueWithoutParticipantInput | CampaignCodeUsageUpdateWithWhereUniqueWithoutParticipantInput[]
+    updateMany?: CampaignCodeUsageUpdateManyWithWhereWithoutParticipantInput | CampaignCodeUsageUpdateManyWithWhereWithoutParticipantInput[]
+    deleteMany?: CampaignCodeUsageScalarWhereInput | CampaignCodeUsageScalarWhereInput[]
+  }
+
+  export type CampaignCreateNestedOneWithoutCodeUsagesInput = {
+    create?: XOR<CampaignCreateWithoutCodeUsagesInput, CampaignUncheckedCreateWithoutCodeUsagesInput>
+    connectOrCreate?: CampaignCreateOrConnectWithoutCodeUsagesInput
+    connect?: CampaignWhereUniqueInput
+  }
+
+  export type CampaignParticipantCreateNestedOneWithoutCodeUsagesInput = {
+    create?: XOR<CampaignParticipantCreateWithoutCodeUsagesInput, CampaignParticipantUncheckedCreateWithoutCodeUsagesInput>
+    connectOrCreate?: CampaignParticipantCreateOrConnectWithoutCodeUsagesInput
+    connect?: CampaignParticipantWhereUniqueInput
+  }
+
+  export type CampaignUpdateOneRequiredWithoutCodeUsagesNestedInput = {
+    create?: XOR<CampaignCreateWithoutCodeUsagesInput, CampaignUncheckedCreateWithoutCodeUsagesInput>
+    connectOrCreate?: CampaignCreateOrConnectWithoutCodeUsagesInput
+    upsert?: CampaignUpsertWithoutCodeUsagesInput
+    connect?: CampaignWhereUniqueInput
+    update?: XOR<XOR<CampaignUpdateToOneWithWhereWithoutCodeUsagesInput, CampaignUpdateWithoutCodeUsagesInput>, CampaignUncheckedUpdateWithoutCodeUsagesInput>
+  }
+
+  export type CampaignParticipantUpdateOneRequiredWithoutCodeUsagesNestedInput = {
+    create?: XOR<CampaignParticipantCreateWithoutCodeUsagesInput, CampaignParticipantUncheckedCreateWithoutCodeUsagesInput>
+    connectOrCreate?: CampaignParticipantCreateOrConnectWithoutCodeUsagesInput
+    upsert?: CampaignParticipantUpsertWithoutCodeUsagesInput
+    connect?: CampaignParticipantWhereUniqueInput
+    update?: XOR<XOR<CampaignParticipantUpdateToOneWithWhereWithoutCodeUsagesInput, CampaignParticipantUpdateWithoutCodeUsagesInput>, CampaignParticipantUncheckedUpdateWithoutCodeUsagesInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[] | ListStringFieldRefInput<$PrismaModel>
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
+    in?: string[]
+    notIn?: string[]
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -20260,8 +38633,8 @@ export namespace Prisma {
 
   export type NestedIntFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
     lt?: number | IntFieldRefInput<$PrismaModel>
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
@@ -20271,8 +38644,8 @@ export namespace Prisma {
 
   export type NestedFloatFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
     lt?: number | FloatFieldRefInput<$PrismaModel>
     lte?: number | FloatFieldRefInput<$PrismaModel>
     gt?: number | FloatFieldRefInput<$PrismaModel>
@@ -20282,8 +38655,8 @@ export namespace Prisma {
 
   export type NestedStringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -20296,8 +38669,8 @@ export namespace Prisma {
 
   export type NestedDateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[]
+    notIn?: Date[] | string[]
     lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
@@ -20307,8 +38680,8 @@ export namespace Prisma {
 
   export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[] | ListStringFieldRefInput<$PrismaModel>
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
+    in?: string[]
+    notIn?: string[]
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -20324,8 +38697,8 @@ export namespace Prisma {
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
     lt?: number | IntFieldRefInput<$PrismaModel>
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
@@ -20340,8 +38713,8 @@ export namespace Prisma {
 
   export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel>
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    in?: number[]
+    notIn?: number[]
     lt?: number | FloatFieldRefInput<$PrismaModel>
     lte?: number | FloatFieldRefInput<$PrismaModel>
     gt?: number | FloatFieldRefInput<$PrismaModel>
@@ -20356,8 +38729,8 @@ export namespace Prisma {
 
   export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    in?: string[] | null
+    notIn?: string[] | null
     lt?: string | StringFieldRefInput<$PrismaModel>
     lte?: string | StringFieldRefInput<$PrismaModel>
     gt?: string | StringFieldRefInput<$PrismaModel>
@@ -20373,8 +38746,8 @@ export namespace Prisma {
 
   export type NestedIntNullableFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
     lt?: number | IntFieldRefInput<$PrismaModel>
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
@@ -20384,8 +38757,8 @@ export namespace Prisma {
 
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
+    in?: Date[] | string[]
+    notIn?: Date[] | string[]
     lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
@@ -20403,8 +38776,8 @@ export namespace Prisma {
 
   export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | null
+    notIn?: Date[] | string[] | null
     lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
@@ -20422,8 +38795,8 @@ export namespace Prisma {
 
   export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
     lt?: number | IntFieldRefInput<$PrismaModel>
     lte?: number | IntFieldRefInput<$PrismaModel>
     gt?: number | IntFieldRefInput<$PrismaModel>
@@ -20438,8 +38811,8 @@ export namespace Prisma {
 
   export type NestedFloatNullableFilter<$PrismaModel = never> = {
     equals?: number | FloatFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel> | null
+    in?: number[] | null
+    notIn?: number[] | null
     lt?: number | FloatFieldRefInput<$PrismaModel>
     lte?: number | FloatFieldRefInput<$PrismaModel>
     gt?: number | FloatFieldRefInput<$PrismaModel>
@@ -20449,8 +38822,8 @@ export namespace Prisma {
 
   export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
-    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
-    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | null
+    notIn?: Date[] | string[] | null
     lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
@@ -20576,7 +38949,6 @@ export namespace Prisma {
 
   export type PostCreateManyCategoryInputEnvelope = {
     data: PostCreateManyCategoryInput | PostCreateManyCategoryInput[]
-    skipDuplicates?: boolean
   }
 
   export type PostUpsertWithWhereUniqueWithoutCategoryInput = {
@@ -20684,7 +39056,6 @@ export namespace Prisma {
 
   export type PostCreateManyAuthorModelInputEnvelope = {
     data: PostCreateManyAuthorModelInput | PostCreateManyAuthorModelInput[]
-    skipDuplicates?: boolean
   }
 
   export type PostUpsertWithWhereUniqueWithoutAuthorModelInput = {
@@ -20856,7 +39227,6 @@ export namespace Prisma {
 
   export type OrderCreateManyUserInputEnvelope = {
     data: OrderCreateManyUserInput | OrderCreateManyUserInput[]
-    skipDuplicates?: boolean
   }
 
   export type OrderUpsertWithWhereUniqueWithoutUserInput = {
@@ -20892,6 +39262,2284 @@ export namespace Prisma {
     userId?: StringNullableFilter<"Order"> | string | null
     createdAt?: DateTimeFilter<"Order"> | Date | string
     updatedAt?: DateTimeFilter<"Order"> | Date | string
+  }
+
+  export type ShareCreateWithoutInfluencerInput = {
+    id?: string
+    platform: string
+    shareUrl?: string | null
+    screenshotUrl?: string | null
+    shareDate: string
+    description?: string | null
+    status?: string
+    rejectReason?: string | null
+    viewCount?: number
+    clickCount?: number
+    saleCount?: number
+    approvedAt?: Date | string | null
+    approvedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    linkClicks?: LinkClickCreateNestedManyWithoutShareInput
+  }
+
+  export type ShareUncheckedCreateWithoutInfluencerInput = {
+    id?: string
+    platform: string
+    shareUrl?: string | null
+    screenshotUrl?: string | null
+    shareDate: string
+    description?: string | null
+    status?: string
+    rejectReason?: string | null
+    viewCount?: number
+    clickCount?: number
+    saleCount?: number
+    approvedAt?: Date | string | null
+    approvedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    linkClicks?: LinkClickUncheckedCreateNestedManyWithoutShareInput
+  }
+
+  export type ShareCreateOrConnectWithoutInfluencerInput = {
+    where: ShareWhereUniqueInput
+    create: XOR<ShareCreateWithoutInfluencerInput, ShareUncheckedCreateWithoutInfluencerInput>
+  }
+
+  export type ShareCreateManyInfluencerInputEnvelope = {
+    data: ShareCreateManyInfluencerInput | ShareCreateManyInfluencerInput[]
+  }
+
+  export type CustomerCreateWithoutInfluencerInput = {
+    id?: string
+    fullName: string
+    phone: string
+    email?: string | null
+    tcNo?: string | null
+    source?: string
+    referrerUrl?: string | null
+    couponUsed?: string | null
+    firstSeenAt?: Date | string
+    status?: string
+    assignedOperatorId?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sales?: SaleCreateNestedManyWithoutCustomerInput
+  }
+
+  export type CustomerUncheckedCreateWithoutInfluencerInput = {
+    id?: string
+    fullName: string
+    phone: string
+    email?: string | null
+    tcNo?: string | null
+    source?: string
+    referrerUrl?: string | null
+    couponUsed?: string | null
+    firstSeenAt?: Date | string
+    status?: string
+    assignedOperatorId?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sales?: SaleUncheckedCreateNestedManyWithoutCustomerInput
+  }
+
+  export type CustomerCreateOrConnectWithoutInfluencerInput = {
+    where: CustomerWhereUniqueInput
+    create: XOR<CustomerCreateWithoutInfluencerInput, CustomerUncheckedCreateWithoutInfluencerInput>
+  }
+
+  export type CustomerCreateManyInfluencerInputEnvelope = {
+    data: CustomerCreateManyInfluencerInput | CustomerCreateManyInfluencerInput[]
+  }
+
+  export type SaleCreateWithoutInfluencerInput = {
+    id?: string
+    umrePackage?: string | null
+    saleAmount: number
+    commissionRate?: number
+    commissionAmount: number
+    commissionStatus?: string
+    saleDate?: Date | string
+    completionDate?: Date | string | null
+    refundDeadline?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    customer: CustomerCreateNestedOneWithoutSalesInput
+    payments?: PaymentSaleCreateNestedManyWithoutSaleInput
+  }
+
+  export type SaleUncheckedCreateWithoutInfluencerInput = {
+    id?: string
+    customerId: string
+    umrePackage?: string | null
+    saleAmount: number
+    commissionRate?: number
+    commissionAmount: number
+    commissionStatus?: string
+    saleDate?: Date | string
+    completionDate?: Date | string | null
+    refundDeadline?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    payments?: PaymentSaleUncheckedCreateNestedManyWithoutSaleInput
+  }
+
+  export type SaleCreateOrConnectWithoutInfluencerInput = {
+    where: SaleWhereUniqueInput
+    create: XOR<SaleCreateWithoutInfluencerInput, SaleUncheckedCreateWithoutInfluencerInput>
+  }
+
+  export type SaleCreateManyInfluencerInputEnvelope = {
+    data: SaleCreateManyInfluencerInput | SaleCreateManyInfluencerInput[]
+  }
+
+  export type PaymentCreateWithoutInfluencerInput = {
+    id?: string
+    periodMonth: string
+    totalAmount: number
+    taxDeduction?: number
+    netAmount: number
+    status?: string
+    approvedBy?: string | null
+    approvedAt?: Date | string | null
+    paidAt?: Date | string | null
+    bankReference?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sales?: PaymentSaleCreateNestedManyWithoutPaymentInput
+  }
+
+  export type PaymentUncheckedCreateWithoutInfluencerInput = {
+    id?: string
+    periodMonth: string
+    totalAmount: number
+    taxDeduction?: number
+    netAmount: number
+    status?: string
+    approvedBy?: string | null
+    approvedAt?: Date | string | null
+    paidAt?: Date | string | null
+    bankReference?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    sales?: PaymentSaleUncheckedCreateNestedManyWithoutPaymentInput
+  }
+
+  export type PaymentCreateOrConnectWithoutInfluencerInput = {
+    where: PaymentWhereUniqueInput
+    create: XOR<PaymentCreateWithoutInfluencerInput, PaymentUncheckedCreateWithoutInfluencerInput>
+  }
+
+  export type PaymentCreateManyInfluencerInputEnvelope = {
+    data: PaymentCreateManyInfluencerInput | PaymentCreateManyInfluencerInput[]
+  }
+
+  export type LinkClickCreateWithoutInfluencerInput = {
+    id?: string
+    ipAddress?: string | null
+    userAgent?: string | null
+    referrer?: string | null
+    country?: string | null
+    utmSource?: string | null
+    utmContent?: string | null
+    isBot?: boolean
+    clickedAt?: Date | string
+    share?: ShareCreateNestedOneWithoutLinkClicksInput
+  }
+
+  export type LinkClickUncheckedCreateWithoutInfluencerInput = {
+    id?: string
+    shareId?: string | null
+    ipAddress?: string | null
+    userAgent?: string | null
+    referrer?: string | null
+    country?: string | null
+    utmSource?: string | null
+    utmContent?: string | null
+    isBot?: boolean
+    clickedAt?: Date | string
+  }
+
+  export type LinkClickCreateOrConnectWithoutInfluencerInput = {
+    where: LinkClickWhereUniqueInput
+    create: XOR<LinkClickCreateWithoutInfluencerInput, LinkClickUncheckedCreateWithoutInfluencerInput>
+  }
+
+  export type LinkClickCreateManyInfluencerInputEnvelope = {
+    data: LinkClickCreateManyInfluencerInput | LinkClickCreateManyInfluencerInput[]
+  }
+
+  export type CampaignParticipantCreateWithoutInfluencerInput = {
+    id?: string
+    uniqueCode: string
+    joinedAt?: Date | string
+    usageCount?: number
+    campaign: CampaignCreateNestedOneWithoutParticipantsInput
+    codeUsages?: CampaignCodeUsageCreateNestedManyWithoutParticipantInput
+  }
+
+  export type CampaignParticipantUncheckedCreateWithoutInfluencerInput = {
+    id?: string
+    campaignId: string
+    uniqueCode: string
+    joinedAt?: Date | string
+    usageCount?: number
+    codeUsages?: CampaignCodeUsageUncheckedCreateNestedManyWithoutParticipantInput
+  }
+
+  export type CampaignParticipantCreateOrConnectWithoutInfluencerInput = {
+    where: CampaignParticipantWhereUniqueInput
+    create: XOR<CampaignParticipantCreateWithoutInfluencerInput, CampaignParticipantUncheckedCreateWithoutInfluencerInput>
+  }
+
+  export type CampaignParticipantCreateManyInfluencerInputEnvelope = {
+    data: CampaignParticipantCreateManyInfluencerInput | CampaignParticipantCreateManyInfluencerInput[]
+  }
+
+  export type ShareUpsertWithWhereUniqueWithoutInfluencerInput = {
+    where: ShareWhereUniqueInput
+    update: XOR<ShareUpdateWithoutInfluencerInput, ShareUncheckedUpdateWithoutInfluencerInput>
+    create: XOR<ShareCreateWithoutInfluencerInput, ShareUncheckedCreateWithoutInfluencerInput>
+  }
+
+  export type ShareUpdateWithWhereUniqueWithoutInfluencerInput = {
+    where: ShareWhereUniqueInput
+    data: XOR<ShareUpdateWithoutInfluencerInput, ShareUncheckedUpdateWithoutInfluencerInput>
+  }
+
+  export type ShareUpdateManyWithWhereWithoutInfluencerInput = {
+    where: ShareScalarWhereInput
+    data: XOR<ShareUpdateManyMutationInput, ShareUncheckedUpdateManyWithoutInfluencerInput>
+  }
+
+  export type ShareScalarWhereInput = {
+    AND?: ShareScalarWhereInput | ShareScalarWhereInput[]
+    OR?: ShareScalarWhereInput[]
+    NOT?: ShareScalarWhereInput | ShareScalarWhereInput[]
+    id?: StringFilter<"Share"> | string
+    influencerId?: StringFilter<"Share"> | string
+    platform?: StringFilter<"Share"> | string
+    shareUrl?: StringNullableFilter<"Share"> | string | null
+    screenshotUrl?: StringNullableFilter<"Share"> | string | null
+    shareDate?: StringFilter<"Share"> | string
+    description?: StringNullableFilter<"Share"> | string | null
+    status?: StringFilter<"Share"> | string
+    rejectReason?: StringNullableFilter<"Share"> | string | null
+    viewCount?: IntFilter<"Share"> | number
+    clickCount?: IntFilter<"Share"> | number
+    saleCount?: IntFilter<"Share"> | number
+    approvedAt?: DateTimeNullableFilter<"Share"> | Date | string | null
+    approvedBy?: StringNullableFilter<"Share"> | string | null
+    createdAt?: DateTimeFilter<"Share"> | Date | string
+    updatedAt?: DateTimeFilter<"Share"> | Date | string
+  }
+
+  export type CustomerUpsertWithWhereUniqueWithoutInfluencerInput = {
+    where: CustomerWhereUniqueInput
+    update: XOR<CustomerUpdateWithoutInfluencerInput, CustomerUncheckedUpdateWithoutInfluencerInput>
+    create: XOR<CustomerCreateWithoutInfluencerInput, CustomerUncheckedCreateWithoutInfluencerInput>
+  }
+
+  export type CustomerUpdateWithWhereUniqueWithoutInfluencerInput = {
+    where: CustomerWhereUniqueInput
+    data: XOR<CustomerUpdateWithoutInfluencerInput, CustomerUncheckedUpdateWithoutInfluencerInput>
+  }
+
+  export type CustomerUpdateManyWithWhereWithoutInfluencerInput = {
+    where: CustomerScalarWhereInput
+    data: XOR<CustomerUpdateManyMutationInput, CustomerUncheckedUpdateManyWithoutInfluencerInput>
+  }
+
+  export type CustomerScalarWhereInput = {
+    AND?: CustomerScalarWhereInput | CustomerScalarWhereInput[]
+    OR?: CustomerScalarWhereInput[]
+    NOT?: CustomerScalarWhereInput | CustomerScalarWhereInput[]
+    id?: StringFilter<"Customer"> | string
+    fullName?: StringFilter<"Customer"> | string
+    phone?: StringFilter<"Customer"> | string
+    email?: StringNullableFilter<"Customer"> | string | null
+    tcNo?: StringNullableFilter<"Customer"> | string | null
+    source?: StringFilter<"Customer"> | string
+    influencerId?: StringNullableFilter<"Customer"> | string | null
+    referrerUrl?: StringNullableFilter<"Customer"> | string | null
+    couponUsed?: StringNullableFilter<"Customer"> | string | null
+    firstSeenAt?: DateTimeFilter<"Customer"> | Date | string
+    status?: StringFilter<"Customer"> | string
+    assignedOperatorId?: StringNullableFilter<"Customer"> | string | null
+    notes?: StringNullableFilter<"Customer"> | string | null
+    createdAt?: DateTimeFilter<"Customer"> | Date | string
+    updatedAt?: DateTimeFilter<"Customer"> | Date | string
+  }
+
+  export type SaleUpsertWithWhereUniqueWithoutInfluencerInput = {
+    where: SaleWhereUniqueInput
+    update: XOR<SaleUpdateWithoutInfluencerInput, SaleUncheckedUpdateWithoutInfluencerInput>
+    create: XOR<SaleCreateWithoutInfluencerInput, SaleUncheckedCreateWithoutInfluencerInput>
+  }
+
+  export type SaleUpdateWithWhereUniqueWithoutInfluencerInput = {
+    where: SaleWhereUniqueInput
+    data: XOR<SaleUpdateWithoutInfluencerInput, SaleUncheckedUpdateWithoutInfluencerInput>
+  }
+
+  export type SaleUpdateManyWithWhereWithoutInfluencerInput = {
+    where: SaleScalarWhereInput
+    data: XOR<SaleUpdateManyMutationInput, SaleUncheckedUpdateManyWithoutInfluencerInput>
+  }
+
+  export type SaleScalarWhereInput = {
+    AND?: SaleScalarWhereInput | SaleScalarWhereInput[]
+    OR?: SaleScalarWhereInput[]
+    NOT?: SaleScalarWhereInput | SaleScalarWhereInput[]
+    id?: StringFilter<"Sale"> | string
+    customerId?: StringFilter<"Sale"> | string
+    influencerId?: StringNullableFilter<"Sale"> | string | null
+    umrePackage?: StringNullableFilter<"Sale"> | string | null
+    saleAmount?: FloatFilter<"Sale"> | number
+    commissionRate?: FloatFilter<"Sale"> | number
+    commissionAmount?: FloatFilter<"Sale"> | number
+    commissionStatus?: StringFilter<"Sale"> | string
+    saleDate?: DateTimeFilter<"Sale"> | Date | string
+    completionDate?: DateTimeNullableFilter<"Sale"> | Date | string | null
+    refundDeadline?: DateTimeNullableFilter<"Sale"> | Date | string | null
+    notes?: StringNullableFilter<"Sale"> | string | null
+    createdAt?: DateTimeFilter<"Sale"> | Date | string
+    updatedAt?: DateTimeFilter<"Sale"> | Date | string
+  }
+
+  export type PaymentUpsertWithWhereUniqueWithoutInfluencerInput = {
+    where: PaymentWhereUniqueInput
+    update: XOR<PaymentUpdateWithoutInfluencerInput, PaymentUncheckedUpdateWithoutInfluencerInput>
+    create: XOR<PaymentCreateWithoutInfluencerInput, PaymentUncheckedCreateWithoutInfluencerInput>
+  }
+
+  export type PaymentUpdateWithWhereUniqueWithoutInfluencerInput = {
+    where: PaymentWhereUniqueInput
+    data: XOR<PaymentUpdateWithoutInfluencerInput, PaymentUncheckedUpdateWithoutInfluencerInput>
+  }
+
+  export type PaymentUpdateManyWithWhereWithoutInfluencerInput = {
+    where: PaymentScalarWhereInput
+    data: XOR<PaymentUpdateManyMutationInput, PaymentUncheckedUpdateManyWithoutInfluencerInput>
+  }
+
+  export type PaymentScalarWhereInput = {
+    AND?: PaymentScalarWhereInput | PaymentScalarWhereInput[]
+    OR?: PaymentScalarWhereInput[]
+    NOT?: PaymentScalarWhereInput | PaymentScalarWhereInput[]
+    id?: StringFilter<"Payment"> | string
+    influencerId?: StringFilter<"Payment"> | string
+    periodMonth?: StringFilter<"Payment"> | string
+    totalAmount?: FloatFilter<"Payment"> | number
+    taxDeduction?: FloatFilter<"Payment"> | number
+    netAmount?: FloatFilter<"Payment"> | number
+    status?: StringFilter<"Payment"> | string
+    approvedBy?: StringNullableFilter<"Payment"> | string | null
+    approvedAt?: DateTimeNullableFilter<"Payment"> | Date | string | null
+    paidAt?: DateTimeNullableFilter<"Payment"> | Date | string | null
+    bankReference?: StringNullableFilter<"Payment"> | string | null
+    notes?: StringNullableFilter<"Payment"> | string | null
+    createdAt?: DateTimeFilter<"Payment"> | Date | string
+    updatedAt?: DateTimeFilter<"Payment"> | Date | string
+  }
+
+  export type LinkClickUpsertWithWhereUniqueWithoutInfluencerInput = {
+    where: LinkClickWhereUniqueInput
+    update: XOR<LinkClickUpdateWithoutInfluencerInput, LinkClickUncheckedUpdateWithoutInfluencerInput>
+    create: XOR<LinkClickCreateWithoutInfluencerInput, LinkClickUncheckedCreateWithoutInfluencerInput>
+  }
+
+  export type LinkClickUpdateWithWhereUniqueWithoutInfluencerInput = {
+    where: LinkClickWhereUniqueInput
+    data: XOR<LinkClickUpdateWithoutInfluencerInput, LinkClickUncheckedUpdateWithoutInfluencerInput>
+  }
+
+  export type LinkClickUpdateManyWithWhereWithoutInfluencerInput = {
+    where: LinkClickScalarWhereInput
+    data: XOR<LinkClickUpdateManyMutationInput, LinkClickUncheckedUpdateManyWithoutInfluencerInput>
+  }
+
+  export type LinkClickScalarWhereInput = {
+    AND?: LinkClickScalarWhereInput | LinkClickScalarWhereInput[]
+    OR?: LinkClickScalarWhereInput[]
+    NOT?: LinkClickScalarWhereInput | LinkClickScalarWhereInput[]
+    id?: StringFilter<"LinkClick"> | string
+    influencerId?: StringFilter<"LinkClick"> | string
+    shareId?: StringNullableFilter<"LinkClick"> | string | null
+    ipAddress?: StringNullableFilter<"LinkClick"> | string | null
+    userAgent?: StringNullableFilter<"LinkClick"> | string | null
+    referrer?: StringNullableFilter<"LinkClick"> | string | null
+    country?: StringNullableFilter<"LinkClick"> | string | null
+    utmSource?: StringNullableFilter<"LinkClick"> | string | null
+    utmContent?: StringNullableFilter<"LinkClick"> | string | null
+    isBot?: BoolFilter<"LinkClick"> | boolean
+    clickedAt?: DateTimeFilter<"LinkClick"> | Date | string
+  }
+
+  export type CampaignParticipantUpsertWithWhereUniqueWithoutInfluencerInput = {
+    where: CampaignParticipantWhereUniqueInput
+    update: XOR<CampaignParticipantUpdateWithoutInfluencerInput, CampaignParticipantUncheckedUpdateWithoutInfluencerInput>
+    create: XOR<CampaignParticipantCreateWithoutInfluencerInput, CampaignParticipantUncheckedCreateWithoutInfluencerInput>
+  }
+
+  export type CampaignParticipantUpdateWithWhereUniqueWithoutInfluencerInput = {
+    where: CampaignParticipantWhereUniqueInput
+    data: XOR<CampaignParticipantUpdateWithoutInfluencerInput, CampaignParticipantUncheckedUpdateWithoutInfluencerInput>
+  }
+
+  export type CampaignParticipantUpdateManyWithWhereWithoutInfluencerInput = {
+    where: CampaignParticipantScalarWhereInput
+    data: XOR<CampaignParticipantUpdateManyMutationInput, CampaignParticipantUncheckedUpdateManyWithoutInfluencerInput>
+  }
+
+  export type CampaignParticipantScalarWhereInput = {
+    AND?: CampaignParticipantScalarWhereInput | CampaignParticipantScalarWhereInput[]
+    OR?: CampaignParticipantScalarWhereInput[]
+    NOT?: CampaignParticipantScalarWhereInput | CampaignParticipantScalarWhereInput[]
+    id?: StringFilter<"CampaignParticipant"> | string
+    campaignId?: StringFilter<"CampaignParticipant"> | string
+    influencerId?: StringFilter<"CampaignParticipant"> | string
+    uniqueCode?: StringFilter<"CampaignParticipant"> | string
+    joinedAt?: DateTimeFilter<"CampaignParticipant"> | Date | string
+    usageCount?: IntFilter<"CampaignParticipant"> | number
+  }
+
+  export type InfluencerCreateWithoutSharesInput = {
+    id?: string
+    fullName: string
+    email: string
+    password: string
+    phone: string
+    tcNo?: string | null
+    birthDate?: string | null
+    avatarUrl?: string | null
+    instagramHandle?: string | null
+    instagramFollowers?: number | null
+    tiktokHandle?: string | null
+    youtubeHandle?: string | null
+    tier?: string
+    uniqueCode: string
+    uniqueUrl: string
+    status?: string
+    rejectReason?: string | null
+    bankIban?: string | null
+    bankName?: string | null
+    bankAccountName?: string | null
+    totalSales?: number
+    totalEarnings?: number
+    pendingEarnings?: number
+    totalClicks?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    customers?: CustomerCreateNestedManyWithoutInfluencerInput
+    sales?: SaleCreateNestedManyWithoutInfluencerInput
+    payments?: PaymentCreateNestedManyWithoutInfluencerInput
+    linkClicks?: LinkClickCreateNestedManyWithoutInfluencerInput
+    campaigns?: CampaignParticipantCreateNestedManyWithoutInfluencerInput
+  }
+
+  export type InfluencerUncheckedCreateWithoutSharesInput = {
+    id?: string
+    fullName: string
+    email: string
+    password: string
+    phone: string
+    tcNo?: string | null
+    birthDate?: string | null
+    avatarUrl?: string | null
+    instagramHandle?: string | null
+    instagramFollowers?: number | null
+    tiktokHandle?: string | null
+    youtubeHandle?: string | null
+    tier?: string
+    uniqueCode: string
+    uniqueUrl: string
+    status?: string
+    rejectReason?: string | null
+    bankIban?: string | null
+    bankName?: string | null
+    bankAccountName?: string | null
+    totalSales?: number
+    totalEarnings?: number
+    pendingEarnings?: number
+    totalClicks?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    customers?: CustomerUncheckedCreateNestedManyWithoutInfluencerInput
+    sales?: SaleUncheckedCreateNestedManyWithoutInfluencerInput
+    payments?: PaymentUncheckedCreateNestedManyWithoutInfluencerInput
+    linkClicks?: LinkClickUncheckedCreateNestedManyWithoutInfluencerInput
+    campaigns?: CampaignParticipantUncheckedCreateNestedManyWithoutInfluencerInput
+  }
+
+  export type InfluencerCreateOrConnectWithoutSharesInput = {
+    where: InfluencerWhereUniqueInput
+    create: XOR<InfluencerCreateWithoutSharesInput, InfluencerUncheckedCreateWithoutSharesInput>
+  }
+
+  export type LinkClickCreateWithoutShareInput = {
+    id?: string
+    ipAddress?: string | null
+    userAgent?: string | null
+    referrer?: string | null
+    country?: string | null
+    utmSource?: string | null
+    utmContent?: string | null
+    isBot?: boolean
+    clickedAt?: Date | string
+    influencer: InfluencerCreateNestedOneWithoutLinkClicksInput
+  }
+
+  export type LinkClickUncheckedCreateWithoutShareInput = {
+    id?: string
+    influencerId: string
+    ipAddress?: string | null
+    userAgent?: string | null
+    referrer?: string | null
+    country?: string | null
+    utmSource?: string | null
+    utmContent?: string | null
+    isBot?: boolean
+    clickedAt?: Date | string
+  }
+
+  export type LinkClickCreateOrConnectWithoutShareInput = {
+    where: LinkClickWhereUniqueInput
+    create: XOR<LinkClickCreateWithoutShareInput, LinkClickUncheckedCreateWithoutShareInput>
+  }
+
+  export type LinkClickCreateManyShareInputEnvelope = {
+    data: LinkClickCreateManyShareInput | LinkClickCreateManyShareInput[]
+  }
+
+  export type InfluencerUpsertWithoutSharesInput = {
+    update: XOR<InfluencerUpdateWithoutSharesInput, InfluencerUncheckedUpdateWithoutSharesInput>
+    create: XOR<InfluencerCreateWithoutSharesInput, InfluencerUncheckedCreateWithoutSharesInput>
+    where?: InfluencerWhereInput
+  }
+
+  export type InfluencerUpdateToOneWithWhereWithoutSharesInput = {
+    where?: InfluencerWhereInput
+    data: XOR<InfluencerUpdateWithoutSharesInput, InfluencerUncheckedUpdateWithoutSharesInput>
+  }
+
+  export type InfluencerUpdateWithoutSharesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    tcNo?: NullableStringFieldUpdateOperationsInput | string | null
+    birthDate?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramFollowers?: NullableIntFieldUpdateOperationsInput | number | null
+    tiktokHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    youtubeHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    tier?: StringFieldUpdateOperationsInput | string
+    uniqueCode?: StringFieldUpdateOperationsInput | string
+    uniqueUrl?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    rejectReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bankIban?: NullableStringFieldUpdateOperationsInput | string | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountName?: NullableStringFieldUpdateOperationsInput | string | null
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalEarnings?: FloatFieldUpdateOperationsInput | number
+    pendingEarnings?: FloatFieldUpdateOperationsInput | number
+    totalClicks?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    customers?: CustomerUpdateManyWithoutInfluencerNestedInput
+    sales?: SaleUpdateManyWithoutInfluencerNestedInput
+    payments?: PaymentUpdateManyWithoutInfluencerNestedInput
+    linkClicks?: LinkClickUpdateManyWithoutInfluencerNestedInput
+    campaigns?: CampaignParticipantUpdateManyWithoutInfluencerNestedInput
+  }
+
+  export type InfluencerUncheckedUpdateWithoutSharesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    tcNo?: NullableStringFieldUpdateOperationsInput | string | null
+    birthDate?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramFollowers?: NullableIntFieldUpdateOperationsInput | number | null
+    tiktokHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    youtubeHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    tier?: StringFieldUpdateOperationsInput | string
+    uniqueCode?: StringFieldUpdateOperationsInput | string
+    uniqueUrl?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    rejectReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bankIban?: NullableStringFieldUpdateOperationsInput | string | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountName?: NullableStringFieldUpdateOperationsInput | string | null
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalEarnings?: FloatFieldUpdateOperationsInput | number
+    pendingEarnings?: FloatFieldUpdateOperationsInput | number
+    totalClicks?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    customers?: CustomerUncheckedUpdateManyWithoutInfluencerNestedInput
+    sales?: SaleUncheckedUpdateManyWithoutInfluencerNestedInput
+    payments?: PaymentUncheckedUpdateManyWithoutInfluencerNestedInput
+    linkClicks?: LinkClickUncheckedUpdateManyWithoutInfluencerNestedInput
+    campaigns?: CampaignParticipantUncheckedUpdateManyWithoutInfluencerNestedInput
+  }
+
+  export type LinkClickUpsertWithWhereUniqueWithoutShareInput = {
+    where: LinkClickWhereUniqueInput
+    update: XOR<LinkClickUpdateWithoutShareInput, LinkClickUncheckedUpdateWithoutShareInput>
+    create: XOR<LinkClickCreateWithoutShareInput, LinkClickUncheckedCreateWithoutShareInput>
+  }
+
+  export type LinkClickUpdateWithWhereUniqueWithoutShareInput = {
+    where: LinkClickWhereUniqueInput
+    data: XOR<LinkClickUpdateWithoutShareInput, LinkClickUncheckedUpdateWithoutShareInput>
+  }
+
+  export type LinkClickUpdateManyWithWhereWithoutShareInput = {
+    where: LinkClickScalarWhereInput
+    data: XOR<LinkClickUpdateManyMutationInput, LinkClickUncheckedUpdateManyWithoutShareInput>
+  }
+
+  export type InfluencerCreateWithoutCustomersInput = {
+    id?: string
+    fullName: string
+    email: string
+    password: string
+    phone: string
+    tcNo?: string | null
+    birthDate?: string | null
+    avatarUrl?: string | null
+    instagramHandle?: string | null
+    instagramFollowers?: number | null
+    tiktokHandle?: string | null
+    youtubeHandle?: string | null
+    tier?: string
+    uniqueCode: string
+    uniqueUrl: string
+    status?: string
+    rejectReason?: string | null
+    bankIban?: string | null
+    bankName?: string | null
+    bankAccountName?: string | null
+    totalSales?: number
+    totalEarnings?: number
+    pendingEarnings?: number
+    totalClicks?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    shares?: ShareCreateNestedManyWithoutInfluencerInput
+    sales?: SaleCreateNestedManyWithoutInfluencerInput
+    payments?: PaymentCreateNestedManyWithoutInfluencerInput
+    linkClicks?: LinkClickCreateNestedManyWithoutInfluencerInput
+    campaigns?: CampaignParticipantCreateNestedManyWithoutInfluencerInput
+  }
+
+  export type InfluencerUncheckedCreateWithoutCustomersInput = {
+    id?: string
+    fullName: string
+    email: string
+    password: string
+    phone: string
+    tcNo?: string | null
+    birthDate?: string | null
+    avatarUrl?: string | null
+    instagramHandle?: string | null
+    instagramFollowers?: number | null
+    tiktokHandle?: string | null
+    youtubeHandle?: string | null
+    tier?: string
+    uniqueCode: string
+    uniqueUrl: string
+    status?: string
+    rejectReason?: string | null
+    bankIban?: string | null
+    bankName?: string | null
+    bankAccountName?: string | null
+    totalSales?: number
+    totalEarnings?: number
+    pendingEarnings?: number
+    totalClicks?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    shares?: ShareUncheckedCreateNestedManyWithoutInfluencerInput
+    sales?: SaleUncheckedCreateNestedManyWithoutInfluencerInput
+    payments?: PaymentUncheckedCreateNestedManyWithoutInfluencerInput
+    linkClicks?: LinkClickUncheckedCreateNestedManyWithoutInfluencerInput
+    campaigns?: CampaignParticipantUncheckedCreateNestedManyWithoutInfluencerInput
+  }
+
+  export type InfluencerCreateOrConnectWithoutCustomersInput = {
+    where: InfluencerWhereUniqueInput
+    create: XOR<InfluencerCreateWithoutCustomersInput, InfluencerUncheckedCreateWithoutCustomersInput>
+  }
+
+  export type SaleCreateWithoutCustomerInput = {
+    id?: string
+    umrePackage?: string | null
+    saleAmount: number
+    commissionRate?: number
+    commissionAmount: number
+    commissionStatus?: string
+    saleDate?: Date | string
+    completionDate?: Date | string | null
+    refundDeadline?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    influencer?: InfluencerCreateNestedOneWithoutSalesInput
+    payments?: PaymentSaleCreateNestedManyWithoutSaleInput
+  }
+
+  export type SaleUncheckedCreateWithoutCustomerInput = {
+    id?: string
+    influencerId?: string | null
+    umrePackage?: string | null
+    saleAmount: number
+    commissionRate?: number
+    commissionAmount: number
+    commissionStatus?: string
+    saleDate?: Date | string
+    completionDate?: Date | string | null
+    refundDeadline?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    payments?: PaymentSaleUncheckedCreateNestedManyWithoutSaleInput
+  }
+
+  export type SaleCreateOrConnectWithoutCustomerInput = {
+    where: SaleWhereUniqueInput
+    create: XOR<SaleCreateWithoutCustomerInput, SaleUncheckedCreateWithoutCustomerInput>
+  }
+
+  export type SaleCreateManyCustomerInputEnvelope = {
+    data: SaleCreateManyCustomerInput | SaleCreateManyCustomerInput[]
+  }
+
+  export type InfluencerUpsertWithoutCustomersInput = {
+    update: XOR<InfluencerUpdateWithoutCustomersInput, InfluencerUncheckedUpdateWithoutCustomersInput>
+    create: XOR<InfluencerCreateWithoutCustomersInput, InfluencerUncheckedCreateWithoutCustomersInput>
+    where?: InfluencerWhereInput
+  }
+
+  export type InfluencerUpdateToOneWithWhereWithoutCustomersInput = {
+    where?: InfluencerWhereInput
+    data: XOR<InfluencerUpdateWithoutCustomersInput, InfluencerUncheckedUpdateWithoutCustomersInput>
+  }
+
+  export type InfluencerUpdateWithoutCustomersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    tcNo?: NullableStringFieldUpdateOperationsInput | string | null
+    birthDate?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramFollowers?: NullableIntFieldUpdateOperationsInput | number | null
+    tiktokHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    youtubeHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    tier?: StringFieldUpdateOperationsInput | string
+    uniqueCode?: StringFieldUpdateOperationsInput | string
+    uniqueUrl?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    rejectReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bankIban?: NullableStringFieldUpdateOperationsInput | string | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountName?: NullableStringFieldUpdateOperationsInput | string | null
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalEarnings?: FloatFieldUpdateOperationsInput | number
+    pendingEarnings?: FloatFieldUpdateOperationsInput | number
+    totalClicks?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shares?: ShareUpdateManyWithoutInfluencerNestedInput
+    sales?: SaleUpdateManyWithoutInfluencerNestedInput
+    payments?: PaymentUpdateManyWithoutInfluencerNestedInput
+    linkClicks?: LinkClickUpdateManyWithoutInfluencerNestedInput
+    campaigns?: CampaignParticipantUpdateManyWithoutInfluencerNestedInput
+  }
+
+  export type InfluencerUncheckedUpdateWithoutCustomersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    tcNo?: NullableStringFieldUpdateOperationsInput | string | null
+    birthDate?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramFollowers?: NullableIntFieldUpdateOperationsInput | number | null
+    tiktokHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    youtubeHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    tier?: StringFieldUpdateOperationsInput | string
+    uniqueCode?: StringFieldUpdateOperationsInput | string
+    uniqueUrl?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    rejectReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bankIban?: NullableStringFieldUpdateOperationsInput | string | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountName?: NullableStringFieldUpdateOperationsInput | string | null
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalEarnings?: FloatFieldUpdateOperationsInput | number
+    pendingEarnings?: FloatFieldUpdateOperationsInput | number
+    totalClicks?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shares?: ShareUncheckedUpdateManyWithoutInfluencerNestedInput
+    sales?: SaleUncheckedUpdateManyWithoutInfluencerNestedInput
+    payments?: PaymentUncheckedUpdateManyWithoutInfluencerNestedInput
+    linkClicks?: LinkClickUncheckedUpdateManyWithoutInfluencerNestedInput
+    campaigns?: CampaignParticipantUncheckedUpdateManyWithoutInfluencerNestedInput
+  }
+
+  export type SaleUpsertWithWhereUniqueWithoutCustomerInput = {
+    where: SaleWhereUniqueInput
+    update: XOR<SaleUpdateWithoutCustomerInput, SaleUncheckedUpdateWithoutCustomerInput>
+    create: XOR<SaleCreateWithoutCustomerInput, SaleUncheckedCreateWithoutCustomerInput>
+  }
+
+  export type SaleUpdateWithWhereUniqueWithoutCustomerInput = {
+    where: SaleWhereUniqueInput
+    data: XOR<SaleUpdateWithoutCustomerInput, SaleUncheckedUpdateWithoutCustomerInput>
+  }
+
+  export type SaleUpdateManyWithWhereWithoutCustomerInput = {
+    where: SaleScalarWhereInput
+    data: XOR<SaleUpdateManyMutationInput, SaleUncheckedUpdateManyWithoutCustomerInput>
+  }
+
+  export type CustomerCreateWithoutSalesInput = {
+    id?: string
+    fullName: string
+    phone: string
+    email?: string | null
+    tcNo?: string | null
+    source?: string
+    referrerUrl?: string | null
+    couponUsed?: string | null
+    firstSeenAt?: Date | string
+    status?: string
+    assignedOperatorId?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    influencer?: InfluencerCreateNestedOneWithoutCustomersInput
+  }
+
+  export type CustomerUncheckedCreateWithoutSalesInput = {
+    id?: string
+    fullName: string
+    phone: string
+    email?: string | null
+    tcNo?: string | null
+    source?: string
+    influencerId?: string | null
+    referrerUrl?: string | null
+    couponUsed?: string | null
+    firstSeenAt?: Date | string
+    status?: string
+    assignedOperatorId?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CustomerCreateOrConnectWithoutSalesInput = {
+    where: CustomerWhereUniqueInput
+    create: XOR<CustomerCreateWithoutSalesInput, CustomerUncheckedCreateWithoutSalesInput>
+  }
+
+  export type InfluencerCreateWithoutSalesInput = {
+    id?: string
+    fullName: string
+    email: string
+    password: string
+    phone: string
+    tcNo?: string | null
+    birthDate?: string | null
+    avatarUrl?: string | null
+    instagramHandle?: string | null
+    instagramFollowers?: number | null
+    tiktokHandle?: string | null
+    youtubeHandle?: string | null
+    tier?: string
+    uniqueCode: string
+    uniqueUrl: string
+    status?: string
+    rejectReason?: string | null
+    bankIban?: string | null
+    bankName?: string | null
+    bankAccountName?: string | null
+    totalSales?: number
+    totalEarnings?: number
+    pendingEarnings?: number
+    totalClicks?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    shares?: ShareCreateNestedManyWithoutInfluencerInput
+    customers?: CustomerCreateNestedManyWithoutInfluencerInput
+    payments?: PaymentCreateNestedManyWithoutInfluencerInput
+    linkClicks?: LinkClickCreateNestedManyWithoutInfluencerInput
+    campaigns?: CampaignParticipantCreateNestedManyWithoutInfluencerInput
+  }
+
+  export type InfluencerUncheckedCreateWithoutSalesInput = {
+    id?: string
+    fullName: string
+    email: string
+    password: string
+    phone: string
+    tcNo?: string | null
+    birthDate?: string | null
+    avatarUrl?: string | null
+    instagramHandle?: string | null
+    instagramFollowers?: number | null
+    tiktokHandle?: string | null
+    youtubeHandle?: string | null
+    tier?: string
+    uniqueCode: string
+    uniqueUrl: string
+    status?: string
+    rejectReason?: string | null
+    bankIban?: string | null
+    bankName?: string | null
+    bankAccountName?: string | null
+    totalSales?: number
+    totalEarnings?: number
+    pendingEarnings?: number
+    totalClicks?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    shares?: ShareUncheckedCreateNestedManyWithoutInfluencerInput
+    customers?: CustomerUncheckedCreateNestedManyWithoutInfluencerInput
+    payments?: PaymentUncheckedCreateNestedManyWithoutInfluencerInput
+    linkClicks?: LinkClickUncheckedCreateNestedManyWithoutInfluencerInput
+    campaigns?: CampaignParticipantUncheckedCreateNestedManyWithoutInfluencerInput
+  }
+
+  export type InfluencerCreateOrConnectWithoutSalesInput = {
+    where: InfluencerWhereUniqueInput
+    create: XOR<InfluencerCreateWithoutSalesInput, InfluencerUncheckedCreateWithoutSalesInput>
+  }
+
+  export type PaymentSaleCreateWithoutSaleInput = {
+    payment: PaymentCreateNestedOneWithoutSalesInput
+  }
+
+  export type PaymentSaleUncheckedCreateWithoutSaleInput = {
+    paymentId: string
+  }
+
+  export type PaymentSaleCreateOrConnectWithoutSaleInput = {
+    where: PaymentSaleWhereUniqueInput
+    create: XOR<PaymentSaleCreateWithoutSaleInput, PaymentSaleUncheckedCreateWithoutSaleInput>
+  }
+
+  export type PaymentSaleCreateManySaleInputEnvelope = {
+    data: PaymentSaleCreateManySaleInput | PaymentSaleCreateManySaleInput[]
+  }
+
+  export type CustomerUpsertWithoutSalesInput = {
+    update: XOR<CustomerUpdateWithoutSalesInput, CustomerUncheckedUpdateWithoutSalesInput>
+    create: XOR<CustomerCreateWithoutSalesInput, CustomerUncheckedCreateWithoutSalesInput>
+    where?: CustomerWhereInput
+  }
+
+  export type CustomerUpdateToOneWithWhereWithoutSalesInput = {
+    where?: CustomerWhereInput
+    data: XOR<CustomerUpdateWithoutSalesInput, CustomerUncheckedUpdateWithoutSalesInput>
+  }
+
+  export type CustomerUpdateWithoutSalesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    tcNo?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: StringFieldUpdateOperationsInput | string
+    referrerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    couponUsed?: NullableStringFieldUpdateOperationsInput | string | null
+    firstSeenAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
+    assignedOperatorId?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    influencer?: InfluencerUpdateOneWithoutCustomersNestedInput
+  }
+
+  export type CustomerUncheckedUpdateWithoutSalesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    tcNo?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: StringFieldUpdateOperationsInput | string
+    influencerId?: NullableStringFieldUpdateOperationsInput | string | null
+    referrerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    couponUsed?: NullableStringFieldUpdateOperationsInput | string | null
+    firstSeenAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
+    assignedOperatorId?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InfluencerUpsertWithoutSalesInput = {
+    update: XOR<InfluencerUpdateWithoutSalesInput, InfluencerUncheckedUpdateWithoutSalesInput>
+    create: XOR<InfluencerCreateWithoutSalesInput, InfluencerUncheckedCreateWithoutSalesInput>
+    where?: InfluencerWhereInput
+  }
+
+  export type InfluencerUpdateToOneWithWhereWithoutSalesInput = {
+    where?: InfluencerWhereInput
+    data: XOR<InfluencerUpdateWithoutSalesInput, InfluencerUncheckedUpdateWithoutSalesInput>
+  }
+
+  export type InfluencerUpdateWithoutSalesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    tcNo?: NullableStringFieldUpdateOperationsInput | string | null
+    birthDate?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramFollowers?: NullableIntFieldUpdateOperationsInput | number | null
+    tiktokHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    youtubeHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    tier?: StringFieldUpdateOperationsInput | string
+    uniqueCode?: StringFieldUpdateOperationsInput | string
+    uniqueUrl?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    rejectReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bankIban?: NullableStringFieldUpdateOperationsInput | string | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountName?: NullableStringFieldUpdateOperationsInput | string | null
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalEarnings?: FloatFieldUpdateOperationsInput | number
+    pendingEarnings?: FloatFieldUpdateOperationsInput | number
+    totalClicks?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shares?: ShareUpdateManyWithoutInfluencerNestedInput
+    customers?: CustomerUpdateManyWithoutInfluencerNestedInput
+    payments?: PaymentUpdateManyWithoutInfluencerNestedInput
+    linkClicks?: LinkClickUpdateManyWithoutInfluencerNestedInput
+    campaigns?: CampaignParticipantUpdateManyWithoutInfluencerNestedInput
+  }
+
+  export type InfluencerUncheckedUpdateWithoutSalesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    tcNo?: NullableStringFieldUpdateOperationsInput | string | null
+    birthDate?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramFollowers?: NullableIntFieldUpdateOperationsInput | number | null
+    tiktokHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    youtubeHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    tier?: StringFieldUpdateOperationsInput | string
+    uniqueCode?: StringFieldUpdateOperationsInput | string
+    uniqueUrl?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    rejectReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bankIban?: NullableStringFieldUpdateOperationsInput | string | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountName?: NullableStringFieldUpdateOperationsInput | string | null
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalEarnings?: FloatFieldUpdateOperationsInput | number
+    pendingEarnings?: FloatFieldUpdateOperationsInput | number
+    totalClicks?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shares?: ShareUncheckedUpdateManyWithoutInfluencerNestedInput
+    customers?: CustomerUncheckedUpdateManyWithoutInfluencerNestedInput
+    payments?: PaymentUncheckedUpdateManyWithoutInfluencerNestedInput
+    linkClicks?: LinkClickUncheckedUpdateManyWithoutInfluencerNestedInput
+    campaigns?: CampaignParticipantUncheckedUpdateManyWithoutInfluencerNestedInput
+  }
+
+  export type PaymentSaleUpsertWithWhereUniqueWithoutSaleInput = {
+    where: PaymentSaleWhereUniqueInput
+    update: XOR<PaymentSaleUpdateWithoutSaleInput, PaymentSaleUncheckedUpdateWithoutSaleInput>
+    create: XOR<PaymentSaleCreateWithoutSaleInput, PaymentSaleUncheckedCreateWithoutSaleInput>
+  }
+
+  export type PaymentSaleUpdateWithWhereUniqueWithoutSaleInput = {
+    where: PaymentSaleWhereUniqueInput
+    data: XOR<PaymentSaleUpdateWithoutSaleInput, PaymentSaleUncheckedUpdateWithoutSaleInput>
+  }
+
+  export type PaymentSaleUpdateManyWithWhereWithoutSaleInput = {
+    where: PaymentSaleScalarWhereInput
+    data: XOR<PaymentSaleUpdateManyMutationInput, PaymentSaleUncheckedUpdateManyWithoutSaleInput>
+  }
+
+  export type PaymentSaleScalarWhereInput = {
+    AND?: PaymentSaleScalarWhereInput | PaymentSaleScalarWhereInput[]
+    OR?: PaymentSaleScalarWhereInput[]
+    NOT?: PaymentSaleScalarWhereInput | PaymentSaleScalarWhereInput[]
+    paymentId?: StringFilter<"PaymentSale"> | string
+    saleId?: StringFilter<"PaymentSale"> | string
+  }
+
+  export type InfluencerCreateWithoutPaymentsInput = {
+    id?: string
+    fullName: string
+    email: string
+    password: string
+    phone: string
+    tcNo?: string | null
+    birthDate?: string | null
+    avatarUrl?: string | null
+    instagramHandle?: string | null
+    instagramFollowers?: number | null
+    tiktokHandle?: string | null
+    youtubeHandle?: string | null
+    tier?: string
+    uniqueCode: string
+    uniqueUrl: string
+    status?: string
+    rejectReason?: string | null
+    bankIban?: string | null
+    bankName?: string | null
+    bankAccountName?: string | null
+    totalSales?: number
+    totalEarnings?: number
+    pendingEarnings?: number
+    totalClicks?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    shares?: ShareCreateNestedManyWithoutInfluencerInput
+    customers?: CustomerCreateNestedManyWithoutInfluencerInput
+    sales?: SaleCreateNestedManyWithoutInfluencerInput
+    linkClicks?: LinkClickCreateNestedManyWithoutInfluencerInput
+    campaigns?: CampaignParticipantCreateNestedManyWithoutInfluencerInput
+  }
+
+  export type InfluencerUncheckedCreateWithoutPaymentsInput = {
+    id?: string
+    fullName: string
+    email: string
+    password: string
+    phone: string
+    tcNo?: string | null
+    birthDate?: string | null
+    avatarUrl?: string | null
+    instagramHandle?: string | null
+    instagramFollowers?: number | null
+    tiktokHandle?: string | null
+    youtubeHandle?: string | null
+    tier?: string
+    uniqueCode: string
+    uniqueUrl: string
+    status?: string
+    rejectReason?: string | null
+    bankIban?: string | null
+    bankName?: string | null
+    bankAccountName?: string | null
+    totalSales?: number
+    totalEarnings?: number
+    pendingEarnings?: number
+    totalClicks?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    shares?: ShareUncheckedCreateNestedManyWithoutInfluencerInput
+    customers?: CustomerUncheckedCreateNestedManyWithoutInfluencerInput
+    sales?: SaleUncheckedCreateNestedManyWithoutInfluencerInput
+    linkClicks?: LinkClickUncheckedCreateNestedManyWithoutInfluencerInput
+    campaigns?: CampaignParticipantUncheckedCreateNestedManyWithoutInfluencerInput
+  }
+
+  export type InfluencerCreateOrConnectWithoutPaymentsInput = {
+    where: InfluencerWhereUniqueInput
+    create: XOR<InfluencerCreateWithoutPaymentsInput, InfluencerUncheckedCreateWithoutPaymentsInput>
+  }
+
+  export type PaymentSaleCreateWithoutPaymentInput = {
+    sale: SaleCreateNestedOneWithoutPaymentsInput
+  }
+
+  export type PaymentSaleUncheckedCreateWithoutPaymentInput = {
+    saleId: string
+  }
+
+  export type PaymentSaleCreateOrConnectWithoutPaymentInput = {
+    where: PaymentSaleWhereUniqueInput
+    create: XOR<PaymentSaleCreateWithoutPaymentInput, PaymentSaleUncheckedCreateWithoutPaymentInput>
+  }
+
+  export type PaymentSaleCreateManyPaymentInputEnvelope = {
+    data: PaymentSaleCreateManyPaymentInput | PaymentSaleCreateManyPaymentInput[]
+  }
+
+  export type InfluencerUpsertWithoutPaymentsInput = {
+    update: XOR<InfluencerUpdateWithoutPaymentsInput, InfluencerUncheckedUpdateWithoutPaymentsInput>
+    create: XOR<InfluencerCreateWithoutPaymentsInput, InfluencerUncheckedCreateWithoutPaymentsInput>
+    where?: InfluencerWhereInput
+  }
+
+  export type InfluencerUpdateToOneWithWhereWithoutPaymentsInput = {
+    where?: InfluencerWhereInput
+    data: XOR<InfluencerUpdateWithoutPaymentsInput, InfluencerUncheckedUpdateWithoutPaymentsInput>
+  }
+
+  export type InfluencerUpdateWithoutPaymentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    tcNo?: NullableStringFieldUpdateOperationsInput | string | null
+    birthDate?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramFollowers?: NullableIntFieldUpdateOperationsInput | number | null
+    tiktokHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    youtubeHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    tier?: StringFieldUpdateOperationsInput | string
+    uniqueCode?: StringFieldUpdateOperationsInput | string
+    uniqueUrl?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    rejectReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bankIban?: NullableStringFieldUpdateOperationsInput | string | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountName?: NullableStringFieldUpdateOperationsInput | string | null
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalEarnings?: FloatFieldUpdateOperationsInput | number
+    pendingEarnings?: FloatFieldUpdateOperationsInput | number
+    totalClicks?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shares?: ShareUpdateManyWithoutInfluencerNestedInput
+    customers?: CustomerUpdateManyWithoutInfluencerNestedInput
+    sales?: SaleUpdateManyWithoutInfluencerNestedInput
+    linkClicks?: LinkClickUpdateManyWithoutInfluencerNestedInput
+    campaigns?: CampaignParticipantUpdateManyWithoutInfluencerNestedInput
+  }
+
+  export type InfluencerUncheckedUpdateWithoutPaymentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    tcNo?: NullableStringFieldUpdateOperationsInput | string | null
+    birthDate?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramFollowers?: NullableIntFieldUpdateOperationsInput | number | null
+    tiktokHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    youtubeHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    tier?: StringFieldUpdateOperationsInput | string
+    uniqueCode?: StringFieldUpdateOperationsInput | string
+    uniqueUrl?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    rejectReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bankIban?: NullableStringFieldUpdateOperationsInput | string | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountName?: NullableStringFieldUpdateOperationsInput | string | null
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalEarnings?: FloatFieldUpdateOperationsInput | number
+    pendingEarnings?: FloatFieldUpdateOperationsInput | number
+    totalClicks?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shares?: ShareUncheckedUpdateManyWithoutInfluencerNestedInput
+    customers?: CustomerUncheckedUpdateManyWithoutInfluencerNestedInput
+    sales?: SaleUncheckedUpdateManyWithoutInfluencerNestedInput
+    linkClicks?: LinkClickUncheckedUpdateManyWithoutInfluencerNestedInput
+    campaigns?: CampaignParticipantUncheckedUpdateManyWithoutInfluencerNestedInput
+  }
+
+  export type PaymentSaleUpsertWithWhereUniqueWithoutPaymentInput = {
+    where: PaymentSaleWhereUniqueInput
+    update: XOR<PaymentSaleUpdateWithoutPaymentInput, PaymentSaleUncheckedUpdateWithoutPaymentInput>
+    create: XOR<PaymentSaleCreateWithoutPaymentInput, PaymentSaleUncheckedCreateWithoutPaymentInput>
+  }
+
+  export type PaymentSaleUpdateWithWhereUniqueWithoutPaymentInput = {
+    where: PaymentSaleWhereUniqueInput
+    data: XOR<PaymentSaleUpdateWithoutPaymentInput, PaymentSaleUncheckedUpdateWithoutPaymentInput>
+  }
+
+  export type PaymentSaleUpdateManyWithWhereWithoutPaymentInput = {
+    where: PaymentSaleScalarWhereInput
+    data: XOR<PaymentSaleUpdateManyMutationInput, PaymentSaleUncheckedUpdateManyWithoutPaymentInput>
+  }
+
+  export type PaymentCreateWithoutSalesInput = {
+    id?: string
+    periodMonth: string
+    totalAmount: number
+    taxDeduction?: number
+    netAmount: number
+    status?: string
+    approvedBy?: string | null
+    approvedAt?: Date | string | null
+    paidAt?: Date | string | null
+    bankReference?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    influencer: InfluencerCreateNestedOneWithoutPaymentsInput
+  }
+
+  export type PaymentUncheckedCreateWithoutSalesInput = {
+    id?: string
+    influencerId: string
+    periodMonth: string
+    totalAmount: number
+    taxDeduction?: number
+    netAmount: number
+    status?: string
+    approvedBy?: string | null
+    approvedAt?: Date | string | null
+    paidAt?: Date | string | null
+    bankReference?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PaymentCreateOrConnectWithoutSalesInput = {
+    where: PaymentWhereUniqueInput
+    create: XOR<PaymentCreateWithoutSalesInput, PaymentUncheckedCreateWithoutSalesInput>
+  }
+
+  export type SaleCreateWithoutPaymentsInput = {
+    id?: string
+    umrePackage?: string | null
+    saleAmount: number
+    commissionRate?: number
+    commissionAmount: number
+    commissionStatus?: string
+    saleDate?: Date | string
+    completionDate?: Date | string | null
+    refundDeadline?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    customer: CustomerCreateNestedOneWithoutSalesInput
+    influencer?: InfluencerCreateNestedOneWithoutSalesInput
+  }
+
+  export type SaleUncheckedCreateWithoutPaymentsInput = {
+    id?: string
+    customerId: string
+    influencerId?: string | null
+    umrePackage?: string | null
+    saleAmount: number
+    commissionRate?: number
+    commissionAmount: number
+    commissionStatus?: string
+    saleDate?: Date | string
+    completionDate?: Date | string | null
+    refundDeadline?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SaleCreateOrConnectWithoutPaymentsInput = {
+    where: SaleWhereUniqueInput
+    create: XOR<SaleCreateWithoutPaymentsInput, SaleUncheckedCreateWithoutPaymentsInput>
+  }
+
+  export type PaymentUpsertWithoutSalesInput = {
+    update: XOR<PaymentUpdateWithoutSalesInput, PaymentUncheckedUpdateWithoutSalesInput>
+    create: XOR<PaymentCreateWithoutSalesInput, PaymentUncheckedCreateWithoutSalesInput>
+    where?: PaymentWhereInput
+  }
+
+  export type PaymentUpdateToOneWithWhereWithoutSalesInput = {
+    where?: PaymentWhereInput
+    data: XOR<PaymentUpdateWithoutSalesInput, PaymentUncheckedUpdateWithoutSalesInput>
+  }
+
+  export type PaymentUpdateWithoutSalesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    periodMonth?: StringFieldUpdateOperationsInput | string
+    totalAmount?: FloatFieldUpdateOperationsInput | number
+    taxDeduction?: FloatFieldUpdateOperationsInput | number
+    netAmount?: FloatFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bankReference?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    influencer?: InfluencerUpdateOneRequiredWithoutPaymentsNestedInput
+  }
+
+  export type PaymentUncheckedUpdateWithoutSalesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    influencerId?: StringFieldUpdateOperationsInput | string
+    periodMonth?: StringFieldUpdateOperationsInput | string
+    totalAmount?: FloatFieldUpdateOperationsInput | number
+    taxDeduction?: FloatFieldUpdateOperationsInput | number
+    netAmount?: FloatFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bankReference?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SaleUpsertWithoutPaymentsInput = {
+    update: XOR<SaleUpdateWithoutPaymentsInput, SaleUncheckedUpdateWithoutPaymentsInput>
+    create: XOR<SaleCreateWithoutPaymentsInput, SaleUncheckedCreateWithoutPaymentsInput>
+    where?: SaleWhereInput
+  }
+
+  export type SaleUpdateToOneWithWhereWithoutPaymentsInput = {
+    where?: SaleWhereInput
+    data: XOR<SaleUpdateWithoutPaymentsInput, SaleUncheckedUpdateWithoutPaymentsInput>
+  }
+
+  export type SaleUpdateWithoutPaymentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    umrePackage?: NullableStringFieldUpdateOperationsInput | string | null
+    saleAmount?: FloatFieldUpdateOperationsInput | number
+    commissionRate?: FloatFieldUpdateOperationsInput | number
+    commissionAmount?: FloatFieldUpdateOperationsInput | number
+    commissionStatus?: StringFieldUpdateOperationsInput | string
+    saleDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    completionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refundDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    customer?: CustomerUpdateOneRequiredWithoutSalesNestedInput
+    influencer?: InfluencerUpdateOneWithoutSalesNestedInput
+  }
+
+  export type SaleUncheckedUpdateWithoutPaymentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    customerId?: StringFieldUpdateOperationsInput | string
+    influencerId?: NullableStringFieldUpdateOperationsInput | string | null
+    umrePackage?: NullableStringFieldUpdateOperationsInput | string | null
+    saleAmount?: FloatFieldUpdateOperationsInput | number
+    commissionRate?: FloatFieldUpdateOperationsInput | number
+    commissionAmount?: FloatFieldUpdateOperationsInput | number
+    commissionStatus?: StringFieldUpdateOperationsInput | string
+    saleDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    completionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refundDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InfluencerCreateWithoutLinkClicksInput = {
+    id?: string
+    fullName: string
+    email: string
+    password: string
+    phone: string
+    tcNo?: string | null
+    birthDate?: string | null
+    avatarUrl?: string | null
+    instagramHandle?: string | null
+    instagramFollowers?: number | null
+    tiktokHandle?: string | null
+    youtubeHandle?: string | null
+    tier?: string
+    uniqueCode: string
+    uniqueUrl: string
+    status?: string
+    rejectReason?: string | null
+    bankIban?: string | null
+    bankName?: string | null
+    bankAccountName?: string | null
+    totalSales?: number
+    totalEarnings?: number
+    pendingEarnings?: number
+    totalClicks?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    shares?: ShareCreateNestedManyWithoutInfluencerInput
+    customers?: CustomerCreateNestedManyWithoutInfluencerInput
+    sales?: SaleCreateNestedManyWithoutInfluencerInput
+    payments?: PaymentCreateNestedManyWithoutInfluencerInput
+    campaigns?: CampaignParticipantCreateNestedManyWithoutInfluencerInput
+  }
+
+  export type InfluencerUncheckedCreateWithoutLinkClicksInput = {
+    id?: string
+    fullName: string
+    email: string
+    password: string
+    phone: string
+    tcNo?: string | null
+    birthDate?: string | null
+    avatarUrl?: string | null
+    instagramHandle?: string | null
+    instagramFollowers?: number | null
+    tiktokHandle?: string | null
+    youtubeHandle?: string | null
+    tier?: string
+    uniqueCode: string
+    uniqueUrl: string
+    status?: string
+    rejectReason?: string | null
+    bankIban?: string | null
+    bankName?: string | null
+    bankAccountName?: string | null
+    totalSales?: number
+    totalEarnings?: number
+    pendingEarnings?: number
+    totalClicks?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    shares?: ShareUncheckedCreateNestedManyWithoutInfluencerInput
+    customers?: CustomerUncheckedCreateNestedManyWithoutInfluencerInput
+    sales?: SaleUncheckedCreateNestedManyWithoutInfluencerInput
+    payments?: PaymentUncheckedCreateNestedManyWithoutInfluencerInput
+    campaigns?: CampaignParticipantUncheckedCreateNestedManyWithoutInfluencerInput
+  }
+
+  export type InfluencerCreateOrConnectWithoutLinkClicksInput = {
+    where: InfluencerWhereUniqueInput
+    create: XOR<InfluencerCreateWithoutLinkClicksInput, InfluencerUncheckedCreateWithoutLinkClicksInput>
+  }
+
+  export type ShareCreateWithoutLinkClicksInput = {
+    id?: string
+    platform: string
+    shareUrl?: string | null
+    screenshotUrl?: string | null
+    shareDate: string
+    description?: string | null
+    status?: string
+    rejectReason?: string | null
+    viewCount?: number
+    clickCount?: number
+    saleCount?: number
+    approvedAt?: Date | string | null
+    approvedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    influencer: InfluencerCreateNestedOneWithoutSharesInput
+  }
+
+  export type ShareUncheckedCreateWithoutLinkClicksInput = {
+    id?: string
+    influencerId: string
+    platform: string
+    shareUrl?: string | null
+    screenshotUrl?: string | null
+    shareDate: string
+    description?: string | null
+    status?: string
+    rejectReason?: string | null
+    viewCount?: number
+    clickCount?: number
+    saleCount?: number
+    approvedAt?: Date | string | null
+    approvedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ShareCreateOrConnectWithoutLinkClicksInput = {
+    where: ShareWhereUniqueInput
+    create: XOR<ShareCreateWithoutLinkClicksInput, ShareUncheckedCreateWithoutLinkClicksInput>
+  }
+
+  export type InfluencerUpsertWithoutLinkClicksInput = {
+    update: XOR<InfluencerUpdateWithoutLinkClicksInput, InfluencerUncheckedUpdateWithoutLinkClicksInput>
+    create: XOR<InfluencerCreateWithoutLinkClicksInput, InfluencerUncheckedCreateWithoutLinkClicksInput>
+    where?: InfluencerWhereInput
+  }
+
+  export type InfluencerUpdateToOneWithWhereWithoutLinkClicksInput = {
+    where?: InfluencerWhereInput
+    data: XOR<InfluencerUpdateWithoutLinkClicksInput, InfluencerUncheckedUpdateWithoutLinkClicksInput>
+  }
+
+  export type InfluencerUpdateWithoutLinkClicksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    tcNo?: NullableStringFieldUpdateOperationsInput | string | null
+    birthDate?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramFollowers?: NullableIntFieldUpdateOperationsInput | number | null
+    tiktokHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    youtubeHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    tier?: StringFieldUpdateOperationsInput | string
+    uniqueCode?: StringFieldUpdateOperationsInput | string
+    uniqueUrl?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    rejectReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bankIban?: NullableStringFieldUpdateOperationsInput | string | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountName?: NullableStringFieldUpdateOperationsInput | string | null
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalEarnings?: FloatFieldUpdateOperationsInput | number
+    pendingEarnings?: FloatFieldUpdateOperationsInput | number
+    totalClicks?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shares?: ShareUpdateManyWithoutInfluencerNestedInput
+    customers?: CustomerUpdateManyWithoutInfluencerNestedInput
+    sales?: SaleUpdateManyWithoutInfluencerNestedInput
+    payments?: PaymentUpdateManyWithoutInfluencerNestedInput
+    campaigns?: CampaignParticipantUpdateManyWithoutInfluencerNestedInput
+  }
+
+  export type InfluencerUncheckedUpdateWithoutLinkClicksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    tcNo?: NullableStringFieldUpdateOperationsInput | string | null
+    birthDate?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramFollowers?: NullableIntFieldUpdateOperationsInput | number | null
+    tiktokHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    youtubeHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    tier?: StringFieldUpdateOperationsInput | string
+    uniqueCode?: StringFieldUpdateOperationsInput | string
+    uniqueUrl?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    rejectReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bankIban?: NullableStringFieldUpdateOperationsInput | string | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountName?: NullableStringFieldUpdateOperationsInput | string | null
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalEarnings?: FloatFieldUpdateOperationsInput | number
+    pendingEarnings?: FloatFieldUpdateOperationsInput | number
+    totalClicks?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shares?: ShareUncheckedUpdateManyWithoutInfluencerNestedInput
+    customers?: CustomerUncheckedUpdateManyWithoutInfluencerNestedInput
+    sales?: SaleUncheckedUpdateManyWithoutInfluencerNestedInput
+    payments?: PaymentUncheckedUpdateManyWithoutInfluencerNestedInput
+    campaigns?: CampaignParticipantUncheckedUpdateManyWithoutInfluencerNestedInput
+  }
+
+  export type ShareUpsertWithoutLinkClicksInput = {
+    update: XOR<ShareUpdateWithoutLinkClicksInput, ShareUncheckedUpdateWithoutLinkClicksInput>
+    create: XOR<ShareCreateWithoutLinkClicksInput, ShareUncheckedCreateWithoutLinkClicksInput>
+    where?: ShareWhereInput
+  }
+
+  export type ShareUpdateToOneWithWhereWithoutLinkClicksInput = {
+    where?: ShareWhereInput
+    data: XOR<ShareUpdateWithoutLinkClicksInput, ShareUncheckedUpdateWithoutLinkClicksInput>
+  }
+
+  export type ShareUpdateWithoutLinkClicksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    platform?: StringFieldUpdateOperationsInput | string
+    shareUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    shareDate?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    rejectReason?: NullableStringFieldUpdateOperationsInput | string | null
+    viewCount?: IntFieldUpdateOperationsInput | number
+    clickCount?: IntFieldUpdateOperationsInput | number
+    saleCount?: IntFieldUpdateOperationsInput | number
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    influencer?: InfluencerUpdateOneRequiredWithoutSharesNestedInput
+  }
+
+  export type ShareUncheckedUpdateWithoutLinkClicksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    influencerId?: StringFieldUpdateOperationsInput | string
+    platform?: StringFieldUpdateOperationsInput | string
+    shareUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    shareDate?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    rejectReason?: NullableStringFieldUpdateOperationsInput | string | null
+    viewCount?: IntFieldUpdateOperationsInput | number
+    clickCount?: IntFieldUpdateOperationsInput | number
+    saleCount?: IntFieldUpdateOperationsInput | number
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CampaignParticipantCreateWithoutCampaignInput = {
+    id?: string
+    uniqueCode: string
+    joinedAt?: Date | string
+    usageCount?: number
+    influencer: InfluencerCreateNestedOneWithoutCampaignsInput
+    codeUsages?: CampaignCodeUsageCreateNestedManyWithoutParticipantInput
+  }
+
+  export type CampaignParticipantUncheckedCreateWithoutCampaignInput = {
+    id?: string
+    influencerId: string
+    uniqueCode: string
+    joinedAt?: Date | string
+    usageCount?: number
+    codeUsages?: CampaignCodeUsageUncheckedCreateNestedManyWithoutParticipantInput
+  }
+
+  export type CampaignParticipantCreateOrConnectWithoutCampaignInput = {
+    where: CampaignParticipantWhereUniqueInput
+    create: XOR<CampaignParticipantCreateWithoutCampaignInput, CampaignParticipantUncheckedCreateWithoutCampaignInput>
+  }
+
+  export type CampaignParticipantCreateManyCampaignInputEnvelope = {
+    data: CampaignParticipantCreateManyCampaignInput | CampaignParticipantCreateManyCampaignInput[]
+  }
+
+  export type CampaignCodeUsageCreateWithoutCampaignInput = {
+    id?: string
+    customerName?: string | null
+    customerPhone?: string | null
+    note?: string | null
+    usedAt?: Date | string
+    participant: CampaignParticipantCreateNestedOneWithoutCodeUsagesInput
+  }
+
+  export type CampaignCodeUsageUncheckedCreateWithoutCampaignInput = {
+    id?: string
+    participantId: string
+    customerName?: string | null
+    customerPhone?: string | null
+    note?: string | null
+    usedAt?: Date | string
+  }
+
+  export type CampaignCodeUsageCreateOrConnectWithoutCampaignInput = {
+    where: CampaignCodeUsageWhereUniqueInput
+    create: XOR<CampaignCodeUsageCreateWithoutCampaignInput, CampaignCodeUsageUncheckedCreateWithoutCampaignInput>
+  }
+
+  export type CampaignCodeUsageCreateManyCampaignInputEnvelope = {
+    data: CampaignCodeUsageCreateManyCampaignInput | CampaignCodeUsageCreateManyCampaignInput[]
+  }
+
+  export type CampaignParticipantUpsertWithWhereUniqueWithoutCampaignInput = {
+    where: CampaignParticipantWhereUniqueInput
+    update: XOR<CampaignParticipantUpdateWithoutCampaignInput, CampaignParticipantUncheckedUpdateWithoutCampaignInput>
+    create: XOR<CampaignParticipantCreateWithoutCampaignInput, CampaignParticipantUncheckedCreateWithoutCampaignInput>
+  }
+
+  export type CampaignParticipantUpdateWithWhereUniqueWithoutCampaignInput = {
+    where: CampaignParticipantWhereUniqueInput
+    data: XOR<CampaignParticipantUpdateWithoutCampaignInput, CampaignParticipantUncheckedUpdateWithoutCampaignInput>
+  }
+
+  export type CampaignParticipantUpdateManyWithWhereWithoutCampaignInput = {
+    where: CampaignParticipantScalarWhereInput
+    data: XOR<CampaignParticipantUpdateManyMutationInput, CampaignParticipantUncheckedUpdateManyWithoutCampaignInput>
+  }
+
+  export type CampaignCodeUsageUpsertWithWhereUniqueWithoutCampaignInput = {
+    where: CampaignCodeUsageWhereUniqueInput
+    update: XOR<CampaignCodeUsageUpdateWithoutCampaignInput, CampaignCodeUsageUncheckedUpdateWithoutCampaignInput>
+    create: XOR<CampaignCodeUsageCreateWithoutCampaignInput, CampaignCodeUsageUncheckedCreateWithoutCampaignInput>
+  }
+
+  export type CampaignCodeUsageUpdateWithWhereUniqueWithoutCampaignInput = {
+    where: CampaignCodeUsageWhereUniqueInput
+    data: XOR<CampaignCodeUsageUpdateWithoutCampaignInput, CampaignCodeUsageUncheckedUpdateWithoutCampaignInput>
+  }
+
+  export type CampaignCodeUsageUpdateManyWithWhereWithoutCampaignInput = {
+    where: CampaignCodeUsageScalarWhereInput
+    data: XOR<CampaignCodeUsageUpdateManyMutationInput, CampaignCodeUsageUncheckedUpdateManyWithoutCampaignInput>
+  }
+
+  export type CampaignCodeUsageScalarWhereInput = {
+    AND?: CampaignCodeUsageScalarWhereInput | CampaignCodeUsageScalarWhereInput[]
+    OR?: CampaignCodeUsageScalarWhereInput[]
+    NOT?: CampaignCodeUsageScalarWhereInput | CampaignCodeUsageScalarWhereInput[]
+    id?: StringFilter<"CampaignCodeUsage"> | string
+    campaignId?: StringFilter<"CampaignCodeUsage"> | string
+    participantId?: StringFilter<"CampaignCodeUsage"> | string
+    customerName?: StringNullableFilter<"CampaignCodeUsage"> | string | null
+    customerPhone?: StringNullableFilter<"CampaignCodeUsage"> | string | null
+    note?: StringNullableFilter<"CampaignCodeUsage"> | string | null
+    usedAt?: DateTimeFilter<"CampaignCodeUsage"> | Date | string
+  }
+
+  export type CampaignCreateWithoutParticipantsInput = {
+    id?: string
+    title: string
+    slug: string
+    description?: string | null
+    type: string
+    discountType?: string
+    discountValue: number
+    codeTemplate: string
+    status?: string
+    startDate?: Date | string | null
+    endDate?: Date | string | null
+    maxParticipants?: number | null
+    imageUrl?: string | null
+    createdBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    codeUsages?: CampaignCodeUsageCreateNestedManyWithoutCampaignInput
+  }
+
+  export type CampaignUncheckedCreateWithoutParticipantsInput = {
+    id?: string
+    title: string
+    slug: string
+    description?: string | null
+    type: string
+    discountType?: string
+    discountValue: number
+    codeTemplate: string
+    status?: string
+    startDate?: Date | string | null
+    endDate?: Date | string | null
+    maxParticipants?: number | null
+    imageUrl?: string | null
+    createdBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    codeUsages?: CampaignCodeUsageUncheckedCreateNestedManyWithoutCampaignInput
+  }
+
+  export type CampaignCreateOrConnectWithoutParticipantsInput = {
+    where: CampaignWhereUniqueInput
+    create: XOR<CampaignCreateWithoutParticipantsInput, CampaignUncheckedCreateWithoutParticipantsInput>
+  }
+
+  export type InfluencerCreateWithoutCampaignsInput = {
+    id?: string
+    fullName: string
+    email: string
+    password: string
+    phone: string
+    tcNo?: string | null
+    birthDate?: string | null
+    avatarUrl?: string | null
+    instagramHandle?: string | null
+    instagramFollowers?: number | null
+    tiktokHandle?: string | null
+    youtubeHandle?: string | null
+    tier?: string
+    uniqueCode: string
+    uniqueUrl: string
+    status?: string
+    rejectReason?: string | null
+    bankIban?: string | null
+    bankName?: string | null
+    bankAccountName?: string | null
+    totalSales?: number
+    totalEarnings?: number
+    pendingEarnings?: number
+    totalClicks?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    shares?: ShareCreateNestedManyWithoutInfluencerInput
+    customers?: CustomerCreateNestedManyWithoutInfluencerInput
+    sales?: SaleCreateNestedManyWithoutInfluencerInput
+    payments?: PaymentCreateNestedManyWithoutInfluencerInput
+    linkClicks?: LinkClickCreateNestedManyWithoutInfluencerInput
+  }
+
+  export type InfluencerUncheckedCreateWithoutCampaignsInput = {
+    id?: string
+    fullName: string
+    email: string
+    password: string
+    phone: string
+    tcNo?: string | null
+    birthDate?: string | null
+    avatarUrl?: string | null
+    instagramHandle?: string | null
+    instagramFollowers?: number | null
+    tiktokHandle?: string | null
+    youtubeHandle?: string | null
+    tier?: string
+    uniqueCode: string
+    uniqueUrl: string
+    status?: string
+    rejectReason?: string | null
+    bankIban?: string | null
+    bankName?: string | null
+    bankAccountName?: string | null
+    totalSales?: number
+    totalEarnings?: number
+    pendingEarnings?: number
+    totalClicks?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    shares?: ShareUncheckedCreateNestedManyWithoutInfluencerInput
+    customers?: CustomerUncheckedCreateNestedManyWithoutInfluencerInput
+    sales?: SaleUncheckedCreateNestedManyWithoutInfluencerInput
+    payments?: PaymentUncheckedCreateNestedManyWithoutInfluencerInput
+    linkClicks?: LinkClickUncheckedCreateNestedManyWithoutInfluencerInput
+  }
+
+  export type InfluencerCreateOrConnectWithoutCampaignsInput = {
+    where: InfluencerWhereUniqueInput
+    create: XOR<InfluencerCreateWithoutCampaignsInput, InfluencerUncheckedCreateWithoutCampaignsInput>
+  }
+
+  export type CampaignCodeUsageCreateWithoutParticipantInput = {
+    id?: string
+    customerName?: string | null
+    customerPhone?: string | null
+    note?: string | null
+    usedAt?: Date | string
+    campaign: CampaignCreateNestedOneWithoutCodeUsagesInput
+  }
+
+  export type CampaignCodeUsageUncheckedCreateWithoutParticipantInput = {
+    id?: string
+    campaignId: string
+    customerName?: string | null
+    customerPhone?: string | null
+    note?: string | null
+    usedAt?: Date | string
+  }
+
+  export type CampaignCodeUsageCreateOrConnectWithoutParticipantInput = {
+    where: CampaignCodeUsageWhereUniqueInput
+    create: XOR<CampaignCodeUsageCreateWithoutParticipantInput, CampaignCodeUsageUncheckedCreateWithoutParticipantInput>
+  }
+
+  export type CampaignCodeUsageCreateManyParticipantInputEnvelope = {
+    data: CampaignCodeUsageCreateManyParticipantInput | CampaignCodeUsageCreateManyParticipantInput[]
+  }
+
+  export type CampaignUpsertWithoutParticipantsInput = {
+    update: XOR<CampaignUpdateWithoutParticipantsInput, CampaignUncheckedUpdateWithoutParticipantsInput>
+    create: XOR<CampaignCreateWithoutParticipantsInput, CampaignUncheckedCreateWithoutParticipantsInput>
+    where?: CampaignWhereInput
+  }
+
+  export type CampaignUpdateToOneWithWhereWithoutParticipantsInput = {
+    where?: CampaignWhereInput
+    data: XOR<CampaignUpdateWithoutParticipantsInput, CampaignUncheckedUpdateWithoutParticipantsInput>
+  }
+
+  export type CampaignUpdateWithoutParticipantsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    discountType?: StringFieldUpdateOperationsInput | string
+    discountValue?: FloatFieldUpdateOperationsInput | number
+    codeTemplate?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    maxParticipants?: NullableIntFieldUpdateOperationsInput | number | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    codeUsages?: CampaignCodeUsageUpdateManyWithoutCampaignNestedInput
+  }
+
+  export type CampaignUncheckedUpdateWithoutParticipantsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    discountType?: StringFieldUpdateOperationsInput | string
+    discountValue?: FloatFieldUpdateOperationsInput | number
+    codeTemplate?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    maxParticipants?: NullableIntFieldUpdateOperationsInput | number | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    codeUsages?: CampaignCodeUsageUncheckedUpdateManyWithoutCampaignNestedInput
+  }
+
+  export type InfluencerUpsertWithoutCampaignsInput = {
+    update: XOR<InfluencerUpdateWithoutCampaignsInput, InfluencerUncheckedUpdateWithoutCampaignsInput>
+    create: XOR<InfluencerCreateWithoutCampaignsInput, InfluencerUncheckedCreateWithoutCampaignsInput>
+    where?: InfluencerWhereInput
+  }
+
+  export type InfluencerUpdateToOneWithWhereWithoutCampaignsInput = {
+    where?: InfluencerWhereInput
+    data: XOR<InfluencerUpdateWithoutCampaignsInput, InfluencerUncheckedUpdateWithoutCampaignsInput>
+  }
+
+  export type InfluencerUpdateWithoutCampaignsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    tcNo?: NullableStringFieldUpdateOperationsInput | string | null
+    birthDate?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramFollowers?: NullableIntFieldUpdateOperationsInput | number | null
+    tiktokHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    youtubeHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    tier?: StringFieldUpdateOperationsInput | string
+    uniqueCode?: StringFieldUpdateOperationsInput | string
+    uniqueUrl?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    rejectReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bankIban?: NullableStringFieldUpdateOperationsInput | string | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountName?: NullableStringFieldUpdateOperationsInput | string | null
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalEarnings?: FloatFieldUpdateOperationsInput | number
+    pendingEarnings?: FloatFieldUpdateOperationsInput | number
+    totalClicks?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shares?: ShareUpdateManyWithoutInfluencerNestedInput
+    customers?: CustomerUpdateManyWithoutInfluencerNestedInput
+    sales?: SaleUpdateManyWithoutInfluencerNestedInput
+    payments?: PaymentUpdateManyWithoutInfluencerNestedInput
+    linkClicks?: LinkClickUpdateManyWithoutInfluencerNestedInput
+  }
+
+  export type InfluencerUncheckedUpdateWithoutCampaignsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    tcNo?: NullableStringFieldUpdateOperationsInput | string | null
+    birthDate?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramFollowers?: NullableIntFieldUpdateOperationsInput | number | null
+    tiktokHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    youtubeHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    tier?: StringFieldUpdateOperationsInput | string
+    uniqueCode?: StringFieldUpdateOperationsInput | string
+    uniqueUrl?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    rejectReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bankIban?: NullableStringFieldUpdateOperationsInput | string | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountName?: NullableStringFieldUpdateOperationsInput | string | null
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalEarnings?: FloatFieldUpdateOperationsInput | number
+    pendingEarnings?: FloatFieldUpdateOperationsInput | number
+    totalClicks?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shares?: ShareUncheckedUpdateManyWithoutInfluencerNestedInput
+    customers?: CustomerUncheckedUpdateManyWithoutInfluencerNestedInput
+    sales?: SaleUncheckedUpdateManyWithoutInfluencerNestedInput
+    payments?: PaymentUncheckedUpdateManyWithoutInfluencerNestedInput
+    linkClicks?: LinkClickUncheckedUpdateManyWithoutInfluencerNestedInput
+  }
+
+  export type CampaignCodeUsageUpsertWithWhereUniqueWithoutParticipantInput = {
+    where: CampaignCodeUsageWhereUniqueInput
+    update: XOR<CampaignCodeUsageUpdateWithoutParticipantInput, CampaignCodeUsageUncheckedUpdateWithoutParticipantInput>
+    create: XOR<CampaignCodeUsageCreateWithoutParticipantInput, CampaignCodeUsageUncheckedCreateWithoutParticipantInput>
+  }
+
+  export type CampaignCodeUsageUpdateWithWhereUniqueWithoutParticipantInput = {
+    where: CampaignCodeUsageWhereUniqueInput
+    data: XOR<CampaignCodeUsageUpdateWithoutParticipantInput, CampaignCodeUsageUncheckedUpdateWithoutParticipantInput>
+  }
+
+  export type CampaignCodeUsageUpdateManyWithWhereWithoutParticipantInput = {
+    where: CampaignCodeUsageScalarWhereInput
+    data: XOR<CampaignCodeUsageUpdateManyMutationInput, CampaignCodeUsageUncheckedUpdateManyWithoutParticipantInput>
+  }
+
+  export type CampaignCreateWithoutCodeUsagesInput = {
+    id?: string
+    title: string
+    slug: string
+    description?: string | null
+    type: string
+    discountType?: string
+    discountValue: number
+    codeTemplate: string
+    status?: string
+    startDate?: Date | string | null
+    endDate?: Date | string | null
+    maxParticipants?: number | null
+    imageUrl?: string | null
+    createdBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    participants?: CampaignParticipantCreateNestedManyWithoutCampaignInput
+  }
+
+  export type CampaignUncheckedCreateWithoutCodeUsagesInput = {
+    id?: string
+    title: string
+    slug: string
+    description?: string | null
+    type: string
+    discountType?: string
+    discountValue: number
+    codeTemplate: string
+    status?: string
+    startDate?: Date | string | null
+    endDate?: Date | string | null
+    maxParticipants?: number | null
+    imageUrl?: string | null
+    createdBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    participants?: CampaignParticipantUncheckedCreateNestedManyWithoutCampaignInput
+  }
+
+  export type CampaignCreateOrConnectWithoutCodeUsagesInput = {
+    where: CampaignWhereUniqueInput
+    create: XOR<CampaignCreateWithoutCodeUsagesInput, CampaignUncheckedCreateWithoutCodeUsagesInput>
+  }
+
+  export type CampaignParticipantCreateWithoutCodeUsagesInput = {
+    id?: string
+    uniqueCode: string
+    joinedAt?: Date | string
+    usageCount?: number
+    campaign: CampaignCreateNestedOneWithoutParticipantsInput
+    influencer: InfluencerCreateNestedOneWithoutCampaignsInput
+  }
+
+  export type CampaignParticipantUncheckedCreateWithoutCodeUsagesInput = {
+    id?: string
+    campaignId: string
+    influencerId: string
+    uniqueCode: string
+    joinedAt?: Date | string
+    usageCount?: number
+  }
+
+  export type CampaignParticipantCreateOrConnectWithoutCodeUsagesInput = {
+    where: CampaignParticipantWhereUniqueInput
+    create: XOR<CampaignParticipantCreateWithoutCodeUsagesInput, CampaignParticipantUncheckedCreateWithoutCodeUsagesInput>
+  }
+
+  export type CampaignUpsertWithoutCodeUsagesInput = {
+    update: XOR<CampaignUpdateWithoutCodeUsagesInput, CampaignUncheckedUpdateWithoutCodeUsagesInput>
+    create: XOR<CampaignCreateWithoutCodeUsagesInput, CampaignUncheckedCreateWithoutCodeUsagesInput>
+    where?: CampaignWhereInput
+  }
+
+  export type CampaignUpdateToOneWithWhereWithoutCodeUsagesInput = {
+    where?: CampaignWhereInput
+    data: XOR<CampaignUpdateWithoutCodeUsagesInput, CampaignUncheckedUpdateWithoutCodeUsagesInput>
+  }
+
+  export type CampaignUpdateWithoutCodeUsagesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    discountType?: StringFieldUpdateOperationsInput | string
+    discountValue?: FloatFieldUpdateOperationsInput | number
+    codeTemplate?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    maxParticipants?: NullableIntFieldUpdateOperationsInput | number | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    participants?: CampaignParticipantUpdateManyWithoutCampaignNestedInput
+  }
+
+  export type CampaignUncheckedUpdateWithoutCodeUsagesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    slug?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    type?: StringFieldUpdateOperationsInput | string
+    discountType?: StringFieldUpdateOperationsInput | string
+    discountValue?: FloatFieldUpdateOperationsInput | number
+    codeTemplate?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    maxParticipants?: NullableIntFieldUpdateOperationsInput | number | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    participants?: CampaignParticipantUncheckedUpdateManyWithoutCampaignNestedInput
+  }
+
+  export type CampaignParticipantUpsertWithoutCodeUsagesInput = {
+    update: XOR<CampaignParticipantUpdateWithoutCodeUsagesInput, CampaignParticipantUncheckedUpdateWithoutCodeUsagesInput>
+    create: XOR<CampaignParticipantCreateWithoutCodeUsagesInput, CampaignParticipantUncheckedCreateWithoutCodeUsagesInput>
+    where?: CampaignParticipantWhereInput
+  }
+
+  export type CampaignParticipantUpdateToOneWithWhereWithoutCodeUsagesInput = {
+    where?: CampaignParticipantWhereInput
+    data: XOR<CampaignParticipantUpdateWithoutCodeUsagesInput, CampaignParticipantUncheckedUpdateWithoutCodeUsagesInput>
+  }
+
+  export type CampaignParticipantUpdateWithoutCodeUsagesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    uniqueCode?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usageCount?: IntFieldUpdateOperationsInput | number
+    campaign?: CampaignUpdateOneRequiredWithoutParticipantsNestedInput
+    influencer?: InfluencerUpdateOneRequiredWithoutCampaignsNestedInput
+  }
+
+  export type CampaignParticipantUncheckedUpdateWithoutCodeUsagesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    campaignId?: StringFieldUpdateOperationsInput | string
+    influencerId?: StringFieldUpdateOperationsInput | string
+    uniqueCode?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usageCount?: IntFieldUpdateOperationsInput | number
   }
 
   export type PostCreateManyCategoryInput = {
@@ -21160,6 +41808,624 @@ export namespace Prisma {
     contactInfo?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ShareCreateManyInfluencerInput = {
+    id?: string
+    platform: string
+    shareUrl?: string | null
+    screenshotUrl?: string | null
+    shareDate: string
+    description?: string | null
+    status?: string
+    rejectReason?: string | null
+    viewCount?: number
+    clickCount?: number
+    saleCount?: number
+    approvedAt?: Date | string | null
+    approvedBy?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CustomerCreateManyInfluencerInput = {
+    id?: string
+    fullName: string
+    phone: string
+    email?: string | null
+    tcNo?: string | null
+    source?: string
+    referrerUrl?: string | null
+    couponUsed?: string | null
+    firstSeenAt?: Date | string
+    status?: string
+    assignedOperatorId?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SaleCreateManyInfluencerInput = {
+    id?: string
+    customerId: string
+    umrePackage?: string | null
+    saleAmount: number
+    commissionRate?: number
+    commissionAmount: number
+    commissionStatus?: string
+    saleDate?: Date | string
+    completionDate?: Date | string | null
+    refundDeadline?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type PaymentCreateManyInfluencerInput = {
+    id?: string
+    periodMonth: string
+    totalAmount: number
+    taxDeduction?: number
+    netAmount: number
+    status?: string
+    approvedBy?: string | null
+    approvedAt?: Date | string | null
+    paidAt?: Date | string | null
+    bankReference?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type LinkClickCreateManyInfluencerInput = {
+    id?: string
+    shareId?: string | null
+    ipAddress?: string | null
+    userAgent?: string | null
+    referrer?: string | null
+    country?: string | null
+    utmSource?: string | null
+    utmContent?: string | null
+    isBot?: boolean
+    clickedAt?: Date | string
+  }
+
+  export type CampaignParticipantCreateManyInfluencerInput = {
+    id?: string
+    campaignId: string
+    uniqueCode: string
+    joinedAt?: Date | string
+    usageCount?: number
+  }
+
+  export type ShareUpdateWithoutInfluencerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    platform?: StringFieldUpdateOperationsInput | string
+    shareUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    shareDate?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    rejectReason?: NullableStringFieldUpdateOperationsInput | string | null
+    viewCount?: IntFieldUpdateOperationsInput | number
+    clickCount?: IntFieldUpdateOperationsInput | number
+    saleCount?: IntFieldUpdateOperationsInput | number
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    linkClicks?: LinkClickUpdateManyWithoutShareNestedInput
+  }
+
+  export type ShareUncheckedUpdateWithoutInfluencerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    platform?: StringFieldUpdateOperationsInput | string
+    shareUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    shareDate?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    rejectReason?: NullableStringFieldUpdateOperationsInput | string | null
+    viewCount?: IntFieldUpdateOperationsInput | number
+    clickCount?: IntFieldUpdateOperationsInput | number
+    saleCount?: IntFieldUpdateOperationsInput | number
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    linkClicks?: LinkClickUncheckedUpdateManyWithoutShareNestedInput
+  }
+
+  export type ShareUncheckedUpdateManyWithoutInfluencerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    platform?: StringFieldUpdateOperationsInput | string
+    shareUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    screenshotUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    shareDate?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    rejectReason?: NullableStringFieldUpdateOperationsInput | string | null
+    viewCount?: IntFieldUpdateOperationsInput | number
+    clickCount?: IntFieldUpdateOperationsInput | number
+    saleCount?: IntFieldUpdateOperationsInput | number
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CustomerUpdateWithoutInfluencerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    tcNo?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: StringFieldUpdateOperationsInput | string
+    referrerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    couponUsed?: NullableStringFieldUpdateOperationsInput | string | null
+    firstSeenAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
+    assignedOperatorId?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sales?: SaleUpdateManyWithoutCustomerNestedInput
+  }
+
+  export type CustomerUncheckedUpdateWithoutInfluencerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    tcNo?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: StringFieldUpdateOperationsInput | string
+    referrerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    couponUsed?: NullableStringFieldUpdateOperationsInput | string | null
+    firstSeenAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
+    assignedOperatorId?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sales?: SaleUncheckedUpdateManyWithoutCustomerNestedInput
+  }
+
+  export type CustomerUncheckedUpdateManyWithoutInfluencerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    tcNo?: NullableStringFieldUpdateOperationsInput | string | null
+    source?: StringFieldUpdateOperationsInput | string
+    referrerUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    couponUsed?: NullableStringFieldUpdateOperationsInput | string | null
+    firstSeenAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: StringFieldUpdateOperationsInput | string
+    assignedOperatorId?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SaleUpdateWithoutInfluencerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    umrePackage?: NullableStringFieldUpdateOperationsInput | string | null
+    saleAmount?: FloatFieldUpdateOperationsInput | number
+    commissionRate?: FloatFieldUpdateOperationsInput | number
+    commissionAmount?: FloatFieldUpdateOperationsInput | number
+    commissionStatus?: StringFieldUpdateOperationsInput | string
+    saleDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    completionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refundDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    customer?: CustomerUpdateOneRequiredWithoutSalesNestedInput
+    payments?: PaymentSaleUpdateManyWithoutSaleNestedInput
+  }
+
+  export type SaleUncheckedUpdateWithoutInfluencerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    customerId?: StringFieldUpdateOperationsInput | string
+    umrePackage?: NullableStringFieldUpdateOperationsInput | string | null
+    saleAmount?: FloatFieldUpdateOperationsInput | number
+    commissionRate?: FloatFieldUpdateOperationsInput | number
+    commissionAmount?: FloatFieldUpdateOperationsInput | number
+    commissionStatus?: StringFieldUpdateOperationsInput | string
+    saleDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    completionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refundDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    payments?: PaymentSaleUncheckedUpdateManyWithoutSaleNestedInput
+  }
+
+  export type SaleUncheckedUpdateManyWithoutInfluencerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    customerId?: StringFieldUpdateOperationsInput | string
+    umrePackage?: NullableStringFieldUpdateOperationsInput | string | null
+    saleAmount?: FloatFieldUpdateOperationsInput | number
+    commissionRate?: FloatFieldUpdateOperationsInput | number
+    commissionAmount?: FloatFieldUpdateOperationsInput | number
+    commissionStatus?: StringFieldUpdateOperationsInput | string
+    saleDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    completionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refundDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PaymentUpdateWithoutInfluencerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    periodMonth?: StringFieldUpdateOperationsInput | string
+    totalAmount?: FloatFieldUpdateOperationsInput | number
+    taxDeduction?: FloatFieldUpdateOperationsInput | number
+    netAmount?: FloatFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bankReference?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sales?: PaymentSaleUpdateManyWithoutPaymentNestedInput
+  }
+
+  export type PaymentUncheckedUpdateWithoutInfluencerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    periodMonth?: StringFieldUpdateOperationsInput | string
+    totalAmount?: FloatFieldUpdateOperationsInput | number
+    taxDeduction?: FloatFieldUpdateOperationsInput | number
+    netAmount?: FloatFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bankReference?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    sales?: PaymentSaleUncheckedUpdateManyWithoutPaymentNestedInput
+  }
+
+  export type PaymentUncheckedUpdateManyWithoutInfluencerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    periodMonth?: StringFieldUpdateOperationsInput | string
+    totalAmount?: FloatFieldUpdateOperationsInput | number
+    taxDeduction?: FloatFieldUpdateOperationsInput | number
+    netAmount?: FloatFieldUpdateOperationsInput | number
+    status?: StringFieldUpdateOperationsInput | string
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    approvedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    paidAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    bankReference?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LinkClickUpdateWithoutInfluencerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    referrer?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    utmSource?: NullableStringFieldUpdateOperationsInput | string | null
+    utmContent?: NullableStringFieldUpdateOperationsInput | string | null
+    isBot?: BoolFieldUpdateOperationsInput | boolean
+    clickedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    share?: ShareUpdateOneWithoutLinkClicksNestedInput
+  }
+
+  export type LinkClickUncheckedUpdateWithoutInfluencerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    shareId?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    referrer?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    utmSource?: NullableStringFieldUpdateOperationsInput | string | null
+    utmContent?: NullableStringFieldUpdateOperationsInput | string | null
+    isBot?: BoolFieldUpdateOperationsInput | boolean
+    clickedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LinkClickUncheckedUpdateManyWithoutInfluencerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    shareId?: NullableStringFieldUpdateOperationsInput | string | null
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    referrer?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    utmSource?: NullableStringFieldUpdateOperationsInput | string | null
+    utmContent?: NullableStringFieldUpdateOperationsInput | string | null
+    isBot?: BoolFieldUpdateOperationsInput | boolean
+    clickedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CampaignParticipantUpdateWithoutInfluencerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    uniqueCode?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usageCount?: IntFieldUpdateOperationsInput | number
+    campaign?: CampaignUpdateOneRequiredWithoutParticipantsNestedInput
+    codeUsages?: CampaignCodeUsageUpdateManyWithoutParticipantNestedInput
+  }
+
+  export type CampaignParticipantUncheckedUpdateWithoutInfluencerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    campaignId?: StringFieldUpdateOperationsInput | string
+    uniqueCode?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usageCount?: IntFieldUpdateOperationsInput | number
+    codeUsages?: CampaignCodeUsageUncheckedUpdateManyWithoutParticipantNestedInput
+  }
+
+  export type CampaignParticipantUncheckedUpdateManyWithoutInfluencerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    campaignId?: StringFieldUpdateOperationsInput | string
+    uniqueCode?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usageCount?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type LinkClickCreateManyShareInput = {
+    id?: string
+    influencerId: string
+    ipAddress?: string | null
+    userAgent?: string | null
+    referrer?: string | null
+    country?: string | null
+    utmSource?: string | null
+    utmContent?: string | null
+    isBot?: boolean
+    clickedAt?: Date | string
+  }
+
+  export type LinkClickUpdateWithoutShareInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    referrer?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    utmSource?: NullableStringFieldUpdateOperationsInput | string | null
+    utmContent?: NullableStringFieldUpdateOperationsInput | string | null
+    isBot?: BoolFieldUpdateOperationsInput | boolean
+    clickedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    influencer?: InfluencerUpdateOneRequiredWithoutLinkClicksNestedInput
+  }
+
+  export type LinkClickUncheckedUpdateWithoutShareInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    influencerId?: StringFieldUpdateOperationsInput | string
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    referrer?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    utmSource?: NullableStringFieldUpdateOperationsInput | string | null
+    utmContent?: NullableStringFieldUpdateOperationsInput | string | null
+    isBot?: BoolFieldUpdateOperationsInput | boolean
+    clickedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type LinkClickUncheckedUpdateManyWithoutShareInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    influencerId?: StringFieldUpdateOperationsInput | string
+    ipAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    userAgent?: NullableStringFieldUpdateOperationsInput | string | null
+    referrer?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    utmSource?: NullableStringFieldUpdateOperationsInput | string | null
+    utmContent?: NullableStringFieldUpdateOperationsInput | string | null
+    isBot?: BoolFieldUpdateOperationsInput | boolean
+    clickedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SaleCreateManyCustomerInput = {
+    id?: string
+    influencerId?: string | null
+    umrePackage?: string | null
+    saleAmount: number
+    commissionRate?: number
+    commissionAmount: number
+    commissionStatus?: string
+    saleDate?: Date | string
+    completionDate?: Date | string | null
+    refundDeadline?: Date | string | null
+    notes?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type SaleUpdateWithoutCustomerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    umrePackage?: NullableStringFieldUpdateOperationsInput | string | null
+    saleAmount?: FloatFieldUpdateOperationsInput | number
+    commissionRate?: FloatFieldUpdateOperationsInput | number
+    commissionAmount?: FloatFieldUpdateOperationsInput | number
+    commissionStatus?: StringFieldUpdateOperationsInput | string
+    saleDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    completionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refundDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    influencer?: InfluencerUpdateOneWithoutSalesNestedInput
+    payments?: PaymentSaleUpdateManyWithoutSaleNestedInput
+  }
+
+  export type SaleUncheckedUpdateWithoutCustomerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    influencerId?: NullableStringFieldUpdateOperationsInput | string | null
+    umrePackage?: NullableStringFieldUpdateOperationsInput | string | null
+    saleAmount?: FloatFieldUpdateOperationsInput | number
+    commissionRate?: FloatFieldUpdateOperationsInput | number
+    commissionAmount?: FloatFieldUpdateOperationsInput | number
+    commissionStatus?: StringFieldUpdateOperationsInput | string
+    saleDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    completionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refundDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    payments?: PaymentSaleUncheckedUpdateManyWithoutSaleNestedInput
+  }
+
+  export type SaleUncheckedUpdateManyWithoutCustomerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    influencerId?: NullableStringFieldUpdateOperationsInput | string | null
+    umrePackage?: NullableStringFieldUpdateOperationsInput | string | null
+    saleAmount?: FloatFieldUpdateOperationsInput | number
+    commissionRate?: FloatFieldUpdateOperationsInput | number
+    commissionAmount?: FloatFieldUpdateOperationsInput | number
+    commissionStatus?: StringFieldUpdateOperationsInput | string
+    saleDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    completionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    refundDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PaymentSaleCreateManySaleInput = {
+    paymentId: string
+  }
+
+  export type PaymentSaleUpdateWithoutSaleInput = {
+    payment?: PaymentUpdateOneRequiredWithoutSalesNestedInput
+  }
+
+  export type PaymentSaleUncheckedUpdateWithoutSaleInput = {
+    paymentId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type PaymentSaleUncheckedUpdateManyWithoutSaleInput = {
+    paymentId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type PaymentSaleCreateManyPaymentInput = {
+    saleId: string
+  }
+
+  export type PaymentSaleUpdateWithoutPaymentInput = {
+    sale?: SaleUpdateOneRequiredWithoutPaymentsNestedInput
+  }
+
+  export type PaymentSaleUncheckedUpdateWithoutPaymentInput = {
+    saleId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type PaymentSaleUncheckedUpdateManyWithoutPaymentInput = {
+    saleId?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type CampaignParticipantCreateManyCampaignInput = {
+    id?: string
+    influencerId: string
+    uniqueCode: string
+    joinedAt?: Date | string
+    usageCount?: number
+  }
+
+  export type CampaignCodeUsageCreateManyCampaignInput = {
+    id?: string
+    participantId: string
+    customerName?: string | null
+    customerPhone?: string | null
+    note?: string | null
+    usedAt?: Date | string
+  }
+
+  export type CampaignParticipantUpdateWithoutCampaignInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    uniqueCode?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usageCount?: IntFieldUpdateOperationsInput | number
+    influencer?: InfluencerUpdateOneRequiredWithoutCampaignsNestedInput
+    codeUsages?: CampaignCodeUsageUpdateManyWithoutParticipantNestedInput
+  }
+
+  export type CampaignParticipantUncheckedUpdateWithoutCampaignInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    influencerId?: StringFieldUpdateOperationsInput | string
+    uniqueCode?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usageCount?: IntFieldUpdateOperationsInput | number
+    codeUsages?: CampaignCodeUsageUncheckedUpdateManyWithoutParticipantNestedInput
+  }
+
+  export type CampaignParticipantUncheckedUpdateManyWithoutCampaignInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    influencerId?: StringFieldUpdateOperationsInput | string
+    uniqueCode?: StringFieldUpdateOperationsInput | string
+    joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    usageCount?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type CampaignCodeUsageUpdateWithoutCampaignInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    customerName?: NullableStringFieldUpdateOperationsInput | string | null
+    customerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    usedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    participant?: CampaignParticipantUpdateOneRequiredWithoutCodeUsagesNestedInput
+  }
+
+  export type CampaignCodeUsageUncheckedUpdateWithoutCampaignInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    participantId?: StringFieldUpdateOperationsInput | string
+    customerName?: NullableStringFieldUpdateOperationsInput | string | null
+    customerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    usedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CampaignCodeUsageUncheckedUpdateManyWithoutCampaignInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    participantId?: StringFieldUpdateOperationsInput | string
+    customerName?: NullableStringFieldUpdateOperationsInput | string | null
+    customerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    usedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CampaignCodeUsageCreateManyParticipantInput = {
+    id?: string
+    campaignId: string
+    customerName?: string | null
+    customerPhone?: string | null
+    note?: string | null
+    usedAt?: Date | string
+  }
+
+  export type CampaignCodeUsageUpdateWithoutParticipantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    customerName?: NullableStringFieldUpdateOperationsInput | string | null
+    customerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    usedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    campaign?: CampaignUpdateOneRequiredWithoutCodeUsagesNestedInput
+  }
+
+  export type CampaignCodeUsageUncheckedUpdateWithoutParticipantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    campaignId?: StringFieldUpdateOperationsInput | string
+    customerName?: NullableStringFieldUpdateOperationsInput | string | null
+    customerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    usedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CampaignCodeUsageUncheckedUpdateManyWithoutParticipantInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    campaignId?: StringFieldUpdateOperationsInput | string
+    customerName?: NullableStringFieldUpdateOperationsInput | string | null
+    customerPhone?: NullableStringFieldUpdateOperationsInput | string | null
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    usedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

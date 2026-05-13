@@ -5,7 +5,7 @@ import { cookies } from 'next/headers';
 
 async function getSession() {
   const store = await cookies();
-  const token = store.get('influencer_token')?.value;
+  const token = store.get('influencer_session')?.value;
   if (!token) return null;
   return verifyInfluencerToken(token);
 }

@@ -10,7 +10,7 @@ function isBot(userAgent: string): boolean {
 
 export async function GET(req: NextRequest, { params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://hadiumreyegidelim.com';
 
   // Influencer bul
   const influencer = await prisma.influencer.findUnique({ where: { uniqueUrl: slug } });

@@ -375,6 +375,11 @@ exports.Prisma.SaleScalarFieldEnum = {
   completionDate: 'completionDate',
   refundDeadline: 'refundDeadline',
   notes: 'notes',
+  lockedCommissionRate: 'lockedCommissionRate',
+  pointsEarned: 'pointsEarned',
+  monthlyTierAtSale: 'monthlyTierAtSale',
+  monthlyMultiplierAtSale: 'monthlyMultiplierAtSale',
+  monthlySaleNumberAtSale: 'monthlySaleNumberAtSale',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -399,6 +404,116 @@ exports.Prisma.PaymentScalarFieldEnum = {
 exports.Prisma.PaymentSaleScalarFieldEnum = {
   paymentId: 'paymentId',
   saleId: 'saleId'
+};
+
+exports.Prisma.LoyaltyAccountScalarFieldEnum = {
+  id: 'id',
+  influencerId: 'influencerId',
+  currentBalance: 'currentBalance',
+  lifetimeEarned: 'lifetimeEarned',
+  lifetimeRedeemed: 'lifetimeRedeemed',
+  currentMonthSalesCount: 'currentMonthSalesCount',
+  currentMonthYear: 'currentMonthYear',
+  currentMonthNumber: 'currentMonthNumber',
+  currentMonthlyTier: 'currentMonthlyTier',
+  currentYear: 'currentYear',
+  yearlySalesCount: 'yearlySalesCount',
+  currentHonorTier: 'currentHonorTier',
+  lastActivityAt: 'lastActivityAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.LoyaltyTransactionScalarFieldEnum = {
+  id: 'id',
+  accountId: 'accountId',
+  transactionType: 'transactionType',
+  pointsAmount: 'pointsAmount',
+  cashEquivalent: 'cashEquivalent',
+  sourceSaleId: 'sourceSaleId',
+  basePoints: 'basePoints',
+  multiplierApplied: 'multiplierApplied',
+  tierAtEarn: 'tierAtEarn',
+  monthlySaleNumber: 'monthlySaleNumber',
+  redemptionId: 'redemptionId',
+  description: 'description',
+  metadata: 'metadata',
+  isReversed: 'isReversed',
+  reversedByTxId: 'reversedByTxId',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.LoyaltyRedemptionScalarFieldEnum = {
+  id: 'id',
+  accountId: 'accountId',
+  redemptionType: 'redemptionType',
+  pointsUsed: 'pointsUsed',
+  cashValue: 'cashValue',
+  targetUser: 'targetUser',
+  targetFullName: 'targetFullName',
+  targetTcNo: 'targetTcNo',
+  targetPhone: 'targetPhone',
+  umrePackageName: 'umrePackageName',
+  catalogItemId: 'catalogItemId',
+  bankIban: 'bankIban',
+  discountCouponCode: 'discountCouponCode',
+  discountAmount: 'discountAmount',
+  expiresAt: 'expiresAt',
+  hybridCustomerPayment: 'hybridCustomerPayment',
+  status: 'status',
+  rejectionReason: 'rejectionReason',
+  requestedAt: 'requestedAt',
+  reviewedAt: 'reviewedAt',
+  reviewedBy: 'reviewedBy',
+  completedAt: 'completedAt',
+  notes: 'notes'
+};
+
+exports.Prisma.LoyaltyCatalogItemScalarFieldEnum = {
+  id: 'id',
+  sku: 'sku',
+  name: 'name',
+  description: 'description',
+  imageUrl: 'imageUrl',
+  pointsRequired: 'pointsRequired',
+  cashEquivalent: 'cashEquivalent',
+  stockQuantity: 'stockQuantity',
+  isActive: 'isActive',
+  category: 'category',
+  requiresAdminAction: 'requiresAdminAction',
+  displayOrder: 'displayOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.LoyaltyMonthlyHistoryScalarFieldEnum = {
+  id: 'id',
+  accountId: 'accountId',
+  year: 'year',
+  month: 'month',
+  totalSales: 'totalSales',
+  totalPointsEarned: 'totalPointsEarned',
+  maxTierReached: 'maxTierReached',
+  archivedAt: 'archivedAt'
+};
+
+exports.Prisma.LoyaltyMonthlyTierRuleScalarFieldEnum = {
+  id: 'id',
+  tierName: 'tierName',
+  minMonthlySales: 'minMonthlySales',
+  multiplier: 'multiplier',
+  colorHex: 'colorHex',
+  displayOrder: 'displayOrder'
+};
+
+exports.Prisma.LoyaltyHonorTierRuleScalarFieldEnum = {
+  id: 'id',
+  tierName: 'tierName',
+  minYearlySales: 'minYearlySales',
+  yearEndBonusPoints: 'yearEndBonusPoints',
+  perksDescription: 'perksDescription',
+  colorHex: 'colorHex',
+  displayOrder: 'displayOrder'
 };
 
 exports.Prisma.LinkClickScalarFieldEnum = {
@@ -499,6 +614,13 @@ exports.Prisma.ModelName = {
   Sale: 'Sale',
   Payment: 'Payment',
   PaymentSale: 'PaymentSale',
+  LoyaltyAccount: 'LoyaltyAccount',
+  LoyaltyTransaction: 'LoyaltyTransaction',
+  LoyaltyRedemption: 'LoyaltyRedemption',
+  LoyaltyCatalogItem: 'LoyaltyCatalogItem',
+  LoyaltyMonthlyHistory: 'LoyaltyMonthlyHistory',
+  LoyaltyMonthlyTierRule: 'LoyaltyMonthlyTierRule',
+  LoyaltyHonorTierRule: 'LoyaltyHonorTierRule',
   LinkClick: 'LinkClick',
   AttributionOverride: 'AttributionOverride',
   Campaign: 'Campaign',

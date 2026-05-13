@@ -235,6 +235,7 @@ model Influencer {
   payments           Payment[]
   linkClicks         LinkClick[]
   campaigns          CampaignParticipant[]
+  loyaltyAccount     LoyaltyAccount?
   createdAt          DateTime              @default(now())
   updatedAt          DateTime              @updatedAt
 }
@@ -281,23 +282,30 @@ model Customer {
 }
 
 model Sale {
-  id               String        @id @default(cuid())
-  customer         Customer      @relation(fields: [customerId], references: [id])
-  customerId       String
-  influencer       Influencer?   @relation(fields: [influencerId], references: [id])
-  influencerId     String?
-  umrePackage      String?
-  saleAmount       Float
-  commissionRate   Float         @default(0.05) // %5
-  commissionAmount Float
-  commissionStatus String        @default("pending") // pending | earned | paid | refunded
-  saleDate         DateTime      @default(now())
-  completionDate   DateTime?
-  refundDeadline   DateTime?
-  notes            String?
-  createdAt        DateTime      @default(now())
-  updatedAt        DateTime      @updatedAt
-  payments         PaymentSale[]
+  id                      String               @id @default(cuid())
+  customer                Customer             @relation(fields: [customerId], references: [id])
+  customerId              String
+  influencer              Influencer?          @relation(fields: [influencerId], references: [id])
+  influencerId            String?
+  umrePackage             String?
+  saleAmount              Float
+  commissionRate          Float                @default(0.05)
+  commissionAmount        Float
+  commissionStatus        String               @default("pending") // pending | earned | paid | refunded
+  saleDate                DateTime             @default(now())
+  completionDate          DateTime?
+  refundDeadline          DateTime?
+  notes                   String?
+  // Loyalty fields
+  lockedCommissionRate    Float?
+  pointsEarned            Int                  @default(0)
+  monthlyTierAtSale       String?
+  monthlyMultiplierAtSale Float?
+  monthlySaleNumberAtSale Int?
+  createdAt               DateTime             @default(now())
+  updatedAt               DateTime             @updatedAt
+  payments                PaymentSale[]
+  loyaltyTransactions     LoyaltyTransaction[]
 }
 
 model Payment {
@@ -326,6 +334,150 @@ model PaymentSale {
   saleId    String
 
   @@id([paymentId, saleId])
+}
+
+// ─────────────────────────────────────────────────────────
+// LOYALTY / YILDIZ SİSTEMİ
+// ─────────────────────────────────────────────────────────
+
+model LoyaltyAccount {
+  id                     String                  @id @default(cuid())
+  influencer             Influencer              @relation(fields: [influencerId], references: [id])
+  influencerId           String                  @unique
+  currentBalance         Int                     @default(0)
+  lifetimeEarned         Int                     @default(0)
+  lifetimeRedeemed       Int                     @default(0)
+  // Aylık tier
+  currentMonthSalesCount Int                     @default(0)
+  currentMonthYear       Int
+  currentMonthNumber     Int
+  currentMonthlyTier     String                  @default("baslangic")
+  // Yıllık onur tier
+  currentYear            Int
+  yearlySalesCount       Int                     @default(0)
+  currentHonorTier       String                  @default("yolcu")
+  // Puan süresi
+  lastActivityAt         DateTime                @default(now())
+  createdAt              DateTime                @default(now())
+  updatedAt              DateTime                @updatedAt
+  transactions           LoyaltyTransaction[]
+  redemptions            LoyaltyRedemption[]
+  monthlyHistory         LoyaltyMonthlyHistory[]
+}
+
+model LoyaltyTransaction {
+  id                String             @id @default(cuid())
+  account           LoyaltyAccount     @relation(fields: [accountId], references: [id])
+  accountId         String
+  transactionType   String // earn | redeem | refund | expire | adjust | yearly_bonus
+  pointsAmount      Int // pozitif veya negatif
+  cashEquivalent    Float
+  // Kazanım detayları
+  sourceSale        Sale?              @relation(fields: [sourceSaleId], references: [id])
+  sourceSaleId      String?
+  basePoints        Int?
+  multiplierApplied Float?
+  tierAtEarn        String?
+  monthlySaleNumber Int?
+  // Harcama detayları
+  redemption        LoyaltyRedemption? @relation(fields: [redemptionId], references: [id])
+  redemptionId      String?
+  description       String?
+  metadata          String? // JSON
+  isReversed        Boolean            @default(false)
+  reversedByTxId    String?
+  createdAt         DateTime           @default(now())
+
+  @@index([accountId])
+  @@index([transactionType])
+  @@index([sourceSaleId])
+}
+
+model LoyaltyRedemption {
+  id                    String               @id @default(cuid())
+  account               LoyaltyAccount       @relation(fields: [accountId], references: [id])
+  accountId             String
+  redemptionType        String // cash | free_umrah | hybrid_umrah | gift_item | customer_discount
+  pointsUsed            Int
+  cashValue             Float
+  // Hedef kişi
+  targetUser            String? // self | es | anne | baba | kardes | cocuk
+  targetFullName        String?
+  targetTcNo            String?
+  targetPhone           String?
+  // Umre
+  umrePackageName       String?
+  // Katalog
+  catalogItem           LoyaltyCatalogItem?  @relation(fields: [catalogItemId], references: [id])
+  catalogItemId         String?
+  // Nakit
+  bankIban              String?
+  // Müşteri indirimi
+  discountCouponCode    String?
+  discountAmount        Float?
+  expiresAt             DateTime?
+  // Karma
+  hybridCustomerPayment Float?
+  // Durum
+  status                String               @default("pending") // pending | approved | completed | rejected | cancelled
+  rejectionReason       String?
+  requestedAt           DateTime             @default(now())
+  reviewedAt            DateTime?
+  reviewedBy            String?
+  completedAt           DateTime?
+  notes                 String?
+  transactions          LoyaltyTransaction[]
+}
+
+model LoyaltyCatalogItem {
+  id                  String              @id @default(cuid())
+  sku                 String              @unique
+  name                String
+  description         String?
+  imageUrl            String?
+  pointsRequired      Int
+  cashEquivalent      Float
+  stockQuantity       Int?
+  isActive            Boolean             @default(true)
+  category            String // hediye_ceki | otel | yemek | deneyim | paket
+  requiresAdminAction Boolean             @default(true)
+  displayOrder        Int                 @default(0)
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+  redemptions         LoyaltyRedemption[]
+}
+
+model LoyaltyMonthlyHistory {
+  id                String         @id @default(cuid())
+  account           LoyaltyAccount @relation(fields: [accountId], references: [id])
+  accountId         String
+  year              Int
+  month             Int
+  totalSales        Int            @default(0)
+  totalPointsEarned Int            @default(0)
+  maxTierReached    String?
+  archivedAt        DateTime       @default(now())
+
+  @@unique([accountId, year, month])
+}
+
+model LoyaltyMonthlyTierRule {
+  id              String  @id @default(cuid())
+  tierName        String  @unique // baslangic | hizli | uretken | sampiyon
+  minMonthlySales Int
+  multiplier      Float
+  colorHex        String?
+  displayOrder    Int     @default(0)
+}
+
+model LoyaltyHonorTierRule {
+  id                 String  @id @default(cuid())
+  tierName           String  @unique // yolcu | haci_adayi | haci | veli
+  minYearlySales     Int
+  yearEndBonusPoints Int     @default(0)
+  perksDescription   String?
+  colorHex           String?
+  displayOrder       Int     @default(0)
 }
 
 model LinkClick {

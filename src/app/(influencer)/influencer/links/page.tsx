@@ -127,7 +127,7 @@ export default function InfluencerLinksPage() {
         <h2 className="text-[16px] font-bold text-gray-900 mb-4">Kullanım İpuçları</h2>
         <div className="space-y-3">
           {[
-            { icon: 'instagram', text: 'Instagram biyografinize ana linki ekleyin, story\'lerde swipe-up linki kullanın.' },
+            { icon: 'photo_camera', text: 'Instagram biyografinize ana linki ekleyin, story\'lerde swipe-up linki kullanın.' },
             { icon: 'sell', text: 'Her paylaşımda kupon kodunuzu sözlü olarak da belirtin.' },
             { icon: 'tag', text: 'Her paylaşımda #işbirliği veya #reklam etiketini eklemeyi unutmayın.' },
             { icon: 'timer', text: 'Link 60 gün cookie\'yi korur — tıklayan biri ilerleyen günlerde satın alsa bile size atanır.' },

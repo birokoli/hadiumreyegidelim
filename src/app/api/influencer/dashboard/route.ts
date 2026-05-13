@@ -28,7 +28,7 @@ export async function GET() {
     where: { influencerId: session.id, clickedAt: { gte: monthStart } },
   });
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://hadiumreyegidelim.com';
 
   return NextResponse.json({
     influencer: {

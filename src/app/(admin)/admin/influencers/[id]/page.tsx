@@ -4,6 +4,8 @@ import { prisma } from '@/lib/prisma';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import AdminInfluencerActions from '@/components/admin/AdminInfluencerActions';
+import AdminInfluencerSalesPanel from '@/components/admin/AdminInfluencerSalesPanel';
+import AdminInfluencerLoyaltyPanel from '@/components/admin/AdminInfluencerLoyaltyPanel';
 
 const tierConfig: Record<string, { label: string; color: string }> = {
   eci:     { label: 'Elçi',    color: 'bg-yellow-50 text-yellow-700 border-yellow-200' },
@@ -45,6 +47,11 @@ export default async function AdminInfluencerDetailPage({ params }: { params: Pr
       sales: { orderBy: { createdAt: 'desc' } },
       payments: { orderBy: { createdAt: 'desc' } },
       campaigns: { include: { campaign: true } },
+      loyaltyAccount: {
+        include: {
+          redemptions: { orderBy: { requestedAt: 'desc' }, take: 20 },
+        },
+      },
     },
   });
 
@@ -52,7 +59,7 @@ export default async function AdminInfluencerDetailPage({ params }: { params: Pr
 
   const tier = tierConfig[inf.tier] || tierConfig.davetci;
   const st = statusConfig[inf.status] || statusConfig.pending;
-  const baseUrl = 'http://localhost:3000';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://hadiumreyegidelim.com';
 
   return (
     <div className="p-6 lg:p-8 max-w-6xl mx-auto space-y-6">
@@ -191,6 +198,16 @@ export default async function AdminInfluencerDetailPage({ params }: { params: Pr
           </div>
         )}
       </div>
+
+      {/* Satışlar */}
+      <AdminInfluencerSalesPanel influencerId={inf.id} initialSales={inf.sales} />
+
+      {/* Yıldız Hesabı */}
+      <AdminInfluencerLoyaltyPanel
+        influencerId={inf.id}
+        loyaltyAccount={inf.loyaltyAccount}
+        redemptions={inf.loyaltyAccount?.redemptions ?? []}
+      />
 
       {/* Müşteriler */}
       <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">

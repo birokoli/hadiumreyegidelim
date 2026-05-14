@@ -202,7 +202,7 @@ export default function AdminInfluencerSalesPanel({
                     <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-full ${st.color}`}>{st.label}</span>
                     {s.pointsEarned > 0 && (
                       <span className="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-yellow-50 text-yellow-700">
-                        +{s.pointsEarned.toLocaleString('tr-TR')} ⭐ {s.monthlyMultiplierAtSale && s.monthlyMultiplierAtSale !== 1 ? `(${s.monthlyMultiplierAtSale}x)` : ''}
+                        +{s.pointsEarned.toLocaleString('tr-TR')} <span className="material-symbols-outlined text-[12px] align-[-1px]" style={{ fontVariationSettings: "'FILL' 1" }}>star</span> {s.monthlyMultiplierAtSale && s.monthlyMultiplierAtSale !== 1 ? `(${s.monthlyMultiplierAtSale}x)` : ''}
                       </span>
                     )}
                   </div>

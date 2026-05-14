@@ -107,7 +107,7 @@ export default function LoyaltyPage() {
             <p className="text-white/60 text-[13px] font-medium">Toplam Yıldız</p>
             <p className="text-[42px] font-black tracking-tight leading-none mt-1">
               {(account.currentBalance ?? 0).toLocaleString('tr-TR')}
-              <span className="text-[20px] font-semibold ml-2 text-white/60">⭐</span>
+              <span className="material-symbols-outlined text-[22px] font-normal ml-2 text-white/60" style={{ fontVariationSettings: "'FILL' 1", verticalAlign: '-4px' }}>star</span>
             </p>
             <p className="text-white/50 text-[13px] mt-1">≈ {(account.cashEquivalent ?? 0).toLocaleString('tr-TR', { style: 'currency', currency: 'TRY' })}</p>
           </div>
@@ -163,7 +163,7 @@ export default function LoyaltyPage() {
           {pending.map((r: any) => (
             <div key={r.id} className="flex items-center justify-between py-1">
               <span className="text-[13px] text-amber-700 capitalize">{r.redemptionType.replace('_', ' ')}</span>
-              <span className="text-[13px] font-semibold text-amber-800">{r.pointsUsed.toLocaleString('tr-TR')} ⭐</span>
+              <span className="text-[13px] font-semibold text-amber-800 flex items-center gap-0.5">{r.pointsUsed.toLocaleString('tr-TR')} <span className="material-symbols-outlined text-[14px]" style={{ fontVariationSettings: "'FILL' 1" }}>star</span></span>
             </div>
           ))}
         </div>
@@ -222,7 +222,7 @@ export default function LoyaltyPage() {
                         : 'border-gray-200 hover:border-gray-300'
                     }`}>
                     <p className="text-[12px] font-semibold text-gray-800">{opt.label}</p>
-                    <p className="text-[12px] text-[#003781] font-bold mt-0.5">{opt.points.toLocaleString('tr-TR')} ⭐</p>
+                    <p className="text-[12px] text-[#003781] font-bold mt-0.5 flex items-center gap-0.5">{opt.points.toLocaleString('tr-TR')} <span className="material-symbols-outlined text-[13px]" style={{ fontVariationSettings: "'FILL' 1" }}>star</span></p>
                   </button>
                 ))}
               </div>
@@ -306,7 +306,7 @@ export default function LoyaltyPage() {
                       : 'border-gray-200 hover:border-gray-300'
                   }`}>
                   <p className="text-[13px] font-medium text-gray-800">{item.label}</p>
-                  <p className="text-[13px] font-bold text-[#003781] shrink-0 ml-3">{item.points.toLocaleString('tr-TR')} ⭐</p>
+                  <p className="text-[13px] font-bold text-[#003781] shrink-0 ml-3 flex items-center gap-0.5">{item.points.toLocaleString('tr-TR')} <span className="material-symbols-outlined text-[14px]" style={{ fontVariationSettings: "'FILL' 1" }}>star</span></p>
                 </div>
               ))}
             </div>
@@ -361,8 +361,8 @@ export default function LoyaltyPage() {
                     {tx.multiplierApplied && tx.multiplierApplied !== 1 && ` · ${tx.multiplierApplied}x çarpan`}
                   </p>
                 </div>
-                <p className={`text-[14px] font-bold ${tx.pointsAmount > 0 ? 'text-green-600' : 'text-red-500'}`}>
-                  {tx.pointsAmount > 0 ? '+' : ''}{tx.pointsAmount.toLocaleString('tr-TR')} ⭐
+                <p className={`text-[14px] font-bold flex items-center gap-0.5 ${tx.pointsAmount > 0 ? 'text-green-600' : 'text-red-500'}`}>
+                  {tx.pointsAmount > 0 ? '+' : ''}{tx.pointsAmount.toLocaleString('tr-TR')} <span className="material-symbols-outlined text-[15px]" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
                 </p>
               </div>
             ))}

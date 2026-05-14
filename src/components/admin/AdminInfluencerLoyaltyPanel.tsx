@@ -104,9 +104,9 @@ export default function AdminInfluencerLoyaltyPanel({
 
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-5">
           {[
-            { label: 'Güncel Bakiye',     value: `${loyaltyAccount.currentBalance.toLocaleString('tr-TR')} ⭐`, sub: `≈ ₺${(loyaltyAccount.currentBalance / 10).toLocaleString('tr-TR')}` },
-            { label: 'Toplam Kazanılan',  value: `${loyaltyAccount.lifetimeEarned.toLocaleString('tr-TR')} ⭐` },
-            { label: 'Toplam Harcanan',   value: `${loyaltyAccount.lifetimeRedeemed.toLocaleString('tr-TR')} ⭐` },
+            { label: 'Güncel Bakiye',     value: <span className="flex items-center gap-1">{loyaltyAccount.currentBalance.toLocaleString('tr-TR')} <span className="material-symbols-outlined text-[16px] text-yellow-500" style={{ fontVariationSettings: "'FILL' 1" }}>star</span></span>, sub: `≈ ₺${(loyaltyAccount.currentBalance / 10).toLocaleString('tr-TR')}` },
+            { label: 'Toplam Kazanılan',  value: <span className="flex items-center gap-1">{loyaltyAccount.lifetimeEarned.toLocaleString('tr-TR')} <span className="material-symbols-outlined text-[16px] text-yellow-500" style={{ fontVariationSettings: "'FILL' 1" }}>star</span></span> },
+            { label: 'Toplam Harcanan',   value: <span className="flex items-center gap-1">{loyaltyAccount.lifetimeRedeemed.toLocaleString('tr-TR')} <span className="material-symbols-outlined text-[16px] text-yellow-500" style={{ fontVariationSettings: "'FILL' 1" }}>star</span></span> },
             { label: 'Aylık Satış',       value: loyaltyAccount.currentMonthSalesCount, sub: TIER_LABELS[loyaltyAccount.currentMonthlyTier] },
           ].map(s => (
             <div key={s.label} className="bg-slate-50 rounded-xl p-4">
@@ -169,7 +169,7 @@ export default function AdminInfluencerLoyaltyPanel({
                       <p className="text-[13px] font-semibold text-slate-900">{REDEMPTION_TYPE_LABELS[r.redemptionType]}</p>
                       <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-full ${st.color}`}>{st.label}</span>
                     </div>
-                    <p className="text-[13px] font-bold text-[#003781]">{r.pointsUsed.toLocaleString('tr-TR')} ⭐ = ₺{r.cashValue.toLocaleString('tr-TR')}</p>
+                    <p className="text-[13px] font-bold text-[#003781] flex items-center gap-1">{r.pointsUsed.toLocaleString('tr-TR')} <span className="material-symbols-outlined text-[14px] text-yellow-500" style={{ fontVariationSettings: "'FILL' 1" }}>star</span> = ₺{r.cashValue.toLocaleString('tr-TR')}</p>
                     {r.bankIban && <p className="text-[12px] text-slate-500 mt-0.5">IBAN: {r.bankIban}</p>}
                     {r.targetFullName && <p className="text-[12px] text-slate-500 mt-0.5">Hedef: {r.targetFullName} ({r.targetUser})</p>}
                     {r.umrePackageName && <p className="text-[12px] text-slate-500 mt-0.5">Paket: {r.umrePackageName}</p>}

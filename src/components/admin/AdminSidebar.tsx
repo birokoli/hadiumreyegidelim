@@ -41,6 +41,7 @@ const menuGroups: { title: string; links: { href: string; icon: string; label: s
     links: [
       { href: "/admin/influencers", icon: "person_celebrate", label: "Influencer Yönetimi" },
       { href: "/admin/campaigns",   icon: "campaign",         label: "Kampanyalar" },
+      { href: "/admin/support",     icon: "support_agent",    label: "Canlı Destek" },
     ],
   },
   {

@@ -11,6 +11,7 @@ const nav = [
   { href: '/influencer/shares',    icon: 'photo_camera',    label: 'Paylaşımlarım' },
   { href: '/influencer/customers', icon: 'people',          label: 'Müşterilerim' },
   { href: '/influencer/payments',  icon: 'payments',        label: 'Ödemelerim' },
+  { href: '/influencer/support',   icon: 'support_agent',   label: 'Canlı Destek' },
 ];
 
 export default function InfluencerSidebar() {

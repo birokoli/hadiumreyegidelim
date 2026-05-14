@@ -325,6 +325,24 @@ exports.Prisma.InfluencerScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.SupportChatScalarFieldEnum = {
+  id: 'id',
+  influencerId: 'influencerId',
+  status: 'status',
+  lastMessageAt: 'lastMessageAt',
+  unreadByAdmin: 'unreadByAdmin',
+  unreadByInfluencer: 'unreadByInfluencer',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.SupportMessageScalarFieldEnum = {
+  id: 'id',
+  chatId: 'chatId',
+  senderType: 'senderType',
+  content: 'content',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.ShareScalarFieldEnum = {
   id: 'id',
   influencerId: 'influencerId',
@@ -609,6 +627,8 @@ exports.Prisma.ModelName = {
   ContactRequest: 'ContactRequest',
   PostVersion: 'PostVersion',
   Influencer: 'Influencer',
+  SupportChat: 'SupportChat',
+  SupportMessage: 'SupportMessage',
   Share: 'Share',
   Customer: 'Customer',
   Sale: 'Sale',

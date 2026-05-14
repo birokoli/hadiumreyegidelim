@@ -84,6 +84,16 @@ export type PostVersion = $Result.DefaultSelection<Prisma.$PostVersionPayload>
  */
 export type Influencer = $Result.DefaultSelection<Prisma.$InfluencerPayload>
 /**
+ * Model SupportChat
+ * 
+ */
+export type SupportChat = $Result.DefaultSelection<Prisma.$SupportChatPayload>
+/**
+ * Model SupportMessage
+ * 
+ */
+export type SupportMessage = $Result.DefaultSelection<Prisma.$SupportMessagePayload>
+/**
  * Model Share
  * 
  */
@@ -426,6 +436,26 @@ export class PrismaClient<
     * ```
     */
   get influencer(): Prisma.InfluencerDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.supportChat`: Exposes CRUD operations for the **SupportChat** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SupportChats
+    * const supportChats = await prisma.supportChat.findMany()
+    * ```
+    */
+  get supportChat(): Prisma.SupportChatDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.supportMessage`: Exposes CRUD operations for the **SupportMessage** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more SupportMessages
+    * const supportMessages = await prisma.supportMessage.findMany()
+    * ```
+    */
+  get supportMessage(): Prisma.SupportMessageDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.share`: Exposes CRUD operations for the **Share** model.
@@ -1051,6 +1081,8 @@ export namespace Prisma {
     ContactRequest: 'ContactRequest',
     PostVersion: 'PostVersion',
     Influencer: 'Influencer',
+    SupportChat: 'SupportChat',
+    SupportMessage: 'SupportMessage',
     Share: 'Share',
     Customer: 'Customer',
     Sale: 'Sale',
@@ -1086,7 +1118,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "order" | "setting" | "service" | "guide" | "category" | "author" | "post" | "package" | "hotel" | "aILog" | "user" | "contactRequest" | "postVersion" | "influencer" | "share" | "customer" | "sale" | "payment" | "paymentSale" | "loyaltyAccount" | "loyaltyTransaction" | "loyaltyRedemption" | "loyaltyCatalogItem" | "loyaltyMonthlyHistory" | "loyaltyMonthlyTierRule" | "loyaltyHonorTierRule" | "linkClick" | "attributionOverride" | "campaign" | "campaignParticipant" | "campaignCodeUsage"
+      modelProps: "order" | "setting" | "service" | "guide" | "category" | "author" | "post" | "package" | "hotel" | "aILog" | "user" | "contactRequest" | "postVersion" | "influencer" | "supportChat" | "supportMessage" | "share" | "customer" | "sale" | "payment" | "paymentSale" | "loyaltyAccount" | "loyaltyTransaction" | "loyaltyRedemption" | "loyaltyCatalogItem" | "loyaltyMonthlyHistory" | "loyaltyMonthlyTierRule" | "loyaltyHonorTierRule" | "linkClick" | "attributionOverride" | "campaign" | "campaignParticipant" | "campaignCodeUsage"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2123,6 +2155,154 @@ export namespace Prisma {
           count: {
             args: Prisma.InfluencerCountArgs<ExtArgs>
             result: $Utils.Optional<InfluencerCountAggregateOutputType> | number
+          }
+        }
+      }
+      SupportChat: {
+        payload: Prisma.$SupportChatPayload<ExtArgs>
+        fields: Prisma.SupportChatFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SupportChatFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SupportChatPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SupportChatFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SupportChatPayload>
+          }
+          findFirst: {
+            args: Prisma.SupportChatFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SupportChatPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SupportChatFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SupportChatPayload>
+          }
+          findMany: {
+            args: Prisma.SupportChatFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SupportChatPayload>[]
+          }
+          create: {
+            args: Prisma.SupportChatCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SupportChatPayload>
+          }
+          createMany: {
+            args: Prisma.SupportChatCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SupportChatCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SupportChatPayload>[]
+          }
+          delete: {
+            args: Prisma.SupportChatDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SupportChatPayload>
+          }
+          update: {
+            args: Prisma.SupportChatUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SupportChatPayload>
+          }
+          deleteMany: {
+            args: Prisma.SupportChatDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SupportChatUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SupportChatUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SupportChatPayload>[]
+          }
+          upsert: {
+            args: Prisma.SupportChatUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SupportChatPayload>
+          }
+          aggregate: {
+            args: Prisma.SupportChatAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSupportChat>
+          }
+          groupBy: {
+            args: Prisma.SupportChatGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SupportChatGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SupportChatCountArgs<ExtArgs>
+            result: $Utils.Optional<SupportChatCountAggregateOutputType> | number
+          }
+        }
+      }
+      SupportMessage: {
+        payload: Prisma.$SupportMessagePayload<ExtArgs>
+        fields: Prisma.SupportMessageFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.SupportMessageFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SupportMessagePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.SupportMessageFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SupportMessagePayload>
+          }
+          findFirst: {
+            args: Prisma.SupportMessageFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SupportMessagePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.SupportMessageFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SupportMessagePayload>
+          }
+          findMany: {
+            args: Prisma.SupportMessageFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SupportMessagePayload>[]
+          }
+          create: {
+            args: Prisma.SupportMessageCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SupportMessagePayload>
+          }
+          createMany: {
+            args: Prisma.SupportMessageCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.SupportMessageCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SupportMessagePayload>[]
+          }
+          delete: {
+            args: Prisma.SupportMessageDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SupportMessagePayload>
+          }
+          update: {
+            args: Prisma.SupportMessageUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SupportMessagePayload>
+          }
+          deleteMany: {
+            args: Prisma.SupportMessageDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.SupportMessageUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.SupportMessageUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SupportMessagePayload>[]
+          }
+          upsert: {
+            args: Prisma.SupportMessageUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$SupportMessagePayload>
+          }
+          aggregate: {
+            args: Prisma.SupportMessageAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateSupportMessage>
+          }
+          groupBy: {
+            args: Prisma.SupportMessageGroupByArgs<ExtArgs>
+            result: $Utils.Optional<SupportMessageGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.SupportMessageCountArgs<ExtArgs>
+            result: $Utils.Optional<SupportMessageCountAggregateOutputType> | number
           }
         }
       }
@@ -3494,6 +3674,8 @@ export namespace Prisma {
     contactRequest?: ContactRequestOmit
     postVersion?: PostVersionOmit
     influencer?: InfluencerOmit
+    supportChat?: SupportChatOmit
+    supportMessage?: SupportMessageOmit
     share?: ShareOmit
     customer?: CustomerOmit
     sale?: SaleOmit
@@ -3752,6 +3934,37 @@ export namespace Prisma {
    */
   export type InfluencerCountOutputTypeCountCampaignsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: CampaignParticipantWhereInput
+  }
+
+
+  /**
+   * Count Type SupportChatCountOutputType
+   */
+
+  export type SupportChatCountOutputType = {
+    messages: number
+  }
+
+  export type SupportChatCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    messages?: boolean | SupportChatCountOutputTypeCountMessagesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * SupportChatCountOutputType without action
+   */
+  export type SupportChatCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SupportChatCountOutputType
+     */
+    select?: SupportChatCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * SupportChatCountOutputType without action
+   */
+  export type SupportChatCountOutputTypeCountMessagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SupportMessageWhereInput
   }
 
 
@@ -18987,6 +19200,7 @@ export namespace Prisma {
     linkClicks?: boolean | Influencer$linkClicksArgs<ExtArgs>
     campaigns?: boolean | Influencer$campaignsArgs<ExtArgs>
     loyaltyAccount?: boolean | Influencer$loyaltyAccountArgs<ExtArgs>
+    supportChat?: boolean | Influencer$supportChatArgs<ExtArgs>
     _count?: boolean | InfluencerCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["influencer"]>
 
@@ -19086,6 +19300,7 @@ export namespace Prisma {
     linkClicks?: boolean | Influencer$linkClicksArgs<ExtArgs>
     campaigns?: boolean | Influencer$campaignsArgs<ExtArgs>
     loyaltyAccount?: boolean | Influencer$loyaltyAccountArgs<ExtArgs>
+    supportChat?: boolean | Influencer$supportChatArgs<ExtArgs>
     _count?: boolean | InfluencerCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type InfluencerIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -19101,6 +19316,7 @@ export namespace Prisma {
       linkClicks: Prisma.$LinkClickPayload<ExtArgs>[]
       campaigns: Prisma.$CampaignParticipantPayload<ExtArgs>[]
       loyaltyAccount: Prisma.$LoyaltyAccountPayload<ExtArgs> | null
+      supportChat: Prisma.$SupportChatPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -19530,6 +19746,7 @@ export namespace Prisma {
     linkClicks<T extends Influencer$linkClicksArgs<ExtArgs> = {}>(args?: Subset<T, Influencer$linkClicksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LinkClickPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     campaigns<T extends Influencer$campaignsArgs<ExtArgs> = {}>(args?: Subset<T, Influencer$campaignsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CampaignParticipantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     loyaltyAccount<T extends Influencer$loyaltyAccountArgs<ExtArgs> = {}>(args?: Subset<T, Influencer$loyaltyAccountArgs<ExtArgs>>): Prisma__LoyaltyAccountClient<$Result.GetResult<Prisma.$LoyaltyAccountPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    supportChat<T extends Influencer$supportChatArgs<ExtArgs> = {}>(args?: Subset<T, Influencer$supportChatArgs<ExtArgs>>): Prisma__SupportChatClient<$Result.GetResult<Prisma.$SupportChatPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -20136,6 +20353,25 @@ export namespace Prisma {
   }
 
   /**
+   * Influencer.supportChat
+   */
+  export type Influencer$supportChatArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SupportChat
+     */
+    select?: SupportChatSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SupportChat
+     */
+    omit?: SupportChatOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SupportChatInclude<ExtArgs> | null
+    where?: SupportChatWhereInput
+  }
+
+  /**
    * Influencer without action
    */
   export type InfluencerDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -20151,6 +20387,2216 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: InfluencerInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model SupportChat
+   */
+
+  export type AggregateSupportChat = {
+    _count: SupportChatCountAggregateOutputType | null
+    _avg: SupportChatAvgAggregateOutputType | null
+    _sum: SupportChatSumAggregateOutputType | null
+    _min: SupportChatMinAggregateOutputType | null
+    _max: SupportChatMaxAggregateOutputType | null
+  }
+
+  export type SupportChatAvgAggregateOutputType = {
+    unreadByAdmin: number | null
+    unreadByInfluencer: number | null
+  }
+
+  export type SupportChatSumAggregateOutputType = {
+    unreadByAdmin: number | null
+    unreadByInfluencer: number | null
+  }
+
+  export type SupportChatMinAggregateOutputType = {
+    id: string | null
+    influencerId: string | null
+    status: string | null
+    lastMessageAt: Date | null
+    unreadByAdmin: number | null
+    unreadByInfluencer: number | null
+    createdAt: Date | null
+  }
+
+  export type SupportChatMaxAggregateOutputType = {
+    id: string | null
+    influencerId: string | null
+    status: string | null
+    lastMessageAt: Date | null
+    unreadByAdmin: number | null
+    unreadByInfluencer: number | null
+    createdAt: Date | null
+  }
+
+  export type SupportChatCountAggregateOutputType = {
+    id: number
+    influencerId: number
+    status: number
+    lastMessageAt: number
+    unreadByAdmin: number
+    unreadByInfluencer: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type SupportChatAvgAggregateInputType = {
+    unreadByAdmin?: true
+    unreadByInfluencer?: true
+  }
+
+  export type SupportChatSumAggregateInputType = {
+    unreadByAdmin?: true
+    unreadByInfluencer?: true
+  }
+
+  export type SupportChatMinAggregateInputType = {
+    id?: true
+    influencerId?: true
+    status?: true
+    lastMessageAt?: true
+    unreadByAdmin?: true
+    unreadByInfluencer?: true
+    createdAt?: true
+  }
+
+  export type SupportChatMaxAggregateInputType = {
+    id?: true
+    influencerId?: true
+    status?: true
+    lastMessageAt?: true
+    unreadByAdmin?: true
+    unreadByInfluencer?: true
+    createdAt?: true
+  }
+
+  export type SupportChatCountAggregateInputType = {
+    id?: true
+    influencerId?: true
+    status?: true
+    lastMessageAt?: true
+    unreadByAdmin?: true
+    unreadByInfluencer?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type SupportChatAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SupportChat to aggregate.
+     */
+    where?: SupportChatWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SupportChats to fetch.
+     */
+    orderBy?: SupportChatOrderByWithRelationInput | SupportChatOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SupportChatWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SupportChats from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SupportChats.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SupportChats
+    **/
+    _count?: true | SupportChatCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: SupportChatAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: SupportChatSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SupportChatMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SupportChatMaxAggregateInputType
+  }
+
+  export type GetSupportChatAggregateType<T extends SupportChatAggregateArgs> = {
+        [P in keyof T & keyof AggregateSupportChat]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSupportChat[P]>
+      : GetScalarType<T[P], AggregateSupportChat[P]>
+  }
+
+
+
+
+  export type SupportChatGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SupportChatWhereInput
+    orderBy?: SupportChatOrderByWithAggregationInput | SupportChatOrderByWithAggregationInput[]
+    by: SupportChatScalarFieldEnum[] | SupportChatScalarFieldEnum
+    having?: SupportChatScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SupportChatCountAggregateInputType | true
+    _avg?: SupportChatAvgAggregateInputType
+    _sum?: SupportChatSumAggregateInputType
+    _min?: SupportChatMinAggregateInputType
+    _max?: SupportChatMaxAggregateInputType
+  }
+
+  export type SupportChatGroupByOutputType = {
+    id: string
+    influencerId: string
+    status: string
+    lastMessageAt: Date
+    unreadByAdmin: number
+    unreadByInfluencer: number
+    createdAt: Date
+    _count: SupportChatCountAggregateOutputType | null
+    _avg: SupportChatAvgAggregateOutputType | null
+    _sum: SupportChatSumAggregateOutputType | null
+    _min: SupportChatMinAggregateOutputType | null
+    _max: SupportChatMaxAggregateOutputType | null
+  }
+
+  type GetSupportChatGroupByPayload<T extends SupportChatGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SupportChatGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SupportChatGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SupportChatGroupByOutputType[P]>
+            : GetScalarType<T[P], SupportChatGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SupportChatSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    influencerId?: boolean
+    status?: boolean
+    lastMessageAt?: boolean
+    unreadByAdmin?: boolean
+    unreadByInfluencer?: boolean
+    createdAt?: boolean
+    influencer?: boolean | InfluencerDefaultArgs<ExtArgs>
+    messages?: boolean | SupportChat$messagesArgs<ExtArgs>
+    _count?: boolean | SupportChatCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["supportChat"]>
+
+  export type SupportChatSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    influencerId?: boolean
+    status?: boolean
+    lastMessageAt?: boolean
+    unreadByAdmin?: boolean
+    unreadByInfluencer?: boolean
+    createdAt?: boolean
+    influencer?: boolean | InfluencerDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["supportChat"]>
+
+  export type SupportChatSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    influencerId?: boolean
+    status?: boolean
+    lastMessageAt?: boolean
+    unreadByAdmin?: boolean
+    unreadByInfluencer?: boolean
+    createdAt?: boolean
+    influencer?: boolean | InfluencerDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["supportChat"]>
+
+  export type SupportChatSelectScalar = {
+    id?: boolean
+    influencerId?: boolean
+    status?: boolean
+    lastMessageAt?: boolean
+    unreadByAdmin?: boolean
+    unreadByInfluencer?: boolean
+    createdAt?: boolean
+  }
+
+  export type SupportChatOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "influencerId" | "status" | "lastMessageAt" | "unreadByAdmin" | "unreadByInfluencer" | "createdAt", ExtArgs["result"]["supportChat"]>
+  export type SupportChatInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    influencer?: boolean | InfluencerDefaultArgs<ExtArgs>
+    messages?: boolean | SupportChat$messagesArgs<ExtArgs>
+    _count?: boolean | SupportChatCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type SupportChatIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    influencer?: boolean | InfluencerDefaultArgs<ExtArgs>
+  }
+  export type SupportChatIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    influencer?: boolean | InfluencerDefaultArgs<ExtArgs>
+  }
+
+  export type $SupportChatPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SupportChat"
+    objects: {
+      influencer: Prisma.$InfluencerPayload<ExtArgs>
+      messages: Prisma.$SupportMessagePayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      influencerId: string
+      status: string
+      lastMessageAt: Date
+      unreadByAdmin: number
+      unreadByInfluencer: number
+      createdAt: Date
+    }, ExtArgs["result"]["supportChat"]>
+    composites: {}
+  }
+
+  type SupportChatGetPayload<S extends boolean | null | undefined | SupportChatDefaultArgs> = $Result.GetResult<Prisma.$SupportChatPayload, S>
+
+  type SupportChatCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SupportChatFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SupportChatCountAggregateInputType | true
+    }
+
+  export interface SupportChatDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SupportChat'], meta: { name: 'SupportChat' } }
+    /**
+     * Find zero or one SupportChat that matches the filter.
+     * @param {SupportChatFindUniqueArgs} args - Arguments to find a SupportChat
+     * @example
+     * // Get one SupportChat
+     * const supportChat = await prisma.supportChat.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SupportChatFindUniqueArgs>(args: SelectSubset<T, SupportChatFindUniqueArgs<ExtArgs>>): Prisma__SupportChatClient<$Result.GetResult<Prisma.$SupportChatPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SupportChat that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SupportChatFindUniqueOrThrowArgs} args - Arguments to find a SupportChat
+     * @example
+     * // Get one SupportChat
+     * const supportChat = await prisma.supportChat.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SupportChatFindUniqueOrThrowArgs>(args: SelectSubset<T, SupportChatFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SupportChatClient<$Result.GetResult<Prisma.$SupportChatPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SupportChat that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SupportChatFindFirstArgs} args - Arguments to find a SupportChat
+     * @example
+     * // Get one SupportChat
+     * const supportChat = await prisma.supportChat.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SupportChatFindFirstArgs>(args?: SelectSubset<T, SupportChatFindFirstArgs<ExtArgs>>): Prisma__SupportChatClient<$Result.GetResult<Prisma.$SupportChatPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SupportChat that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SupportChatFindFirstOrThrowArgs} args - Arguments to find a SupportChat
+     * @example
+     * // Get one SupportChat
+     * const supportChat = await prisma.supportChat.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SupportChatFindFirstOrThrowArgs>(args?: SelectSubset<T, SupportChatFindFirstOrThrowArgs<ExtArgs>>): Prisma__SupportChatClient<$Result.GetResult<Prisma.$SupportChatPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SupportChats that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SupportChatFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SupportChats
+     * const supportChats = await prisma.supportChat.findMany()
+     * 
+     * // Get first 10 SupportChats
+     * const supportChats = await prisma.supportChat.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const supportChatWithIdOnly = await prisma.supportChat.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SupportChatFindManyArgs>(args?: SelectSubset<T, SupportChatFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SupportChatPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SupportChat.
+     * @param {SupportChatCreateArgs} args - Arguments to create a SupportChat.
+     * @example
+     * // Create one SupportChat
+     * const SupportChat = await prisma.supportChat.create({
+     *   data: {
+     *     // ... data to create a SupportChat
+     *   }
+     * })
+     * 
+     */
+    create<T extends SupportChatCreateArgs>(args: SelectSubset<T, SupportChatCreateArgs<ExtArgs>>): Prisma__SupportChatClient<$Result.GetResult<Prisma.$SupportChatPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SupportChats.
+     * @param {SupportChatCreateManyArgs} args - Arguments to create many SupportChats.
+     * @example
+     * // Create many SupportChats
+     * const supportChat = await prisma.supportChat.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SupportChatCreateManyArgs>(args?: SelectSubset<T, SupportChatCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many SupportChats and returns the data saved in the database.
+     * @param {SupportChatCreateManyAndReturnArgs} args - Arguments to create many SupportChats.
+     * @example
+     * // Create many SupportChats
+     * const supportChat = await prisma.supportChat.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many SupportChats and only return the `id`
+     * const supportChatWithIdOnly = await prisma.supportChat.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SupportChatCreateManyAndReturnArgs>(args?: SelectSubset<T, SupportChatCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SupportChatPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a SupportChat.
+     * @param {SupportChatDeleteArgs} args - Arguments to delete one SupportChat.
+     * @example
+     * // Delete one SupportChat
+     * const SupportChat = await prisma.supportChat.delete({
+     *   where: {
+     *     // ... filter to delete one SupportChat
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SupportChatDeleteArgs>(args: SelectSubset<T, SupportChatDeleteArgs<ExtArgs>>): Prisma__SupportChatClient<$Result.GetResult<Prisma.$SupportChatPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SupportChat.
+     * @param {SupportChatUpdateArgs} args - Arguments to update one SupportChat.
+     * @example
+     * // Update one SupportChat
+     * const supportChat = await prisma.supportChat.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SupportChatUpdateArgs>(args: SelectSubset<T, SupportChatUpdateArgs<ExtArgs>>): Prisma__SupportChatClient<$Result.GetResult<Prisma.$SupportChatPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SupportChats.
+     * @param {SupportChatDeleteManyArgs} args - Arguments to filter SupportChats to delete.
+     * @example
+     * // Delete a few SupportChats
+     * const { count } = await prisma.supportChat.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SupportChatDeleteManyArgs>(args?: SelectSubset<T, SupportChatDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SupportChats.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SupportChatUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SupportChats
+     * const supportChat = await prisma.supportChat.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SupportChatUpdateManyArgs>(args: SelectSubset<T, SupportChatUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SupportChats and returns the data updated in the database.
+     * @param {SupportChatUpdateManyAndReturnArgs} args - Arguments to update many SupportChats.
+     * @example
+     * // Update many SupportChats
+     * const supportChat = await prisma.supportChat.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more SupportChats and only return the `id`
+     * const supportChatWithIdOnly = await prisma.supportChat.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SupportChatUpdateManyAndReturnArgs>(args: SelectSubset<T, SupportChatUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SupportChatPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one SupportChat.
+     * @param {SupportChatUpsertArgs} args - Arguments to update or create a SupportChat.
+     * @example
+     * // Update or create a SupportChat
+     * const supportChat = await prisma.supportChat.upsert({
+     *   create: {
+     *     // ... data to create a SupportChat
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SupportChat we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SupportChatUpsertArgs>(args: SelectSubset<T, SupportChatUpsertArgs<ExtArgs>>): Prisma__SupportChatClient<$Result.GetResult<Prisma.$SupportChatPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SupportChats.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SupportChatCountArgs} args - Arguments to filter SupportChats to count.
+     * @example
+     * // Count the number of SupportChats
+     * const count = await prisma.supportChat.count({
+     *   where: {
+     *     // ... the filter for the SupportChats we want to count
+     *   }
+     * })
+    **/
+    count<T extends SupportChatCountArgs>(
+      args?: Subset<T, SupportChatCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SupportChatCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SupportChat.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SupportChatAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SupportChatAggregateArgs>(args: Subset<T, SupportChatAggregateArgs>): Prisma.PrismaPromise<GetSupportChatAggregateType<T>>
+
+    /**
+     * Group by SupportChat.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SupportChatGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SupportChatGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SupportChatGroupByArgs['orderBy'] }
+        : { orderBy?: SupportChatGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SupportChatGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSupportChatGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SupportChat model
+   */
+  readonly fields: SupportChatFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SupportChat.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SupportChatClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    influencer<T extends InfluencerDefaultArgs<ExtArgs> = {}>(args?: Subset<T, InfluencerDefaultArgs<ExtArgs>>): Prisma__InfluencerClient<$Result.GetResult<Prisma.$InfluencerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    messages<T extends SupportChat$messagesArgs<ExtArgs> = {}>(args?: Subset<T, SupportChat$messagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SupportMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SupportChat model
+   */
+  interface SupportChatFieldRefs {
+    readonly id: FieldRef<"SupportChat", 'String'>
+    readonly influencerId: FieldRef<"SupportChat", 'String'>
+    readonly status: FieldRef<"SupportChat", 'String'>
+    readonly lastMessageAt: FieldRef<"SupportChat", 'DateTime'>
+    readonly unreadByAdmin: FieldRef<"SupportChat", 'Int'>
+    readonly unreadByInfluencer: FieldRef<"SupportChat", 'Int'>
+    readonly createdAt: FieldRef<"SupportChat", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SupportChat findUnique
+   */
+  export type SupportChatFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SupportChat
+     */
+    select?: SupportChatSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SupportChat
+     */
+    omit?: SupportChatOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SupportChatInclude<ExtArgs> | null
+    /**
+     * Filter, which SupportChat to fetch.
+     */
+    where: SupportChatWhereUniqueInput
+  }
+
+  /**
+   * SupportChat findUniqueOrThrow
+   */
+  export type SupportChatFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SupportChat
+     */
+    select?: SupportChatSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SupportChat
+     */
+    omit?: SupportChatOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SupportChatInclude<ExtArgs> | null
+    /**
+     * Filter, which SupportChat to fetch.
+     */
+    where: SupportChatWhereUniqueInput
+  }
+
+  /**
+   * SupportChat findFirst
+   */
+  export type SupportChatFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SupportChat
+     */
+    select?: SupportChatSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SupportChat
+     */
+    omit?: SupportChatOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SupportChatInclude<ExtArgs> | null
+    /**
+     * Filter, which SupportChat to fetch.
+     */
+    where?: SupportChatWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SupportChats to fetch.
+     */
+    orderBy?: SupportChatOrderByWithRelationInput | SupportChatOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SupportChats.
+     */
+    cursor?: SupportChatWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SupportChats from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SupportChats.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SupportChats.
+     */
+    distinct?: SupportChatScalarFieldEnum | SupportChatScalarFieldEnum[]
+  }
+
+  /**
+   * SupportChat findFirstOrThrow
+   */
+  export type SupportChatFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SupportChat
+     */
+    select?: SupportChatSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SupportChat
+     */
+    omit?: SupportChatOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SupportChatInclude<ExtArgs> | null
+    /**
+     * Filter, which SupportChat to fetch.
+     */
+    where?: SupportChatWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SupportChats to fetch.
+     */
+    orderBy?: SupportChatOrderByWithRelationInput | SupportChatOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SupportChats.
+     */
+    cursor?: SupportChatWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SupportChats from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SupportChats.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SupportChats.
+     */
+    distinct?: SupportChatScalarFieldEnum | SupportChatScalarFieldEnum[]
+  }
+
+  /**
+   * SupportChat findMany
+   */
+  export type SupportChatFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SupportChat
+     */
+    select?: SupportChatSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SupportChat
+     */
+    omit?: SupportChatOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SupportChatInclude<ExtArgs> | null
+    /**
+     * Filter, which SupportChats to fetch.
+     */
+    where?: SupportChatWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SupportChats to fetch.
+     */
+    orderBy?: SupportChatOrderByWithRelationInput | SupportChatOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SupportChats.
+     */
+    cursor?: SupportChatWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SupportChats from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SupportChats.
+     */
+    skip?: number
+    distinct?: SupportChatScalarFieldEnum | SupportChatScalarFieldEnum[]
+  }
+
+  /**
+   * SupportChat create
+   */
+  export type SupportChatCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SupportChat
+     */
+    select?: SupportChatSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SupportChat
+     */
+    omit?: SupportChatOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SupportChatInclude<ExtArgs> | null
+    /**
+     * The data needed to create a SupportChat.
+     */
+    data: XOR<SupportChatCreateInput, SupportChatUncheckedCreateInput>
+  }
+
+  /**
+   * SupportChat createMany
+   */
+  export type SupportChatCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SupportChats.
+     */
+    data: SupportChatCreateManyInput | SupportChatCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SupportChat createManyAndReturn
+   */
+  export type SupportChatCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SupportChat
+     */
+    select?: SupportChatSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SupportChat
+     */
+    omit?: SupportChatOmit<ExtArgs> | null
+    /**
+     * The data used to create many SupportChats.
+     */
+    data: SupportChatCreateManyInput | SupportChatCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SupportChatIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SupportChat update
+   */
+  export type SupportChatUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SupportChat
+     */
+    select?: SupportChatSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SupportChat
+     */
+    omit?: SupportChatOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SupportChatInclude<ExtArgs> | null
+    /**
+     * The data needed to update a SupportChat.
+     */
+    data: XOR<SupportChatUpdateInput, SupportChatUncheckedUpdateInput>
+    /**
+     * Choose, which SupportChat to update.
+     */
+    where: SupportChatWhereUniqueInput
+  }
+
+  /**
+   * SupportChat updateMany
+   */
+  export type SupportChatUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SupportChats.
+     */
+    data: XOR<SupportChatUpdateManyMutationInput, SupportChatUncheckedUpdateManyInput>
+    /**
+     * Filter which SupportChats to update
+     */
+    where?: SupportChatWhereInput
+    /**
+     * Limit how many SupportChats to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SupportChat updateManyAndReturn
+   */
+  export type SupportChatUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SupportChat
+     */
+    select?: SupportChatSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SupportChat
+     */
+    omit?: SupportChatOmit<ExtArgs> | null
+    /**
+     * The data used to update SupportChats.
+     */
+    data: XOR<SupportChatUpdateManyMutationInput, SupportChatUncheckedUpdateManyInput>
+    /**
+     * Filter which SupportChats to update
+     */
+    where?: SupportChatWhereInput
+    /**
+     * Limit how many SupportChats to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SupportChatIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SupportChat upsert
+   */
+  export type SupportChatUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SupportChat
+     */
+    select?: SupportChatSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SupportChat
+     */
+    omit?: SupportChatOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SupportChatInclude<ExtArgs> | null
+    /**
+     * The filter to search for the SupportChat to update in case it exists.
+     */
+    where: SupportChatWhereUniqueInput
+    /**
+     * In case the SupportChat found by the `where` argument doesn't exist, create a new SupportChat with this data.
+     */
+    create: XOR<SupportChatCreateInput, SupportChatUncheckedCreateInput>
+    /**
+     * In case the SupportChat was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SupportChatUpdateInput, SupportChatUncheckedUpdateInput>
+  }
+
+  /**
+   * SupportChat delete
+   */
+  export type SupportChatDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SupportChat
+     */
+    select?: SupportChatSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SupportChat
+     */
+    omit?: SupportChatOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SupportChatInclude<ExtArgs> | null
+    /**
+     * Filter which SupportChat to delete.
+     */
+    where: SupportChatWhereUniqueInput
+  }
+
+  /**
+   * SupportChat deleteMany
+   */
+  export type SupportChatDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SupportChats to delete
+     */
+    where?: SupportChatWhereInput
+    /**
+     * Limit how many SupportChats to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SupportChat.messages
+   */
+  export type SupportChat$messagesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SupportMessage
+     */
+    select?: SupportMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SupportMessage
+     */
+    omit?: SupportMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SupportMessageInclude<ExtArgs> | null
+    where?: SupportMessageWhereInput
+    orderBy?: SupportMessageOrderByWithRelationInput | SupportMessageOrderByWithRelationInput[]
+    cursor?: SupportMessageWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: SupportMessageScalarFieldEnum | SupportMessageScalarFieldEnum[]
+  }
+
+  /**
+   * SupportChat without action
+   */
+  export type SupportChatDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SupportChat
+     */
+    select?: SupportChatSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SupportChat
+     */
+    omit?: SupportChatOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SupportChatInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model SupportMessage
+   */
+
+  export type AggregateSupportMessage = {
+    _count: SupportMessageCountAggregateOutputType | null
+    _min: SupportMessageMinAggregateOutputType | null
+    _max: SupportMessageMaxAggregateOutputType | null
+  }
+
+  export type SupportMessageMinAggregateOutputType = {
+    id: string | null
+    chatId: string | null
+    senderType: string | null
+    content: string | null
+    createdAt: Date | null
+  }
+
+  export type SupportMessageMaxAggregateOutputType = {
+    id: string | null
+    chatId: string | null
+    senderType: string | null
+    content: string | null
+    createdAt: Date | null
+  }
+
+  export type SupportMessageCountAggregateOutputType = {
+    id: number
+    chatId: number
+    senderType: number
+    content: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type SupportMessageMinAggregateInputType = {
+    id?: true
+    chatId?: true
+    senderType?: true
+    content?: true
+    createdAt?: true
+  }
+
+  export type SupportMessageMaxAggregateInputType = {
+    id?: true
+    chatId?: true
+    senderType?: true
+    content?: true
+    createdAt?: true
+  }
+
+  export type SupportMessageCountAggregateInputType = {
+    id?: true
+    chatId?: true
+    senderType?: true
+    content?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type SupportMessageAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SupportMessage to aggregate.
+     */
+    where?: SupportMessageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SupportMessages to fetch.
+     */
+    orderBy?: SupportMessageOrderByWithRelationInput | SupportMessageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: SupportMessageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SupportMessages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SupportMessages.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned SupportMessages
+    **/
+    _count?: true | SupportMessageCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: SupportMessageMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: SupportMessageMaxAggregateInputType
+  }
+
+  export type GetSupportMessageAggregateType<T extends SupportMessageAggregateArgs> = {
+        [P in keyof T & keyof AggregateSupportMessage]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateSupportMessage[P]>
+      : GetScalarType<T[P], AggregateSupportMessage[P]>
+  }
+
+
+
+
+  export type SupportMessageGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: SupportMessageWhereInput
+    orderBy?: SupportMessageOrderByWithAggregationInput | SupportMessageOrderByWithAggregationInput[]
+    by: SupportMessageScalarFieldEnum[] | SupportMessageScalarFieldEnum
+    having?: SupportMessageScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: SupportMessageCountAggregateInputType | true
+    _min?: SupportMessageMinAggregateInputType
+    _max?: SupportMessageMaxAggregateInputType
+  }
+
+  export type SupportMessageGroupByOutputType = {
+    id: string
+    chatId: string
+    senderType: string
+    content: string
+    createdAt: Date
+    _count: SupportMessageCountAggregateOutputType | null
+    _min: SupportMessageMinAggregateOutputType | null
+    _max: SupportMessageMaxAggregateOutputType | null
+  }
+
+  type GetSupportMessageGroupByPayload<T extends SupportMessageGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<SupportMessageGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof SupportMessageGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], SupportMessageGroupByOutputType[P]>
+            : GetScalarType<T[P], SupportMessageGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type SupportMessageSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    chatId?: boolean
+    senderType?: boolean
+    content?: boolean
+    createdAt?: boolean
+    chat?: boolean | SupportChatDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["supportMessage"]>
+
+  export type SupportMessageSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    chatId?: boolean
+    senderType?: boolean
+    content?: boolean
+    createdAt?: boolean
+    chat?: boolean | SupportChatDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["supportMessage"]>
+
+  export type SupportMessageSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    chatId?: boolean
+    senderType?: boolean
+    content?: boolean
+    createdAt?: boolean
+    chat?: boolean | SupportChatDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["supportMessage"]>
+
+  export type SupportMessageSelectScalar = {
+    id?: boolean
+    chatId?: boolean
+    senderType?: boolean
+    content?: boolean
+    createdAt?: boolean
+  }
+
+  export type SupportMessageOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "chatId" | "senderType" | "content" | "createdAt", ExtArgs["result"]["supportMessage"]>
+  export type SupportMessageInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    chat?: boolean | SupportChatDefaultArgs<ExtArgs>
+  }
+  export type SupportMessageIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    chat?: boolean | SupportChatDefaultArgs<ExtArgs>
+  }
+  export type SupportMessageIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    chat?: boolean | SupportChatDefaultArgs<ExtArgs>
+  }
+
+  export type $SupportMessagePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "SupportMessage"
+    objects: {
+      chat: Prisma.$SupportChatPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      chatId: string
+      senderType: string
+      content: string
+      createdAt: Date
+    }, ExtArgs["result"]["supportMessage"]>
+    composites: {}
+  }
+
+  type SupportMessageGetPayload<S extends boolean | null | undefined | SupportMessageDefaultArgs> = $Result.GetResult<Prisma.$SupportMessagePayload, S>
+
+  type SupportMessageCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<SupportMessageFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: SupportMessageCountAggregateInputType | true
+    }
+
+  export interface SupportMessageDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['SupportMessage'], meta: { name: 'SupportMessage' } }
+    /**
+     * Find zero or one SupportMessage that matches the filter.
+     * @param {SupportMessageFindUniqueArgs} args - Arguments to find a SupportMessage
+     * @example
+     * // Get one SupportMessage
+     * const supportMessage = await prisma.supportMessage.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends SupportMessageFindUniqueArgs>(args: SelectSubset<T, SupportMessageFindUniqueArgs<ExtArgs>>): Prisma__SupportMessageClient<$Result.GetResult<Prisma.$SupportMessagePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one SupportMessage that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {SupportMessageFindUniqueOrThrowArgs} args - Arguments to find a SupportMessage
+     * @example
+     * // Get one SupportMessage
+     * const supportMessage = await prisma.supportMessage.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends SupportMessageFindUniqueOrThrowArgs>(args: SelectSubset<T, SupportMessageFindUniqueOrThrowArgs<ExtArgs>>): Prisma__SupportMessageClient<$Result.GetResult<Prisma.$SupportMessagePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SupportMessage that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SupportMessageFindFirstArgs} args - Arguments to find a SupportMessage
+     * @example
+     * // Get one SupportMessage
+     * const supportMessage = await prisma.supportMessage.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends SupportMessageFindFirstArgs>(args?: SelectSubset<T, SupportMessageFindFirstArgs<ExtArgs>>): Prisma__SupportMessageClient<$Result.GetResult<Prisma.$SupportMessagePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first SupportMessage that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SupportMessageFindFirstOrThrowArgs} args - Arguments to find a SupportMessage
+     * @example
+     * // Get one SupportMessage
+     * const supportMessage = await prisma.supportMessage.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends SupportMessageFindFirstOrThrowArgs>(args?: SelectSubset<T, SupportMessageFindFirstOrThrowArgs<ExtArgs>>): Prisma__SupportMessageClient<$Result.GetResult<Prisma.$SupportMessagePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more SupportMessages that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SupportMessageFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all SupportMessages
+     * const supportMessages = await prisma.supportMessage.findMany()
+     * 
+     * // Get first 10 SupportMessages
+     * const supportMessages = await prisma.supportMessage.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const supportMessageWithIdOnly = await prisma.supportMessage.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends SupportMessageFindManyArgs>(args?: SelectSubset<T, SupportMessageFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SupportMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a SupportMessage.
+     * @param {SupportMessageCreateArgs} args - Arguments to create a SupportMessage.
+     * @example
+     * // Create one SupportMessage
+     * const SupportMessage = await prisma.supportMessage.create({
+     *   data: {
+     *     // ... data to create a SupportMessage
+     *   }
+     * })
+     * 
+     */
+    create<T extends SupportMessageCreateArgs>(args: SelectSubset<T, SupportMessageCreateArgs<ExtArgs>>): Prisma__SupportMessageClient<$Result.GetResult<Prisma.$SupportMessagePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many SupportMessages.
+     * @param {SupportMessageCreateManyArgs} args - Arguments to create many SupportMessages.
+     * @example
+     * // Create many SupportMessages
+     * const supportMessage = await prisma.supportMessage.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends SupportMessageCreateManyArgs>(args?: SelectSubset<T, SupportMessageCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many SupportMessages and returns the data saved in the database.
+     * @param {SupportMessageCreateManyAndReturnArgs} args - Arguments to create many SupportMessages.
+     * @example
+     * // Create many SupportMessages
+     * const supportMessage = await prisma.supportMessage.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many SupportMessages and only return the `id`
+     * const supportMessageWithIdOnly = await prisma.supportMessage.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends SupportMessageCreateManyAndReturnArgs>(args?: SelectSubset<T, SupportMessageCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SupportMessagePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a SupportMessage.
+     * @param {SupportMessageDeleteArgs} args - Arguments to delete one SupportMessage.
+     * @example
+     * // Delete one SupportMessage
+     * const SupportMessage = await prisma.supportMessage.delete({
+     *   where: {
+     *     // ... filter to delete one SupportMessage
+     *   }
+     * })
+     * 
+     */
+    delete<T extends SupportMessageDeleteArgs>(args: SelectSubset<T, SupportMessageDeleteArgs<ExtArgs>>): Prisma__SupportMessageClient<$Result.GetResult<Prisma.$SupportMessagePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one SupportMessage.
+     * @param {SupportMessageUpdateArgs} args - Arguments to update one SupportMessage.
+     * @example
+     * // Update one SupportMessage
+     * const supportMessage = await prisma.supportMessage.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends SupportMessageUpdateArgs>(args: SelectSubset<T, SupportMessageUpdateArgs<ExtArgs>>): Prisma__SupportMessageClient<$Result.GetResult<Prisma.$SupportMessagePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more SupportMessages.
+     * @param {SupportMessageDeleteManyArgs} args - Arguments to filter SupportMessages to delete.
+     * @example
+     * // Delete a few SupportMessages
+     * const { count } = await prisma.supportMessage.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends SupportMessageDeleteManyArgs>(args?: SelectSubset<T, SupportMessageDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SupportMessages.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SupportMessageUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many SupportMessages
+     * const supportMessage = await prisma.supportMessage.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends SupportMessageUpdateManyArgs>(args: SelectSubset<T, SupportMessageUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more SupportMessages and returns the data updated in the database.
+     * @param {SupportMessageUpdateManyAndReturnArgs} args - Arguments to update many SupportMessages.
+     * @example
+     * // Update many SupportMessages
+     * const supportMessage = await prisma.supportMessage.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more SupportMessages and only return the `id`
+     * const supportMessageWithIdOnly = await prisma.supportMessage.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends SupportMessageUpdateManyAndReturnArgs>(args: SelectSubset<T, SupportMessageUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SupportMessagePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one SupportMessage.
+     * @param {SupportMessageUpsertArgs} args - Arguments to update or create a SupportMessage.
+     * @example
+     * // Update or create a SupportMessage
+     * const supportMessage = await prisma.supportMessage.upsert({
+     *   create: {
+     *     // ... data to create a SupportMessage
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the SupportMessage we want to update
+     *   }
+     * })
+     */
+    upsert<T extends SupportMessageUpsertArgs>(args: SelectSubset<T, SupportMessageUpsertArgs<ExtArgs>>): Prisma__SupportMessageClient<$Result.GetResult<Prisma.$SupportMessagePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of SupportMessages.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SupportMessageCountArgs} args - Arguments to filter SupportMessages to count.
+     * @example
+     * // Count the number of SupportMessages
+     * const count = await prisma.supportMessage.count({
+     *   where: {
+     *     // ... the filter for the SupportMessages we want to count
+     *   }
+     * })
+    **/
+    count<T extends SupportMessageCountArgs>(
+      args?: Subset<T, SupportMessageCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], SupportMessageCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a SupportMessage.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SupportMessageAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends SupportMessageAggregateArgs>(args: Subset<T, SupportMessageAggregateArgs>): Prisma.PrismaPromise<GetSupportMessageAggregateType<T>>
+
+    /**
+     * Group by SupportMessage.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {SupportMessageGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends SupportMessageGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: SupportMessageGroupByArgs['orderBy'] }
+        : { orderBy?: SupportMessageGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, SupportMessageGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetSupportMessageGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the SupportMessage model
+   */
+  readonly fields: SupportMessageFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for SupportMessage.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__SupportMessageClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    chat<T extends SupportChatDefaultArgs<ExtArgs> = {}>(args?: Subset<T, SupportChatDefaultArgs<ExtArgs>>): Prisma__SupportChatClient<$Result.GetResult<Prisma.$SupportChatPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the SupportMessage model
+   */
+  interface SupportMessageFieldRefs {
+    readonly id: FieldRef<"SupportMessage", 'String'>
+    readonly chatId: FieldRef<"SupportMessage", 'String'>
+    readonly senderType: FieldRef<"SupportMessage", 'String'>
+    readonly content: FieldRef<"SupportMessage", 'String'>
+    readonly createdAt: FieldRef<"SupportMessage", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * SupportMessage findUnique
+   */
+  export type SupportMessageFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SupportMessage
+     */
+    select?: SupportMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SupportMessage
+     */
+    omit?: SupportMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SupportMessageInclude<ExtArgs> | null
+    /**
+     * Filter, which SupportMessage to fetch.
+     */
+    where: SupportMessageWhereUniqueInput
+  }
+
+  /**
+   * SupportMessage findUniqueOrThrow
+   */
+  export type SupportMessageFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SupportMessage
+     */
+    select?: SupportMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SupportMessage
+     */
+    omit?: SupportMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SupportMessageInclude<ExtArgs> | null
+    /**
+     * Filter, which SupportMessage to fetch.
+     */
+    where: SupportMessageWhereUniqueInput
+  }
+
+  /**
+   * SupportMessage findFirst
+   */
+  export type SupportMessageFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SupportMessage
+     */
+    select?: SupportMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SupportMessage
+     */
+    omit?: SupportMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SupportMessageInclude<ExtArgs> | null
+    /**
+     * Filter, which SupportMessage to fetch.
+     */
+    where?: SupportMessageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SupportMessages to fetch.
+     */
+    orderBy?: SupportMessageOrderByWithRelationInput | SupportMessageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SupportMessages.
+     */
+    cursor?: SupportMessageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SupportMessages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SupportMessages.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SupportMessages.
+     */
+    distinct?: SupportMessageScalarFieldEnum | SupportMessageScalarFieldEnum[]
+  }
+
+  /**
+   * SupportMessage findFirstOrThrow
+   */
+  export type SupportMessageFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SupportMessage
+     */
+    select?: SupportMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SupportMessage
+     */
+    omit?: SupportMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SupportMessageInclude<ExtArgs> | null
+    /**
+     * Filter, which SupportMessage to fetch.
+     */
+    where?: SupportMessageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SupportMessages to fetch.
+     */
+    orderBy?: SupportMessageOrderByWithRelationInput | SupportMessageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for SupportMessages.
+     */
+    cursor?: SupportMessageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SupportMessages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SupportMessages.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of SupportMessages.
+     */
+    distinct?: SupportMessageScalarFieldEnum | SupportMessageScalarFieldEnum[]
+  }
+
+  /**
+   * SupportMessage findMany
+   */
+  export type SupportMessageFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SupportMessage
+     */
+    select?: SupportMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SupportMessage
+     */
+    omit?: SupportMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SupportMessageInclude<ExtArgs> | null
+    /**
+     * Filter, which SupportMessages to fetch.
+     */
+    where?: SupportMessageWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of SupportMessages to fetch.
+     */
+    orderBy?: SupportMessageOrderByWithRelationInput | SupportMessageOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing SupportMessages.
+     */
+    cursor?: SupportMessageWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` SupportMessages from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` SupportMessages.
+     */
+    skip?: number
+    distinct?: SupportMessageScalarFieldEnum | SupportMessageScalarFieldEnum[]
+  }
+
+  /**
+   * SupportMessage create
+   */
+  export type SupportMessageCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SupportMessage
+     */
+    select?: SupportMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SupportMessage
+     */
+    omit?: SupportMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SupportMessageInclude<ExtArgs> | null
+    /**
+     * The data needed to create a SupportMessage.
+     */
+    data: XOR<SupportMessageCreateInput, SupportMessageUncheckedCreateInput>
+  }
+
+  /**
+   * SupportMessage createMany
+   */
+  export type SupportMessageCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many SupportMessages.
+     */
+    data: SupportMessageCreateManyInput | SupportMessageCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * SupportMessage createManyAndReturn
+   */
+  export type SupportMessageCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SupportMessage
+     */
+    select?: SupportMessageSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SupportMessage
+     */
+    omit?: SupportMessageOmit<ExtArgs> | null
+    /**
+     * The data used to create many SupportMessages.
+     */
+    data: SupportMessageCreateManyInput | SupportMessageCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SupportMessageIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SupportMessage update
+   */
+  export type SupportMessageUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SupportMessage
+     */
+    select?: SupportMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SupportMessage
+     */
+    omit?: SupportMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SupportMessageInclude<ExtArgs> | null
+    /**
+     * The data needed to update a SupportMessage.
+     */
+    data: XOR<SupportMessageUpdateInput, SupportMessageUncheckedUpdateInput>
+    /**
+     * Choose, which SupportMessage to update.
+     */
+    where: SupportMessageWhereUniqueInput
+  }
+
+  /**
+   * SupportMessage updateMany
+   */
+  export type SupportMessageUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update SupportMessages.
+     */
+    data: XOR<SupportMessageUpdateManyMutationInput, SupportMessageUncheckedUpdateManyInput>
+    /**
+     * Filter which SupportMessages to update
+     */
+    where?: SupportMessageWhereInput
+    /**
+     * Limit how many SupportMessages to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * SupportMessage updateManyAndReturn
+   */
+  export type SupportMessageUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SupportMessage
+     */
+    select?: SupportMessageSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the SupportMessage
+     */
+    omit?: SupportMessageOmit<ExtArgs> | null
+    /**
+     * The data used to update SupportMessages.
+     */
+    data: XOR<SupportMessageUpdateManyMutationInput, SupportMessageUncheckedUpdateManyInput>
+    /**
+     * Filter which SupportMessages to update
+     */
+    where?: SupportMessageWhereInput
+    /**
+     * Limit how many SupportMessages to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SupportMessageIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * SupportMessage upsert
+   */
+  export type SupportMessageUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SupportMessage
+     */
+    select?: SupportMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SupportMessage
+     */
+    omit?: SupportMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SupportMessageInclude<ExtArgs> | null
+    /**
+     * The filter to search for the SupportMessage to update in case it exists.
+     */
+    where: SupportMessageWhereUniqueInput
+    /**
+     * In case the SupportMessage found by the `where` argument doesn't exist, create a new SupportMessage with this data.
+     */
+    create: XOR<SupportMessageCreateInput, SupportMessageUncheckedCreateInput>
+    /**
+     * In case the SupportMessage was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<SupportMessageUpdateInput, SupportMessageUncheckedUpdateInput>
+  }
+
+  /**
+   * SupportMessage delete
+   */
+  export type SupportMessageDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SupportMessage
+     */
+    select?: SupportMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SupportMessage
+     */
+    omit?: SupportMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SupportMessageInclude<ExtArgs> | null
+    /**
+     * Filter which SupportMessage to delete.
+     */
+    where: SupportMessageWhereUniqueInput
+  }
+
+  /**
+   * SupportMessage deleteMany
+   */
+  export type SupportMessageDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which SupportMessages to delete
+     */
+    where?: SupportMessageWhereInput
+    /**
+     * Limit how many SupportMessages to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * SupportMessage without action
+   */
+  export type SupportMessageDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the SupportMessage
+     */
+    select?: SupportMessageSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the SupportMessage
+     */
+    omit?: SupportMessageOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: SupportMessageInclude<ExtArgs> | null
   }
 
 
@@ -40804,6 +43250,30 @@ export namespace Prisma {
   export type InfluencerScalarFieldEnum = (typeof InfluencerScalarFieldEnum)[keyof typeof InfluencerScalarFieldEnum]
 
 
+  export const SupportChatScalarFieldEnum: {
+    id: 'id',
+    influencerId: 'influencerId',
+    status: 'status',
+    lastMessageAt: 'lastMessageAt',
+    unreadByAdmin: 'unreadByAdmin',
+    unreadByInfluencer: 'unreadByInfluencer',
+    createdAt: 'createdAt'
+  };
+
+  export type SupportChatScalarFieldEnum = (typeof SupportChatScalarFieldEnum)[keyof typeof SupportChatScalarFieldEnum]
+
+
+  export const SupportMessageScalarFieldEnum: {
+    id: 'id',
+    chatId: 'chatId',
+    senderType: 'senderType',
+    content: 'content',
+    createdAt: 'createdAt'
+  };
+
+  export type SupportMessageScalarFieldEnum = (typeof SupportMessageScalarFieldEnum)[keyof typeof SupportMessageScalarFieldEnum]
+
+
   export const ShareScalarFieldEnum: {
     id: 'id',
     influencerId: 'influencerId',
@@ -42303,6 +44773,7 @@ export namespace Prisma {
     linkClicks?: LinkClickListRelationFilter
     campaigns?: CampaignParticipantListRelationFilter
     loyaltyAccount?: XOR<LoyaltyAccountNullableScalarRelationFilter, LoyaltyAccountWhereInput> | null
+    supportChat?: XOR<SupportChatNullableScalarRelationFilter, SupportChatWhereInput> | null
   }
 
   export type InfluencerOrderByWithRelationInput = {
@@ -42339,6 +44810,7 @@ export namespace Prisma {
     linkClicks?: LinkClickOrderByRelationAggregateInput
     campaigns?: CampaignParticipantOrderByRelationAggregateInput
     loyaltyAccount?: LoyaltyAccountOrderByWithRelationInput
+    supportChat?: SupportChatOrderByWithRelationInput
   }
 
   export type InfluencerWhereUniqueInput = Prisma.AtLeast<{
@@ -42378,6 +44850,7 @@ export namespace Prisma {
     linkClicks?: LinkClickListRelationFilter
     campaigns?: CampaignParticipantListRelationFilter
     loyaltyAccount?: XOR<LoyaltyAccountNullableScalarRelationFilter, LoyaltyAccountWhereInput> | null
+    supportChat?: XOR<SupportChatNullableScalarRelationFilter, SupportChatWhereInput> | null
   }, "id" | "email" | "uniqueCode" | "uniqueUrl">
 
   export type InfluencerOrderByWithAggregationInput = {
@@ -42444,6 +44917,131 @@ export namespace Prisma {
     totalClicks?: IntWithAggregatesFilter<"Influencer"> | number
     createdAt?: DateTimeWithAggregatesFilter<"Influencer"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Influencer"> | Date | string
+  }
+
+  export type SupportChatWhereInput = {
+    AND?: SupportChatWhereInput | SupportChatWhereInput[]
+    OR?: SupportChatWhereInput[]
+    NOT?: SupportChatWhereInput | SupportChatWhereInput[]
+    id?: StringFilter<"SupportChat"> | string
+    influencerId?: StringFilter<"SupportChat"> | string
+    status?: StringFilter<"SupportChat"> | string
+    lastMessageAt?: DateTimeFilter<"SupportChat"> | Date | string
+    unreadByAdmin?: IntFilter<"SupportChat"> | number
+    unreadByInfluencer?: IntFilter<"SupportChat"> | number
+    createdAt?: DateTimeFilter<"SupportChat"> | Date | string
+    influencer?: XOR<InfluencerScalarRelationFilter, InfluencerWhereInput>
+    messages?: SupportMessageListRelationFilter
+  }
+
+  export type SupportChatOrderByWithRelationInput = {
+    id?: SortOrder
+    influencerId?: SortOrder
+    status?: SortOrder
+    lastMessageAt?: SortOrder
+    unreadByAdmin?: SortOrder
+    unreadByInfluencer?: SortOrder
+    createdAt?: SortOrder
+    influencer?: InfluencerOrderByWithRelationInput
+    messages?: SupportMessageOrderByRelationAggregateInput
+  }
+
+  export type SupportChatWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    influencerId?: string
+    AND?: SupportChatWhereInput | SupportChatWhereInput[]
+    OR?: SupportChatWhereInput[]
+    NOT?: SupportChatWhereInput | SupportChatWhereInput[]
+    status?: StringFilter<"SupportChat"> | string
+    lastMessageAt?: DateTimeFilter<"SupportChat"> | Date | string
+    unreadByAdmin?: IntFilter<"SupportChat"> | number
+    unreadByInfluencer?: IntFilter<"SupportChat"> | number
+    createdAt?: DateTimeFilter<"SupportChat"> | Date | string
+    influencer?: XOR<InfluencerScalarRelationFilter, InfluencerWhereInput>
+    messages?: SupportMessageListRelationFilter
+  }, "id" | "influencerId">
+
+  export type SupportChatOrderByWithAggregationInput = {
+    id?: SortOrder
+    influencerId?: SortOrder
+    status?: SortOrder
+    lastMessageAt?: SortOrder
+    unreadByAdmin?: SortOrder
+    unreadByInfluencer?: SortOrder
+    createdAt?: SortOrder
+    _count?: SupportChatCountOrderByAggregateInput
+    _avg?: SupportChatAvgOrderByAggregateInput
+    _max?: SupportChatMaxOrderByAggregateInput
+    _min?: SupportChatMinOrderByAggregateInput
+    _sum?: SupportChatSumOrderByAggregateInput
+  }
+
+  export type SupportChatScalarWhereWithAggregatesInput = {
+    AND?: SupportChatScalarWhereWithAggregatesInput | SupportChatScalarWhereWithAggregatesInput[]
+    OR?: SupportChatScalarWhereWithAggregatesInput[]
+    NOT?: SupportChatScalarWhereWithAggregatesInput | SupportChatScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"SupportChat"> | string
+    influencerId?: StringWithAggregatesFilter<"SupportChat"> | string
+    status?: StringWithAggregatesFilter<"SupportChat"> | string
+    lastMessageAt?: DateTimeWithAggregatesFilter<"SupportChat"> | Date | string
+    unreadByAdmin?: IntWithAggregatesFilter<"SupportChat"> | number
+    unreadByInfluencer?: IntWithAggregatesFilter<"SupportChat"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"SupportChat"> | Date | string
+  }
+
+  export type SupportMessageWhereInput = {
+    AND?: SupportMessageWhereInput | SupportMessageWhereInput[]
+    OR?: SupportMessageWhereInput[]
+    NOT?: SupportMessageWhereInput | SupportMessageWhereInput[]
+    id?: StringFilter<"SupportMessage"> | string
+    chatId?: StringFilter<"SupportMessage"> | string
+    senderType?: StringFilter<"SupportMessage"> | string
+    content?: StringFilter<"SupportMessage"> | string
+    createdAt?: DateTimeFilter<"SupportMessage"> | Date | string
+    chat?: XOR<SupportChatScalarRelationFilter, SupportChatWhereInput>
+  }
+
+  export type SupportMessageOrderByWithRelationInput = {
+    id?: SortOrder
+    chatId?: SortOrder
+    senderType?: SortOrder
+    content?: SortOrder
+    createdAt?: SortOrder
+    chat?: SupportChatOrderByWithRelationInput
+  }
+
+  export type SupportMessageWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: SupportMessageWhereInput | SupportMessageWhereInput[]
+    OR?: SupportMessageWhereInput[]
+    NOT?: SupportMessageWhereInput | SupportMessageWhereInput[]
+    chatId?: StringFilter<"SupportMessage"> | string
+    senderType?: StringFilter<"SupportMessage"> | string
+    content?: StringFilter<"SupportMessage"> | string
+    createdAt?: DateTimeFilter<"SupportMessage"> | Date | string
+    chat?: XOR<SupportChatScalarRelationFilter, SupportChatWhereInput>
+  }, "id">
+
+  export type SupportMessageOrderByWithAggregationInput = {
+    id?: SortOrder
+    chatId?: SortOrder
+    senderType?: SortOrder
+    content?: SortOrder
+    createdAt?: SortOrder
+    _count?: SupportMessageCountOrderByAggregateInput
+    _max?: SupportMessageMaxOrderByAggregateInput
+    _min?: SupportMessageMinOrderByAggregateInput
+  }
+
+  export type SupportMessageScalarWhereWithAggregatesInput = {
+    AND?: SupportMessageScalarWhereWithAggregatesInput | SupportMessageScalarWhereWithAggregatesInput[]
+    OR?: SupportMessageScalarWhereWithAggregatesInput[]
+    NOT?: SupportMessageScalarWhereWithAggregatesInput | SupportMessageScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"SupportMessage"> | string
+    chatId?: StringWithAggregatesFilter<"SupportMessage"> | string
+    senderType?: StringWithAggregatesFilter<"SupportMessage"> | string
+    content?: StringWithAggregatesFilter<"SupportMessage"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"SupportMessage"> | Date | string
   }
 
   export type ShareWhereInput = {
@@ -45309,6 +47907,7 @@ export namespace Prisma {
     linkClicks?: LinkClickCreateNestedManyWithoutInfluencerInput
     campaigns?: CampaignParticipantCreateNestedManyWithoutInfluencerInput
     loyaltyAccount?: LoyaltyAccountCreateNestedOneWithoutInfluencerInput
+    supportChat?: SupportChatCreateNestedOneWithoutInfluencerInput
   }
 
   export type InfluencerUncheckedCreateInput = {
@@ -45345,6 +47944,7 @@ export namespace Prisma {
     linkClicks?: LinkClickUncheckedCreateNestedManyWithoutInfluencerInput
     campaigns?: CampaignParticipantUncheckedCreateNestedManyWithoutInfluencerInput
     loyaltyAccount?: LoyaltyAccountUncheckedCreateNestedOneWithoutInfluencerInput
+    supportChat?: SupportChatUncheckedCreateNestedOneWithoutInfluencerInput
   }
 
   export type InfluencerUpdateInput = {
@@ -45381,6 +47981,7 @@ export namespace Prisma {
     linkClicks?: LinkClickUpdateManyWithoutInfluencerNestedInput
     campaigns?: CampaignParticipantUpdateManyWithoutInfluencerNestedInput
     loyaltyAccount?: LoyaltyAccountUpdateOneWithoutInfluencerNestedInput
+    supportChat?: SupportChatUpdateOneWithoutInfluencerNestedInput
   }
 
   export type InfluencerUncheckedUpdateInput = {
@@ -45417,6 +48018,7 @@ export namespace Prisma {
     linkClicks?: LinkClickUncheckedUpdateManyWithoutInfluencerNestedInput
     campaigns?: CampaignParticipantUncheckedUpdateManyWithoutInfluencerNestedInput
     loyaltyAccount?: LoyaltyAccountUncheckedUpdateOneWithoutInfluencerNestedInput
+    supportChat?: SupportChatUncheckedUpdateOneWithoutInfluencerNestedInput
   }
 
   export type InfluencerCreateManyInput = {
@@ -45504,6 +48106,134 @@ export namespace Prisma {
     totalClicks?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SupportChatCreateInput = {
+    id?: string
+    status?: string
+    lastMessageAt?: Date | string
+    unreadByAdmin?: number
+    unreadByInfluencer?: number
+    createdAt?: Date | string
+    influencer: InfluencerCreateNestedOneWithoutSupportChatInput
+    messages?: SupportMessageCreateNestedManyWithoutChatInput
+  }
+
+  export type SupportChatUncheckedCreateInput = {
+    id?: string
+    influencerId: string
+    status?: string
+    lastMessageAt?: Date | string
+    unreadByAdmin?: number
+    unreadByInfluencer?: number
+    createdAt?: Date | string
+    messages?: SupportMessageUncheckedCreateNestedManyWithoutChatInput
+  }
+
+  export type SupportChatUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    lastMessageAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    unreadByAdmin?: IntFieldUpdateOperationsInput | number
+    unreadByInfluencer?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    influencer?: InfluencerUpdateOneRequiredWithoutSupportChatNestedInput
+    messages?: SupportMessageUpdateManyWithoutChatNestedInput
+  }
+
+  export type SupportChatUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    influencerId?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    lastMessageAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    unreadByAdmin?: IntFieldUpdateOperationsInput | number
+    unreadByInfluencer?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    messages?: SupportMessageUncheckedUpdateManyWithoutChatNestedInput
+  }
+
+  export type SupportChatCreateManyInput = {
+    id?: string
+    influencerId: string
+    status?: string
+    lastMessageAt?: Date | string
+    unreadByAdmin?: number
+    unreadByInfluencer?: number
+    createdAt?: Date | string
+  }
+
+  export type SupportChatUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    lastMessageAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    unreadByAdmin?: IntFieldUpdateOperationsInput | number
+    unreadByInfluencer?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SupportChatUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    influencerId?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    lastMessageAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    unreadByAdmin?: IntFieldUpdateOperationsInput | number
+    unreadByInfluencer?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SupportMessageCreateInput = {
+    id?: string
+    senderType: string
+    content: string
+    createdAt?: Date | string
+    chat: SupportChatCreateNestedOneWithoutMessagesInput
+  }
+
+  export type SupportMessageUncheckedCreateInput = {
+    id?: string
+    chatId: string
+    senderType: string
+    content: string
+    createdAt?: Date | string
+  }
+
+  export type SupportMessageUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    senderType?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    chat?: SupportChatUpdateOneRequiredWithoutMessagesNestedInput
+  }
+
+  export type SupportMessageUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    chatId?: StringFieldUpdateOperationsInput | string
+    senderType?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SupportMessageCreateManyInput = {
+    id?: string
+    chatId: string
+    senderType: string
+    content: string
+    createdAt?: Date | string
+  }
+
+  export type SupportMessageUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    senderType?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SupportMessageUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    chatId?: StringFieldUpdateOperationsInput | string
+    senderType?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ShareCreateInput = {
@@ -48188,6 +50918,11 @@ export namespace Prisma {
     isNot?: LoyaltyAccountWhereInput | null
   }
 
+  export type SupportChatNullableScalarRelationFilter = {
+    is?: SupportChatWhereInput | null
+    isNot?: SupportChatWhereInput | null
+  }
+
   export type ShareOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -48318,6 +51053,85 @@ export namespace Prisma {
   export type InfluencerScalarRelationFilter = {
     is?: InfluencerWhereInput
     isNot?: InfluencerWhereInput
+  }
+
+  export type SupportMessageListRelationFilter = {
+    every?: SupportMessageWhereInput
+    some?: SupportMessageWhereInput
+    none?: SupportMessageWhereInput
+  }
+
+  export type SupportMessageOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type SupportChatCountOrderByAggregateInput = {
+    id?: SortOrder
+    influencerId?: SortOrder
+    status?: SortOrder
+    lastMessageAt?: SortOrder
+    unreadByAdmin?: SortOrder
+    unreadByInfluencer?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SupportChatAvgOrderByAggregateInput = {
+    unreadByAdmin?: SortOrder
+    unreadByInfluencer?: SortOrder
+  }
+
+  export type SupportChatMaxOrderByAggregateInput = {
+    id?: SortOrder
+    influencerId?: SortOrder
+    status?: SortOrder
+    lastMessageAt?: SortOrder
+    unreadByAdmin?: SortOrder
+    unreadByInfluencer?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SupportChatMinOrderByAggregateInput = {
+    id?: SortOrder
+    influencerId?: SortOrder
+    status?: SortOrder
+    lastMessageAt?: SortOrder
+    unreadByAdmin?: SortOrder
+    unreadByInfluencer?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SupportChatSumOrderByAggregateInput = {
+    unreadByAdmin?: SortOrder
+    unreadByInfluencer?: SortOrder
+  }
+
+  export type SupportChatScalarRelationFilter = {
+    is?: SupportChatWhereInput
+    isNot?: SupportChatWhereInput
+  }
+
+  export type SupportMessageCountOrderByAggregateInput = {
+    id?: SortOrder
+    chatId?: SortOrder
+    senderType?: SortOrder
+    content?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SupportMessageMaxOrderByAggregateInput = {
+    id?: SortOrder
+    chatId?: SortOrder
+    senderType?: SortOrder
+    content?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type SupportMessageMinOrderByAggregateInput = {
+    id?: SortOrder
+    chatId?: SortOrder
+    senderType?: SortOrder
+    content?: SortOrder
+    createdAt?: SortOrder
   }
 
   export type ShareCountOrderByAggregateInput = {
@@ -49659,6 +52473,12 @@ export namespace Prisma {
     connect?: LoyaltyAccountWhereUniqueInput
   }
 
+  export type SupportChatCreateNestedOneWithoutInfluencerInput = {
+    create?: XOR<SupportChatCreateWithoutInfluencerInput, SupportChatUncheckedCreateWithoutInfluencerInput>
+    connectOrCreate?: SupportChatCreateOrConnectWithoutInfluencerInput
+    connect?: SupportChatWhereUniqueInput
+  }
+
   export type ShareUncheckedCreateNestedManyWithoutInfluencerInput = {
     create?: XOR<ShareCreateWithoutInfluencerInput, ShareUncheckedCreateWithoutInfluencerInput> | ShareCreateWithoutInfluencerInput[] | ShareUncheckedCreateWithoutInfluencerInput[]
     connectOrCreate?: ShareCreateOrConnectWithoutInfluencerInput | ShareCreateOrConnectWithoutInfluencerInput[]
@@ -49705,6 +52525,12 @@ export namespace Prisma {
     create?: XOR<LoyaltyAccountCreateWithoutInfluencerInput, LoyaltyAccountUncheckedCreateWithoutInfluencerInput>
     connectOrCreate?: LoyaltyAccountCreateOrConnectWithoutInfluencerInput
     connect?: LoyaltyAccountWhereUniqueInput
+  }
+
+  export type SupportChatUncheckedCreateNestedOneWithoutInfluencerInput = {
+    create?: XOR<SupportChatCreateWithoutInfluencerInput, SupportChatUncheckedCreateWithoutInfluencerInput>
+    connectOrCreate?: SupportChatCreateOrConnectWithoutInfluencerInput
+    connect?: SupportChatWhereUniqueInput
   }
 
   export type ShareUpdateManyWithoutInfluencerNestedInput = {
@@ -49801,6 +52627,16 @@ export namespace Prisma {
     update?: XOR<XOR<LoyaltyAccountUpdateToOneWithWhereWithoutInfluencerInput, LoyaltyAccountUpdateWithoutInfluencerInput>, LoyaltyAccountUncheckedUpdateWithoutInfluencerInput>
   }
 
+  export type SupportChatUpdateOneWithoutInfluencerNestedInput = {
+    create?: XOR<SupportChatCreateWithoutInfluencerInput, SupportChatUncheckedCreateWithoutInfluencerInput>
+    connectOrCreate?: SupportChatCreateOrConnectWithoutInfluencerInput
+    upsert?: SupportChatUpsertWithoutInfluencerInput
+    disconnect?: SupportChatWhereInput | boolean
+    delete?: SupportChatWhereInput | boolean
+    connect?: SupportChatWhereUniqueInput
+    update?: XOR<XOR<SupportChatUpdateToOneWithWhereWithoutInfluencerInput, SupportChatUpdateWithoutInfluencerInput>, SupportChatUncheckedUpdateWithoutInfluencerInput>
+  }
+
   export type ShareUncheckedUpdateManyWithoutInfluencerNestedInput = {
     create?: XOR<ShareCreateWithoutInfluencerInput, ShareUncheckedCreateWithoutInfluencerInput> | ShareCreateWithoutInfluencerInput[] | ShareUncheckedCreateWithoutInfluencerInput[]
     connectOrCreate?: ShareCreateOrConnectWithoutInfluencerInput | ShareCreateOrConnectWithoutInfluencerInput[]
@@ -49893,6 +52729,86 @@ export namespace Prisma {
     delete?: LoyaltyAccountWhereInput | boolean
     connect?: LoyaltyAccountWhereUniqueInput
     update?: XOR<XOR<LoyaltyAccountUpdateToOneWithWhereWithoutInfluencerInput, LoyaltyAccountUpdateWithoutInfluencerInput>, LoyaltyAccountUncheckedUpdateWithoutInfluencerInput>
+  }
+
+  export type SupportChatUncheckedUpdateOneWithoutInfluencerNestedInput = {
+    create?: XOR<SupportChatCreateWithoutInfluencerInput, SupportChatUncheckedCreateWithoutInfluencerInput>
+    connectOrCreate?: SupportChatCreateOrConnectWithoutInfluencerInput
+    upsert?: SupportChatUpsertWithoutInfluencerInput
+    disconnect?: SupportChatWhereInput | boolean
+    delete?: SupportChatWhereInput | boolean
+    connect?: SupportChatWhereUniqueInput
+    update?: XOR<XOR<SupportChatUpdateToOneWithWhereWithoutInfluencerInput, SupportChatUpdateWithoutInfluencerInput>, SupportChatUncheckedUpdateWithoutInfluencerInput>
+  }
+
+  export type InfluencerCreateNestedOneWithoutSupportChatInput = {
+    create?: XOR<InfluencerCreateWithoutSupportChatInput, InfluencerUncheckedCreateWithoutSupportChatInput>
+    connectOrCreate?: InfluencerCreateOrConnectWithoutSupportChatInput
+    connect?: InfluencerWhereUniqueInput
+  }
+
+  export type SupportMessageCreateNestedManyWithoutChatInput = {
+    create?: XOR<SupportMessageCreateWithoutChatInput, SupportMessageUncheckedCreateWithoutChatInput> | SupportMessageCreateWithoutChatInput[] | SupportMessageUncheckedCreateWithoutChatInput[]
+    connectOrCreate?: SupportMessageCreateOrConnectWithoutChatInput | SupportMessageCreateOrConnectWithoutChatInput[]
+    createMany?: SupportMessageCreateManyChatInputEnvelope
+    connect?: SupportMessageWhereUniqueInput | SupportMessageWhereUniqueInput[]
+  }
+
+  export type SupportMessageUncheckedCreateNestedManyWithoutChatInput = {
+    create?: XOR<SupportMessageCreateWithoutChatInput, SupportMessageUncheckedCreateWithoutChatInput> | SupportMessageCreateWithoutChatInput[] | SupportMessageUncheckedCreateWithoutChatInput[]
+    connectOrCreate?: SupportMessageCreateOrConnectWithoutChatInput | SupportMessageCreateOrConnectWithoutChatInput[]
+    createMany?: SupportMessageCreateManyChatInputEnvelope
+    connect?: SupportMessageWhereUniqueInput | SupportMessageWhereUniqueInput[]
+  }
+
+  export type InfluencerUpdateOneRequiredWithoutSupportChatNestedInput = {
+    create?: XOR<InfluencerCreateWithoutSupportChatInput, InfluencerUncheckedCreateWithoutSupportChatInput>
+    connectOrCreate?: InfluencerCreateOrConnectWithoutSupportChatInput
+    upsert?: InfluencerUpsertWithoutSupportChatInput
+    connect?: InfluencerWhereUniqueInput
+    update?: XOR<XOR<InfluencerUpdateToOneWithWhereWithoutSupportChatInput, InfluencerUpdateWithoutSupportChatInput>, InfluencerUncheckedUpdateWithoutSupportChatInput>
+  }
+
+  export type SupportMessageUpdateManyWithoutChatNestedInput = {
+    create?: XOR<SupportMessageCreateWithoutChatInput, SupportMessageUncheckedCreateWithoutChatInput> | SupportMessageCreateWithoutChatInput[] | SupportMessageUncheckedCreateWithoutChatInput[]
+    connectOrCreate?: SupportMessageCreateOrConnectWithoutChatInput | SupportMessageCreateOrConnectWithoutChatInput[]
+    upsert?: SupportMessageUpsertWithWhereUniqueWithoutChatInput | SupportMessageUpsertWithWhereUniqueWithoutChatInput[]
+    createMany?: SupportMessageCreateManyChatInputEnvelope
+    set?: SupportMessageWhereUniqueInput | SupportMessageWhereUniqueInput[]
+    disconnect?: SupportMessageWhereUniqueInput | SupportMessageWhereUniqueInput[]
+    delete?: SupportMessageWhereUniqueInput | SupportMessageWhereUniqueInput[]
+    connect?: SupportMessageWhereUniqueInput | SupportMessageWhereUniqueInput[]
+    update?: SupportMessageUpdateWithWhereUniqueWithoutChatInput | SupportMessageUpdateWithWhereUniqueWithoutChatInput[]
+    updateMany?: SupportMessageUpdateManyWithWhereWithoutChatInput | SupportMessageUpdateManyWithWhereWithoutChatInput[]
+    deleteMany?: SupportMessageScalarWhereInput | SupportMessageScalarWhereInput[]
+  }
+
+  export type SupportMessageUncheckedUpdateManyWithoutChatNestedInput = {
+    create?: XOR<SupportMessageCreateWithoutChatInput, SupportMessageUncheckedCreateWithoutChatInput> | SupportMessageCreateWithoutChatInput[] | SupportMessageUncheckedCreateWithoutChatInput[]
+    connectOrCreate?: SupportMessageCreateOrConnectWithoutChatInput | SupportMessageCreateOrConnectWithoutChatInput[]
+    upsert?: SupportMessageUpsertWithWhereUniqueWithoutChatInput | SupportMessageUpsertWithWhereUniqueWithoutChatInput[]
+    createMany?: SupportMessageCreateManyChatInputEnvelope
+    set?: SupportMessageWhereUniqueInput | SupportMessageWhereUniqueInput[]
+    disconnect?: SupportMessageWhereUniqueInput | SupportMessageWhereUniqueInput[]
+    delete?: SupportMessageWhereUniqueInput | SupportMessageWhereUniqueInput[]
+    connect?: SupportMessageWhereUniqueInput | SupportMessageWhereUniqueInput[]
+    update?: SupportMessageUpdateWithWhereUniqueWithoutChatInput | SupportMessageUpdateWithWhereUniqueWithoutChatInput[]
+    updateMany?: SupportMessageUpdateManyWithWhereWithoutChatInput | SupportMessageUpdateManyWithWhereWithoutChatInput[]
+    deleteMany?: SupportMessageScalarWhereInput | SupportMessageScalarWhereInput[]
+  }
+
+  export type SupportChatCreateNestedOneWithoutMessagesInput = {
+    create?: XOR<SupportChatCreateWithoutMessagesInput, SupportChatUncheckedCreateWithoutMessagesInput>
+    connectOrCreate?: SupportChatCreateOrConnectWithoutMessagesInput
+    connect?: SupportChatWhereUniqueInput
+  }
+
+  export type SupportChatUpdateOneRequiredWithoutMessagesNestedInput = {
+    create?: XOR<SupportChatCreateWithoutMessagesInput, SupportChatUncheckedCreateWithoutMessagesInput>
+    connectOrCreate?: SupportChatCreateOrConnectWithoutMessagesInput
+    upsert?: SupportChatUpsertWithoutMessagesInput
+    connect?: SupportChatWhereUniqueInput
+    update?: XOR<XOR<SupportChatUpdateToOneWithWhereWithoutMessagesInput, SupportChatUpdateWithoutMessagesInput>, SupportChatUncheckedUpdateWithoutMessagesInput>
   }
 
   export type InfluencerCreateNestedOneWithoutSharesInput = {
@@ -51710,6 +54626,31 @@ export namespace Prisma {
     create: XOR<LoyaltyAccountCreateWithoutInfluencerInput, LoyaltyAccountUncheckedCreateWithoutInfluencerInput>
   }
 
+  export type SupportChatCreateWithoutInfluencerInput = {
+    id?: string
+    status?: string
+    lastMessageAt?: Date | string
+    unreadByAdmin?: number
+    unreadByInfluencer?: number
+    createdAt?: Date | string
+    messages?: SupportMessageCreateNestedManyWithoutChatInput
+  }
+
+  export type SupportChatUncheckedCreateWithoutInfluencerInput = {
+    id?: string
+    status?: string
+    lastMessageAt?: Date | string
+    unreadByAdmin?: number
+    unreadByInfluencer?: number
+    createdAt?: Date | string
+    messages?: SupportMessageUncheckedCreateNestedManyWithoutChatInput
+  }
+
+  export type SupportChatCreateOrConnectWithoutInfluencerInput = {
+    where: SupportChatWhereUniqueInput
+    create: XOR<SupportChatCreateWithoutInfluencerInput, SupportChatUncheckedCreateWithoutInfluencerInput>
+  }
+
   export type ShareUpsertWithWhereUniqueWithoutInfluencerInput = {
     where: ShareWhereUniqueInput
     update: XOR<ShareUpdateWithoutInfluencerInput, ShareUncheckedUpdateWithoutInfluencerInput>
@@ -51974,6 +54915,304 @@ export namespace Prisma {
     monthlyHistory?: LoyaltyMonthlyHistoryUncheckedUpdateManyWithoutAccountNestedInput
   }
 
+  export type SupportChatUpsertWithoutInfluencerInput = {
+    update: XOR<SupportChatUpdateWithoutInfluencerInput, SupportChatUncheckedUpdateWithoutInfluencerInput>
+    create: XOR<SupportChatCreateWithoutInfluencerInput, SupportChatUncheckedCreateWithoutInfluencerInput>
+    where?: SupportChatWhereInput
+  }
+
+  export type SupportChatUpdateToOneWithWhereWithoutInfluencerInput = {
+    where?: SupportChatWhereInput
+    data: XOR<SupportChatUpdateWithoutInfluencerInput, SupportChatUncheckedUpdateWithoutInfluencerInput>
+  }
+
+  export type SupportChatUpdateWithoutInfluencerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    lastMessageAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    unreadByAdmin?: IntFieldUpdateOperationsInput | number
+    unreadByInfluencer?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    messages?: SupportMessageUpdateManyWithoutChatNestedInput
+  }
+
+  export type SupportChatUncheckedUpdateWithoutInfluencerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    lastMessageAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    unreadByAdmin?: IntFieldUpdateOperationsInput | number
+    unreadByInfluencer?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    messages?: SupportMessageUncheckedUpdateManyWithoutChatNestedInput
+  }
+
+  export type InfluencerCreateWithoutSupportChatInput = {
+    id?: string
+    fullName: string
+    email: string
+    password: string
+    phone: string
+    tcNo?: string | null
+    birthDate?: string | null
+    avatarUrl?: string | null
+    instagramHandle?: string | null
+    instagramFollowers?: number | null
+    tiktokHandle?: string | null
+    youtubeHandle?: string | null
+    tier?: string
+    uniqueCode: string
+    uniqueUrl: string
+    status?: string
+    rejectReason?: string | null
+    bankIban?: string | null
+    bankName?: string | null
+    bankAccountName?: string | null
+    totalSales?: number
+    totalEarnings?: number
+    pendingEarnings?: number
+    totalClicks?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    shares?: ShareCreateNestedManyWithoutInfluencerInput
+    customers?: CustomerCreateNestedManyWithoutInfluencerInput
+    sales?: SaleCreateNestedManyWithoutInfluencerInput
+    payments?: PaymentCreateNestedManyWithoutInfluencerInput
+    linkClicks?: LinkClickCreateNestedManyWithoutInfluencerInput
+    campaigns?: CampaignParticipantCreateNestedManyWithoutInfluencerInput
+    loyaltyAccount?: LoyaltyAccountCreateNestedOneWithoutInfluencerInput
+  }
+
+  export type InfluencerUncheckedCreateWithoutSupportChatInput = {
+    id?: string
+    fullName: string
+    email: string
+    password: string
+    phone: string
+    tcNo?: string | null
+    birthDate?: string | null
+    avatarUrl?: string | null
+    instagramHandle?: string | null
+    instagramFollowers?: number | null
+    tiktokHandle?: string | null
+    youtubeHandle?: string | null
+    tier?: string
+    uniqueCode: string
+    uniqueUrl: string
+    status?: string
+    rejectReason?: string | null
+    bankIban?: string | null
+    bankName?: string | null
+    bankAccountName?: string | null
+    totalSales?: number
+    totalEarnings?: number
+    pendingEarnings?: number
+    totalClicks?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    shares?: ShareUncheckedCreateNestedManyWithoutInfluencerInput
+    customers?: CustomerUncheckedCreateNestedManyWithoutInfluencerInput
+    sales?: SaleUncheckedCreateNestedManyWithoutInfluencerInput
+    payments?: PaymentUncheckedCreateNestedManyWithoutInfluencerInput
+    linkClicks?: LinkClickUncheckedCreateNestedManyWithoutInfluencerInput
+    campaigns?: CampaignParticipantUncheckedCreateNestedManyWithoutInfluencerInput
+    loyaltyAccount?: LoyaltyAccountUncheckedCreateNestedOneWithoutInfluencerInput
+  }
+
+  export type InfluencerCreateOrConnectWithoutSupportChatInput = {
+    where: InfluencerWhereUniqueInput
+    create: XOR<InfluencerCreateWithoutSupportChatInput, InfluencerUncheckedCreateWithoutSupportChatInput>
+  }
+
+  export type SupportMessageCreateWithoutChatInput = {
+    id?: string
+    senderType: string
+    content: string
+    createdAt?: Date | string
+  }
+
+  export type SupportMessageUncheckedCreateWithoutChatInput = {
+    id?: string
+    senderType: string
+    content: string
+    createdAt?: Date | string
+  }
+
+  export type SupportMessageCreateOrConnectWithoutChatInput = {
+    where: SupportMessageWhereUniqueInput
+    create: XOR<SupportMessageCreateWithoutChatInput, SupportMessageUncheckedCreateWithoutChatInput>
+  }
+
+  export type SupportMessageCreateManyChatInputEnvelope = {
+    data: SupportMessageCreateManyChatInput | SupportMessageCreateManyChatInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type InfluencerUpsertWithoutSupportChatInput = {
+    update: XOR<InfluencerUpdateWithoutSupportChatInput, InfluencerUncheckedUpdateWithoutSupportChatInput>
+    create: XOR<InfluencerCreateWithoutSupportChatInput, InfluencerUncheckedCreateWithoutSupportChatInput>
+    where?: InfluencerWhereInput
+  }
+
+  export type InfluencerUpdateToOneWithWhereWithoutSupportChatInput = {
+    where?: InfluencerWhereInput
+    data: XOR<InfluencerUpdateWithoutSupportChatInput, InfluencerUncheckedUpdateWithoutSupportChatInput>
+  }
+
+  export type InfluencerUpdateWithoutSupportChatInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    tcNo?: NullableStringFieldUpdateOperationsInput | string | null
+    birthDate?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramFollowers?: NullableIntFieldUpdateOperationsInput | number | null
+    tiktokHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    youtubeHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    tier?: StringFieldUpdateOperationsInput | string
+    uniqueCode?: StringFieldUpdateOperationsInput | string
+    uniqueUrl?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    rejectReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bankIban?: NullableStringFieldUpdateOperationsInput | string | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountName?: NullableStringFieldUpdateOperationsInput | string | null
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalEarnings?: FloatFieldUpdateOperationsInput | number
+    pendingEarnings?: FloatFieldUpdateOperationsInput | number
+    totalClicks?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shares?: ShareUpdateManyWithoutInfluencerNestedInput
+    customers?: CustomerUpdateManyWithoutInfluencerNestedInput
+    sales?: SaleUpdateManyWithoutInfluencerNestedInput
+    payments?: PaymentUpdateManyWithoutInfluencerNestedInput
+    linkClicks?: LinkClickUpdateManyWithoutInfluencerNestedInput
+    campaigns?: CampaignParticipantUpdateManyWithoutInfluencerNestedInput
+    loyaltyAccount?: LoyaltyAccountUpdateOneWithoutInfluencerNestedInput
+  }
+
+  export type InfluencerUncheckedUpdateWithoutSupportChatInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    tcNo?: NullableStringFieldUpdateOperationsInput | string | null
+    birthDate?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramFollowers?: NullableIntFieldUpdateOperationsInput | number | null
+    tiktokHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    youtubeHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    tier?: StringFieldUpdateOperationsInput | string
+    uniqueCode?: StringFieldUpdateOperationsInput | string
+    uniqueUrl?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    rejectReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bankIban?: NullableStringFieldUpdateOperationsInput | string | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountName?: NullableStringFieldUpdateOperationsInput | string | null
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalEarnings?: FloatFieldUpdateOperationsInput | number
+    pendingEarnings?: FloatFieldUpdateOperationsInput | number
+    totalClicks?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shares?: ShareUncheckedUpdateManyWithoutInfluencerNestedInput
+    customers?: CustomerUncheckedUpdateManyWithoutInfluencerNestedInput
+    sales?: SaleUncheckedUpdateManyWithoutInfluencerNestedInput
+    payments?: PaymentUncheckedUpdateManyWithoutInfluencerNestedInput
+    linkClicks?: LinkClickUncheckedUpdateManyWithoutInfluencerNestedInput
+    campaigns?: CampaignParticipantUncheckedUpdateManyWithoutInfluencerNestedInput
+    loyaltyAccount?: LoyaltyAccountUncheckedUpdateOneWithoutInfluencerNestedInput
+  }
+
+  export type SupportMessageUpsertWithWhereUniqueWithoutChatInput = {
+    where: SupportMessageWhereUniqueInput
+    update: XOR<SupportMessageUpdateWithoutChatInput, SupportMessageUncheckedUpdateWithoutChatInput>
+    create: XOR<SupportMessageCreateWithoutChatInput, SupportMessageUncheckedCreateWithoutChatInput>
+  }
+
+  export type SupportMessageUpdateWithWhereUniqueWithoutChatInput = {
+    where: SupportMessageWhereUniqueInput
+    data: XOR<SupportMessageUpdateWithoutChatInput, SupportMessageUncheckedUpdateWithoutChatInput>
+  }
+
+  export type SupportMessageUpdateManyWithWhereWithoutChatInput = {
+    where: SupportMessageScalarWhereInput
+    data: XOR<SupportMessageUpdateManyMutationInput, SupportMessageUncheckedUpdateManyWithoutChatInput>
+  }
+
+  export type SupportMessageScalarWhereInput = {
+    AND?: SupportMessageScalarWhereInput | SupportMessageScalarWhereInput[]
+    OR?: SupportMessageScalarWhereInput[]
+    NOT?: SupportMessageScalarWhereInput | SupportMessageScalarWhereInput[]
+    id?: StringFilter<"SupportMessage"> | string
+    chatId?: StringFilter<"SupportMessage"> | string
+    senderType?: StringFilter<"SupportMessage"> | string
+    content?: StringFilter<"SupportMessage"> | string
+    createdAt?: DateTimeFilter<"SupportMessage"> | Date | string
+  }
+
+  export type SupportChatCreateWithoutMessagesInput = {
+    id?: string
+    status?: string
+    lastMessageAt?: Date | string
+    unreadByAdmin?: number
+    unreadByInfluencer?: number
+    createdAt?: Date | string
+    influencer: InfluencerCreateNestedOneWithoutSupportChatInput
+  }
+
+  export type SupportChatUncheckedCreateWithoutMessagesInput = {
+    id?: string
+    influencerId: string
+    status?: string
+    lastMessageAt?: Date | string
+    unreadByAdmin?: number
+    unreadByInfluencer?: number
+    createdAt?: Date | string
+  }
+
+  export type SupportChatCreateOrConnectWithoutMessagesInput = {
+    where: SupportChatWhereUniqueInput
+    create: XOR<SupportChatCreateWithoutMessagesInput, SupportChatUncheckedCreateWithoutMessagesInput>
+  }
+
+  export type SupportChatUpsertWithoutMessagesInput = {
+    update: XOR<SupportChatUpdateWithoutMessagesInput, SupportChatUncheckedUpdateWithoutMessagesInput>
+    create: XOR<SupportChatCreateWithoutMessagesInput, SupportChatUncheckedCreateWithoutMessagesInput>
+    where?: SupportChatWhereInput
+  }
+
+  export type SupportChatUpdateToOneWithWhereWithoutMessagesInput = {
+    where?: SupportChatWhereInput
+    data: XOR<SupportChatUpdateWithoutMessagesInput, SupportChatUncheckedUpdateWithoutMessagesInput>
+  }
+
+  export type SupportChatUpdateWithoutMessagesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    lastMessageAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    unreadByAdmin?: IntFieldUpdateOperationsInput | number
+    unreadByInfluencer?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    influencer?: InfluencerUpdateOneRequiredWithoutSupportChatNestedInput
+  }
+
+  export type SupportChatUncheckedUpdateWithoutMessagesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    influencerId?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    lastMessageAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    unreadByAdmin?: IntFieldUpdateOperationsInput | number
+    unreadByInfluencer?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type InfluencerCreateWithoutSharesInput = {
     id?: string
     fullName: string
@@ -52007,6 +55246,7 @@ export namespace Prisma {
     linkClicks?: LinkClickCreateNestedManyWithoutInfluencerInput
     campaigns?: CampaignParticipantCreateNestedManyWithoutInfluencerInput
     loyaltyAccount?: LoyaltyAccountCreateNestedOneWithoutInfluencerInput
+    supportChat?: SupportChatCreateNestedOneWithoutInfluencerInput
   }
 
   export type InfluencerUncheckedCreateWithoutSharesInput = {
@@ -52042,6 +55282,7 @@ export namespace Prisma {
     linkClicks?: LinkClickUncheckedCreateNestedManyWithoutInfluencerInput
     campaigns?: CampaignParticipantUncheckedCreateNestedManyWithoutInfluencerInput
     loyaltyAccount?: LoyaltyAccountUncheckedCreateNestedOneWithoutInfluencerInput
+    supportChat?: SupportChatUncheckedCreateNestedOneWithoutInfluencerInput
   }
 
   export type InfluencerCreateOrConnectWithoutSharesInput = {
@@ -52129,6 +55370,7 @@ export namespace Prisma {
     linkClicks?: LinkClickUpdateManyWithoutInfluencerNestedInput
     campaigns?: CampaignParticipantUpdateManyWithoutInfluencerNestedInput
     loyaltyAccount?: LoyaltyAccountUpdateOneWithoutInfluencerNestedInput
+    supportChat?: SupportChatUpdateOneWithoutInfluencerNestedInput
   }
 
   export type InfluencerUncheckedUpdateWithoutSharesInput = {
@@ -52164,6 +55406,7 @@ export namespace Prisma {
     linkClicks?: LinkClickUncheckedUpdateManyWithoutInfluencerNestedInput
     campaigns?: CampaignParticipantUncheckedUpdateManyWithoutInfluencerNestedInput
     loyaltyAccount?: LoyaltyAccountUncheckedUpdateOneWithoutInfluencerNestedInput
+    supportChat?: SupportChatUncheckedUpdateOneWithoutInfluencerNestedInput
   }
 
   export type LinkClickUpsertWithWhereUniqueWithoutShareInput = {
@@ -52215,6 +55458,7 @@ export namespace Prisma {
     linkClicks?: LinkClickCreateNestedManyWithoutInfluencerInput
     campaigns?: CampaignParticipantCreateNestedManyWithoutInfluencerInput
     loyaltyAccount?: LoyaltyAccountCreateNestedOneWithoutInfluencerInput
+    supportChat?: SupportChatCreateNestedOneWithoutInfluencerInput
   }
 
   export type InfluencerUncheckedCreateWithoutCustomersInput = {
@@ -52250,6 +55494,7 @@ export namespace Prisma {
     linkClicks?: LinkClickUncheckedCreateNestedManyWithoutInfluencerInput
     campaigns?: CampaignParticipantUncheckedCreateNestedManyWithoutInfluencerInput
     loyaltyAccount?: LoyaltyAccountUncheckedCreateNestedOneWithoutInfluencerInput
+    supportChat?: SupportChatUncheckedCreateNestedOneWithoutInfluencerInput
   }
 
   export type InfluencerCreateOrConnectWithoutCustomersInput = {
@@ -52357,6 +55602,7 @@ export namespace Prisma {
     linkClicks?: LinkClickUpdateManyWithoutInfluencerNestedInput
     campaigns?: CampaignParticipantUpdateManyWithoutInfluencerNestedInput
     loyaltyAccount?: LoyaltyAccountUpdateOneWithoutInfluencerNestedInput
+    supportChat?: SupportChatUpdateOneWithoutInfluencerNestedInput
   }
 
   export type InfluencerUncheckedUpdateWithoutCustomersInput = {
@@ -52392,6 +55638,7 @@ export namespace Prisma {
     linkClicks?: LinkClickUncheckedUpdateManyWithoutInfluencerNestedInput
     campaigns?: CampaignParticipantUncheckedUpdateManyWithoutInfluencerNestedInput
     loyaltyAccount?: LoyaltyAccountUncheckedUpdateOneWithoutInfluencerNestedInput
+    supportChat?: SupportChatUncheckedUpdateOneWithoutInfluencerNestedInput
   }
 
   export type SaleUpsertWithWhereUniqueWithoutCustomerInput = {
@@ -52484,6 +55731,7 @@ export namespace Prisma {
     linkClicks?: LinkClickCreateNestedManyWithoutInfluencerInput
     campaigns?: CampaignParticipantCreateNestedManyWithoutInfluencerInput
     loyaltyAccount?: LoyaltyAccountCreateNestedOneWithoutInfluencerInput
+    supportChat?: SupportChatCreateNestedOneWithoutInfluencerInput
   }
 
   export type InfluencerUncheckedCreateWithoutSalesInput = {
@@ -52519,6 +55767,7 @@ export namespace Prisma {
     linkClicks?: LinkClickUncheckedCreateNestedManyWithoutInfluencerInput
     campaigns?: CampaignParticipantUncheckedCreateNestedManyWithoutInfluencerInput
     loyaltyAccount?: LoyaltyAccountUncheckedCreateNestedOneWithoutInfluencerInput
+    supportChat?: SupportChatUncheckedCreateNestedOneWithoutInfluencerInput
   }
 
   export type InfluencerCreateOrConnectWithoutSalesInput = {
@@ -52681,6 +55930,7 @@ export namespace Prisma {
     linkClicks?: LinkClickUpdateManyWithoutInfluencerNestedInput
     campaigns?: CampaignParticipantUpdateManyWithoutInfluencerNestedInput
     loyaltyAccount?: LoyaltyAccountUpdateOneWithoutInfluencerNestedInput
+    supportChat?: SupportChatUpdateOneWithoutInfluencerNestedInput
   }
 
   export type InfluencerUncheckedUpdateWithoutSalesInput = {
@@ -52716,6 +55966,7 @@ export namespace Prisma {
     linkClicks?: LinkClickUncheckedUpdateManyWithoutInfluencerNestedInput
     campaigns?: CampaignParticipantUncheckedUpdateManyWithoutInfluencerNestedInput
     loyaltyAccount?: LoyaltyAccountUncheckedUpdateOneWithoutInfluencerNestedInput
+    supportChat?: SupportChatUncheckedUpdateOneWithoutInfluencerNestedInput
   }
 
   export type PaymentSaleUpsertWithWhereUniqueWithoutSaleInput = {
@@ -52813,6 +56064,7 @@ export namespace Prisma {
     linkClicks?: LinkClickCreateNestedManyWithoutInfluencerInput
     campaigns?: CampaignParticipantCreateNestedManyWithoutInfluencerInput
     loyaltyAccount?: LoyaltyAccountCreateNestedOneWithoutInfluencerInput
+    supportChat?: SupportChatCreateNestedOneWithoutInfluencerInput
   }
 
   export type InfluencerUncheckedCreateWithoutPaymentsInput = {
@@ -52848,6 +56100,7 @@ export namespace Prisma {
     linkClicks?: LinkClickUncheckedCreateNestedManyWithoutInfluencerInput
     campaigns?: CampaignParticipantUncheckedCreateNestedManyWithoutInfluencerInput
     loyaltyAccount?: LoyaltyAccountUncheckedCreateNestedOneWithoutInfluencerInput
+    supportChat?: SupportChatUncheckedCreateNestedOneWithoutInfluencerInput
   }
 
   export type InfluencerCreateOrConnectWithoutPaymentsInput = {
@@ -52917,6 +56170,7 @@ export namespace Prisma {
     linkClicks?: LinkClickUpdateManyWithoutInfluencerNestedInput
     campaigns?: CampaignParticipantUpdateManyWithoutInfluencerNestedInput
     loyaltyAccount?: LoyaltyAccountUpdateOneWithoutInfluencerNestedInput
+    supportChat?: SupportChatUpdateOneWithoutInfluencerNestedInput
   }
 
   export type InfluencerUncheckedUpdateWithoutPaymentsInput = {
@@ -52952,6 +56206,7 @@ export namespace Prisma {
     linkClicks?: LinkClickUncheckedUpdateManyWithoutInfluencerNestedInput
     campaigns?: CampaignParticipantUncheckedUpdateManyWithoutInfluencerNestedInput
     loyaltyAccount?: LoyaltyAccountUncheckedUpdateOneWithoutInfluencerNestedInput
+    supportChat?: SupportChatUncheckedUpdateOneWithoutInfluencerNestedInput
   }
 
   export type PaymentSaleUpsertWithWhereUniqueWithoutPaymentInput = {
@@ -53195,6 +56450,7 @@ export namespace Prisma {
     payments?: PaymentCreateNestedManyWithoutInfluencerInput
     linkClicks?: LinkClickCreateNestedManyWithoutInfluencerInput
     campaigns?: CampaignParticipantCreateNestedManyWithoutInfluencerInput
+    supportChat?: SupportChatCreateNestedOneWithoutInfluencerInput
   }
 
   export type InfluencerUncheckedCreateWithoutLoyaltyAccountInput = {
@@ -53230,6 +56486,7 @@ export namespace Prisma {
     payments?: PaymentUncheckedCreateNestedManyWithoutInfluencerInput
     linkClicks?: LinkClickUncheckedCreateNestedManyWithoutInfluencerInput
     campaigns?: CampaignParticipantUncheckedCreateNestedManyWithoutInfluencerInput
+    supportChat?: SupportChatUncheckedCreateNestedOneWithoutInfluencerInput
   }
 
   export type InfluencerCreateOrConnectWithoutLoyaltyAccountInput = {
@@ -53419,6 +56676,7 @@ export namespace Prisma {
     payments?: PaymentUpdateManyWithoutInfluencerNestedInput
     linkClicks?: LinkClickUpdateManyWithoutInfluencerNestedInput
     campaigns?: CampaignParticipantUpdateManyWithoutInfluencerNestedInput
+    supportChat?: SupportChatUpdateOneWithoutInfluencerNestedInput
   }
 
   export type InfluencerUncheckedUpdateWithoutLoyaltyAccountInput = {
@@ -53454,6 +56712,7 @@ export namespace Prisma {
     payments?: PaymentUncheckedUpdateManyWithoutInfluencerNestedInput
     linkClicks?: LinkClickUncheckedUpdateManyWithoutInfluencerNestedInput
     campaigns?: CampaignParticipantUncheckedUpdateManyWithoutInfluencerNestedInput
+    supportChat?: SupportChatUncheckedUpdateOneWithoutInfluencerNestedInput
   }
 
   export type LoyaltyTransactionUpsertWithWhereUniqueWithoutAccountInput = {
@@ -54320,6 +57579,7 @@ export namespace Prisma {
     payments?: PaymentCreateNestedManyWithoutInfluencerInput
     campaigns?: CampaignParticipantCreateNestedManyWithoutInfluencerInput
     loyaltyAccount?: LoyaltyAccountCreateNestedOneWithoutInfluencerInput
+    supportChat?: SupportChatCreateNestedOneWithoutInfluencerInput
   }
 
   export type InfluencerUncheckedCreateWithoutLinkClicksInput = {
@@ -54355,6 +57615,7 @@ export namespace Prisma {
     payments?: PaymentUncheckedCreateNestedManyWithoutInfluencerInput
     campaigns?: CampaignParticipantUncheckedCreateNestedManyWithoutInfluencerInput
     loyaltyAccount?: LoyaltyAccountUncheckedCreateNestedOneWithoutInfluencerInput
+    supportChat?: SupportChatUncheckedCreateNestedOneWithoutInfluencerInput
   }
 
   export type InfluencerCreateOrConnectWithoutLinkClicksInput = {
@@ -54449,6 +57710,7 @@ export namespace Prisma {
     payments?: PaymentUpdateManyWithoutInfluencerNestedInput
     campaigns?: CampaignParticipantUpdateManyWithoutInfluencerNestedInput
     loyaltyAccount?: LoyaltyAccountUpdateOneWithoutInfluencerNestedInput
+    supportChat?: SupportChatUpdateOneWithoutInfluencerNestedInput
   }
 
   export type InfluencerUncheckedUpdateWithoutLinkClicksInput = {
@@ -54484,6 +57746,7 @@ export namespace Prisma {
     payments?: PaymentUncheckedUpdateManyWithoutInfluencerNestedInput
     campaigns?: CampaignParticipantUncheckedUpdateManyWithoutInfluencerNestedInput
     loyaltyAccount?: LoyaltyAccountUncheckedUpdateOneWithoutInfluencerNestedInput
+    supportChat?: SupportChatUncheckedUpdateOneWithoutInfluencerNestedInput
   }
 
   export type ShareUpsertWithoutLinkClicksInput = {
@@ -54714,6 +57977,7 @@ export namespace Prisma {
     payments?: PaymentCreateNestedManyWithoutInfluencerInput
     linkClicks?: LinkClickCreateNestedManyWithoutInfluencerInput
     loyaltyAccount?: LoyaltyAccountCreateNestedOneWithoutInfluencerInput
+    supportChat?: SupportChatCreateNestedOneWithoutInfluencerInput
   }
 
   export type InfluencerUncheckedCreateWithoutCampaignsInput = {
@@ -54749,6 +58013,7 @@ export namespace Prisma {
     payments?: PaymentUncheckedCreateNestedManyWithoutInfluencerInput
     linkClicks?: LinkClickUncheckedCreateNestedManyWithoutInfluencerInput
     loyaltyAccount?: LoyaltyAccountUncheckedCreateNestedOneWithoutInfluencerInput
+    supportChat?: SupportChatUncheckedCreateNestedOneWithoutInfluencerInput
   }
 
   export type InfluencerCreateOrConnectWithoutCampaignsInput = {
@@ -54879,6 +58144,7 @@ export namespace Prisma {
     payments?: PaymentUpdateManyWithoutInfluencerNestedInput
     linkClicks?: LinkClickUpdateManyWithoutInfluencerNestedInput
     loyaltyAccount?: LoyaltyAccountUpdateOneWithoutInfluencerNestedInput
+    supportChat?: SupportChatUpdateOneWithoutInfluencerNestedInput
   }
 
   export type InfluencerUncheckedUpdateWithoutCampaignsInput = {
@@ -54914,6 +58180,7 @@ export namespace Prisma {
     payments?: PaymentUncheckedUpdateManyWithoutInfluencerNestedInput
     linkClicks?: LinkClickUncheckedUpdateManyWithoutInfluencerNestedInput
     loyaltyAccount?: LoyaltyAccountUncheckedUpdateOneWithoutInfluencerNestedInput
+    supportChat?: SupportChatUncheckedUpdateOneWithoutInfluencerNestedInput
   }
 
   export type CampaignCodeUsageUpsertWithWhereUniqueWithoutParticipantInput = {
@@ -55730,6 +58997,34 @@ export namespace Prisma {
     uniqueCode?: StringFieldUpdateOperationsInput | string
     joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     usageCount?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type SupportMessageCreateManyChatInput = {
+    id?: string
+    senderType: string
+    content: string
+    createdAt?: Date | string
+  }
+
+  export type SupportMessageUpdateWithoutChatInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    senderType?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SupportMessageUncheckedUpdateWithoutChatInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    senderType?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type SupportMessageUncheckedUpdateManyWithoutChatInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    senderType?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type LinkClickCreateManyShareInput = {

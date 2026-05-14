@@ -111,7 +111,7 @@ export default function AdminSupportPage() {
   const totalUnread = chats.reduce((s, c) => s + c.unreadByAdmin, 0);
 
   return (
-    <div className="flex h-[calc(100vh-64px)] -m-6 lg:-m-8 overflow-hidden">
+    <div className="flex h-[calc(100vh-80px)] overflow-hidden">
 
       {/* ── SOL: SOHBET LİSTESİ ── */}
       <div className={`${selectedId ? 'hidden lg:flex' : 'flex'} flex-col w-full lg:w-[340px] bg-white border-r border-gray-100 shrink-0`}>

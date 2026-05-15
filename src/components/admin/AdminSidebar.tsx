@@ -18,7 +18,8 @@ const menuGroups: { title: string; links: { href: string; icon: string; label: s
     links: [
       { href: "/admin/orders",            icon: "receipt_long",  label: "Talepler / Siparişler" },
       { href: "/admin/contact",           icon: "call",           label: "WhatsApp & İletişim"  },
-      { href: "/admin/fiyat-teklifleri",  icon: "request_quote",  label: "Fiyat Teklifleri"     },
+      { href: "/admin/fiyat-teklifleri",           icon: "request_quote",  label: "Fiyat Teklifleri"     },
+      { href: "/admin/fiyat-teklifleri/hizmetler", icon: "library_books",  label: "Hizmet Kütüphanesi"   },
     ],
   },
   {

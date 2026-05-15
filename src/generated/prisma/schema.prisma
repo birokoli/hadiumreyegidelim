@@ -578,3 +578,54 @@ model CampaignCodeUsage {
   note          String?
   usedAt        DateTime            @default(now())
 }
+
+// ─────────────────────────────────────────────────────────
+// FİYAT TEKLİFİ SİSTEMİ
+// ─────────────────────────────────────────────────────────
+
+model Quotation {
+  id            String          @id @default(cuid())
+  quotationNo   String          @unique // "TKF-2026-0001"
+  customerName  String
+  customerPhone String?
+  customerEmail String?
+  pax           Int             @default(1) // kişi sayısı
+  travelDate    String? // "Mart 2027" gibi serbest metin
+  validUntil    String? // "30 gün" gibi
+  margin        Float           @default(20) // % kar marjı — PDF'e yansımaz
+  status        String          @default("draft") // draft | sent | accepted | rejected | expired
+  notes         String?
+  items         QuotationItem[]
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+}
+
+model QuotationItem {
+  id          String    @id @default(cuid())
+  quotation   Quotation @relation(fields: [quotationId], references: [id], onDelete: Cascade)
+  quotationId String
+  category    String // flight | hotel | transfer | guide | extra
+  name        String
+  description String?
+  costPrice   Float // maliyet — PDF'e yansımaz
+  salePrice   Float // satış fiyatı = costPrice * (1 + margin/100)
+  currency    String    @default("USD")
+  quantity    Int       @default(1)
+  unit        String? // "kişi" | "gün" | "araç" | "gecelik"
+  sortOrder   Int       @default(0)
+  createdAt   DateTime  @default(now())
+}
+
+model ServiceLibrary {
+  id          String   @id @default(cuid())
+  category    String // flight | hotel | transfer | guide | extra
+  name        String
+  description String?
+  defaultCost Float    @default(0)
+  currency    String   @default("USD")
+  unit        String?
+  isActive    Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

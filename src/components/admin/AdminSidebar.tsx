@@ -16,8 +16,9 @@ const menuGroups: { title: string; links: { href: string; icon: string; label: s
   {
     title: "Satış & CRM",
     links: [
-      { href: "/admin/orders",  icon: "receipt_long", label: "Talepler / Siparişler" },
-      { href: "/admin/contact", icon: "call",          label: "WhatsApp & İletişim"  },
+      { href: "/admin/orders",            icon: "receipt_long",  label: "Talepler / Siparişler" },
+      { href: "/admin/contact",           icon: "call",           label: "WhatsApp & İletişim"  },
+      { href: "/admin/fiyat-teklifleri",  icon: "request_quote",  label: "Fiyat Teklifleri"     },
     ],
   },
   {

@@ -596,6 +596,51 @@ exports.Prisma.CampaignCodeUsageScalarFieldEnum = {
   usedAt: 'usedAt'
 };
 
+exports.Prisma.QuotationScalarFieldEnum = {
+  id: 'id',
+  quotationNo: 'quotationNo',
+  customerName: 'customerName',
+  customerPhone: 'customerPhone',
+  customerEmail: 'customerEmail',
+  pax: 'pax',
+  travelDate: 'travelDate',
+  validUntil: 'validUntil',
+  margin: 'margin',
+  status: 'status',
+  notes: 'notes',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.QuotationItemScalarFieldEnum = {
+  id: 'id',
+  quotationId: 'quotationId',
+  category: 'category',
+  name: 'name',
+  description: 'description',
+  costPrice: 'costPrice',
+  salePrice: 'salePrice',
+  currency: 'currency',
+  quantity: 'quantity',
+  unit: 'unit',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.ServiceLibraryScalarFieldEnum = {
+  id: 'id',
+  category: 'category',
+  name: 'name',
+  description: 'description',
+  defaultCost: 'defaultCost',
+  currency: 'currency',
+  unit: 'unit',
+  isActive: 'isActive',
+  sortOrder: 'sortOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -645,7 +690,10 @@ exports.Prisma.ModelName = {
   AttributionOverride: 'AttributionOverride',
   Campaign: 'Campaign',
   CampaignParticipant: 'CampaignParticipant',
-  CampaignCodeUsage: 'CampaignCodeUsage'
+  CampaignCodeUsage: 'CampaignCodeUsage',
+  Quotation: 'Quotation',
+  QuotationItem: 'QuotationItem',
+  ServiceLibrary: 'ServiceLibrary'
 };
 
 /**

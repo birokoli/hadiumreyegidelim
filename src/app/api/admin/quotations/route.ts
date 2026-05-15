@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
   if (!await checkAdmin()) return NextResponse.json({ error: 'Yetkisiz.' }, { status: 401 });
 
   const body = await req.json();
-  const { customerName, customerPhone, customerEmail, pax, travelDate, validUntil, margin, notes, items } = body;
+  const { customerName, customerPhone, customerEmail, pax, travelDate, startDate, validUntil, margin, usdRate, notes, items } = body;
 
   if (!customerName) return NextResponse.json({ error: 'Müşteri adı zorunlu.' }, { status: 400 });
 
@@ -52,8 +52,10 @@ export async function POST(req: NextRequest) {
       customerEmail: customerEmail || null,
       pax: pax ?? 1,
       travelDate: travelDate || null,
+      startDate: startDate || null,
       validUntil: validUntil || null,
       margin: margin ?? 20,
+      usdRate: usdRate ?? 0,
       notes: notes || null,
       items: items?.length
         ? {

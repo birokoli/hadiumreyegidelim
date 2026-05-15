@@ -27,7 +27,7 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
 
   const { id } = await params;
   const body = await req.json();
-  const { customerName, customerPhone, customerEmail, pax, travelDate, validUntil, margin, notes, status, items } = body;
+  const { customerName, customerPhone, customerEmail, pax, travelDate, startDate, validUntil, margin, usdRate, notes, status, items } = body;
 
   // Önce eski item'ları sil, yenilerini ekle
   await prisma.quotationItem.deleteMany({ where: { quotationId: id } });
@@ -40,8 +40,10 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
       customerEmail: customerEmail || null,
       pax: pax ?? 1,
       travelDate: travelDate || null,
+      startDate: startDate || null,
       validUntil: validUntil || null,
       margin: margin ?? 20,
+      usdRate: usdRate ?? 0,
       notes: notes || null,
       status: status ?? 'draft',
       items: items?.length

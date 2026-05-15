@@ -43309,11 +43309,13 @@ export namespace Prisma {
   export type QuotationAvgAggregateOutputType = {
     pax: number | null
     margin: number | null
+    usdRate: number | null
   }
 
   export type QuotationSumAggregateOutputType = {
     pax: number | null
     margin: number | null
+    usdRate: number | null
   }
 
   export type QuotationMinAggregateOutputType = {
@@ -43326,6 +43328,8 @@ export namespace Prisma {
     travelDate: string | null
     validUntil: string | null
     margin: number | null
+    usdRate: number | null
+    startDate: string | null
     status: string | null
     notes: string | null
     createdAt: Date | null
@@ -43342,6 +43346,8 @@ export namespace Prisma {
     travelDate: string | null
     validUntil: string | null
     margin: number | null
+    usdRate: number | null
+    startDate: string | null
     status: string | null
     notes: string | null
     createdAt: Date | null
@@ -43358,6 +43364,8 @@ export namespace Prisma {
     travelDate: number
     validUntil: number
     margin: number
+    usdRate: number
+    startDate: number
     status: number
     notes: number
     createdAt: number
@@ -43369,11 +43377,13 @@ export namespace Prisma {
   export type QuotationAvgAggregateInputType = {
     pax?: true
     margin?: true
+    usdRate?: true
   }
 
   export type QuotationSumAggregateInputType = {
     pax?: true
     margin?: true
+    usdRate?: true
   }
 
   export type QuotationMinAggregateInputType = {
@@ -43386,6 +43396,8 @@ export namespace Prisma {
     travelDate?: true
     validUntil?: true
     margin?: true
+    usdRate?: true
+    startDate?: true
     status?: true
     notes?: true
     createdAt?: true
@@ -43402,6 +43414,8 @@ export namespace Prisma {
     travelDate?: true
     validUntil?: true
     margin?: true
+    usdRate?: true
+    startDate?: true
     status?: true
     notes?: true
     createdAt?: true
@@ -43418,6 +43432,8 @@ export namespace Prisma {
     travelDate?: true
     validUntil?: true
     margin?: true
+    usdRate?: true
+    startDate?: true
     status?: true
     notes?: true
     createdAt?: true
@@ -43521,6 +43537,8 @@ export namespace Prisma {
     travelDate: string | null
     validUntil: string | null
     margin: number
+    usdRate: number
+    startDate: string | null
     status: string
     notes: string | null
     createdAt: Date
@@ -43556,6 +43574,8 @@ export namespace Prisma {
     travelDate?: boolean
     validUntil?: boolean
     margin?: boolean
+    usdRate?: boolean
+    startDate?: boolean
     status?: boolean
     notes?: boolean
     createdAt?: boolean
@@ -43574,6 +43594,8 @@ export namespace Prisma {
     travelDate?: boolean
     validUntil?: boolean
     margin?: boolean
+    usdRate?: boolean
+    startDate?: boolean
     status?: boolean
     notes?: boolean
     createdAt?: boolean
@@ -43590,6 +43612,8 @@ export namespace Prisma {
     travelDate?: boolean
     validUntil?: boolean
     margin?: boolean
+    usdRate?: boolean
+    startDate?: boolean
     status?: boolean
     notes?: boolean
     createdAt?: boolean
@@ -43606,13 +43630,15 @@ export namespace Prisma {
     travelDate?: boolean
     validUntil?: boolean
     margin?: boolean
+    usdRate?: boolean
+    startDate?: boolean
     status?: boolean
     notes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type QuotationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "quotationNo" | "customerName" | "customerPhone" | "customerEmail" | "pax" | "travelDate" | "validUntil" | "margin" | "status" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["quotation"]>
+  export type QuotationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "quotationNo" | "customerName" | "customerPhone" | "customerEmail" | "pax" | "travelDate" | "validUntil" | "margin" | "usdRate" | "startDate" | "status" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["quotation"]>
   export type QuotationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     items?: boolean | Quotation$itemsArgs<ExtArgs>
     _count?: boolean | QuotationCountOutputTypeDefaultArgs<ExtArgs>
@@ -43635,6 +43661,8 @@ export namespace Prisma {
       travelDate: string | null
       validUntil: string | null
       margin: number
+      usdRate: number
+      startDate: string | null
       status: string
       notes: string | null
       createdAt: Date
@@ -44072,6 +44100,8 @@ export namespace Prisma {
     readonly travelDate: FieldRef<"Quotation", 'String'>
     readonly validUntil: FieldRef<"Quotation", 'String'>
     readonly margin: FieldRef<"Quotation", 'Float'>
+    readonly usdRate: FieldRef<"Quotation", 'Float'>
+    readonly startDate: FieldRef<"Quotation", 'String'>
     readonly status: FieldRef<"Quotation", 'String'>
     readonly notes: FieldRef<"Quotation", 'String'>
     readonly createdAt: FieldRef<"Quotation", 'DateTime'>
@@ -47410,6 +47440,8 @@ export namespace Prisma {
     travelDate: 'travelDate',
     validUntil: 'validUntil',
     margin: 'margin',
+    usdRate: 'usdRate',
+    startDate: 'startDate',
     status: 'status',
     notes: 'notes',
     createdAt: 'createdAt',
@@ -50528,6 +50560,8 @@ export namespace Prisma {
     travelDate?: StringNullableFilter<"Quotation"> | string | null
     validUntil?: StringNullableFilter<"Quotation"> | string | null
     margin?: FloatFilter<"Quotation"> | number
+    usdRate?: FloatFilter<"Quotation"> | number
+    startDate?: StringNullableFilter<"Quotation"> | string | null
     status?: StringFilter<"Quotation"> | string
     notes?: StringNullableFilter<"Quotation"> | string | null
     createdAt?: DateTimeFilter<"Quotation"> | Date | string
@@ -50545,6 +50579,8 @@ export namespace Prisma {
     travelDate?: SortOrderInput | SortOrder
     validUntil?: SortOrderInput | SortOrder
     margin?: SortOrder
+    usdRate?: SortOrder
+    startDate?: SortOrderInput | SortOrder
     status?: SortOrder
     notes?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -50565,6 +50601,8 @@ export namespace Prisma {
     travelDate?: StringNullableFilter<"Quotation"> | string | null
     validUntil?: StringNullableFilter<"Quotation"> | string | null
     margin?: FloatFilter<"Quotation"> | number
+    usdRate?: FloatFilter<"Quotation"> | number
+    startDate?: StringNullableFilter<"Quotation"> | string | null
     status?: StringFilter<"Quotation"> | string
     notes?: StringNullableFilter<"Quotation"> | string | null
     createdAt?: DateTimeFilter<"Quotation"> | Date | string
@@ -50582,6 +50620,8 @@ export namespace Prisma {
     travelDate?: SortOrderInput | SortOrder
     validUntil?: SortOrderInput | SortOrder
     margin?: SortOrder
+    usdRate?: SortOrder
+    startDate?: SortOrderInput | SortOrder
     status?: SortOrder
     notes?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -50606,6 +50646,8 @@ export namespace Prisma {
     travelDate?: StringNullableWithAggregatesFilter<"Quotation"> | string | null
     validUntil?: StringNullableWithAggregatesFilter<"Quotation"> | string | null
     margin?: FloatWithAggregatesFilter<"Quotation"> | number
+    usdRate?: FloatWithAggregatesFilter<"Quotation"> | number
+    startDate?: StringNullableWithAggregatesFilter<"Quotation"> | string | null
     status?: StringWithAggregatesFilter<"Quotation"> | string
     notes?: StringNullableWithAggregatesFilter<"Quotation"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Quotation"> | Date | string
@@ -54199,6 +54241,8 @@ export namespace Prisma {
     travelDate?: string | null
     validUntil?: string | null
     margin?: number
+    usdRate?: number
+    startDate?: string | null
     status?: string
     notes?: string | null
     createdAt?: Date | string
@@ -54216,6 +54260,8 @@ export namespace Prisma {
     travelDate?: string | null
     validUntil?: string | null
     margin?: number
+    usdRate?: number
+    startDate?: string | null
     status?: string
     notes?: string | null
     createdAt?: Date | string
@@ -54233,6 +54279,8 @@ export namespace Prisma {
     travelDate?: NullableStringFieldUpdateOperationsInput | string | null
     validUntil?: NullableStringFieldUpdateOperationsInput | string | null
     margin?: FloatFieldUpdateOperationsInput | number
+    usdRate?: FloatFieldUpdateOperationsInput | number
+    startDate?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -54250,6 +54298,8 @@ export namespace Prisma {
     travelDate?: NullableStringFieldUpdateOperationsInput | string | null
     validUntil?: NullableStringFieldUpdateOperationsInput | string | null
     margin?: FloatFieldUpdateOperationsInput | number
+    usdRate?: FloatFieldUpdateOperationsInput | number
+    startDate?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -54267,6 +54317,8 @@ export namespace Prisma {
     travelDate?: string | null
     validUntil?: string | null
     margin?: number
+    usdRate?: number
+    startDate?: string | null
     status?: string
     notes?: string | null
     createdAt?: Date | string
@@ -54283,6 +54335,8 @@ export namespace Prisma {
     travelDate?: NullableStringFieldUpdateOperationsInput | string | null
     validUntil?: NullableStringFieldUpdateOperationsInput | string | null
     margin?: FloatFieldUpdateOperationsInput | number
+    usdRate?: FloatFieldUpdateOperationsInput | number
+    startDate?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -54299,6 +54353,8 @@ export namespace Prisma {
     travelDate?: NullableStringFieldUpdateOperationsInput | string | null
     validUntil?: NullableStringFieldUpdateOperationsInput | string | null
     margin?: FloatFieldUpdateOperationsInput | number
+    usdRate?: FloatFieldUpdateOperationsInput | number
+    startDate?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -56694,6 +56750,8 @@ export namespace Prisma {
     travelDate?: SortOrder
     validUntil?: SortOrder
     margin?: SortOrder
+    usdRate?: SortOrder
+    startDate?: SortOrder
     status?: SortOrder
     notes?: SortOrder
     createdAt?: SortOrder
@@ -56703,6 +56761,7 @@ export namespace Prisma {
   export type QuotationAvgOrderByAggregateInput = {
     pax?: SortOrder
     margin?: SortOrder
+    usdRate?: SortOrder
   }
 
   export type QuotationMaxOrderByAggregateInput = {
@@ -56715,6 +56774,8 @@ export namespace Prisma {
     travelDate?: SortOrder
     validUntil?: SortOrder
     margin?: SortOrder
+    usdRate?: SortOrder
+    startDate?: SortOrder
     status?: SortOrder
     notes?: SortOrder
     createdAt?: SortOrder
@@ -56731,6 +56792,8 @@ export namespace Prisma {
     travelDate?: SortOrder
     validUntil?: SortOrder
     margin?: SortOrder
+    usdRate?: SortOrder
+    startDate?: SortOrder
     status?: SortOrder
     notes?: SortOrder
     createdAt?: SortOrder
@@ -56740,6 +56803,7 @@ export namespace Prisma {
   export type QuotationSumOrderByAggregateInput = {
     pax?: SortOrder
     margin?: SortOrder
+    usdRate?: SortOrder
   }
 
   export type QuotationScalarRelationFilter = {
@@ -63136,6 +63200,8 @@ export namespace Prisma {
     travelDate?: string | null
     validUntil?: string | null
     margin?: number
+    usdRate?: number
+    startDate?: string | null
     status?: string
     notes?: string | null
     createdAt?: Date | string
@@ -63152,6 +63218,8 @@ export namespace Prisma {
     travelDate?: string | null
     validUntil?: string | null
     margin?: number
+    usdRate?: number
+    startDate?: string | null
     status?: string
     notes?: string | null
     createdAt?: Date | string
@@ -63184,6 +63252,8 @@ export namespace Prisma {
     travelDate?: NullableStringFieldUpdateOperationsInput | string | null
     validUntil?: NullableStringFieldUpdateOperationsInput | string | null
     margin?: FloatFieldUpdateOperationsInput | number
+    usdRate?: FloatFieldUpdateOperationsInput | number
+    startDate?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -63200,6 +63270,8 @@ export namespace Prisma {
     travelDate?: NullableStringFieldUpdateOperationsInput | string | null
     validUntil?: NullableStringFieldUpdateOperationsInput | string | null
     margin?: FloatFieldUpdateOperationsInput | number
+    usdRate?: FloatFieldUpdateOperationsInput | number
+    startDate?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string

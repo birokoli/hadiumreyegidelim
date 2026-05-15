@@ -606,6 +606,8 @@ exports.Prisma.QuotationScalarFieldEnum = {
   travelDate: 'travelDate',
   validUntil: 'validUntil',
   margin: 'margin',
+  usdRate: 'usdRate',
+  startDate: 'startDate',
   status: 'status',
   notes: 'notes',
   createdAt: 'createdAt',

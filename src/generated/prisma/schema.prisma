@@ -593,6 +593,8 @@ model Quotation {
   travelDate    String? // "Mart 2027" gibi serbest metin
   validUntil    String? // "30 gün" gibi
   margin        Float           @default(20) // % kar marjı — PDF'e yansımaz
+  usdRate       Float           @default(0) // USD/TRY kuru
+  startDate     String? // "8 Haziran 2026" — PDF meta satırı
   status        String          @default("draft") // draft | sent | accepted | rejected | expired
   notes         String?
   items         QuotationItem[]

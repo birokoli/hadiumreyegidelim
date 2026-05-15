@@ -169,7 +169,6 @@ function buildPdfHtml(fields: {
 <head>
 <meta charset="UTF-8"/>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Poppins:wght@400;500;700&display=swap" rel="stylesheet"/>
-<style>* { box-sizing: border-box; margin: 0; padding: 0; }</style>
 </head>
 <body style="background:white;margin:0;padding:0;">
 
@@ -412,7 +411,10 @@ export default function QuotationForm({ editId }: { editId?: string }) {
     wrapper.style.position = 'fixed';
     wrapper.style.left = '-99999px';
     wrapper.style.top = '0';
-    wrapper.style.background = 'white';
+    wrapper.style.width = '794px';
+    wrapper.style.overflow = 'hidden';
+    wrapper.style.pointerEvents = 'none';
+    wrapper.style.zIndex = '-1';
     document.body.appendChild(wrapper);
 
     const customerSlug = customerName.replace(/\s+/g, '');

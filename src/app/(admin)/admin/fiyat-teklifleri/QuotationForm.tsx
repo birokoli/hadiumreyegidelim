@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
-import Script from 'next/script';
 
 // ─── Types ────────────────────────────────────────────────
 interface ServiceLibItem {
@@ -164,13 +163,7 @@ function buildPdfHtml(fields: {
   const h2Style = `font-family:'Poppins',sans-serif;font-weight:700;font-size:11px;color:#203D76;margin:20px 0 6px;`;
   const sectionSubtitle = `font-family:'Poppins',sans-serif;font-size:16px;font-weight:400;color:#464646;margin:28px 0 8px;`;
 
-  return `<!DOCTYPE html>
-<html lang="tr">
-<head>
-<meta charset="UTF-8"/>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Poppins:wght@400;500;700&display=swap" rel="stylesheet"/>
-</head>
-<body style="background:white;margin:0;padding:0;">
+  return `<div style="background:white;margin:0;padding:0;font-family:'Poppins',sans-serif;">
 
 <!-- ══════════════════════ SAYFA 1: HAKKIMIZDA ══════════════════════ -->
 <div id="page-1" style="${PAGE_STYLE}">
@@ -251,13 +244,13 @@ function buildPdfHtml(fields: {
   ${pageNum(3)}
 </div>
 
-</body>
-</html>`;
+</div>`;
 }
 
 // ─── Main Component ────────────────────────────────────────
 export default function QuotationForm({ editId }: { editId?: string }) {
   const router = useRouter();
+  const pdfRef = useRef<HTMLDivElement>(null);
   const [html2pdfReady, setHtml2pdfReady] = useState(false);
 
   // Form state
@@ -284,6 +277,30 @@ export default function QuotationForm({ editId }: { editId?: string }) {
   const [libOpen, setLibOpen] = useState(false);
   const [libSearch, setLibSearch] = useState('');
   const [addingCategory, setAddingCategory] = useState('vize');
+
+  // html2pdf + Cairo/Poppins font yükleme
+  useEffect(() => {
+    // Fontlar
+    if (!document.querySelector('link[data-pdf-fonts]')) {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = 'https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Poppins:wght@400;500;700&display=swap';
+      link.setAttribute('data-pdf-fonts', '1');
+      document.head.appendChild(link);
+    }
+    // Script
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    if (typeof (window as any).html2pdf !== 'undefined') {
+      setHtml2pdfReady(true);
+      return;
+    }
+    if (document.querySelector('script[data-html2pdf]')) return;
+    const script = document.createElement('script');
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
+    script.setAttribute('data-html2pdf', '1');
+    script.onload = () => setHtml2pdfReady(true);
+    document.head.appendChild(script);
+  }, []);
 
   // Load service library
   useEffect(() => {
@@ -401,32 +418,30 @@ export default function QuotationForm({ editId }: { editId?: string }) {
   function downloadPdf() {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const h2p = (window as any).html2pdf;
-    if (!h2p) return alert('PDF kütüphanesi yükleniyor, lütfen bekleyin.');
+    if (!h2p) { alert('PDF kütüphanesi yükleniyor, lütfen bekleyin.'); return; }
+    const el = pdfRef.current;
+    if (!el) return;
+
     setDownloading(true);
 
-    const html = buildPdfHtml({ quotationNo: quotationNo || 'TASLAK', customerName, customerPhone, pax, travelDate, startDate, usdRate, notes, items });
+    // Referans HTML ile birebir aynı yaklaşım:
+    // element zaten DOM'da rendered, geçici olarak visible yapıp capture ediyoruz
+    const origLeft = el.style.left;
+    el.style.left = '-794px'; // hâlâ ekran dışı ama fixed -99999 değil
 
-    const wrapper = document.createElement('div');
-    wrapper.innerHTML = html;
-    wrapper.style.position = 'fixed';
-    wrapper.style.left = '-99999px';
-    wrapper.style.top = '0';
-    wrapper.style.width = '794px';
-    wrapper.style.overflow = 'hidden';
-    wrapper.style.pointerEvents = 'none';
-    wrapper.style.zIndex = '-1';
-    document.body.appendChild(wrapper);
-
-    const customerSlug = customerName.replace(/\s+/g, '');
+    const slug = (customerName || 'Teklif').replace(/\s+/g, '');
     h2p().set({
       margin: 0,
-      filename: `hadiumreyegidelim_com-Fiyat-Teklifi-${customerSlug}.pdf`,
+      filename: `hadiumreyegidelim_com-Fiyat-Teklifi-${slug}.pdf`,
       image: { type: 'jpeg', quality: 0.98 },
       html2canvas: { scale: 2, useCORS: true, backgroundColor: '#ffffff', logging: false },
       jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
       pagebreak: { mode: ['css', 'legacy'], before: ['#page-2', '#page-3'] },
-    }).from(wrapper).save().then(() => {
-      document.body.removeChild(wrapper);
+    }).from(el).save().then(() => {
+      el.style.left = origLeft;
+      setDownloading(false);
+    }).catch(() => {
+      el.style.left = origLeft;
       setDownloading(false);
     });
   }
@@ -442,18 +457,28 @@ export default function QuotationForm({ editId }: { editId?: string }) {
     return { ...cat, items: items.filter(i => i.category === catVal) };
   });
 
-  // PDF preview HTML
-  const previewHtml = buildPdfHtml({
+  // PDF içeriği — hem hidden ref div hem preview tab için kullanılır
+  const pdfBodyHtml = buildPdfHtml({
     quotationNo: quotationNo || 'TASLAK',
-    customerName: customerName || 'Müşteri Adı',
+    customerName: customerName || 'Müşteri',
     customerPhone, pax, travelDate, startDate, usdRate, notes, items,
   });
 
   return (
     <>
-      <Script
-        src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
-        onLoad={() => setHtml2pdfReady(true)}
+      {/* ── Gizli PDF container: referans HTML'deki doc-wrapper gibi her zaman DOM'da ── */}
+      <div
+        ref={pdfRef}
+        style={{
+          position: 'fixed',
+          left: '-99999px',
+          top: 0,
+          width: '794px',
+          background: 'white',
+          zIndex: -9999,
+          pointerEvents: 'none',
+        }}
+        dangerouslySetInnerHTML={{ __html: pdfBodyHtml }}
       />
 
       <div className="space-y-4">
@@ -471,7 +496,7 @@ export default function QuotationForm({ editId }: { editId?: string }) {
           <div className="flex items-center gap-2 flex-wrap">
             <button
               onClick={downloadPdf}
-              disabled={downloading || items.length === 0 || !html2pdfReady}
+              disabled={downloading || items.length === 0}
               className="flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-40 text-white text-[13px] font-semibold px-4 py-2.5 rounded-xl transition-all active:scale-95 shadow-sm"
             >
               <span className="material-symbols-outlined text-[18px]">{downloading ? 'progress_activity' : 'picture_as_pdf'}</span>
@@ -729,7 +754,7 @@ export default function QuotationForm({ editId }: { editId?: string }) {
               </div>
 
               {/* PDF download shortcut */}
-              <button onClick={downloadPdf} disabled={downloading || items.length === 0 || !html2pdfReady}
+              <button onClick={downloadPdf} disabled={downloading || items.length === 0}
                 className="w-full py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-700 disabled:opacity-40 text-white text-[13px] font-semibold flex items-center justify-center gap-2 transition-all active:scale-95 shadow-sm">
                 <span className="material-symbols-outlined text-[18px]">{downloading ? 'progress_activity' : 'picture_as_pdf'}</span>
                 {downloading ? 'PDF oluşturuluyor...' : 'PDF İndir (.pdf)'}
@@ -744,7 +769,7 @@ export default function QuotationForm({ editId }: { editId?: string }) {
                 <span className="w-2 h-2 rounded-full bg-emerald-400 inline-block" />
                 Müşteri görünümü — PDF'te bu 3 sayfa çıkacak (kar payı gözükmez)
               </span>
-              <button onClick={downloadPdf} disabled={downloading || items.length === 0 || !html2pdfReady}
+              <button onClick={downloadPdf} disabled={downloading || items.length === 0}
                 className="flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-40 text-white text-[12px] font-semibold px-3 py-1.5 rounded-lg transition-all">
                 <span className="material-symbols-outlined text-[15px]">{downloading ? 'progress_activity' : 'download'}</span>
                 PDF İndir
@@ -756,7 +781,7 @@ export default function QuotationForm({ editId }: { editId?: string }) {
                   <div className="text-[10px] text-gray-400 mb-1 text-center">Sayfa {pageNum}</div>
                   <div
                     style={{ transform: 'scale(0.72)', transformOrigin: 'top center', width: '794px', marginBottom: '-215px' }}
-                    dangerouslySetInnerHTML={{ __html: previewHtml }}
+                    dangerouslySetInnerHTML={{ __html: pdfBodyHtml }}
                     className="pointer-events-none"
                     ref={el => {
                       if (el) {

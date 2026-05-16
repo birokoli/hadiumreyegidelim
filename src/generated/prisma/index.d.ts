@@ -179,6 +179,11 @@ export type CampaignParticipant = $Result.DefaultSelection<Prisma.$CampaignParti
  */
 export type CampaignCodeUsage = $Result.DefaultSelection<Prisma.$CampaignCodeUsagePayload>
 /**
+ * Model CompanySettings
+ * 
+ */
+export type CompanySettings = $Result.DefaultSelection<Prisma.$CompanySettingsPayload>
+/**
  * Model Quotation
  * 
  */
@@ -641,6 +646,16 @@ export class PrismaClient<
     * ```
     */
   get campaignCodeUsage(): Prisma.CampaignCodeUsageDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.companySettings`: Exposes CRUD operations for the **CompanySettings** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more CompanySettings
+    * const companySettings = await prisma.companySettings.findMany()
+    * ```
+    */
+  get companySettings(): Prisma.CompanySettingsDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.quotation`: Exposes CRUD operations for the **Quotation** model.
@@ -1145,6 +1160,7 @@ export namespace Prisma {
     Campaign: 'Campaign',
     CampaignParticipant: 'CampaignParticipant',
     CampaignCodeUsage: 'CampaignCodeUsage',
+    CompanySettings: 'CompanySettings',
     Quotation: 'Quotation',
     QuotationItem: 'QuotationItem',
     ServiceLibrary: 'ServiceLibrary'
@@ -1166,7 +1182,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "order" | "setting" | "service" | "guide" | "category" | "author" | "post" | "package" | "hotel" | "aILog" | "user" | "contactRequest" | "postVersion" | "influencer" | "supportChat" | "supportMessage" | "share" | "customer" | "sale" | "payment" | "paymentSale" | "loyaltyAccount" | "loyaltyTransaction" | "loyaltyRedemption" | "loyaltyCatalogItem" | "loyaltyMonthlyHistory" | "loyaltyMonthlyTierRule" | "loyaltyHonorTierRule" | "linkClick" | "attributionOverride" | "campaign" | "campaignParticipant" | "campaignCodeUsage" | "quotation" | "quotationItem" | "serviceLibrary"
+      modelProps: "order" | "setting" | "service" | "guide" | "category" | "author" | "post" | "package" | "hotel" | "aILog" | "user" | "contactRequest" | "postVersion" | "influencer" | "supportChat" | "supportMessage" | "share" | "customer" | "sale" | "payment" | "paymentSale" | "loyaltyAccount" | "loyaltyTransaction" | "loyaltyRedemption" | "loyaltyCatalogItem" | "loyaltyMonthlyHistory" | "loyaltyMonthlyTierRule" | "loyaltyHonorTierRule" | "linkClick" | "attributionOverride" | "campaign" | "campaignParticipant" | "campaignCodeUsage" | "companySettings" | "quotation" | "quotationItem" | "serviceLibrary"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -3612,6 +3628,80 @@ export namespace Prisma {
           }
         }
       }
+      CompanySettings: {
+        payload: Prisma.$CompanySettingsPayload<ExtArgs>
+        fields: Prisma.CompanySettingsFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CompanySettingsFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanySettingsPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CompanySettingsFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanySettingsPayload>
+          }
+          findFirst: {
+            args: Prisma.CompanySettingsFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanySettingsPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CompanySettingsFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanySettingsPayload>
+          }
+          findMany: {
+            args: Prisma.CompanySettingsFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanySettingsPayload>[]
+          }
+          create: {
+            args: Prisma.CompanySettingsCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanySettingsPayload>
+          }
+          createMany: {
+            args: Prisma.CompanySettingsCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.CompanySettingsCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanySettingsPayload>[]
+          }
+          delete: {
+            args: Prisma.CompanySettingsDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanySettingsPayload>
+          }
+          update: {
+            args: Prisma.CompanySettingsUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanySettingsPayload>
+          }
+          deleteMany: {
+            args: Prisma.CompanySettingsDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CompanySettingsUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.CompanySettingsUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanySettingsPayload>[]
+          }
+          upsert: {
+            args: Prisma.CompanySettingsUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CompanySettingsPayload>
+          }
+          aggregate: {
+            args: Prisma.CompanySettingsAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCompanySettings>
+          }
+          groupBy: {
+            args: Prisma.CompanySettingsGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CompanySettingsGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CompanySettingsCountArgs<ExtArgs>
+            result: $Utils.Optional<CompanySettingsCountAggregateOutputType> | number
+          }
+        }
+      }
       Quotation: {
         payload: Prisma.$QuotationPayload<ExtArgs>
         fields: Prisma.QuotationFieldRefs
@@ -3963,6 +4053,7 @@ export namespace Prisma {
     campaign?: CampaignOmit
     campaignParticipant?: CampaignParticipantOmit
     campaignCodeUsage?: CampaignCodeUsageOmit
+    companySettings?: CompanySettingsOmit
     quotation?: QuotationOmit
     quotationItem?: QuotationItemOmit
     serviceLibrary?: ServiceLibraryOmit
@@ -43295,6 +43386,1052 @@ export namespace Prisma {
 
 
   /**
+   * Model CompanySettings
+   */
+
+  export type AggregateCompanySettings = {
+    _count: CompanySettingsCountAggregateOutputType | null
+    _avg: CompanySettingsAvgAggregateOutputType | null
+    _sum: CompanySettingsSumAggregateOutputType | null
+    _min: CompanySettingsMinAggregateOutputType | null
+    _max: CompanySettingsMaxAggregateOutputType | null
+  }
+
+  export type CompanySettingsAvgAggregateOutputType = {
+    defaultMargin: number | null
+    defaultUsdRate: number | null
+  }
+
+  export type CompanySettingsSumAggregateOutputType = {
+    defaultMargin: number | null
+    defaultUsdRate: number | null
+  }
+
+  export type CompanySettingsMinAggregateOutputType = {
+    id: string | null
+    logoPath: string | null
+    defaultMargin: number | null
+    defaultUsdRate: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CompanySettingsMaxAggregateOutputType = {
+    id: string | null
+    logoPath: string | null
+    defaultMargin: number | null
+    defaultUsdRate: number | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CompanySettingsCountAggregateOutputType = {
+    id: number
+    logoPath: number
+    defaultMargin: number
+    defaultUsdRate: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type CompanySettingsAvgAggregateInputType = {
+    defaultMargin?: true
+    defaultUsdRate?: true
+  }
+
+  export type CompanySettingsSumAggregateInputType = {
+    defaultMargin?: true
+    defaultUsdRate?: true
+  }
+
+  export type CompanySettingsMinAggregateInputType = {
+    id?: true
+    logoPath?: true
+    defaultMargin?: true
+    defaultUsdRate?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CompanySettingsMaxAggregateInputType = {
+    id?: true
+    logoPath?: true
+    defaultMargin?: true
+    defaultUsdRate?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CompanySettingsCountAggregateInputType = {
+    id?: true
+    logoPath?: true
+    defaultMargin?: true
+    defaultUsdRate?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type CompanySettingsAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CompanySettings to aggregate.
+     */
+    where?: CompanySettingsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CompanySettings to fetch.
+     */
+    orderBy?: CompanySettingsOrderByWithRelationInput | CompanySettingsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CompanySettingsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CompanySettings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CompanySettings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned CompanySettings
+    **/
+    _count?: true | CompanySettingsCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: CompanySettingsAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: CompanySettingsSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CompanySettingsMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CompanySettingsMaxAggregateInputType
+  }
+
+  export type GetCompanySettingsAggregateType<T extends CompanySettingsAggregateArgs> = {
+        [P in keyof T & keyof AggregateCompanySettings]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCompanySettings[P]>
+      : GetScalarType<T[P], AggregateCompanySettings[P]>
+  }
+
+
+
+
+  export type CompanySettingsGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CompanySettingsWhereInput
+    orderBy?: CompanySettingsOrderByWithAggregationInput | CompanySettingsOrderByWithAggregationInput[]
+    by: CompanySettingsScalarFieldEnum[] | CompanySettingsScalarFieldEnum
+    having?: CompanySettingsScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CompanySettingsCountAggregateInputType | true
+    _avg?: CompanySettingsAvgAggregateInputType
+    _sum?: CompanySettingsSumAggregateInputType
+    _min?: CompanySettingsMinAggregateInputType
+    _max?: CompanySettingsMaxAggregateInputType
+  }
+
+  export type CompanySettingsGroupByOutputType = {
+    id: string
+    logoPath: string | null
+    defaultMargin: number
+    defaultUsdRate: number
+    createdAt: Date
+    updatedAt: Date
+    _count: CompanySettingsCountAggregateOutputType | null
+    _avg: CompanySettingsAvgAggregateOutputType | null
+    _sum: CompanySettingsSumAggregateOutputType | null
+    _min: CompanySettingsMinAggregateOutputType | null
+    _max: CompanySettingsMaxAggregateOutputType | null
+  }
+
+  type GetCompanySettingsGroupByPayload<T extends CompanySettingsGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CompanySettingsGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CompanySettingsGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CompanySettingsGroupByOutputType[P]>
+            : GetScalarType<T[P], CompanySettingsGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CompanySettingsSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    logoPath?: boolean
+    defaultMargin?: boolean
+    defaultUsdRate?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["companySettings"]>
+
+  export type CompanySettingsSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    logoPath?: boolean
+    defaultMargin?: boolean
+    defaultUsdRate?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["companySettings"]>
+
+  export type CompanySettingsSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    logoPath?: boolean
+    defaultMargin?: boolean
+    defaultUsdRate?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["companySettings"]>
+
+  export type CompanySettingsSelectScalar = {
+    id?: boolean
+    logoPath?: boolean
+    defaultMargin?: boolean
+    defaultUsdRate?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type CompanySettingsOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "logoPath" | "defaultMargin" | "defaultUsdRate" | "createdAt" | "updatedAt", ExtArgs["result"]["companySettings"]>
+
+  export type $CompanySettingsPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "CompanySettings"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      logoPath: string | null
+      defaultMargin: number
+      defaultUsdRate: number
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["companySettings"]>
+    composites: {}
+  }
+
+  type CompanySettingsGetPayload<S extends boolean | null | undefined | CompanySettingsDefaultArgs> = $Result.GetResult<Prisma.$CompanySettingsPayload, S>
+
+  type CompanySettingsCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CompanySettingsFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CompanySettingsCountAggregateInputType | true
+    }
+
+  export interface CompanySettingsDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CompanySettings'], meta: { name: 'CompanySettings' } }
+    /**
+     * Find zero or one CompanySettings that matches the filter.
+     * @param {CompanySettingsFindUniqueArgs} args - Arguments to find a CompanySettings
+     * @example
+     * // Get one CompanySettings
+     * const companySettings = await prisma.companySettings.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CompanySettingsFindUniqueArgs>(args: SelectSubset<T, CompanySettingsFindUniqueArgs<ExtArgs>>): Prisma__CompanySettingsClient<$Result.GetResult<Prisma.$CompanySettingsPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one CompanySettings that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CompanySettingsFindUniqueOrThrowArgs} args - Arguments to find a CompanySettings
+     * @example
+     * // Get one CompanySettings
+     * const companySettings = await prisma.companySettings.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CompanySettingsFindUniqueOrThrowArgs>(args: SelectSubset<T, CompanySettingsFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CompanySettingsClient<$Result.GetResult<Prisma.$CompanySettingsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CompanySettings that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompanySettingsFindFirstArgs} args - Arguments to find a CompanySettings
+     * @example
+     * // Get one CompanySettings
+     * const companySettings = await prisma.companySettings.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CompanySettingsFindFirstArgs>(args?: SelectSubset<T, CompanySettingsFindFirstArgs<ExtArgs>>): Prisma__CompanySettingsClient<$Result.GetResult<Prisma.$CompanySettingsPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CompanySettings that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompanySettingsFindFirstOrThrowArgs} args - Arguments to find a CompanySettings
+     * @example
+     * // Get one CompanySettings
+     * const companySettings = await prisma.companySettings.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CompanySettingsFindFirstOrThrowArgs>(args?: SelectSubset<T, CompanySettingsFindFirstOrThrowArgs<ExtArgs>>): Prisma__CompanySettingsClient<$Result.GetResult<Prisma.$CompanySettingsPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more CompanySettings that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompanySettingsFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all CompanySettings
+     * const companySettings = await prisma.companySettings.findMany()
+     * 
+     * // Get first 10 CompanySettings
+     * const companySettings = await prisma.companySettings.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const companySettingsWithIdOnly = await prisma.companySettings.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends CompanySettingsFindManyArgs>(args?: SelectSubset<T, CompanySettingsFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompanySettingsPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a CompanySettings.
+     * @param {CompanySettingsCreateArgs} args - Arguments to create a CompanySettings.
+     * @example
+     * // Create one CompanySettings
+     * const CompanySettings = await prisma.companySettings.create({
+     *   data: {
+     *     // ... data to create a CompanySettings
+     *   }
+     * })
+     * 
+     */
+    create<T extends CompanySettingsCreateArgs>(args: SelectSubset<T, CompanySettingsCreateArgs<ExtArgs>>): Prisma__CompanySettingsClient<$Result.GetResult<Prisma.$CompanySettingsPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many CompanySettings.
+     * @param {CompanySettingsCreateManyArgs} args - Arguments to create many CompanySettings.
+     * @example
+     * // Create many CompanySettings
+     * const companySettings = await prisma.companySettings.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CompanySettingsCreateManyArgs>(args?: SelectSubset<T, CompanySettingsCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many CompanySettings and returns the data saved in the database.
+     * @param {CompanySettingsCreateManyAndReturnArgs} args - Arguments to create many CompanySettings.
+     * @example
+     * // Create many CompanySettings
+     * const companySettings = await prisma.companySettings.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many CompanySettings and only return the `id`
+     * const companySettingsWithIdOnly = await prisma.companySettings.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends CompanySettingsCreateManyAndReturnArgs>(args?: SelectSubset<T, CompanySettingsCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompanySettingsPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a CompanySettings.
+     * @param {CompanySettingsDeleteArgs} args - Arguments to delete one CompanySettings.
+     * @example
+     * // Delete one CompanySettings
+     * const CompanySettings = await prisma.companySettings.delete({
+     *   where: {
+     *     // ... filter to delete one CompanySettings
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CompanySettingsDeleteArgs>(args: SelectSubset<T, CompanySettingsDeleteArgs<ExtArgs>>): Prisma__CompanySettingsClient<$Result.GetResult<Prisma.$CompanySettingsPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one CompanySettings.
+     * @param {CompanySettingsUpdateArgs} args - Arguments to update one CompanySettings.
+     * @example
+     * // Update one CompanySettings
+     * const companySettings = await prisma.companySettings.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CompanySettingsUpdateArgs>(args: SelectSubset<T, CompanySettingsUpdateArgs<ExtArgs>>): Prisma__CompanySettingsClient<$Result.GetResult<Prisma.$CompanySettingsPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more CompanySettings.
+     * @param {CompanySettingsDeleteManyArgs} args - Arguments to filter CompanySettings to delete.
+     * @example
+     * // Delete a few CompanySettings
+     * const { count } = await prisma.companySettings.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CompanySettingsDeleteManyArgs>(args?: SelectSubset<T, CompanySettingsDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CompanySettings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompanySettingsUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many CompanySettings
+     * const companySettings = await prisma.companySettings.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CompanySettingsUpdateManyArgs>(args: SelectSubset<T, CompanySettingsUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CompanySettings and returns the data updated in the database.
+     * @param {CompanySettingsUpdateManyAndReturnArgs} args - Arguments to update many CompanySettings.
+     * @example
+     * // Update many CompanySettings
+     * const companySettings = await prisma.companySettings.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more CompanySettings and only return the `id`
+     * const companySettingsWithIdOnly = await prisma.companySettings.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends CompanySettingsUpdateManyAndReturnArgs>(args: SelectSubset<T, CompanySettingsUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CompanySettingsPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one CompanySettings.
+     * @param {CompanySettingsUpsertArgs} args - Arguments to update or create a CompanySettings.
+     * @example
+     * // Update or create a CompanySettings
+     * const companySettings = await prisma.companySettings.upsert({
+     *   create: {
+     *     // ... data to create a CompanySettings
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the CompanySettings we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CompanySettingsUpsertArgs>(args: SelectSubset<T, CompanySettingsUpsertArgs<ExtArgs>>): Prisma__CompanySettingsClient<$Result.GetResult<Prisma.$CompanySettingsPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of CompanySettings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompanySettingsCountArgs} args - Arguments to filter CompanySettings to count.
+     * @example
+     * // Count the number of CompanySettings
+     * const count = await prisma.companySettings.count({
+     *   where: {
+     *     // ... the filter for the CompanySettings we want to count
+     *   }
+     * })
+    **/
+    count<T extends CompanySettingsCountArgs>(
+      args?: Subset<T, CompanySettingsCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CompanySettingsCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a CompanySettings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompanySettingsAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CompanySettingsAggregateArgs>(args: Subset<T, CompanySettingsAggregateArgs>): Prisma.PrismaPromise<GetCompanySettingsAggregateType<T>>
+
+    /**
+     * Group by CompanySettings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CompanySettingsGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CompanySettingsGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CompanySettingsGroupByArgs['orderBy'] }
+        : { orderBy?: CompanySettingsGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CompanySettingsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCompanySettingsGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the CompanySettings model
+   */
+  readonly fields: CompanySettingsFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for CompanySettings.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CompanySettingsClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the CompanySettings model
+   */
+  interface CompanySettingsFieldRefs {
+    readonly id: FieldRef<"CompanySettings", 'String'>
+    readonly logoPath: FieldRef<"CompanySettings", 'String'>
+    readonly defaultMargin: FieldRef<"CompanySettings", 'Float'>
+    readonly defaultUsdRate: FieldRef<"CompanySettings", 'Float'>
+    readonly createdAt: FieldRef<"CompanySettings", 'DateTime'>
+    readonly updatedAt: FieldRef<"CompanySettings", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * CompanySettings findUnique
+   */
+  export type CompanySettingsFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanySettings
+     */
+    select?: CompanySettingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanySettings
+     */
+    omit?: CompanySettingsOmit<ExtArgs> | null
+    /**
+     * Filter, which CompanySettings to fetch.
+     */
+    where: CompanySettingsWhereUniqueInput
+  }
+
+  /**
+   * CompanySettings findUniqueOrThrow
+   */
+  export type CompanySettingsFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanySettings
+     */
+    select?: CompanySettingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanySettings
+     */
+    omit?: CompanySettingsOmit<ExtArgs> | null
+    /**
+     * Filter, which CompanySettings to fetch.
+     */
+    where: CompanySettingsWhereUniqueInput
+  }
+
+  /**
+   * CompanySettings findFirst
+   */
+  export type CompanySettingsFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanySettings
+     */
+    select?: CompanySettingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanySettings
+     */
+    omit?: CompanySettingsOmit<ExtArgs> | null
+    /**
+     * Filter, which CompanySettings to fetch.
+     */
+    where?: CompanySettingsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CompanySettings to fetch.
+     */
+    orderBy?: CompanySettingsOrderByWithRelationInput | CompanySettingsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CompanySettings.
+     */
+    cursor?: CompanySettingsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CompanySettings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CompanySettings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CompanySettings.
+     */
+    distinct?: CompanySettingsScalarFieldEnum | CompanySettingsScalarFieldEnum[]
+  }
+
+  /**
+   * CompanySettings findFirstOrThrow
+   */
+  export type CompanySettingsFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanySettings
+     */
+    select?: CompanySettingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanySettings
+     */
+    omit?: CompanySettingsOmit<ExtArgs> | null
+    /**
+     * Filter, which CompanySettings to fetch.
+     */
+    where?: CompanySettingsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CompanySettings to fetch.
+     */
+    orderBy?: CompanySettingsOrderByWithRelationInput | CompanySettingsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CompanySettings.
+     */
+    cursor?: CompanySettingsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CompanySettings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CompanySettings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CompanySettings.
+     */
+    distinct?: CompanySettingsScalarFieldEnum | CompanySettingsScalarFieldEnum[]
+  }
+
+  /**
+   * CompanySettings findMany
+   */
+  export type CompanySettingsFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanySettings
+     */
+    select?: CompanySettingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanySettings
+     */
+    omit?: CompanySettingsOmit<ExtArgs> | null
+    /**
+     * Filter, which CompanySettings to fetch.
+     */
+    where?: CompanySettingsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CompanySettings to fetch.
+     */
+    orderBy?: CompanySettingsOrderByWithRelationInput | CompanySettingsOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing CompanySettings.
+     */
+    cursor?: CompanySettingsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CompanySettings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CompanySettings.
+     */
+    skip?: number
+    distinct?: CompanySettingsScalarFieldEnum | CompanySettingsScalarFieldEnum[]
+  }
+
+  /**
+   * CompanySettings create
+   */
+  export type CompanySettingsCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanySettings
+     */
+    select?: CompanySettingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanySettings
+     */
+    omit?: CompanySettingsOmit<ExtArgs> | null
+    /**
+     * The data needed to create a CompanySettings.
+     */
+    data: XOR<CompanySettingsCreateInput, CompanySettingsUncheckedCreateInput>
+  }
+
+  /**
+   * CompanySettings createMany
+   */
+  export type CompanySettingsCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many CompanySettings.
+     */
+    data: CompanySettingsCreateManyInput | CompanySettingsCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * CompanySettings createManyAndReturn
+   */
+  export type CompanySettingsCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanySettings
+     */
+    select?: CompanySettingsSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanySettings
+     */
+    omit?: CompanySettingsOmit<ExtArgs> | null
+    /**
+     * The data used to create many CompanySettings.
+     */
+    data: CompanySettingsCreateManyInput | CompanySettingsCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * CompanySettings update
+   */
+  export type CompanySettingsUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanySettings
+     */
+    select?: CompanySettingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanySettings
+     */
+    omit?: CompanySettingsOmit<ExtArgs> | null
+    /**
+     * The data needed to update a CompanySettings.
+     */
+    data: XOR<CompanySettingsUpdateInput, CompanySettingsUncheckedUpdateInput>
+    /**
+     * Choose, which CompanySettings to update.
+     */
+    where: CompanySettingsWhereUniqueInput
+  }
+
+  /**
+   * CompanySettings updateMany
+   */
+  export type CompanySettingsUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update CompanySettings.
+     */
+    data: XOR<CompanySettingsUpdateManyMutationInput, CompanySettingsUncheckedUpdateManyInput>
+    /**
+     * Filter which CompanySettings to update
+     */
+    where?: CompanySettingsWhereInput
+    /**
+     * Limit how many CompanySettings to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * CompanySettings updateManyAndReturn
+   */
+  export type CompanySettingsUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanySettings
+     */
+    select?: CompanySettingsSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanySettings
+     */
+    omit?: CompanySettingsOmit<ExtArgs> | null
+    /**
+     * The data used to update CompanySettings.
+     */
+    data: XOR<CompanySettingsUpdateManyMutationInput, CompanySettingsUncheckedUpdateManyInput>
+    /**
+     * Filter which CompanySettings to update
+     */
+    where?: CompanySettingsWhereInput
+    /**
+     * Limit how many CompanySettings to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * CompanySettings upsert
+   */
+  export type CompanySettingsUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanySettings
+     */
+    select?: CompanySettingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanySettings
+     */
+    omit?: CompanySettingsOmit<ExtArgs> | null
+    /**
+     * The filter to search for the CompanySettings to update in case it exists.
+     */
+    where: CompanySettingsWhereUniqueInput
+    /**
+     * In case the CompanySettings found by the `where` argument doesn't exist, create a new CompanySettings with this data.
+     */
+    create: XOR<CompanySettingsCreateInput, CompanySettingsUncheckedCreateInput>
+    /**
+     * In case the CompanySettings was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CompanySettingsUpdateInput, CompanySettingsUncheckedUpdateInput>
+  }
+
+  /**
+   * CompanySettings delete
+   */
+  export type CompanySettingsDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanySettings
+     */
+    select?: CompanySettingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanySettings
+     */
+    omit?: CompanySettingsOmit<ExtArgs> | null
+    /**
+     * Filter which CompanySettings to delete.
+     */
+    where: CompanySettingsWhereUniqueInput
+  }
+
+  /**
+   * CompanySettings deleteMany
+   */
+  export type CompanySettingsDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CompanySettings to delete
+     */
+    where?: CompanySettingsWhereInput
+    /**
+     * Limit how many CompanySettings to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * CompanySettings without action
+   */
+  export type CompanySettingsDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CompanySettings
+     */
+    select?: CompanySettingsSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CompanySettings
+     */
+    omit?: CompanySettingsOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Model Quotation
    */
 
@@ -43307,13 +44444,15 @@ export namespace Prisma {
   }
 
   export type QuotationAvgAggregateOutputType = {
-    pax: number | null
+    adultsCount: number | null
+    childrenCount: number | null
     margin: number | null
     usdRate: number | null
   }
 
   export type QuotationSumAggregateOutputType = {
-    pax: number | null
+    adultsCount: number | null
+    childrenCount: number | null
     margin: number | null
     usdRate: number | null
   }
@@ -43324,12 +44463,13 @@ export namespace Prisma {
     customerName: string | null
     customerPhone: string | null
     customerEmail: string | null
-    pax: number | null
+    adultsCount: number | null
+    childrenCount: number | null
     travelDate: string | null
+    startDate: string | null
     validUntil: string | null
     margin: number | null
     usdRate: number | null
-    startDate: string | null
     status: string | null
     notes: string | null
     createdAt: Date | null
@@ -43342,12 +44482,13 @@ export namespace Prisma {
     customerName: string | null
     customerPhone: string | null
     customerEmail: string | null
-    pax: number | null
+    adultsCount: number | null
+    childrenCount: number | null
     travelDate: string | null
+    startDate: string | null
     validUntil: string | null
     margin: number | null
     usdRate: number | null
-    startDate: string | null
     status: string | null
     notes: string | null
     createdAt: Date | null
@@ -43360,12 +44501,13 @@ export namespace Prisma {
     customerName: number
     customerPhone: number
     customerEmail: number
-    pax: number
+    adultsCount: number
+    childrenCount: number
     travelDate: number
+    startDate: number
     validUntil: number
     margin: number
     usdRate: number
-    startDate: number
     status: number
     notes: number
     createdAt: number
@@ -43375,13 +44517,15 @@ export namespace Prisma {
 
 
   export type QuotationAvgAggregateInputType = {
-    pax?: true
+    adultsCount?: true
+    childrenCount?: true
     margin?: true
     usdRate?: true
   }
 
   export type QuotationSumAggregateInputType = {
-    pax?: true
+    adultsCount?: true
+    childrenCount?: true
     margin?: true
     usdRate?: true
   }
@@ -43392,12 +44536,13 @@ export namespace Prisma {
     customerName?: true
     customerPhone?: true
     customerEmail?: true
-    pax?: true
+    adultsCount?: true
+    childrenCount?: true
     travelDate?: true
+    startDate?: true
     validUntil?: true
     margin?: true
     usdRate?: true
-    startDate?: true
     status?: true
     notes?: true
     createdAt?: true
@@ -43410,12 +44555,13 @@ export namespace Prisma {
     customerName?: true
     customerPhone?: true
     customerEmail?: true
-    pax?: true
+    adultsCount?: true
+    childrenCount?: true
     travelDate?: true
+    startDate?: true
     validUntil?: true
     margin?: true
     usdRate?: true
-    startDate?: true
     status?: true
     notes?: true
     createdAt?: true
@@ -43428,12 +44574,13 @@ export namespace Prisma {
     customerName?: true
     customerPhone?: true
     customerEmail?: true
-    pax?: true
+    adultsCount?: true
+    childrenCount?: true
     travelDate?: true
+    startDate?: true
     validUntil?: true
     margin?: true
     usdRate?: true
-    startDate?: true
     status?: true
     notes?: true
     createdAt?: true
@@ -43533,12 +44680,13 @@ export namespace Prisma {
     customerName: string
     customerPhone: string | null
     customerEmail: string | null
-    pax: number
+    adultsCount: number
+    childrenCount: number
     travelDate: string | null
+    startDate: string | null
     validUntil: string | null
     margin: number
     usdRate: number
-    startDate: string | null
     status: string
     notes: string | null
     createdAt: Date
@@ -43570,12 +44718,13 @@ export namespace Prisma {
     customerName?: boolean
     customerPhone?: boolean
     customerEmail?: boolean
-    pax?: boolean
+    adultsCount?: boolean
+    childrenCount?: boolean
     travelDate?: boolean
+    startDate?: boolean
     validUntil?: boolean
     margin?: boolean
     usdRate?: boolean
-    startDate?: boolean
     status?: boolean
     notes?: boolean
     createdAt?: boolean
@@ -43590,12 +44739,13 @@ export namespace Prisma {
     customerName?: boolean
     customerPhone?: boolean
     customerEmail?: boolean
-    pax?: boolean
+    adultsCount?: boolean
+    childrenCount?: boolean
     travelDate?: boolean
+    startDate?: boolean
     validUntil?: boolean
     margin?: boolean
     usdRate?: boolean
-    startDate?: boolean
     status?: boolean
     notes?: boolean
     createdAt?: boolean
@@ -43608,12 +44758,13 @@ export namespace Prisma {
     customerName?: boolean
     customerPhone?: boolean
     customerEmail?: boolean
-    pax?: boolean
+    adultsCount?: boolean
+    childrenCount?: boolean
     travelDate?: boolean
+    startDate?: boolean
     validUntil?: boolean
     margin?: boolean
     usdRate?: boolean
-    startDate?: boolean
     status?: boolean
     notes?: boolean
     createdAt?: boolean
@@ -43626,19 +44777,20 @@ export namespace Prisma {
     customerName?: boolean
     customerPhone?: boolean
     customerEmail?: boolean
-    pax?: boolean
+    adultsCount?: boolean
+    childrenCount?: boolean
     travelDate?: boolean
+    startDate?: boolean
     validUntil?: boolean
     margin?: boolean
     usdRate?: boolean
-    startDate?: boolean
     status?: boolean
     notes?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type QuotationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "quotationNo" | "customerName" | "customerPhone" | "customerEmail" | "pax" | "travelDate" | "validUntil" | "margin" | "usdRate" | "startDate" | "status" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["quotation"]>
+  export type QuotationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "quotationNo" | "customerName" | "customerPhone" | "customerEmail" | "adultsCount" | "childrenCount" | "travelDate" | "startDate" | "validUntil" | "margin" | "usdRate" | "status" | "notes" | "createdAt" | "updatedAt", ExtArgs["result"]["quotation"]>
   export type QuotationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     items?: boolean | Quotation$itemsArgs<ExtArgs>
     _count?: boolean | QuotationCountOutputTypeDefaultArgs<ExtArgs>
@@ -43657,12 +44809,13 @@ export namespace Prisma {
       customerName: string
       customerPhone: string | null
       customerEmail: string | null
-      pax: number
+      adultsCount: number
+      childrenCount: number
       travelDate: string | null
+      startDate: string | null
       validUntil: string | null
       margin: number
       usdRate: number
-      startDate: string | null
       status: string
       notes: string | null
       createdAt: Date
@@ -44096,12 +45249,13 @@ export namespace Prisma {
     readonly customerName: FieldRef<"Quotation", 'String'>
     readonly customerPhone: FieldRef<"Quotation", 'String'>
     readonly customerEmail: FieldRef<"Quotation", 'String'>
-    readonly pax: FieldRef<"Quotation", 'Int'>
+    readonly adultsCount: FieldRef<"Quotation", 'Int'>
+    readonly childrenCount: FieldRef<"Quotation", 'Int'>
     readonly travelDate: FieldRef<"Quotation", 'String'>
+    readonly startDate: FieldRef<"Quotation", 'String'>
     readonly validUntil: FieldRef<"Quotation", 'String'>
     readonly margin: FieldRef<"Quotation", 'Float'>
     readonly usdRate: FieldRef<"Quotation", 'Float'>
-    readonly startDate: FieldRef<"Quotation", 'String'>
     readonly status: FieldRef<"Quotation", 'String'>
     readonly notes: FieldRef<"Quotation", 'String'>
     readonly createdAt: FieldRef<"Quotation", 'DateTime'>
@@ -44549,16 +45703,22 @@ export namespace Prisma {
   }
 
   export type QuotationItemAvgAggregateOutputType = {
-    costPrice: number | null
-    salePrice: number | null
+    unitCostUsd: number | null
     quantity: number | null
+    childPricePercent: number | null
+    extraBedCount: number | null
+    extraBedPriceUsd: number | null
+    saleTotalUsd: number | null
     sortOrder: number | null
   }
 
   export type QuotationItemSumAggregateOutputType = {
-    costPrice: number | null
-    salePrice: number | null
+    unitCostUsd: number | null
     quantity: number | null
+    childPricePercent: number | null
+    extraBedCount: number | null
+    extraBedPriceUsd: number | null
+    saleTotalUsd: number | null
     sortOrder: number | null
   }
 
@@ -44568,11 +45728,14 @@ export namespace Prisma {
     category: string | null
     name: string | null
     description: string | null
-    costPrice: number | null
-    salePrice: number | null
-    currency: string | null
+    pricingType: string | null
+    unitCostUsd: number | null
     quantity: number | null
-    unit: string | null
+    childPricePercent: number | null
+    vehicleType: string | null
+    extraBedCount: number | null
+    extraBedPriceUsd: number | null
+    saleTotalUsd: number | null
     sortOrder: number | null
     createdAt: Date | null
   }
@@ -44583,11 +45746,14 @@ export namespace Prisma {
     category: string | null
     name: string | null
     description: string | null
-    costPrice: number | null
-    salePrice: number | null
-    currency: string | null
+    pricingType: string | null
+    unitCostUsd: number | null
     quantity: number | null
-    unit: string | null
+    childPricePercent: number | null
+    vehicleType: string | null
+    extraBedCount: number | null
+    extraBedPriceUsd: number | null
+    saleTotalUsd: number | null
     sortOrder: number | null
     createdAt: Date | null
   }
@@ -44598,11 +45764,14 @@ export namespace Prisma {
     category: number
     name: number
     description: number
-    costPrice: number
-    salePrice: number
-    currency: number
+    pricingType: number
+    unitCostUsd: number
     quantity: number
-    unit: number
+    childPricePercent: number
+    vehicleType: number
+    extraBedCount: number
+    extraBedPriceUsd: number
+    saleTotalUsd: number
     sortOrder: number
     createdAt: number
     _all: number
@@ -44610,16 +45779,22 @@ export namespace Prisma {
 
 
   export type QuotationItemAvgAggregateInputType = {
-    costPrice?: true
-    salePrice?: true
+    unitCostUsd?: true
     quantity?: true
+    childPricePercent?: true
+    extraBedCount?: true
+    extraBedPriceUsd?: true
+    saleTotalUsd?: true
     sortOrder?: true
   }
 
   export type QuotationItemSumAggregateInputType = {
-    costPrice?: true
-    salePrice?: true
+    unitCostUsd?: true
     quantity?: true
+    childPricePercent?: true
+    extraBedCount?: true
+    extraBedPriceUsd?: true
+    saleTotalUsd?: true
     sortOrder?: true
   }
 
@@ -44629,11 +45804,14 @@ export namespace Prisma {
     category?: true
     name?: true
     description?: true
-    costPrice?: true
-    salePrice?: true
-    currency?: true
+    pricingType?: true
+    unitCostUsd?: true
     quantity?: true
-    unit?: true
+    childPricePercent?: true
+    vehicleType?: true
+    extraBedCount?: true
+    extraBedPriceUsd?: true
+    saleTotalUsd?: true
     sortOrder?: true
     createdAt?: true
   }
@@ -44644,11 +45822,14 @@ export namespace Prisma {
     category?: true
     name?: true
     description?: true
-    costPrice?: true
-    salePrice?: true
-    currency?: true
+    pricingType?: true
+    unitCostUsd?: true
     quantity?: true
-    unit?: true
+    childPricePercent?: true
+    vehicleType?: true
+    extraBedCount?: true
+    extraBedPriceUsd?: true
+    saleTotalUsd?: true
     sortOrder?: true
     createdAt?: true
   }
@@ -44659,11 +45840,14 @@ export namespace Prisma {
     category?: true
     name?: true
     description?: true
-    costPrice?: true
-    salePrice?: true
-    currency?: true
+    pricingType?: true
+    unitCostUsd?: true
     quantity?: true
-    unit?: true
+    childPricePercent?: true
+    vehicleType?: true
+    extraBedCount?: true
+    extraBedPriceUsd?: true
+    saleTotalUsd?: true
     sortOrder?: true
     createdAt?: true
     _all?: true
@@ -44761,11 +45945,14 @@ export namespace Prisma {
     category: string
     name: string
     description: string | null
-    costPrice: number
-    salePrice: number
-    currency: string
+    pricingType: string
+    unitCostUsd: number
     quantity: number
-    unit: string | null
+    childPricePercent: number
+    vehicleType: string | null
+    extraBedCount: number
+    extraBedPriceUsd: number
+    saleTotalUsd: number
     sortOrder: number
     createdAt: Date
     _count: QuotationItemCountAggregateOutputType | null
@@ -44795,11 +45982,14 @@ export namespace Prisma {
     category?: boolean
     name?: boolean
     description?: boolean
-    costPrice?: boolean
-    salePrice?: boolean
-    currency?: boolean
+    pricingType?: boolean
+    unitCostUsd?: boolean
     quantity?: boolean
-    unit?: boolean
+    childPricePercent?: boolean
+    vehicleType?: boolean
+    extraBedCount?: boolean
+    extraBedPriceUsd?: boolean
+    saleTotalUsd?: boolean
     sortOrder?: boolean
     createdAt?: boolean
     quotation?: boolean | QuotationDefaultArgs<ExtArgs>
@@ -44811,11 +46001,14 @@ export namespace Prisma {
     category?: boolean
     name?: boolean
     description?: boolean
-    costPrice?: boolean
-    salePrice?: boolean
-    currency?: boolean
+    pricingType?: boolean
+    unitCostUsd?: boolean
     quantity?: boolean
-    unit?: boolean
+    childPricePercent?: boolean
+    vehicleType?: boolean
+    extraBedCount?: boolean
+    extraBedPriceUsd?: boolean
+    saleTotalUsd?: boolean
     sortOrder?: boolean
     createdAt?: boolean
     quotation?: boolean | QuotationDefaultArgs<ExtArgs>
@@ -44827,11 +46020,14 @@ export namespace Prisma {
     category?: boolean
     name?: boolean
     description?: boolean
-    costPrice?: boolean
-    salePrice?: boolean
-    currency?: boolean
+    pricingType?: boolean
+    unitCostUsd?: boolean
     quantity?: boolean
-    unit?: boolean
+    childPricePercent?: boolean
+    vehicleType?: boolean
+    extraBedCount?: boolean
+    extraBedPriceUsd?: boolean
+    saleTotalUsd?: boolean
     sortOrder?: boolean
     createdAt?: boolean
     quotation?: boolean | QuotationDefaultArgs<ExtArgs>
@@ -44843,16 +46039,19 @@ export namespace Prisma {
     category?: boolean
     name?: boolean
     description?: boolean
-    costPrice?: boolean
-    salePrice?: boolean
-    currency?: boolean
+    pricingType?: boolean
+    unitCostUsd?: boolean
     quantity?: boolean
-    unit?: boolean
+    childPricePercent?: boolean
+    vehicleType?: boolean
+    extraBedCount?: boolean
+    extraBedPriceUsd?: boolean
+    saleTotalUsd?: boolean
     sortOrder?: boolean
     createdAt?: boolean
   }
 
-  export type QuotationItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "quotationId" | "category" | "name" | "description" | "costPrice" | "salePrice" | "currency" | "quantity" | "unit" | "sortOrder" | "createdAt", ExtArgs["result"]["quotationItem"]>
+  export type QuotationItemOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "quotationId" | "category" | "name" | "description" | "pricingType" | "unitCostUsd" | "quantity" | "childPricePercent" | "vehicleType" | "extraBedCount" | "extraBedPriceUsd" | "saleTotalUsd" | "sortOrder" | "createdAt", ExtArgs["result"]["quotationItem"]>
   export type QuotationItemInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     quotation?: boolean | QuotationDefaultArgs<ExtArgs>
   }
@@ -44874,11 +46073,14 @@ export namespace Prisma {
       category: string
       name: string
       description: string | null
-      costPrice: number
-      salePrice: number
-      currency: string
+      pricingType: string
+      unitCostUsd: number
       quantity: number
-      unit: string | null
+      childPricePercent: number
+      vehicleType: string | null
+      extraBedCount: number
+      extraBedPriceUsd: number
+      saleTotalUsd: number
       sortOrder: number
       createdAt: Date
     }, ExtArgs["result"]["quotationItem"]>
@@ -45310,11 +46512,14 @@ export namespace Prisma {
     readonly category: FieldRef<"QuotationItem", 'String'>
     readonly name: FieldRef<"QuotationItem", 'String'>
     readonly description: FieldRef<"QuotationItem", 'String'>
-    readonly costPrice: FieldRef<"QuotationItem", 'Float'>
-    readonly salePrice: FieldRef<"QuotationItem", 'Float'>
-    readonly currency: FieldRef<"QuotationItem", 'String'>
+    readonly pricingType: FieldRef<"QuotationItem", 'String'>
+    readonly unitCostUsd: FieldRef<"QuotationItem", 'Float'>
     readonly quantity: FieldRef<"QuotationItem", 'Int'>
-    readonly unit: FieldRef<"QuotationItem", 'String'>
+    readonly childPricePercent: FieldRef<"QuotationItem", 'Float'>
+    readonly vehicleType: FieldRef<"QuotationItem", 'String'>
+    readonly extraBedCount: FieldRef<"QuotationItem", 'Int'>
+    readonly extraBedPriceUsd: FieldRef<"QuotationItem", 'Float'>
+    readonly saleTotalUsd: FieldRef<"QuotationItem", 'Float'>
     readonly sortOrder: FieldRef<"QuotationItem", 'Int'>
     readonly createdAt: FieldRef<"QuotationItem", 'DateTime'>
   }
@@ -45744,12 +46949,16 @@ export namespace Prisma {
   }
 
   export type ServiceLibraryAvgAggregateOutputType = {
-    defaultCost: number | null
+    defaultCostUsd: number | null
+    defaultChildPercent: number | null
+    defaultExtraBedPrice: number | null
     sortOrder: number | null
   }
 
   export type ServiceLibrarySumAggregateOutputType = {
-    defaultCost: number | null
+    defaultCostUsd: number | null
+    defaultChildPercent: number | null
+    defaultExtraBedPrice: number | null
     sortOrder: number | null
   }
 
@@ -45758,9 +46967,11 @@ export namespace Prisma {
     category: string | null
     name: string | null
     description: string | null
-    defaultCost: number | null
-    currency: string | null
-    unit: string | null
+    defaultPricingType: string | null
+    defaultCostUsd: number | null
+    defaultVehicleType: string | null
+    defaultChildPercent: number | null
+    defaultExtraBedPrice: number | null
     isActive: boolean | null
     sortOrder: number | null
     createdAt: Date | null
@@ -45772,9 +46983,11 @@ export namespace Prisma {
     category: string | null
     name: string | null
     description: string | null
-    defaultCost: number | null
-    currency: string | null
-    unit: string | null
+    defaultPricingType: string | null
+    defaultCostUsd: number | null
+    defaultVehicleType: string | null
+    defaultChildPercent: number | null
+    defaultExtraBedPrice: number | null
     isActive: boolean | null
     sortOrder: number | null
     createdAt: Date | null
@@ -45786,9 +46999,11 @@ export namespace Prisma {
     category: number
     name: number
     description: number
-    defaultCost: number
-    currency: number
-    unit: number
+    defaultPricingType: number
+    defaultCostUsd: number
+    defaultVehicleType: number
+    defaultChildPercent: number
+    defaultExtraBedPrice: number
     isActive: number
     sortOrder: number
     createdAt: number
@@ -45798,12 +47013,16 @@ export namespace Prisma {
 
 
   export type ServiceLibraryAvgAggregateInputType = {
-    defaultCost?: true
+    defaultCostUsd?: true
+    defaultChildPercent?: true
+    defaultExtraBedPrice?: true
     sortOrder?: true
   }
 
   export type ServiceLibrarySumAggregateInputType = {
-    defaultCost?: true
+    defaultCostUsd?: true
+    defaultChildPercent?: true
+    defaultExtraBedPrice?: true
     sortOrder?: true
   }
 
@@ -45812,9 +47031,11 @@ export namespace Prisma {
     category?: true
     name?: true
     description?: true
-    defaultCost?: true
-    currency?: true
-    unit?: true
+    defaultPricingType?: true
+    defaultCostUsd?: true
+    defaultVehicleType?: true
+    defaultChildPercent?: true
+    defaultExtraBedPrice?: true
     isActive?: true
     sortOrder?: true
     createdAt?: true
@@ -45826,9 +47047,11 @@ export namespace Prisma {
     category?: true
     name?: true
     description?: true
-    defaultCost?: true
-    currency?: true
-    unit?: true
+    defaultPricingType?: true
+    defaultCostUsd?: true
+    defaultVehicleType?: true
+    defaultChildPercent?: true
+    defaultExtraBedPrice?: true
     isActive?: true
     sortOrder?: true
     createdAt?: true
@@ -45840,9 +47063,11 @@ export namespace Prisma {
     category?: true
     name?: true
     description?: true
-    defaultCost?: true
-    currency?: true
-    unit?: true
+    defaultPricingType?: true
+    defaultCostUsd?: true
+    defaultVehicleType?: true
+    defaultChildPercent?: true
+    defaultExtraBedPrice?: true
     isActive?: true
     sortOrder?: true
     createdAt?: true
@@ -45941,9 +47166,11 @@ export namespace Prisma {
     category: string
     name: string
     description: string | null
-    defaultCost: number
-    currency: string
-    unit: string | null
+    defaultPricingType: string
+    defaultCostUsd: number
+    defaultVehicleType: string | null
+    defaultChildPercent: number
+    defaultExtraBedPrice: number
     isActive: boolean
     sortOrder: number
     createdAt: Date
@@ -45974,9 +47201,11 @@ export namespace Prisma {
     category?: boolean
     name?: boolean
     description?: boolean
-    defaultCost?: boolean
-    currency?: boolean
-    unit?: boolean
+    defaultPricingType?: boolean
+    defaultCostUsd?: boolean
+    defaultVehicleType?: boolean
+    defaultChildPercent?: boolean
+    defaultExtraBedPrice?: boolean
     isActive?: boolean
     sortOrder?: boolean
     createdAt?: boolean
@@ -45988,9 +47217,11 @@ export namespace Prisma {
     category?: boolean
     name?: boolean
     description?: boolean
-    defaultCost?: boolean
-    currency?: boolean
-    unit?: boolean
+    defaultPricingType?: boolean
+    defaultCostUsd?: boolean
+    defaultVehicleType?: boolean
+    defaultChildPercent?: boolean
+    defaultExtraBedPrice?: boolean
     isActive?: boolean
     sortOrder?: boolean
     createdAt?: boolean
@@ -46002,9 +47233,11 @@ export namespace Prisma {
     category?: boolean
     name?: boolean
     description?: boolean
-    defaultCost?: boolean
-    currency?: boolean
-    unit?: boolean
+    defaultPricingType?: boolean
+    defaultCostUsd?: boolean
+    defaultVehicleType?: boolean
+    defaultChildPercent?: boolean
+    defaultExtraBedPrice?: boolean
     isActive?: boolean
     sortOrder?: boolean
     createdAt?: boolean
@@ -46016,16 +47249,18 @@ export namespace Prisma {
     category?: boolean
     name?: boolean
     description?: boolean
-    defaultCost?: boolean
-    currency?: boolean
-    unit?: boolean
+    defaultPricingType?: boolean
+    defaultCostUsd?: boolean
+    defaultVehicleType?: boolean
+    defaultChildPercent?: boolean
+    defaultExtraBedPrice?: boolean
     isActive?: boolean
     sortOrder?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type ServiceLibraryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "category" | "name" | "description" | "defaultCost" | "currency" | "unit" | "isActive" | "sortOrder" | "createdAt" | "updatedAt", ExtArgs["result"]["serviceLibrary"]>
+  export type ServiceLibraryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "category" | "name" | "description" | "defaultPricingType" | "defaultCostUsd" | "defaultVehicleType" | "defaultChildPercent" | "defaultExtraBedPrice" | "isActive" | "sortOrder" | "createdAt" | "updatedAt", ExtArgs["result"]["serviceLibrary"]>
 
   export type $ServiceLibraryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "ServiceLibrary"
@@ -46035,9 +47270,11 @@ export namespace Prisma {
       category: string
       name: string
       description: string | null
-      defaultCost: number
-      currency: string
-      unit: string | null
+      defaultPricingType: string
+      defaultCostUsd: number
+      defaultVehicleType: string | null
+      defaultChildPercent: number
+      defaultExtraBedPrice: number
       isActive: boolean
       sortOrder: number
       createdAt: Date
@@ -46469,9 +47706,11 @@ export namespace Prisma {
     readonly category: FieldRef<"ServiceLibrary", 'String'>
     readonly name: FieldRef<"ServiceLibrary", 'String'>
     readonly description: FieldRef<"ServiceLibrary", 'String'>
-    readonly defaultCost: FieldRef<"ServiceLibrary", 'Float'>
-    readonly currency: FieldRef<"ServiceLibrary", 'String'>
-    readonly unit: FieldRef<"ServiceLibrary", 'String'>
+    readonly defaultPricingType: FieldRef<"ServiceLibrary", 'String'>
+    readonly defaultCostUsd: FieldRef<"ServiceLibrary", 'Float'>
+    readonly defaultVehicleType: FieldRef<"ServiceLibrary", 'String'>
+    readonly defaultChildPercent: FieldRef<"ServiceLibrary", 'Float'>
+    readonly defaultExtraBedPrice: FieldRef<"ServiceLibrary", 'Float'>
     readonly isActive: FieldRef<"ServiceLibrary", 'Boolean'>
     readonly sortOrder: FieldRef<"ServiceLibrary", 'Int'>
     readonly createdAt: FieldRef<"ServiceLibrary", 'DateTime'>
@@ -47430,18 +48669,31 @@ export namespace Prisma {
   export type CampaignCodeUsageScalarFieldEnum = (typeof CampaignCodeUsageScalarFieldEnum)[keyof typeof CampaignCodeUsageScalarFieldEnum]
 
 
+  export const CompanySettingsScalarFieldEnum: {
+    id: 'id',
+    logoPath: 'logoPath',
+    defaultMargin: 'defaultMargin',
+    defaultUsdRate: 'defaultUsdRate',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type CompanySettingsScalarFieldEnum = (typeof CompanySettingsScalarFieldEnum)[keyof typeof CompanySettingsScalarFieldEnum]
+
+
   export const QuotationScalarFieldEnum: {
     id: 'id',
     quotationNo: 'quotationNo',
     customerName: 'customerName',
     customerPhone: 'customerPhone',
     customerEmail: 'customerEmail',
-    pax: 'pax',
+    adultsCount: 'adultsCount',
+    childrenCount: 'childrenCount',
     travelDate: 'travelDate',
+    startDate: 'startDate',
     validUntil: 'validUntil',
     margin: 'margin',
     usdRate: 'usdRate',
-    startDate: 'startDate',
     status: 'status',
     notes: 'notes',
     createdAt: 'createdAt',
@@ -47457,11 +48709,14 @@ export namespace Prisma {
     category: 'category',
     name: 'name',
     description: 'description',
-    costPrice: 'costPrice',
-    salePrice: 'salePrice',
-    currency: 'currency',
+    pricingType: 'pricingType',
+    unitCostUsd: 'unitCostUsd',
     quantity: 'quantity',
-    unit: 'unit',
+    childPricePercent: 'childPricePercent',
+    vehicleType: 'vehicleType',
+    extraBedCount: 'extraBedCount',
+    extraBedPriceUsd: 'extraBedPriceUsd',
+    saleTotalUsd: 'saleTotalUsd',
     sortOrder: 'sortOrder',
     createdAt: 'createdAt'
   };
@@ -47474,9 +48729,11 @@ export namespace Prisma {
     category: 'category',
     name: 'name',
     description: 'description',
-    defaultCost: 'defaultCost',
-    currency: 'currency',
-    unit: 'unit',
+    defaultPricingType: 'defaultPricingType',
+    defaultCostUsd: 'defaultCostUsd',
+    defaultVehicleType: 'defaultVehicleType',
+    defaultChildPercent: 'defaultChildPercent',
+    defaultExtraBedPrice: 'defaultExtraBedPrice',
     isActive: 'isActive',
     sortOrder: 'sortOrder',
     createdAt: 'createdAt',
@@ -50547,6 +51804,65 @@ export namespace Prisma {
     usedAt?: DateTimeWithAggregatesFilter<"CampaignCodeUsage"> | Date | string
   }
 
+  export type CompanySettingsWhereInput = {
+    AND?: CompanySettingsWhereInput | CompanySettingsWhereInput[]
+    OR?: CompanySettingsWhereInput[]
+    NOT?: CompanySettingsWhereInput | CompanySettingsWhereInput[]
+    id?: StringFilter<"CompanySettings"> | string
+    logoPath?: StringNullableFilter<"CompanySettings"> | string | null
+    defaultMargin?: FloatFilter<"CompanySettings"> | number
+    defaultUsdRate?: FloatFilter<"CompanySettings"> | number
+    createdAt?: DateTimeFilter<"CompanySettings"> | Date | string
+    updatedAt?: DateTimeFilter<"CompanySettings"> | Date | string
+  }
+
+  export type CompanySettingsOrderByWithRelationInput = {
+    id?: SortOrder
+    logoPath?: SortOrderInput | SortOrder
+    defaultMargin?: SortOrder
+    defaultUsdRate?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CompanySettingsWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: CompanySettingsWhereInput | CompanySettingsWhereInput[]
+    OR?: CompanySettingsWhereInput[]
+    NOT?: CompanySettingsWhereInput | CompanySettingsWhereInput[]
+    logoPath?: StringNullableFilter<"CompanySettings"> | string | null
+    defaultMargin?: FloatFilter<"CompanySettings"> | number
+    defaultUsdRate?: FloatFilter<"CompanySettings"> | number
+    createdAt?: DateTimeFilter<"CompanySettings"> | Date | string
+    updatedAt?: DateTimeFilter<"CompanySettings"> | Date | string
+  }, "id">
+
+  export type CompanySettingsOrderByWithAggregationInput = {
+    id?: SortOrder
+    logoPath?: SortOrderInput | SortOrder
+    defaultMargin?: SortOrder
+    defaultUsdRate?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: CompanySettingsCountOrderByAggregateInput
+    _avg?: CompanySettingsAvgOrderByAggregateInput
+    _max?: CompanySettingsMaxOrderByAggregateInput
+    _min?: CompanySettingsMinOrderByAggregateInput
+    _sum?: CompanySettingsSumOrderByAggregateInput
+  }
+
+  export type CompanySettingsScalarWhereWithAggregatesInput = {
+    AND?: CompanySettingsScalarWhereWithAggregatesInput | CompanySettingsScalarWhereWithAggregatesInput[]
+    OR?: CompanySettingsScalarWhereWithAggregatesInput[]
+    NOT?: CompanySettingsScalarWhereWithAggregatesInput | CompanySettingsScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"CompanySettings"> | string
+    logoPath?: StringNullableWithAggregatesFilter<"CompanySettings"> | string | null
+    defaultMargin?: FloatWithAggregatesFilter<"CompanySettings"> | number
+    defaultUsdRate?: FloatWithAggregatesFilter<"CompanySettings"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"CompanySettings"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"CompanySettings"> | Date | string
+  }
+
   export type QuotationWhereInput = {
     AND?: QuotationWhereInput | QuotationWhereInput[]
     OR?: QuotationWhereInput[]
@@ -50556,12 +51872,13 @@ export namespace Prisma {
     customerName?: StringFilter<"Quotation"> | string
     customerPhone?: StringNullableFilter<"Quotation"> | string | null
     customerEmail?: StringNullableFilter<"Quotation"> | string | null
-    pax?: IntFilter<"Quotation"> | number
+    adultsCount?: IntFilter<"Quotation"> | number
+    childrenCount?: IntFilter<"Quotation"> | number
     travelDate?: StringNullableFilter<"Quotation"> | string | null
+    startDate?: StringNullableFilter<"Quotation"> | string | null
     validUntil?: StringNullableFilter<"Quotation"> | string | null
     margin?: FloatFilter<"Quotation"> | number
     usdRate?: FloatFilter<"Quotation"> | number
-    startDate?: StringNullableFilter<"Quotation"> | string | null
     status?: StringFilter<"Quotation"> | string
     notes?: StringNullableFilter<"Quotation"> | string | null
     createdAt?: DateTimeFilter<"Quotation"> | Date | string
@@ -50575,12 +51892,13 @@ export namespace Prisma {
     customerName?: SortOrder
     customerPhone?: SortOrderInput | SortOrder
     customerEmail?: SortOrderInput | SortOrder
-    pax?: SortOrder
+    adultsCount?: SortOrder
+    childrenCount?: SortOrder
     travelDate?: SortOrderInput | SortOrder
+    startDate?: SortOrderInput | SortOrder
     validUntil?: SortOrderInput | SortOrder
     margin?: SortOrder
     usdRate?: SortOrder
-    startDate?: SortOrderInput | SortOrder
     status?: SortOrder
     notes?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -50597,12 +51915,13 @@ export namespace Prisma {
     customerName?: StringFilter<"Quotation"> | string
     customerPhone?: StringNullableFilter<"Quotation"> | string | null
     customerEmail?: StringNullableFilter<"Quotation"> | string | null
-    pax?: IntFilter<"Quotation"> | number
+    adultsCount?: IntFilter<"Quotation"> | number
+    childrenCount?: IntFilter<"Quotation"> | number
     travelDate?: StringNullableFilter<"Quotation"> | string | null
+    startDate?: StringNullableFilter<"Quotation"> | string | null
     validUntil?: StringNullableFilter<"Quotation"> | string | null
     margin?: FloatFilter<"Quotation"> | number
     usdRate?: FloatFilter<"Quotation"> | number
-    startDate?: StringNullableFilter<"Quotation"> | string | null
     status?: StringFilter<"Quotation"> | string
     notes?: StringNullableFilter<"Quotation"> | string | null
     createdAt?: DateTimeFilter<"Quotation"> | Date | string
@@ -50616,12 +51935,13 @@ export namespace Prisma {
     customerName?: SortOrder
     customerPhone?: SortOrderInput | SortOrder
     customerEmail?: SortOrderInput | SortOrder
-    pax?: SortOrder
+    adultsCount?: SortOrder
+    childrenCount?: SortOrder
     travelDate?: SortOrderInput | SortOrder
+    startDate?: SortOrderInput | SortOrder
     validUntil?: SortOrderInput | SortOrder
     margin?: SortOrder
     usdRate?: SortOrder
-    startDate?: SortOrderInput | SortOrder
     status?: SortOrder
     notes?: SortOrderInput | SortOrder
     createdAt?: SortOrder
@@ -50642,12 +51962,13 @@ export namespace Prisma {
     customerName?: StringWithAggregatesFilter<"Quotation"> | string
     customerPhone?: StringNullableWithAggregatesFilter<"Quotation"> | string | null
     customerEmail?: StringNullableWithAggregatesFilter<"Quotation"> | string | null
-    pax?: IntWithAggregatesFilter<"Quotation"> | number
+    adultsCount?: IntWithAggregatesFilter<"Quotation"> | number
+    childrenCount?: IntWithAggregatesFilter<"Quotation"> | number
     travelDate?: StringNullableWithAggregatesFilter<"Quotation"> | string | null
+    startDate?: StringNullableWithAggregatesFilter<"Quotation"> | string | null
     validUntil?: StringNullableWithAggregatesFilter<"Quotation"> | string | null
     margin?: FloatWithAggregatesFilter<"Quotation"> | number
     usdRate?: FloatWithAggregatesFilter<"Quotation"> | number
-    startDate?: StringNullableWithAggregatesFilter<"Quotation"> | string | null
     status?: StringWithAggregatesFilter<"Quotation"> | string
     notes?: StringNullableWithAggregatesFilter<"Quotation"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Quotation"> | Date | string
@@ -50663,11 +51984,14 @@ export namespace Prisma {
     category?: StringFilter<"QuotationItem"> | string
     name?: StringFilter<"QuotationItem"> | string
     description?: StringNullableFilter<"QuotationItem"> | string | null
-    costPrice?: FloatFilter<"QuotationItem"> | number
-    salePrice?: FloatFilter<"QuotationItem"> | number
-    currency?: StringFilter<"QuotationItem"> | string
+    pricingType?: StringFilter<"QuotationItem"> | string
+    unitCostUsd?: FloatFilter<"QuotationItem"> | number
     quantity?: IntFilter<"QuotationItem"> | number
-    unit?: StringNullableFilter<"QuotationItem"> | string | null
+    childPricePercent?: FloatFilter<"QuotationItem"> | number
+    vehicleType?: StringNullableFilter<"QuotationItem"> | string | null
+    extraBedCount?: IntFilter<"QuotationItem"> | number
+    extraBedPriceUsd?: FloatFilter<"QuotationItem"> | number
+    saleTotalUsd?: FloatFilter<"QuotationItem"> | number
     sortOrder?: IntFilter<"QuotationItem"> | number
     createdAt?: DateTimeFilter<"QuotationItem"> | Date | string
     quotation?: XOR<QuotationScalarRelationFilter, QuotationWhereInput>
@@ -50679,11 +52003,14 @@ export namespace Prisma {
     category?: SortOrder
     name?: SortOrder
     description?: SortOrderInput | SortOrder
-    costPrice?: SortOrder
-    salePrice?: SortOrder
-    currency?: SortOrder
+    pricingType?: SortOrder
+    unitCostUsd?: SortOrder
     quantity?: SortOrder
-    unit?: SortOrderInput | SortOrder
+    childPricePercent?: SortOrder
+    vehicleType?: SortOrderInput | SortOrder
+    extraBedCount?: SortOrder
+    extraBedPriceUsd?: SortOrder
+    saleTotalUsd?: SortOrder
     sortOrder?: SortOrder
     createdAt?: SortOrder
     quotation?: QuotationOrderByWithRelationInput
@@ -50698,11 +52025,14 @@ export namespace Prisma {
     category?: StringFilter<"QuotationItem"> | string
     name?: StringFilter<"QuotationItem"> | string
     description?: StringNullableFilter<"QuotationItem"> | string | null
-    costPrice?: FloatFilter<"QuotationItem"> | number
-    salePrice?: FloatFilter<"QuotationItem"> | number
-    currency?: StringFilter<"QuotationItem"> | string
+    pricingType?: StringFilter<"QuotationItem"> | string
+    unitCostUsd?: FloatFilter<"QuotationItem"> | number
     quantity?: IntFilter<"QuotationItem"> | number
-    unit?: StringNullableFilter<"QuotationItem"> | string | null
+    childPricePercent?: FloatFilter<"QuotationItem"> | number
+    vehicleType?: StringNullableFilter<"QuotationItem"> | string | null
+    extraBedCount?: IntFilter<"QuotationItem"> | number
+    extraBedPriceUsd?: FloatFilter<"QuotationItem"> | number
+    saleTotalUsd?: FloatFilter<"QuotationItem"> | number
     sortOrder?: IntFilter<"QuotationItem"> | number
     createdAt?: DateTimeFilter<"QuotationItem"> | Date | string
     quotation?: XOR<QuotationScalarRelationFilter, QuotationWhereInput>
@@ -50714,11 +52044,14 @@ export namespace Prisma {
     category?: SortOrder
     name?: SortOrder
     description?: SortOrderInput | SortOrder
-    costPrice?: SortOrder
-    salePrice?: SortOrder
-    currency?: SortOrder
+    pricingType?: SortOrder
+    unitCostUsd?: SortOrder
     quantity?: SortOrder
-    unit?: SortOrderInput | SortOrder
+    childPricePercent?: SortOrder
+    vehicleType?: SortOrderInput | SortOrder
+    extraBedCount?: SortOrder
+    extraBedPriceUsd?: SortOrder
+    saleTotalUsd?: SortOrder
     sortOrder?: SortOrder
     createdAt?: SortOrder
     _count?: QuotationItemCountOrderByAggregateInput
@@ -50737,11 +52070,14 @@ export namespace Prisma {
     category?: StringWithAggregatesFilter<"QuotationItem"> | string
     name?: StringWithAggregatesFilter<"QuotationItem"> | string
     description?: StringNullableWithAggregatesFilter<"QuotationItem"> | string | null
-    costPrice?: FloatWithAggregatesFilter<"QuotationItem"> | number
-    salePrice?: FloatWithAggregatesFilter<"QuotationItem"> | number
-    currency?: StringWithAggregatesFilter<"QuotationItem"> | string
+    pricingType?: StringWithAggregatesFilter<"QuotationItem"> | string
+    unitCostUsd?: FloatWithAggregatesFilter<"QuotationItem"> | number
     quantity?: IntWithAggregatesFilter<"QuotationItem"> | number
-    unit?: StringNullableWithAggregatesFilter<"QuotationItem"> | string | null
+    childPricePercent?: FloatWithAggregatesFilter<"QuotationItem"> | number
+    vehicleType?: StringNullableWithAggregatesFilter<"QuotationItem"> | string | null
+    extraBedCount?: IntWithAggregatesFilter<"QuotationItem"> | number
+    extraBedPriceUsd?: FloatWithAggregatesFilter<"QuotationItem"> | number
+    saleTotalUsd?: FloatWithAggregatesFilter<"QuotationItem"> | number
     sortOrder?: IntWithAggregatesFilter<"QuotationItem"> | number
     createdAt?: DateTimeWithAggregatesFilter<"QuotationItem"> | Date | string
   }
@@ -50754,9 +52090,11 @@ export namespace Prisma {
     category?: StringFilter<"ServiceLibrary"> | string
     name?: StringFilter<"ServiceLibrary"> | string
     description?: StringNullableFilter<"ServiceLibrary"> | string | null
-    defaultCost?: FloatFilter<"ServiceLibrary"> | number
-    currency?: StringFilter<"ServiceLibrary"> | string
-    unit?: StringNullableFilter<"ServiceLibrary"> | string | null
+    defaultPricingType?: StringFilter<"ServiceLibrary"> | string
+    defaultCostUsd?: FloatFilter<"ServiceLibrary"> | number
+    defaultVehicleType?: StringNullableFilter<"ServiceLibrary"> | string | null
+    defaultChildPercent?: FloatFilter<"ServiceLibrary"> | number
+    defaultExtraBedPrice?: FloatFilter<"ServiceLibrary"> | number
     isActive?: BoolFilter<"ServiceLibrary"> | boolean
     sortOrder?: IntFilter<"ServiceLibrary"> | number
     createdAt?: DateTimeFilter<"ServiceLibrary"> | Date | string
@@ -50768,9 +52106,11 @@ export namespace Prisma {
     category?: SortOrder
     name?: SortOrder
     description?: SortOrderInput | SortOrder
-    defaultCost?: SortOrder
-    currency?: SortOrder
-    unit?: SortOrderInput | SortOrder
+    defaultPricingType?: SortOrder
+    defaultCostUsd?: SortOrder
+    defaultVehicleType?: SortOrderInput | SortOrder
+    defaultChildPercent?: SortOrder
+    defaultExtraBedPrice?: SortOrder
     isActive?: SortOrder
     sortOrder?: SortOrder
     createdAt?: SortOrder
@@ -50785,9 +52125,11 @@ export namespace Prisma {
     category?: StringFilter<"ServiceLibrary"> | string
     name?: StringFilter<"ServiceLibrary"> | string
     description?: StringNullableFilter<"ServiceLibrary"> | string | null
-    defaultCost?: FloatFilter<"ServiceLibrary"> | number
-    currency?: StringFilter<"ServiceLibrary"> | string
-    unit?: StringNullableFilter<"ServiceLibrary"> | string | null
+    defaultPricingType?: StringFilter<"ServiceLibrary"> | string
+    defaultCostUsd?: FloatFilter<"ServiceLibrary"> | number
+    defaultVehicleType?: StringNullableFilter<"ServiceLibrary"> | string | null
+    defaultChildPercent?: FloatFilter<"ServiceLibrary"> | number
+    defaultExtraBedPrice?: FloatFilter<"ServiceLibrary"> | number
     isActive?: BoolFilter<"ServiceLibrary"> | boolean
     sortOrder?: IntFilter<"ServiceLibrary"> | number
     createdAt?: DateTimeFilter<"ServiceLibrary"> | Date | string
@@ -50799,9 +52141,11 @@ export namespace Prisma {
     category?: SortOrder
     name?: SortOrder
     description?: SortOrderInput | SortOrder
-    defaultCost?: SortOrder
-    currency?: SortOrder
-    unit?: SortOrderInput | SortOrder
+    defaultPricingType?: SortOrder
+    defaultCostUsd?: SortOrder
+    defaultVehicleType?: SortOrderInput | SortOrder
+    defaultChildPercent?: SortOrder
+    defaultExtraBedPrice?: SortOrder
     isActive?: SortOrder
     sortOrder?: SortOrder
     createdAt?: SortOrder
@@ -50821,9 +52165,11 @@ export namespace Prisma {
     category?: StringWithAggregatesFilter<"ServiceLibrary"> | string
     name?: StringWithAggregatesFilter<"ServiceLibrary"> | string
     description?: StringNullableWithAggregatesFilter<"ServiceLibrary"> | string | null
-    defaultCost?: FloatWithAggregatesFilter<"ServiceLibrary"> | number
-    currency?: StringWithAggregatesFilter<"ServiceLibrary"> | string
-    unit?: StringNullableWithAggregatesFilter<"ServiceLibrary"> | string | null
+    defaultPricingType?: StringWithAggregatesFilter<"ServiceLibrary"> | string
+    defaultCostUsd?: FloatWithAggregatesFilter<"ServiceLibrary"> | number
+    defaultVehicleType?: StringNullableWithAggregatesFilter<"ServiceLibrary"> | string | null
+    defaultChildPercent?: FloatWithAggregatesFilter<"ServiceLibrary"> | number
+    defaultExtraBedPrice?: FloatWithAggregatesFilter<"ServiceLibrary"> | number
     isActive?: BoolWithAggregatesFilter<"ServiceLibrary"> | boolean
     sortOrder?: IntWithAggregatesFilter<"ServiceLibrary"> | number
     createdAt?: DateTimeWithAggregatesFilter<"ServiceLibrary"> | Date | string
@@ -54231,18 +55577,82 @@ export namespace Prisma {
     usedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type CompanySettingsCreateInput = {
+    id?: string
+    logoPath?: string | null
+    defaultMargin?: number
+    defaultUsdRate?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CompanySettingsUncheckedCreateInput = {
+    id?: string
+    logoPath?: string | null
+    defaultMargin?: number
+    defaultUsdRate?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CompanySettingsUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    logoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultMargin?: FloatFieldUpdateOperationsInput | number
+    defaultUsdRate?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CompanySettingsUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    logoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultMargin?: FloatFieldUpdateOperationsInput | number
+    defaultUsdRate?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CompanySettingsCreateManyInput = {
+    id?: string
+    logoPath?: string | null
+    defaultMargin?: number
+    defaultUsdRate?: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CompanySettingsUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    logoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultMargin?: FloatFieldUpdateOperationsInput | number
+    defaultUsdRate?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CompanySettingsUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    logoPath?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultMargin?: FloatFieldUpdateOperationsInput | number
+    defaultUsdRate?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type QuotationCreateInput = {
     id?: string
     quotationNo: string
     customerName: string
     customerPhone?: string | null
     customerEmail?: string | null
-    pax?: number
+    adultsCount?: number
+    childrenCount?: number
     travelDate?: string | null
+    startDate?: string | null
     validUntil?: string | null
     margin?: number
     usdRate?: number
-    startDate?: string | null
     status?: string
     notes?: string | null
     createdAt?: Date | string
@@ -54256,12 +55666,13 @@ export namespace Prisma {
     customerName: string
     customerPhone?: string | null
     customerEmail?: string | null
-    pax?: number
+    adultsCount?: number
+    childrenCount?: number
     travelDate?: string | null
+    startDate?: string | null
     validUntil?: string | null
     margin?: number
     usdRate?: number
-    startDate?: string | null
     status?: string
     notes?: string | null
     createdAt?: Date | string
@@ -54275,12 +55686,13 @@ export namespace Prisma {
     customerName?: StringFieldUpdateOperationsInput | string
     customerPhone?: NullableStringFieldUpdateOperationsInput | string | null
     customerEmail?: NullableStringFieldUpdateOperationsInput | string | null
-    pax?: IntFieldUpdateOperationsInput | number
+    adultsCount?: IntFieldUpdateOperationsInput | number
+    childrenCount?: IntFieldUpdateOperationsInput | number
     travelDate?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: NullableStringFieldUpdateOperationsInput | string | null
     validUntil?: NullableStringFieldUpdateOperationsInput | string | null
     margin?: FloatFieldUpdateOperationsInput | number
     usdRate?: FloatFieldUpdateOperationsInput | number
-    startDate?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -54294,12 +55706,13 @@ export namespace Prisma {
     customerName?: StringFieldUpdateOperationsInput | string
     customerPhone?: NullableStringFieldUpdateOperationsInput | string | null
     customerEmail?: NullableStringFieldUpdateOperationsInput | string | null
-    pax?: IntFieldUpdateOperationsInput | number
+    adultsCount?: IntFieldUpdateOperationsInput | number
+    childrenCount?: IntFieldUpdateOperationsInput | number
     travelDate?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: NullableStringFieldUpdateOperationsInput | string | null
     validUntil?: NullableStringFieldUpdateOperationsInput | string | null
     margin?: FloatFieldUpdateOperationsInput | number
     usdRate?: FloatFieldUpdateOperationsInput | number
-    startDate?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -54313,12 +55726,13 @@ export namespace Prisma {
     customerName: string
     customerPhone?: string | null
     customerEmail?: string | null
-    pax?: number
+    adultsCount?: number
+    childrenCount?: number
     travelDate?: string | null
+    startDate?: string | null
     validUntil?: string | null
     margin?: number
     usdRate?: number
-    startDate?: string | null
     status?: string
     notes?: string | null
     createdAt?: Date | string
@@ -54331,12 +55745,13 @@ export namespace Prisma {
     customerName?: StringFieldUpdateOperationsInput | string
     customerPhone?: NullableStringFieldUpdateOperationsInput | string | null
     customerEmail?: NullableStringFieldUpdateOperationsInput | string | null
-    pax?: IntFieldUpdateOperationsInput | number
+    adultsCount?: IntFieldUpdateOperationsInput | number
+    childrenCount?: IntFieldUpdateOperationsInput | number
     travelDate?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: NullableStringFieldUpdateOperationsInput | string | null
     validUntil?: NullableStringFieldUpdateOperationsInput | string | null
     margin?: FloatFieldUpdateOperationsInput | number
     usdRate?: FloatFieldUpdateOperationsInput | number
-    startDate?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -54349,12 +55764,13 @@ export namespace Prisma {
     customerName?: StringFieldUpdateOperationsInput | string
     customerPhone?: NullableStringFieldUpdateOperationsInput | string | null
     customerEmail?: NullableStringFieldUpdateOperationsInput | string | null
-    pax?: IntFieldUpdateOperationsInput | number
+    adultsCount?: IntFieldUpdateOperationsInput | number
+    childrenCount?: IntFieldUpdateOperationsInput | number
     travelDate?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: NullableStringFieldUpdateOperationsInput | string | null
     validUntil?: NullableStringFieldUpdateOperationsInput | string | null
     margin?: FloatFieldUpdateOperationsInput | number
     usdRate?: FloatFieldUpdateOperationsInput | number
-    startDate?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -54366,11 +55782,14 @@ export namespace Prisma {
     category: string
     name: string
     description?: string | null
-    costPrice: number
-    salePrice: number
-    currency?: string
+    pricingType?: string
+    unitCostUsd?: number
     quantity?: number
-    unit?: string | null
+    childPricePercent?: number
+    vehicleType?: string | null
+    extraBedCount?: number
+    extraBedPriceUsd?: number
+    saleTotalUsd?: number
     sortOrder?: number
     createdAt?: Date | string
     quotation: QuotationCreateNestedOneWithoutItemsInput
@@ -54382,11 +55801,14 @@ export namespace Prisma {
     category: string
     name: string
     description?: string | null
-    costPrice: number
-    salePrice: number
-    currency?: string
+    pricingType?: string
+    unitCostUsd?: number
     quantity?: number
-    unit?: string | null
+    childPricePercent?: number
+    vehicleType?: string | null
+    extraBedCount?: number
+    extraBedPriceUsd?: number
+    saleTotalUsd?: number
     sortOrder?: number
     createdAt?: Date | string
   }
@@ -54396,11 +55818,14 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    costPrice?: FloatFieldUpdateOperationsInput | number
-    salePrice?: FloatFieldUpdateOperationsInput | number
-    currency?: StringFieldUpdateOperationsInput | string
+    pricingType?: StringFieldUpdateOperationsInput | string
+    unitCostUsd?: FloatFieldUpdateOperationsInput | number
     quantity?: IntFieldUpdateOperationsInput | number
-    unit?: NullableStringFieldUpdateOperationsInput | string | null
+    childPricePercent?: FloatFieldUpdateOperationsInput | number
+    vehicleType?: NullableStringFieldUpdateOperationsInput | string | null
+    extraBedCount?: IntFieldUpdateOperationsInput | number
+    extraBedPriceUsd?: FloatFieldUpdateOperationsInput | number
+    saleTotalUsd?: FloatFieldUpdateOperationsInput | number
     sortOrder?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     quotation?: QuotationUpdateOneRequiredWithoutItemsNestedInput
@@ -54412,11 +55837,14 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    costPrice?: FloatFieldUpdateOperationsInput | number
-    salePrice?: FloatFieldUpdateOperationsInput | number
-    currency?: StringFieldUpdateOperationsInput | string
+    pricingType?: StringFieldUpdateOperationsInput | string
+    unitCostUsd?: FloatFieldUpdateOperationsInput | number
     quantity?: IntFieldUpdateOperationsInput | number
-    unit?: NullableStringFieldUpdateOperationsInput | string | null
+    childPricePercent?: FloatFieldUpdateOperationsInput | number
+    vehicleType?: NullableStringFieldUpdateOperationsInput | string | null
+    extraBedCount?: IntFieldUpdateOperationsInput | number
+    extraBedPriceUsd?: FloatFieldUpdateOperationsInput | number
+    saleTotalUsd?: FloatFieldUpdateOperationsInput | number
     sortOrder?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -54427,11 +55855,14 @@ export namespace Prisma {
     category: string
     name: string
     description?: string | null
-    costPrice: number
-    salePrice: number
-    currency?: string
+    pricingType?: string
+    unitCostUsd?: number
     quantity?: number
-    unit?: string | null
+    childPricePercent?: number
+    vehicleType?: string | null
+    extraBedCount?: number
+    extraBedPriceUsd?: number
+    saleTotalUsd?: number
     sortOrder?: number
     createdAt?: Date | string
   }
@@ -54441,11 +55872,14 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    costPrice?: FloatFieldUpdateOperationsInput | number
-    salePrice?: FloatFieldUpdateOperationsInput | number
-    currency?: StringFieldUpdateOperationsInput | string
+    pricingType?: StringFieldUpdateOperationsInput | string
+    unitCostUsd?: FloatFieldUpdateOperationsInput | number
     quantity?: IntFieldUpdateOperationsInput | number
-    unit?: NullableStringFieldUpdateOperationsInput | string | null
+    childPricePercent?: FloatFieldUpdateOperationsInput | number
+    vehicleType?: NullableStringFieldUpdateOperationsInput | string | null
+    extraBedCount?: IntFieldUpdateOperationsInput | number
+    extraBedPriceUsd?: FloatFieldUpdateOperationsInput | number
+    saleTotalUsd?: FloatFieldUpdateOperationsInput | number
     sortOrder?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -54456,11 +55890,14 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    costPrice?: FloatFieldUpdateOperationsInput | number
-    salePrice?: FloatFieldUpdateOperationsInput | number
-    currency?: StringFieldUpdateOperationsInput | string
+    pricingType?: StringFieldUpdateOperationsInput | string
+    unitCostUsd?: FloatFieldUpdateOperationsInput | number
     quantity?: IntFieldUpdateOperationsInput | number
-    unit?: NullableStringFieldUpdateOperationsInput | string | null
+    childPricePercent?: FloatFieldUpdateOperationsInput | number
+    vehicleType?: NullableStringFieldUpdateOperationsInput | string | null
+    extraBedCount?: IntFieldUpdateOperationsInput | number
+    extraBedPriceUsd?: FloatFieldUpdateOperationsInput | number
+    saleTotalUsd?: FloatFieldUpdateOperationsInput | number
     sortOrder?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -54470,9 +55907,11 @@ export namespace Prisma {
     category: string
     name: string
     description?: string | null
-    defaultCost?: number
-    currency?: string
-    unit?: string | null
+    defaultPricingType?: string
+    defaultCostUsd?: number
+    defaultVehicleType?: string | null
+    defaultChildPercent?: number
+    defaultExtraBedPrice?: number
     isActive?: boolean
     sortOrder?: number
     createdAt?: Date | string
@@ -54484,9 +55923,11 @@ export namespace Prisma {
     category: string
     name: string
     description?: string | null
-    defaultCost?: number
-    currency?: string
-    unit?: string | null
+    defaultPricingType?: string
+    defaultCostUsd?: number
+    defaultVehicleType?: string | null
+    defaultChildPercent?: number
+    defaultExtraBedPrice?: number
     isActive?: boolean
     sortOrder?: number
     createdAt?: Date | string
@@ -54498,9 +55939,11 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    defaultCost?: FloatFieldUpdateOperationsInput | number
-    currency?: StringFieldUpdateOperationsInput | string
-    unit?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultPricingType?: StringFieldUpdateOperationsInput | string
+    defaultCostUsd?: FloatFieldUpdateOperationsInput | number
+    defaultVehicleType?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultChildPercent?: FloatFieldUpdateOperationsInput | number
+    defaultExtraBedPrice?: FloatFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean
     sortOrder?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -54512,9 +55955,11 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    defaultCost?: FloatFieldUpdateOperationsInput | number
-    currency?: StringFieldUpdateOperationsInput | string
-    unit?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultPricingType?: StringFieldUpdateOperationsInput | string
+    defaultCostUsd?: FloatFieldUpdateOperationsInput | number
+    defaultVehicleType?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultChildPercent?: FloatFieldUpdateOperationsInput | number
+    defaultExtraBedPrice?: FloatFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean
     sortOrder?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -54526,9 +55971,11 @@ export namespace Prisma {
     category: string
     name: string
     description?: string | null
-    defaultCost?: number
-    currency?: string
-    unit?: string | null
+    defaultPricingType?: string
+    defaultCostUsd?: number
+    defaultVehicleType?: string | null
+    defaultChildPercent?: number
+    defaultExtraBedPrice?: number
     isActive?: boolean
     sortOrder?: number
     createdAt?: Date | string
@@ -54540,9 +55987,11 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    defaultCost?: FloatFieldUpdateOperationsInput | number
-    currency?: StringFieldUpdateOperationsInput | string
-    unit?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultPricingType?: StringFieldUpdateOperationsInput | string
+    defaultCostUsd?: FloatFieldUpdateOperationsInput | number
+    defaultVehicleType?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultChildPercent?: FloatFieldUpdateOperationsInput | number
+    defaultExtraBedPrice?: FloatFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean
     sortOrder?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -54554,9 +56003,11 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    defaultCost?: FloatFieldUpdateOperationsInput | number
-    currency?: StringFieldUpdateOperationsInput | string
-    unit?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultPricingType?: StringFieldUpdateOperationsInput | string
+    defaultCostUsd?: FloatFieldUpdateOperationsInput | number
+    defaultVehicleType?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultChildPercent?: FloatFieldUpdateOperationsInput | number
+    defaultExtraBedPrice?: FloatFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean
     sortOrder?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -56730,6 +58181,43 @@ export namespace Prisma {
     usedAt?: SortOrder
   }
 
+  export type CompanySettingsCountOrderByAggregateInput = {
+    id?: SortOrder
+    logoPath?: SortOrder
+    defaultMargin?: SortOrder
+    defaultUsdRate?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CompanySettingsAvgOrderByAggregateInput = {
+    defaultMargin?: SortOrder
+    defaultUsdRate?: SortOrder
+  }
+
+  export type CompanySettingsMaxOrderByAggregateInput = {
+    id?: SortOrder
+    logoPath?: SortOrder
+    defaultMargin?: SortOrder
+    defaultUsdRate?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CompanySettingsMinOrderByAggregateInput = {
+    id?: SortOrder
+    logoPath?: SortOrder
+    defaultMargin?: SortOrder
+    defaultUsdRate?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CompanySettingsSumOrderByAggregateInput = {
+    defaultMargin?: SortOrder
+    defaultUsdRate?: SortOrder
+  }
+
   export type QuotationItemListRelationFilter = {
     every?: QuotationItemWhereInput
     some?: QuotationItemWhereInput
@@ -56746,12 +58234,13 @@ export namespace Prisma {
     customerName?: SortOrder
     customerPhone?: SortOrder
     customerEmail?: SortOrder
-    pax?: SortOrder
+    adultsCount?: SortOrder
+    childrenCount?: SortOrder
     travelDate?: SortOrder
+    startDate?: SortOrder
     validUntil?: SortOrder
     margin?: SortOrder
     usdRate?: SortOrder
-    startDate?: SortOrder
     status?: SortOrder
     notes?: SortOrder
     createdAt?: SortOrder
@@ -56759,7 +58248,8 @@ export namespace Prisma {
   }
 
   export type QuotationAvgOrderByAggregateInput = {
-    pax?: SortOrder
+    adultsCount?: SortOrder
+    childrenCount?: SortOrder
     margin?: SortOrder
     usdRate?: SortOrder
   }
@@ -56770,12 +58260,13 @@ export namespace Prisma {
     customerName?: SortOrder
     customerPhone?: SortOrder
     customerEmail?: SortOrder
-    pax?: SortOrder
+    adultsCount?: SortOrder
+    childrenCount?: SortOrder
     travelDate?: SortOrder
+    startDate?: SortOrder
     validUntil?: SortOrder
     margin?: SortOrder
     usdRate?: SortOrder
-    startDate?: SortOrder
     status?: SortOrder
     notes?: SortOrder
     createdAt?: SortOrder
@@ -56788,12 +58279,13 @@ export namespace Prisma {
     customerName?: SortOrder
     customerPhone?: SortOrder
     customerEmail?: SortOrder
-    pax?: SortOrder
+    adultsCount?: SortOrder
+    childrenCount?: SortOrder
     travelDate?: SortOrder
+    startDate?: SortOrder
     validUntil?: SortOrder
     margin?: SortOrder
     usdRate?: SortOrder
-    startDate?: SortOrder
     status?: SortOrder
     notes?: SortOrder
     createdAt?: SortOrder
@@ -56801,7 +58293,8 @@ export namespace Prisma {
   }
 
   export type QuotationSumOrderByAggregateInput = {
-    pax?: SortOrder
+    adultsCount?: SortOrder
+    childrenCount?: SortOrder
     margin?: SortOrder
     usdRate?: SortOrder
   }
@@ -56817,19 +58310,25 @@ export namespace Prisma {
     category?: SortOrder
     name?: SortOrder
     description?: SortOrder
-    costPrice?: SortOrder
-    salePrice?: SortOrder
-    currency?: SortOrder
+    pricingType?: SortOrder
+    unitCostUsd?: SortOrder
     quantity?: SortOrder
-    unit?: SortOrder
+    childPricePercent?: SortOrder
+    vehicleType?: SortOrder
+    extraBedCount?: SortOrder
+    extraBedPriceUsd?: SortOrder
+    saleTotalUsd?: SortOrder
     sortOrder?: SortOrder
     createdAt?: SortOrder
   }
 
   export type QuotationItemAvgOrderByAggregateInput = {
-    costPrice?: SortOrder
-    salePrice?: SortOrder
+    unitCostUsd?: SortOrder
     quantity?: SortOrder
+    childPricePercent?: SortOrder
+    extraBedCount?: SortOrder
+    extraBedPriceUsd?: SortOrder
+    saleTotalUsd?: SortOrder
     sortOrder?: SortOrder
   }
 
@@ -56839,11 +58338,14 @@ export namespace Prisma {
     category?: SortOrder
     name?: SortOrder
     description?: SortOrder
-    costPrice?: SortOrder
-    salePrice?: SortOrder
-    currency?: SortOrder
+    pricingType?: SortOrder
+    unitCostUsd?: SortOrder
     quantity?: SortOrder
-    unit?: SortOrder
+    childPricePercent?: SortOrder
+    vehicleType?: SortOrder
+    extraBedCount?: SortOrder
+    extraBedPriceUsd?: SortOrder
+    saleTotalUsd?: SortOrder
     sortOrder?: SortOrder
     createdAt?: SortOrder
   }
@@ -56854,19 +58356,25 @@ export namespace Prisma {
     category?: SortOrder
     name?: SortOrder
     description?: SortOrder
-    costPrice?: SortOrder
-    salePrice?: SortOrder
-    currency?: SortOrder
+    pricingType?: SortOrder
+    unitCostUsd?: SortOrder
     quantity?: SortOrder
-    unit?: SortOrder
+    childPricePercent?: SortOrder
+    vehicleType?: SortOrder
+    extraBedCount?: SortOrder
+    extraBedPriceUsd?: SortOrder
+    saleTotalUsd?: SortOrder
     sortOrder?: SortOrder
     createdAt?: SortOrder
   }
 
   export type QuotationItemSumOrderByAggregateInput = {
-    costPrice?: SortOrder
-    salePrice?: SortOrder
+    unitCostUsd?: SortOrder
     quantity?: SortOrder
+    childPricePercent?: SortOrder
+    extraBedCount?: SortOrder
+    extraBedPriceUsd?: SortOrder
+    saleTotalUsd?: SortOrder
     sortOrder?: SortOrder
   }
 
@@ -56875,9 +58383,11 @@ export namespace Prisma {
     category?: SortOrder
     name?: SortOrder
     description?: SortOrder
-    defaultCost?: SortOrder
-    currency?: SortOrder
-    unit?: SortOrder
+    defaultPricingType?: SortOrder
+    defaultCostUsd?: SortOrder
+    defaultVehicleType?: SortOrder
+    defaultChildPercent?: SortOrder
+    defaultExtraBedPrice?: SortOrder
     isActive?: SortOrder
     sortOrder?: SortOrder
     createdAt?: SortOrder
@@ -56885,7 +58395,9 @@ export namespace Prisma {
   }
 
   export type ServiceLibraryAvgOrderByAggregateInput = {
-    defaultCost?: SortOrder
+    defaultCostUsd?: SortOrder
+    defaultChildPercent?: SortOrder
+    defaultExtraBedPrice?: SortOrder
     sortOrder?: SortOrder
   }
 
@@ -56894,9 +58406,11 @@ export namespace Prisma {
     category?: SortOrder
     name?: SortOrder
     description?: SortOrder
-    defaultCost?: SortOrder
-    currency?: SortOrder
-    unit?: SortOrder
+    defaultPricingType?: SortOrder
+    defaultCostUsd?: SortOrder
+    defaultVehicleType?: SortOrder
+    defaultChildPercent?: SortOrder
+    defaultExtraBedPrice?: SortOrder
     isActive?: SortOrder
     sortOrder?: SortOrder
     createdAt?: SortOrder
@@ -56908,9 +58422,11 @@ export namespace Prisma {
     category?: SortOrder
     name?: SortOrder
     description?: SortOrder
-    defaultCost?: SortOrder
-    currency?: SortOrder
-    unit?: SortOrder
+    defaultPricingType?: SortOrder
+    defaultCostUsd?: SortOrder
+    defaultVehicleType?: SortOrder
+    defaultChildPercent?: SortOrder
+    defaultExtraBedPrice?: SortOrder
     isActive?: SortOrder
     sortOrder?: SortOrder
     createdAt?: SortOrder
@@ -56918,7 +58434,9 @@ export namespace Prisma {
   }
 
   export type ServiceLibrarySumOrderByAggregateInput = {
-    defaultCost?: SortOrder
+    defaultCostUsd?: SortOrder
+    defaultChildPercent?: SortOrder
+    defaultExtraBedPrice?: SortOrder
     sortOrder?: SortOrder
   }
 
@@ -63123,11 +64641,14 @@ export namespace Prisma {
     category: string
     name: string
     description?: string | null
-    costPrice: number
-    salePrice: number
-    currency?: string
+    pricingType?: string
+    unitCostUsd?: number
     quantity?: number
-    unit?: string | null
+    childPricePercent?: number
+    vehicleType?: string | null
+    extraBedCount?: number
+    extraBedPriceUsd?: number
+    saleTotalUsd?: number
     sortOrder?: number
     createdAt?: Date | string
   }
@@ -63137,11 +64658,14 @@ export namespace Prisma {
     category: string
     name: string
     description?: string | null
-    costPrice: number
-    salePrice: number
-    currency?: string
+    pricingType?: string
+    unitCostUsd?: number
     quantity?: number
-    unit?: string | null
+    childPricePercent?: number
+    vehicleType?: string | null
+    extraBedCount?: number
+    extraBedPriceUsd?: number
+    saleTotalUsd?: number
     sortOrder?: number
     createdAt?: Date | string
   }
@@ -63181,11 +64705,14 @@ export namespace Prisma {
     category?: StringFilter<"QuotationItem"> | string
     name?: StringFilter<"QuotationItem"> | string
     description?: StringNullableFilter<"QuotationItem"> | string | null
-    costPrice?: FloatFilter<"QuotationItem"> | number
-    salePrice?: FloatFilter<"QuotationItem"> | number
-    currency?: StringFilter<"QuotationItem"> | string
+    pricingType?: StringFilter<"QuotationItem"> | string
+    unitCostUsd?: FloatFilter<"QuotationItem"> | number
     quantity?: IntFilter<"QuotationItem"> | number
-    unit?: StringNullableFilter<"QuotationItem"> | string | null
+    childPricePercent?: FloatFilter<"QuotationItem"> | number
+    vehicleType?: StringNullableFilter<"QuotationItem"> | string | null
+    extraBedCount?: IntFilter<"QuotationItem"> | number
+    extraBedPriceUsd?: FloatFilter<"QuotationItem"> | number
+    saleTotalUsd?: FloatFilter<"QuotationItem"> | number
     sortOrder?: IntFilter<"QuotationItem"> | number
     createdAt?: DateTimeFilter<"QuotationItem"> | Date | string
   }
@@ -63196,12 +64723,13 @@ export namespace Prisma {
     customerName: string
     customerPhone?: string | null
     customerEmail?: string | null
-    pax?: number
+    adultsCount?: number
+    childrenCount?: number
     travelDate?: string | null
+    startDate?: string | null
     validUntil?: string | null
     margin?: number
     usdRate?: number
-    startDate?: string | null
     status?: string
     notes?: string | null
     createdAt?: Date | string
@@ -63214,12 +64742,13 @@ export namespace Prisma {
     customerName: string
     customerPhone?: string | null
     customerEmail?: string | null
-    pax?: number
+    adultsCount?: number
+    childrenCount?: number
     travelDate?: string | null
+    startDate?: string | null
     validUntil?: string | null
     margin?: number
     usdRate?: number
-    startDate?: string | null
     status?: string
     notes?: string | null
     createdAt?: Date | string
@@ -63248,12 +64777,13 @@ export namespace Prisma {
     customerName?: StringFieldUpdateOperationsInput | string
     customerPhone?: NullableStringFieldUpdateOperationsInput | string | null
     customerEmail?: NullableStringFieldUpdateOperationsInput | string | null
-    pax?: IntFieldUpdateOperationsInput | number
+    adultsCount?: IntFieldUpdateOperationsInput | number
+    childrenCount?: IntFieldUpdateOperationsInput | number
     travelDate?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: NullableStringFieldUpdateOperationsInput | string | null
     validUntil?: NullableStringFieldUpdateOperationsInput | string | null
     margin?: FloatFieldUpdateOperationsInput | number
     usdRate?: FloatFieldUpdateOperationsInput | number
-    startDate?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -63266,12 +64796,13 @@ export namespace Prisma {
     customerName?: StringFieldUpdateOperationsInput | string
     customerPhone?: NullableStringFieldUpdateOperationsInput | string | null
     customerEmail?: NullableStringFieldUpdateOperationsInput | string | null
-    pax?: IntFieldUpdateOperationsInput | number
+    adultsCount?: IntFieldUpdateOperationsInput | number
+    childrenCount?: IntFieldUpdateOperationsInput | number
     travelDate?: NullableStringFieldUpdateOperationsInput | string | null
+    startDate?: NullableStringFieldUpdateOperationsInput | string | null
     validUntil?: NullableStringFieldUpdateOperationsInput | string | null
     margin?: FloatFieldUpdateOperationsInput | number
     usdRate?: FloatFieldUpdateOperationsInput | number
-    startDate?: NullableStringFieldUpdateOperationsInput | string | null
     status?: StringFieldUpdateOperationsInput | string
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -64701,11 +66232,14 @@ export namespace Prisma {
     category: string
     name: string
     description?: string | null
-    costPrice: number
-    salePrice: number
-    currency?: string
+    pricingType?: string
+    unitCostUsd?: number
     quantity?: number
-    unit?: string | null
+    childPricePercent?: number
+    vehicleType?: string | null
+    extraBedCount?: number
+    extraBedPriceUsd?: number
+    saleTotalUsd?: number
     sortOrder?: number
     createdAt?: Date | string
   }
@@ -64715,11 +66249,14 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    costPrice?: FloatFieldUpdateOperationsInput | number
-    salePrice?: FloatFieldUpdateOperationsInput | number
-    currency?: StringFieldUpdateOperationsInput | string
+    pricingType?: StringFieldUpdateOperationsInput | string
+    unitCostUsd?: FloatFieldUpdateOperationsInput | number
     quantity?: IntFieldUpdateOperationsInput | number
-    unit?: NullableStringFieldUpdateOperationsInput | string | null
+    childPricePercent?: FloatFieldUpdateOperationsInput | number
+    vehicleType?: NullableStringFieldUpdateOperationsInput | string | null
+    extraBedCount?: IntFieldUpdateOperationsInput | number
+    extraBedPriceUsd?: FloatFieldUpdateOperationsInput | number
+    saleTotalUsd?: FloatFieldUpdateOperationsInput | number
     sortOrder?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -64729,11 +66266,14 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    costPrice?: FloatFieldUpdateOperationsInput | number
-    salePrice?: FloatFieldUpdateOperationsInput | number
-    currency?: StringFieldUpdateOperationsInput | string
+    pricingType?: StringFieldUpdateOperationsInput | string
+    unitCostUsd?: FloatFieldUpdateOperationsInput | number
     quantity?: IntFieldUpdateOperationsInput | number
-    unit?: NullableStringFieldUpdateOperationsInput | string | null
+    childPricePercent?: FloatFieldUpdateOperationsInput | number
+    vehicleType?: NullableStringFieldUpdateOperationsInput | string | null
+    extraBedCount?: IntFieldUpdateOperationsInput | number
+    extraBedPriceUsd?: FloatFieldUpdateOperationsInput | number
+    saleTotalUsd?: FloatFieldUpdateOperationsInput | number
     sortOrder?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -64743,11 +66283,14 @@ export namespace Prisma {
     category?: StringFieldUpdateOperationsInput | string
     name?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
-    costPrice?: FloatFieldUpdateOperationsInput | number
-    salePrice?: FloatFieldUpdateOperationsInput | number
-    currency?: StringFieldUpdateOperationsInput | string
+    pricingType?: StringFieldUpdateOperationsInput | string
+    unitCostUsd?: FloatFieldUpdateOperationsInput | number
     quantity?: IntFieldUpdateOperationsInput | number
-    unit?: NullableStringFieldUpdateOperationsInput | string | null
+    childPricePercent?: FloatFieldUpdateOperationsInput | number
+    vehicleType?: NullableStringFieldUpdateOperationsInput | string | null
+    extraBedCount?: IntFieldUpdateOperationsInput | number
+    extraBedPriceUsd?: FloatFieldUpdateOperationsInput | number
+    saleTotalUsd?: FloatFieldUpdateOperationsInput | number
     sortOrder?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

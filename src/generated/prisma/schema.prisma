@@ -583,51 +583,71 @@ model CampaignCodeUsage {
 // FİYAT TEKLİFİ SİSTEMİ
 // ─────────────────────────────────────────────────────────
 
+model CompanySettings {
+  id             String   @id @default(cuid())
+  logoPath       String? // public/ altında saklanan dosya yolu
+  defaultMargin  Float    @default(18)
+  defaultUsdRate Float    @default(0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
 model Quotation {
   id            String          @id @default(cuid())
   quotationNo   String          @unique // "TKF-2026-0001"
   customerName  String
   customerPhone String?
   customerEmail String?
-  pax           Int             @default(1) // kişi sayısı
-  travelDate    String? // "Mart 2027" gibi serbest metin
-  validUntil    String? // "30 gün" gibi
-  margin        Float           @default(20) // % kar marjı — PDF'e yansımaz
-  usdRate       Float           @default(0) // USD/TRY kuru
+  adultsCount   Int             @default(1)
+  childrenCount Int             @default(0)
+  travelDate    String? // "8-13 Haziran 2026" — PDF başlığı
   startDate     String? // "8 Haziran 2026" — PDF meta satırı
+  validUntil    String? // "3 iş günü" gibi serbest metin
+  margin        Float           @default(18) // % kar marjı — PDF'e yansımaz
+  usdRate       Float           @default(0) // USD/TRY kuru
   status        String          @default("draft") // draft | sent | accepted | rejected | expired
-  notes         String?
+  notes         String? // sadece admin görür
   items         QuotationItem[]
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
 }
 
+// pricingType değerleri:
+//   per_person  — vize, tren, bilet (kişi başı × yetişkin + çocuk × childPricePercent)
+//   per_vehicle — transfer, araçlı tur (birim × adet araç)
+//   per_room    — otel (oda fiyatı × oda adedi + extraBedPriceUsd × extraBedCount)
+//   flat        — tek seferlik sabit fiyat × adet
 model QuotationItem {
-  id          String    @id @default(cuid())
-  quotation   Quotation @relation(fields: [quotationId], references: [id], onDelete: Cascade)
-  quotationId String
-  category    String // flight | hotel | transfer | guide | extra
-  name        String
-  description String?
-  costPrice   Float // maliyet — PDF'e yansımaz
-  salePrice   Float // satış fiyatı = costPrice * (1 + margin/100)
-  currency    String    @default("USD")
-  quantity    Int       @default(1)
-  unit        String? // "kişi" | "gün" | "araç" | "gecelik"
-  sortOrder   Int       @default(0)
-  createdAt   DateTime  @default(now())
+  id                String    @id @default(cuid())
+  quotation         Quotation @relation(fields: [quotationId], references: [id], onDelete: Cascade)
+  quotationId       String
+  category          String // vize | hotel | transfer | tur | flight | extra
+  name              String
+  description       String?
+  pricingType       String    @default("flat") // per_person | per_vehicle | per_room | flat
+  unitCostUsd       Float     @default(0) // birim alış fiyatı (USD)
+  quantity          Int       @default(1) // araç adedi / oda sayısı / adet
+  childPricePercent Float     @default(0) // per_person: çocuk kalem oranı (0-100)
+  vehicleType       String? // per_vehicle: sedan|minivan|gmc|midibus|bus
+  extraBedCount     Int       @default(0) // per_room: ek yatak sayısı
+  extraBedPriceUsd  Float     @default(0) // per_room: ek yatak birim alış
+  saleTotalUsd      Float     @default(0) // hesaplanan satış toplamı (margin dahil)
+  sortOrder         Int       @default(0)
+  createdAt         DateTime  @default(now())
 }
 
 model ServiceLibrary {
-  id          String   @id @default(cuid())
-  category    String // flight | hotel | transfer | guide | extra
-  name        String
-  description String?
-  defaultCost Float    @default(0)
-  currency    String   @default("USD")
-  unit        String?
-  isActive    Boolean  @default(true)
-  sortOrder   Int      @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id                   String   @id @default(cuid())
+  category             String // vize | hotel | transfer | tur | flight | extra
+  name                 String
+  description          String?
+  defaultPricingType   String   @default("flat") // per_person | per_vehicle | per_room | flat
+  defaultCostUsd       Float    @default(0)
+  defaultVehicleType   String?
+  defaultChildPercent  Float    @default(0)
+  defaultExtraBedPrice Float    @default(0)
+  isActive             Boolean  @default(true)
+  sortOrder            Int      @default(0)
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
 }

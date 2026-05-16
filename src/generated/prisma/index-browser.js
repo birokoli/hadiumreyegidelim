@@ -596,18 +596,28 @@ exports.Prisma.CampaignCodeUsageScalarFieldEnum = {
   usedAt: 'usedAt'
 };
 
+exports.Prisma.CompanySettingsScalarFieldEnum = {
+  id: 'id',
+  logoPath: 'logoPath',
+  defaultMargin: 'defaultMargin',
+  defaultUsdRate: 'defaultUsdRate',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.QuotationScalarFieldEnum = {
   id: 'id',
   quotationNo: 'quotationNo',
   customerName: 'customerName',
   customerPhone: 'customerPhone',
   customerEmail: 'customerEmail',
-  pax: 'pax',
+  adultsCount: 'adultsCount',
+  childrenCount: 'childrenCount',
   travelDate: 'travelDate',
+  startDate: 'startDate',
   validUntil: 'validUntil',
   margin: 'margin',
   usdRate: 'usdRate',
-  startDate: 'startDate',
   status: 'status',
   notes: 'notes',
   createdAt: 'createdAt',
@@ -620,11 +630,14 @@ exports.Prisma.QuotationItemScalarFieldEnum = {
   category: 'category',
   name: 'name',
   description: 'description',
-  costPrice: 'costPrice',
-  salePrice: 'salePrice',
-  currency: 'currency',
+  pricingType: 'pricingType',
+  unitCostUsd: 'unitCostUsd',
   quantity: 'quantity',
-  unit: 'unit',
+  childPricePercent: 'childPricePercent',
+  vehicleType: 'vehicleType',
+  extraBedCount: 'extraBedCount',
+  extraBedPriceUsd: 'extraBedPriceUsd',
+  saleTotalUsd: 'saleTotalUsd',
   sortOrder: 'sortOrder',
   createdAt: 'createdAt'
 };
@@ -634,9 +647,11 @@ exports.Prisma.ServiceLibraryScalarFieldEnum = {
   category: 'category',
   name: 'name',
   description: 'description',
-  defaultCost: 'defaultCost',
-  currency: 'currency',
-  unit: 'unit',
+  defaultPricingType: 'defaultPricingType',
+  defaultCostUsd: 'defaultCostUsd',
+  defaultVehicleType: 'defaultVehicleType',
+  defaultChildPercent: 'defaultChildPercent',
+  defaultExtraBedPrice: 'defaultExtraBedPrice',
   isActive: 'isActive',
   sortOrder: 'sortOrder',
   createdAt: 'createdAt',
@@ -693,6 +708,7 @@ exports.Prisma.ModelName = {
   Campaign: 'Campaign',
   CampaignParticipant: 'CampaignParticipant',
   CampaignCodeUsage: 'CampaignCodeUsage',
+  CompanySettings: 'CompanySettings',
   Quotation: 'Quotation',
   QuotationItem: 'QuotationItem',
   ServiceLibrary: 'ServiceLibrary'

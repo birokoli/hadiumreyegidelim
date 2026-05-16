@@ -7,7 +7,6 @@ async function checkAdmin() {
   return store.get('admin_session')?.value === 'true';
 }
 
-// GET — tüm hizmet şablonlarını listele
 export async function GET() {
   if (!await checkAdmin()) return NextResponse.json({ error: 'Yetkisiz.' }, { status: 401 });
 
@@ -19,12 +18,15 @@ export async function GET() {
   return NextResponse.json({ services });
 }
 
-// POST — yeni hizmet şablonu ekle
 export async function POST(req: NextRequest) {
   if (!await checkAdmin()) return NextResponse.json({ error: 'Yetkisiz.' }, { status: 401 });
 
   const body = await req.json();
-  const { category, name, description, defaultCost, currency, unit } = body;
+  const {
+    category, name, description,
+    defaultPricingType, defaultCostUsd,
+    defaultVehicleType, defaultChildPercent, defaultExtraBedPrice,
+  } = body;
 
   if (!category || !name) return NextResponse.json({ error: 'Kategori ve isim zorunlu.' }, { status: 400 });
 
@@ -32,10 +34,12 @@ export async function POST(req: NextRequest) {
     data: {
       category,
       name,
-      description: description || null,
-      defaultCost: defaultCost ?? 0,
-      currency: currency ?? 'USD',
-      unit: unit || null,
+      description:          description || null,
+      defaultPricingType:   defaultPricingType ?? 'flat',
+      defaultCostUsd:       defaultCostUsd ?? 0,
+      defaultVehicleType:   defaultVehicleType || null,
+      defaultChildPercent:  defaultChildPercent ?? 0,
+      defaultExtraBedPrice: defaultExtraBedPrice ?? 0,
     },
   });
 

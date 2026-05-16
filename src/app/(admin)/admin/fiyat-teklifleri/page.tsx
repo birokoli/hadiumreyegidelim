@@ -4,9 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 interface QuotationItem {
-  salePrice: number;
-  quantity: number;
-  currency: string;
+  saleTotalUsd: number;
 }
 
 interface Quotation {
@@ -14,24 +12,28 @@ interface Quotation {
   quotationNo: string;
   customerName: string;
   customerPhone?: string;
-  pax: number;
+  adultsCount: number;
+  childrenCount: number;
   travelDate?: string;
   status: string;
-  margin: number;
   createdAt: string;
   items: QuotationItem[];
 }
 
 const STATUS_LABELS: Record<string, { label: string; color: string }> = {
-  draft:    { label: 'Taslak',   color: 'bg-gray-100 text-gray-600' },
-  sent:     { label: 'Gönderildi', color: 'bg-blue-50 text-blue-700' },
+  draft:    { label: 'Taslak',       color: 'bg-gray-100 text-gray-600' },
+  sent:     { label: 'Gönderildi',   color: 'bg-blue-50 text-blue-700' },
   accepted: { label: 'Kabul Edildi', color: 'bg-emerald-50 text-emerald-700' },
-  rejected: { label: 'Reddedildi', color: 'bg-red-50 text-red-600' },
+  rejected: { label: 'Reddedildi',   color: 'bg-red-50 text-red-600' },
   expired:  { label: 'Süresi Doldu', color: 'bg-amber-50 text-amber-700' },
 };
 
 function calcTotal(items: QuotationItem[]) {
-  return items.reduce((s, i) => s + i.salePrice * i.quantity, 0);
+  return items.reduce((s, i) => s + i.saleTotalUsd, 0);
+}
+
+function paxLabel(adults: number, children: number) {
+  return children > 0 ? `${adults}Y + ${children}Ç` : `${adults} Yetişkin`;
 }
 
 function formatDate(iso: string) {
@@ -40,23 +42,20 @@ function formatDate(iso: string) {
 
 export default function QuotationsListPage() {
   const [quotations, setQuotations] = useState<Quotation[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState('');
-  const [statusFilter, setStatusFilter] = useState('all');
-  const [deleting, setDeleting] = useState<string | null>(null);
-
-  async function load() {
-    const res = await fetch('/api/admin/quotations');
-    if (res.ok) {
-      const data = await res.json();
-      setQuotations(data.quotations ?? []);
-    }
-    setLoading(false);
-  }
+  const [loading,    setLoading]    = useState(true);
+  const [search,     setSearch]     = useState('');
+  const [statusFlt,  setStatusFlt]  = useState('all');
+  const [deleting,   setDeleting]   = useState<string | null>(null);
 
   useEffect(() => { load(); }, []);
 
-  async function deleteQuotation(id: string, no: string) {
+  async function load() {
+    const res = await fetch('/api/admin/quotations');
+    if (res.ok) setQuotations((await res.json()).quotations ?? []);
+    setLoading(false);
+  }
+
+  async function del(id: string, no: string) {
     if (!confirm(`"${no}" numaralı teklifi silmek istediğinizden emin misiniz?`)) return;
     setDeleting(id);
     await fetch(`/api/admin/quotations/${id}`, { method: 'DELETE' });
@@ -65,12 +64,11 @@ export default function QuotationsListPage() {
   }
 
   const filtered = quotations.filter(q => {
-    const matchSearch = !search
+    const m = !search
       || q.customerName.toLowerCase().includes(search.toLowerCase())
       || q.quotationNo.toLowerCase().includes(search.toLowerCase())
       || (q.customerPhone ?? '').includes(search);
-    const matchStatus = statusFilter === 'all' || q.status === statusFilter;
-    return matchSearch && matchStatus;
+    return m && (statusFlt === 'all' || q.status === statusFlt);
   });
 
   const totalValue = filtered.reduce((s, q) => s + calcTotal(q.items), 0);
@@ -81,41 +79,36 @@ export default function QuotationsListPage() {
       <div className="flex items-center justify-between gap-4 flex-wrap">
         <div>
           <h1 className="text-[22px] font-bold text-gray-900">Fiyat Teklifleri</h1>
-          <p className="text-[13px] text-gray-400 mt-0.5">{quotations.length} teklif · Toplam {totalValue.toLocaleString('tr-TR')} USD</p>
+          <p className="text-[13px] text-gray-400 mt-0.5">
+            {quotations.length} teklif · Toplam {totalValue.toLocaleString('tr-TR', { maximumFractionDigits: 0 })} USD
+          </p>
         </div>
-        <Link href="/admin/fiyat-teklifleri/yeni">
-          <button className="flex items-center gap-2 bg-[#003781] hover:bg-[#002d6a] text-white text-[13px] font-semibold px-4 py-2.5 rounded-xl transition-all shadow-sm active:scale-95">
-            <span className="material-symbols-outlined text-[18px]">add</span>
-            Yeni Teklif
-          </button>
-        </Link>
+        <div className="flex gap-2">
+          <Link href="/admin/fiyat-teklifleri/yeni">
+            <button className="flex items-center gap-2 bg-[#003781] hover:bg-[#002d6a] text-white text-[13px] font-semibold px-4 py-2.5 rounded-xl transition-all shadow-sm active:scale-95">
+              <span className="material-symbols-outlined text-[18px]">add</span>
+              Yeni Teklif
+            </button>
+          </Link>
+        </div>
       </div>
 
-      {/* Filters */}
+      {/* Filtreler */}
       <div className="flex gap-3 flex-wrap">
         <div className="flex-1 min-w-[200px] relative">
           <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[18px] text-gray-400">search</span>
-          <input
-            type="text"
-            placeholder="Müşteri adı, teklif no..."
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            className="w-full pl-9 pr-4 py-2.5 bg-white border border-gray-200 rounded-xl text-[13px] text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#003781]/15 focus:border-[#003781]/40"
-          />
+          <input type="text" placeholder="Müşteri adı, teklif no..."
+            value={search} onChange={e => setSearch(e.target.value)}
+            className="w-full pl-9 pr-4 py-2.5 bg-white border border-gray-200 rounded-xl text-[13px] focus:outline-none focus:ring-2 focus:ring-[#003781]/15" />
         </div>
-        <select
-          value={statusFilter}
-          onChange={e => setStatusFilter(e.target.value)}
-          className="bg-white border border-gray-200 rounded-xl text-[13px] text-gray-700 px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-[#003781]/15"
-        >
+        <select value={statusFlt} onChange={e => setStatusFlt(e.target.value)}
+          className="bg-white border border-gray-200 rounded-xl text-[13px] text-gray-700 px-3 py-2.5 focus:outline-none">
           <option value="all">Tüm Durumlar</option>
-          {Object.entries(STATUS_LABELS).map(([k, v]) => (
-            <option key={k} value={k}>{v.label}</option>
-          ))}
+          {Object.entries(STATUS_LABELS).map(([k, v]) => <option key={k} value={k}>{v.label}</option>)}
         </select>
       </div>
 
-      {/* Table */}
+      {/* Tablo */}
       <div className="bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm">
         {loading ? (
           <div className="flex items-center justify-center py-16 text-gray-400 text-[14px]">
@@ -126,9 +119,9 @@ export default function QuotationsListPage() {
           <div className="flex flex-col items-center justify-center py-16 gap-3">
             <span className="material-symbols-outlined text-5xl text-gray-200" style={{ fontVariationSettings: "'FILL' 1" }}>request_quote</span>
             <p className="text-[14px] text-gray-400">
-              {search || statusFilter !== 'all' ? 'Arama kriterlerine uygun teklif bulunamadı.' : 'Henüz teklif oluşturulmadı.'}
+              {search || statusFlt !== 'all' ? 'Kriterlere uygun teklif bulunamadı.' : 'Henüz teklif oluşturulmadı.'}
             </p>
-            {!search && statusFilter === 'all' && (
+            {!search && statusFlt === 'all' && (
               <Link href="/admin/fiyat-teklifleri/yeni">
                 <button className="mt-1 text-[13px] font-semibold text-[#003781] hover:underline">İlk teklifi oluştur</button>
               </Link>
@@ -143,8 +136,8 @@ export default function QuotationsListPage() {
                 <th className="text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wider px-4 py-3 hidden md:table-cell">Seyahat</th>
                 <th className="text-right text-[11px] font-semibold text-gray-500 uppercase tracking-wider px-4 py-3 hidden sm:table-cell">Tutar</th>
                 <th className="text-center text-[11px] font-semibold text-gray-500 uppercase tracking-wider px-4 py-3">Durum</th>
-                <th className="text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wider px-4 py-3 hidden lg:table-cell">Tarih</th>
-                <th className="px-4 py-3 w-24"></th>
+                <th className="text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wider px-4 py-3 hidden lg:table-cell">Oluşturulma</th>
+                <th className="px-4 py-3 w-28"></th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-50">
@@ -159,7 +152,7 @@ export default function QuotationsListPage() {
                     <td className="px-4 py-3.5">
                       <p className="text-[13px] font-semibold text-gray-900">{q.customerName}</p>
                       {q.customerPhone && <p className="text-[11px] text-gray-400">{q.customerPhone}</p>}
-                      <p className="text-[11px] text-gray-400">{q.pax} kişi</p>
+                      <p className="text-[11px] text-gray-400">{paxLabel(q.adultsCount, q.childrenCount)}</p>
                     </td>
                     <td className="px-4 py-3.5 hidden md:table-cell">
                       <p className="text-[13px] text-gray-600">{q.travelDate || '—'}</p>
@@ -178,17 +171,18 @@ export default function QuotationsListPage() {
                     </td>
                     <td className="px-4 py-3.5">
                       <div className="flex items-center gap-1 justify-end">
-                        <Link href={`/admin/fiyat-teklifleri/${q.id}`}>
-                          <button className="p-1.5 rounded-lg hover:bg-gray-100 text-gray-400 hover:text-[#003781] transition-colors" title="Düzenle">
+                        <a href={`/api/admin/quotations/${q.id}/pdf`} target="_blank" title="PDF İndir">
+                          <button className="p-1.5 rounded-lg hover:bg-emerald-50 text-gray-400 hover:text-emerald-600 transition-colors">
+                            <span className="material-symbols-outlined text-[18px]">picture_as_pdf</span>
+                          </button>
+                        </a>
+                        <Link href={`/admin/fiyat-teklifleri/${q.id}`} title="Düzenle">
+                          <button className="p-1.5 rounded-lg hover:bg-gray-100 text-gray-400 hover:text-[#003781] transition-colors">
                             <span className="material-symbols-outlined text-[18px]">edit</span>
                           </button>
                         </Link>
-                        <button
-                          onClick={() => deleteQuotation(q.id, q.quotationNo)}
-                          disabled={deleting === q.id}
-                          className="p-1.5 rounded-lg hover:bg-red-50 text-gray-400 hover:text-red-500 transition-colors"
-                          title="Sil"
-                        >
+                        <button onClick={() => del(q.id, q.quotationNo)} disabled={deleting === q.id}
+                          className="p-1.5 rounded-lg hover:bg-red-50 text-gray-400 hover:text-red-500 transition-colors" title="Sil">
                           <span className="material-symbols-outlined text-[18px]">{deleting === q.id ? 'progress_activity' : 'delete'}</span>
                         </button>
                       </div>

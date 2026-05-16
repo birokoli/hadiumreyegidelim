@@ -7,7 +7,6 @@ async function checkAdmin() {
   return store.get('admin_session')?.value === 'true';
 }
 
-// GET — tek teklifi getir
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   if (!await checkAdmin()) return NextResponse.json({ error: 'Yetkisiz.' }, { status: 401 });
 
@@ -21,49 +20,37 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
   return NextResponse.json({ quotation });
 }
 
-// PUT — teklifi güncelle
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   if (!await checkAdmin()) return NextResponse.json({ error: 'Yetkisiz.' }, { status: 401 });
 
   const { id } = await params;
   const body = await req.json();
-  const { customerName, customerPhone, customerEmail, pax, travelDate, startDate, validUntil, margin, usdRate, notes, status, items } = body;
+  const {
+    customerName, customerPhone, customerEmail,
+    adultsCount, childrenCount,
+    travelDate, startDate, validUntil,
+    margin, usdRate, notes, status, items,
+  } = body;
 
-  // Önce eski item'ları sil, yenilerini ekle
   await prisma.quotationItem.deleteMany({ where: { quotationId: id } });
 
   const quotation = await prisma.quotation.update({
     where: { id },
     data: {
       customerName,
-      customerPhone: customerPhone || null,
-      customerEmail: customerEmail || null,
-      pax: pax ?? 1,
-      travelDate: travelDate || null,
-      startDate: startDate || null,
-      validUntil: validUntil || null,
-      margin: margin ?? 20,
-      usdRate: usdRate ?? 0,
-      notes: notes || null,
-      status: status ?? 'draft',
+      customerPhone:  customerPhone || null,
+      customerEmail:  customerEmail || null,
+      adultsCount:    adultsCount ?? 1,
+      childrenCount:  childrenCount ?? 0,
+      travelDate:     travelDate || null,
+      startDate:      startDate || null,
+      validUntil:     validUntil || null,
+      margin:         margin ?? 18,
+      usdRate:        usdRate ?? 0,
+      notes:          notes || null,
+      status:         status ?? 'draft',
       items: items?.length
-        ? {
-            create: items.map((item: {
-              category: string; name: string; description?: string;
-              costPrice: number; salePrice: number; currency?: string;
-              quantity?: number; unit?: string; sortOrder?: number;
-            }, idx: number) => ({
-              category: item.category,
-              name: item.name,
-              description: item.description || null,
-              costPrice: item.costPrice,
-              salePrice: item.salePrice,
-              currency: item.currency ?? 'USD',
-              quantity: item.quantity ?? 1,
-              unit: item.unit || null,
-              sortOrder: item.sortOrder ?? idx,
-            })),
-          }
+        ? { create: items.map(buildItemCreate) }
         : undefined,
     },
     include: { items: { orderBy: { sortOrder: 'asc' } } },
@@ -72,11 +59,28 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
   return NextResponse.json({ quotation });
 }
 
-// DELETE — teklifi sil
 export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   if (!await checkAdmin()) return NextResponse.json({ error: 'Yetkisiz.' }, { status: 401 });
 
   const { id } = await params;
   await prisma.quotation.delete({ where: { id } });
   return NextResponse.json({ ok: true });
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function buildItemCreate(item: any, idx: number) {
+  return {
+    category:          item.category,
+    name:              item.name,
+    description:       item.description || null,
+    pricingType:       item.pricingType ?? 'flat',
+    unitCostUsd:       item.unitCostUsd ?? 0,
+    quantity:          item.quantity ?? 1,
+    childPricePercent: item.childPricePercent ?? 0,
+    vehicleType:       item.vehicleType || null,
+    extraBedCount:     item.extraBedCount ?? 0,
+    extraBedPriceUsd:  item.extraBedPriceUsd ?? 0,
+    saleTotalUsd:      item.saleTotalUsd ?? 0,
+    sortOrder:         item.sortOrder ?? idx,
+  };
 }

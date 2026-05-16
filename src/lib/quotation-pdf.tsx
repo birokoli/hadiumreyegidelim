@@ -10,10 +10,7 @@ import {
 // ─── Font kayıt ───────────────────────────────────────────────
 const fontsDir = path.join(process.cwd(), 'public', 'fonts');
 
-Font.register({
-  family: 'Cairo',
-  src: path.join(fontsDir, 'Cairo-Regular.ttf'),
-});
+Font.register({ family: 'Cairo', src: path.join(fontsDir, 'Cairo-Regular.ttf') });
 Font.register({
   family: 'Poppins',
   fonts: [
@@ -23,41 +20,41 @@ Font.register({
   ],
 });
 
-// ─── Stil sabitleri ───────────────────────────────────────────
+// ─── Renkler & stil ───────────────────────────────────────────
 const BLUE = '#203D76';
 const GRAY = '#464646';
-const PAD  = 45;
+const PAD  = 48;
 
 const s = StyleSheet.create({
-  page:      { backgroundColor: '#fff', paddingTop: PAD, paddingBottom: PAD + 20, paddingHorizontal: PAD, fontFamily: 'Poppins', color: GRAY },
-  hdrRow:    { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 28 },
-  title:     { fontFamily: 'Cairo', fontSize: 30, color: BLUE, lineHeight: 1.2 },
-  logo:      { width: 110, height: 40, objectFit: 'contain' },
-  logoTxt:   { fontSize: 11, fontWeight: 700, color: BLUE, textAlign: 'right' },
-  meta:      { fontSize: 11, color: GRAY, marginBottom: 20 },
-  metaBold:  { fontWeight: 700, color: BLUE },
-  body:      { fontSize: 10, lineHeight: 1.7, color: GRAY, marginBottom: 10, textAlign: 'justify' },
-  bodyBlue:  { fontSize: 10, lineHeight: 1.7, color: BLUE, fontWeight: 500, marginBottom: 10, textAlign: 'justify' },
-  h2:        { fontSize: 10, fontWeight: 700, color: BLUE, marginTop: 16, marginBottom: 5 },
-  secSub:    { fontSize: 13, color: GRAY, marginTop: 22, marginBottom: 6 },
-  catHdr:    { fontSize: 10, fontWeight: 700, color: BLUE, marginTop: 16, marginBottom: 4 },
-  itemName:  { fontSize: 10, fontWeight: 700, color: BLUE, marginBottom: 1 },
-  itemPrice: { fontSize: 10, color: GRAY, marginBottom: 2, marginLeft: 10 },
-  itemDtl:   { fontSize: 9, color: '#999', marginLeft: 10, marginBottom: 4 },
-  tblHead:   { flexDirection: 'row', borderBottomWidth: 1, borderColor: BLUE, paddingBottom: 4, marginBottom: 4 },
-  tblRow:    { flexDirection: 'row', borderWidth: 1, borderColor: BLUE, marginBottom: 3, backgroundColor: '#fff' },
-  cellLbl:   { flex: 3, fontSize: 9, padding: 6, color: BLUE, fontWeight: 700 },
-  cellNum:   { flex: 1, fontSize: 9, padding: 6, color: GRAY, textAlign: 'right' },
-  cellNH:    { flex: 1, fontSize: 9, padding: 4, color: BLUE, fontWeight: 700, textAlign: 'right' },
-  noteBox:   { marginTop: 20, padding: 14, borderWidth: 1, borderColor: BLUE, borderRadius: 4, backgroundColor: '#f9fafc' },
-  noteTxt:   { fontSize: 10, color: BLUE, lineHeight: 1.7, fontWeight: 500 },
-  payRow:    { flexDirection: 'row', marginBottom: 8 },
-  payLbl:    { fontSize: 10, fontWeight: 700, color: BLUE, marginRight: 4 },
-  payTxt:    { fontSize: 10, color: GRAY, flex: 1, lineHeight: 1.6 },
-  pgNum:     { position: 'absolute', bottom: 20, right: PAD, fontSize: 9, color: GRAY },
+  page:     { backgroundColor: '#fff', paddingTop: PAD, paddingBottom: PAD + 20, paddingHorizontal: PAD, fontFamily: 'Poppins', color: GRAY },
+  hdrRow:   { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 28 },
+  title:    { fontFamily: 'Cairo', fontSize: 39, color: BLUE, lineHeight: 1.15, fontWeight: 400 },
+  logo:     { width: 130, height: 46, objectFit: 'contain' },
+  logoTxt:  { fontSize: 10, fontWeight: 700, color: BLUE, textAlign: 'right', lineHeight: 1.5 },
+  meta:     { fontSize: 13, color: GRAY, marginBottom: 20 },
+  metaBold: { fontWeight: 700, color: BLUE },
+  body:     { fontSize: 11, lineHeight: 1.75, color: GRAY, marginBottom: 12, textAlign: 'justify' },
+  bodyBlue: { fontSize: 11, lineHeight: 1.75, color: BLUE, fontWeight: 500, marginBottom: 12, textAlign: 'justify' },
+  h2:       { fontSize: 11, fontWeight: 700, color: BLUE, marginTop: 18, marginBottom: 6 },
+  secSub:   { fontSize: 16, fontWeight: 400, color: GRAY, marginTop: 24, marginBottom: 8 },
+  catHdr:   { fontSize: 11, fontWeight: 700, color: BLUE, marginTop: 18, marginBottom: 5 },
+  itemName: { fontSize: 11, fontWeight: 700, color: BLUE, marginBottom: 2 },
+  itemPrc:  { fontSize: 11, color: GRAY, marginBottom: 2, marginLeft: 12 },
+  itemDtl:  { fontSize: 9, color: '#999', marginLeft: 12, marginBottom: 5 },
+  tblHead:  { flexDirection: 'row', borderBottomWidth: 1, borderColor: BLUE, paddingBottom: 4, marginBottom: 4 },
+  tblRow:   { flexDirection: 'row', borderWidth: 1, borderColor: BLUE, marginBottom: 3, backgroundColor: '#fff' },
+  cellLbl:  { flex: 3, fontSize: 10, padding: 7, color: BLUE, fontWeight: 700 },
+  cellNum:  { flex: 1, fontSize: 10, padding: 7, color: GRAY, textAlign: 'right' },
+  cellNH:   { flex: 1, fontSize: 10, padding: 5, color: BLUE, fontWeight: 700, textAlign: 'right' },
+  noteBox:  { marginTop: 22, padding: 16, borderWidth: 1, borderColor: BLUE, borderRadius: 5, backgroundColor: '#f9fafc' },
+  noteTxt:  { fontSize: 11, color: BLUE, lineHeight: 1.75, fontWeight: 500 },
+  payRow:   { flexDirection: 'row', marginBottom: 10 },
+  payLbl:   { fontSize: 11, fontWeight: 700, color: BLUE, marginRight: 5 },
+  payTxt:   { fontSize: 11, color: GRAY, flex: 1, lineHeight: 1.65 },
+  pgNum:    { position: 'absolute', bottom: 22, right: PAD, fontSize: 10, color: GRAY },
 });
 
-// ─── Yardımcılar ──────────────────────────────────────────────
+// ─── Kategori sırası & etiketler ──────────────────────────────
 const CAT_LABELS: Record<string, string> = {
   vize:     '1. Vize İşlemleri',
   hotel:    '2. Konaklama Bilgileri',
@@ -73,7 +70,7 @@ const fmtUSD = (n: number) =>
 const fmtTL = (n: number, rate: number) =>
   (n * rate).toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' TL';
 
-// ─── Bileşenler ───────────────────────────────────────────────
+// ─── Sayfa başlığı ────────────────────────────────────────────
 function PageHeader({ title, logoPath }: { title: string; logoPath?: string | null }) {
   const logoAbs = logoPath ? path.join(process.cwd(), 'public', logoPath) : null;
   return (
@@ -81,23 +78,28 @@ function PageHeader({ title, logoPath }: { title: string; logoPath?: string | nu
       <Text style={s.title}>{title}</Text>
       {logoAbs
         ? <Image style={s.logo} src={logoAbs} />
-        : <Text style={s.logoTxt}>hadiumreyegidelim.com</Text>}
+        : (
+          <Text style={s.logoTxt}>
+            {'hadı\numreye\nGİDELİM.COM'}
+          </Text>
+        )}
     </View>
   );
 }
 
+// ─── Meta satırı ──────────────────────────────────────────────
 function MetaLine({ startDate, travelDate, adultsCount, childrenCount }: {
   startDate?: string | null; travelDate?: string | null;
   adultsCount: number; childrenCount: number;
 }) {
-  const date   = startDate || travelDate || '';
-  const paxStr = childrenCount > 0
+  const date = startDate || travelDate || '';
+  const pax  = childrenCount > 0
     ? `${adultsCount} Yetişkin + ${childrenCount} Çocuk`
     : `${adultsCount} Yetişkin`;
   return (
     <Text style={s.meta}>
-      <Text style={s.metaBold}>{date}: </Text>
-      {paxStr}
+      <Text style={s.metaBold}>{date}{': '}</Text>
+      {pax}
     </Text>
   );
 }
@@ -128,113 +130,119 @@ export interface QuotationData {
   }>;
 }
 
-// ─── PDF Buffer üret ──────────────────────────────────────────
+// ─── PDF üret ─────────────────────────────────────────────────
 export async function renderQuotationPdf(q: QuotationData): Promise<Buffer> {
   const ctx = { adultsCount: q.adultsCount, childrenCount: q.childrenCount, margin: q.margin };
 
   const grouped: Record<string, QuotationData['items']> = {};
   CAT_ORDER.forEach(c => { grouped[c] = q.items.filter(i => i.category === c); });
 
+  const getCalc = (item: QuotationData['items'][number]) => ({
+    pricingType:       item.pricingType as PricingType,
+    unitCostUsd:       item.unitCostUsd,
+    quantity:          item.quantity,
+    childPricePercent: item.childPricePercent,
+    vehicleType:       item.vehicleType ?? '',
+    extraBedCount:     item.extraBedCount,
+    extraBedPriceUsd:  item.extraBedPriceUsd,
+  });
+
   const catTotal = (cats: string[]) =>
     cats.reduce((sum, c) =>
-      sum + (grouped[c] ?? []).reduce((s, item) => {
-        const calc = {
-          pricingType:       item.pricingType as PricingType,
-          unitCostUsd:       item.unitCostUsd,
-          quantity:          item.quantity,
-          childPricePercent: item.childPricePercent,
-          vehicleType:       item.vehicleType ?? '',
-          extraBedCount:     item.extraBedCount,
-          extraBedPriceUsd:  item.extraBedPriceUsd,
-        };
-        return s + calcSaleTotal(calc, ctx);
-      }, 0),
-    0);
+      sum + (grouped[c] ?? []).reduce((s, item) =>
+        s + calcSaleTotal(getCalc(item), ctx), 0), 0);
 
   const totals = [
-    { label: 'Yemekli Otel Genel Toplam',             usd: catTotal(CAT_ORDER) },
+    { label: 'Yemekli Otel Genel Toplam',              usd: catTotal(CAT_ORDER) },
     { label: 'Yemeksiz Otel \u2013 Tursuz Genel Toplam', usd: catTotal(CAT_ORDER.filter(c => c !== 'tur')) },
-    { label: 'Sadece Otel Genel Toplam',              usd: catTotal(CAT_ORDER.filter(c => c !== 'tur' && c !== 'transfer')) },
+    { label: 'Sadece Otel Genel Toplam',               usd: catTotal(CAT_ORDER.filter(c => c !== 'tur' && c !== 'transfer')) },
     { label: 'Transfersiz Otel \u2013 Turlu Genel Toplam', usd: catTotal(CAT_ORDER.filter(c => c !== 'transfer')) },
   ];
 
   const titleLine = `${q.travelDate || 'Umre'}\nUmre Plan\u0131`;
+  const activeCats = CAT_ORDER.filter(cat => grouped[cat]?.length > 0);
 
   const doc = (
     <Document>
 
-      {/* SAYFA 1: HAKKIMIZDA */}
+      {/* ═══════ SAYFA 1: HAKKIMIZDA ═══════ */}
       <Page size="A4" style={s.page}>
-        <PageHeader title="Hakk\u0131m\u0131zda" logoPath={q.logoPath} />
+        <PageHeader title={'Hakkımızda'} logoPath={q.logoPath} />
+
         <Text style={s.body}>
-          Hadiumreyegidelim.com, manevi bir yolculu\u011fa \u00e7\u0131kan ve misafirlerine huzur dolu bir ibadet deneyimi sunmay\u0131 ama\u00e7layan bir turizm platformudur. Medine-i M\u00fcnevvere&apos;den Mekke-i M\u00fckerre me&apos;ye kadar uzanan hizmet yelpazemizle, her m\u00fcminin hayalindeki kutsal topraklar ziyaretini ger\u00e7e\u011fe d\u00f6n\u00fc\u015ft\u00fcr\u00fcyoruz.
+          {'Hadiumreyegidelim.com, manevi bir yolculuğa çıkan ve misafirlerine huzur dolu bir ibadet deneyimi sunmayı amaçlayan bir turizm platformudur. Medine-i Münevvere\'den Mekke-i Mükerreme\'ye kadar uzanan hizmet yelpazemizle, her müminin hayalindeki kutsal topraklar ziyaretini gerçeğe dönüştürüyoruz.'}
         </Text>
         <Text style={s.bodyBlue}>
-          Y\u0131llar\u0131n deneyimi ve uzman ekibimizle, butik gruplardan ki\u015fiye \u00f6zel ziyaretlere, manevi ke\u015fiflerden konforlu konaklamalara kadar her ihtiyaca uygun \u00e7\u00f6z\u00fcmler sunuyoruz.
+          {'Yılların deneyimi ve uzman ekibimizle, butik gruplardan kişiye özel ziyaretlere, manevi keşiflerden konforlu konaklamalara kadar her ihtiyaca uygun çözümler sunuyoruz. Özel transfer hizmetleri, rehberli mukaddes mekan turları, hızlı tren organizasyonları ve daha fazlasını içeren geniş bir hizmet portföyüne sahibiz.'}
         </Text>
         <Text style={s.body}>
-          Hadiumreyegidelim.com olarak, sadece bir seyahat de\u011fil, hayat boyu hat\u0131rlanacak manevi bir ba\u011f kuruyoruz. Her misafirimizin \u00f6zel isteklerini anlayarak, ki\u015fiye \u00f6zel planlamalar yap\u0131yor ve her detay\u0131 titizlikle ele al\u0131yoruz.
+          {'Hadiumreyegidelim.com olarak, sadece bir seyahat değil, hayat boyu hatırlanacak manevi bir bağ kuruyoruz. Her misafirimizin özel isteklerini anlayarak, kişiye özel planlamalar yapıyor ve her detayı titizlikle ele alıyoruz. Güven, konfor ve kalite anlayışıyla çıktığımız bu yolda, misafirlerimize unutulmaz bir ibadet deneyimi sunmayı taahhüt ediyoruz.'}
         </Text>
-        <Text style={s.body}>Siz niyet edin, biz ger\u00e7ekle\u015ftirelim.{'\n'}Hadiumreyegidelim.com ile kutsal topraklar size daha yak\u0131n!</Text>
+        <Text style={s.body}>
+          {'Siz niyet edin, biz gerçekleştirelim.\nHadiumreyegidelim.com ile kutsal topraklar size daha yakın!'}
+        </Text>
 
-        <Text style={s.secSub}>Vizyonumuz ve Misyonumuz</Text>
+        <Text style={s.secSub}>{'Vizyonumuz ve Misyonumuz'}</Text>
         <Text style={s.body}>
-          Ekibimizin her biri, maneviyat ve hizmet a\u015fk\u0131yla dolu profesyonellerden olu\u015fmaktad\u0131r. Misafirlerimize en iyi hizmeti sunmak i\u00e7in s\u00fcrekli e\u011fitimler al\u0131yor, sekt\u00f6rdeki yenilikleri takip ediyor ve en g\u00fcncel bilgileri kullanarak en iyi \u00e7\u00f6z\u00fcmleri sunuyoruz.
+          {'Ekibimizin her biri, maneviyat ve hizmet aşkıyla dolu profesyonellerden oluşmaktadır. Misafirlerimize en iyi hizmeti sunmak için sürekli eğitimler alıyor, sektördeki yenilikleri takip ediyor ve en güncel bilgileri kullanarak en iyi çözümleri sunuyoruz. Güvenilirlik, şeffaflık ve müşteri odaklılık ilkelerimizle, her adımda yanınızda oluyoruz.'}
         </Text>
         <Text style={s.body}>
-          Vizyonumuz, sadece bir seyahat \u015firketi olman\u0131n \u00f6tesine ge\u00e7erek, insanlar\u0131n ya\u015famlar\u0131na manevi de\u011fer katan, mukaddes topraklar\u0131n ruhunu ke\u015ffetmelerini sa\u011flayan ve s\u00fcrd\u00fcr\u00fclebilir turizmi destekleyen bir lider olmakt\u0131r.
+          {'Vizyonumuz, sadece bir seyahat şirketi olmanın ötesine geçerek, insanların yaşamlarına manevi değer katan, mukaddes toprakların ruhunu keşfetmelerini sağlayan ve sürdürülebilir turizmi destekleyen bir lider olmaktır. Bu doğrultuda, modern teknolojiyi en iyi şekilde kullanarak, her misafirimizin ihtiyaç ve beklentilerine uygun çözümler sunuyoruz.'}
         </Text>
         <Text style={s.body}>
-          Misyonumuz ise, misafirlerimize her anlar\u0131nda konforlu, g\u00fcvenli ve huzurlu bir ibadet deneyimi ya\u015fatmakt\u0131r.
+          {'Misyonumuz ise, misafirlerimize her anlarında konforlu, güvenli ve huzurlu bir ibadet deneyimi yaşatmaktır. Müşteri memnuniyetini en üst düzeyde tutmayı ilke edinen firmamız, kişiye özel planlamalar ve esnek hizmet seçenekleri ile her türlü ziyaret ihtiyacına cevap vermektedir.'}
         </Text>
-        <Text style={s.pgNum} render={({ pageNumber }) => String(pageNumber)} fixed />
-      </Page>
-
-      {/* SAYFA 2: FİYAT DETAYLARI */}
-      <Page size="A4" style={s.page}>
-        <PageHeader title={titleLine} logoPath={q.logoPath} />
-        <MetaLine startDate={q.startDate} travelDate={q.travelDate} adultsCount={q.adultsCount} childrenCount={q.childrenCount} />
-
-        {CAT_ORDER.filter(cat => grouped[cat]?.length > 0).map(cat => (
-          <View key={cat}>
-            <Text style={s.catHdr}>{CAT_LABELS[cat]}</Text>
-            {grouped[cat].map(item => {
-              const calc = {
-                pricingType:       item.pricingType as PricingType,
-                unitCostUsd:       item.unitCostUsd,
-                quantity:          item.quantity,
-                childPricePercent: item.childPricePercent,
-                vehicleType:       item.vehicleType ?? '',
-                extraBedCount:     item.extraBedCount,
-                extraBedPriceUsd:  item.extraBedPriceUsd,
-              };
-              const sale   = calcSaleTotal(calc, ctx);
-              const detail = formatItemDetail(calc, ctx);
-              return (
-                <View key={item.id} wrap={false}>
-                  <Text style={s.itemName}>{item.name}</Text>
-                  <Text style={s.itemPrice}>{'\u2022'} {fmtUSD(sale)}</Text>
-                  {detail ? <Text style={s.itemDtl}>({detail})</Text> : null}
-                </View>
-              );
-            })}
-          </View>
-        ))}
 
         <Text style={s.pgNum} render={({ pageNumber }) => String(pageNumber)} fixed />
       </Page>
 
-      {/* SAYFA 3: GENEL TOPLAM */}
+      {/* ═══════ SAYFA 2: FİYAT DETAYLARI ═══════ */}
       <Page size="A4" style={s.page}>
         <PageHeader title={titleLine} logoPath={q.logoPath} />
-        <MetaLine startDate={q.startDate} travelDate={q.travelDate} adultsCount={q.adultsCount} childrenCount={q.childrenCount} />
+        <MetaLine
+          startDate={q.startDate} travelDate={q.travelDate}
+          adultsCount={q.adultsCount} childrenCount={q.childrenCount}
+        />
 
-        <Text style={s.h2}>Genel Toplam</Text>
+        {activeCats.length === 0 ? (
+          <Text style={s.body}>{'Henüz kalem eklenmemiş.'}</Text>
+        ) : (
+          activeCats.map(cat => (
+            <View key={cat}>
+              <Text style={s.catHdr}>{CAT_LABELS[cat]}</Text>
+              {grouped[cat].map(item => {
+                const calc  = getCalc(item);
+                const sale  = calcSaleTotal(calc, ctx);
+                const dtl   = formatItemDetail(calc, ctx);
+                return (
+                  <View key={item.id} wrap={false}>
+                    <Text style={s.itemName}>{item.name}</Text>
+                    <Text style={s.itemPrc}>{'\u2022 '}{fmtUSD(sale)}</Text>
+                    {dtl ? <Text style={s.itemDtl}>{'('}{dtl}{')'}</Text> : null}
+                  </View>
+                );
+              })}
+            </View>
+          ))
+        )}
+
+        <Text style={s.pgNum} render={({ pageNumber }) => String(pageNumber)} fixed />
+      </Page>
+
+      {/* ═══════ SAYFA 3: GENEL TOPLAM ═══════ */}
+      <Page size="A4" style={s.page}>
+        <PageHeader title={titleLine} logoPath={q.logoPath} />
+        <MetaLine
+          startDate={q.startDate} travelDate={q.travelDate}
+          adultsCount={q.adultsCount} childrenCount={q.childrenCount}
+        />
+
+        <Text style={s.h2}>{'Genel Toplam'}</Text>
         <View style={{ marginTop: 10 }}>
           <View style={s.tblHead}>
-            <Text style={[s.cellNH, { flex: 3, textAlign: 'left' }]}> </Text>
-            {q.usdRate > 0 && <Text style={s.cellNH}>TL</Text>}
-            <Text style={s.cellNH}>USD</Text>
+            <Text style={[s.cellNH, { flex: 3, textAlign: 'left' }]}>{' '}</Text>
+            {q.usdRate > 0 && <Text style={s.cellNH}>{'TL'}</Text>}
+            <Text style={s.cellNH}>{'USD'}</Text>
           </View>
           {totals.map((t, i) => (
             <View key={i} style={s.tblRow} wrap={false}>
@@ -245,48 +253,53 @@ export async function renderQuotationPdf(q: QuotationData): Promise<Buffer> {
           ))}
         </View>
         {q.usdRate > 0 && (
-          <Text style={{ fontSize: 9, color: BLUE, textAlign: 'right', marginTop: 8, fontWeight: 700 }}>
-            1 USD = {q.usdRate.toFixed(4)} TL
+          <Text style={{ fontSize: 9, color: BLUE, textAlign: 'right', marginTop: 10, fontWeight: 700 }}>
+            {'1 USD = '}{q.usdRate.toFixed(4)}{' TL'}
           </Text>
         )}
         {q.notes ? (
           <View style={s.noteBox} wrap={false}>
-            <Text style={s.h2}>Notlar</Text>
-            <Text style={{ fontSize: 10, color: GRAY, lineHeight: 1.6 }}>{q.notes}</Text>
+            <Text style={s.h2}>{'Notlar'}</Text>
+            <Text style={{ fontSize: 11, color: GRAY, lineHeight: 1.65 }}>{q.notes}</Text>
           </View>
         ) : null}
 
         <Text style={s.pgNum} render={({ pageNumber }) => String(pageNumber)} fixed />
       </Page>
 
-      {/* SAYFA 4: ÖDEME KOŞULLARI */}
+      {/* ═══════ SAYFA 4: ÖDEME KOŞULLARI ═══════ */}
       <Page size="A4" style={s.page}>
         <PageHeader title={titleLine} logoPath={q.logoPath} />
-        <MetaLine startDate={q.startDate} travelDate={q.travelDate} adultsCount={q.adultsCount} childrenCount={q.childrenCount} />
+        <MetaLine
+          startDate={q.startDate} travelDate={q.travelDate}
+          adultsCount={q.adultsCount} childrenCount={q.childrenCount}
+        />
 
-        <Text style={s.h2}>\u00d6nemli Notlar ve \u00d6deme Ko\u015fullar\u0131</Text>
-        <Text style={s.bodyBlue}>Belirtilen fiyatlara %20 KDV dahil de\u011fildir.</Text>
-        <Text style={s.h2}>\u00d6deme Se\u00e7enekleri:</Text>
+        <Text style={s.h2}>{'Önemli Notlar ve Ödeme Koşulları'}</Text>
+        <Text style={s.bodyBlue}>{'Belirtilen fiyatlara %20 KDV dahil değildir.'}</Text>
+        <Text style={s.h2}>{'Ödeme Seçenekleri:'}</Text>
 
-        {[
-          { lbl: '\u2022 Nakit \u00d6deme: ', txt: 'Teklifte sunulan tutarlar, \u00f6demenin nakden (elden) yap\u0131lmas\u0131 durumunda ge\u00e7erli olan net fiyatlard\u0131r.' },
-          { lbl: '\u2022 EFT / Havale: ', txt: '\u00d6demenin banka kanal\u0131yla (EFT/Havale) yap\u0131lmas\u0131 durumunda, mevcut tutara %20 KDV ilave edilecektir.' },
-          { lbl: '\u2022 Kredi Kart\u0131: ', txt: '\u00d6demenin kredi kart\u0131 ile tahsil edilmesi durumunda, mevcut tutar \u00fczerine %20 KDV ve %5 hizmet komisyonu uygulanacakt\u0131r.' },
-        ].map((item, i) => (
-          <View key={i} style={s.payRow}>
-            <Text style={s.payLbl}>{item.lbl}</Text>
-            <Text style={s.payTxt}>{item.txt}</Text>
-          </View>
-        ))}
+        <View style={s.payRow}>
+          <Text style={s.payLbl}>{'• Nakit Ödeme: '}</Text>
+          <Text style={s.payTxt}>{'Teklifte sunulan tutarlar, ödemenin nakden (elden) yapılması durumunda geçerli olan net fiyatlardır.'}</Text>
+        </View>
+        <View style={s.payRow}>
+          <Text style={s.payLbl}>{'• EFT / Havale: '}</Text>
+          <Text style={s.payTxt}>{'Ödemenin banka kanalıyla (EFT/Havale) yapılması durumunda, mevcut tutara %20 KDV ilave edilecektir.'}</Text>
+        </View>
+        <View style={s.payRow}>
+          <Text style={s.payLbl}>{'• Kredi Kartı: '}</Text>
+          <Text style={s.payTxt}>{'Ödemenin kredi kartı ile tahsil edilmesi durumunda, işlem maliyetleri nedeniyle mevcut tutar üzerine %20 KDV ve %5 hizmet komisyonu uygulanacaktır.'}</Text>
+        </View>
 
-        <Text style={[s.h2, { marginTop: 16 }]}>Teklif Esnekli\u011fi:</Text>
+        <Text style={[s.h2, { marginTop: 18 }]}>{'Teklif Esnekliği:'}</Text>
         <Text style={s.body}>
-          \u0130\u015fbu fiyat teklifi, detayland\u0131r\u0131lan hizmet kalemlerinin tamam\u0131n\u0131 kapsamaktad\u0131r. Talebiniz do\u011frultusunda paket i\u00e7eri\u011finden \u00fcr\u00fcn veya hizmet \u00e7\u0131kar\u0131labilir.
+          {'İşbu fiyat teklifi, detaylandırılan hizmet kalemlerinin tamamını kapsamaktadır. Talebiniz doğrultusunda paket içeriğinden ürün veya hizmet çıkarılabilir; bu durumda teklif, güncel tercihleriniz üzerinden yeniden revize edilerek tarafınıza sunulacaktır.'}
         </Text>
 
         <View style={s.noteBox} wrap={false}>
           <Text style={s.noteTxt}>
-            Size \u00f6zel haz\u0131rlad\u0131\u011f\u0131m\u0131z fiyat teklifi yukar\u0131daki dosyan\u0131n i\u00e7erisinde detayl\u0131ca mevcuttur. Fiyatlar\u0131m\u0131z Dolar Kuru endeksli olup verdi\u011fimiz bu fiyat teklifi 1 ile 3 i\u015f g\u00fcn\u00fc ge\u00e7erlidir. Fiyatlar\u0131m\u0131za U\u00e7ak Bileti dahil de\u011fildir.{'\n\n'}D\u00f6n\u00fc\u015f\u00fcn\u00fcz\u00fc Bekliyoruz efendim.
+            {'Size özel hazırladığımız fiyat teklifi yukarıdaki dosyanın içerisinde detaylıca mevcuttur. Fiyatlarımız Dolar Kuru endeksli olup verdiğimiz bu fiyat teklifi 1 ile 3 iş günü geçerlidir. Fiyatlarımıza Uçak Bileti dahil değildir.\n\nDönüşünüzü Bekliyoruz efendim.'}
           </Text>
         </View>
 

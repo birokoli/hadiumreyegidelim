@@ -424,14 +424,14 @@ const [html2pdfReady, setHtml2pdfReady] = useState(false);
 
     // html2pdf string-from yaklaşımı: DOM'a biz eklemiyoruz,
     // html2pdf kendisi geçici bir element oluşturup viewport içinde capture ediyor.
-    h2p().from(pdfBodyHtml).set({
+    h2p().set({
       margin: 0,
       filename: `hadiumreyegidelim_com-Fiyat-Teklifi-${slug}.pdf`,
       image: { type: 'jpeg', quality: 0.98 },
       html2canvas: { scale: 2, useCORS: true, backgroundColor: '#ffffff', logging: false },
       jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
       pagebreak: { mode: ['css', 'legacy'], before: ['#page-2', '#page-3'] },
-    }).save().then(() => {
+    }).from(pdfBodyHtml).save().then(() => {
       setDownloading(false);
     }).catch(() => {
       setDownloading(false);

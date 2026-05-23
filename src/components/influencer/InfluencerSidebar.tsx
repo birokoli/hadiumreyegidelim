@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 const nav = [
   { href: '/influencer/dashboard', icon: 'dashboard',       label: 'Dashboard' },
   { href: '/influencer/loyalty',   icon: 'star',            label: 'Yıldızlarım' },
+  { href: '/influencer/davet',     icon: 'group_add',       label: 'Davet & Referral' },
   { href: '/influencer/campaigns', icon: 'campaign',        label: 'Kampanyalar' },
   { href: '/influencer/links',     icon: 'link',            label: 'Linklerim & Kodum' },
   { href: '/influencer/shares',    icon: 'photo_camera',    label: 'Paylaşımlarım' },

@@ -6,6 +6,7 @@ import Link from 'next/link';
 import AdminInfluencerActions from '@/components/admin/AdminInfluencerActions';
 import AdminInfluencerSalesPanel from '@/components/admin/AdminInfluencerSalesPanel';
 import AdminInfluencerLoyaltyPanel from '@/components/admin/AdminInfluencerLoyaltyPanel';
+import AdminInfluencerAffiliatePanel from '@/components/admin/AdminInfluencerAffiliatePanel';
 
 const tierConfig: Record<string, { label: string; color: string }> = {
   eci:     { label: 'Elçi',    color: 'bg-yellow-50 text-yellow-700 border-yellow-200' },
@@ -52,6 +53,10 @@ export default async function AdminInfluencerDetailPage({ params }: { params: Pr
           redemptions: { orderBy: { requestedAt: 'desc' }, take: 20 },
         },
       },
+      starLedgerEntries: { orderBy: { createdAt: 'desc' }, take: 30 },
+      perfScores: { orderBy: { period: 'desc' }, take: 12 },
+      referralsMade: { include: { invited: { select: { fullName: true, uniqueCode: true, status: true } } } },
+      referralReceived: { include: { referrer: { select: { fullName: true, uniqueCode: true } } } },
     },
   });
 
@@ -207,6 +212,17 @@ export default async function AdminInfluencerDetailPage({ params }: { params: Pr
         influencerId={inf.id}
         loyaltyAccount={inf.loyaltyAccount}
         redemptions={inf.loyaltyAccount?.redemptions ?? []}
+      />
+
+      {/* Affiliate Paneli */}
+      <AdminInfluencerAffiliatePanel
+        influencerId={inf.id}
+        programUnlocked={inf.programUnlocked}
+        baseThrOverride={inf.baseThrOverride}
+        starLedgerEntries={inf.starLedgerEntries}
+        perfScores={inf.perfScores}
+        referralsMade={inf.referralsMade}
+        referralReceived={inf.referralReceived}
       />
 
       {/* Müşteriler */}

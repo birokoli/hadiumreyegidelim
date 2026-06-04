@@ -151,6 +151,55 @@ export default async function Home() {
         </div>
       </section>
 
+      {/* Ağustos 2025 Kampanya Banner */}
+      <section className="bg-primary py-0 overflow-hidden">
+        <div className="max-w-screen-2xl mx-auto">
+          <Link href="/agustos-kampanyasi" className="group flex flex-col md:flex-row items-stretch min-h-[220px] relative">
+            {/* Sol görsel şerit */}
+            <div className="hidden md:block md:w-72 lg:w-96 relative shrink-0 overflow-hidden">
+              <img
+                src="https://images.unsplash.com/photo-1564769625905-50e93615e769?q=80&w=800&auto=format&fit=crop"
+                alt="Ağustos 2025 Bireysel Umre Kampanyası"
+                className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent to-primary" />
+            </div>
+            {/* İçerik */}
+            <div className="flex-1 px-10 md:px-14 py-10 flex flex-col justify-center relative z-10">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div>
+                  <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-4 rounded-full bg-[#FFD166]/20 border border-[#FFD166]/30 text-[#FFD166] font-bold text-[9px] tracking-[0.3em] uppercase">
+                    <span className="material-symbols-outlined text-[12px]" style={{ fontVariationSettings: "'FILL' 1" }}>campaign</span>
+                    SINIRLI KONTENJAN · 10–19 AĞUSTOS 2025
+                  </div>
+                  <h2 className="font-headline text-3xl md:text-4xl text-white font-bold leading-tight mb-2 group-hover:text-[#FFD166] transition-colors duration-300">
+                    9 Günlük Bireysel Umre — Kişi Başı $360
+                  </h2>
+                  <p className="text-white/70 text-sm max-w-lg leading-relaxed">
+                    Mekke 6 gece + Medine 3 gece · Hızlı tren, transfer ve kahvaltılar dahil. Uçak bileti opsiyonel.
+                  </p>
+                </div>
+                <div className="shrink-0">
+                  <span className="inline-flex items-center gap-3 bg-[#FFD166] text-primary font-bold uppercase tracking-widest text-xs px-8 py-4 rounded-2xl shadow-2xl group-hover:bg-white group-hover:scale-105 transition-all">
+                    Kampanyayı İncele
+                    <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+                  </span>
+                </div>
+              </div>
+              {/* Mini özellikler */}
+              <div className="flex flex-wrap gap-x-8 gap-y-2 mt-6 pt-6 border-t border-white/10">
+                {["Al Hidayah Towers – Mekke", "Sedra Global Hotel – Medine", "Hızlı Tren Dahil", "Eco VIP Transfer"].map((item) => (
+                  <span key={item} className="flex items-center gap-1.5 text-white/60 text-[11px] font-bold uppercase tracking-widest">
+                    <span className="material-symbols-outlined text-[#FFD166] text-[14px]" style={{ fontVariationSettings: "'FILL' 1" }}>check_circle</span>
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </Link>
+        </div>
+      </section>
+
       {/* Premium Hazır Paketler Vitrini */}
       <section className="py-24 bg-surface-container-lowest relative overflow-hidden">
         <div className="max-w-screen-2xl mx-auto px-8 relative z-10">

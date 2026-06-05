@@ -20,7 +20,6 @@ const EMPTY_FORM = {
   title: '', description: '', type: 'transfer',
   discountType: 'percent', discountValue: '', codeTemplate: '',
   startDate: '', endDate: '', maxParticipants: '',
-  // Story alanları
   storyEyebrow: '', storyTitle: '', storySub: '',
   storyFeats: '', commissionPct: '',
 };
@@ -47,30 +46,32 @@ export default function AdminCampaignsPage() {
     e.preventDefault();
     setSubmitting(true);
     setError('');
-
-    // storyFeats: virgülle ayrılmış string → array
-    const payload = {
-      ...form,
-      storyFeats: form.storyFeats
-        ? form.storyFeats.split(',').map(s => s.trim()).filter(Boolean)
-        : undefined,
-      commissionPct: form.commissionPct || undefined,
-    };
-
-    const res = await fetch('/api/admin/campaigns', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
-    const data = await res.json();
-    if (res.ok) {
-      setShowForm(false);
-      setForm(EMPTY_FORM);
-      load();
-    } else {
-      setError(data.error || 'Hata oluştu.');
+    try {
+      const payload = {
+        ...form,
+        storyFeats: form.storyFeats
+          ? form.storyFeats.split(',').map(s => s.trim()).filter(Boolean)
+          : undefined,
+        commissionPct: form.commissionPct || undefined,
+      };
+      const res = await fetch('/api/admin/campaigns', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setShowForm(false);
+        setForm(EMPTY_FORM);
+        load();
+      } else {
+        setError(data.error || 'Hata oluştu.');
+      }
+    } catch {
+      setError('Sunucu hatası. Lütfen tekrar deneyin.');
+    } finally {
+      setSubmitting(false);
     }
-    setSubmitting(false);
   };
 
   const toggleStatus = async (id: string, status: string) => {
@@ -111,7 +112,6 @@ export default function AdminCampaignsPage() {
             {error && <div className="mb-4 bg-red-50 text-red-600 text-[13px] px-4 py-3 rounded-xl border border-red-100">{error}</div>}
 
             <form onSubmit={handleSubmit} className="space-y-4">
-              {/* ── Temel bilgiler ─────────────────────────── */}
               <div>
                 <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">Kampanya Adı *</label>
                 <input type="text" value={form.title} onChange={e => set('title', e.target.value)} required placeholder="Transfer %10 İndirim"
@@ -186,32 +186,28 @@ export default function AdminCampaignsPage() {
                 </div>
               </div>
 
-              {/* ── Story alanları ─────────────────────────── */}
+              {/* Story alanları */}
               <div className="pt-2 border-t border-slate-100">
                 <p className="text-[12px] font-bold uppercase tracking-widest text-slate-400 mb-3">Story Görsel Alanları (opsiyonel)</p>
-
                 <div className="space-y-3">
                   <div>
                     <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">Eyebrow (üst etiket)</label>
-                    <input type="text" value={form.storyEyebrow} onChange={e => set('storyEyebrow', e.target.value)} placeholder="🌙 AĞUSTOS ÖZEL"
+                    <input type="text" value={form.storyEyebrow} onChange={e => set('storyEyebrow', e.target.value)} placeholder="AGUSTOS OZEL"
                       className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-[14px] focus:outline-none focus:ring-2 focus:ring-[#003781]/20 focus:border-[#003781] transition-all" />
                   </div>
-
                   <div>
                     <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">Story Başlığı</label>
                     <input type="text" value={form.storyTitle} onChange={e => set('storyTitle', e.target.value)} placeholder="Boş bırakılırsa kampanya adı kullanılır"
                       className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-[14px] focus:outline-none focus:ring-2 focus:ring-[#003781]/20 focus:border-[#003781] transition-all" />
                   </div>
-
                   <div>
                     <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">Alt Başlık</label>
-                    <input type="text" value={form.storySub} onChange={e => set('storySub', e.target.value)} placeholder="Takipçilerine özel fırsat"
+                    <input type="text" value={form.storySub} onChange={e => set('storySub', e.target.value)} placeholder="Takipcilerine ozel firsat"
                       className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-[14px] focus:outline-none focus:ring-2 focus:ring-[#003781]/20 focus:border-[#003781] transition-all" />
                   </div>
-
                   <div>
                     <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">Özellikler (virgülle ayır)</label>
-                    <input type="text" value={form.storyFeats} onChange={e => set('storyFeats', e.target.value)} placeholder="Otel dahil, Uçuş dahil, Rehber dahil"
+                    <input type="text" value={form.storyFeats} onChange={e => set('storyFeats', e.target.value)} placeholder="Otel dahil, Ucus dahil, Rehber dahil"
                       className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-[14px] focus:outline-none focus:ring-2 focus:ring-[#003781]/20 focus:border-[#003781] transition-all" />
                   </div>
                 </div>

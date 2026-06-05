@@ -11,7 +11,7 @@ export function middleware(req: NextRequest) {
   // ─── MARKETING subdomaini ─────────────────────────────────────────────
   if (isMarketing) {
     // API ve statik dosyalar geçsin
-    if (url.startsWith('/api/') || url.startsWith('/_next/') || url.startsWith('/r/')) {
+    if (url.startsWith('/api/') || url.startsWith('/_next/') || url.startsWith('/r/') || url.startsWith('/c/')) {
       return NextResponse.next();
     }
     // Influencer sayfaları zaten doğru yerde

@@ -557,6 +557,12 @@ model Campaign {
   maxParticipants Int?                          // null = sınırsız
   imageUrl        String?
   createdBy       String?
+  // Story görsel alanları
+  storyEyebrow    String?                       // "🌙 AĞUSTOS ÖZEL"
+  storyTitle      String?                       // Story başlığı (boşsa title kullanılır)
+  storySub        String?                       // "Takipçilerine özel fırsat"
+  storyFeats      String?                       // JSON: ["Otel dahil", "Hızlı tren dahil", ...]
+  commissionPct   Float?                        // Gösterim amaçlı komisyon %
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
   participants    CampaignParticipant[]

@@ -21,7 +21,12 @@ export async function POST(req: NextRequest) {
   if (!await getAdmin()) return NextResponse.json({ error: 'Yetkisiz.' }, { status: 401 });
 
   const body = await req.json();
-  const { title, description, type, discountType, discountValue, codeTemplate, startDate, endDate, maxParticipants, imageUrl } = body;
+  const {
+    title, description, type, discountType, discountValue, codeTemplate,
+    startDate, endDate, maxParticipants, imageUrl,
+    // Story alanları (opsiyonel)
+    storyEyebrow, storyTitle, storySub, storyFeats, commissionPct,
+  } = body;
 
   if (!title || !type || !discountValue || !codeTemplate) {
     return NextResponse.json({ error: 'Zorunlu alanlar eksik.' }, { status: 400 });
@@ -44,6 +49,12 @@ export async function POST(req: NextRequest) {
       endDate: endDate ? new Date(endDate) : null,
       maxParticipants: maxParticipants ? parseInt(maxParticipants) : null,
       imageUrl: imageUrl || null,
+      // Story alanları
+      storyEyebrow: storyEyebrow?.trim() || null,
+      storyTitle:   storyTitle?.trim()   || null,
+      storySub:     storySub?.trim()     || null,
+      storyFeats:   storyFeats ? JSON.stringify(storyFeats) : null,
+      commissionPct: commissionPct ? parseFloat(commissionPct) : null,
     },
   });
 

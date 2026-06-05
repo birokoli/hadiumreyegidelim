@@ -47,30 +47,32 @@ export default function AdminCampaignsPage() {
     e.preventDefault();
     setSubmitting(true);
     setError('');
-
-    // storyFeats: virgülle ayrılmış string → array
-    const payload = {
-      ...form,
-      storyFeats: form.storyFeats
-        ? form.storyFeats.split(',').map(s => s.trim()).filter(Boolean)
-        : undefined,
-      commissionPct: form.commissionPct || undefined,
-    };
-
-    const res = await fetch('/api/admin/campaigns', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
-    const data = await res.json();
-    if (res.ok) {
-      setShowForm(false);
-      setForm(EMPTY_FORM);
-      load();
-    } else {
-      setError(data.error || 'Hata oluştu.');
+    try {
+      const payload = {
+        ...form,
+        storyFeats: form.storyFeats
+          ? form.storyFeats.split(',').map(s => s.trim()).filter(Boolean)
+          : undefined,
+        commissionPct: form.commissionPct || undefined,
+      };
+      const res = await fetch('/api/admin/campaigns', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setShowForm(false);
+        setForm(EMPTY_FORM);
+        load();
+      } else {
+        setError(data.error || 'Hata oluştu.');
+      }
+    } catch {
+      setError('Sunucu hatası. Lütfen tekrar deneyin.');
+    } finally {
+      setSubmitting(false);
     }
-    setSubmitting(false);
   };
 
   const toggleStatus = async (id: string, status: string) => {

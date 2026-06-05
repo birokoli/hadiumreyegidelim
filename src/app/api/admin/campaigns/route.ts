@@ -10,15 +10,11 @@ async function getAdmin() {
 export async function GET() {
   if (!await getAdmin()) return NextResponse.json({ error: 'Yetkisiz.' }, { status: 401 });
 
-  try {
-    const campaigns = await prisma.campaign.findMany({
-      orderBy: { createdAt: 'desc' },
-      include: { _count: { select: { participants: true, codeUsages: true } } },
-    });
-    return NextResponse.json({ campaigns });
-  } catch (e: any) {
-    return NextResponse.json({ error: 'DB hatası: ' + e.message }, { status: 500 });
-  }
+  const campaigns = await prisma.campaign.findMany({
+    orderBy: { createdAt: 'desc' },
+    include: { _count: { select: { participants: true, codeUsages: true } } },
+  });
+  return NextResponse.json({ campaigns });
 }
 
 export async function POST(req: NextRequest) {
@@ -28,6 +24,7 @@ export async function POST(req: NextRequest) {
   const {
     title, description, type, discountType, discountValue, codeTemplate,
     startDate, endDate, maxParticipants, imageUrl,
+    // Story alanları (opsiyonel)
     storyEyebrow, storyTitle, storySub, storyFeats, commissionPct,
   } = body;
 
@@ -35,32 +32,31 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Zorunlu alanlar eksik.' }, { status: 400 });
   }
 
+  // slug oluştur
   const slug = codeTemplate.toLowerCase().replace(/[^a-z0-9]/g, '-') + '-' + Date.now();
 
-  try {
-    const campaign = await prisma.campaign.create({
-      data: {
-        title: title.trim(),
-        slug,
-        description: description?.trim() || null,
-        type,
-        discountType: discountType || 'percent',
-        discountValue: parseFloat(discountValue),
-        codeTemplate: codeTemplate.toUpperCase().replace(/\s/g, ''),
-        status: 'active',
-        startDate: startDate ? new Date(startDate) : null,
-        endDate: endDate ? new Date(endDate) : null,
-        maxParticipants: maxParticipants ? parseInt(maxParticipants) : null,
-        imageUrl: imageUrl || null,
-        storyEyebrow: storyEyebrow?.trim() || null,
-        storyTitle:   storyTitle?.trim()   || null,
-        storySub:     storySub?.trim()     || null,
-        storyFeats:   storyFeats ? JSON.stringify(storyFeats) : null,
-        commissionPct: commissionPct ? parseFloat(commissionPct) : null,
-      },
-    });
-    return NextResponse.json({ success: true, campaign });
-  } catch (e: any) {
-    return NextResponse.json({ error: 'DB hatası: ' + e.message }, { status: 500 });
-  }
+  const campaign = await prisma.campaign.create({
+    data: {
+      title: title.trim(),
+      slug,
+      description: description?.trim() || null,
+      type,
+      discountType: discountType || 'percent',
+      discountValue: parseFloat(discountValue),
+      codeTemplate: codeTemplate.toUpperCase().replace(/\s/g, ''),
+      status: 'active',
+      startDate: startDate ? new Date(startDate) : null,
+      endDate: endDate ? new Date(endDate) : null,
+      maxParticipants: maxParticipants ? parseInt(maxParticipants) : null,
+      imageUrl: imageUrl || null,
+      // Story alanları
+      storyEyebrow: storyEyebrow?.trim() || null,
+      storyTitle:   storyTitle?.trim()   || null,
+      storySub:     storySub?.trim()     || null,
+      storyFeats:   storyFeats ? JSON.stringify(storyFeats) : null,
+      commissionPct: commissionPct ? parseFloat(commissionPct) : null,
+    },
+  });
+
+  return NextResponse.json({ success: true, campaign });
 }

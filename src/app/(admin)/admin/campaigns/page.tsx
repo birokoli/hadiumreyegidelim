@@ -11,25 +11,33 @@ const typeLabels: Record<string, { label: string; icon: string; color: string }>
 };
 
 const statusMap: Record<string, { label: string; dot: string }> = {
-  active: { label: 'Aktif',  dot: 'bg-green-500' },
+  active: { label: 'Aktif',    dot: 'bg-green-500' },
   paused: { label: 'Duraklat', dot: 'bg-yellow-500' },
-  ended:  { label: 'Bitti',  dot: 'bg-gray-400' },
+  ended:  { label: 'Bitti',   dot: 'bg-gray-400' },
+};
+
+const EMPTY_FORM = {
+  title: '', description: '', type: 'transfer',
+  discountType: 'percent', discountValue: '', codeTemplate: '',
+  startDate: '', endDate: '', maxParticipants: '',
+  // Story alanları
+  storyEyebrow: '', storyTitle: '', storySub: '',
+  storyFeats: '', commissionPct: '',
 };
 
 export default function AdminCampaignsPage() {
   const [campaigns, setCampaigns] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [showForm, setShowForm] = useState(false);
+  const [loading, setLoading]     = useState(true);
+  const [showForm, setShowForm]   = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState('');
-  const [form, setForm] = useState({
-    title: '', description: '', type: 'transfer',
-    discountType: 'percent', discountValue: '', codeTemplate: '',
-    startDate: '', endDate: '', maxParticipants: '',
-  });
+  const [error, setError]         = useState('');
+  const [form, setForm]           = useState(EMPTY_FORM);
 
   const load = () => {
-    fetch('/api/admin/campaigns').then(r => r.json()).then(d => { setCampaigns(d.campaigns || []); setLoading(false); });
+    fetch('/api/admin/campaigns')
+      .then(r => r.json())
+      .then(d => { setCampaigns(d.campaigns || []); setLoading(false); })
+      .catch(() => setLoading(false));
   };
   useEffect(() => { load(); }, []);
 
@@ -39,20 +47,39 @@ export default function AdminCampaignsPage() {
     e.preventDefault();
     setSubmitting(true);
     setError('');
+
+    // storyFeats: virgülle ayrılmış string → array
+    const payload = {
+      ...form,
+      storyFeats: form.storyFeats
+        ? form.storyFeats.split(',').map(s => s.trim()).filter(Boolean)
+        : undefined,
+      commissionPct: form.commissionPct || undefined,
+    };
+
     const res = await fetch('/api/admin/campaigns', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(form),
+      body: JSON.stringify(payload),
     });
     const data = await res.json();
-    if (res.ok) { setShowForm(false); setForm({ title: '', description: '', type: 'transfer', discountType: 'percent', discountValue: '', codeTemplate: '', startDate: '', endDate: '', maxParticipants: '' }); load(); }
-    else setError(data.error || 'Hata oluştu.');
+    if (res.ok) {
+      setShowForm(false);
+      setForm(EMPTY_FORM);
+      load();
+    } else {
+      setError(data.error || 'Hata oluştu.');
+    }
     setSubmitting(false);
   };
 
   const toggleStatus = async (id: string, status: string) => {
     const next = status === 'active' ? 'paused' : 'active';
-    await fetch(`/api/admin/campaigns/${id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ status: next }) });
+    await fetch(`/api/admin/campaigns/${id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: next }),
+    });
     load();
   };
 
@@ -72,7 +99,7 @@ export default function AdminCampaignsPage() {
 
       {/* Form modal */}
       {showForm && (
-        <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4 overflow-y-auto" onClick={() => setShowForm(false)}>
+        <div className="fixed inset-0 bg-black/40 z-50 flex items-start justify-center p-4 overflow-y-auto" onClick={() => setShowForm(false)}>
           <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg p-7 my-4" onClick={e => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-5">
               <h2 className="text-[18px] font-bold text-slate-900">Yeni Kampanya</h2>
@@ -84,6 +111,7 @@ export default function AdminCampaignsPage() {
             {error && <div className="mb-4 bg-red-50 text-red-600 text-[13px] px-4 py-3 rounded-xl border border-red-100">{error}</div>}
 
             <form onSubmit={handleSubmit} className="space-y-4">
+              {/* ── Temel bilgiler ─────────────────────────── */}
               <div>
                 <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">Kampanya Adı *</label>
                 <input type="text" value={form.title} onChange={e => set('title', e.target.value)} required placeholder="Transfer %10 İndirim"
@@ -127,7 +155,7 @@ export default function AdminCampaignsPage() {
                   <input type="text" value={form.codeTemplate} onChange={e => set('codeTemplate', e.target.value.toUpperCase())} required placeholder="TRANSFER10"
                     className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-[14px] font-mono uppercase focus:outline-none focus:ring-2 focus:ring-[#003781]/20 focus:border-[#003781] transition-all" />
                   {form.codeTemplate && (
-                    <p className="text-[11px] text-slate-400 mt-1">Örn: <span className="font-semibold text-[#003781]">YASINİ{form.codeTemplate}</span></p>
+                    <p className="text-[11px] text-slate-400 mt-1">Örn: <span className="font-semibold text-[#003781]">YASİN{form.codeTemplate}</span></p>
                   )}
                 </div>
               </div>
@@ -145,10 +173,48 @@ export default function AdminCampaignsPage() {
                 </div>
               </div>
 
-              <div>
-                <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">Maks. Katılımcı (boş = sınırsız)</label>
-                <input type="number" value={form.maxParticipants} onChange={e => set('maxParticipants', e.target.value)} min="1" placeholder="100"
-                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-[14px] focus:outline-none focus:ring-2 focus:ring-[#003781]/20 focus:border-[#003781] transition-all" />
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">Maks. Katılımcı</label>
+                  <input type="number" value={form.maxParticipants} onChange={e => set('maxParticipants', e.target.value)} min="1" placeholder="sınırsız"
+                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-[14px] focus:outline-none focus:ring-2 focus:ring-[#003781]/20 focus:border-[#003781] transition-all" />
+                </div>
+                <div>
+                  <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">Komisyon %</label>
+                  <input type="number" value={form.commissionPct} onChange={e => set('commissionPct', e.target.value)} min="0" max="100" step="0.1" placeholder="örn: 5"
+                    className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-[14px] focus:outline-none focus:ring-2 focus:ring-[#003781]/20 focus:border-[#003781] transition-all" />
+                </div>
+              </div>
+
+              {/* ── Story alanları ─────────────────────────── */}
+              <div className="pt-2 border-t border-slate-100">
+                <p className="text-[12px] font-bold uppercase tracking-widest text-slate-400 mb-3">Story Görsel Alanları (opsiyonel)</p>
+
+                <div className="space-y-3">
+                  <div>
+                    <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">Eyebrow (üst etiket)</label>
+                    <input type="text" value={form.storyEyebrow} onChange={e => set('storyEyebrow', e.target.value)} placeholder="🌙 AĞUSTOS ÖZEL"
+                      className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-[14px] focus:outline-none focus:ring-2 focus:ring-[#003781]/20 focus:border-[#003781] transition-all" />
+                  </div>
+
+                  <div>
+                    <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">Story Başlığı</label>
+                    <input type="text" value={form.storyTitle} onChange={e => set('storyTitle', e.target.value)} placeholder="Boş bırakılırsa kampanya adı kullanılır"
+                      className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-[14px] focus:outline-none focus:ring-2 focus:ring-[#003781]/20 focus:border-[#003781] transition-all" />
+                  </div>
+
+                  <div>
+                    <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">Alt Başlık</label>
+                    <input type="text" value={form.storySub} onChange={e => set('storySub', e.target.value)} placeholder="Takipçilerine özel fırsat"
+                      className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-[14px] focus:outline-none focus:ring-2 focus:ring-[#003781]/20 focus:border-[#003781] transition-all" />
+                  </div>
+
+                  <div>
+                    <label className="block text-[13px] font-semibold text-slate-700 mb-1.5">Özellikler (virgülle ayır)</label>
+                    <input type="text" value={form.storyFeats} onChange={e => set('storyFeats', e.target.value)} placeholder="Otel dahil, Uçuş dahil, Rehber dahil"
+                      className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-[14px] focus:outline-none focus:ring-2 focus:ring-[#003781]/20 focus:border-[#003781] transition-all" />
+                  </div>
+                </div>
               </div>
 
               <div className="flex gap-3 pt-2">
@@ -203,6 +269,9 @@ export default function AdminCampaignsPage() {
                         <span className="text-[13px] font-semibold text-slate-700">
                           {c.discountType === 'percent' ? `%${c.discountValue} indirim` : `₺${c.discountValue} indirim`}
                         </span>
+                        {c.commissionPct && (
+                          <span className="text-[12px] font-semibold text-green-700 bg-green-50 px-2.5 py-1 rounded-full">%{c.commissionPct} komisyon</span>
+                        )}
                         <span className="text-[12px] text-slate-400 font-mono bg-slate-50 px-2 py-0.5 rounded-lg">Şablon: {c.codeTemplate}</span>
                       </div>
                     </div>
@@ -224,12 +293,12 @@ export default function AdminCampaignsPage() {
                   </div>
                 </div>
 
-                {/* Bitiş tarihi */}
-                {c.endDate && (
+                {(c.endDate || c.maxParticipants) && (
                   <p className="text-[12px] text-slate-400 mt-3 pt-3 border-t border-slate-50 flex items-center gap-1.5">
                     <span className="material-symbols-outlined text-[14px]">event</span>
-                    Bitiş: {new Date(c.endDate).toLocaleDateString('tr-TR')}
-                    {c.maxParticipants && ` · Maks ${c.maxParticipants} katılımcı`}
+                    {c.endDate && `Bitiş: ${new Date(c.endDate).toLocaleDateString('tr-TR')}`}
+                    {c.endDate && c.maxParticipants && ' · '}
+                    {c.maxParticipants && `Maks ${c.maxParticipants} katılımcı`}
                   </p>
                 )}
               </div>

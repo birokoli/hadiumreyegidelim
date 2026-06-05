@@ -1,4 +1,5 @@
-// /api/og/story - React.createElement ile JSX yok, safi .ts
+// /api/og/story?campaign={slug}&ref={code}
+// IMPORTANT: Satori (used by next/og) only supports .woff and .ttf, NOT .woff2
 import { ImageResponse } from 'next/og';
 import { NextRequest } from 'next/server';
 import { prisma } from '@/lib/prisma';
@@ -6,16 +7,37 @@ import React from 'react';
 
 export const runtime = 'nodejs';
 
-async function loadFont(weight: 400 | 700 | 900): Promise<ArrayBuffer | null> {
-  const urls: Record<number, string> = {
-    400: 'https://fonts.bunny.net/inter/files/inter-latin-400-normal.woff2',
-    700: 'https://fonts.bunny.net/inter/files/inter-latin-700-normal.woff2',
-    900: 'https://fonts.bunny.net/inter/files/inter-latin-900-normal.woff2',
-  };
+type FontWeight = 400 | 700 | 900;
+
+async function loadFont(weight: FontWeight): Promise<ArrayBuffer | null> {
+  // Primary: Google Fonts CSS with old UA → returns WOFF (not WOFF2)
+  const cssUrl = `https://fonts.googleapis.com/css2?family=Inter:wght@${weight}&display=swap`;
   try {
-    const res = await fetch(urls[weight]);
-    if (res.ok) return res.arrayBuffer();
+    const cssRes = await fetch(cssUrl, {
+      headers: { 'User-Agent': 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.0)' },
+    });
+    if (cssRes.ok) {
+      const css = await cssRes.text();
+      // Match .woff (not .woff2)
+      const m = css.match(/url\(([^)]+\.woff)\s*\)/);
+      if (m) {
+        const r = await fetch(m[1]);
+        if (r.ok) return r.arrayBuffer();
+      }
+    }
   } catch { /* fallback */ }
+
+  // Fallback: Bunny Fonts WOFF (not WOFF2)
+  try {
+    const bunny: Record<FontWeight, string> = {
+      400: 'https://fonts.bunny.net/inter/files/inter-latin-400-normal.woff',
+      700: 'https://fonts.bunny.net/inter/files/inter-latin-700-normal.woff',
+      900: 'https://fonts.bunny.net/inter/files/inter-latin-900-normal.woff',
+    };
+    const r = await fetch(bunny[weight]);
+    if (r.ok) return r.arrayBuffer();
+  } catch { /* null */ }
+
   return null;
 }
 
@@ -25,7 +47,10 @@ const GOLD = '#c9a96e';
 
 function buildElement(title: string, code: string, discountLabel: string) {
   return e('div', {
-    style: { width: 1080, height: 1920, background: '#ffffff', display: 'flex', flexDirection: 'column', padding: 80, fontFamily: 'Inter' }
+    style: {
+      width: 1080, height: 1920, background: '#ffffff',
+      display: 'flex', flexDirection: 'column', padding: 80, fontFamily: 'Inter',
+    },
   },
     e('div', { style: { width: 80, height: 8, background: NAVY, display: 'flex', marginBottom: 60 } }),
     e('div', { style: { fontSize: 28, fontWeight: 700, color: NAVY, marginBottom: 80 } }, 'HadiUmreyeGidelim.com'),
@@ -33,7 +58,7 @@ function buildElement(title: string, code: string, discountLabel: string) {
     e('div', { style: { fontSize: 36, color: '#6b7280', marginBottom: 60 } }, discountLabel),
     e('div', { style: { flex: 1 } }),
     e('div', {
-      style: { background: NAVY, borderRadius: 24, padding: '40px 48px', display: 'flex', flexDirection: 'column', gap: 8 }
+      style: { background: NAVY, borderRadius: 24, padding: '40px 48px', display: 'flex', flexDirection: 'column', gap: 8 },
     },
       e('div', { style: { fontSize: 18, color: 'rgba(255,255,255,0.6)', fontWeight: 600 } }, 'OZEL KODUN'),
       e('div', { style: { fontSize: 52, fontWeight: 900, color: GOLD, letterSpacing: '0.1em' } }, code),
@@ -58,6 +83,16 @@ export async function GET(req: NextRequest) {
     const code = refCode || 'KODUNUZ';
 
     const [reg, bold, black] = await Promise.all([loadFont(400), loadFont(700), loadFont(900)]);
+
+    // Require at least one font — Satori fails without any font for the specified fontFamily
+    if (!reg && !bold && !black) {
+      console.error('[story] Font yuklenemedi');
+      return new Response(JSON.stringify({ error: 'Font yuklenemedi' }), {
+        status: 500,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
     const fonts = [
       ...(reg   ? [{ name: 'Inter', data: reg,   weight: 400 as const, style: 'normal' as const }] : []),
       ...(bold  ? [{ name: 'Inter', data: bold,  weight: 700 as const, style: 'normal' as const }] : []),

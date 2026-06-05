@@ -30,7 +30,10 @@ export default function InfluencerCampaignsPage() {
   const [storyTarget, setStoryTarget] = useState<StoryTarget | null>(null);
 
   const load = useCallback(() => {
-    fetch('/api/influencer/campaigns').then(r => r.json()).then(d => { setData(d); setLoading(false); });
+    fetch('/api/influencer/campaigns')
+      .then(r => r.json())
+      .then(d => { setData(d); setLoading(false); })
+      .catch(() => setLoading(false));
   }, []);
 
   useEffect(() => { load(); }, [load]);

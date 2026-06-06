@@ -165,7 +165,6 @@ function buildDarkTemplate(
   code: string,
   handle: string,
 ) {
-  // Özellik satırı
   const featRow = (text: string, i: number) =>
     e('div', { key: String(i), style: { display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: 32 } },
       e('div', { style: { width: 56, height: 56, borderRadius: 28, borderWidth: 2, borderStyle: 'solid', borderColor: 'rgba(255,255,255,0.25)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginRight: 28 } },
@@ -174,58 +173,59 @@ function buildDarkTemplate(
       e('div', { style: { fontSize: 36, color: 'rgba(255,255,255,0.88)', fontWeight: 500, display: 'flex' } }, text),
     );
 
-  return e('div', { style: { position: 'relative', width: 1080, height: 1920, backgroundColor: DARK, display: 'flex', flexDirection: 'column', fontFamily: 'Montserrat' } },
+  // Tam yükseklik, 3 bölüm: üst (başlık) | orta (özellikler, kalan alan) | alt (kart + CTA)
+  return e('div', { style: { width: 1080, height: 1920, backgroundColor: DARK, display: 'flex', flexDirection: 'column', fontFamily: 'Montserrat', paddingLeft: 80, paddingRight: 80, paddingTop: 90, paddingBottom: 100 } },
 
-    // İçerik
-    e('div', { style: { display: 'flex', flexDirection: 'column', paddingLeft: 80, paddingRight: 80, paddingTop: 90 } },
+    // ── ÜST: site adı + eyebrow + başlık + alt metin ──────────────────────
+    e('div', { style: { display: 'flex', flexDirection: 'column' } },
 
-      // Site adı (üst sol)
       e('div', { style: { fontSize: 26, fontWeight: 600, color: 'rgba(255,255,255,0.35)', marginBottom: 80, display: 'flex' } },
         'hadiumreyegidelim.com'
       ),
 
-      // Eyebrow — mektup aralıklı, altın rengi
       e('div', { style: { fontSize: 24, fontWeight: 700, color: GOLD, letterSpacing: 5, marginBottom: 36, display: 'flex' } },
         eyebrow.toUpperCase()
       ),
 
-      // Ana başlık — büyük, beyaz, bold
       e('div', { style: { fontSize: title.length > 30 ? 72 : 88, fontWeight: 900, color: '#ffffff', lineHeight: 1.05, marginBottom: 44, display: 'flex', flexWrap: 'wrap' } },
         title
       ),
 
-      // Alt metin
-      sub ? e('div', { style: { fontSize: 34, color: 'rgba(255,255,255,0.50)', lineHeight: 1.45, marginBottom: 56, display: 'flex', flexWrap: 'wrap' } }, sub) : null,
+      sub ? e('div', { style: { fontSize: 34, color: 'rgba(255,255,255,0.50)', lineHeight: 1.45, display: 'flex', flexWrap: 'wrap' } }, sub) : null,
+    ),
 
-      // Özellik listesi
+    // ── ORTA: özellikler — kalan tüm alanı doldurur ───────────────────────
+    e('div', { style: { display: 'flex', flexDirection: 'column', flexGrow: 1, justifyContent: 'center', paddingTop: 40, paddingBottom: 40 } },
       feats.length > 0
-        ? e('div', { style: { display: 'flex', flexDirection: 'column', marginBottom: 56 } },
+        ? e('div', { style: { display: 'flex', flexDirection: 'column' } },
             ...feats.map((feat, i) => featRow(feat, i)),
           )
-        : e('div', { style: { marginBottom: 56, display: 'flex' } }),
+        : null,
+    ),
+
+    // ── ALT: indirim kartı + CTA + domain ─────────────────────────────────
+    e('div', { style: { display: 'flex', flexDirection: 'column' } },
 
       // İndirim kartı
       e('div', { style: { display: 'flex', flexDirection: 'row', alignItems: 'center', backgroundColor: 'rgba(255,255,255,0.07)', borderRadius: 28, paddingTop: 44, paddingBottom: 44, paddingLeft: 52, paddingRight: 44, marginBottom: 52 } },
-        // Sol: indirim miktarı
         e('div', { style: { display: 'flex', flexDirection: 'column', flexGrow: 1 } },
           e('div', { style: { fontSize: 22, color: 'rgba(255,255,255,0.40)', fontWeight: 700, marginBottom: 10, display: 'flex' } }, 'Sana \u00f6zel indirim'),
           e('div', { style: { fontSize: 80, fontWeight: 900, color: '#ffffff', lineHeight: 1, display: 'flex' } }, discountLabel),
         ),
-        // Sağ: kod butonu
         e('div', { style: { backgroundColor: GOLD, borderRadius: 20, paddingTop: 32, paddingBottom: 32, paddingLeft: 44, paddingRight: 44, display: 'flex', alignItems: 'center', justifyContent: 'center' } },
           e('div', { style: { fontSize: code.length > 8 ? 40 : 50, fontWeight: 900, color: DARK, lineHeight: 1, display: 'flex' } }, code),
         ),
       ),
 
       // CTA
-      e('div', { style: { display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: 60 } },
+      e('div', { style: { display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: 56 } },
         e('div', { style: { width: 64, height: 64, borderRadius: 32, borderWidth: 2, borderStyle: 'solid', borderColor: 'rgba(255,255,255,0.30)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: 24, flexShrink: 0 } },
           e('div', { style: { fontSize: 30, color: '#ffffff', fontWeight: 700 } }, '\u2192'),
         ),
         e('div', { style: { fontSize: 36, fontWeight: 700, color: '#ffffff', display: 'flex' } }, 'Rezervasyon i\u00e7in DM at'),
       ),
 
-      // Alt bilgi
+      // Domain + handle
       e('div', { style: { display: 'flex', flexDirection: 'column' } },
         e('div', { style: { fontSize: 30, color: GOLD, fontWeight: 700, display: 'flex' } }, 'hadiumreyegidelim.com'),
         handle ? e('div', { style: { fontSize: 26, color: 'rgba(255,255,255,0.35)', fontWeight: 400, marginTop: 10, display: 'flex' } }, handle + ' \u00f6nerisiyle') : null,

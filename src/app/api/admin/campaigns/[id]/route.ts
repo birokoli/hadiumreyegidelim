@@ -33,3 +33,11 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   await prisma.campaign.update({ where: { id }, data: { status } });
   return NextResponse.json({ success: true });
 }
+
+export async function DELETE(_: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  if (!await getAdmin()) return NextResponse.json({ error: 'Yetkisiz.' }, { status: 401 });
+  const { id } = await params;
+
+  await prisma.campaign.delete({ where: { id } });
+  return NextResponse.json({ success: true });
+}

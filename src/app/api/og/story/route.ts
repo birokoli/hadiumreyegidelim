@@ -11,6 +11,31 @@ import React from 'react';
 
 export const runtime = 'nodejs';
 
+// ─── Stream buffer yardımcısı ─────────────────────────────────────────────────
+// ImageResponse body'si bir ReadableStream. Satori async hatalarını try/catch
+// yakalayabilmek için stream'i tamamen okuyup düz Response olarak döndürüyoruz.
+async function toBufferedResponse(imgRes: Response): Promise<Response> {
+  const reader = imgRes.body!.getReader();
+  const chunks: Uint8Array[] = [];
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      if (value) chunks.push(value);
+    }
+  } finally {
+    reader.releaseLock();
+  }
+  const totalLen = chunks.reduce((s, c) => s + c.length, 0);
+  const buf = new Uint8Array(totalLen);
+  let off = 0;
+  for (const c of chunks) { buf.set(c, off); off += c.length; }
+  return new Response(buf, {
+    status: 200,
+    headers: { 'Content-Type': 'image/png', 'Cache-Control': 'public, max-age=3600' },
+  });
+}
+
 // ─── Font yükleyici ───────────────────────────────────────────────────────────
 type W = 400 | 600 | 700 | 800 | 900;
 const fontCache = new Map<string, ArrayBuffer>();
@@ -300,10 +325,10 @@ export async function GET(req: NextRequest) {
         ...(m700 ? [{ name: 'Montserrat', data: m700, weight: 700 as const, style: 'normal' as const }] : []),
       ];
 
-      return new ImageResponse(
+      return await toBufferedResponse(new ImageResponse(
         buildPhotoTemplate(campaign.imageUrl, bannerText, priceLabel, durTop, durMain, discountLabel, code, handle),
         { width: 1080, height: 1920, fonts },
-      );
+      ));
     }
 
     // ── Beyaz metin şablonu (imageUrl yok) ───────────────────────────────────
@@ -325,10 +350,10 @@ export async function GET(req: NextRequest) {
       ...(black ? [{ name: 'Inter', data: black, weight: 900 as const, style: 'normal' as const }] : []),
     ];
 
-    return new ImageResponse(
+    return await toBufferedResponse(new ImageResponse(
       buildWhiteTemplate(eyebrow, title, sub, feats, discountLabel, code, handle, trackingUrl),
       { width: 1080, height: 1920, fonts },
-    );
+    ));
 
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : String(err);

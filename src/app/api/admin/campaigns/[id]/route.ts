@@ -38,6 +38,10 @@ export async function DELETE(_: NextRequest, { params }: { params: Promise<{ id:
   if (!await getAdmin()) return NextResponse.json({ error: 'Yetkisiz.' }, { status: 401 });
   const { id } = await params;
 
-  await prisma.campaign.delete({ where: { id } });
+  await prisma.$transaction([
+    prisma.campaignCodeUsage.deleteMany({ where: { campaignId: id } }),
+    prisma.campaignParticipant.deleteMany({ where: { campaignId: id } }),
+    prisma.campaign.delete({ where: { id } }),
+  ]);
   return NextResponse.json({ success: true });
 }

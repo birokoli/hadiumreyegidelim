@@ -140,86 +140,95 @@ function buildPhotoTemplate(
 // ─── Beyaz metin şablonu (Satori-safe) ────────────────────────────────────────
 function buildWhiteTemplate(
   eyebrow: string, title: string, sub: string, feats: string[],
-  discountLabel: string, code: string, handle: string, trackingUrl: string,
+  discountLabel: string, code: string, handle: string,
 ) {
   const NAVY = '#003781';
   const GOLD = '#c9a96e';
   const GRAY = '#6b7280';
 
-  return e('div', { style: { width: 1080, height: 1920, backgroundColor: '#ffffff', display: 'flex', flexDirection: 'column', fontFamily: 'Inter' } },
+  // Dekoratif daire — boşluğu doldurmak için
+  const decoCircle = e('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 60 } },
+    e('div', { style: { width: 320, height: 320, borderRadius: 160, borderWidth: 3, borderStyle: 'solid', borderColor: '#e8edf6', display: 'flex', alignItems: 'center', justifyContent: 'center' } },
+      e('div', { style: { width: 220, height: 220, borderRadius: 110, backgroundColor: '#f0f4fb', display: 'flex', alignItems: 'center', justifyContent: 'center' } },
+        e('div', { style: { fontSize: 120, lineHeight: 1 } }, '\uD83D\uDD4C'), // 🕌
+      ),
+    ),
+  );
+
+  return e('div', { style: { position: 'relative', width: 1080, height: 1920, backgroundColor: '#ffffff', display: 'flex', flexDirection: 'column', fontFamily: 'Inter' } },
 
     // Üst lacivert çizgi
     e('div', { style: { width: 1080, height: 8, backgroundColor: NAVY, display: 'flex' } }),
 
-    // İçerik (flexGrow:1 — "flex:1" shorthand Satori'de çalışmaz)
-    e('div', { style: { flexGrow: 1, display: 'flex', flexDirection: 'column', paddingLeft: 80, paddingRight: 80, paddingTop: 72, paddingBottom: 0 } },
+    // İçerik — sabit yükseklik değil, her şeyi sırayla diz (paddingBottom: alt bar için)
+    e('div', { style: { display: 'flex', flexDirection: 'column', paddingLeft: 80, paddingRight: 80, paddingTop: 80, paddingBottom: 260 } },
 
       // Site adı
-      e('div', { style: { fontSize: 22, fontWeight: 700, color: NAVY, marginBottom: 52, display: 'flex' } },
+      e('div', { style: { fontSize: 22, fontWeight: 700, color: NAVY, marginBottom: 56, display: 'flex' } },
         'hadiumreyegidelim.com'
       ),
 
       // Eyebrow pill
-      e('div', { style: { display: 'flex', marginBottom: 36 } },
-        e('div', { style: { backgroundColor: NAVY, borderRadius: 100, paddingTop: 12, paddingBottom: 12, paddingLeft: 28, paddingRight: 28, display: 'flex' } },
-          e('div', { style: { color: '#ffffff', fontSize: 18, fontWeight: 700 } }, eyebrow),
+      e('div', { style: { display: 'flex', marginBottom: 40 } },
+        e('div', { style: { backgroundColor: NAVY, borderRadius: 100, paddingTop: 14, paddingBottom: 14, paddingLeft: 32, paddingRight: 32, display: 'flex' } },
+          e('div', { style: { color: '#ffffff', fontSize: 20, fontWeight: 700 } }, eyebrow),
         ),
       ),
 
       // Ana başlık
-      e('div', { style: { fontSize: title.length > 30 ? 68 : 80, fontWeight: 900, color: NAVY, lineHeight: 1.05, marginBottom: 36, display: 'flex', flexWrap: 'wrap' } },
+      e('div', { style: { fontSize: title.length > 28 ? 68 : 82, fontWeight: 900, color: NAVY, lineHeight: 1.05, marginBottom: 40, display: 'flex', flexWrap: 'wrap' } },
         title
       ),
 
       // Alt başlık
-      sub ? e('div', { style: { fontSize: 32, color: GRAY, lineHeight: 1.45, marginBottom: 56, display: 'flex', flexWrap: 'wrap' } }, sub) : null,
+      sub ? e('div', { style: { fontSize: 34, color: GRAY, lineHeight: 1.45, marginBottom: 60, display: 'flex', flexWrap: 'wrap' } }, sub) : null,
 
-      // Özellik listesi
-      feats.length > 0 ? e('div', { style: { display: 'flex', flexDirection: 'column', marginBottom: 56 } },
-        ...feats.map((feat, i) =>
-          e('div', { key: String(i), style: { display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: 22 } },
-            e('div', { style: { width: 44, height: 44, borderRadius: 100, backgroundColor: '#f0f4fb', borderWidth: 2, borderStyle: 'solid', borderColor: NAVY, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginRight: 20 } },
-              e('div', { style: { fontSize: 22, color: NAVY, fontWeight: 900 } }, '\u2713')
+      // Özellik listesi VEYA dekoratif element
+      feats.length > 0
+        ? e('div', { style: { display: 'flex', flexDirection: 'column', marginBottom: 60 } },
+            ...feats.map((feat, i) =>
+              e('div', { key: String(i), style: { display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: 24 } },
+                e('div', { style: { width: 48, height: 48, borderRadius: 100, backgroundColor: '#f0f4fb', borderWidth: 2, borderStyle: 'solid', borderColor: NAVY, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginRight: 20 } },
+                  e('div', { style: { fontSize: 24, color: NAVY, fontWeight: 900 } }, '\u2713')
+                ),
+                e('div', { style: { fontSize: 32, color: '#1f2937', fontWeight: 500, display: 'flex' } }, feat),
+              )
             ),
-            e('div', { style: { fontSize: 30, color: '#1f2937', fontWeight: 500, display: 'flex' } }, feat),
           )
-        ),
-      ) : null,
+        : decoCircle,
 
-      // Esnek dolgu
-      e('div', { style: { flexGrow: 1, display: 'flex' } }),
+      // Ayraç
+      e('div', { style: { width: 920, height: 2, backgroundColor: '#e8edf6', marginBottom: 60, display: 'flex' } }),
 
       // İndirim + Kod kartı
-      e('div', { style: { display: 'flex', flexDirection: 'row', marginBottom: 48, borderRadius: 28, overflow: 'hidden', borderWidth: 2, borderStyle: 'solid', borderColor: '#e2e8f0', backgroundColor: '#f4f6f9' } },
-        // Sol: indirim
+      e('div', { style: { display: 'flex', flexDirection: 'row', marginBottom: 52, borderRadius: 28, borderWidth: 2, borderStyle: 'solid', borderColor: '#e2e8f0', backgroundColor: '#f4f6f9' } },
         e('div', { style: { flexGrow: 1, paddingLeft: 48, paddingRight: 32, paddingTop: 44, paddingBottom: 44, display: 'flex', flexDirection: 'column', justifyContent: 'center', borderRightWidth: 2, borderRightStyle: 'solid', borderRightColor: '#e2e8f0' } },
           e('div', { style: { fontSize: 15, color: GRAY, fontWeight: 700, marginBottom: 10, display: 'flex' } }, 'SANA OZEL INDIRIM'),
-          e('div', { style: { fontSize: 64, fontWeight: 900, color: NAVY, lineHeight: 1, display: 'flex' } }, discountLabel),
+          e('div', { style: { fontSize: 68, fontWeight: 900, color: NAVY, lineHeight: 1, display: 'flex' } }, discountLabel),
         ),
-        // Sağ: kod
-        e('div', { style: { backgroundColor: NAVY, paddingLeft: 40, paddingRight: 40, paddingTop: 44, paddingBottom: 44, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' } },
-          e('div', { style: { fontSize: 13, color: 'rgba(255,255,255,0.55)', fontWeight: 700, marginBottom: 8, display: 'flex' } }, 'KODUN'),
-          e('div', { style: { fontSize: 40, fontWeight: 900, color: GOLD, lineHeight: 1, display: 'flex' } }, code),
+        e('div', { style: { backgroundColor: NAVY, paddingLeft: 44, paddingRight: 44, paddingTop: 44, paddingBottom: 44, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', borderRadius: 0 } },
+          e('div', { style: { fontSize: 14, color: 'rgba(255,255,255,0.55)', fontWeight: 700, marginBottom: 10, display: 'flex' } }, 'KODUN'),
+          e('div', { style: { fontSize: 44, fontWeight: 900, color: GOLD, lineHeight: 1, display: 'flex' } }, code),
         ),
       ),
 
       // CTA
-      e('div', { style: { display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: 44 } },
-        e('div', { style: { width: 56, height: 56, borderRadius: 100, borderWidth: 2, borderStyle: 'solid', borderColor: NAVY, display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: 18, flexShrink: 0 } },
-          e('div', { style: { fontSize: 26, color: NAVY, fontWeight: 900 } }, '\u2192'),
+      e('div', { style: { display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: 52 } },
+        e('div', { style: { width: 60, height: 60, borderRadius: 100, borderWidth: 2, borderStyle: 'solid', borderColor: NAVY, display: 'flex', alignItems: 'center', justifyContent: 'center', marginRight: 20, flexShrink: 0 } },
+          e('div', { style: { fontSize: 28, color: NAVY, fontWeight: 900 } }, '\u2192'),
         ),
-        e('div', { style: { fontSize: 30, fontWeight: 700, color: NAVY, display: 'flex' } }, 'Rezervasyon i\u00e7in DM at'),
+        e('div', { style: { fontSize: 32, fontWeight: 700, color: NAVY, display: 'flex' } }, 'Rezervasyon i\u00e7in DM at'),
       ),
 
-      // Alt bilgi
+      // Alt bilgi — sadece domain + handle, slug gösterme
       e('div', { style: { display: 'flex', flexDirection: 'column' } },
-        e('div', { style: { fontSize: 24, color: NAVY, fontWeight: 600, display: 'flex' } }, trackingUrl),
-        handle ? e('div', { style: { fontSize: 20, color: '#9ca3af', fontWeight: 400, marginTop: 6, display: 'flex' } }, handle + ' \u00f6nerisiyle') : null,
+        e('div', { style: { fontSize: 26, color: NAVY, fontWeight: 600, display: 'flex' } }, 'hadiumreyegidelim.com'),
+        handle ? e('div', { style: { fontSize: 22, color: '#9ca3af', fontWeight: 400, marginTop: 8, display: 'flex' } }, handle + ' \u00f6nerisiyle') : null,
       ),
     ),
 
-    // Alt altın çizgi + 200px Instagram boşluğu
-    e('div', { style: { display: 'flex', flexDirection: 'column' } },
+    // Alt altın çizgi + 200px Instagram boşluğu (absolute → Satori'de marginTop:auto çalışmıyor)
+    e('div', { style: { position: 'absolute', bottom: 0, left: 0, width: 1080, display: 'flex', flexDirection: 'column' } },
       e('div', { style: { width: 1080, height: 6, backgroundColor: GOLD, display: 'flex' } }),
       e('div', { style: { width: 1080, height: 200, backgroundColor: '#ffffff', display: 'flex' } }),
     ),
@@ -276,7 +285,6 @@ export async function GET(req: NextRequest) {
     const title   = campaign.storyTitle   ?? campaign.title;
     const sub     = campaign.storySub     ?? campaign.description ?? '';
     const feats: string[] = campaign.storyFeats ? JSON.parse(campaign.storyFeats) : [];
-    const trackingUrl = `hadiumreyegidelim.com/c/${campaignSlug}?ref=${code}`;
 
     const [r400, r700, r900] = await Promise.all([loadFont('Inter', 400), loadFont('Inter', 700), loadFont('Inter', 900)]);
     if (!r400 && !r700 && !r900) return new Response(JSON.stringify({ error: 'Inter yuklenemedi' }), { status: 500, headers: { 'Content-Type': 'application/json' } });
@@ -287,7 +295,7 @@ export async function GET(req: NextRequest) {
     ];
 
     return await toBufferedResponse(new ImageResponse(
-      buildWhiteTemplate(eyebrow, title, sub, feats, discountLabel, code, handle, trackingUrl),
+      buildWhiteTemplate(eyebrow, title, sub, feats, discountLabel, code, handle),
       { width: 1080, height: 1920, fonts },
     ));
 

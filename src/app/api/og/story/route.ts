@@ -194,13 +194,18 @@ function buildDarkTemplate(
       sub ? e('div', { style: { fontSize: 34, color: 'rgba(255,255,255,0.50)', lineHeight: 1.45, display: 'flex', flexWrap: 'wrap' } }, sub) : null,
     ),
 
-    // ── ORTA: özellikler — kalan tüm alanı doldurur ───────────────────────
+    // ── ORTA: özellikler VEYA dekoratif quote — kalan alanı doldurur ──────
     e('div', { style: { display: 'flex', flexDirection: 'column', flexGrow: 1, justifyContent: 'center', paddingTop: 40, paddingBottom: 40 } },
       feats.length > 0
         ? e('div', { style: { display: 'flex', flexDirection: 'column' } },
             ...feats.map((feat, i) => featRow(feat, i)),
           )
-        : null,
+        : e('div', { style: { display: 'flex', flexDirection: 'column', backgroundColor: 'rgba(201,169,110,0.10)', borderRadius: 28, paddingTop: 52, paddingBottom: 52, paddingLeft: 52, paddingRight: 52 } },
+            e('div', { style: { fontSize: 72, color: GOLD, fontWeight: 900, lineHeight: 1, marginBottom: 24, display: 'flex' } }, '\u201c'),
+            e('div', { style: { fontSize: 36, color: 'rgba(255,255,255,0.72)', lineHeight: 1.55, fontWeight: 500, display: 'flex', flexWrap: 'wrap' } },
+              'Umre, kalbin Allah\u2019a y\u00f6neli\u015finin en g\u00fczel yolculu\u011fu. Sizi bu kutlu yolda en iyi \u015fekilde ta\u015f\u0131mak i\u00e7in buradayız.'
+            ),
+          ),
     ),
 
     // ── ALT: indirim kartı + CTA + domain ─────────────────────────────────
@@ -233,6 +238,29 @@ function buildDarkTemplate(
     ),
   );
 }
+
+// ─── Yardımcı: emoji + fazla boşluk temizle, ilk cümleyi al ─────────────────
+function cleanText(text: string, maxLen = 130): string {
+  const clean = text
+    .replace(/[\u{1F000}-\u{1FFFF}]/gu, '')
+    .replace(/[\u{2600}-\u{27BF}]/gu, '')
+    .replace(/[✅❌💰📅🕌🕋]/g, '')
+    .replace(/→|←|•/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  const first = clean.split(/[.!?\n]/)[0].trim();
+  return first.length > maxLen ? first.slice(0, maxLen - 3) + '...' : first;
+}
+
+// Kampanya type'ından Türkçe eyebrow üret
+const TYPE_LABELS: Record<string, string> = {
+  package:    'UMRE PAKETİ',
+  individual: 'BİREYSEL UMRE',
+  bireysel:   'BİREYSEL UMRE',
+  hanim:      'HANİM UMRESİ',
+  group:      'GRUP UMRESİ',
+  vip:        'VIP UMRE',
+};
 
 // ─── GET ──────────────────────────────────────────────────────────────────────
 export async function GET(req: NextRequest) {
@@ -287,10 +315,12 @@ export async function GET(req: NextRequest) {
     }
 
     // ── Şablon 2: Koyu lacivert metin ────────────────────────────────────────
-    const eyebrow = campaign.storyEyebrow ?? campaign.type.replace(/_/g, ' ');
-    const title   = campaign.storyTitle   ?? campaign.title;
-    // storySub yoksa boş bırak — campaign.description çok uzun/emoji içeriyor
-    const sub     = campaign.storySub ?? '';
+    const eyebrow = campaign.storyEyebrow
+      ?? TYPE_LABELS[campaign.type?.toLowerCase?.() ?? '']
+      ?? 'UMRE PROGRAMI';
+    const title = campaign.storyTitle ?? campaign.title;
+    const sub   = campaign.storySub
+      ?? (campaign.description ? cleanText(campaign.description) : '');
     const feats: string[] = (() => {
       try { return campaign.storyFeats ? JSON.parse(campaign.storyFeats) : []; }
       catch { return []; }

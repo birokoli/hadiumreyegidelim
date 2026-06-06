@@ -35,19 +35,26 @@ export default function AdminCampaignsPage() {
 
   const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }));
 
+  const EMPTY_FORM = { title: '', description: '', type: 'transfer', discountType: 'percent', discountValue: '', codeTemplate: '', startDate: '', endDate: '', maxParticipants: '' };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
     setError('');
-    const res = await fetch('/api/admin/campaigns', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(form),
-    });
-    const data = await res.json();
-    if (res.ok) { setShowForm(false); setForm({ title: '', description: '', type: 'transfer', discountType: 'percent', discountValue: '', codeTemplate: '', startDate: '', endDate: '', maxParticipants: '' }); load(); }
-    else setError(data.error || 'Hata oluştu.');
-    setSubmitting(false);
+    try {
+      const res = await fetch('/api/admin/campaigns', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+      const data = await res.json();
+      if (res.ok) { setShowForm(false); setForm(EMPTY_FORM); load(); }
+      else setError(data.error || 'Hata oluştu.');
+    } catch {
+      setError('Sunucu hatası. Lütfen tekrar deneyin.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const toggleStatus = async (id: string, status: string) => {

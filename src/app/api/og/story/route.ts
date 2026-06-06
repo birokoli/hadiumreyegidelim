@@ -287,9 +287,10 @@ export async function GET(req: NextRequest) {
     }
 
     // ── Şablon 2: Koyu lacivert metin ────────────────────────────────────────
-    const eyebrow = campaign.storyEyebrow ?? campaign.type;
+    const eyebrow = campaign.storyEyebrow ?? campaign.type.replace(/_/g, ' ');
     const title   = campaign.storyTitle   ?? campaign.title;
-    const sub     = campaign.storySub     ?? campaign.description ?? '';
+    // storySub yoksa boş bırak — campaign.description çok uzun/emoji içeriyor
+    const sub     = campaign.storySub ?? '';
     const feats: string[] = (() => {
       try { return campaign.storyFeats ? JSON.parse(campaign.storyFeats) : []; }
       catch { return []; }

@@ -138,6 +138,20 @@ export default function AdminUsersPage() {
     setMessage(null);
 
     try {
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!form.name.trim() || !form.username.trim() || !form.email.trim()) {
+        throw new Error("Ad soyad, kullanıcı adı ve e-posta alanları zorunlu.");
+      }
+      if (!emailPattern.test(form.email.trim())) {
+        throw new Error("Geçerli bir e-posta adresi girin.");
+      }
+      if (!editing && form.password.length < 8) {
+        throw new Error("Şifre en az 8 karakter olmalı.");
+      }
+      if (editing && form.password && form.password.length < 8) {
+        throw new Error("Yeni şifre en az 8 karakter olmalı.");
+      }
+
       const endpoint = editing ? `/api/admin/users/${form.id}` : "/api/admin/users";
       const res = await fetch(endpoint, {
         method: editing ? "PATCH" : "POST",
@@ -343,15 +357,15 @@ export default function AdminUsersPage() {
             )}
           </div>
 
-          <form onSubmit={submitForm} className="space-y-5">
+          <form onSubmit={submitForm} noValidate className="space-y-5">
             <div>
               <label className="block text-xs font-bold text-outline uppercase tracking-wider mb-2">Ad Soyad</label>
-              <input required value={form.name} onChange={event => setField("name", event.target.value)} className="w-full bg-surface-container-low border border-outline-variant/20 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 outline-none text-primary" />
+              <input value={form.name} onChange={event => setField("name", event.target.value)} className="w-full bg-surface-container-low border border-outline-variant/20 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 outline-none text-primary" />
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-xs font-bold text-outline uppercase tracking-wider mb-2">Kullanıcı Adı</label>
-                <input required value={form.username} onChange={event => setField("username", event.target.value)} className="w-full bg-surface-container-low border border-outline-variant/20 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 outline-none text-primary" />
+                <input value={form.username} onChange={event => setField("username", event.target.value)} className="w-full bg-surface-container-low border border-outline-variant/20 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 outline-none text-primary" />
               </div>
               <div>
                 <label className="block text-xs font-bold text-outline uppercase tracking-wider mb-2">Durum</label>
@@ -363,16 +377,14 @@ export default function AdminUsersPage() {
             </div>
             <div>
               <label className="block text-xs font-bold text-outline uppercase tracking-wider mb-2">E-posta</label>
-              <input required type="email" value={form.email} onChange={event => setField("email", event.target.value)} className="w-full bg-surface-container-low border border-outline-variant/20 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 outline-none text-primary" />
+              <input type="text" inputMode="email" value={form.email} onChange={event => setField("email", event.target.value)} className="w-full bg-surface-container-low border border-outline-variant/20 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 outline-none text-primary" />
             </div>
             <div>
               <label className="block text-xs font-bold text-outline uppercase tracking-wider mb-2">
                 Şifre {editing && <span className="normal-case tracking-normal text-slate-400">(opsiyonel)</span>}
               </label>
               <input
-                required={!editing}
                 type="password"
-                minLength={8}
                 value={form.password}
                 onChange={event => setField("password", event.target.value)}
                 className="w-full bg-surface-container-low border border-outline-variant/20 rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary/20 outline-none text-primary"

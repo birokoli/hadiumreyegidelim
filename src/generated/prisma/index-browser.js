@@ -274,6 +274,20 @@ exports.Prisma.UserScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.AdminUserScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  username: 'username',
+  email: 'email',
+  password: 'password',
+  role: 'role',
+  permissions: 'permissions',
+  status: 'status',
+  lastLoginAt: 'lastLoginAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.ContactRequestScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -321,6 +335,10 @@ exports.Prisma.InfluencerScalarFieldEnum = {
   totalEarnings: 'totalEarnings',
   pendingEarnings: 'pendingEarnings',
   totalClicks: 'totalClicks',
+  programUnlocked: 'programUnlocked',
+  baseThrOverride: 'baseThrOverride',
+  unlockedAt: 'unlockedAt',
+  firstShareAt: 'firstShareAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -389,6 +407,7 @@ exports.Prisma.SaleScalarFieldEnum = {
   commissionRate: 'commissionRate',
   commissionAmount: 'commissionAmount',
   commissionStatus: 'commissionStatus',
+  affiliatePeriod: 'affiliatePeriod',
   saleDate: 'saleDate',
   completionDate: 'completionDate',
   refundDeadline: 'refundDeadline',
@@ -573,6 +592,11 @@ exports.Prisma.CampaignScalarFieldEnum = {
   maxParticipants: 'maxParticipants',
   imageUrl: 'imageUrl',
   createdBy: 'createdBy',
+  storyEyebrow: 'storyEyebrow',
+  storyTitle: 'storyTitle',
+  storySub: 'storySub',
+  storyFeats: 'storyFeats',
+  commissionPct: 'commissionPct',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -658,6 +682,75 @@ exports.Prisma.ServiceLibraryScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.ProgramConfigScalarFieldEnum = {
+  id: 'id',
+  baseThreshold: 'baseThreshold',
+  minThreshold: 'minThreshold',
+  referralReduction: 'referralReduction',
+  startRate: 'startRate',
+  maxRate: 'maxRate',
+  starToTry: 'starToTry',
+  weightCvr: 'weightCvr',
+  weightVolume: 'weightVolume',
+  weightCtr: 'weightCtr',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.StarLedgerScalarFieldEnum = {
+  id: 'id',
+  influencerId: 'influencerId',
+  delta: 'delta',
+  reason: 'reason',
+  note: 'note',
+  createdBy: 'createdBy',
+  refSaleId: 'refSaleId',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.PerformanceScoreScalarFieldEnum = {
+  id: 'id',
+  influencerId: 'influencerId',
+  period: 'period',
+  ctr: 'ctr',
+  cvr: 'cvr',
+  volume: 'volume',
+  ctrNorm: 'ctrNorm',
+  cvrNorm: 'cvrNorm',
+  volumeNorm: 'volumeNorm',
+  score: 'score',
+  commissionRate: 'commissionRate',
+  computedAt: 'computedAt'
+};
+
+exports.Prisma.PerformanceEventScalarFieldEnum = {
+  id: 'id',
+  influencerId: 'influencerId',
+  period: 'period',
+  impressions: 'impressions',
+  clicks: 'clicks',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ReferralScalarFieldEnum = {
+  id: 'id',
+  referrerId: 'referrerId',
+  invitedId: 'invitedId',
+  qualified: 'qualified',
+  qualifiedAt: 'qualifiedAt',
+  qualifiedPeriod: 'qualifiedPeriod',
+  reductionApplied: 'reductionApplied',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.ReferralQualificationScalarFieldEnum = {
+  id: 'id',
+  referralId: 'referralId',
+  referrerId: 'referrerId',
+  period: 'period',
+  reduction: 'reduction',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -686,6 +779,7 @@ exports.Prisma.ModelName = {
   Hotel: 'Hotel',
   AILog: 'AILog',
   User: 'User',
+  AdminUser: 'AdminUser',
   ContactRequest: 'ContactRequest',
   PostVersion: 'PostVersion',
   Influencer: 'Influencer',
@@ -711,7 +805,13 @@ exports.Prisma.ModelName = {
   CompanySettings: 'CompanySettings',
   Quotation: 'Quotation',
   QuotationItem: 'QuotationItem',
-  ServiceLibrary: 'ServiceLibrary'
+  ServiceLibrary: 'ServiceLibrary',
+  ProgramConfig: 'ProgramConfig',
+  StarLedger: 'StarLedger',
+  PerformanceScore: 'PerformanceScore',
+  PerformanceEvent: 'PerformanceEvent',
+  Referral: 'Referral',
+  ReferralQualification: 'ReferralQualification'
 };
 
 /**

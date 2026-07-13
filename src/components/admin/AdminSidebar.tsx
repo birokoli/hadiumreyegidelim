@@ -6,54 +6,57 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useAdminContext } from "./AdminContext";
 
-const menuGroups: { title: string; links: { href: string; icon: string; label: string; exact?: boolean }[] }[] = [
+type AdminPermission = "dashboard" | "orders" | "content" | "operations" | "marketing" | "settings" | "users";
+
+const menuGroups: { title: string; links: { href: string; icon: string; label: string; exact?: boolean; permission?: AdminPermission }[] }[] = [
   {
     title: "Genel Bakış",
     links: [
-      { href: "/admin", icon: "dashboard", label: "Dashboard", exact: true },
+      { href: "/admin", icon: "dashboard", label: "Dashboard", exact: true, permission: "dashboard" },
     ],
   },
   {
     title: "Satış & CRM",
     links: [
-      { href: "/admin/orders",            icon: "receipt_long",  label: "Talepler / Siparişler" },
-      { href: "/admin/contact",           icon: "call",           label: "WhatsApp & İletişim"  },
-      { href: "/admin/fiyat-teklifleri",           icon: "request_quote",  label: "Fiyat Teklifleri"     },
-      { href: "/admin/fiyat-teklifleri/hizmetler", icon: "library_books",  label: "Hizmet Kütüphanesi"   },
+      { href: "/admin/orders",            icon: "receipt_long",  label: "Talepler / Siparişler", permission: "orders" },
+      { href: "/admin/contact",           icon: "call",           label: "WhatsApp & İletişim", permission: "orders"  },
+      { href: "/admin/fiyat-teklifleri",           icon: "request_quote",  label: "Fiyat Teklifleri", permission: "orders"     },
+      { href: "/admin/fiyat-teklifleri/hizmetler", icon: "library_books",  label: "Hizmet Kütüphanesi", permission: "orders"   },
     ],
   },
   {
     title: "Operasyon Merkezi",
     links: [
-      { href: "/admin/packages", icon: "inventory_2", label: "Lüks Paketler"  },
-      { href: "/admin/services", icon: "mosque",      label: "Ek Hizmetler"   },
-      { href: "/admin/guides",   icon: "person_pin",  label: "Yerel Rehberler" },
+      { href: "/admin/packages", icon: "inventory_2", label: "Lüks Paketler", permission: "operations"  },
+      { href: "/admin/services", icon: "mosque",      label: "Ek Hizmetler", permission: "operations"   },
+      { href: "/admin/guides",   icon: "person_pin",  label: "Yerel Rehberler", permission: "operations" },
     ],
   },
   {
     title: "İçerik Stüdyosu",
     links: [
-      { href: "/admin/content",    icon: "article",  label: "Blog İçerikleri" },
-      { href: "/admin/categories", icon: "category", label: "Kategoriler"     },
-      { href: "/admin/authors",    icon: "badge",    label: "Yazarlar"        },
+      { href: "/admin/content",    icon: "article",  label: "Blog İçerikleri", permission: "content" },
+      { href: "/admin/categories", icon: "category", label: "Kategoriler", permission: "content"     },
+      { href: "/admin/authors",    icon: "badge",    label: "Yazarlar", permission: "content"        },
     ],
   },
   {
     title: "Marketing & Influencer",
     links: [
-      { href: "/admin/influencers", icon: "person_celebrate", label: "Influencer Yönetimi" },
-      { href: "/admin/affiliate",   icon: "star",             label: "Affiliate Program" },
-      { href: "/admin/campaigns",   icon: "campaign",         label: "Kampanyalar" },
-      { href: "/admin/support",     icon: "support_agent",    label: "Canlı Destek" },
+      { href: "/admin/influencers", icon: "person_celebrate", label: "Influencer Yönetimi", permission: "marketing" },
+      { href: "/admin/affiliate",   icon: "star",             label: "Affiliate Program", permission: "marketing" },
+      { href: "/admin/campaigns",   icon: "campaign",         label: "Kampanyalar", permission: "marketing" },
+      { href: "/admin/support",     icon: "support_agent",    label: "Canlı Destek", permission: "marketing" },
     ],
   },
   {
     title: "Sistem & Ayarlar",
     links: [
-      { href: "/admin/analytics", icon: "analytics",     label: "Analytics"       },
-      { href: "/admin/media",     icon: "photo_library", label: "Medya Galerisi"  },
-      { href: "/admin/ai-logs",   icon: "memory",        label: "Yapay Zeka (AI)" },
-      { href: "/admin/settings",  icon: "settings",      label: "Sistem Ayarları" },
+      { href: "/admin/analytics", icon: "analytics",     label: "Analytics", permission: "dashboard"       },
+      { href: "/admin/media",     icon: "photo_library", label: "Medya Galerisi", permission: "content"  },
+      { href: "/admin/ai-logs",   icon: "memory",        label: "Yapay Zeka (AI)", permission: "dashboard" },
+      { href: "/admin/users",     icon: "manage_accounts", label: "Kullanıcı Yönetimi", permission: "users" },
+      { href: "/admin/settings",  icon: "settings",      label: "Sistem Ayarları", permission: "settings" },
     ],
   },
 ];
@@ -61,6 +64,27 @@ const menuGroups: { title: string; links: { href: string; icon: string; label: s
 export default function AdminSidebar({ logoUrl }: { logoUrl?: string }) {
   const pathname = usePathname();
   const { sidebarOpen, setSidebarOpen } = useAdminContext();
+  const [allowedPermissions, setAllowedPermissions] = React.useState<AdminPermission[] | null>(null);
+  const [isSuperAdmin, setIsSuperAdmin] = React.useState(true);
+
+  useEffect(() => {
+    fetch("/api/admin/me")
+      .then(res => res.json())
+      .then(data => {
+        const admin = data.admin;
+        setIsSuperAdmin(Boolean(admin?.legacy) || admin?.role === "super_admin");
+        setAllowedPermissions(Array.isArray(admin?.permissions) ? admin.permissions : []);
+      })
+      .catch(() => {
+        setIsSuperAdmin(true);
+        setAllowedPermissions(null);
+      });
+  }, []);
+
+  const canSee = (permission?: AdminPermission) => {
+    if (!permission || isSuperAdmin || allowedPermissions === null) return true;
+    return allowedPermissions.includes(permission);
+  };
 
   // Close sidebar on route change (mobile)
   useEffect(() => {
@@ -122,13 +146,17 @@ export default function AdminSidebar({ logoUrl }: { logoUrl?: string }) {
 
         {/* Nav */}
         <nav className="flex-1 flex flex-col space-y-5 px-4">
-          {menuGroups.map((group, idx) => (
+          {menuGroups.map((group, idx) => {
+            const links = group.links.filter(link => canSee(link.permission));
+            if (links.length === 0) return null;
+
+            return (
             <div key={idx}>
               <h4 className="text-[10px] uppercase tracking-widest text-slate-400 font-bold px-4 mb-1.5">
                 {group.title}
               </h4>
               <div className="space-y-0.5">
-                {group.links.map(link => {
+                {links.map(link => {
                   const isActive = link.exact
                     ? pathname === link.href
                     : pathname.startsWith(link.href);
@@ -154,7 +182,8 @@ export default function AdminSidebar({ logoUrl }: { logoUrl?: string }) {
                 })}
               </div>
             </div>
-          ))}
+            );
+          })}
         </nav>
 
         {/* Bottom CTA */}

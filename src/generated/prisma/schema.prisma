@@ -172,6 +172,20 @@ model User {
   updatedAt DateTime @updatedAt
 }
 
+model AdminUser {
+  id          String    @id @default(cuid())
+  name        String
+  username    String    @unique
+  email       String    @unique
+  password    String
+  role        String    @default("editor")
+  permissions String    @default("[]")
+  status      String    @default("active")
+  lastLoginAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
 model ContactRequest {
   id        String   @id @default(cuid())
   name      String
@@ -228,6 +242,11 @@ model Influencer {
   totalEarnings      Float                 @default(0)
   pendingEarnings    Float                 @default(0)
   totalClicks        Int                   @default(0)
+  // Affiliate
+  programUnlocked    Boolean               @default(false)
+  baseThrOverride    Int?
+  unlockedAt         DateTime?
+  firstShareAt       DateTime?
   // İlişkiler
   shares             Share[]
   customers          Customer[]
@@ -237,6 +256,11 @@ model Influencer {
   campaigns          CampaignParticipant[]
   loyaltyAccount     LoyaltyAccount?
   supportChat        SupportChat?
+  starLedgerEntries  StarLedger[]
+  perfScores         PerformanceScore[]
+  perfEvents         PerformanceEvent[]
+  referralsMade      Referral[]            @relation("ReferrerRelation")
+  referralReceived   Referral?             @relation("InvitedRelation")
   createdAt          DateTime              @default(now())
   updatedAt          DateTime              @updatedAt
 }
@@ -314,6 +338,7 @@ model Sale {
   commissionRate          Float                @default(0.05)
   commissionAmount        Float
   commissionStatus        String               @default("pending") // pending | earned | paid | refunded
+  affiliatePeriod         String? // "YYYY-MM-01" — komisyon dönemine bağlama
   saleDate                DateTime             @default(now())
   completionDate          DateTime?
   refundDeadline          DateTime?
@@ -547,6 +572,12 @@ model Campaign {
   maxParticipants Int? // null = sınırsız
   imageUrl        String?
   createdBy       String?
+  // Story görsel alanları
+  storyEyebrow    String? // "🌙 AĞUSTOS ÖZEL"
+  storyTitle      String? // Story başlığı (boşsa title kullanılır)
+  storySub        String? // "Takipçilerine özel fırsat"
+  storyFeats      String? // JSON: ["Otel dahil", "Hızlı tren dahil", ...]
+  commissionPct   Float? // Gösterim amaçlı komisyon %
   createdAt       DateTime              @default(now())
   updatedAt       DateTime              @updatedAt
   participants    CampaignParticipant[]
@@ -650,4 +681,97 @@ model ServiceLibrary {
   sortOrder            Int      @default(0)
   createdAt            DateTime @default(now())
   updatedAt            DateTime @updatedAt
+}
+
+// ─────────────────────────────────────────────────────────
+// AFFİLİATE SİSTEMİ
+// ─────────────────────────────────────────────────────────
+
+model ProgramConfig {
+  id                Int      @id @default(1)
+  baseThreshold     Int      @default(20) // Program açılış eşiği (geçerli satış)
+  minThreshold      Int      @default(5) // Referral indirimi sonrası minimum eşik
+  referralReduction Int      @default(3) // Davet başına düşülen eşik miktarı
+  startRate         Float    @default(3.0) // Başlangıç komisyon oranı (%)
+  maxRate           Float    @default(7.0) // Maksimum komisyon oranı (%)
+  starToTry         Float    @default(0.10) // 1 yıldız = kaç TL
+  weightCvr         Float    @default(0.40) // Skor ağırlıkları
+  weightVolume      Float    @default(0.40)
+  weightCtr         Float    @default(0.20)
+  updatedAt         DateTime @updatedAt
+}
+
+model StarLedger {
+  id           String     @id @default(cuid())
+  influencer   Influencer @relation(fields: [influencerId], references: [id])
+  influencerId String
+  delta        Float // Pozitif: kazanç, Negatif: harcama
+  reason       String // commission | admin_adjust | withdraw | gift_redeem | referral_bonus | reversal
+  note         String?
+  createdBy    String     @default("system")
+  refSaleId    String? // ilgili satış ID'si (komisyon kaydında)
+  createdAt    DateTime   @default(now())
+
+  @@index([influencerId])
+}
+
+model PerformanceScore {
+  id             String     @id @default(cuid())
+  influencer     Influencer @relation(fields: [influencerId], references: [id])
+  influencerId   String
+  period         String // "YYYY-MM-01"
+  ctr            Float      @default(0)
+  cvr            Float      @default(0)
+  volume         Int        @default(0)
+  ctrNorm        Float      @default(0)
+  cvrNorm        Float      @default(0)
+  volumeNorm     Float      @default(0)
+  score          Float      @default(0)
+  commissionRate Float      @default(3.0)
+  computedAt     DateTime   @default(now())
+
+  @@unique([influencerId, period])
+  @@index([influencerId])
+}
+
+model PerformanceEvent {
+  id           String     @id @default(cuid())
+  influencer   Influencer @relation(fields: [influencerId], references: [id])
+  influencerId String
+  period       String // "YYYY-MM-01"
+  impressions  Int        @default(0)
+  clicks       Int        @default(0)
+  updatedAt    DateTime   @updatedAt
+
+  @@unique([influencerId, period])
+  @@index([influencerId])
+}
+
+model Referral {
+  id               String                  @id @default(cuid())
+  referrer         Influencer              @relation("ReferrerRelation", fields: [referrerId], references: [id])
+  referrerId       String
+  invited          Influencer              @relation("InvitedRelation", fields: [invitedId], references: [id])
+  invitedId        String                  @unique // Bir kişi sadece 1 davetten gelir
+  qualified        Boolean                 @default(false)
+  qualifiedAt      DateTime?
+  qualifiedPeriod  String?
+  reductionApplied Int?
+  createdAt        DateTime                @default(now())
+  qualifications   ReferralQualification[]
+
+  @@index([referrerId])
+}
+
+model ReferralQualification {
+  id         String   @id @default(cuid())
+  referral   Referral @relation(fields: [referralId], references: [id])
+  referralId String
+  referrerId String // Denormalized for fast query
+  period     String
+  reduction  Int
+  createdAt  DateTime @default(now())
+
+  @@unique([referralId, period])
+  @@index([referrerId, period])
 }

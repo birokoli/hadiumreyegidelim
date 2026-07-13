@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import crypto from 'crypto';
+import bcrypt from 'bcryptjs';
+import { createAdminToken, hashLegacyAdminPassword, normalizePermissions } from '@/lib/admin-auth';
 
 // ─── In-memory brute force protection ─────────────────
 // { ip -> { attempts, lockedUntil } }
@@ -48,11 +49,6 @@ function recordSuccess(ip: string) {
   loginAttempts.delete(ip);
 }
 
-// ─── Simple SHA-256 hash (no bcrypt dep needed) ────────
-function hashPassword(pw: string): string {
-  return crypto.createHash('sha256').update(pw + 'hug-salt-2026').digest('hex');
-}
-
 export async function POST(request: Request) {
   try {
     const ip = getClientIp(request);
@@ -67,13 +63,70 @@ export async function POST(request: Request) {
     }
 
     const { username, password } = await request.json();
+    const login = String(username || '').trim();
+    const rawPassword = String(password || '');
+
+    const adminUser = await prisma.adminUser.findFirst({
+      where: {
+        OR: [
+          { username: login },
+          { email: login.toLowerCase() },
+        ],
+      },
+    }).catch(() => null);
+
+    if (adminUser) {
+      if (adminUser.status !== 'active') {
+        recordFailure(ip);
+        return NextResponse.json({ success: false, error: 'Bu yönetici hesabı pasif durumda.' }, { status: 403 });
+      }
+
+      const passwordValid = await bcrypt.compare(rawPassword, adminUser.password);
+      if (passwordValid) {
+        recordSuccess(ip);
+        await prisma.adminUser.update({
+          where: { id: adminUser.id },
+          data: { lastLoginAt: new Date() },
+        });
+
+        const adminToken = await createAdminToken({
+          id: adminUser.id,
+          name: adminUser.name,
+          username: adminUser.username,
+          email: adminUser.email,
+          role: adminUser.role,
+          permissions: normalizePermissions(adminUser.permissions),
+        });
+
+        const response = NextResponse.json({ success: true });
+        response.cookies.set({
+          name: 'admin_session',
+          value: 'true',
+          httpOnly: true,
+          path: '/',
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'lax',
+          maxAge: 30 * 24 * 60 * 60,
+        });
+        response.cookies.set({
+          name: 'admin_token',
+          value: adminToken,
+          httpOnly: true,
+          path: '/',
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'lax',
+          maxAge: 30 * 24 * 60 * 60,
+        });
+        return response;
+      }
+    }
 
     // Check if a custom password hash exists in settings
     const customPasswordSetting = await prisma.setting.findUnique({ where: { key: 'ADMIN_PASSWORD_HASH' } }).catch(() => null);
     const customUsernameSetting = await prisma.setting.findUnique({ where: { key: 'ADMIN_USERNAME' } }).catch(() => null);
 
     const validUsername = customUsernameSetting?.value || 'Yasin';
-    const inputHash = hashPassword(password);
+    const inputHash = hashLegacyAdminPassword(rawPassword);
 
     let passwordValid = false;
     if (customPasswordSetting?.value) {
@@ -81,10 +134,10 @@ export async function POST(request: Request) {
       passwordValid = customPasswordSetting.value === inputHash;
     } else {
       // Fallback to original hardcoded password
-      passwordValid = password === 'Harun.28122017';
+      passwordValid = rawPassword === 'Harun.28122017';
     }
 
-    if (username === validUsername && passwordValid) {
+    if (login === validUsername && passwordValid) {
       recordSuccess(ip);
       const response = NextResponse.json({ success: true });
       response.cookies.set({
@@ -93,8 +146,10 @@ export async function POST(request: Request) {
         httpOnly: true,
         path: '/',
         secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
         maxAge: 30 * 24 * 60 * 60,
       });
+      response.cookies.delete('admin_token');
       return response;
     }
 
@@ -105,7 +160,7 @@ export async function POST(request: Request) {
       : 'Çok fazla başarısız deneme. 15 dakika beklemeniz gerekiyor.';
 
     return NextResponse.json({ success: false, error: message }, { status: 401 });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ success: false, error: 'Sunucu hatası oluştu' }, { status: 500 });
   }
 }

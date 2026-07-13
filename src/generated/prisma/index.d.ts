@@ -69,6 +69,11 @@ export type AILog = $Result.DefaultSelection<Prisma.$AILogPayload>
  */
 export type User = $Result.DefaultSelection<Prisma.$UserPayload>
 /**
+ * Model AdminUser
+ * 
+ */
+export type AdminUser = $Result.DefaultSelection<Prisma.$AdminUserPayload>
+/**
  * Model ContactRequest
  * 
  */
@@ -198,6 +203,36 @@ export type QuotationItem = $Result.DefaultSelection<Prisma.$QuotationItemPayloa
  * 
  */
 export type ServiceLibrary = $Result.DefaultSelection<Prisma.$ServiceLibraryPayload>
+/**
+ * Model ProgramConfig
+ * 
+ */
+export type ProgramConfig = $Result.DefaultSelection<Prisma.$ProgramConfigPayload>
+/**
+ * Model StarLedger
+ * 
+ */
+export type StarLedger = $Result.DefaultSelection<Prisma.$StarLedgerPayload>
+/**
+ * Model PerformanceScore
+ * 
+ */
+export type PerformanceScore = $Result.DefaultSelection<Prisma.$PerformanceScorePayload>
+/**
+ * Model PerformanceEvent
+ * 
+ */
+export type PerformanceEvent = $Result.DefaultSelection<Prisma.$PerformanceEventPayload>
+/**
+ * Model Referral
+ * 
+ */
+export type Referral = $Result.DefaultSelection<Prisma.$ReferralPayload>
+/**
+ * Model ReferralQualification
+ * 
+ */
+export type ReferralQualification = $Result.DefaultSelection<Prisma.$ReferralQualificationPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -426,6 +461,16 @@ export class PrismaClient<
     * ```
     */
   get user(): Prisma.UserDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.adminUser`: Exposes CRUD operations for the **AdminUser** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AdminUsers
+    * const adminUsers = await prisma.adminUser.findMany()
+    * ```
+    */
+  get adminUser(): Prisma.AdminUserDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.contactRequest`: Exposes CRUD operations for the **ContactRequest** model.
@@ -686,6 +731,66 @@ export class PrismaClient<
     * ```
     */
   get serviceLibrary(): Prisma.ServiceLibraryDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.programConfig`: Exposes CRUD operations for the **ProgramConfig** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ProgramConfigs
+    * const programConfigs = await prisma.programConfig.findMany()
+    * ```
+    */
+  get programConfig(): Prisma.ProgramConfigDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.starLedger`: Exposes CRUD operations for the **StarLedger** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more StarLedgers
+    * const starLedgers = await prisma.starLedger.findMany()
+    * ```
+    */
+  get starLedger(): Prisma.StarLedgerDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.performanceScore`: Exposes CRUD operations for the **PerformanceScore** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PerformanceScores
+    * const performanceScores = await prisma.performanceScore.findMany()
+    * ```
+    */
+  get performanceScore(): Prisma.PerformanceScoreDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.performanceEvent`: Exposes CRUD operations for the **PerformanceEvent** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more PerformanceEvents
+    * const performanceEvents = await prisma.performanceEvent.findMany()
+    * ```
+    */
+  get performanceEvent(): Prisma.PerformanceEventDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.referral`: Exposes CRUD operations for the **Referral** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Referrals
+    * const referrals = await prisma.referral.findMany()
+    * ```
+    */
+  get referral(): Prisma.ReferralDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.referralQualification`: Exposes CRUD operations for the **ReferralQualification** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ReferralQualifications
+    * const referralQualifications = await prisma.referralQualification.findMany()
+    * ```
+    */
+  get referralQualification(): Prisma.ReferralQualificationDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1138,6 +1243,7 @@ export namespace Prisma {
     Hotel: 'Hotel',
     AILog: 'AILog',
     User: 'User',
+    AdminUser: 'AdminUser',
     ContactRequest: 'ContactRequest',
     PostVersion: 'PostVersion',
     Influencer: 'Influencer',
@@ -1163,7 +1269,13 @@ export namespace Prisma {
     CompanySettings: 'CompanySettings',
     Quotation: 'Quotation',
     QuotationItem: 'QuotationItem',
-    ServiceLibrary: 'ServiceLibrary'
+    ServiceLibrary: 'ServiceLibrary',
+    ProgramConfig: 'ProgramConfig',
+    StarLedger: 'StarLedger',
+    PerformanceScore: 'PerformanceScore',
+    PerformanceEvent: 'PerformanceEvent',
+    Referral: 'Referral',
+    ReferralQualification: 'ReferralQualification'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1182,7 +1294,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "order" | "setting" | "service" | "guide" | "category" | "author" | "post" | "package" | "hotel" | "aILog" | "user" | "contactRequest" | "postVersion" | "influencer" | "supportChat" | "supportMessage" | "share" | "customer" | "sale" | "payment" | "paymentSale" | "loyaltyAccount" | "loyaltyTransaction" | "loyaltyRedemption" | "loyaltyCatalogItem" | "loyaltyMonthlyHistory" | "loyaltyMonthlyTierRule" | "loyaltyHonorTierRule" | "linkClick" | "attributionOverride" | "campaign" | "campaignParticipant" | "campaignCodeUsage" | "companySettings" | "quotation" | "quotationItem" | "serviceLibrary"
+      modelProps: "order" | "setting" | "service" | "guide" | "category" | "author" | "post" | "package" | "hotel" | "aILog" | "user" | "adminUser" | "contactRequest" | "postVersion" | "influencer" | "supportChat" | "supportMessage" | "share" | "customer" | "sale" | "payment" | "paymentSale" | "loyaltyAccount" | "loyaltyTransaction" | "loyaltyRedemption" | "loyaltyCatalogItem" | "loyaltyMonthlyHistory" | "loyaltyMonthlyTierRule" | "loyaltyHonorTierRule" | "linkClick" | "attributionOverride" | "campaign" | "campaignParticipant" | "campaignCodeUsage" | "companySettings" | "quotation" | "quotationItem" | "serviceLibrary" | "programConfig" | "starLedger" | "performanceScore" | "performanceEvent" | "referral" | "referralQualification"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1997,6 +2109,80 @@ export namespace Prisma {
           count: {
             args: Prisma.UserCountArgs<ExtArgs>
             result: $Utils.Optional<UserCountAggregateOutputType> | number
+          }
+        }
+      }
+      AdminUser: {
+        payload: Prisma.$AdminUserPayload<ExtArgs>
+        fields: Prisma.AdminUserFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AdminUserFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminUserPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AdminUserFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminUserPayload>
+          }
+          findFirst: {
+            args: Prisma.AdminUserFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminUserPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AdminUserFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminUserPayload>
+          }
+          findMany: {
+            args: Prisma.AdminUserFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminUserPayload>[]
+          }
+          create: {
+            args: Prisma.AdminUserCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminUserPayload>
+          }
+          createMany: {
+            args: Prisma.AdminUserCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AdminUserCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminUserPayload>[]
+          }
+          delete: {
+            args: Prisma.AdminUserDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminUserPayload>
+          }
+          update: {
+            args: Prisma.AdminUserUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminUserPayload>
+          }
+          deleteMany: {
+            args: Prisma.AdminUserDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AdminUserUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AdminUserUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminUserPayload>[]
+          }
+          upsert: {
+            args: Prisma.AdminUserUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AdminUserPayload>
+          }
+          aggregate: {
+            args: Prisma.AdminUserAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAdminUser>
+          }
+          groupBy: {
+            args: Prisma.AdminUserGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AdminUserGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AdminUserCountArgs<ExtArgs>
+            result: $Utils.Optional<AdminUserCountAggregateOutputType> | number
           }
         }
       }
@@ -3924,6 +4110,450 @@ export namespace Prisma {
           }
         }
       }
+      ProgramConfig: {
+        payload: Prisma.$ProgramConfigPayload<ExtArgs>
+        fields: Prisma.ProgramConfigFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ProgramConfigFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProgramConfigPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ProgramConfigFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProgramConfigPayload>
+          }
+          findFirst: {
+            args: Prisma.ProgramConfigFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProgramConfigPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ProgramConfigFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProgramConfigPayload>
+          }
+          findMany: {
+            args: Prisma.ProgramConfigFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProgramConfigPayload>[]
+          }
+          create: {
+            args: Prisma.ProgramConfigCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProgramConfigPayload>
+          }
+          createMany: {
+            args: Prisma.ProgramConfigCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ProgramConfigCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProgramConfigPayload>[]
+          }
+          delete: {
+            args: Prisma.ProgramConfigDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProgramConfigPayload>
+          }
+          update: {
+            args: Prisma.ProgramConfigUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProgramConfigPayload>
+          }
+          deleteMany: {
+            args: Prisma.ProgramConfigDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ProgramConfigUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ProgramConfigUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProgramConfigPayload>[]
+          }
+          upsert: {
+            args: Prisma.ProgramConfigUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ProgramConfigPayload>
+          }
+          aggregate: {
+            args: Prisma.ProgramConfigAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateProgramConfig>
+          }
+          groupBy: {
+            args: Prisma.ProgramConfigGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ProgramConfigGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ProgramConfigCountArgs<ExtArgs>
+            result: $Utils.Optional<ProgramConfigCountAggregateOutputType> | number
+          }
+        }
+      }
+      StarLedger: {
+        payload: Prisma.$StarLedgerPayload<ExtArgs>
+        fields: Prisma.StarLedgerFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.StarLedgerFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StarLedgerPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.StarLedgerFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StarLedgerPayload>
+          }
+          findFirst: {
+            args: Prisma.StarLedgerFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StarLedgerPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.StarLedgerFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StarLedgerPayload>
+          }
+          findMany: {
+            args: Prisma.StarLedgerFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StarLedgerPayload>[]
+          }
+          create: {
+            args: Prisma.StarLedgerCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StarLedgerPayload>
+          }
+          createMany: {
+            args: Prisma.StarLedgerCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.StarLedgerCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StarLedgerPayload>[]
+          }
+          delete: {
+            args: Prisma.StarLedgerDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StarLedgerPayload>
+          }
+          update: {
+            args: Prisma.StarLedgerUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StarLedgerPayload>
+          }
+          deleteMany: {
+            args: Prisma.StarLedgerDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.StarLedgerUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.StarLedgerUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StarLedgerPayload>[]
+          }
+          upsert: {
+            args: Prisma.StarLedgerUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$StarLedgerPayload>
+          }
+          aggregate: {
+            args: Prisma.StarLedgerAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateStarLedger>
+          }
+          groupBy: {
+            args: Prisma.StarLedgerGroupByArgs<ExtArgs>
+            result: $Utils.Optional<StarLedgerGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.StarLedgerCountArgs<ExtArgs>
+            result: $Utils.Optional<StarLedgerCountAggregateOutputType> | number
+          }
+        }
+      }
+      PerformanceScore: {
+        payload: Prisma.$PerformanceScorePayload<ExtArgs>
+        fields: Prisma.PerformanceScoreFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PerformanceScoreFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PerformanceScorePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PerformanceScoreFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PerformanceScorePayload>
+          }
+          findFirst: {
+            args: Prisma.PerformanceScoreFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PerformanceScorePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PerformanceScoreFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PerformanceScorePayload>
+          }
+          findMany: {
+            args: Prisma.PerformanceScoreFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PerformanceScorePayload>[]
+          }
+          create: {
+            args: Prisma.PerformanceScoreCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PerformanceScorePayload>
+          }
+          createMany: {
+            args: Prisma.PerformanceScoreCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PerformanceScoreCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PerformanceScorePayload>[]
+          }
+          delete: {
+            args: Prisma.PerformanceScoreDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PerformanceScorePayload>
+          }
+          update: {
+            args: Prisma.PerformanceScoreUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PerformanceScorePayload>
+          }
+          deleteMany: {
+            args: Prisma.PerformanceScoreDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PerformanceScoreUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PerformanceScoreUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PerformanceScorePayload>[]
+          }
+          upsert: {
+            args: Prisma.PerformanceScoreUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PerformanceScorePayload>
+          }
+          aggregate: {
+            args: Prisma.PerformanceScoreAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePerformanceScore>
+          }
+          groupBy: {
+            args: Prisma.PerformanceScoreGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PerformanceScoreGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PerformanceScoreCountArgs<ExtArgs>
+            result: $Utils.Optional<PerformanceScoreCountAggregateOutputType> | number
+          }
+        }
+      }
+      PerformanceEvent: {
+        payload: Prisma.$PerformanceEventPayload<ExtArgs>
+        fields: Prisma.PerformanceEventFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PerformanceEventFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PerformanceEventPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PerformanceEventFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PerformanceEventPayload>
+          }
+          findFirst: {
+            args: Prisma.PerformanceEventFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PerformanceEventPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PerformanceEventFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PerformanceEventPayload>
+          }
+          findMany: {
+            args: Prisma.PerformanceEventFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PerformanceEventPayload>[]
+          }
+          create: {
+            args: Prisma.PerformanceEventCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PerformanceEventPayload>
+          }
+          createMany: {
+            args: Prisma.PerformanceEventCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PerformanceEventCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PerformanceEventPayload>[]
+          }
+          delete: {
+            args: Prisma.PerformanceEventDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PerformanceEventPayload>
+          }
+          update: {
+            args: Prisma.PerformanceEventUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PerformanceEventPayload>
+          }
+          deleteMany: {
+            args: Prisma.PerformanceEventDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PerformanceEventUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PerformanceEventUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PerformanceEventPayload>[]
+          }
+          upsert: {
+            args: Prisma.PerformanceEventUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PerformanceEventPayload>
+          }
+          aggregate: {
+            args: Prisma.PerformanceEventAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePerformanceEvent>
+          }
+          groupBy: {
+            args: Prisma.PerformanceEventGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PerformanceEventGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PerformanceEventCountArgs<ExtArgs>
+            result: $Utils.Optional<PerformanceEventCountAggregateOutputType> | number
+          }
+        }
+      }
+      Referral: {
+        payload: Prisma.$ReferralPayload<ExtArgs>
+        fields: Prisma.ReferralFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ReferralFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReferralPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ReferralFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReferralPayload>
+          }
+          findFirst: {
+            args: Prisma.ReferralFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReferralPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ReferralFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReferralPayload>
+          }
+          findMany: {
+            args: Prisma.ReferralFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReferralPayload>[]
+          }
+          create: {
+            args: Prisma.ReferralCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReferralPayload>
+          }
+          createMany: {
+            args: Prisma.ReferralCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ReferralCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReferralPayload>[]
+          }
+          delete: {
+            args: Prisma.ReferralDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReferralPayload>
+          }
+          update: {
+            args: Prisma.ReferralUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReferralPayload>
+          }
+          deleteMany: {
+            args: Prisma.ReferralDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ReferralUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ReferralUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReferralPayload>[]
+          }
+          upsert: {
+            args: Prisma.ReferralUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReferralPayload>
+          }
+          aggregate: {
+            args: Prisma.ReferralAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateReferral>
+          }
+          groupBy: {
+            args: Prisma.ReferralGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ReferralGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ReferralCountArgs<ExtArgs>
+            result: $Utils.Optional<ReferralCountAggregateOutputType> | number
+          }
+        }
+      }
+      ReferralQualification: {
+        payload: Prisma.$ReferralQualificationPayload<ExtArgs>
+        fields: Prisma.ReferralQualificationFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ReferralQualificationFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReferralQualificationPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ReferralQualificationFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReferralQualificationPayload>
+          }
+          findFirst: {
+            args: Prisma.ReferralQualificationFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReferralQualificationPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ReferralQualificationFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReferralQualificationPayload>
+          }
+          findMany: {
+            args: Prisma.ReferralQualificationFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReferralQualificationPayload>[]
+          }
+          create: {
+            args: Prisma.ReferralQualificationCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReferralQualificationPayload>
+          }
+          createMany: {
+            args: Prisma.ReferralQualificationCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ReferralQualificationCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReferralQualificationPayload>[]
+          }
+          delete: {
+            args: Prisma.ReferralQualificationDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReferralQualificationPayload>
+          }
+          update: {
+            args: Prisma.ReferralQualificationUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReferralQualificationPayload>
+          }
+          deleteMany: {
+            args: Prisma.ReferralQualificationDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ReferralQualificationUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ReferralQualificationUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReferralQualificationPayload>[]
+          }
+          upsert: {
+            args: Prisma.ReferralQualificationUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ReferralQualificationPayload>
+          }
+          aggregate: {
+            args: Prisma.ReferralQualificationAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateReferralQualification>
+          }
+          groupBy: {
+            args: Prisma.ReferralQualificationGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ReferralQualificationGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ReferralQualificationCountArgs<ExtArgs>
+            result: $Utils.Optional<ReferralQualificationCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -4031,6 +4661,7 @@ export namespace Prisma {
     hotel?: HotelOmit
     aILog?: AILogOmit
     user?: UserOmit
+    adminUser?: AdminUserOmit
     contactRequest?: ContactRequestOmit
     postVersion?: PostVersionOmit
     influencer?: InfluencerOmit
@@ -4057,6 +4688,12 @@ export namespace Prisma {
     quotation?: QuotationOmit
     quotationItem?: QuotationItemOmit
     serviceLibrary?: ServiceLibraryOmit
+    programConfig?: ProgramConfigOmit
+    starLedger?: StarLedgerOmit
+    performanceScore?: PerformanceScoreOmit
+    performanceEvent?: PerformanceEventOmit
+    referral?: ReferralOmit
+    referralQualification?: ReferralQualificationOmit
   }
 
   /* Types for Logging */
@@ -4236,6 +4873,10 @@ export namespace Prisma {
     payments: number
     linkClicks: number
     campaigns: number
+    starLedgerEntries: number
+    perfScores: number
+    perfEvents: number
+    referralsMade: number
   }
 
   export type InfluencerCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4245,6 +4886,10 @@ export namespace Prisma {
     payments?: boolean | InfluencerCountOutputTypeCountPaymentsArgs
     linkClicks?: boolean | InfluencerCountOutputTypeCountLinkClicksArgs
     campaigns?: boolean | InfluencerCountOutputTypeCountCampaignsArgs
+    starLedgerEntries?: boolean | InfluencerCountOutputTypeCountStarLedgerEntriesArgs
+    perfScores?: boolean | InfluencerCountOutputTypeCountPerfScoresArgs
+    perfEvents?: boolean | InfluencerCountOutputTypeCountPerfEventsArgs
+    referralsMade?: boolean | InfluencerCountOutputTypeCountReferralsMadeArgs
   }
 
   // Custom InputTypes
@@ -4298,6 +4943,34 @@ export namespace Prisma {
    */
   export type InfluencerCountOutputTypeCountCampaignsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: CampaignParticipantWhereInput
+  }
+
+  /**
+   * InfluencerCountOutputType without action
+   */
+  export type InfluencerCountOutputTypeCountStarLedgerEntriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: StarLedgerWhereInput
+  }
+
+  /**
+   * InfluencerCountOutputType without action
+   */
+  export type InfluencerCountOutputTypeCountPerfScoresArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PerformanceScoreWhereInput
+  }
+
+  /**
+   * InfluencerCountOutputType without action
+   */
+  export type InfluencerCountOutputTypeCountPerfEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PerformanceEventWhereInput
+  }
+
+  /**
+   * InfluencerCountOutputType without action
+   */
+  export type InfluencerCountOutputTypeCountReferralsMadeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ReferralWhereInput
   }
 
 
@@ -4675,6 +5348,37 @@ export namespace Prisma {
    */
   export type QuotationCountOutputTypeCountItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: QuotationItemWhereInput
+  }
+
+
+  /**
+   * Count Type ReferralCountOutputType
+   */
+
+  export type ReferralCountOutputType = {
+    qualifications: number
+  }
+
+  export type ReferralCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    qualifications?: boolean | ReferralCountOutputTypeCountQualificationsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * ReferralCountOutputType without action
+   */
+  export type ReferralCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReferralCountOutputType
+     */
+    select?: ReferralCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ReferralCountOutputType without action
+   */
+  export type ReferralCountOutputTypeCountQualificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ReferralQualificationWhereInput
   }
 
 
@@ -17105,6 +17809,1079 @@ export namespace Prisma {
 
 
   /**
+   * Model AdminUser
+   */
+
+  export type AggregateAdminUser = {
+    _count: AdminUserCountAggregateOutputType | null
+    _min: AdminUserMinAggregateOutputType | null
+    _max: AdminUserMaxAggregateOutputType | null
+  }
+
+  export type AdminUserMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    username: string | null
+    email: string | null
+    password: string | null
+    role: string | null
+    permissions: string | null
+    status: string | null
+    lastLoginAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AdminUserMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    username: string | null
+    email: string | null
+    password: string | null
+    role: string | null
+    permissions: string | null
+    status: string | null
+    lastLoginAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AdminUserCountAggregateOutputType = {
+    id: number
+    name: number
+    username: number
+    email: number
+    password: number
+    role: number
+    permissions: number
+    status: number
+    lastLoginAt: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type AdminUserMinAggregateInputType = {
+    id?: true
+    name?: true
+    username?: true
+    email?: true
+    password?: true
+    role?: true
+    permissions?: true
+    status?: true
+    lastLoginAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AdminUserMaxAggregateInputType = {
+    id?: true
+    name?: true
+    username?: true
+    email?: true
+    password?: true
+    role?: true
+    permissions?: true
+    status?: true
+    lastLoginAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AdminUserCountAggregateInputType = {
+    id?: true
+    name?: true
+    username?: true
+    email?: true
+    password?: true
+    role?: true
+    permissions?: true
+    status?: true
+    lastLoginAt?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type AdminUserAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AdminUser to aggregate.
+     */
+    where?: AdminUserWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AdminUsers to fetch.
+     */
+    orderBy?: AdminUserOrderByWithRelationInput | AdminUserOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AdminUserWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AdminUsers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AdminUsers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AdminUsers
+    **/
+    _count?: true | AdminUserCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AdminUserMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AdminUserMaxAggregateInputType
+  }
+
+  export type GetAdminUserAggregateType<T extends AdminUserAggregateArgs> = {
+        [P in keyof T & keyof AggregateAdminUser]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAdminUser[P]>
+      : GetScalarType<T[P], AggregateAdminUser[P]>
+  }
+
+
+
+
+  export type AdminUserGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AdminUserWhereInput
+    orderBy?: AdminUserOrderByWithAggregationInput | AdminUserOrderByWithAggregationInput[]
+    by: AdminUserScalarFieldEnum[] | AdminUserScalarFieldEnum
+    having?: AdminUserScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AdminUserCountAggregateInputType | true
+    _min?: AdminUserMinAggregateInputType
+    _max?: AdminUserMaxAggregateInputType
+  }
+
+  export type AdminUserGroupByOutputType = {
+    id: string
+    name: string
+    username: string
+    email: string
+    password: string
+    role: string
+    permissions: string
+    status: string
+    lastLoginAt: Date | null
+    createdAt: Date
+    updatedAt: Date
+    _count: AdminUserCountAggregateOutputType | null
+    _min: AdminUserMinAggregateOutputType | null
+    _max: AdminUserMaxAggregateOutputType | null
+  }
+
+  type GetAdminUserGroupByPayload<T extends AdminUserGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AdminUserGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AdminUserGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AdminUserGroupByOutputType[P]>
+            : GetScalarType<T[P], AdminUserGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AdminUserSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    username?: boolean
+    email?: boolean
+    password?: boolean
+    role?: boolean
+    permissions?: boolean
+    status?: boolean
+    lastLoginAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["adminUser"]>
+
+  export type AdminUserSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    username?: boolean
+    email?: boolean
+    password?: boolean
+    role?: boolean
+    permissions?: boolean
+    status?: boolean
+    lastLoginAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["adminUser"]>
+
+  export type AdminUserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    username?: boolean
+    email?: boolean
+    password?: boolean
+    role?: boolean
+    permissions?: boolean
+    status?: boolean
+    lastLoginAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["adminUser"]>
+
+  export type AdminUserSelectScalar = {
+    id?: boolean
+    name?: boolean
+    username?: boolean
+    email?: boolean
+    password?: boolean
+    role?: boolean
+    permissions?: boolean
+    status?: boolean
+    lastLoginAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type AdminUserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "username" | "email" | "password" | "role" | "permissions" | "status" | "lastLoginAt" | "createdAt" | "updatedAt", ExtArgs["result"]["adminUser"]>
+
+  export type $AdminUserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AdminUser"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string
+      username: string
+      email: string
+      password: string
+      role: string
+      permissions: string
+      status: string
+      lastLoginAt: Date | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["adminUser"]>
+    composites: {}
+  }
+
+  type AdminUserGetPayload<S extends boolean | null | undefined | AdminUserDefaultArgs> = $Result.GetResult<Prisma.$AdminUserPayload, S>
+
+  type AdminUserCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AdminUserFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AdminUserCountAggregateInputType | true
+    }
+
+  export interface AdminUserDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AdminUser'], meta: { name: 'AdminUser' } }
+    /**
+     * Find zero or one AdminUser that matches the filter.
+     * @param {AdminUserFindUniqueArgs} args - Arguments to find a AdminUser
+     * @example
+     * // Get one AdminUser
+     * const adminUser = await prisma.adminUser.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AdminUserFindUniqueArgs>(args: SelectSubset<T, AdminUserFindUniqueArgs<ExtArgs>>): Prisma__AdminUserClient<$Result.GetResult<Prisma.$AdminUserPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AdminUser that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AdminUserFindUniqueOrThrowArgs} args - Arguments to find a AdminUser
+     * @example
+     * // Get one AdminUser
+     * const adminUser = await prisma.adminUser.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AdminUserFindUniqueOrThrowArgs>(args: SelectSubset<T, AdminUserFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AdminUserClient<$Result.GetResult<Prisma.$AdminUserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AdminUser that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdminUserFindFirstArgs} args - Arguments to find a AdminUser
+     * @example
+     * // Get one AdminUser
+     * const adminUser = await prisma.adminUser.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AdminUserFindFirstArgs>(args?: SelectSubset<T, AdminUserFindFirstArgs<ExtArgs>>): Prisma__AdminUserClient<$Result.GetResult<Prisma.$AdminUserPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AdminUser that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdminUserFindFirstOrThrowArgs} args - Arguments to find a AdminUser
+     * @example
+     * // Get one AdminUser
+     * const adminUser = await prisma.adminUser.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AdminUserFindFirstOrThrowArgs>(args?: SelectSubset<T, AdminUserFindFirstOrThrowArgs<ExtArgs>>): Prisma__AdminUserClient<$Result.GetResult<Prisma.$AdminUserPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AdminUsers that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdminUserFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AdminUsers
+     * const adminUsers = await prisma.adminUser.findMany()
+     * 
+     * // Get first 10 AdminUsers
+     * const adminUsers = await prisma.adminUser.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const adminUserWithIdOnly = await prisma.adminUser.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AdminUserFindManyArgs>(args?: SelectSubset<T, AdminUserFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AdminUserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AdminUser.
+     * @param {AdminUserCreateArgs} args - Arguments to create a AdminUser.
+     * @example
+     * // Create one AdminUser
+     * const AdminUser = await prisma.adminUser.create({
+     *   data: {
+     *     // ... data to create a AdminUser
+     *   }
+     * })
+     * 
+     */
+    create<T extends AdminUserCreateArgs>(args: SelectSubset<T, AdminUserCreateArgs<ExtArgs>>): Prisma__AdminUserClient<$Result.GetResult<Prisma.$AdminUserPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AdminUsers.
+     * @param {AdminUserCreateManyArgs} args - Arguments to create many AdminUsers.
+     * @example
+     * // Create many AdminUsers
+     * const adminUser = await prisma.adminUser.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AdminUserCreateManyArgs>(args?: SelectSubset<T, AdminUserCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AdminUsers and returns the data saved in the database.
+     * @param {AdminUserCreateManyAndReturnArgs} args - Arguments to create many AdminUsers.
+     * @example
+     * // Create many AdminUsers
+     * const adminUser = await prisma.adminUser.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AdminUsers and only return the `id`
+     * const adminUserWithIdOnly = await prisma.adminUser.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AdminUserCreateManyAndReturnArgs>(args?: SelectSubset<T, AdminUserCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AdminUserPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AdminUser.
+     * @param {AdminUserDeleteArgs} args - Arguments to delete one AdminUser.
+     * @example
+     * // Delete one AdminUser
+     * const AdminUser = await prisma.adminUser.delete({
+     *   where: {
+     *     // ... filter to delete one AdminUser
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AdminUserDeleteArgs>(args: SelectSubset<T, AdminUserDeleteArgs<ExtArgs>>): Prisma__AdminUserClient<$Result.GetResult<Prisma.$AdminUserPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AdminUser.
+     * @param {AdminUserUpdateArgs} args - Arguments to update one AdminUser.
+     * @example
+     * // Update one AdminUser
+     * const adminUser = await prisma.adminUser.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AdminUserUpdateArgs>(args: SelectSubset<T, AdminUserUpdateArgs<ExtArgs>>): Prisma__AdminUserClient<$Result.GetResult<Prisma.$AdminUserPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AdminUsers.
+     * @param {AdminUserDeleteManyArgs} args - Arguments to filter AdminUsers to delete.
+     * @example
+     * // Delete a few AdminUsers
+     * const { count } = await prisma.adminUser.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AdminUserDeleteManyArgs>(args?: SelectSubset<T, AdminUserDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AdminUsers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdminUserUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AdminUsers
+     * const adminUser = await prisma.adminUser.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AdminUserUpdateManyArgs>(args: SelectSubset<T, AdminUserUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AdminUsers and returns the data updated in the database.
+     * @param {AdminUserUpdateManyAndReturnArgs} args - Arguments to update many AdminUsers.
+     * @example
+     * // Update many AdminUsers
+     * const adminUser = await prisma.adminUser.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AdminUsers and only return the `id`
+     * const adminUserWithIdOnly = await prisma.adminUser.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AdminUserUpdateManyAndReturnArgs>(args: SelectSubset<T, AdminUserUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AdminUserPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AdminUser.
+     * @param {AdminUserUpsertArgs} args - Arguments to update or create a AdminUser.
+     * @example
+     * // Update or create a AdminUser
+     * const adminUser = await prisma.adminUser.upsert({
+     *   create: {
+     *     // ... data to create a AdminUser
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AdminUser we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AdminUserUpsertArgs>(args: SelectSubset<T, AdminUserUpsertArgs<ExtArgs>>): Prisma__AdminUserClient<$Result.GetResult<Prisma.$AdminUserPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AdminUsers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdminUserCountArgs} args - Arguments to filter AdminUsers to count.
+     * @example
+     * // Count the number of AdminUsers
+     * const count = await prisma.adminUser.count({
+     *   where: {
+     *     // ... the filter for the AdminUsers we want to count
+     *   }
+     * })
+    **/
+    count<T extends AdminUserCountArgs>(
+      args?: Subset<T, AdminUserCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AdminUserCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AdminUser.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdminUserAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AdminUserAggregateArgs>(args: Subset<T, AdminUserAggregateArgs>): Prisma.PrismaPromise<GetAdminUserAggregateType<T>>
+
+    /**
+     * Group by AdminUser.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AdminUserGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AdminUserGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AdminUserGroupByArgs['orderBy'] }
+        : { orderBy?: AdminUserGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AdminUserGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAdminUserGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AdminUser model
+   */
+  readonly fields: AdminUserFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AdminUser.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AdminUserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AdminUser model
+   */
+  interface AdminUserFieldRefs {
+    readonly id: FieldRef<"AdminUser", 'String'>
+    readonly name: FieldRef<"AdminUser", 'String'>
+    readonly username: FieldRef<"AdminUser", 'String'>
+    readonly email: FieldRef<"AdminUser", 'String'>
+    readonly password: FieldRef<"AdminUser", 'String'>
+    readonly role: FieldRef<"AdminUser", 'String'>
+    readonly permissions: FieldRef<"AdminUser", 'String'>
+    readonly status: FieldRef<"AdminUser", 'String'>
+    readonly lastLoginAt: FieldRef<"AdminUser", 'DateTime'>
+    readonly createdAt: FieldRef<"AdminUser", 'DateTime'>
+    readonly updatedAt: FieldRef<"AdminUser", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AdminUser findUnique
+   */
+  export type AdminUserFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminUser
+     */
+    select?: AdminUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminUser
+     */
+    omit?: AdminUserOmit<ExtArgs> | null
+    /**
+     * Filter, which AdminUser to fetch.
+     */
+    where: AdminUserWhereUniqueInput
+  }
+
+  /**
+   * AdminUser findUniqueOrThrow
+   */
+  export type AdminUserFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminUser
+     */
+    select?: AdminUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminUser
+     */
+    omit?: AdminUserOmit<ExtArgs> | null
+    /**
+     * Filter, which AdminUser to fetch.
+     */
+    where: AdminUserWhereUniqueInput
+  }
+
+  /**
+   * AdminUser findFirst
+   */
+  export type AdminUserFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminUser
+     */
+    select?: AdminUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminUser
+     */
+    omit?: AdminUserOmit<ExtArgs> | null
+    /**
+     * Filter, which AdminUser to fetch.
+     */
+    where?: AdminUserWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AdminUsers to fetch.
+     */
+    orderBy?: AdminUserOrderByWithRelationInput | AdminUserOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AdminUsers.
+     */
+    cursor?: AdminUserWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AdminUsers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AdminUsers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AdminUsers.
+     */
+    distinct?: AdminUserScalarFieldEnum | AdminUserScalarFieldEnum[]
+  }
+
+  /**
+   * AdminUser findFirstOrThrow
+   */
+  export type AdminUserFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminUser
+     */
+    select?: AdminUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminUser
+     */
+    omit?: AdminUserOmit<ExtArgs> | null
+    /**
+     * Filter, which AdminUser to fetch.
+     */
+    where?: AdminUserWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AdminUsers to fetch.
+     */
+    orderBy?: AdminUserOrderByWithRelationInput | AdminUserOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AdminUsers.
+     */
+    cursor?: AdminUserWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AdminUsers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AdminUsers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AdminUsers.
+     */
+    distinct?: AdminUserScalarFieldEnum | AdminUserScalarFieldEnum[]
+  }
+
+  /**
+   * AdminUser findMany
+   */
+  export type AdminUserFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminUser
+     */
+    select?: AdminUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminUser
+     */
+    omit?: AdminUserOmit<ExtArgs> | null
+    /**
+     * Filter, which AdminUsers to fetch.
+     */
+    where?: AdminUserWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AdminUsers to fetch.
+     */
+    orderBy?: AdminUserOrderByWithRelationInput | AdminUserOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AdminUsers.
+     */
+    cursor?: AdminUserWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AdminUsers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AdminUsers.
+     */
+    skip?: number
+    distinct?: AdminUserScalarFieldEnum | AdminUserScalarFieldEnum[]
+  }
+
+  /**
+   * AdminUser create
+   */
+  export type AdminUserCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminUser
+     */
+    select?: AdminUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminUser
+     */
+    omit?: AdminUserOmit<ExtArgs> | null
+    /**
+     * The data needed to create a AdminUser.
+     */
+    data: XOR<AdminUserCreateInput, AdminUserUncheckedCreateInput>
+  }
+
+  /**
+   * AdminUser createMany
+   */
+  export type AdminUserCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AdminUsers.
+     */
+    data: AdminUserCreateManyInput | AdminUserCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AdminUser createManyAndReturn
+   */
+  export type AdminUserCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminUser
+     */
+    select?: AdminUserSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminUser
+     */
+    omit?: AdminUserOmit<ExtArgs> | null
+    /**
+     * The data used to create many AdminUsers.
+     */
+    data: AdminUserCreateManyInput | AdminUserCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AdminUser update
+   */
+  export type AdminUserUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminUser
+     */
+    select?: AdminUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminUser
+     */
+    omit?: AdminUserOmit<ExtArgs> | null
+    /**
+     * The data needed to update a AdminUser.
+     */
+    data: XOR<AdminUserUpdateInput, AdminUserUncheckedUpdateInput>
+    /**
+     * Choose, which AdminUser to update.
+     */
+    where: AdminUserWhereUniqueInput
+  }
+
+  /**
+   * AdminUser updateMany
+   */
+  export type AdminUserUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AdminUsers.
+     */
+    data: XOR<AdminUserUpdateManyMutationInput, AdminUserUncheckedUpdateManyInput>
+    /**
+     * Filter which AdminUsers to update
+     */
+    where?: AdminUserWhereInput
+    /**
+     * Limit how many AdminUsers to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AdminUser updateManyAndReturn
+   */
+  export type AdminUserUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminUser
+     */
+    select?: AdminUserSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminUser
+     */
+    omit?: AdminUserOmit<ExtArgs> | null
+    /**
+     * The data used to update AdminUsers.
+     */
+    data: XOR<AdminUserUpdateManyMutationInput, AdminUserUncheckedUpdateManyInput>
+    /**
+     * Filter which AdminUsers to update
+     */
+    where?: AdminUserWhereInput
+    /**
+     * Limit how many AdminUsers to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AdminUser upsert
+   */
+  export type AdminUserUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminUser
+     */
+    select?: AdminUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminUser
+     */
+    omit?: AdminUserOmit<ExtArgs> | null
+    /**
+     * The filter to search for the AdminUser to update in case it exists.
+     */
+    where: AdminUserWhereUniqueInput
+    /**
+     * In case the AdminUser found by the `where` argument doesn't exist, create a new AdminUser with this data.
+     */
+    create: XOR<AdminUserCreateInput, AdminUserUncheckedCreateInput>
+    /**
+     * In case the AdminUser was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AdminUserUpdateInput, AdminUserUncheckedUpdateInput>
+  }
+
+  /**
+   * AdminUser delete
+   */
+  export type AdminUserDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminUser
+     */
+    select?: AdminUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminUser
+     */
+    omit?: AdminUserOmit<ExtArgs> | null
+    /**
+     * Filter which AdminUser to delete.
+     */
+    where: AdminUserWhereUniqueInput
+  }
+
+  /**
+   * AdminUser deleteMany
+   */
+  export type AdminUserDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AdminUsers to delete
+     */
+    where?: AdminUserWhereInput
+    /**
+     * Limit how many AdminUsers to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AdminUser without action
+   */
+  export type AdminUserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AdminUser
+     */
+    select?: AdminUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AdminUser
+     */
+    omit?: AdminUserOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Model ContactRequest
    */
 
@@ -19224,6 +21001,7 @@ export namespace Prisma {
     totalEarnings: number | null
     pendingEarnings: number | null
     totalClicks: number | null
+    baseThrOverride: number | null
   }
 
   export type InfluencerSumAggregateOutputType = {
@@ -19232,6 +21010,7 @@ export namespace Prisma {
     totalEarnings: number | null
     pendingEarnings: number | null
     totalClicks: number | null
+    baseThrOverride: number | null
   }
 
   export type InfluencerMinAggregateOutputType = {
@@ -19259,6 +21038,10 @@ export namespace Prisma {
     totalEarnings: number | null
     pendingEarnings: number | null
     totalClicks: number | null
+    programUnlocked: boolean | null
+    baseThrOverride: number | null
+    unlockedAt: Date | null
+    firstShareAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -19288,6 +21071,10 @@ export namespace Prisma {
     totalEarnings: number | null
     pendingEarnings: number | null
     totalClicks: number | null
+    programUnlocked: boolean | null
+    baseThrOverride: number | null
+    unlockedAt: Date | null
+    firstShareAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -19317,6 +21104,10 @@ export namespace Prisma {
     totalEarnings: number
     pendingEarnings: number
     totalClicks: number
+    programUnlocked: number
+    baseThrOverride: number
+    unlockedAt: number
+    firstShareAt: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -19329,6 +21120,7 @@ export namespace Prisma {
     totalEarnings?: true
     pendingEarnings?: true
     totalClicks?: true
+    baseThrOverride?: true
   }
 
   export type InfluencerSumAggregateInputType = {
@@ -19337,6 +21129,7 @@ export namespace Prisma {
     totalEarnings?: true
     pendingEarnings?: true
     totalClicks?: true
+    baseThrOverride?: true
   }
 
   export type InfluencerMinAggregateInputType = {
@@ -19364,6 +21157,10 @@ export namespace Prisma {
     totalEarnings?: true
     pendingEarnings?: true
     totalClicks?: true
+    programUnlocked?: true
+    baseThrOverride?: true
+    unlockedAt?: true
+    firstShareAt?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -19393,6 +21190,10 @@ export namespace Prisma {
     totalEarnings?: true
     pendingEarnings?: true
     totalClicks?: true
+    programUnlocked?: true
+    baseThrOverride?: true
+    unlockedAt?: true
+    firstShareAt?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -19422,6 +21223,10 @@ export namespace Prisma {
     totalEarnings?: true
     pendingEarnings?: true
     totalClicks?: true
+    programUnlocked?: true
+    baseThrOverride?: true
+    unlockedAt?: true
+    firstShareAt?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -19538,6 +21343,10 @@ export namespace Prisma {
     totalEarnings: number
     pendingEarnings: number
     totalClicks: number
+    programUnlocked: boolean
+    baseThrOverride: number | null
+    unlockedAt: Date | null
+    firstShareAt: Date | null
     createdAt: Date
     updatedAt: Date
     _count: InfluencerCountAggregateOutputType | null
@@ -19586,6 +21395,10 @@ export namespace Prisma {
     totalEarnings?: boolean
     pendingEarnings?: boolean
     totalClicks?: boolean
+    programUnlocked?: boolean
+    baseThrOverride?: boolean
+    unlockedAt?: boolean
+    firstShareAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     shares?: boolean | Influencer$sharesArgs<ExtArgs>
@@ -19596,6 +21409,11 @@ export namespace Prisma {
     campaigns?: boolean | Influencer$campaignsArgs<ExtArgs>
     loyaltyAccount?: boolean | Influencer$loyaltyAccountArgs<ExtArgs>
     supportChat?: boolean | Influencer$supportChatArgs<ExtArgs>
+    starLedgerEntries?: boolean | Influencer$starLedgerEntriesArgs<ExtArgs>
+    perfScores?: boolean | Influencer$perfScoresArgs<ExtArgs>
+    perfEvents?: boolean | Influencer$perfEventsArgs<ExtArgs>
+    referralsMade?: boolean | Influencer$referralsMadeArgs<ExtArgs>
+    referralReceived?: boolean | Influencer$referralReceivedArgs<ExtArgs>
     _count?: boolean | InfluencerCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["influencer"]>
 
@@ -19624,6 +21442,10 @@ export namespace Prisma {
     totalEarnings?: boolean
     pendingEarnings?: boolean
     totalClicks?: boolean
+    programUnlocked?: boolean
+    baseThrOverride?: boolean
+    unlockedAt?: boolean
+    firstShareAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["influencer"]>
@@ -19653,6 +21475,10 @@ export namespace Prisma {
     totalEarnings?: boolean
     pendingEarnings?: boolean
     totalClicks?: boolean
+    programUnlocked?: boolean
+    baseThrOverride?: boolean
+    unlockedAt?: boolean
+    firstShareAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["influencer"]>
@@ -19682,11 +21508,15 @@ export namespace Prisma {
     totalEarnings?: boolean
     pendingEarnings?: boolean
     totalClicks?: boolean
+    programUnlocked?: boolean
+    baseThrOverride?: boolean
+    unlockedAt?: boolean
+    firstShareAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type InfluencerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "fullName" | "email" | "password" | "phone" | "tcNo" | "birthDate" | "avatarUrl" | "instagramHandle" | "instagramFollowers" | "tiktokHandle" | "youtubeHandle" | "tier" | "uniqueCode" | "uniqueUrl" | "status" | "rejectReason" | "bankIban" | "bankName" | "bankAccountName" | "totalSales" | "totalEarnings" | "pendingEarnings" | "totalClicks" | "createdAt" | "updatedAt", ExtArgs["result"]["influencer"]>
+  export type InfluencerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "fullName" | "email" | "password" | "phone" | "tcNo" | "birthDate" | "avatarUrl" | "instagramHandle" | "instagramFollowers" | "tiktokHandle" | "youtubeHandle" | "tier" | "uniqueCode" | "uniqueUrl" | "status" | "rejectReason" | "bankIban" | "bankName" | "bankAccountName" | "totalSales" | "totalEarnings" | "pendingEarnings" | "totalClicks" | "programUnlocked" | "baseThrOverride" | "unlockedAt" | "firstShareAt" | "createdAt" | "updatedAt", ExtArgs["result"]["influencer"]>
   export type InfluencerInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     shares?: boolean | Influencer$sharesArgs<ExtArgs>
     customers?: boolean | Influencer$customersArgs<ExtArgs>
@@ -19696,6 +21526,11 @@ export namespace Prisma {
     campaigns?: boolean | Influencer$campaignsArgs<ExtArgs>
     loyaltyAccount?: boolean | Influencer$loyaltyAccountArgs<ExtArgs>
     supportChat?: boolean | Influencer$supportChatArgs<ExtArgs>
+    starLedgerEntries?: boolean | Influencer$starLedgerEntriesArgs<ExtArgs>
+    perfScores?: boolean | Influencer$perfScoresArgs<ExtArgs>
+    perfEvents?: boolean | Influencer$perfEventsArgs<ExtArgs>
+    referralsMade?: boolean | Influencer$referralsMadeArgs<ExtArgs>
+    referralReceived?: boolean | Influencer$referralReceivedArgs<ExtArgs>
     _count?: boolean | InfluencerCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type InfluencerIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -19712,6 +21547,11 @@ export namespace Prisma {
       campaigns: Prisma.$CampaignParticipantPayload<ExtArgs>[]
       loyaltyAccount: Prisma.$LoyaltyAccountPayload<ExtArgs> | null
       supportChat: Prisma.$SupportChatPayload<ExtArgs> | null
+      starLedgerEntries: Prisma.$StarLedgerPayload<ExtArgs>[]
+      perfScores: Prisma.$PerformanceScorePayload<ExtArgs>[]
+      perfEvents: Prisma.$PerformanceEventPayload<ExtArgs>[]
+      referralsMade: Prisma.$ReferralPayload<ExtArgs>[]
+      referralReceived: Prisma.$ReferralPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -19738,6 +21578,10 @@ export namespace Prisma {
       totalEarnings: number
       pendingEarnings: number
       totalClicks: number
+      programUnlocked: boolean
+      baseThrOverride: number | null
+      unlockedAt: Date | null
+      firstShareAt: Date | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["influencer"]>
@@ -20142,6 +21986,11 @@ export namespace Prisma {
     campaigns<T extends Influencer$campaignsArgs<ExtArgs> = {}>(args?: Subset<T, Influencer$campaignsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CampaignParticipantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     loyaltyAccount<T extends Influencer$loyaltyAccountArgs<ExtArgs> = {}>(args?: Subset<T, Influencer$loyaltyAccountArgs<ExtArgs>>): Prisma__LoyaltyAccountClient<$Result.GetResult<Prisma.$LoyaltyAccountPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     supportChat<T extends Influencer$supportChatArgs<ExtArgs> = {}>(args?: Subset<T, Influencer$supportChatArgs<ExtArgs>>): Prisma__SupportChatClient<$Result.GetResult<Prisma.$SupportChatPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    starLedgerEntries<T extends Influencer$starLedgerEntriesArgs<ExtArgs> = {}>(args?: Subset<T, Influencer$starLedgerEntriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StarLedgerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    perfScores<T extends Influencer$perfScoresArgs<ExtArgs> = {}>(args?: Subset<T, Influencer$perfScoresArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PerformanceScorePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    perfEvents<T extends Influencer$perfEventsArgs<ExtArgs> = {}>(args?: Subset<T, Influencer$perfEventsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PerformanceEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    referralsMade<T extends Influencer$referralsMadeArgs<ExtArgs> = {}>(args?: Subset<T, Influencer$referralsMadeArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReferralPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    referralReceived<T extends Influencer$referralReceivedArgs<ExtArgs> = {}>(args?: Subset<T, Influencer$referralReceivedArgs<ExtArgs>>): Prisma__ReferralClient<$Result.GetResult<Prisma.$ReferralPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -20195,6 +22044,10 @@ export namespace Prisma {
     readonly totalEarnings: FieldRef<"Influencer", 'Float'>
     readonly pendingEarnings: FieldRef<"Influencer", 'Float'>
     readonly totalClicks: FieldRef<"Influencer", 'Int'>
+    readonly programUnlocked: FieldRef<"Influencer", 'Boolean'>
+    readonly baseThrOverride: FieldRef<"Influencer", 'Int'>
+    readonly unlockedAt: FieldRef<"Influencer", 'DateTime'>
+    readonly firstShareAt: FieldRef<"Influencer", 'DateTime'>
     readonly createdAt: FieldRef<"Influencer", 'DateTime'>
     readonly updatedAt: FieldRef<"Influencer", 'DateTime'>
   }
@@ -20764,6 +22617,121 @@ export namespace Prisma {
      */
     include?: SupportChatInclude<ExtArgs> | null
     where?: SupportChatWhereInput
+  }
+
+  /**
+   * Influencer.starLedgerEntries
+   */
+  export type Influencer$starLedgerEntriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StarLedger
+     */
+    select?: StarLedgerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StarLedger
+     */
+    omit?: StarLedgerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StarLedgerInclude<ExtArgs> | null
+    where?: StarLedgerWhereInput
+    orderBy?: StarLedgerOrderByWithRelationInput | StarLedgerOrderByWithRelationInput[]
+    cursor?: StarLedgerWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: StarLedgerScalarFieldEnum | StarLedgerScalarFieldEnum[]
+  }
+
+  /**
+   * Influencer.perfScores
+   */
+  export type Influencer$perfScoresArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PerformanceScore
+     */
+    select?: PerformanceScoreSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PerformanceScore
+     */
+    omit?: PerformanceScoreOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PerformanceScoreInclude<ExtArgs> | null
+    where?: PerformanceScoreWhereInput
+    orderBy?: PerformanceScoreOrderByWithRelationInput | PerformanceScoreOrderByWithRelationInput[]
+    cursor?: PerformanceScoreWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PerformanceScoreScalarFieldEnum | PerformanceScoreScalarFieldEnum[]
+  }
+
+  /**
+   * Influencer.perfEvents
+   */
+  export type Influencer$perfEventsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PerformanceEvent
+     */
+    select?: PerformanceEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PerformanceEvent
+     */
+    omit?: PerformanceEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PerformanceEventInclude<ExtArgs> | null
+    where?: PerformanceEventWhereInput
+    orderBy?: PerformanceEventOrderByWithRelationInput | PerformanceEventOrderByWithRelationInput[]
+    cursor?: PerformanceEventWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PerformanceEventScalarFieldEnum | PerformanceEventScalarFieldEnum[]
+  }
+
+  /**
+   * Influencer.referralsMade
+   */
+  export type Influencer$referralsMadeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Referral
+     */
+    select?: ReferralSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Referral
+     */
+    omit?: ReferralOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReferralInclude<ExtArgs> | null
+    where?: ReferralWhereInput
+    orderBy?: ReferralOrderByWithRelationInput | ReferralOrderByWithRelationInput[]
+    cursor?: ReferralWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ReferralScalarFieldEnum | ReferralScalarFieldEnum[]
+  }
+
+  /**
+   * Influencer.referralReceived
+   */
+  export type Influencer$referralReceivedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Referral
+     */
+    select?: ReferralSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Referral
+     */
+    omit?: ReferralOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReferralInclude<ExtArgs> | null
+    where?: ReferralWhereInput
   }
 
   /**
@@ -25546,6 +27514,7 @@ export namespace Prisma {
     commissionRate: number | null
     commissionAmount: number | null
     commissionStatus: string | null
+    affiliatePeriod: string | null
     saleDate: Date | null
     completionDate: Date | null
     refundDeadline: Date | null
@@ -25568,6 +27537,7 @@ export namespace Prisma {
     commissionRate: number | null
     commissionAmount: number | null
     commissionStatus: string | null
+    affiliatePeriod: string | null
     saleDate: Date | null
     completionDate: Date | null
     refundDeadline: Date | null
@@ -25590,6 +27560,7 @@ export namespace Prisma {
     commissionRate: number
     commissionAmount: number
     commissionStatus: number
+    affiliatePeriod: number
     saleDate: number
     completionDate: number
     refundDeadline: number
@@ -25634,6 +27605,7 @@ export namespace Prisma {
     commissionRate?: true
     commissionAmount?: true
     commissionStatus?: true
+    affiliatePeriod?: true
     saleDate?: true
     completionDate?: true
     refundDeadline?: true
@@ -25656,6 +27628,7 @@ export namespace Prisma {
     commissionRate?: true
     commissionAmount?: true
     commissionStatus?: true
+    affiliatePeriod?: true
     saleDate?: true
     completionDate?: true
     refundDeadline?: true
@@ -25678,6 +27651,7 @@ export namespace Prisma {
     commissionRate?: true
     commissionAmount?: true
     commissionStatus?: true
+    affiliatePeriod?: true
     saleDate?: true
     completionDate?: true
     refundDeadline?: true
@@ -25787,6 +27761,7 @@ export namespace Prisma {
     commissionRate: number
     commissionAmount: number
     commissionStatus: string
+    affiliatePeriod: string | null
     saleDate: Date
     completionDate: Date | null
     refundDeadline: Date | null
@@ -25828,6 +27803,7 @@ export namespace Prisma {
     commissionRate?: boolean
     commissionAmount?: boolean
     commissionStatus?: boolean
+    affiliatePeriod?: boolean
     saleDate?: boolean
     completionDate?: boolean
     refundDeadline?: boolean
@@ -25855,6 +27831,7 @@ export namespace Prisma {
     commissionRate?: boolean
     commissionAmount?: boolean
     commissionStatus?: boolean
+    affiliatePeriod?: boolean
     saleDate?: boolean
     completionDate?: boolean
     refundDeadline?: boolean
@@ -25879,6 +27856,7 @@ export namespace Prisma {
     commissionRate?: boolean
     commissionAmount?: boolean
     commissionStatus?: boolean
+    affiliatePeriod?: boolean
     saleDate?: boolean
     completionDate?: boolean
     refundDeadline?: boolean
@@ -25903,6 +27881,7 @@ export namespace Prisma {
     commissionRate?: boolean
     commissionAmount?: boolean
     commissionStatus?: boolean
+    affiliatePeriod?: boolean
     saleDate?: boolean
     completionDate?: boolean
     refundDeadline?: boolean
@@ -25916,7 +27895,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type SaleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "customerId" | "influencerId" | "umrePackage" | "saleAmount" | "commissionRate" | "commissionAmount" | "commissionStatus" | "saleDate" | "completionDate" | "refundDeadline" | "notes" | "lockedCommissionRate" | "pointsEarned" | "monthlyTierAtSale" | "monthlyMultiplierAtSale" | "monthlySaleNumberAtSale" | "createdAt" | "updatedAt", ExtArgs["result"]["sale"]>
+  export type SaleOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "customerId" | "influencerId" | "umrePackage" | "saleAmount" | "commissionRate" | "commissionAmount" | "commissionStatus" | "affiliatePeriod" | "saleDate" | "completionDate" | "refundDeadline" | "notes" | "lockedCommissionRate" | "pointsEarned" | "monthlyTierAtSale" | "monthlyMultiplierAtSale" | "monthlySaleNumberAtSale" | "createdAt" | "updatedAt", ExtArgs["result"]["sale"]>
   export type SaleInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     customer?: boolean | CustomerDefaultArgs<ExtArgs>
     influencer?: boolean | Sale$influencerArgs<ExtArgs>
@@ -25950,6 +27929,7 @@ export namespace Prisma {
       commissionRate: number
       commissionAmount: number
       commissionStatus: string
+      affiliatePeriod: string | null
       saleDate: Date
       completionDate: Date | null
       refundDeadline: Date | null
@@ -26396,6 +28376,7 @@ export namespace Prisma {
     readonly commissionRate: FieldRef<"Sale", 'Float'>
     readonly commissionAmount: FieldRef<"Sale", 'Float'>
     readonly commissionStatus: FieldRef<"Sale", 'String'>
+    readonly affiliatePeriod: FieldRef<"Sale", 'String'>
     readonly saleDate: FieldRef<"Sale", 'DateTime'>
     readonly completionDate: FieldRef<"Sale", 'DateTime'>
     readonly refundDeadline: FieldRef<"Sale", 'DateTime'>
@@ -39886,11 +41867,13 @@ export namespace Prisma {
   export type CampaignAvgAggregateOutputType = {
     discountValue: number | null
     maxParticipants: number | null
+    commissionPct: number | null
   }
 
   export type CampaignSumAggregateOutputType = {
     discountValue: number | null
     maxParticipants: number | null
+    commissionPct: number | null
   }
 
   export type CampaignMinAggregateOutputType = {
@@ -39908,6 +41891,11 @@ export namespace Prisma {
     maxParticipants: number | null
     imageUrl: string | null
     createdBy: string | null
+    storyEyebrow: string | null
+    storyTitle: string | null
+    storySub: string | null
+    storyFeats: string | null
+    commissionPct: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -39927,6 +41915,11 @@ export namespace Prisma {
     maxParticipants: number | null
     imageUrl: string | null
     createdBy: string | null
+    storyEyebrow: string | null
+    storyTitle: string | null
+    storySub: string | null
+    storyFeats: string | null
+    commissionPct: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -39946,6 +41939,11 @@ export namespace Prisma {
     maxParticipants: number
     imageUrl: number
     createdBy: number
+    storyEyebrow: number
+    storyTitle: number
+    storySub: number
+    storyFeats: number
+    commissionPct: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -39955,11 +41953,13 @@ export namespace Prisma {
   export type CampaignAvgAggregateInputType = {
     discountValue?: true
     maxParticipants?: true
+    commissionPct?: true
   }
 
   export type CampaignSumAggregateInputType = {
     discountValue?: true
     maxParticipants?: true
+    commissionPct?: true
   }
 
   export type CampaignMinAggregateInputType = {
@@ -39977,6 +41977,11 @@ export namespace Prisma {
     maxParticipants?: true
     imageUrl?: true
     createdBy?: true
+    storyEyebrow?: true
+    storyTitle?: true
+    storySub?: true
+    storyFeats?: true
+    commissionPct?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -39996,6 +42001,11 @@ export namespace Prisma {
     maxParticipants?: true
     imageUrl?: true
     createdBy?: true
+    storyEyebrow?: true
+    storyTitle?: true
+    storySub?: true
+    storyFeats?: true
+    commissionPct?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -40015,6 +42025,11 @@ export namespace Prisma {
     maxParticipants?: true
     imageUrl?: true
     createdBy?: true
+    storyEyebrow?: true
+    storyTitle?: true
+    storySub?: true
+    storyFeats?: true
+    commissionPct?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -40121,6 +42136,11 @@ export namespace Prisma {
     maxParticipants: number | null
     imageUrl: string | null
     createdBy: string | null
+    storyEyebrow: string | null
+    storyTitle: string | null
+    storySub: string | null
+    storyFeats: string | null
+    commissionPct: number | null
     createdAt: Date
     updatedAt: Date
     _count: CampaignCountAggregateOutputType | null
@@ -40159,6 +42179,11 @@ export namespace Prisma {
     maxParticipants?: boolean
     imageUrl?: boolean
     createdBy?: boolean
+    storyEyebrow?: boolean
+    storyTitle?: boolean
+    storySub?: boolean
+    storyFeats?: boolean
+    commissionPct?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     participants?: boolean | Campaign$participantsArgs<ExtArgs>
@@ -40181,6 +42206,11 @@ export namespace Prisma {
     maxParticipants?: boolean
     imageUrl?: boolean
     createdBy?: boolean
+    storyEyebrow?: boolean
+    storyTitle?: boolean
+    storySub?: boolean
+    storyFeats?: boolean
+    commissionPct?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["campaign"]>
@@ -40200,6 +42230,11 @@ export namespace Prisma {
     maxParticipants?: boolean
     imageUrl?: boolean
     createdBy?: boolean
+    storyEyebrow?: boolean
+    storyTitle?: boolean
+    storySub?: boolean
+    storyFeats?: boolean
+    commissionPct?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["campaign"]>
@@ -40219,11 +42254,16 @@ export namespace Prisma {
     maxParticipants?: boolean
     imageUrl?: boolean
     createdBy?: boolean
+    storyEyebrow?: boolean
+    storyTitle?: boolean
+    storySub?: boolean
+    storyFeats?: boolean
+    commissionPct?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type CampaignOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "slug" | "description" | "type" | "discountType" | "discountValue" | "codeTemplate" | "status" | "startDate" | "endDate" | "maxParticipants" | "imageUrl" | "createdBy" | "createdAt" | "updatedAt", ExtArgs["result"]["campaign"]>
+  export type CampaignOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "slug" | "description" | "type" | "discountType" | "discountValue" | "codeTemplate" | "status" | "startDate" | "endDate" | "maxParticipants" | "imageUrl" | "createdBy" | "storyEyebrow" | "storyTitle" | "storySub" | "storyFeats" | "commissionPct" | "createdAt" | "updatedAt", ExtArgs["result"]["campaign"]>
   export type CampaignInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     participants?: boolean | Campaign$participantsArgs<ExtArgs>
     codeUsages?: boolean | Campaign$codeUsagesArgs<ExtArgs>
@@ -40253,6 +42293,11 @@ export namespace Prisma {
       maxParticipants: number | null
       imageUrl: string | null
       createdBy: string | null
+      storyEyebrow: string | null
+      storyTitle: string | null
+      storySub: string | null
+      storyFeats: string | null
+      commissionPct: number | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["campaign"]>
@@ -40694,6 +42739,11 @@ export namespace Prisma {
     readonly maxParticipants: FieldRef<"Campaign", 'Int'>
     readonly imageUrl: FieldRef<"Campaign", 'String'>
     readonly createdBy: FieldRef<"Campaign", 'String'>
+    readonly storyEyebrow: FieldRef<"Campaign", 'String'>
+    readonly storyTitle: FieldRef<"Campaign", 'String'>
+    readonly storySub: FieldRef<"Campaign", 'String'>
+    readonly storyFeats: FieldRef<"Campaign", 'String'>
+    readonly commissionPct: FieldRef<"Campaign", 'Float'>
     readonly createdAt: FieldRef<"Campaign", 'DateTime'>
     readonly updatedAt: FieldRef<"Campaign", 'DateTime'>
   }
@@ -48082,6 +50132,6874 @@ export namespace Prisma {
 
 
   /**
+   * Model ProgramConfig
+   */
+
+  export type AggregateProgramConfig = {
+    _count: ProgramConfigCountAggregateOutputType | null
+    _avg: ProgramConfigAvgAggregateOutputType | null
+    _sum: ProgramConfigSumAggregateOutputType | null
+    _min: ProgramConfigMinAggregateOutputType | null
+    _max: ProgramConfigMaxAggregateOutputType | null
+  }
+
+  export type ProgramConfigAvgAggregateOutputType = {
+    id: number | null
+    baseThreshold: number | null
+    minThreshold: number | null
+    referralReduction: number | null
+    startRate: number | null
+    maxRate: number | null
+    starToTry: number | null
+    weightCvr: number | null
+    weightVolume: number | null
+    weightCtr: number | null
+  }
+
+  export type ProgramConfigSumAggregateOutputType = {
+    id: number | null
+    baseThreshold: number | null
+    minThreshold: number | null
+    referralReduction: number | null
+    startRate: number | null
+    maxRate: number | null
+    starToTry: number | null
+    weightCvr: number | null
+    weightVolume: number | null
+    weightCtr: number | null
+  }
+
+  export type ProgramConfigMinAggregateOutputType = {
+    id: number | null
+    baseThreshold: number | null
+    minThreshold: number | null
+    referralReduction: number | null
+    startRate: number | null
+    maxRate: number | null
+    starToTry: number | null
+    weightCvr: number | null
+    weightVolume: number | null
+    weightCtr: number | null
+    updatedAt: Date | null
+  }
+
+  export type ProgramConfigMaxAggregateOutputType = {
+    id: number | null
+    baseThreshold: number | null
+    minThreshold: number | null
+    referralReduction: number | null
+    startRate: number | null
+    maxRate: number | null
+    starToTry: number | null
+    weightCvr: number | null
+    weightVolume: number | null
+    weightCtr: number | null
+    updatedAt: Date | null
+  }
+
+  export type ProgramConfigCountAggregateOutputType = {
+    id: number
+    baseThreshold: number
+    minThreshold: number
+    referralReduction: number
+    startRate: number
+    maxRate: number
+    starToTry: number
+    weightCvr: number
+    weightVolume: number
+    weightCtr: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ProgramConfigAvgAggregateInputType = {
+    id?: true
+    baseThreshold?: true
+    minThreshold?: true
+    referralReduction?: true
+    startRate?: true
+    maxRate?: true
+    starToTry?: true
+    weightCvr?: true
+    weightVolume?: true
+    weightCtr?: true
+  }
+
+  export type ProgramConfigSumAggregateInputType = {
+    id?: true
+    baseThreshold?: true
+    minThreshold?: true
+    referralReduction?: true
+    startRate?: true
+    maxRate?: true
+    starToTry?: true
+    weightCvr?: true
+    weightVolume?: true
+    weightCtr?: true
+  }
+
+  export type ProgramConfigMinAggregateInputType = {
+    id?: true
+    baseThreshold?: true
+    minThreshold?: true
+    referralReduction?: true
+    startRate?: true
+    maxRate?: true
+    starToTry?: true
+    weightCvr?: true
+    weightVolume?: true
+    weightCtr?: true
+    updatedAt?: true
+  }
+
+  export type ProgramConfigMaxAggregateInputType = {
+    id?: true
+    baseThreshold?: true
+    minThreshold?: true
+    referralReduction?: true
+    startRate?: true
+    maxRate?: true
+    starToTry?: true
+    weightCvr?: true
+    weightVolume?: true
+    weightCtr?: true
+    updatedAt?: true
+  }
+
+  export type ProgramConfigCountAggregateInputType = {
+    id?: true
+    baseThreshold?: true
+    minThreshold?: true
+    referralReduction?: true
+    startRate?: true
+    maxRate?: true
+    starToTry?: true
+    weightCvr?: true
+    weightVolume?: true
+    weightCtr?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ProgramConfigAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ProgramConfig to aggregate.
+     */
+    where?: ProgramConfigWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProgramConfigs to fetch.
+     */
+    orderBy?: ProgramConfigOrderByWithRelationInput | ProgramConfigOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ProgramConfigWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProgramConfigs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProgramConfigs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ProgramConfigs
+    **/
+    _count?: true | ProgramConfigCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ProgramConfigAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ProgramConfigSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ProgramConfigMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ProgramConfigMaxAggregateInputType
+  }
+
+  export type GetProgramConfigAggregateType<T extends ProgramConfigAggregateArgs> = {
+        [P in keyof T & keyof AggregateProgramConfig]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateProgramConfig[P]>
+      : GetScalarType<T[P], AggregateProgramConfig[P]>
+  }
+
+
+
+
+  export type ProgramConfigGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ProgramConfigWhereInput
+    orderBy?: ProgramConfigOrderByWithAggregationInput | ProgramConfigOrderByWithAggregationInput[]
+    by: ProgramConfigScalarFieldEnum[] | ProgramConfigScalarFieldEnum
+    having?: ProgramConfigScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ProgramConfigCountAggregateInputType | true
+    _avg?: ProgramConfigAvgAggregateInputType
+    _sum?: ProgramConfigSumAggregateInputType
+    _min?: ProgramConfigMinAggregateInputType
+    _max?: ProgramConfigMaxAggregateInputType
+  }
+
+  export type ProgramConfigGroupByOutputType = {
+    id: number
+    baseThreshold: number
+    minThreshold: number
+    referralReduction: number
+    startRate: number
+    maxRate: number
+    starToTry: number
+    weightCvr: number
+    weightVolume: number
+    weightCtr: number
+    updatedAt: Date
+    _count: ProgramConfigCountAggregateOutputType | null
+    _avg: ProgramConfigAvgAggregateOutputType | null
+    _sum: ProgramConfigSumAggregateOutputType | null
+    _min: ProgramConfigMinAggregateOutputType | null
+    _max: ProgramConfigMaxAggregateOutputType | null
+  }
+
+  type GetProgramConfigGroupByPayload<T extends ProgramConfigGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ProgramConfigGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ProgramConfigGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ProgramConfigGroupByOutputType[P]>
+            : GetScalarType<T[P], ProgramConfigGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ProgramConfigSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    baseThreshold?: boolean
+    minThreshold?: boolean
+    referralReduction?: boolean
+    startRate?: boolean
+    maxRate?: boolean
+    starToTry?: boolean
+    weightCvr?: boolean
+    weightVolume?: boolean
+    weightCtr?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["programConfig"]>
+
+  export type ProgramConfigSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    baseThreshold?: boolean
+    minThreshold?: boolean
+    referralReduction?: boolean
+    startRate?: boolean
+    maxRate?: boolean
+    starToTry?: boolean
+    weightCvr?: boolean
+    weightVolume?: boolean
+    weightCtr?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["programConfig"]>
+
+  export type ProgramConfigSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    baseThreshold?: boolean
+    minThreshold?: boolean
+    referralReduction?: boolean
+    startRate?: boolean
+    maxRate?: boolean
+    starToTry?: boolean
+    weightCvr?: boolean
+    weightVolume?: boolean
+    weightCtr?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["programConfig"]>
+
+  export type ProgramConfigSelectScalar = {
+    id?: boolean
+    baseThreshold?: boolean
+    minThreshold?: boolean
+    referralReduction?: boolean
+    startRate?: boolean
+    maxRate?: boolean
+    starToTry?: boolean
+    weightCvr?: boolean
+    weightVolume?: boolean
+    weightCtr?: boolean
+    updatedAt?: boolean
+  }
+
+  export type ProgramConfigOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "baseThreshold" | "minThreshold" | "referralReduction" | "startRate" | "maxRate" | "starToTry" | "weightCvr" | "weightVolume" | "weightCtr" | "updatedAt", ExtArgs["result"]["programConfig"]>
+
+  export type $ProgramConfigPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ProgramConfig"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      baseThreshold: number
+      minThreshold: number
+      referralReduction: number
+      startRate: number
+      maxRate: number
+      starToTry: number
+      weightCvr: number
+      weightVolume: number
+      weightCtr: number
+      updatedAt: Date
+    }, ExtArgs["result"]["programConfig"]>
+    composites: {}
+  }
+
+  type ProgramConfigGetPayload<S extends boolean | null | undefined | ProgramConfigDefaultArgs> = $Result.GetResult<Prisma.$ProgramConfigPayload, S>
+
+  type ProgramConfigCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ProgramConfigFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ProgramConfigCountAggregateInputType | true
+    }
+
+  export interface ProgramConfigDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ProgramConfig'], meta: { name: 'ProgramConfig' } }
+    /**
+     * Find zero or one ProgramConfig that matches the filter.
+     * @param {ProgramConfigFindUniqueArgs} args - Arguments to find a ProgramConfig
+     * @example
+     * // Get one ProgramConfig
+     * const programConfig = await prisma.programConfig.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ProgramConfigFindUniqueArgs>(args: SelectSubset<T, ProgramConfigFindUniqueArgs<ExtArgs>>): Prisma__ProgramConfigClient<$Result.GetResult<Prisma.$ProgramConfigPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ProgramConfig that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ProgramConfigFindUniqueOrThrowArgs} args - Arguments to find a ProgramConfig
+     * @example
+     * // Get one ProgramConfig
+     * const programConfig = await prisma.programConfig.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ProgramConfigFindUniqueOrThrowArgs>(args: SelectSubset<T, ProgramConfigFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ProgramConfigClient<$Result.GetResult<Prisma.$ProgramConfigPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ProgramConfig that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProgramConfigFindFirstArgs} args - Arguments to find a ProgramConfig
+     * @example
+     * // Get one ProgramConfig
+     * const programConfig = await prisma.programConfig.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ProgramConfigFindFirstArgs>(args?: SelectSubset<T, ProgramConfigFindFirstArgs<ExtArgs>>): Prisma__ProgramConfigClient<$Result.GetResult<Prisma.$ProgramConfigPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ProgramConfig that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProgramConfigFindFirstOrThrowArgs} args - Arguments to find a ProgramConfig
+     * @example
+     * // Get one ProgramConfig
+     * const programConfig = await prisma.programConfig.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ProgramConfigFindFirstOrThrowArgs>(args?: SelectSubset<T, ProgramConfigFindFirstOrThrowArgs<ExtArgs>>): Prisma__ProgramConfigClient<$Result.GetResult<Prisma.$ProgramConfigPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ProgramConfigs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProgramConfigFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ProgramConfigs
+     * const programConfigs = await prisma.programConfig.findMany()
+     * 
+     * // Get first 10 ProgramConfigs
+     * const programConfigs = await prisma.programConfig.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const programConfigWithIdOnly = await prisma.programConfig.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ProgramConfigFindManyArgs>(args?: SelectSubset<T, ProgramConfigFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProgramConfigPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ProgramConfig.
+     * @param {ProgramConfigCreateArgs} args - Arguments to create a ProgramConfig.
+     * @example
+     * // Create one ProgramConfig
+     * const ProgramConfig = await prisma.programConfig.create({
+     *   data: {
+     *     // ... data to create a ProgramConfig
+     *   }
+     * })
+     * 
+     */
+    create<T extends ProgramConfigCreateArgs>(args: SelectSubset<T, ProgramConfigCreateArgs<ExtArgs>>): Prisma__ProgramConfigClient<$Result.GetResult<Prisma.$ProgramConfigPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ProgramConfigs.
+     * @param {ProgramConfigCreateManyArgs} args - Arguments to create many ProgramConfigs.
+     * @example
+     * // Create many ProgramConfigs
+     * const programConfig = await prisma.programConfig.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ProgramConfigCreateManyArgs>(args?: SelectSubset<T, ProgramConfigCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ProgramConfigs and returns the data saved in the database.
+     * @param {ProgramConfigCreateManyAndReturnArgs} args - Arguments to create many ProgramConfigs.
+     * @example
+     * // Create many ProgramConfigs
+     * const programConfig = await prisma.programConfig.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ProgramConfigs and only return the `id`
+     * const programConfigWithIdOnly = await prisma.programConfig.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ProgramConfigCreateManyAndReturnArgs>(args?: SelectSubset<T, ProgramConfigCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProgramConfigPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ProgramConfig.
+     * @param {ProgramConfigDeleteArgs} args - Arguments to delete one ProgramConfig.
+     * @example
+     * // Delete one ProgramConfig
+     * const ProgramConfig = await prisma.programConfig.delete({
+     *   where: {
+     *     // ... filter to delete one ProgramConfig
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ProgramConfigDeleteArgs>(args: SelectSubset<T, ProgramConfigDeleteArgs<ExtArgs>>): Prisma__ProgramConfigClient<$Result.GetResult<Prisma.$ProgramConfigPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ProgramConfig.
+     * @param {ProgramConfigUpdateArgs} args - Arguments to update one ProgramConfig.
+     * @example
+     * // Update one ProgramConfig
+     * const programConfig = await prisma.programConfig.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ProgramConfigUpdateArgs>(args: SelectSubset<T, ProgramConfigUpdateArgs<ExtArgs>>): Prisma__ProgramConfigClient<$Result.GetResult<Prisma.$ProgramConfigPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ProgramConfigs.
+     * @param {ProgramConfigDeleteManyArgs} args - Arguments to filter ProgramConfigs to delete.
+     * @example
+     * // Delete a few ProgramConfigs
+     * const { count } = await prisma.programConfig.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ProgramConfigDeleteManyArgs>(args?: SelectSubset<T, ProgramConfigDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ProgramConfigs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProgramConfigUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ProgramConfigs
+     * const programConfig = await prisma.programConfig.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ProgramConfigUpdateManyArgs>(args: SelectSubset<T, ProgramConfigUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ProgramConfigs and returns the data updated in the database.
+     * @param {ProgramConfigUpdateManyAndReturnArgs} args - Arguments to update many ProgramConfigs.
+     * @example
+     * // Update many ProgramConfigs
+     * const programConfig = await prisma.programConfig.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ProgramConfigs and only return the `id`
+     * const programConfigWithIdOnly = await prisma.programConfig.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ProgramConfigUpdateManyAndReturnArgs>(args: SelectSubset<T, ProgramConfigUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProgramConfigPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ProgramConfig.
+     * @param {ProgramConfigUpsertArgs} args - Arguments to update or create a ProgramConfig.
+     * @example
+     * // Update or create a ProgramConfig
+     * const programConfig = await prisma.programConfig.upsert({
+     *   create: {
+     *     // ... data to create a ProgramConfig
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ProgramConfig we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ProgramConfigUpsertArgs>(args: SelectSubset<T, ProgramConfigUpsertArgs<ExtArgs>>): Prisma__ProgramConfigClient<$Result.GetResult<Prisma.$ProgramConfigPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ProgramConfigs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProgramConfigCountArgs} args - Arguments to filter ProgramConfigs to count.
+     * @example
+     * // Count the number of ProgramConfigs
+     * const count = await prisma.programConfig.count({
+     *   where: {
+     *     // ... the filter for the ProgramConfigs we want to count
+     *   }
+     * })
+    **/
+    count<T extends ProgramConfigCountArgs>(
+      args?: Subset<T, ProgramConfigCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ProgramConfigCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ProgramConfig.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProgramConfigAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ProgramConfigAggregateArgs>(args: Subset<T, ProgramConfigAggregateArgs>): Prisma.PrismaPromise<GetProgramConfigAggregateType<T>>
+
+    /**
+     * Group by ProgramConfig.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ProgramConfigGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ProgramConfigGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ProgramConfigGroupByArgs['orderBy'] }
+        : { orderBy?: ProgramConfigGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ProgramConfigGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetProgramConfigGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ProgramConfig model
+   */
+  readonly fields: ProgramConfigFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ProgramConfig.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ProgramConfigClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ProgramConfig model
+   */
+  interface ProgramConfigFieldRefs {
+    readonly id: FieldRef<"ProgramConfig", 'Int'>
+    readonly baseThreshold: FieldRef<"ProgramConfig", 'Int'>
+    readonly minThreshold: FieldRef<"ProgramConfig", 'Int'>
+    readonly referralReduction: FieldRef<"ProgramConfig", 'Int'>
+    readonly startRate: FieldRef<"ProgramConfig", 'Float'>
+    readonly maxRate: FieldRef<"ProgramConfig", 'Float'>
+    readonly starToTry: FieldRef<"ProgramConfig", 'Float'>
+    readonly weightCvr: FieldRef<"ProgramConfig", 'Float'>
+    readonly weightVolume: FieldRef<"ProgramConfig", 'Float'>
+    readonly weightCtr: FieldRef<"ProgramConfig", 'Float'>
+    readonly updatedAt: FieldRef<"ProgramConfig", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ProgramConfig findUnique
+   */
+  export type ProgramConfigFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProgramConfig
+     */
+    select?: ProgramConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProgramConfig
+     */
+    omit?: ProgramConfigOmit<ExtArgs> | null
+    /**
+     * Filter, which ProgramConfig to fetch.
+     */
+    where: ProgramConfigWhereUniqueInput
+  }
+
+  /**
+   * ProgramConfig findUniqueOrThrow
+   */
+  export type ProgramConfigFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProgramConfig
+     */
+    select?: ProgramConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProgramConfig
+     */
+    omit?: ProgramConfigOmit<ExtArgs> | null
+    /**
+     * Filter, which ProgramConfig to fetch.
+     */
+    where: ProgramConfigWhereUniqueInput
+  }
+
+  /**
+   * ProgramConfig findFirst
+   */
+  export type ProgramConfigFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProgramConfig
+     */
+    select?: ProgramConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProgramConfig
+     */
+    omit?: ProgramConfigOmit<ExtArgs> | null
+    /**
+     * Filter, which ProgramConfig to fetch.
+     */
+    where?: ProgramConfigWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProgramConfigs to fetch.
+     */
+    orderBy?: ProgramConfigOrderByWithRelationInput | ProgramConfigOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ProgramConfigs.
+     */
+    cursor?: ProgramConfigWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProgramConfigs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProgramConfigs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ProgramConfigs.
+     */
+    distinct?: ProgramConfigScalarFieldEnum | ProgramConfigScalarFieldEnum[]
+  }
+
+  /**
+   * ProgramConfig findFirstOrThrow
+   */
+  export type ProgramConfigFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProgramConfig
+     */
+    select?: ProgramConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProgramConfig
+     */
+    omit?: ProgramConfigOmit<ExtArgs> | null
+    /**
+     * Filter, which ProgramConfig to fetch.
+     */
+    where?: ProgramConfigWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProgramConfigs to fetch.
+     */
+    orderBy?: ProgramConfigOrderByWithRelationInput | ProgramConfigOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ProgramConfigs.
+     */
+    cursor?: ProgramConfigWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProgramConfigs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProgramConfigs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ProgramConfigs.
+     */
+    distinct?: ProgramConfigScalarFieldEnum | ProgramConfigScalarFieldEnum[]
+  }
+
+  /**
+   * ProgramConfig findMany
+   */
+  export type ProgramConfigFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProgramConfig
+     */
+    select?: ProgramConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProgramConfig
+     */
+    omit?: ProgramConfigOmit<ExtArgs> | null
+    /**
+     * Filter, which ProgramConfigs to fetch.
+     */
+    where?: ProgramConfigWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ProgramConfigs to fetch.
+     */
+    orderBy?: ProgramConfigOrderByWithRelationInput | ProgramConfigOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ProgramConfigs.
+     */
+    cursor?: ProgramConfigWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ProgramConfigs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ProgramConfigs.
+     */
+    skip?: number
+    distinct?: ProgramConfigScalarFieldEnum | ProgramConfigScalarFieldEnum[]
+  }
+
+  /**
+   * ProgramConfig create
+   */
+  export type ProgramConfigCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProgramConfig
+     */
+    select?: ProgramConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProgramConfig
+     */
+    omit?: ProgramConfigOmit<ExtArgs> | null
+    /**
+     * The data needed to create a ProgramConfig.
+     */
+    data: XOR<ProgramConfigCreateInput, ProgramConfigUncheckedCreateInput>
+  }
+
+  /**
+   * ProgramConfig createMany
+   */
+  export type ProgramConfigCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ProgramConfigs.
+     */
+    data: ProgramConfigCreateManyInput | ProgramConfigCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ProgramConfig createManyAndReturn
+   */
+  export type ProgramConfigCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProgramConfig
+     */
+    select?: ProgramConfigSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProgramConfig
+     */
+    omit?: ProgramConfigOmit<ExtArgs> | null
+    /**
+     * The data used to create many ProgramConfigs.
+     */
+    data: ProgramConfigCreateManyInput | ProgramConfigCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ProgramConfig update
+   */
+  export type ProgramConfigUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProgramConfig
+     */
+    select?: ProgramConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProgramConfig
+     */
+    omit?: ProgramConfigOmit<ExtArgs> | null
+    /**
+     * The data needed to update a ProgramConfig.
+     */
+    data: XOR<ProgramConfigUpdateInput, ProgramConfigUncheckedUpdateInput>
+    /**
+     * Choose, which ProgramConfig to update.
+     */
+    where: ProgramConfigWhereUniqueInput
+  }
+
+  /**
+   * ProgramConfig updateMany
+   */
+  export type ProgramConfigUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ProgramConfigs.
+     */
+    data: XOR<ProgramConfigUpdateManyMutationInput, ProgramConfigUncheckedUpdateManyInput>
+    /**
+     * Filter which ProgramConfigs to update
+     */
+    where?: ProgramConfigWhereInput
+    /**
+     * Limit how many ProgramConfigs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ProgramConfig updateManyAndReturn
+   */
+  export type ProgramConfigUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProgramConfig
+     */
+    select?: ProgramConfigSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProgramConfig
+     */
+    omit?: ProgramConfigOmit<ExtArgs> | null
+    /**
+     * The data used to update ProgramConfigs.
+     */
+    data: XOR<ProgramConfigUpdateManyMutationInput, ProgramConfigUncheckedUpdateManyInput>
+    /**
+     * Filter which ProgramConfigs to update
+     */
+    where?: ProgramConfigWhereInput
+    /**
+     * Limit how many ProgramConfigs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ProgramConfig upsert
+   */
+  export type ProgramConfigUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProgramConfig
+     */
+    select?: ProgramConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProgramConfig
+     */
+    omit?: ProgramConfigOmit<ExtArgs> | null
+    /**
+     * The filter to search for the ProgramConfig to update in case it exists.
+     */
+    where: ProgramConfigWhereUniqueInput
+    /**
+     * In case the ProgramConfig found by the `where` argument doesn't exist, create a new ProgramConfig with this data.
+     */
+    create: XOR<ProgramConfigCreateInput, ProgramConfigUncheckedCreateInput>
+    /**
+     * In case the ProgramConfig was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ProgramConfigUpdateInput, ProgramConfigUncheckedUpdateInput>
+  }
+
+  /**
+   * ProgramConfig delete
+   */
+  export type ProgramConfigDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProgramConfig
+     */
+    select?: ProgramConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProgramConfig
+     */
+    omit?: ProgramConfigOmit<ExtArgs> | null
+    /**
+     * Filter which ProgramConfig to delete.
+     */
+    where: ProgramConfigWhereUniqueInput
+  }
+
+  /**
+   * ProgramConfig deleteMany
+   */
+  export type ProgramConfigDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ProgramConfigs to delete
+     */
+    where?: ProgramConfigWhereInput
+    /**
+     * Limit how many ProgramConfigs to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ProgramConfig without action
+   */
+  export type ProgramConfigDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ProgramConfig
+     */
+    select?: ProgramConfigSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ProgramConfig
+     */
+    omit?: ProgramConfigOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model StarLedger
+   */
+
+  export type AggregateStarLedger = {
+    _count: StarLedgerCountAggregateOutputType | null
+    _avg: StarLedgerAvgAggregateOutputType | null
+    _sum: StarLedgerSumAggregateOutputType | null
+    _min: StarLedgerMinAggregateOutputType | null
+    _max: StarLedgerMaxAggregateOutputType | null
+  }
+
+  export type StarLedgerAvgAggregateOutputType = {
+    delta: number | null
+  }
+
+  export type StarLedgerSumAggregateOutputType = {
+    delta: number | null
+  }
+
+  export type StarLedgerMinAggregateOutputType = {
+    id: string | null
+    influencerId: string | null
+    delta: number | null
+    reason: string | null
+    note: string | null
+    createdBy: string | null
+    refSaleId: string | null
+    createdAt: Date | null
+  }
+
+  export type StarLedgerMaxAggregateOutputType = {
+    id: string | null
+    influencerId: string | null
+    delta: number | null
+    reason: string | null
+    note: string | null
+    createdBy: string | null
+    refSaleId: string | null
+    createdAt: Date | null
+  }
+
+  export type StarLedgerCountAggregateOutputType = {
+    id: number
+    influencerId: number
+    delta: number
+    reason: number
+    note: number
+    createdBy: number
+    refSaleId: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type StarLedgerAvgAggregateInputType = {
+    delta?: true
+  }
+
+  export type StarLedgerSumAggregateInputType = {
+    delta?: true
+  }
+
+  export type StarLedgerMinAggregateInputType = {
+    id?: true
+    influencerId?: true
+    delta?: true
+    reason?: true
+    note?: true
+    createdBy?: true
+    refSaleId?: true
+    createdAt?: true
+  }
+
+  export type StarLedgerMaxAggregateInputType = {
+    id?: true
+    influencerId?: true
+    delta?: true
+    reason?: true
+    note?: true
+    createdBy?: true
+    refSaleId?: true
+    createdAt?: true
+  }
+
+  export type StarLedgerCountAggregateInputType = {
+    id?: true
+    influencerId?: true
+    delta?: true
+    reason?: true
+    note?: true
+    createdBy?: true
+    refSaleId?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type StarLedgerAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which StarLedger to aggregate.
+     */
+    where?: StarLedgerWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of StarLedgers to fetch.
+     */
+    orderBy?: StarLedgerOrderByWithRelationInput | StarLedgerOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: StarLedgerWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` StarLedgers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` StarLedgers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned StarLedgers
+    **/
+    _count?: true | StarLedgerCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: StarLedgerAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: StarLedgerSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: StarLedgerMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: StarLedgerMaxAggregateInputType
+  }
+
+  export type GetStarLedgerAggregateType<T extends StarLedgerAggregateArgs> = {
+        [P in keyof T & keyof AggregateStarLedger]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateStarLedger[P]>
+      : GetScalarType<T[P], AggregateStarLedger[P]>
+  }
+
+
+
+
+  export type StarLedgerGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: StarLedgerWhereInput
+    orderBy?: StarLedgerOrderByWithAggregationInput | StarLedgerOrderByWithAggregationInput[]
+    by: StarLedgerScalarFieldEnum[] | StarLedgerScalarFieldEnum
+    having?: StarLedgerScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: StarLedgerCountAggregateInputType | true
+    _avg?: StarLedgerAvgAggregateInputType
+    _sum?: StarLedgerSumAggregateInputType
+    _min?: StarLedgerMinAggregateInputType
+    _max?: StarLedgerMaxAggregateInputType
+  }
+
+  export type StarLedgerGroupByOutputType = {
+    id: string
+    influencerId: string
+    delta: number
+    reason: string
+    note: string | null
+    createdBy: string
+    refSaleId: string | null
+    createdAt: Date
+    _count: StarLedgerCountAggregateOutputType | null
+    _avg: StarLedgerAvgAggregateOutputType | null
+    _sum: StarLedgerSumAggregateOutputType | null
+    _min: StarLedgerMinAggregateOutputType | null
+    _max: StarLedgerMaxAggregateOutputType | null
+  }
+
+  type GetStarLedgerGroupByPayload<T extends StarLedgerGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<StarLedgerGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof StarLedgerGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], StarLedgerGroupByOutputType[P]>
+            : GetScalarType<T[P], StarLedgerGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type StarLedgerSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    influencerId?: boolean
+    delta?: boolean
+    reason?: boolean
+    note?: boolean
+    createdBy?: boolean
+    refSaleId?: boolean
+    createdAt?: boolean
+    influencer?: boolean | InfluencerDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["starLedger"]>
+
+  export type StarLedgerSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    influencerId?: boolean
+    delta?: boolean
+    reason?: boolean
+    note?: boolean
+    createdBy?: boolean
+    refSaleId?: boolean
+    createdAt?: boolean
+    influencer?: boolean | InfluencerDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["starLedger"]>
+
+  export type StarLedgerSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    influencerId?: boolean
+    delta?: boolean
+    reason?: boolean
+    note?: boolean
+    createdBy?: boolean
+    refSaleId?: boolean
+    createdAt?: boolean
+    influencer?: boolean | InfluencerDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["starLedger"]>
+
+  export type StarLedgerSelectScalar = {
+    id?: boolean
+    influencerId?: boolean
+    delta?: boolean
+    reason?: boolean
+    note?: boolean
+    createdBy?: boolean
+    refSaleId?: boolean
+    createdAt?: boolean
+  }
+
+  export type StarLedgerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "influencerId" | "delta" | "reason" | "note" | "createdBy" | "refSaleId" | "createdAt", ExtArgs["result"]["starLedger"]>
+  export type StarLedgerInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    influencer?: boolean | InfluencerDefaultArgs<ExtArgs>
+  }
+  export type StarLedgerIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    influencer?: boolean | InfluencerDefaultArgs<ExtArgs>
+  }
+  export type StarLedgerIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    influencer?: boolean | InfluencerDefaultArgs<ExtArgs>
+  }
+
+  export type $StarLedgerPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "StarLedger"
+    objects: {
+      influencer: Prisma.$InfluencerPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      influencerId: string
+      delta: number
+      reason: string
+      note: string | null
+      createdBy: string
+      refSaleId: string | null
+      createdAt: Date
+    }, ExtArgs["result"]["starLedger"]>
+    composites: {}
+  }
+
+  type StarLedgerGetPayload<S extends boolean | null | undefined | StarLedgerDefaultArgs> = $Result.GetResult<Prisma.$StarLedgerPayload, S>
+
+  type StarLedgerCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<StarLedgerFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: StarLedgerCountAggregateInputType | true
+    }
+
+  export interface StarLedgerDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['StarLedger'], meta: { name: 'StarLedger' } }
+    /**
+     * Find zero or one StarLedger that matches the filter.
+     * @param {StarLedgerFindUniqueArgs} args - Arguments to find a StarLedger
+     * @example
+     * // Get one StarLedger
+     * const starLedger = await prisma.starLedger.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends StarLedgerFindUniqueArgs>(args: SelectSubset<T, StarLedgerFindUniqueArgs<ExtArgs>>): Prisma__StarLedgerClient<$Result.GetResult<Prisma.$StarLedgerPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one StarLedger that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {StarLedgerFindUniqueOrThrowArgs} args - Arguments to find a StarLedger
+     * @example
+     * // Get one StarLedger
+     * const starLedger = await prisma.starLedger.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends StarLedgerFindUniqueOrThrowArgs>(args: SelectSubset<T, StarLedgerFindUniqueOrThrowArgs<ExtArgs>>): Prisma__StarLedgerClient<$Result.GetResult<Prisma.$StarLedgerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first StarLedger that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StarLedgerFindFirstArgs} args - Arguments to find a StarLedger
+     * @example
+     * // Get one StarLedger
+     * const starLedger = await prisma.starLedger.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends StarLedgerFindFirstArgs>(args?: SelectSubset<T, StarLedgerFindFirstArgs<ExtArgs>>): Prisma__StarLedgerClient<$Result.GetResult<Prisma.$StarLedgerPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first StarLedger that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StarLedgerFindFirstOrThrowArgs} args - Arguments to find a StarLedger
+     * @example
+     * // Get one StarLedger
+     * const starLedger = await prisma.starLedger.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends StarLedgerFindFirstOrThrowArgs>(args?: SelectSubset<T, StarLedgerFindFirstOrThrowArgs<ExtArgs>>): Prisma__StarLedgerClient<$Result.GetResult<Prisma.$StarLedgerPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more StarLedgers that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StarLedgerFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all StarLedgers
+     * const starLedgers = await prisma.starLedger.findMany()
+     * 
+     * // Get first 10 StarLedgers
+     * const starLedgers = await prisma.starLedger.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const starLedgerWithIdOnly = await prisma.starLedger.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends StarLedgerFindManyArgs>(args?: SelectSubset<T, StarLedgerFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StarLedgerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a StarLedger.
+     * @param {StarLedgerCreateArgs} args - Arguments to create a StarLedger.
+     * @example
+     * // Create one StarLedger
+     * const StarLedger = await prisma.starLedger.create({
+     *   data: {
+     *     // ... data to create a StarLedger
+     *   }
+     * })
+     * 
+     */
+    create<T extends StarLedgerCreateArgs>(args: SelectSubset<T, StarLedgerCreateArgs<ExtArgs>>): Prisma__StarLedgerClient<$Result.GetResult<Prisma.$StarLedgerPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many StarLedgers.
+     * @param {StarLedgerCreateManyArgs} args - Arguments to create many StarLedgers.
+     * @example
+     * // Create many StarLedgers
+     * const starLedger = await prisma.starLedger.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends StarLedgerCreateManyArgs>(args?: SelectSubset<T, StarLedgerCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many StarLedgers and returns the data saved in the database.
+     * @param {StarLedgerCreateManyAndReturnArgs} args - Arguments to create many StarLedgers.
+     * @example
+     * // Create many StarLedgers
+     * const starLedger = await prisma.starLedger.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many StarLedgers and only return the `id`
+     * const starLedgerWithIdOnly = await prisma.starLedger.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends StarLedgerCreateManyAndReturnArgs>(args?: SelectSubset<T, StarLedgerCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StarLedgerPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a StarLedger.
+     * @param {StarLedgerDeleteArgs} args - Arguments to delete one StarLedger.
+     * @example
+     * // Delete one StarLedger
+     * const StarLedger = await prisma.starLedger.delete({
+     *   where: {
+     *     // ... filter to delete one StarLedger
+     *   }
+     * })
+     * 
+     */
+    delete<T extends StarLedgerDeleteArgs>(args: SelectSubset<T, StarLedgerDeleteArgs<ExtArgs>>): Prisma__StarLedgerClient<$Result.GetResult<Prisma.$StarLedgerPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one StarLedger.
+     * @param {StarLedgerUpdateArgs} args - Arguments to update one StarLedger.
+     * @example
+     * // Update one StarLedger
+     * const starLedger = await prisma.starLedger.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends StarLedgerUpdateArgs>(args: SelectSubset<T, StarLedgerUpdateArgs<ExtArgs>>): Prisma__StarLedgerClient<$Result.GetResult<Prisma.$StarLedgerPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more StarLedgers.
+     * @param {StarLedgerDeleteManyArgs} args - Arguments to filter StarLedgers to delete.
+     * @example
+     * // Delete a few StarLedgers
+     * const { count } = await prisma.starLedger.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends StarLedgerDeleteManyArgs>(args?: SelectSubset<T, StarLedgerDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more StarLedgers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StarLedgerUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many StarLedgers
+     * const starLedger = await prisma.starLedger.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends StarLedgerUpdateManyArgs>(args: SelectSubset<T, StarLedgerUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more StarLedgers and returns the data updated in the database.
+     * @param {StarLedgerUpdateManyAndReturnArgs} args - Arguments to update many StarLedgers.
+     * @example
+     * // Update many StarLedgers
+     * const starLedger = await prisma.starLedger.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more StarLedgers and only return the `id`
+     * const starLedgerWithIdOnly = await prisma.starLedger.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends StarLedgerUpdateManyAndReturnArgs>(args: SelectSubset<T, StarLedgerUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$StarLedgerPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one StarLedger.
+     * @param {StarLedgerUpsertArgs} args - Arguments to update or create a StarLedger.
+     * @example
+     * // Update or create a StarLedger
+     * const starLedger = await prisma.starLedger.upsert({
+     *   create: {
+     *     // ... data to create a StarLedger
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the StarLedger we want to update
+     *   }
+     * })
+     */
+    upsert<T extends StarLedgerUpsertArgs>(args: SelectSubset<T, StarLedgerUpsertArgs<ExtArgs>>): Prisma__StarLedgerClient<$Result.GetResult<Prisma.$StarLedgerPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of StarLedgers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StarLedgerCountArgs} args - Arguments to filter StarLedgers to count.
+     * @example
+     * // Count the number of StarLedgers
+     * const count = await prisma.starLedger.count({
+     *   where: {
+     *     // ... the filter for the StarLedgers we want to count
+     *   }
+     * })
+    **/
+    count<T extends StarLedgerCountArgs>(
+      args?: Subset<T, StarLedgerCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], StarLedgerCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a StarLedger.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StarLedgerAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends StarLedgerAggregateArgs>(args: Subset<T, StarLedgerAggregateArgs>): Prisma.PrismaPromise<GetStarLedgerAggregateType<T>>
+
+    /**
+     * Group by StarLedger.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {StarLedgerGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends StarLedgerGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: StarLedgerGroupByArgs['orderBy'] }
+        : { orderBy?: StarLedgerGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, StarLedgerGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetStarLedgerGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the StarLedger model
+   */
+  readonly fields: StarLedgerFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for StarLedger.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__StarLedgerClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    influencer<T extends InfluencerDefaultArgs<ExtArgs> = {}>(args?: Subset<T, InfluencerDefaultArgs<ExtArgs>>): Prisma__InfluencerClient<$Result.GetResult<Prisma.$InfluencerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the StarLedger model
+   */
+  interface StarLedgerFieldRefs {
+    readonly id: FieldRef<"StarLedger", 'String'>
+    readonly influencerId: FieldRef<"StarLedger", 'String'>
+    readonly delta: FieldRef<"StarLedger", 'Float'>
+    readonly reason: FieldRef<"StarLedger", 'String'>
+    readonly note: FieldRef<"StarLedger", 'String'>
+    readonly createdBy: FieldRef<"StarLedger", 'String'>
+    readonly refSaleId: FieldRef<"StarLedger", 'String'>
+    readonly createdAt: FieldRef<"StarLedger", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * StarLedger findUnique
+   */
+  export type StarLedgerFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StarLedger
+     */
+    select?: StarLedgerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StarLedger
+     */
+    omit?: StarLedgerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StarLedgerInclude<ExtArgs> | null
+    /**
+     * Filter, which StarLedger to fetch.
+     */
+    where: StarLedgerWhereUniqueInput
+  }
+
+  /**
+   * StarLedger findUniqueOrThrow
+   */
+  export type StarLedgerFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StarLedger
+     */
+    select?: StarLedgerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StarLedger
+     */
+    omit?: StarLedgerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StarLedgerInclude<ExtArgs> | null
+    /**
+     * Filter, which StarLedger to fetch.
+     */
+    where: StarLedgerWhereUniqueInput
+  }
+
+  /**
+   * StarLedger findFirst
+   */
+  export type StarLedgerFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StarLedger
+     */
+    select?: StarLedgerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StarLedger
+     */
+    omit?: StarLedgerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StarLedgerInclude<ExtArgs> | null
+    /**
+     * Filter, which StarLedger to fetch.
+     */
+    where?: StarLedgerWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of StarLedgers to fetch.
+     */
+    orderBy?: StarLedgerOrderByWithRelationInput | StarLedgerOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for StarLedgers.
+     */
+    cursor?: StarLedgerWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` StarLedgers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` StarLedgers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of StarLedgers.
+     */
+    distinct?: StarLedgerScalarFieldEnum | StarLedgerScalarFieldEnum[]
+  }
+
+  /**
+   * StarLedger findFirstOrThrow
+   */
+  export type StarLedgerFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StarLedger
+     */
+    select?: StarLedgerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StarLedger
+     */
+    omit?: StarLedgerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StarLedgerInclude<ExtArgs> | null
+    /**
+     * Filter, which StarLedger to fetch.
+     */
+    where?: StarLedgerWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of StarLedgers to fetch.
+     */
+    orderBy?: StarLedgerOrderByWithRelationInput | StarLedgerOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for StarLedgers.
+     */
+    cursor?: StarLedgerWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` StarLedgers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` StarLedgers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of StarLedgers.
+     */
+    distinct?: StarLedgerScalarFieldEnum | StarLedgerScalarFieldEnum[]
+  }
+
+  /**
+   * StarLedger findMany
+   */
+  export type StarLedgerFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StarLedger
+     */
+    select?: StarLedgerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StarLedger
+     */
+    omit?: StarLedgerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StarLedgerInclude<ExtArgs> | null
+    /**
+     * Filter, which StarLedgers to fetch.
+     */
+    where?: StarLedgerWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of StarLedgers to fetch.
+     */
+    orderBy?: StarLedgerOrderByWithRelationInput | StarLedgerOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing StarLedgers.
+     */
+    cursor?: StarLedgerWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` StarLedgers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` StarLedgers.
+     */
+    skip?: number
+    distinct?: StarLedgerScalarFieldEnum | StarLedgerScalarFieldEnum[]
+  }
+
+  /**
+   * StarLedger create
+   */
+  export type StarLedgerCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StarLedger
+     */
+    select?: StarLedgerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StarLedger
+     */
+    omit?: StarLedgerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StarLedgerInclude<ExtArgs> | null
+    /**
+     * The data needed to create a StarLedger.
+     */
+    data: XOR<StarLedgerCreateInput, StarLedgerUncheckedCreateInput>
+  }
+
+  /**
+   * StarLedger createMany
+   */
+  export type StarLedgerCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many StarLedgers.
+     */
+    data: StarLedgerCreateManyInput | StarLedgerCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * StarLedger createManyAndReturn
+   */
+  export type StarLedgerCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StarLedger
+     */
+    select?: StarLedgerSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the StarLedger
+     */
+    omit?: StarLedgerOmit<ExtArgs> | null
+    /**
+     * The data used to create many StarLedgers.
+     */
+    data: StarLedgerCreateManyInput | StarLedgerCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StarLedgerIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * StarLedger update
+   */
+  export type StarLedgerUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StarLedger
+     */
+    select?: StarLedgerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StarLedger
+     */
+    omit?: StarLedgerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StarLedgerInclude<ExtArgs> | null
+    /**
+     * The data needed to update a StarLedger.
+     */
+    data: XOR<StarLedgerUpdateInput, StarLedgerUncheckedUpdateInput>
+    /**
+     * Choose, which StarLedger to update.
+     */
+    where: StarLedgerWhereUniqueInput
+  }
+
+  /**
+   * StarLedger updateMany
+   */
+  export type StarLedgerUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update StarLedgers.
+     */
+    data: XOR<StarLedgerUpdateManyMutationInput, StarLedgerUncheckedUpdateManyInput>
+    /**
+     * Filter which StarLedgers to update
+     */
+    where?: StarLedgerWhereInput
+    /**
+     * Limit how many StarLedgers to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * StarLedger updateManyAndReturn
+   */
+  export type StarLedgerUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StarLedger
+     */
+    select?: StarLedgerSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the StarLedger
+     */
+    omit?: StarLedgerOmit<ExtArgs> | null
+    /**
+     * The data used to update StarLedgers.
+     */
+    data: XOR<StarLedgerUpdateManyMutationInput, StarLedgerUncheckedUpdateManyInput>
+    /**
+     * Filter which StarLedgers to update
+     */
+    where?: StarLedgerWhereInput
+    /**
+     * Limit how many StarLedgers to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StarLedgerIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * StarLedger upsert
+   */
+  export type StarLedgerUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StarLedger
+     */
+    select?: StarLedgerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StarLedger
+     */
+    omit?: StarLedgerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StarLedgerInclude<ExtArgs> | null
+    /**
+     * The filter to search for the StarLedger to update in case it exists.
+     */
+    where: StarLedgerWhereUniqueInput
+    /**
+     * In case the StarLedger found by the `where` argument doesn't exist, create a new StarLedger with this data.
+     */
+    create: XOR<StarLedgerCreateInput, StarLedgerUncheckedCreateInput>
+    /**
+     * In case the StarLedger was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<StarLedgerUpdateInput, StarLedgerUncheckedUpdateInput>
+  }
+
+  /**
+   * StarLedger delete
+   */
+  export type StarLedgerDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StarLedger
+     */
+    select?: StarLedgerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StarLedger
+     */
+    omit?: StarLedgerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StarLedgerInclude<ExtArgs> | null
+    /**
+     * Filter which StarLedger to delete.
+     */
+    where: StarLedgerWhereUniqueInput
+  }
+
+  /**
+   * StarLedger deleteMany
+   */
+  export type StarLedgerDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which StarLedgers to delete
+     */
+    where?: StarLedgerWhereInput
+    /**
+     * Limit how many StarLedgers to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * StarLedger without action
+   */
+  export type StarLedgerDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the StarLedger
+     */
+    select?: StarLedgerSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the StarLedger
+     */
+    omit?: StarLedgerOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: StarLedgerInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model PerformanceScore
+   */
+
+  export type AggregatePerformanceScore = {
+    _count: PerformanceScoreCountAggregateOutputType | null
+    _avg: PerformanceScoreAvgAggregateOutputType | null
+    _sum: PerformanceScoreSumAggregateOutputType | null
+    _min: PerformanceScoreMinAggregateOutputType | null
+    _max: PerformanceScoreMaxAggregateOutputType | null
+  }
+
+  export type PerformanceScoreAvgAggregateOutputType = {
+    ctr: number | null
+    cvr: number | null
+    volume: number | null
+    ctrNorm: number | null
+    cvrNorm: number | null
+    volumeNorm: number | null
+    score: number | null
+    commissionRate: number | null
+  }
+
+  export type PerformanceScoreSumAggregateOutputType = {
+    ctr: number | null
+    cvr: number | null
+    volume: number | null
+    ctrNorm: number | null
+    cvrNorm: number | null
+    volumeNorm: number | null
+    score: number | null
+    commissionRate: number | null
+  }
+
+  export type PerformanceScoreMinAggregateOutputType = {
+    id: string | null
+    influencerId: string | null
+    period: string | null
+    ctr: number | null
+    cvr: number | null
+    volume: number | null
+    ctrNorm: number | null
+    cvrNorm: number | null
+    volumeNorm: number | null
+    score: number | null
+    commissionRate: number | null
+    computedAt: Date | null
+  }
+
+  export type PerformanceScoreMaxAggregateOutputType = {
+    id: string | null
+    influencerId: string | null
+    period: string | null
+    ctr: number | null
+    cvr: number | null
+    volume: number | null
+    ctrNorm: number | null
+    cvrNorm: number | null
+    volumeNorm: number | null
+    score: number | null
+    commissionRate: number | null
+    computedAt: Date | null
+  }
+
+  export type PerformanceScoreCountAggregateOutputType = {
+    id: number
+    influencerId: number
+    period: number
+    ctr: number
+    cvr: number
+    volume: number
+    ctrNorm: number
+    cvrNorm: number
+    volumeNorm: number
+    score: number
+    commissionRate: number
+    computedAt: number
+    _all: number
+  }
+
+
+  export type PerformanceScoreAvgAggregateInputType = {
+    ctr?: true
+    cvr?: true
+    volume?: true
+    ctrNorm?: true
+    cvrNorm?: true
+    volumeNorm?: true
+    score?: true
+    commissionRate?: true
+  }
+
+  export type PerformanceScoreSumAggregateInputType = {
+    ctr?: true
+    cvr?: true
+    volume?: true
+    ctrNorm?: true
+    cvrNorm?: true
+    volumeNorm?: true
+    score?: true
+    commissionRate?: true
+  }
+
+  export type PerformanceScoreMinAggregateInputType = {
+    id?: true
+    influencerId?: true
+    period?: true
+    ctr?: true
+    cvr?: true
+    volume?: true
+    ctrNorm?: true
+    cvrNorm?: true
+    volumeNorm?: true
+    score?: true
+    commissionRate?: true
+    computedAt?: true
+  }
+
+  export type PerformanceScoreMaxAggregateInputType = {
+    id?: true
+    influencerId?: true
+    period?: true
+    ctr?: true
+    cvr?: true
+    volume?: true
+    ctrNorm?: true
+    cvrNorm?: true
+    volumeNorm?: true
+    score?: true
+    commissionRate?: true
+    computedAt?: true
+  }
+
+  export type PerformanceScoreCountAggregateInputType = {
+    id?: true
+    influencerId?: true
+    period?: true
+    ctr?: true
+    cvr?: true
+    volume?: true
+    ctrNorm?: true
+    cvrNorm?: true
+    volumeNorm?: true
+    score?: true
+    commissionRate?: true
+    computedAt?: true
+    _all?: true
+  }
+
+  export type PerformanceScoreAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PerformanceScore to aggregate.
+     */
+    where?: PerformanceScoreWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PerformanceScores to fetch.
+     */
+    orderBy?: PerformanceScoreOrderByWithRelationInput | PerformanceScoreOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PerformanceScoreWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PerformanceScores from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PerformanceScores.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PerformanceScores
+    **/
+    _count?: true | PerformanceScoreCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: PerformanceScoreAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PerformanceScoreSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PerformanceScoreMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PerformanceScoreMaxAggregateInputType
+  }
+
+  export type GetPerformanceScoreAggregateType<T extends PerformanceScoreAggregateArgs> = {
+        [P in keyof T & keyof AggregatePerformanceScore]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePerformanceScore[P]>
+      : GetScalarType<T[P], AggregatePerformanceScore[P]>
+  }
+
+
+
+
+  export type PerformanceScoreGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PerformanceScoreWhereInput
+    orderBy?: PerformanceScoreOrderByWithAggregationInput | PerformanceScoreOrderByWithAggregationInput[]
+    by: PerformanceScoreScalarFieldEnum[] | PerformanceScoreScalarFieldEnum
+    having?: PerformanceScoreScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PerformanceScoreCountAggregateInputType | true
+    _avg?: PerformanceScoreAvgAggregateInputType
+    _sum?: PerformanceScoreSumAggregateInputType
+    _min?: PerformanceScoreMinAggregateInputType
+    _max?: PerformanceScoreMaxAggregateInputType
+  }
+
+  export type PerformanceScoreGroupByOutputType = {
+    id: string
+    influencerId: string
+    period: string
+    ctr: number
+    cvr: number
+    volume: number
+    ctrNorm: number
+    cvrNorm: number
+    volumeNorm: number
+    score: number
+    commissionRate: number
+    computedAt: Date
+    _count: PerformanceScoreCountAggregateOutputType | null
+    _avg: PerformanceScoreAvgAggregateOutputType | null
+    _sum: PerformanceScoreSumAggregateOutputType | null
+    _min: PerformanceScoreMinAggregateOutputType | null
+    _max: PerformanceScoreMaxAggregateOutputType | null
+  }
+
+  type GetPerformanceScoreGroupByPayload<T extends PerformanceScoreGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PerformanceScoreGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PerformanceScoreGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PerformanceScoreGroupByOutputType[P]>
+            : GetScalarType<T[P], PerformanceScoreGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PerformanceScoreSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    influencerId?: boolean
+    period?: boolean
+    ctr?: boolean
+    cvr?: boolean
+    volume?: boolean
+    ctrNorm?: boolean
+    cvrNorm?: boolean
+    volumeNorm?: boolean
+    score?: boolean
+    commissionRate?: boolean
+    computedAt?: boolean
+    influencer?: boolean | InfluencerDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["performanceScore"]>
+
+  export type PerformanceScoreSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    influencerId?: boolean
+    period?: boolean
+    ctr?: boolean
+    cvr?: boolean
+    volume?: boolean
+    ctrNorm?: boolean
+    cvrNorm?: boolean
+    volumeNorm?: boolean
+    score?: boolean
+    commissionRate?: boolean
+    computedAt?: boolean
+    influencer?: boolean | InfluencerDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["performanceScore"]>
+
+  export type PerformanceScoreSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    influencerId?: boolean
+    period?: boolean
+    ctr?: boolean
+    cvr?: boolean
+    volume?: boolean
+    ctrNorm?: boolean
+    cvrNorm?: boolean
+    volumeNorm?: boolean
+    score?: boolean
+    commissionRate?: boolean
+    computedAt?: boolean
+    influencer?: boolean | InfluencerDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["performanceScore"]>
+
+  export type PerformanceScoreSelectScalar = {
+    id?: boolean
+    influencerId?: boolean
+    period?: boolean
+    ctr?: boolean
+    cvr?: boolean
+    volume?: boolean
+    ctrNorm?: boolean
+    cvrNorm?: boolean
+    volumeNorm?: boolean
+    score?: boolean
+    commissionRate?: boolean
+    computedAt?: boolean
+  }
+
+  export type PerformanceScoreOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "influencerId" | "period" | "ctr" | "cvr" | "volume" | "ctrNorm" | "cvrNorm" | "volumeNorm" | "score" | "commissionRate" | "computedAt", ExtArgs["result"]["performanceScore"]>
+  export type PerformanceScoreInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    influencer?: boolean | InfluencerDefaultArgs<ExtArgs>
+  }
+  export type PerformanceScoreIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    influencer?: boolean | InfluencerDefaultArgs<ExtArgs>
+  }
+  export type PerformanceScoreIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    influencer?: boolean | InfluencerDefaultArgs<ExtArgs>
+  }
+
+  export type $PerformanceScorePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PerformanceScore"
+    objects: {
+      influencer: Prisma.$InfluencerPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      influencerId: string
+      period: string
+      ctr: number
+      cvr: number
+      volume: number
+      ctrNorm: number
+      cvrNorm: number
+      volumeNorm: number
+      score: number
+      commissionRate: number
+      computedAt: Date
+    }, ExtArgs["result"]["performanceScore"]>
+    composites: {}
+  }
+
+  type PerformanceScoreGetPayload<S extends boolean | null | undefined | PerformanceScoreDefaultArgs> = $Result.GetResult<Prisma.$PerformanceScorePayload, S>
+
+  type PerformanceScoreCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PerformanceScoreFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PerformanceScoreCountAggregateInputType | true
+    }
+
+  export interface PerformanceScoreDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PerformanceScore'], meta: { name: 'PerformanceScore' } }
+    /**
+     * Find zero or one PerformanceScore that matches the filter.
+     * @param {PerformanceScoreFindUniqueArgs} args - Arguments to find a PerformanceScore
+     * @example
+     * // Get one PerformanceScore
+     * const performanceScore = await prisma.performanceScore.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PerformanceScoreFindUniqueArgs>(args: SelectSubset<T, PerformanceScoreFindUniqueArgs<ExtArgs>>): Prisma__PerformanceScoreClient<$Result.GetResult<Prisma.$PerformanceScorePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PerformanceScore that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PerformanceScoreFindUniqueOrThrowArgs} args - Arguments to find a PerformanceScore
+     * @example
+     * // Get one PerformanceScore
+     * const performanceScore = await prisma.performanceScore.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PerformanceScoreFindUniqueOrThrowArgs>(args: SelectSubset<T, PerformanceScoreFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PerformanceScoreClient<$Result.GetResult<Prisma.$PerformanceScorePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PerformanceScore that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PerformanceScoreFindFirstArgs} args - Arguments to find a PerformanceScore
+     * @example
+     * // Get one PerformanceScore
+     * const performanceScore = await prisma.performanceScore.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PerformanceScoreFindFirstArgs>(args?: SelectSubset<T, PerformanceScoreFindFirstArgs<ExtArgs>>): Prisma__PerformanceScoreClient<$Result.GetResult<Prisma.$PerformanceScorePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PerformanceScore that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PerformanceScoreFindFirstOrThrowArgs} args - Arguments to find a PerformanceScore
+     * @example
+     * // Get one PerformanceScore
+     * const performanceScore = await prisma.performanceScore.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PerformanceScoreFindFirstOrThrowArgs>(args?: SelectSubset<T, PerformanceScoreFindFirstOrThrowArgs<ExtArgs>>): Prisma__PerformanceScoreClient<$Result.GetResult<Prisma.$PerformanceScorePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PerformanceScores that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PerformanceScoreFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PerformanceScores
+     * const performanceScores = await prisma.performanceScore.findMany()
+     * 
+     * // Get first 10 PerformanceScores
+     * const performanceScores = await prisma.performanceScore.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const performanceScoreWithIdOnly = await prisma.performanceScore.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PerformanceScoreFindManyArgs>(args?: SelectSubset<T, PerformanceScoreFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PerformanceScorePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PerformanceScore.
+     * @param {PerformanceScoreCreateArgs} args - Arguments to create a PerformanceScore.
+     * @example
+     * // Create one PerformanceScore
+     * const PerformanceScore = await prisma.performanceScore.create({
+     *   data: {
+     *     // ... data to create a PerformanceScore
+     *   }
+     * })
+     * 
+     */
+    create<T extends PerformanceScoreCreateArgs>(args: SelectSubset<T, PerformanceScoreCreateArgs<ExtArgs>>): Prisma__PerformanceScoreClient<$Result.GetResult<Prisma.$PerformanceScorePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PerformanceScores.
+     * @param {PerformanceScoreCreateManyArgs} args - Arguments to create many PerformanceScores.
+     * @example
+     * // Create many PerformanceScores
+     * const performanceScore = await prisma.performanceScore.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PerformanceScoreCreateManyArgs>(args?: SelectSubset<T, PerformanceScoreCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PerformanceScores and returns the data saved in the database.
+     * @param {PerformanceScoreCreateManyAndReturnArgs} args - Arguments to create many PerformanceScores.
+     * @example
+     * // Create many PerformanceScores
+     * const performanceScore = await prisma.performanceScore.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PerformanceScores and only return the `id`
+     * const performanceScoreWithIdOnly = await prisma.performanceScore.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PerformanceScoreCreateManyAndReturnArgs>(args?: SelectSubset<T, PerformanceScoreCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PerformanceScorePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a PerformanceScore.
+     * @param {PerformanceScoreDeleteArgs} args - Arguments to delete one PerformanceScore.
+     * @example
+     * // Delete one PerformanceScore
+     * const PerformanceScore = await prisma.performanceScore.delete({
+     *   where: {
+     *     // ... filter to delete one PerformanceScore
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PerformanceScoreDeleteArgs>(args: SelectSubset<T, PerformanceScoreDeleteArgs<ExtArgs>>): Prisma__PerformanceScoreClient<$Result.GetResult<Prisma.$PerformanceScorePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PerformanceScore.
+     * @param {PerformanceScoreUpdateArgs} args - Arguments to update one PerformanceScore.
+     * @example
+     * // Update one PerformanceScore
+     * const performanceScore = await prisma.performanceScore.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PerformanceScoreUpdateArgs>(args: SelectSubset<T, PerformanceScoreUpdateArgs<ExtArgs>>): Prisma__PerformanceScoreClient<$Result.GetResult<Prisma.$PerformanceScorePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PerformanceScores.
+     * @param {PerformanceScoreDeleteManyArgs} args - Arguments to filter PerformanceScores to delete.
+     * @example
+     * // Delete a few PerformanceScores
+     * const { count } = await prisma.performanceScore.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PerformanceScoreDeleteManyArgs>(args?: SelectSubset<T, PerformanceScoreDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PerformanceScores.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PerformanceScoreUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PerformanceScores
+     * const performanceScore = await prisma.performanceScore.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PerformanceScoreUpdateManyArgs>(args: SelectSubset<T, PerformanceScoreUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PerformanceScores and returns the data updated in the database.
+     * @param {PerformanceScoreUpdateManyAndReturnArgs} args - Arguments to update many PerformanceScores.
+     * @example
+     * // Update many PerformanceScores
+     * const performanceScore = await prisma.performanceScore.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more PerformanceScores and only return the `id`
+     * const performanceScoreWithIdOnly = await prisma.performanceScore.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PerformanceScoreUpdateManyAndReturnArgs>(args: SelectSubset<T, PerformanceScoreUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PerformanceScorePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one PerformanceScore.
+     * @param {PerformanceScoreUpsertArgs} args - Arguments to update or create a PerformanceScore.
+     * @example
+     * // Update or create a PerformanceScore
+     * const performanceScore = await prisma.performanceScore.upsert({
+     *   create: {
+     *     // ... data to create a PerformanceScore
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PerformanceScore we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PerformanceScoreUpsertArgs>(args: SelectSubset<T, PerformanceScoreUpsertArgs<ExtArgs>>): Prisma__PerformanceScoreClient<$Result.GetResult<Prisma.$PerformanceScorePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PerformanceScores.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PerformanceScoreCountArgs} args - Arguments to filter PerformanceScores to count.
+     * @example
+     * // Count the number of PerformanceScores
+     * const count = await prisma.performanceScore.count({
+     *   where: {
+     *     // ... the filter for the PerformanceScores we want to count
+     *   }
+     * })
+    **/
+    count<T extends PerformanceScoreCountArgs>(
+      args?: Subset<T, PerformanceScoreCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PerformanceScoreCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PerformanceScore.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PerformanceScoreAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PerformanceScoreAggregateArgs>(args: Subset<T, PerformanceScoreAggregateArgs>): Prisma.PrismaPromise<GetPerformanceScoreAggregateType<T>>
+
+    /**
+     * Group by PerformanceScore.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PerformanceScoreGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PerformanceScoreGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PerformanceScoreGroupByArgs['orderBy'] }
+        : { orderBy?: PerformanceScoreGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PerformanceScoreGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPerformanceScoreGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PerformanceScore model
+   */
+  readonly fields: PerformanceScoreFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PerformanceScore.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PerformanceScoreClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    influencer<T extends InfluencerDefaultArgs<ExtArgs> = {}>(args?: Subset<T, InfluencerDefaultArgs<ExtArgs>>): Prisma__InfluencerClient<$Result.GetResult<Prisma.$InfluencerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PerformanceScore model
+   */
+  interface PerformanceScoreFieldRefs {
+    readonly id: FieldRef<"PerformanceScore", 'String'>
+    readonly influencerId: FieldRef<"PerformanceScore", 'String'>
+    readonly period: FieldRef<"PerformanceScore", 'String'>
+    readonly ctr: FieldRef<"PerformanceScore", 'Float'>
+    readonly cvr: FieldRef<"PerformanceScore", 'Float'>
+    readonly volume: FieldRef<"PerformanceScore", 'Int'>
+    readonly ctrNorm: FieldRef<"PerformanceScore", 'Float'>
+    readonly cvrNorm: FieldRef<"PerformanceScore", 'Float'>
+    readonly volumeNorm: FieldRef<"PerformanceScore", 'Float'>
+    readonly score: FieldRef<"PerformanceScore", 'Float'>
+    readonly commissionRate: FieldRef<"PerformanceScore", 'Float'>
+    readonly computedAt: FieldRef<"PerformanceScore", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PerformanceScore findUnique
+   */
+  export type PerformanceScoreFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PerformanceScore
+     */
+    select?: PerformanceScoreSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PerformanceScore
+     */
+    omit?: PerformanceScoreOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PerformanceScoreInclude<ExtArgs> | null
+    /**
+     * Filter, which PerformanceScore to fetch.
+     */
+    where: PerformanceScoreWhereUniqueInput
+  }
+
+  /**
+   * PerformanceScore findUniqueOrThrow
+   */
+  export type PerformanceScoreFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PerformanceScore
+     */
+    select?: PerformanceScoreSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PerformanceScore
+     */
+    omit?: PerformanceScoreOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PerformanceScoreInclude<ExtArgs> | null
+    /**
+     * Filter, which PerformanceScore to fetch.
+     */
+    where: PerformanceScoreWhereUniqueInput
+  }
+
+  /**
+   * PerformanceScore findFirst
+   */
+  export type PerformanceScoreFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PerformanceScore
+     */
+    select?: PerformanceScoreSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PerformanceScore
+     */
+    omit?: PerformanceScoreOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PerformanceScoreInclude<ExtArgs> | null
+    /**
+     * Filter, which PerformanceScore to fetch.
+     */
+    where?: PerformanceScoreWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PerformanceScores to fetch.
+     */
+    orderBy?: PerformanceScoreOrderByWithRelationInput | PerformanceScoreOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PerformanceScores.
+     */
+    cursor?: PerformanceScoreWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PerformanceScores from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PerformanceScores.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PerformanceScores.
+     */
+    distinct?: PerformanceScoreScalarFieldEnum | PerformanceScoreScalarFieldEnum[]
+  }
+
+  /**
+   * PerformanceScore findFirstOrThrow
+   */
+  export type PerformanceScoreFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PerformanceScore
+     */
+    select?: PerformanceScoreSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PerformanceScore
+     */
+    omit?: PerformanceScoreOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PerformanceScoreInclude<ExtArgs> | null
+    /**
+     * Filter, which PerformanceScore to fetch.
+     */
+    where?: PerformanceScoreWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PerformanceScores to fetch.
+     */
+    orderBy?: PerformanceScoreOrderByWithRelationInput | PerformanceScoreOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PerformanceScores.
+     */
+    cursor?: PerformanceScoreWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PerformanceScores from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PerformanceScores.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PerformanceScores.
+     */
+    distinct?: PerformanceScoreScalarFieldEnum | PerformanceScoreScalarFieldEnum[]
+  }
+
+  /**
+   * PerformanceScore findMany
+   */
+  export type PerformanceScoreFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PerformanceScore
+     */
+    select?: PerformanceScoreSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PerformanceScore
+     */
+    omit?: PerformanceScoreOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PerformanceScoreInclude<ExtArgs> | null
+    /**
+     * Filter, which PerformanceScores to fetch.
+     */
+    where?: PerformanceScoreWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PerformanceScores to fetch.
+     */
+    orderBy?: PerformanceScoreOrderByWithRelationInput | PerformanceScoreOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PerformanceScores.
+     */
+    cursor?: PerformanceScoreWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PerformanceScores from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PerformanceScores.
+     */
+    skip?: number
+    distinct?: PerformanceScoreScalarFieldEnum | PerformanceScoreScalarFieldEnum[]
+  }
+
+  /**
+   * PerformanceScore create
+   */
+  export type PerformanceScoreCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PerformanceScore
+     */
+    select?: PerformanceScoreSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PerformanceScore
+     */
+    omit?: PerformanceScoreOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PerformanceScoreInclude<ExtArgs> | null
+    /**
+     * The data needed to create a PerformanceScore.
+     */
+    data: XOR<PerformanceScoreCreateInput, PerformanceScoreUncheckedCreateInput>
+  }
+
+  /**
+   * PerformanceScore createMany
+   */
+  export type PerformanceScoreCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PerformanceScores.
+     */
+    data: PerformanceScoreCreateManyInput | PerformanceScoreCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PerformanceScore createManyAndReturn
+   */
+  export type PerformanceScoreCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PerformanceScore
+     */
+    select?: PerformanceScoreSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PerformanceScore
+     */
+    omit?: PerformanceScoreOmit<ExtArgs> | null
+    /**
+     * The data used to create many PerformanceScores.
+     */
+    data: PerformanceScoreCreateManyInput | PerformanceScoreCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PerformanceScoreIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PerformanceScore update
+   */
+  export type PerformanceScoreUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PerformanceScore
+     */
+    select?: PerformanceScoreSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PerformanceScore
+     */
+    omit?: PerformanceScoreOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PerformanceScoreInclude<ExtArgs> | null
+    /**
+     * The data needed to update a PerformanceScore.
+     */
+    data: XOR<PerformanceScoreUpdateInput, PerformanceScoreUncheckedUpdateInput>
+    /**
+     * Choose, which PerformanceScore to update.
+     */
+    where: PerformanceScoreWhereUniqueInput
+  }
+
+  /**
+   * PerformanceScore updateMany
+   */
+  export type PerformanceScoreUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PerformanceScores.
+     */
+    data: XOR<PerformanceScoreUpdateManyMutationInput, PerformanceScoreUncheckedUpdateManyInput>
+    /**
+     * Filter which PerformanceScores to update
+     */
+    where?: PerformanceScoreWhereInput
+    /**
+     * Limit how many PerformanceScores to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PerformanceScore updateManyAndReturn
+   */
+  export type PerformanceScoreUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PerformanceScore
+     */
+    select?: PerformanceScoreSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PerformanceScore
+     */
+    omit?: PerformanceScoreOmit<ExtArgs> | null
+    /**
+     * The data used to update PerformanceScores.
+     */
+    data: XOR<PerformanceScoreUpdateManyMutationInput, PerformanceScoreUncheckedUpdateManyInput>
+    /**
+     * Filter which PerformanceScores to update
+     */
+    where?: PerformanceScoreWhereInput
+    /**
+     * Limit how many PerformanceScores to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PerformanceScoreIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PerformanceScore upsert
+   */
+  export type PerformanceScoreUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PerformanceScore
+     */
+    select?: PerformanceScoreSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PerformanceScore
+     */
+    omit?: PerformanceScoreOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PerformanceScoreInclude<ExtArgs> | null
+    /**
+     * The filter to search for the PerformanceScore to update in case it exists.
+     */
+    where: PerformanceScoreWhereUniqueInput
+    /**
+     * In case the PerformanceScore found by the `where` argument doesn't exist, create a new PerformanceScore with this data.
+     */
+    create: XOR<PerformanceScoreCreateInput, PerformanceScoreUncheckedCreateInput>
+    /**
+     * In case the PerformanceScore was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PerformanceScoreUpdateInput, PerformanceScoreUncheckedUpdateInput>
+  }
+
+  /**
+   * PerformanceScore delete
+   */
+  export type PerformanceScoreDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PerformanceScore
+     */
+    select?: PerformanceScoreSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PerformanceScore
+     */
+    omit?: PerformanceScoreOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PerformanceScoreInclude<ExtArgs> | null
+    /**
+     * Filter which PerformanceScore to delete.
+     */
+    where: PerformanceScoreWhereUniqueInput
+  }
+
+  /**
+   * PerformanceScore deleteMany
+   */
+  export type PerformanceScoreDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PerformanceScores to delete
+     */
+    where?: PerformanceScoreWhereInput
+    /**
+     * Limit how many PerformanceScores to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PerformanceScore without action
+   */
+  export type PerformanceScoreDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PerformanceScore
+     */
+    select?: PerformanceScoreSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PerformanceScore
+     */
+    omit?: PerformanceScoreOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PerformanceScoreInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model PerformanceEvent
+   */
+
+  export type AggregatePerformanceEvent = {
+    _count: PerformanceEventCountAggregateOutputType | null
+    _avg: PerformanceEventAvgAggregateOutputType | null
+    _sum: PerformanceEventSumAggregateOutputType | null
+    _min: PerformanceEventMinAggregateOutputType | null
+    _max: PerformanceEventMaxAggregateOutputType | null
+  }
+
+  export type PerformanceEventAvgAggregateOutputType = {
+    impressions: number | null
+    clicks: number | null
+  }
+
+  export type PerformanceEventSumAggregateOutputType = {
+    impressions: number | null
+    clicks: number | null
+  }
+
+  export type PerformanceEventMinAggregateOutputType = {
+    id: string | null
+    influencerId: string | null
+    period: string | null
+    impressions: number | null
+    clicks: number | null
+    updatedAt: Date | null
+  }
+
+  export type PerformanceEventMaxAggregateOutputType = {
+    id: string | null
+    influencerId: string | null
+    period: string | null
+    impressions: number | null
+    clicks: number | null
+    updatedAt: Date | null
+  }
+
+  export type PerformanceEventCountAggregateOutputType = {
+    id: number
+    influencerId: number
+    period: number
+    impressions: number
+    clicks: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type PerformanceEventAvgAggregateInputType = {
+    impressions?: true
+    clicks?: true
+  }
+
+  export type PerformanceEventSumAggregateInputType = {
+    impressions?: true
+    clicks?: true
+  }
+
+  export type PerformanceEventMinAggregateInputType = {
+    id?: true
+    influencerId?: true
+    period?: true
+    impressions?: true
+    clicks?: true
+    updatedAt?: true
+  }
+
+  export type PerformanceEventMaxAggregateInputType = {
+    id?: true
+    influencerId?: true
+    period?: true
+    impressions?: true
+    clicks?: true
+    updatedAt?: true
+  }
+
+  export type PerformanceEventCountAggregateInputType = {
+    id?: true
+    influencerId?: true
+    period?: true
+    impressions?: true
+    clicks?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type PerformanceEventAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PerformanceEvent to aggregate.
+     */
+    where?: PerformanceEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PerformanceEvents to fetch.
+     */
+    orderBy?: PerformanceEventOrderByWithRelationInput | PerformanceEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PerformanceEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PerformanceEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PerformanceEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned PerformanceEvents
+    **/
+    _count?: true | PerformanceEventCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: PerformanceEventAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PerformanceEventSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PerformanceEventMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PerformanceEventMaxAggregateInputType
+  }
+
+  export type GetPerformanceEventAggregateType<T extends PerformanceEventAggregateArgs> = {
+        [P in keyof T & keyof AggregatePerformanceEvent]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePerformanceEvent[P]>
+      : GetScalarType<T[P], AggregatePerformanceEvent[P]>
+  }
+
+
+
+
+  export type PerformanceEventGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PerformanceEventWhereInput
+    orderBy?: PerformanceEventOrderByWithAggregationInput | PerformanceEventOrderByWithAggregationInput[]
+    by: PerformanceEventScalarFieldEnum[] | PerformanceEventScalarFieldEnum
+    having?: PerformanceEventScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PerformanceEventCountAggregateInputType | true
+    _avg?: PerformanceEventAvgAggregateInputType
+    _sum?: PerformanceEventSumAggregateInputType
+    _min?: PerformanceEventMinAggregateInputType
+    _max?: PerformanceEventMaxAggregateInputType
+  }
+
+  export type PerformanceEventGroupByOutputType = {
+    id: string
+    influencerId: string
+    period: string
+    impressions: number
+    clicks: number
+    updatedAt: Date
+    _count: PerformanceEventCountAggregateOutputType | null
+    _avg: PerformanceEventAvgAggregateOutputType | null
+    _sum: PerformanceEventSumAggregateOutputType | null
+    _min: PerformanceEventMinAggregateOutputType | null
+    _max: PerformanceEventMaxAggregateOutputType | null
+  }
+
+  type GetPerformanceEventGroupByPayload<T extends PerformanceEventGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PerformanceEventGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PerformanceEventGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PerformanceEventGroupByOutputType[P]>
+            : GetScalarType<T[P], PerformanceEventGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PerformanceEventSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    influencerId?: boolean
+    period?: boolean
+    impressions?: boolean
+    clicks?: boolean
+    updatedAt?: boolean
+    influencer?: boolean | InfluencerDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["performanceEvent"]>
+
+  export type PerformanceEventSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    influencerId?: boolean
+    period?: boolean
+    impressions?: boolean
+    clicks?: boolean
+    updatedAt?: boolean
+    influencer?: boolean | InfluencerDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["performanceEvent"]>
+
+  export type PerformanceEventSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    influencerId?: boolean
+    period?: boolean
+    impressions?: boolean
+    clicks?: boolean
+    updatedAt?: boolean
+    influencer?: boolean | InfluencerDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["performanceEvent"]>
+
+  export type PerformanceEventSelectScalar = {
+    id?: boolean
+    influencerId?: boolean
+    period?: boolean
+    impressions?: boolean
+    clicks?: boolean
+    updatedAt?: boolean
+  }
+
+  export type PerformanceEventOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "influencerId" | "period" | "impressions" | "clicks" | "updatedAt", ExtArgs["result"]["performanceEvent"]>
+  export type PerformanceEventInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    influencer?: boolean | InfluencerDefaultArgs<ExtArgs>
+  }
+  export type PerformanceEventIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    influencer?: boolean | InfluencerDefaultArgs<ExtArgs>
+  }
+  export type PerformanceEventIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    influencer?: boolean | InfluencerDefaultArgs<ExtArgs>
+  }
+
+  export type $PerformanceEventPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "PerformanceEvent"
+    objects: {
+      influencer: Prisma.$InfluencerPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      influencerId: string
+      period: string
+      impressions: number
+      clicks: number
+      updatedAt: Date
+    }, ExtArgs["result"]["performanceEvent"]>
+    composites: {}
+  }
+
+  type PerformanceEventGetPayload<S extends boolean | null | undefined | PerformanceEventDefaultArgs> = $Result.GetResult<Prisma.$PerformanceEventPayload, S>
+
+  type PerformanceEventCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PerformanceEventFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PerformanceEventCountAggregateInputType | true
+    }
+
+  export interface PerformanceEventDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['PerformanceEvent'], meta: { name: 'PerformanceEvent' } }
+    /**
+     * Find zero or one PerformanceEvent that matches the filter.
+     * @param {PerformanceEventFindUniqueArgs} args - Arguments to find a PerformanceEvent
+     * @example
+     * // Get one PerformanceEvent
+     * const performanceEvent = await prisma.performanceEvent.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PerformanceEventFindUniqueArgs>(args: SelectSubset<T, PerformanceEventFindUniqueArgs<ExtArgs>>): Prisma__PerformanceEventClient<$Result.GetResult<Prisma.$PerformanceEventPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one PerformanceEvent that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PerformanceEventFindUniqueOrThrowArgs} args - Arguments to find a PerformanceEvent
+     * @example
+     * // Get one PerformanceEvent
+     * const performanceEvent = await prisma.performanceEvent.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PerformanceEventFindUniqueOrThrowArgs>(args: SelectSubset<T, PerformanceEventFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PerformanceEventClient<$Result.GetResult<Prisma.$PerformanceEventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PerformanceEvent that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PerformanceEventFindFirstArgs} args - Arguments to find a PerformanceEvent
+     * @example
+     * // Get one PerformanceEvent
+     * const performanceEvent = await prisma.performanceEvent.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PerformanceEventFindFirstArgs>(args?: SelectSubset<T, PerformanceEventFindFirstArgs<ExtArgs>>): Prisma__PerformanceEventClient<$Result.GetResult<Prisma.$PerformanceEventPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first PerformanceEvent that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PerformanceEventFindFirstOrThrowArgs} args - Arguments to find a PerformanceEvent
+     * @example
+     * // Get one PerformanceEvent
+     * const performanceEvent = await prisma.performanceEvent.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PerformanceEventFindFirstOrThrowArgs>(args?: SelectSubset<T, PerformanceEventFindFirstOrThrowArgs<ExtArgs>>): Prisma__PerformanceEventClient<$Result.GetResult<Prisma.$PerformanceEventPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more PerformanceEvents that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PerformanceEventFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all PerformanceEvents
+     * const performanceEvents = await prisma.performanceEvent.findMany()
+     * 
+     * // Get first 10 PerformanceEvents
+     * const performanceEvents = await prisma.performanceEvent.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const performanceEventWithIdOnly = await prisma.performanceEvent.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PerformanceEventFindManyArgs>(args?: SelectSubset<T, PerformanceEventFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PerformanceEventPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a PerformanceEvent.
+     * @param {PerformanceEventCreateArgs} args - Arguments to create a PerformanceEvent.
+     * @example
+     * // Create one PerformanceEvent
+     * const PerformanceEvent = await prisma.performanceEvent.create({
+     *   data: {
+     *     // ... data to create a PerformanceEvent
+     *   }
+     * })
+     * 
+     */
+    create<T extends PerformanceEventCreateArgs>(args: SelectSubset<T, PerformanceEventCreateArgs<ExtArgs>>): Prisma__PerformanceEventClient<$Result.GetResult<Prisma.$PerformanceEventPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many PerformanceEvents.
+     * @param {PerformanceEventCreateManyArgs} args - Arguments to create many PerformanceEvents.
+     * @example
+     * // Create many PerformanceEvents
+     * const performanceEvent = await prisma.performanceEvent.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PerformanceEventCreateManyArgs>(args?: SelectSubset<T, PerformanceEventCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many PerformanceEvents and returns the data saved in the database.
+     * @param {PerformanceEventCreateManyAndReturnArgs} args - Arguments to create many PerformanceEvents.
+     * @example
+     * // Create many PerformanceEvents
+     * const performanceEvent = await prisma.performanceEvent.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many PerformanceEvents and only return the `id`
+     * const performanceEventWithIdOnly = await prisma.performanceEvent.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PerformanceEventCreateManyAndReturnArgs>(args?: SelectSubset<T, PerformanceEventCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PerformanceEventPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a PerformanceEvent.
+     * @param {PerformanceEventDeleteArgs} args - Arguments to delete one PerformanceEvent.
+     * @example
+     * // Delete one PerformanceEvent
+     * const PerformanceEvent = await prisma.performanceEvent.delete({
+     *   where: {
+     *     // ... filter to delete one PerformanceEvent
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PerformanceEventDeleteArgs>(args: SelectSubset<T, PerformanceEventDeleteArgs<ExtArgs>>): Prisma__PerformanceEventClient<$Result.GetResult<Prisma.$PerformanceEventPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one PerformanceEvent.
+     * @param {PerformanceEventUpdateArgs} args - Arguments to update one PerformanceEvent.
+     * @example
+     * // Update one PerformanceEvent
+     * const performanceEvent = await prisma.performanceEvent.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PerformanceEventUpdateArgs>(args: SelectSubset<T, PerformanceEventUpdateArgs<ExtArgs>>): Prisma__PerformanceEventClient<$Result.GetResult<Prisma.$PerformanceEventPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more PerformanceEvents.
+     * @param {PerformanceEventDeleteManyArgs} args - Arguments to filter PerformanceEvents to delete.
+     * @example
+     * // Delete a few PerformanceEvents
+     * const { count } = await prisma.performanceEvent.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PerformanceEventDeleteManyArgs>(args?: SelectSubset<T, PerformanceEventDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PerformanceEvents.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PerformanceEventUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many PerformanceEvents
+     * const performanceEvent = await prisma.performanceEvent.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PerformanceEventUpdateManyArgs>(args: SelectSubset<T, PerformanceEventUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more PerformanceEvents and returns the data updated in the database.
+     * @param {PerformanceEventUpdateManyAndReturnArgs} args - Arguments to update many PerformanceEvents.
+     * @example
+     * // Update many PerformanceEvents
+     * const performanceEvent = await prisma.performanceEvent.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more PerformanceEvents and only return the `id`
+     * const performanceEventWithIdOnly = await prisma.performanceEvent.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PerformanceEventUpdateManyAndReturnArgs>(args: SelectSubset<T, PerformanceEventUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PerformanceEventPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one PerformanceEvent.
+     * @param {PerformanceEventUpsertArgs} args - Arguments to update or create a PerformanceEvent.
+     * @example
+     * // Update or create a PerformanceEvent
+     * const performanceEvent = await prisma.performanceEvent.upsert({
+     *   create: {
+     *     // ... data to create a PerformanceEvent
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the PerformanceEvent we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PerformanceEventUpsertArgs>(args: SelectSubset<T, PerformanceEventUpsertArgs<ExtArgs>>): Prisma__PerformanceEventClient<$Result.GetResult<Prisma.$PerformanceEventPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of PerformanceEvents.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PerformanceEventCountArgs} args - Arguments to filter PerformanceEvents to count.
+     * @example
+     * // Count the number of PerformanceEvents
+     * const count = await prisma.performanceEvent.count({
+     *   where: {
+     *     // ... the filter for the PerformanceEvents we want to count
+     *   }
+     * })
+    **/
+    count<T extends PerformanceEventCountArgs>(
+      args?: Subset<T, PerformanceEventCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PerformanceEventCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a PerformanceEvent.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PerformanceEventAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PerformanceEventAggregateArgs>(args: Subset<T, PerformanceEventAggregateArgs>): Prisma.PrismaPromise<GetPerformanceEventAggregateType<T>>
+
+    /**
+     * Group by PerformanceEvent.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PerformanceEventGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PerformanceEventGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PerformanceEventGroupByArgs['orderBy'] }
+        : { orderBy?: PerformanceEventGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PerformanceEventGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPerformanceEventGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the PerformanceEvent model
+   */
+  readonly fields: PerformanceEventFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for PerformanceEvent.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PerformanceEventClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    influencer<T extends InfluencerDefaultArgs<ExtArgs> = {}>(args?: Subset<T, InfluencerDefaultArgs<ExtArgs>>): Prisma__InfluencerClient<$Result.GetResult<Prisma.$InfluencerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the PerformanceEvent model
+   */
+  interface PerformanceEventFieldRefs {
+    readonly id: FieldRef<"PerformanceEvent", 'String'>
+    readonly influencerId: FieldRef<"PerformanceEvent", 'String'>
+    readonly period: FieldRef<"PerformanceEvent", 'String'>
+    readonly impressions: FieldRef<"PerformanceEvent", 'Int'>
+    readonly clicks: FieldRef<"PerformanceEvent", 'Int'>
+    readonly updatedAt: FieldRef<"PerformanceEvent", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * PerformanceEvent findUnique
+   */
+  export type PerformanceEventFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PerformanceEvent
+     */
+    select?: PerformanceEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PerformanceEvent
+     */
+    omit?: PerformanceEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PerformanceEventInclude<ExtArgs> | null
+    /**
+     * Filter, which PerformanceEvent to fetch.
+     */
+    where: PerformanceEventWhereUniqueInput
+  }
+
+  /**
+   * PerformanceEvent findUniqueOrThrow
+   */
+  export type PerformanceEventFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PerformanceEvent
+     */
+    select?: PerformanceEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PerformanceEvent
+     */
+    omit?: PerformanceEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PerformanceEventInclude<ExtArgs> | null
+    /**
+     * Filter, which PerformanceEvent to fetch.
+     */
+    where: PerformanceEventWhereUniqueInput
+  }
+
+  /**
+   * PerformanceEvent findFirst
+   */
+  export type PerformanceEventFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PerformanceEvent
+     */
+    select?: PerformanceEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PerformanceEvent
+     */
+    omit?: PerformanceEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PerformanceEventInclude<ExtArgs> | null
+    /**
+     * Filter, which PerformanceEvent to fetch.
+     */
+    where?: PerformanceEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PerformanceEvents to fetch.
+     */
+    orderBy?: PerformanceEventOrderByWithRelationInput | PerformanceEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PerformanceEvents.
+     */
+    cursor?: PerformanceEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PerformanceEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PerformanceEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PerformanceEvents.
+     */
+    distinct?: PerformanceEventScalarFieldEnum | PerformanceEventScalarFieldEnum[]
+  }
+
+  /**
+   * PerformanceEvent findFirstOrThrow
+   */
+  export type PerformanceEventFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PerformanceEvent
+     */
+    select?: PerformanceEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PerformanceEvent
+     */
+    omit?: PerformanceEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PerformanceEventInclude<ExtArgs> | null
+    /**
+     * Filter, which PerformanceEvent to fetch.
+     */
+    where?: PerformanceEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PerformanceEvents to fetch.
+     */
+    orderBy?: PerformanceEventOrderByWithRelationInput | PerformanceEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for PerformanceEvents.
+     */
+    cursor?: PerformanceEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PerformanceEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PerformanceEvents.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of PerformanceEvents.
+     */
+    distinct?: PerformanceEventScalarFieldEnum | PerformanceEventScalarFieldEnum[]
+  }
+
+  /**
+   * PerformanceEvent findMany
+   */
+  export type PerformanceEventFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PerformanceEvent
+     */
+    select?: PerformanceEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PerformanceEvent
+     */
+    omit?: PerformanceEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PerformanceEventInclude<ExtArgs> | null
+    /**
+     * Filter, which PerformanceEvents to fetch.
+     */
+    where?: PerformanceEventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of PerformanceEvents to fetch.
+     */
+    orderBy?: PerformanceEventOrderByWithRelationInput | PerformanceEventOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing PerformanceEvents.
+     */
+    cursor?: PerformanceEventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` PerformanceEvents from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` PerformanceEvents.
+     */
+    skip?: number
+    distinct?: PerformanceEventScalarFieldEnum | PerformanceEventScalarFieldEnum[]
+  }
+
+  /**
+   * PerformanceEvent create
+   */
+  export type PerformanceEventCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PerformanceEvent
+     */
+    select?: PerformanceEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PerformanceEvent
+     */
+    omit?: PerformanceEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PerformanceEventInclude<ExtArgs> | null
+    /**
+     * The data needed to create a PerformanceEvent.
+     */
+    data: XOR<PerformanceEventCreateInput, PerformanceEventUncheckedCreateInput>
+  }
+
+  /**
+   * PerformanceEvent createMany
+   */
+  export type PerformanceEventCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many PerformanceEvents.
+     */
+    data: PerformanceEventCreateManyInput | PerformanceEventCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * PerformanceEvent createManyAndReturn
+   */
+  export type PerformanceEventCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PerformanceEvent
+     */
+    select?: PerformanceEventSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PerformanceEvent
+     */
+    omit?: PerformanceEventOmit<ExtArgs> | null
+    /**
+     * The data used to create many PerformanceEvents.
+     */
+    data: PerformanceEventCreateManyInput | PerformanceEventCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PerformanceEventIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PerformanceEvent update
+   */
+  export type PerformanceEventUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PerformanceEvent
+     */
+    select?: PerformanceEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PerformanceEvent
+     */
+    omit?: PerformanceEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PerformanceEventInclude<ExtArgs> | null
+    /**
+     * The data needed to update a PerformanceEvent.
+     */
+    data: XOR<PerformanceEventUpdateInput, PerformanceEventUncheckedUpdateInput>
+    /**
+     * Choose, which PerformanceEvent to update.
+     */
+    where: PerformanceEventWhereUniqueInput
+  }
+
+  /**
+   * PerformanceEvent updateMany
+   */
+  export type PerformanceEventUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update PerformanceEvents.
+     */
+    data: XOR<PerformanceEventUpdateManyMutationInput, PerformanceEventUncheckedUpdateManyInput>
+    /**
+     * Filter which PerformanceEvents to update
+     */
+    where?: PerformanceEventWhereInput
+    /**
+     * Limit how many PerformanceEvents to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * PerformanceEvent updateManyAndReturn
+   */
+  export type PerformanceEventUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PerformanceEvent
+     */
+    select?: PerformanceEventSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the PerformanceEvent
+     */
+    omit?: PerformanceEventOmit<ExtArgs> | null
+    /**
+     * The data used to update PerformanceEvents.
+     */
+    data: XOR<PerformanceEventUpdateManyMutationInput, PerformanceEventUncheckedUpdateManyInput>
+    /**
+     * Filter which PerformanceEvents to update
+     */
+    where?: PerformanceEventWhereInput
+    /**
+     * Limit how many PerformanceEvents to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PerformanceEventIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * PerformanceEvent upsert
+   */
+  export type PerformanceEventUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PerformanceEvent
+     */
+    select?: PerformanceEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PerformanceEvent
+     */
+    omit?: PerformanceEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PerformanceEventInclude<ExtArgs> | null
+    /**
+     * The filter to search for the PerformanceEvent to update in case it exists.
+     */
+    where: PerformanceEventWhereUniqueInput
+    /**
+     * In case the PerformanceEvent found by the `where` argument doesn't exist, create a new PerformanceEvent with this data.
+     */
+    create: XOR<PerformanceEventCreateInput, PerformanceEventUncheckedCreateInput>
+    /**
+     * In case the PerformanceEvent was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PerformanceEventUpdateInput, PerformanceEventUncheckedUpdateInput>
+  }
+
+  /**
+   * PerformanceEvent delete
+   */
+  export type PerformanceEventDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PerformanceEvent
+     */
+    select?: PerformanceEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PerformanceEvent
+     */
+    omit?: PerformanceEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PerformanceEventInclude<ExtArgs> | null
+    /**
+     * Filter which PerformanceEvent to delete.
+     */
+    where: PerformanceEventWhereUniqueInput
+  }
+
+  /**
+   * PerformanceEvent deleteMany
+   */
+  export type PerformanceEventDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which PerformanceEvents to delete
+     */
+    where?: PerformanceEventWhereInput
+    /**
+     * Limit how many PerformanceEvents to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * PerformanceEvent without action
+   */
+  export type PerformanceEventDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the PerformanceEvent
+     */
+    select?: PerformanceEventSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the PerformanceEvent
+     */
+    omit?: PerformanceEventOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PerformanceEventInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Referral
+   */
+
+  export type AggregateReferral = {
+    _count: ReferralCountAggregateOutputType | null
+    _avg: ReferralAvgAggregateOutputType | null
+    _sum: ReferralSumAggregateOutputType | null
+    _min: ReferralMinAggregateOutputType | null
+    _max: ReferralMaxAggregateOutputType | null
+  }
+
+  export type ReferralAvgAggregateOutputType = {
+    reductionApplied: number | null
+  }
+
+  export type ReferralSumAggregateOutputType = {
+    reductionApplied: number | null
+  }
+
+  export type ReferralMinAggregateOutputType = {
+    id: string | null
+    referrerId: string | null
+    invitedId: string | null
+    qualified: boolean | null
+    qualifiedAt: Date | null
+    qualifiedPeriod: string | null
+    reductionApplied: number | null
+    createdAt: Date | null
+  }
+
+  export type ReferralMaxAggregateOutputType = {
+    id: string | null
+    referrerId: string | null
+    invitedId: string | null
+    qualified: boolean | null
+    qualifiedAt: Date | null
+    qualifiedPeriod: string | null
+    reductionApplied: number | null
+    createdAt: Date | null
+  }
+
+  export type ReferralCountAggregateOutputType = {
+    id: number
+    referrerId: number
+    invitedId: number
+    qualified: number
+    qualifiedAt: number
+    qualifiedPeriod: number
+    reductionApplied: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type ReferralAvgAggregateInputType = {
+    reductionApplied?: true
+  }
+
+  export type ReferralSumAggregateInputType = {
+    reductionApplied?: true
+  }
+
+  export type ReferralMinAggregateInputType = {
+    id?: true
+    referrerId?: true
+    invitedId?: true
+    qualified?: true
+    qualifiedAt?: true
+    qualifiedPeriod?: true
+    reductionApplied?: true
+    createdAt?: true
+  }
+
+  export type ReferralMaxAggregateInputType = {
+    id?: true
+    referrerId?: true
+    invitedId?: true
+    qualified?: true
+    qualifiedAt?: true
+    qualifiedPeriod?: true
+    reductionApplied?: true
+    createdAt?: true
+  }
+
+  export type ReferralCountAggregateInputType = {
+    id?: true
+    referrerId?: true
+    invitedId?: true
+    qualified?: true
+    qualifiedAt?: true
+    qualifiedPeriod?: true
+    reductionApplied?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type ReferralAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Referral to aggregate.
+     */
+    where?: ReferralWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Referrals to fetch.
+     */
+    orderBy?: ReferralOrderByWithRelationInput | ReferralOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ReferralWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Referrals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Referrals.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Referrals
+    **/
+    _count?: true | ReferralCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ReferralAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ReferralSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ReferralMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ReferralMaxAggregateInputType
+  }
+
+  export type GetReferralAggregateType<T extends ReferralAggregateArgs> = {
+        [P in keyof T & keyof AggregateReferral]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateReferral[P]>
+      : GetScalarType<T[P], AggregateReferral[P]>
+  }
+
+
+
+
+  export type ReferralGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ReferralWhereInput
+    orderBy?: ReferralOrderByWithAggregationInput | ReferralOrderByWithAggregationInput[]
+    by: ReferralScalarFieldEnum[] | ReferralScalarFieldEnum
+    having?: ReferralScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ReferralCountAggregateInputType | true
+    _avg?: ReferralAvgAggregateInputType
+    _sum?: ReferralSumAggregateInputType
+    _min?: ReferralMinAggregateInputType
+    _max?: ReferralMaxAggregateInputType
+  }
+
+  export type ReferralGroupByOutputType = {
+    id: string
+    referrerId: string
+    invitedId: string
+    qualified: boolean
+    qualifiedAt: Date | null
+    qualifiedPeriod: string | null
+    reductionApplied: number | null
+    createdAt: Date
+    _count: ReferralCountAggregateOutputType | null
+    _avg: ReferralAvgAggregateOutputType | null
+    _sum: ReferralSumAggregateOutputType | null
+    _min: ReferralMinAggregateOutputType | null
+    _max: ReferralMaxAggregateOutputType | null
+  }
+
+  type GetReferralGroupByPayload<T extends ReferralGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ReferralGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ReferralGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ReferralGroupByOutputType[P]>
+            : GetScalarType<T[P], ReferralGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ReferralSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    referrerId?: boolean
+    invitedId?: boolean
+    qualified?: boolean
+    qualifiedAt?: boolean
+    qualifiedPeriod?: boolean
+    reductionApplied?: boolean
+    createdAt?: boolean
+    referrer?: boolean | InfluencerDefaultArgs<ExtArgs>
+    invited?: boolean | InfluencerDefaultArgs<ExtArgs>
+    qualifications?: boolean | Referral$qualificationsArgs<ExtArgs>
+    _count?: boolean | ReferralCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["referral"]>
+
+  export type ReferralSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    referrerId?: boolean
+    invitedId?: boolean
+    qualified?: boolean
+    qualifiedAt?: boolean
+    qualifiedPeriod?: boolean
+    reductionApplied?: boolean
+    createdAt?: boolean
+    referrer?: boolean | InfluencerDefaultArgs<ExtArgs>
+    invited?: boolean | InfluencerDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["referral"]>
+
+  export type ReferralSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    referrerId?: boolean
+    invitedId?: boolean
+    qualified?: boolean
+    qualifiedAt?: boolean
+    qualifiedPeriod?: boolean
+    reductionApplied?: boolean
+    createdAt?: boolean
+    referrer?: boolean | InfluencerDefaultArgs<ExtArgs>
+    invited?: boolean | InfluencerDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["referral"]>
+
+  export type ReferralSelectScalar = {
+    id?: boolean
+    referrerId?: boolean
+    invitedId?: boolean
+    qualified?: boolean
+    qualifiedAt?: boolean
+    qualifiedPeriod?: boolean
+    reductionApplied?: boolean
+    createdAt?: boolean
+  }
+
+  export type ReferralOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "referrerId" | "invitedId" | "qualified" | "qualifiedAt" | "qualifiedPeriod" | "reductionApplied" | "createdAt", ExtArgs["result"]["referral"]>
+  export type ReferralInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    referrer?: boolean | InfluencerDefaultArgs<ExtArgs>
+    invited?: boolean | InfluencerDefaultArgs<ExtArgs>
+    qualifications?: boolean | Referral$qualificationsArgs<ExtArgs>
+    _count?: boolean | ReferralCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type ReferralIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    referrer?: boolean | InfluencerDefaultArgs<ExtArgs>
+    invited?: boolean | InfluencerDefaultArgs<ExtArgs>
+  }
+  export type ReferralIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    referrer?: boolean | InfluencerDefaultArgs<ExtArgs>
+    invited?: boolean | InfluencerDefaultArgs<ExtArgs>
+  }
+
+  export type $ReferralPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Referral"
+    objects: {
+      referrer: Prisma.$InfluencerPayload<ExtArgs>
+      invited: Prisma.$InfluencerPayload<ExtArgs>
+      qualifications: Prisma.$ReferralQualificationPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      referrerId: string
+      invitedId: string
+      qualified: boolean
+      qualifiedAt: Date | null
+      qualifiedPeriod: string | null
+      reductionApplied: number | null
+      createdAt: Date
+    }, ExtArgs["result"]["referral"]>
+    composites: {}
+  }
+
+  type ReferralGetPayload<S extends boolean | null | undefined | ReferralDefaultArgs> = $Result.GetResult<Prisma.$ReferralPayload, S>
+
+  type ReferralCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ReferralFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ReferralCountAggregateInputType | true
+    }
+
+  export interface ReferralDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Referral'], meta: { name: 'Referral' } }
+    /**
+     * Find zero or one Referral that matches the filter.
+     * @param {ReferralFindUniqueArgs} args - Arguments to find a Referral
+     * @example
+     * // Get one Referral
+     * const referral = await prisma.referral.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ReferralFindUniqueArgs>(args: SelectSubset<T, ReferralFindUniqueArgs<ExtArgs>>): Prisma__ReferralClient<$Result.GetResult<Prisma.$ReferralPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Referral that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ReferralFindUniqueOrThrowArgs} args - Arguments to find a Referral
+     * @example
+     * // Get one Referral
+     * const referral = await prisma.referral.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ReferralFindUniqueOrThrowArgs>(args: SelectSubset<T, ReferralFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ReferralClient<$Result.GetResult<Prisma.$ReferralPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Referral that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReferralFindFirstArgs} args - Arguments to find a Referral
+     * @example
+     * // Get one Referral
+     * const referral = await prisma.referral.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ReferralFindFirstArgs>(args?: SelectSubset<T, ReferralFindFirstArgs<ExtArgs>>): Prisma__ReferralClient<$Result.GetResult<Prisma.$ReferralPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Referral that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReferralFindFirstOrThrowArgs} args - Arguments to find a Referral
+     * @example
+     * // Get one Referral
+     * const referral = await prisma.referral.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ReferralFindFirstOrThrowArgs>(args?: SelectSubset<T, ReferralFindFirstOrThrowArgs<ExtArgs>>): Prisma__ReferralClient<$Result.GetResult<Prisma.$ReferralPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Referrals that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReferralFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Referrals
+     * const referrals = await prisma.referral.findMany()
+     * 
+     * // Get first 10 Referrals
+     * const referrals = await prisma.referral.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const referralWithIdOnly = await prisma.referral.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ReferralFindManyArgs>(args?: SelectSubset<T, ReferralFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReferralPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Referral.
+     * @param {ReferralCreateArgs} args - Arguments to create a Referral.
+     * @example
+     * // Create one Referral
+     * const Referral = await prisma.referral.create({
+     *   data: {
+     *     // ... data to create a Referral
+     *   }
+     * })
+     * 
+     */
+    create<T extends ReferralCreateArgs>(args: SelectSubset<T, ReferralCreateArgs<ExtArgs>>): Prisma__ReferralClient<$Result.GetResult<Prisma.$ReferralPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Referrals.
+     * @param {ReferralCreateManyArgs} args - Arguments to create many Referrals.
+     * @example
+     * // Create many Referrals
+     * const referral = await prisma.referral.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ReferralCreateManyArgs>(args?: SelectSubset<T, ReferralCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Referrals and returns the data saved in the database.
+     * @param {ReferralCreateManyAndReturnArgs} args - Arguments to create many Referrals.
+     * @example
+     * // Create many Referrals
+     * const referral = await prisma.referral.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Referrals and only return the `id`
+     * const referralWithIdOnly = await prisma.referral.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ReferralCreateManyAndReturnArgs>(args?: SelectSubset<T, ReferralCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReferralPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Referral.
+     * @param {ReferralDeleteArgs} args - Arguments to delete one Referral.
+     * @example
+     * // Delete one Referral
+     * const Referral = await prisma.referral.delete({
+     *   where: {
+     *     // ... filter to delete one Referral
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ReferralDeleteArgs>(args: SelectSubset<T, ReferralDeleteArgs<ExtArgs>>): Prisma__ReferralClient<$Result.GetResult<Prisma.$ReferralPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Referral.
+     * @param {ReferralUpdateArgs} args - Arguments to update one Referral.
+     * @example
+     * // Update one Referral
+     * const referral = await prisma.referral.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ReferralUpdateArgs>(args: SelectSubset<T, ReferralUpdateArgs<ExtArgs>>): Prisma__ReferralClient<$Result.GetResult<Prisma.$ReferralPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Referrals.
+     * @param {ReferralDeleteManyArgs} args - Arguments to filter Referrals to delete.
+     * @example
+     * // Delete a few Referrals
+     * const { count } = await prisma.referral.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ReferralDeleteManyArgs>(args?: SelectSubset<T, ReferralDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Referrals.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReferralUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Referrals
+     * const referral = await prisma.referral.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ReferralUpdateManyArgs>(args: SelectSubset<T, ReferralUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Referrals and returns the data updated in the database.
+     * @param {ReferralUpdateManyAndReturnArgs} args - Arguments to update many Referrals.
+     * @example
+     * // Update many Referrals
+     * const referral = await prisma.referral.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Referrals and only return the `id`
+     * const referralWithIdOnly = await prisma.referral.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ReferralUpdateManyAndReturnArgs>(args: SelectSubset<T, ReferralUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReferralPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Referral.
+     * @param {ReferralUpsertArgs} args - Arguments to update or create a Referral.
+     * @example
+     * // Update or create a Referral
+     * const referral = await prisma.referral.upsert({
+     *   create: {
+     *     // ... data to create a Referral
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Referral we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ReferralUpsertArgs>(args: SelectSubset<T, ReferralUpsertArgs<ExtArgs>>): Prisma__ReferralClient<$Result.GetResult<Prisma.$ReferralPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Referrals.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReferralCountArgs} args - Arguments to filter Referrals to count.
+     * @example
+     * // Count the number of Referrals
+     * const count = await prisma.referral.count({
+     *   where: {
+     *     // ... the filter for the Referrals we want to count
+     *   }
+     * })
+    **/
+    count<T extends ReferralCountArgs>(
+      args?: Subset<T, ReferralCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ReferralCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Referral.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReferralAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ReferralAggregateArgs>(args: Subset<T, ReferralAggregateArgs>): Prisma.PrismaPromise<GetReferralAggregateType<T>>
+
+    /**
+     * Group by Referral.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReferralGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ReferralGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ReferralGroupByArgs['orderBy'] }
+        : { orderBy?: ReferralGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ReferralGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetReferralGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Referral model
+   */
+  readonly fields: ReferralFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Referral.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ReferralClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    referrer<T extends InfluencerDefaultArgs<ExtArgs> = {}>(args?: Subset<T, InfluencerDefaultArgs<ExtArgs>>): Prisma__InfluencerClient<$Result.GetResult<Prisma.$InfluencerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    invited<T extends InfluencerDefaultArgs<ExtArgs> = {}>(args?: Subset<T, InfluencerDefaultArgs<ExtArgs>>): Prisma__InfluencerClient<$Result.GetResult<Prisma.$InfluencerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    qualifications<T extends Referral$qualificationsArgs<ExtArgs> = {}>(args?: Subset<T, Referral$qualificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReferralQualificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Referral model
+   */
+  interface ReferralFieldRefs {
+    readonly id: FieldRef<"Referral", 'String'>
+    readonly referrerId: FieldRef<"Referral", 'String'>
+    readonly invitedId: FieldRef<"Referral", 'String'>
+    readonly qualified: FieldRef<"Referral", 'Boolean'>
+    readonly qualifiedAt: FieldRef<"Referral", 'DateTime'>
+    readonly qualifiedPeriod: FieldRef<"Referral", 'String'>
+    readonly reductionApplied: FieldRef<"Referral", 'Int'>
+    readonly createdAt: FieldRef<"Referral", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Referral findUnique
+   */
+  export type ReferralFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Referral
+     */
+    select?: ReferralSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Referral
+     */
+    omit?: ReferralOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReferralInclude<ExtArgs> | null
+    /**
+     * Filter, which Referral to fetch.
+     */
+    where: ReferralWhereUniqueInput
+  }
+
+  /**
+   * Referral findUniqueOrThrow
+   */
+  export type ReferralFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Referral
+     */
+    select?: ReferralSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Referral
+     */
+    omit?: ReferralOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReferralInclude<ExtArgs> | null
+    /**
+     * Filter, which Referral to fetch.
+     */
+    where: ReferralWhereUniqueInput
+  }
+
+  /**
+   * Referral findFirst
+   */
+  export type ReferralFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Referral
+     */
+    select?: ReferralSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Referral
+     */
+    omit?: ReferralOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReferralInclude<ExtArgs> | null
+    /**
+     * Filter, which Referral to fetch.
+     */
+    where?: ReferralWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Referrals to fetch.
+     */
+    orderBy?: ReferralOrderByWithRelationInput | ReferralOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Referrals.
+     */
+    cursor?: ReferralWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Referrals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Referrals.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Referrals.
+     */
+    distinct?: ReferralScalarFieldEnum | ReferralScalarFieldEnum[]
+  }
+
+  /**
+   * Referral findFirstOrThrow
+   */
+  export type ReferralFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Referral
+     */
+    select?: ReferralSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Referral
+     */
+    omit?: ReferralOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReferralInclude<ExtArgs> | null
+    /**
+     * Filter, which Referral to fetch.
+     */
+    where?: ReferralWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Referrals to fetch.
+     */
+    orderBy?: ReferralOrderByWithRelationInput | ReferralOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Referrals.
+     */
+    cursor?: ReferralWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Referrals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Referrals.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Referrals.
+     */
+    distinct?: ReferralScalarFieldEnum | ReferralScalarFieldEnum[]
+  }
+
+  /**
+   * Referral findMany
+   */
+  export type ReferralFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Referral
+     */
+    select?: ReferralSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Referral
+     */
+    omit?: ReferralOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReferralInclude<ExtArgs> | null
+    /**
+     * Filter, which Referrals to fetch.
+     */
+    where?: ReferralWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Referrals to fetch.
+     */
+    orderBy?: ReferralOrderByWithRelationInput | ReferralOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Referrals.
+     */
+    cursor?: ReferralWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Referrals from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Referrals.
+     */
+    skip?: number
+    distinct?: ReferralScalarFieldEnum | ReferralScalarFieldEnum[]
+  }
+
+  /**
+   * Referral create
+   */
+  export type ReferralCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Referral
+     */
+    select?: ReferralSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Referral
+     */
+    omit?: ReferralOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReferralInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Referral.
+     */
+    data: XOR<ReferralCreateInput, ReferralUncheckedCreateInput>
+  }
+
+  /**
+   * Referral createMany
+   */
+  export type ReferralCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Referrals.
+     */
+    data: ReferralCreateManyInput | ReferralCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Referral createManyAndReturn
+   */
+  export type ReferralCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Referral
+     */
+    select?: ReferralSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Referral
+     */
+    omit?: ReferralOmit<ExtArgs> | null
+    /**
+     * The data used to create many Referrals.
+     */
+    data: ReferralCreateManyInput | ReferralCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReferralIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Referral update
+   */
+  export type ReferralUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Referral
+     */
+    select?: ReferralSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Referral
+     */
+    omit?: ReferralOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReferralInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Referral.
+     */
+    data: XOR<ReferralUpdateInput, ReferralUncheckedUpdateInput>
+    /**
+     * Choose, which Referral to update.
+     */
+    where: ReferralWhereUniqueInput
+  }
+
+  /**
+   * Referral updateMany
+   */
+  export type ReferralUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Referrals.
+     */
+    data: XOR<ReferralUpdateManyMutationInput, ReferralUncheckedUpdateManyInput>
+    /**
+     * Filter which Referrals to update
+     */
+    where?: ReferralWhereInput
+    /**
+     * Limit how many Referrals to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Referral updateManyAndReturn
+   */
+  export type ReferralUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Referral
+     */
+    select?: ReferralSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Referral
+     */
+    omit?: ReferralOmit<ExtArgs> | null
+    /**
+     * The data used to update Referrals.
+     */
+    data: XOR<ReferralUpdateManyMutationInput, ReferralUncheckedUpdateManyInput>
+    /**
+     * Filter which Referrals to update
+     */
+    where?: ReferralWhereInput
+    /**
+     * Limit how many Referrals to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReferralIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Referral upsert
+   */
+  export type ReferralUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Referral
+     */
+    select?: ReferralSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Referral
+     */
+    omit?: ReferralOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReferralInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Referral to update in case it exists.
+     */
+    where: ReferralWhereUniqueInput
+    /**
+     * In case the Referral found by the `where` argument doesn't exist, create a new Referral with this data.
+     */
+    create: XOR<ReferralCreateInput, ReferralUncheckedCreateInput>
+    /**
+     * In case the Referral was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ReferralUpdateInput, ReferralUncheckedUpdateInput>
+  }
+
+  /**
+   * Referral delete
+   */
+  export type ReferralDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Referral
+     */
+    select?: ReferralSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Referral
+     */
+    omit?: ReferralOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReferralInclude<ExtArgs> | null
+    /**
+     * Filter which Referral to delete.
+     */
+    where: ReferralWhereUniqueInput
+  }
+
+  /**
+   * Referral deleteMany
+   */
+  export type ReferralDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Referrals to delete
+     */
+    where?: ReferralWhereInput
+    /**
+     * Limit how many Referrals to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Referral.qualifications
+   */
+  export type Referral$qualificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReferralQualification
+     */
+    select?: ReferralQualificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReferralQualification
+     */
+    omit?: ReferralQualificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReferralQualificationInclude<ExtArgs> | null
+    where?: ReferralQualificationWhereInput
+    orderBy?: ReferralQualificationOrderByWithRelationInput | ReferralQualificationOrderByWithRelationInput[]
+    cursor?: ReferralQualificationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ReferralQualificationScalarFieldEnum | ReferralQualificationScalarFieldEnum[]
+  }
+
+  /**
+   * Referral without action
+   */
+  export type ReferralDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Referral
+     */
+    select?: ReferralSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Referral
+     */
+    omit?: ReferralOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReferralInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ReferralQualification
+   */
+
+  export type AggregateReferralQualification = {
+    _count: ReferralQualificationCountAggregateOutputType | null
+    _avg: ReferralQualificationAvgAggregateOutputType | null
+    _sum: ReferralQualificationSumAggregateOutputType | null
+    _min: ReferralQualificationMinAggregateOutputType | null
+    _max: ReferralQualificationMaxAggregateOutputType | null
+  }
+
+  export type ReferralQualificationAvgAggregateOutputType = {
+    reduction: number | null
+  }
+
+  export type ReferralQualificationSumAggregateOutputType = {
+    reduction: number | null
+  }
+
+  export type ReferralQualificationMinAggregateOutputType = {
+    id: string | null
+    referralId: string | null
+    referrerId: string | null
+    period: string | null
+    reduction: number | null
+    createdAt: Date | null
+  }
+
+  export type ReferralQualificationMaxAggregateOutputType = {
+    id: string | null
+    referralId: string | null
+    referrerId: string | null
+    period: string | null
+    reduction: number | null
+    createdAt: Date | null
+  }
+
+  export type ReferralQualificationCountAggregateOutputType = {
+    id: number
+    referralId: number
+    referrerId: number
+    period: number
+    reduction: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type ReferralQualificationAvgAggregateInputType = {
+    reduction?: true
+  }
+
+  export type ReferralQualificationSumAggregateInputType = {
+    reduction?: true
+  }
+
+  export type ReferralQualificationMinAggregateInputType = {
+    id?: true
+    referralId?: true
+    referrerId?: true
+    period?: true
+    reduction?: true
+    createdAt?: true
+  }
+
+  export type ReferralQualificationMaxAggregateInputType = {
+    id?: true
+    referralId?: true
+    referrerId?: true
+    period?: true
+    reduction?: true
+    createdAt?: true
+  }
+
+  export type ReferralQualificationCountAggregateInputType = {
+    id?: true
+    referralId?: true
+    referrerId?: true
+    period?: true
+    reduction?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type ReferralQualificationAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ReferralQualification to aggregate.
+     */
+    where?: ReferralQualificationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ReferralQualifications to fetch.
+     */
+    orderBy?: ReferralQualificationOrderByWithRelationInput | ReferralQualificationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ReferralQualificationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ReferralQualifications from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ReferralQualifications.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ReferralQualifications
+    **/
+    _count?: true | ReferralQualificationCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ReferralQualificationAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ReferralQualificationSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ReferralQualificationMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ReferralQualificationMaxAggregateInputType
+  }
+
+  export type GetReferralQualificationAggregateType<T extends ReferralQualificationAggregateArgs> = {
+        [P in keyof T & keyof AggregateReferralQualification]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateReferralQualification[P]>
+      : GetScalarType<T[P], AggregateReferralQualification[P]>
+  }
+
+
+
+
+  export type ReferralQualificationGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ReferralQualificationWhereInput
+    orderBy?: ReferralQualificationOrderByWithAggregationInput | ReferralQualificationOrderByWithAggregationInput[]
+    by: ReferralQualificationScalarFieldEnum[] | ReferralQualificationScalarFieldEnum
+    having?: ReferralQualificationScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ReferralQualificationCountAggregateInputType | true
+    _avg?: ReferralQualificationAvgAggregateInputType
+    _sum?: ReferralQualificationSumAggregateInputType
+    _min?: ReferralQualificationMinAggregateInputType
+    _max?: ReferralQualificationMaxAggregateInputType
+  }
+
+  export type ReferralQualificationGroupByOutputType = {
+    id: string
+    referralId: string
+    referrerId: string
+    period: string
+    reduction: number
+    createdAt: Date
+    _count: ReferralQualificationCountAggregateOutputType | null
+    _avg: ReferralQualificationAvgAggregateOutputType | null
+    _sum: ReferralQualificationSumAggregateOutputType | null
+    _min: ReferralQualificationMinAggregateOutputType | null
+    _max: ReferralQualificationMaxAggregateOutputType | null
+  }
+
+  type GetReferralQualificationGroupByPayload<T extends ReferralQualificationGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ReferralQualificationGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ReferralQualificationGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ReferralQualificationGroupByOutputType[P]>
+            : GetScalarType<T[P], ReferralQualificationGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ReferralQualificationSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    referralId?: boolean
+    referrerId?: boolean
+    period?: boolean
+    reduction?: boolean
+    createdAt?: boolean
+    referral?: boolean | ReferralDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["referralQualification"]>
+
+  export type ReferralQualificationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    referralId?: boolean
+    referrerId?: boolean
+    period?: boolean
+    reduction?: boolean
+    createdAt?: boolean
+    referral?: boolean | ReferralDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["referralQualification"]>
+
+  export type ReferralQualificationSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    referralId?: boolean
+    referrerId?: boolean
+    period?: boolean
+    reduction?: boolean
+    createdAt?: boolean
+    referral?: boolean | ReferralDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["referralQualification"]>
+
+  export type ReferralQualificationSelectScalar = {
+    id?: boolean
+    referralId?: boolean
+    referrerId?: boolean
+    period?: boolean
+    reduction?: boolean
+    createdAt?: boolean
+  }
+
+  export type ReferralQualificationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "referralId" | "referrerId" | "period" | "reduction" | "createdAt", ExtArgs["result"]["referralQualification"]>
+  export type ReferralQualificationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    referral?: boolean | ReferralDefaultArgs<ExtArgs>
+  }
+  export type ReferralQualificationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    referral?: boolean | ReferralDefaultArgs<ExtArgs>
+  }
+  export type ReferralQualificationIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    referral?: boolean | ReferralDefaultArgs<ExtArgs>
+  }
+
+  export type $ReferralQualificationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ReferralQualification"
+    objects: {
+      referral: Prisma.$ReferralPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      referralId: string
+      referrerId: string
+      period: string
+      reduction: number
+      createdAt: Date
+    }, ExtArgs["result"]["referralQualification"]>
+    composites: {}
+  }
+
+  type ReferralQualificationGetPayload<S extends boolean | null | undefined | ReferralQualificationDefaultArgs> = $Result.GetResult<Prisma.$ReferralQualificationPayload, S>
+
+  type ReferralQualificationCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ReferralQualificationFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ReferralQualificationCountAggregateInputType | true
+    }
+
+  export interface ReferralQualificationDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ReferralQualification'], meta: { name: 'ReferralQualification' } }
+    /**
+     * Find zero or one ReferralQualification that matches the filter.
+     * @param {ReferralQualificationFindUniqueArgs} args - Arguments to find a ReferralQualification
+     * @example
+     * // Get one ReferralQualification
+     * const referralQualification = await prisma.referralQualification.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ReferralQualificationFindUniqueArgs>(args: SelectSubset<T, ReferralQualificationFindUniqueArgs<ExtArgs>>): Prisma__ReferralQualificationClient<$Result.GetResult<Prisma.$ReferralQualificationPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ReferralQualification that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ReferralQualificationFindUniqueOrThrowArgs} args - Arguments to find a ReferralQualification
+     * @example
+     * // Get one ReferralQualification
+     * const referralQualification = await prisma.referralQualification.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ReferralQualificationFindUniqueOrThrowArgs>(args: SelectSubset<T, ReferralQualificationFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ReferralQualificationClient<$Result.GetResult<Prisma.$ReferralQualificationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ReferralQualification that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReferralQualificationFindFirstArgs} args - Arguments to find a ReferralQualification
+     * @example
+     * // Get one ReferralQualification
+     * const referralQualification = await prisma.referralQualification.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ReferralQualificationFindFirstArgs>(args?: SelectSubset<T, ReferralQualificationFindFirstArgs<ExtArgs>>): Prisma__ReferralQualificationClient<$Result.GetResult<Prisma.$ReferralQualificationPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ReferralQualification that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReferralQualificationFindFirstOrThrowArgs} args - Arguments to find a ReferralQualification
+     * @example
+     * // Get one ReferralQualification
+     * const referralQualification = await prisma.referralQualification.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ReferralQualificationFindFirstOrThrowArgs>(args?: SelectSubset<T, ReferralQualificationFindFirstOrThrowArgs<ExtArgs>>): Prisma__ReferralQualificationClient<$Result.GetResult<Prisma.$ReferralQualificationPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ReferralQualifications that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReferralQualificationFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ReferralQualifications
+     * const referralQualifications = await prisma.referralQualification.findMany()
+     * 
+     * // Get first 10 ReferralQualifications
+     * const referralQualifications = await prisma.referralQualification.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const referralQualificationWithIdOnly = await prisma.referralQualification.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ReferralQualificationFindManyArgs>(args?: SelectSubset<T, ReferralQualificationFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReferralQualificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ReferralQualification.
+     * @param {ReferralQualificationCreateArgs} args - Arguments to create a ReferralQualification.
+     * @example
+     * // Create one ReferralQualification
+     * const ReferralQualification = await prisma.referralQualification.create({
+     *   data: {
+     *     // ... data to create a ReferralQualification
+     *   }
+     * })
+     * 
+     */
+    create<T extends ReferralQualificationCreateArgs>(args: SelectSubset<T, ReferralQualificationCreateArgs<ExtArgs>>): Prisma__ReferralQualificationClient<$Result.GetResult<Prisma.$ReferralQualificationPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ReferralQualifications.
+     * @param {ReferralQualificationCreateManyArgs} args - Arguments to create many ReferralQualifications.
+     * @example
+     * // Create many ReferralQualifications
+     * const referralQualification = await prisma.referralQualification.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ReferralQualificationCreateManyArgs>(args?: SelectSubset<T, ReferralQualificationCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ReferralQualifications and returns the data saved in the database.
+     * @param {ReferralQualificationCreateManyAndReturnArgs} args - Arguments to create many ReferralQualifications.
+     * @example
+     * // Create many ReferralQualifications
+     * const referralQualification = await prisma.referralQualification.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ReferralQualifications and only return the `id`
+     * const referralQualificationWithIdOnly = await prisma.referralQualification.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ReferralQualificationCreateManyAndReturnArgs>(args?: SelectSubset<T, ReferralQualificationCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReferralQualificationPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ReferralQualification.
+     * @param {ReferralQualificationDeleteArgs} args - Arguments to delete one ReferralQualification.
+     * @example
+     * // Delete one ReferralQualification
+     * const ReferralQualification = await prisma.referralQualification.delete({
+     *   where: {
+     *     // ... filter to delete one ReferralQualification
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ReferralQualificationDeleteArgs>(args: SelectSubset<T, ReferralQualificationDeleteArgs<ExtArgs>>): Prisma__ReferralQualificationClient<$Result.GetResult<Prisma.$ReferralQualificationPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ReferralQualification.
+     * @param {ReferralQualificationUpdateArgs} args - Arguments to update one ReferralQualification.
+     * @example
+     * // Update one ReferralQualification
+     * const referralQualification = await prisma.referralQualification.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ReferralQualificationUpdateArgs>(args: SelectSubset<T, ReferralQualificationUpdateArgs<ExtArgs>>): Prisma__ReferralQualificationClient<$Result.GetResult<Prisma.$ReferralQualificationPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ReferralQualifications.
+     * @param {ReferralQualificationDeleteManyArgs} args - Arguments to filter ReferralQualifications to delete.
+     * @example
+     * // Delete a few ReferralQualifications
+     * const { count } = await prisma.referralQualification.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ReferralQualificationDeleteManyArgs>(args?: SelectSubset<T, ReferralQualificationDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ReferralQualifications.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReferralQualificationUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ReferralQualifications
+     * const referralQualification = await prisma.referralQualification.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ReferralQualificationUpdateManyArgs>(args: SelectSubset<T, ReferralQualificationUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ReferralQualifications and returns the data updated in the database.
+     * @param {ReferralQualificationUpdateManyAndReturnArgs} args - Arguments to update many ReferralQualifications.
+     * @example
+     * // Update many ReferralQualifications
+     * const referralQualification = await prisma.referralQualification.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ReferralQualifications and only return the `id`
+     * const referralQualificationWithIdOnly = await prisma.referralQualification.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ReferralQualificationUpdateManyAndReturnArgs>(args: SelectSubset<T, ReferralQualificationUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ReferralQualificationPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ReferralQualification.
+     * @param {ReferralQualificationUpsertArgs} args - Arguments to update or create a ReferralQualification.
+     * @example
+     * // Update or create a ReferralQualification
+     * const referralQualification = await prisma.referralQualification.upsert({
+     *   create: {
+     *     // ... data to create a ReferralQualification
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ReferralQualification we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ReferralQualificationUpsertArgs>(args: SelectSubset<T, ReferralQualificationUpsertArgs<ExtArgs>>): Prisma__ReferralQualificationClient<$Result.GetResult<Prisma.$ReferralQualificationPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ReferralQualifications.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReferralQualificationCountArgs} args - Arguments to filter ReferralQualifications to count.
+     * @example
+     * // Count the number of ReferralQualifications
+     * const count = await prisma.referralQualification.count({
+     *   where: {
+     *     // ... the filter for the ReferralQualifications we want to count
+     *   }
+     * })
+    **/
+    count<T extends ReferralQualificationCountArgs>(
+      args?: Subset<T, ReferralQualificationCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ReferralQualificationCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ReferralQualification.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReferralQualificationAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ReferralQualificationAggregateArgs>(args: Subset<T, ReferralQualificationAggregateArgs>): Prisma.PrismaPromise<GetReferralQualificationAggregateType<T>>
+
+    /**
+     * Group by ReferralQualification.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ReferralQualificationGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ReferralQualificationGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ReferralQualificationGroupByArgs['orderBy'] }
+        : { orderBy?: ReferralQualificationGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ReferralQualificationGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetReferralQualificationGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ReferralQualification model
+   */
+  readonly fields: ReferralQualificationFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ReferralQualification.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ReferralQualificationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    referral<T extends ReferralDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ReferralDefaultArgs<ExtArgs>>): Prisma__ReferralClient<$Result.GetResult<Prisma.$ReferralPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ReferralQualification model
+   */
+  interface ReferralQualificationFieldRefs {
+    readonly id: FieldRef<"ReferralQualification", 'String'>
+    readonly referralId: FieldRef<"ReferralQualification", 'String'>
+    readonly referrerId: FieldRef<"ReferralQualification", 'String'>
+    readonly period: FieldRef<"ReferralQualification", 'String'>
+    readonly reduction: FieldRef<"ReferralQualification", 'Int'>
+    readonly createdAt: FieldRef<"ReferralQualification", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ReferralQualification findUnique
+   */
+  export type ReferralQualificationFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReferralQualification
+     */
+    select?: ReferralQualificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReferralQualification
+     */
+    omit?: ReferralQualificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReferralQualificationInclude<ExtArgs> | null
+    /**
+     * Filter, which ReferralQualification to fetch.
+     */
+    where: ReferralQualificationWhereUniqueInput
+  }
+
+  /**
+   * ReferralQualification findUniqueOrThrow
+   */
+  export type ReferralQualificationFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReferralQualification
+     */
+    select?: ReferralQualificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReferralQualification
+     */
+    omit?: ReferralQualificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReferralQualificationInclude<ExtArgs> | null
+    /**
+     * Filter, which ReferralQualification to fetch.
+     */
+    where: ReferralQualificationWhereUniqueInput
+  }
+
+  /**
+   * ReferralQualification findFirst
+   */
+  export type ReferralQualificationFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReferralQualification
+     */
+    select?: ReferralQualificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReferralQualification
+     */
+    omit?: ReferralQualificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReferralQualificationInclude<ExtArgs> | null
+    /**
+     * Filter, which ReferralQualification to fetch.
+     */
+    where?: ReferralQualificationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ReferralQualifications to fetch.
+     */
+    orderBy?: ReferralQualificationOrderByWithRelationInput | ReferralQualificationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ReferralQualifications.
+     */
+    cursor?: ReferralQualificationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ReferralQualifications from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ReferralQualifications.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ReferralQualifications.
+     */
+    distinct?: ReferralQualificationScalarFieldEnum | ReferralQualificationScalarFieldEnum[]
+  }
+
+  /**
+   * ReferralQualification findFirstOrThrow
+   */
+  export type ReferralQualificationFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReferralQualification
+     */
+    select?: ReferralQualificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReferralQualification
+     */
+    omit?: ReferralQualificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReferralQualificationInclude<ExtArgs> | null
+    /**
+     * Filter, which ReferralQualification to fetch.
+     */
+    where?: ReferralQualificationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ReferralQualifications to fetch.
+     */
+    orderBy?: ReferralQualificationOrderByWithRelationInput | ReferralQualificationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ReferralQualifications.
+     */
+    cursor?: ReferralQualificationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ReferralQualifications from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ReferralQualifications.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ReferralQualifications.
+     */
+    distinct?: ReferralQualificationScalarFieldEnum | ReferralQualificationScalarFieldEnum[]
+  }
+
+  /**
+   * ReferralQualification findMany
+   */
+  export type ReferralQualificationFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReferralQualification
+     */
+    select?: ReferralQualificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReferralQualification
+     */
+    omit?: ReferralQualificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReferralQualificationInclude<ExtArgs> | null
+    /**
+     * Filter, which ReferralQualifications to fetch.
+     */
+    where?: ReferralQualificationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ReferralQualifications to fetch.
+     */
+    orderBy?: ReferralQualificationOrderByWithRelationInput | ReferralQualificationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ReferralQualifications.
+     */
+    cursor?: ReferralQualificationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ReferralQualifications from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ReferralQualifications.
+     */
+    skip?: number
+    distinct?: ReferralQualificationScalarFieldEnum | ReferralQualificationScalarFieldEnum[]
+  }
+
+  /**
+   * ReferralQualification create
+   */
+  export type ReferralQualificationCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReferralQualification
+     */
+    select?: ReferralQualificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReferralQualification
+     */
+    omit?: ReferralQualificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReferralQualificationInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ReferralQualification.
+     */
+    data: XOR<ReferralQualificationCreateInput, ReferralQualificationUncheckedCreateInput>
+  }
+
+  /**
+   * ReferralQualification createMany
+   */
+  export type ReferralQualificationCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ReferralQualifications.
+     */
+    data: ReferralQualificationCreateManyInput | ReferralQualificationCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ReferralQualification createManyAndReturn
+   */
+  export type ReferralQualificationCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReferralQualification
+     */
+    select?: ReferralQualificationSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReferralQualification
+     */
+    omit?: ReferralQualificationOmit<ExtArgs> | null
+    /**
+     * The data used to create many ReferralQualifications.
+     */
+    data: ReferralQualificationCreateManyInput | ReferralQualificationCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReferralQualificationIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ReferralQualification update
+   */
+  export type ReferralQualificationUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReferralQualification
+     */
+    select?: ReferralQualificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReferralQualification
+     */
+    omit?: ReferralQualificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReferralQualificationInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ReferralQualification.
+     */
+    data: XOR<ReferralQualificationUpdateInput, ReferralQualificationUncheckedUpdateInput>
+    /**
+     * Choose, which ReferralQualification to update.
+     */
+    where: ReferralQualificationWhereUniqueInput
+  }
+
+  /**
+   * ReferralQualification updateMany
+   */
+  export type ReferralQualificationUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ReferralQualifications.
+     */
+    data: XOR<ReferralQualificationUpdateManyMutationInput, ReferralQualificationUncheckedUpdateManyInput>
+    /**
+     * Filter which ReferralQualifications to update
+     */
+    where?: ReferralQualificationWhereInput
+    /**
+     * Limit how many ReferralQualifications to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ReferralQualification updateManyAndReturn
+   */
+  export type ReferralQualificationUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReferralQualification
+     */
+    select?: ReferralQualificationSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReferralQualification
+     */
+    omit?: ReferralQualificationOmit<ExtArgs> | null
+    /**
+     * The data used to update ReferralQualifications.
+     */
+    data: XOR<ReferralQualificationUpdateManyMutationInput, ReferralQualificationUncheckedUpdateManyInput>
+    /**
+     * Filter which ReferralQualifications to update
+     */
+    where?: ReferralQualificationWhereInput
+    /**
+     * Limit how many ReferralQualifications to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReferralQualificationIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ReferralQualification upsert
+   */
+  export type ReferralQualificationUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReferralQualification
+     */
+    select?: ReferralQualificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReferralQualification
+     */
+    omit?: ReferralQualificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReferralQualificationInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ReferralQualification to update in case it exists.
+     */
+    where: ReferralQualificationWhereUniqueInput
+    /**
+     * In case the ReferralQualification found by the `where` argument doesn't exist, create a new ReferralQualification with this data.
+     */
+    create: XOR<ReferralQualificationCreateInput, ReferralQualificationUncheckedCreateInput>
+    /**
+     * In case the ReferralQualification was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ReferralQualificationUpdateInput, ReferralQualificationUncheckedUpdateInput>
+  }
+
+  /**
+   * ReferralQualification delete
+   */
+  export type ReferralQualificationDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReferralQualification
+     */
+    select?: ReferralQualificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReferralQualification
+     */
+    omit?: ReferralQualificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReferralQualificationInclude<ExtArgs> | null
+    /**
+     * Filter which ReferralQualification to delete.
+     */
+    where: ReferralQualificationWhereUniqueInput
+  }
+
+  /**
+   * ReferralQualification deleteMany
+   */
+  export type ReferralQualificationDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ReferralQualifications to delete
+     */
+    where?: ReferralQualificationWhereInput
+    /**
+     * Limit how many ReferralQualifications to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ReferralQualification without action
+   */
+  export type ReferralQualificationDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ReferralQualification
+     */
+    select?: ReferralQualificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ReferralQualification
+     */
+    omit?: ReferralQualificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ReferralQualificationInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -48281,6 +57199,23 @@ export namespace Prisma {
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
+  export const AdminUserScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    username: 'username',
+    email: 'email',
+    password: 'password',
+    role: 'role',
+    permissions: 'permissions',
+    status: 'status',
+    lastLoginAt: 'lastLoginAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type AdminUserScalarFieldEnum = (typeof AdminUserScalarFieldEnum)[keyof typeof AdminUserScalarFieldEnum]
+
+
   export const ContactRequestScalarFieldEnum: {
     id: 'id',
     name: 'name',
@@ -48334,6 +57269,10 @@ export namespace Prisma {
     totalEarnings: 'totalEarnings',
     pendingEarnings: 'pendingEarnings',
     totalClicks: 'totalClicks',
+    programUnlocked: 'programUnlocked',
+    baseThrOverride: 'baseThrOverride',
+    unlockedAt: 'unlockedAt',
+    firstShareAt: 'firstShareAt',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -48417,6 +57356,7 @@ export namespace Prisma {
     commissionRate: 'commissionRate',
     commissionAmount: 'commissionAmount',
     commissionStatus: 'commissionStatus',
+    affiliatePeriod: 'affiliatePeriod',
     saleDate: 'saleDate',
     completionDate: 'completionDate',
     refundDeadline: 'refundDeadline',
@@ -48637,6 +57577,11 @@ export namespace Prisma {
     maxParticipants: 'maxParticipants',
     imageUrl: 'imageUrl',
     createdBy: 'createdBy',
+    storyEyebrow: 'storyEyebrow',
+    storyTitle: 'storyTitle',
+    storySub: 'storySub',
+    storyFeats: 'storyFeats',
+    commissionPct: 'commissionPct',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -48741,6 +57686,93 @@ export namespace Prisma {
   };
 
   export type ServiceLibraryScalarFieldEnum = (typeof ServiceLibraryScalarFieldEnum)[keyof typeof ServiceLibraryScalarFieldEnum]
+
+
+  export const ProgramConfigScalarFieldEnum: {
+    id: 'id',
+    baseThreshold: 'baseThreshold',
+    minThreshold: 'minThreshold',
+    referralReduction: 'referralReduction',
+    startRate: 'startRate',
+    maxRate: 'maxRate',
+    starToTry: 'starToTry',
+    weightCvr: 'weightCvr',
+    weightVolume: 'weightVolume',
+    weightCtr: 'weightCtr',
+    updatedAt: 'updatedAt'
+  };
+
+  export type ProgramConfigScalarFieldEnum = (typeof ProgramConfigScalarFieldEnum)[keyof typeof ProgramConfigScalarFieldEnum]
+
+
+  export const StarLedgerScalarFieldEnum: {
+    id: 'id',
+    influencerId: 'influencerId',
+    delta: 'delta',
+    reason: 'reason',
+    note: 'note',
+    createdBy: 'createdBy',
+    refSaleId: 'refSaleId',
+    createdAt: 'createdAt'
+  };
+
+  export type StarLedgerScalarFieldEnum = (typeof StarLedgerScalarFieldEnum)[keyof typeof StarLedgerScalarFieldEnum]
+
+
+  export const PerformanceScoreScalarFieldEnum: {
+    id: 'id',
+    influencerId: 'influencerId',
+    period: 'period',
+    ctr: 'ctr',
+    cvr: 'cvr',
+    volume: 'volume',
+    ctrNorm: 'ctrNorm',
+    cvrNorm: 'cvrNorm',
+    volumeNorm: 'volumeNorm',
+    score: 'score',
+    commissionRate: 'commissionRate',
+    computedAt: 'computedAt'
+  };
+
+  export type PerformanceScoreScalarFieldEnum = (typeof PerformanceScoreScalarFieldEnum)[keyof typeof PerformanceScoreScalarFieldEnum]
+
+
+  export const PerformanceEventScalarFieldEnum: {
+    id: 'id',
+    influencerId: 'influencerId',
+    period: 'period',
+    impressions: 'impressions',
+    clicks: 'clicks',
+    updatedAt: 'updatedAt'
+  };
+
+  export type PerformanceEventScalarFieldEnum = (typeof PerformanceEventScalarFieldEnum)[keyof typeof PerformanceEventScalarFieldEnum]
+
+
+  export const ReferralScalarFieldEnum: {
+    id: 'id',
+    referrerId: 'referrerId',
+    invitedId: 'invitedId',
+    qualified: 'qualified',
+    qualifiedAt: 'qualifiedAt',
+    qualifiedPeriod: 'qualifiedPeriod',
+    reductionApplied: 'reductionApplied',
+    createdAt: 'createdAt'
+  };
+
+  export type ReferralScalarFieldEnum = (typeof ReferralScalarFieldEnum)[keyof typeof ReferralScalarFieldEnum]
+
+
+  export const ReferralQualificationScalarFieldEnum: {
+    id: 'id',
+    referralId: 'referralId',
+    referrerId: 'referrerId',
+    period: 'period',
+    reduction: 'reduction',
+    createdAt: 'createdAt'
+  };
+
+  export type ReferralQualificationScalarFieldEnum = (typeof ReferralQualificationScalarFieldEnum)[keyof typeof ReferralQualificationScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -49765,6 +58797,88 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
   }
 
+  export type AdminUserWhereInput = {
+    AND?: AdminUserWhereInput | AdminUserWhereInput[]
+    OR?: AdminUserWhereInput[]
+    NOT?: AdminUserWhereInput | AdminUserWhereInput[]
+    id?: StringFilter<"AdminUser"> | string
+    name?: StringFilter<"AdminUser"> | string
+    username?: StringFilter<"AdminUser"> | string
+    email?: StringFilter<"AdminUser"> | string
+    password?: StringFilter<"AdminUser"> | string
+    role?: StringFilter<"AdminUser"> | string
+    permissions?: StringFilter<"AdminUser"> | string
+    status?: StringFilter<"AdminUser"> | string
+    lastLoginAt?: DateTimeNullableFilter<"AdminUser"> | Date | string | null
+    createdAt?: DateTimeFilter<"AdminUser"> | Date | string
+    updatedAt?: DateTimeFilter<"AdminUser"> | Date | string
+  }
+
+  export type AdminUserOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    username?: SortOrder
+    email?: SortOrder
+    password?: SortOrder
+    role?: SortOrder
+    permissions?: SortOrder
+    status?: SortOrder
+    lastLoginAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AdminUserWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    username?: string
+    email?: string
+    AND?: AdminUserWhereInput | AdminUserWhereInput[]
+    OR?: AdminUserWhereInput[]
+    NOT?: AdminUserWhereInput | AdminUserWhereInput[]
+    name?: StringFilter<"AdminUser"> | string
+    password?: StringFilter<"AdminUser"> | string
+    role?: StringFilter<"AdminUser"> | string
+    permissions?: StringFilter<"AdminUser"> | string
+    status?: StringFilter<"AdminUser"> | string
+    lastLoginAt?: DateTimeNullableFilter<"AdminUser"> | Date | string | null
+    createdAt?: DateTimeFilter<"AdminUser"> | Date | string
+    updatedAt?: DateTimeFilter<"AdminUser"> | Date | string
+  }, "id" | "username" | "email">
+
+  export type AdminUserOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    username?: SortOrder
+    email?: SortOrder
+    password?: SortOrder
+    role?: SortOrder
+    permissions?: SortOrder
+    status?: SortOrder
+    lastLoginAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: AdminUserCountOrderByAggregateInput
+    _max?: AdminUserMaxOrderByAggregateInput
+    _min?: AdminUserMinOrderByAggregateInput
+  }
+
+  export type AdminUserScalarWhereWithAggregatesInput = {
+    AND?: AdminUserScalarWhereWithAggregatesInput | AdminUserScalarWhereWithAggregatesInput[]
+    OR?: AdminUserScalarWhereWithAggregatesInput[]
+    NOT?: AdminUserScalarWhereWithAggregatesInput | AdminUserScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AdminUser"> | string
+    name?: StringWithAggregatesFilter<"AdminUser"> | string
+    username?: StringWithAggregatesFilter<"AdminUser"> | string
+    email?: StringWithAggregatesFilter<"AdminUser"> | string
+    password?: StringWithAggregatesFilter<"AdminUser"> | string
+    role?: StringWithAggregatesFilter<"AdminUser"> | string
+    permissions?: StringWithAggregatesFilter<"AdminUser"> | string
+    status?: StringWithAggregatesFilter<"AdminUser"> | string
+    lastLoginAt?: DateTimeNullableWithAggregatesFilter<"AdminUser"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"AdminUser"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"AdminUser"> | Date | string
+  }
+
   export type ContactRequestWhereInput = {
     AND?: ContactRequestWhereInput | ContactRequestWhereInput[]
     OR?: ContactRequestWhereInput[]
@@ -49929,6 +59043,10 @@ export namespace Prisma {
     totalEarnings?: FloatFilter<"Influencer"> | number
     pendingEarnings?: FloatFilter<"Influencer"> | number
     totalClicks?: IntFilter<"Influencer"> | number
+    programUnlocked?: BoolFilter<"Influencer"> | boolean
+    baseThrOverride?: IntNullableFilter<"Influencer"> | number | null
+    unlockedAt?: DateTimeNullableFilter<"Influencer"> | Date | string | null
+    firstShareAt?: DateTimeNullableFilter<"Influencer"> | Date | string | null
     createdAt?: DateTimeFilter<"Influencer"> | Date | string
     updatedAt?: DateTimeFilter<"Influencer"> | Date | string
     shares?: ShareListRelationFilter
@@ -49939,6 +59057,11 @@ export namespace Prisma {
     campaigns?: CampaignParticipantListRelationFilter
     loyaltyAccount?: XOR<LoyaltyAccountNullableScalarRelationFilter, LoyaltyAccountWhereInput> | null
     supportChat?: XOR<SupportChatNullableScalarRelationFilter, SupportChatWhereInput> | null
+    starLedgerEntries?: StarLedgerListRelationFilter
+    perfScores?: PerformanceScoreListRelationFilter
+    perfEvents?: PerformanceEventListRelationFilter
+    referralsMade?: ReferralListRelationFilter
+    referralReceived?: XOR<ReferralNullableScalarRelationFilter, ReferralWhereInput> | null
   }
 
   export type InfluencerOrderByWithRelationInput = {
@@ -49966,6 +59089,10 @@ export namespace Prisma {
     totalEarnings?: SortOrder
     pendingEarnings?: SortOrder
     totalClicks?: SortOrder
+    programUnlocked?: SortOrder
+    baseThrOverride?: SortOrderInput | SortOrder
+    unlockedAt?: SortOrderInput | SortOrder
+    firstShareAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     shares?: ShareOrderByRelationAggregateInput
@@ -49976,6 +59103,11 @@ export namespace Prisma {
     campaigns?: CampaignParticipantOrderByRelationAggregateInput
     loyaltyAccount?: LoyaltyAccountOrderByWithRelationInput
     supportChat?: SupportChatOrderByWithRelationInput
+    starLedgerEntries?: StarLedgerOrderByRelationAggregateInput
+    perfScores?: PerformanceScoreOrderByRelationAggregateInput
+    perfEvents?: PerformanceEventOrderByRelationAggregateInput
+    referralsMade?: ReferralOrderByRelationAggregateInput
+    referralReceived?: ReferralOrderByWithRelationInput
   }
 
   export type InfluencerWhereUniqueInput = Prisma.AtLeast<{
@@ -50006,6 +59138,10 @@ export namespace Prisma {
     totalEarnings?: FloatFilter<"Influencer"> | number
     pendingEarnings?: FloatFilter<"Influencer"> | number
     totalClicks?: IntFilter<"Influencer"> | number
+    programUnlocked?: BoolFilter<"Influencer"> | boolean
+    baseThrOverride?: IntNullableFilter<"Influencer"> | number | null
+    unlockedAt?: DateTimeNullableFilter<"Influencer"> | Date | string | null
+    firstShareAt?: DateTimeNullableFilter<"Influencer"> | Date | string | null
     createdAt?: DateTimeFilter<"Influencer"> | Date | string
     updatedAt?: DateTimeFilter<"Influencer"> | Date | string
     shares?: ShareListRelationFilter
@@ -50016,6 +59152,11 @@ export namespace Prisma {
     campaigns?: CampaignParticipantListRelationFilter
     loyaltyAccount?: XOR<LoyaltyAccountNullableScalarRelationFilter, LoyaltyAccountWhereInput> | null
     supportChat?: XOR<SupportChatNullableScalarRelationFilter, SupportChatWhereInput> | null
+    starLedgerEntries?: StarLedgerListRelationFilter
+    perfScores?: PerformanceScoreListRelationFilter
+    perfEvents?: PerformanceEventListRelationFilter
+    referralsMade?: ReferralListRelationFilter
+    referralReceived?: XOR<ReferralNullableScalarRelationFilter, ReferralWhereInput> | null
   }, "id" | "email" | "uniqueCode" | "uniqueUrl">
 
   export type InfluencerOrderByWithAggregationInput = {
@@ -50043,6 +59184,10 @@ export namespace Prisma {
     totalEarnings?: SortOrder
     pendingEarnings?: SortOrder
     totalClicks?: SortOrder
+    programUnlocked?: SortOrder
+    baseThrOverride?: SortOrderInput | SortOrder
+    unlockedAt?: SortOrderInput | SortOrder
+    firstShareAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: InfluencerCountOrderByAggregateInput
@@ -50080,6 +59225,10 @@ export namespace Prisma {
     totalEarnings?: FloatWithAggregatesFilter<"Influencer"> | number
     pendingEarnings?: FloatWithAggregatesFilter<"Influencer"> | number
     totalClicks?: IntWithAggregatesFilter<"Influencer"> | number
+    programUnlocked?: BoolWithAggregatesFilter<"Influencer"> | boolean
+    baseThrOverride?: IntNullableWithAggregatesFilter<"Influencer"> | number | null
+    unlockedAt?: DateTimeNullableWithAggregatesFilter<"Influencer"> | Date | string | null
+    firstShareAt?: DateTimeNullableWithAggregatesFilter<"Influencer"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Influencer"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Influencer"> | Date | string
   }
@@ -50444,6 +59593,7 @@ export namespace Prisma {
     commissionRate?: FloatFilter<"Sale"> | number
     commissionAmount?: FloatFilter<"Sale"> | number
     commissionStatus?: StringFilter<"Sale"> | string
+    affiliatePeriod?: StringNullableFilter<"Sale"> | string | null
     saleDate?: DateTimeFilter<"Sale"> | Date | string
     completionDate?: DateTimeNullableFilter<"Sale"> | Date | string | null
     refundDeadline?: DateTimeNullableFilter<"Sale"> | Date | string | null
@@ -50470,6 +59620,7 @@ export namespace Prisma {
     commissionRate?: SortOrder
     commissionAmount?: SortOrder
     commissionStatus?: SortOrder
+    affiliatePeriod?: SortOrderInput | SortOrder
     saleDate?: SortOrder
     completionDate?: SortOrderInput | SortOrder
     refundDeadline?: SortOrderInput | SortOrder
@@ -50499,6 +59650,7 @@ export namespace Prisma {
     commissionRate?: FloatFilter<"Sale"> | number
     commissionAmount?: FloatFilter<"Sale"> | number
     commissionStatus?: StringFilter<"Sale"> | string
+    affiliatePeriod?: StringNullableFilter<"Sale"> | string | null
     saleDate?: DateTimeFilter<"Sale"> | Date | string
     completionDate?: DateTimeNullableFilter<"Sale"> | Date | string | null
     refundDeadline?: DateTimeNullableFilter<"Sale"> | Date | string | null
@@ -50525,6 +59677,7 @@ export namespace Prisma {
     commissionRate?: SortOrder
     commissionAmount?: SortOrder
     commissionStatus?: SortOrder
+    affiliatePeriod?: SortOrderInput | SortOrder
     saleDate?: SortOrder
     completionDate?: SortOrderInput | SortOrder
     refundDeadline?: SortOrderInput | SortOrder
@@ -50555,6 +59708,7 @@ export namespace Prisma {
     commissionRate?: FloatWithAggregatesFilter<"Sale"> | number
     commissionAmount?: FloatWithAggregatesFilter<"Sale"> | number
     commissionStatus?: StringWithAggregatesFilter<"Sale"> | string
+    affiliatePeriod?: StringNullableWithAggregatesFilter<"Sale"> | string | null
     saleDate?: DateTimeWithAggregatesFilter<"Sale"> | Date | string
     completionDate?: DateTimeNullableWithAggregatesFilter<"Sale"> | Date | string | null
     refundDeadline?: DateTimeNullableWithAggregatesFilter<"Sale"> | Date | string | null
@@ -51570,6 +60724,11 @@ export namespace Prisma {
     maxParticipants?: IntNullableFilter<"Campaign"> | number | null
     imageUrl?: StringNullableFilter<"Campaign"> | string | null
     createdBy?: StringNullableFilter<"Campaign"> | string | null
+    storyEyebrow?: StringNullableFilter<"Campaign"> | string | null
+    storyTitle?: StringNullableFilter<"Campaign"> | string | null
+    storySub?: StringNullableFilter<"Campaign"> | string | null
+    storyFeats?: StringNullableFilter<"Campaign"> | string | null
+    commissionPct?: FloatNullableFilter<"Campaign"> | number | null
     createdAt?: DateTimeFilter<"Campaign"> | Date | string
     updatedAt?: DateTimeFilter<"Campaign"> | Date | string
     participants?: CampaignParticipantListRelationFilter
@@ -51591,6 +60750,11 @@ export namespace Prisma {
     maxParticipants?: SortOrderInput | SortOrder
     imageUrl?: SortOrderInput | SortOrder
     createdBy?: SortOrderInput | SortOrder
+    storyEyebrow?: SortOrderInput | SortOrder
+    storyTitle?: SortOrderInput | SortOrder
+    storySub?: SortOrderInput | SortOrder
+    storyFeats?: SortOrderInput | SortOrder
+    commissionPct?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     participants?: CampaignParticipantOrderByRelationAggregateInput
@@ -51615,6 +60779,11 @@ export namespace Prisma {
     maxParticipants?: IntNullableFilter<"Campaign"> | number | null
     imageUrl?: StringNullableFilter<"Campaign"> | string | null
     createdBy?: StringNullableFilter<"Campaign"> | string | null
+    storyEyebrow?: StringNullableFilter<"Campaign"> | string | null
+    storyTitle?: StringNullableFilter<"Campaign"> | string | null
+    storySub?: StringNullableFilter<"Campaign"> | string | null
+    storyFeats?: StringNullableFilter<"Campaign"> | string | null
+    commissionPct?: FloatNullableFilter<"Campaign"> | number | null
     createdAt?: DateTimeFilter<"Campaign"> | Date | string
     updatedAt?: DateTimeFilter<"Campaign"> | Date | string
     participants?: CampaignParticipantListRelationFilter
@@ -51636,6 +60805,11 @@ export namespace Prisma {
     maxParticipants?: SortOrderInput | SortOrder
     imageUrl?: SortOrderInput | SortOrder
     createdBy?: SortOrderInput | SortOrder
+    storyEyebrow?: SortOrderInput | SortOrder
+    storyTitle?: SortOrderInput | SortOrder
+    storySub?: SortOrderInput | SortOrder
+    storyFeats?: SortOrderInput | SortOrder
+    commissionPct?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: CampaignCountOrderByAggregateInput
@@ -51663,6 +60837,11 @@ export namespace Prisma {
     maxParticipants?: IntNullableWithAggregatesFilter<"Campaign"> | number | null
     imageUrl?: StringNullableWithAggregatesFilter<"Campaign"> | string | null
     createdBy?: StringNullableWithAggregatesFilter<"Campaign"> | string | null
+    storyEyebrow?: StringNullableWithAggregatesFilter<"Campaign"> | string | null
+    storyTitle?: StringNullableWithAggregatesFilter<"Campaign"> | string | null
+    storySub?: StringNullableWithAggregatesFilter<"Campaign"> | string | null
+    storyFeats?: StringNullableWithAggregatesFilter<"Campaign"> | string | null
+    commissionPct?: FloatNullableWithAggregatesFilter<"Campaign"> | number | null
     createdAt?: DateTimeWithAggregatesFilter<"Campaign"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Campaign"> | Date | string
   }
@@ -52174,6 +61353,459 @@ export namespace Prisma {
     sortOrder?: IntWithAggregatesFilter<"ServiceLibrary"> | number
     createdAt?: DateTimeWithAggregatesFilter<"ServiceLibrary"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"ServiceLibrary"> | Date | string
+  }
+
+  export type ProgramConfigWhereInput = {
+    AND?: ProgramConfigWhereInput | ProgramConfigWhereInput[]
+    OR?: ProgramConfigWhereInput[]
+    NOT?: ProgramConfigWhereInput | ProgramConfigWhereInput[]
+    id?: IntFilter<"ProgramConfig"> | number
+    baseThreshold?: IntFilter<"ProgramConfig"> | number
+    minThreshold?: IntFilter<"ProgramConfig"> | number
+    referralReduction?: IntFilter<"ProgramConfig"> | number
+    startRate?: FloatFilter<"ProgramConfig"> | number
+    maxRate?: FloatFilter<"ProgramConfig"> | number
+    starToTry?: FloatFilter<"ProgramConfig"> | number
+    weightCvr?: FloatFilter<"ProgramConfig"> | number
+    weightVolume?: FloatFilter<"ProgramConfig"> | number
+    weightCtr?: FloatFilter<"ProgramConfig"> | number
+    updatedAt?: DateTimeFilter<"ProgramConfig"> | Date | string
+  }
+
+  export type ProgramConfigOrderByWithRelationInput = {
+    id?: SortOrder
+    baseThreshold?: SortOrder
+    minThreshold?: SortOrder
+    referralReduction?: SortOrder
+    startRate?: SortOrder
+    maxRate?: SortOrder
+    starToTry?: SortOrder
+    weightCvr?: SortOrder
+    weightVolume?: SortOrder
+    weightCtr?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ProgramConfigWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: ProgramConfigWhereInput | ProgramConfigWhereInput[]
+    OR?: ProgramConfigWhereInput[]
+    NOT?: ProgramConfigWhereInput | ProgramConfigWhereInput[]
+    baseThreshold?: IntFilter<"ProgramConfig"> | number
+    minThreshold?: IntFilter<"ProgramConfig"> | number
+    referralReduction?: IntFilter<"ProgramConfig"> | number
+    startRate?: FloatFilter<"ProgramConfig"> | number
+    maxRate?: FloatFilter<"ProgramConfig"> | number
+    starToTry?: FloatFilter<"ProgramConfig"> | number
+    weightCvr?: FloatFilter<"ProgramConfig"> | number
+    weightVolume?: FloatFilter<"ProgramConfig"> | number
+    weightCtr?: FloatFilter<"ProgramConfig"> | number
+    updatedAt?: DateTimeFilter<"ProgramConfig"> | Date | string
+  }, "id">
+
+  export type ProgramConfigOrderByWithAggregationInput = {
+    id?: SortOrder
+    baseThreshold?: SortOrder
+    minThreshold?: SortOrder
+    referralReduction?: SortOrder
+    startRate?: SortOrder
+    maxRate?: SortOrder
+    starToTry?: SortOrder
+    weightCvr?: SortOrder
+    weightVolume?: SortOrder
+    weightCtr?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ProgramConfigCountOrderByAggregateInput
+    _avg?: ProgramConfigAvgOrderByAggregateInput
+    _max?: ProgramConfigMaxOrderByAggregateInput
+    _min?: ProgramConfigMinOrderByAggregateInput
+    _sum?: ProgramConfigSumOrderByAggregateInput
+  }
+
+  export type ProgramConfigScalarWhereWithAggregatesInput = {
+    AND?: ProgramConfigScalarWhereWithAggregatesInput | ProgramConfigScalarWhereWithAggregatesInput[]
+    OR?: ProgramConfigScalarWhereWithAggregatesInput[]
+    NOT?: ProgramConfigScalarWhereWithAggregatesInput | ProgramConfigScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"ProgramConfig"> | number
+    baseThreshold?: IntWithAggregatesFilter<"ProgramConfig"> | number
+    minThreshold?: IntWithAggregatesFilter<"ProgramConfig"> | number
+    referralReduction?: IntWithAggregatesFilter<"ProgramConfig"> | number
+    startRate?: FloatWithAggregatesFilter<"ProgramConfig"> | number
+    maxRate?: FloatWithAggregatesFilter<"ProgramConfig"> | number
+    starToTry?: FloatWithAggregatesFilter<"ProgramConfig"> | number
+    weightCvr?: FloatWithAggregatesFilter<"ProgramConfig"> | number
+    weightVolume?: FloatWithAggregatesFilter<"ProgramConfig"> | number
+    weightCtr?: FloatWithAggregatesFilter<"ProgramConfig"> | number
+    updatedAt?: DateTimeWithAggregatesFilter<"ProgramConfig"> | Date | string
+  }
+
+  export type StarLedgerWhereInput = {
+    AND?: StarLedgerWhereInput | StarLedgerWhereInput[]
+    OR?: StarLedgerWhereInput[]
+    NOT?: StarLedgerWhereInput | StarLedgerWhereInput[]
+    id?: StringFilter<"StarLedger"> | string
+    influencerId?: StringFilter<"StarLedger"> | string
+    delta?: FloatFilter<"StarLedger"> | number
+    reason?: StringFilter<"StarLedger"> | string
+    note?: StringNullableFilter<"StarLedger"> | string | null
+    createdBy?: StringFilter<"StarLedger"> | string
+    refSaleId?: StringNullableFilter<"StarLedger"> | string | null
+    createdAt?: DateTimeFilter<"StarLedger"> | Date | string
+    influencer?: XOR<InfluencerScalarRelationFilter, InfluencerWhereInput>
+  }
+
+  export type StarLedgerOrderByWithRelationInput = {
+    id?: SortOrder
+    influencerId?: SortOrder
+    delta?: SortOrder
+    reason?: SortOrder
+    note?: SortOrderInput | SortOrder
+    createdBy?: SortOrder
+    refSaleId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    influencer?: InfluencerOrderByWithRelationInput
+  }
+
+  export type StarLedgerWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: StarLedgerWhereInput | StarLedgerWhereInput[]
+    OR?: StarLedgerWhereInput[]
+    NOT?: StarLedgerWhereInput | StarLedgerWhereInput[]
+    influencerId?: StringFilter<"StarLedger"> | string
+    delta?: FloatFilter<"StarLedger"> | number
+    reason?: StringFilter<"StarLedger"> | string
+    note?: StringNullableFilter<"StarLedger"> | string | null
+    createdBy?: StringFilter<"StarLedger"> | string
+    refSaleId?: StringNullableFilter<"StarLedger"> | string | null
+    createdAt?: DateTimeFilter<"StarLedger"> | Date | string
+    influencer?: XOR<InfluencerScalarRelationFilter, InfluencerWhereInput>
+  }, "id">
+
+  export type StarLedgerOrderByWithAggregationInput = {
+    id?: SortOrder
+    influencerId?: SortOrder
+    delta?: SortOrder
+    reason?: SortOrder
+    note?: SortOrderInput | SortOrder
+    createdBy?: SortOrder
+    refSaleId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: StarLedgerCountOrderByAggregateInput
+    _avg?: StarLedgerAvgOrderByAggregateInput
+    _max?: StarLedgerMaxOrderByAggregateInput
+    _min?: StarLedgerMinOrderByAggregateInput
+    _sum?: StarLedgerSumOrderByAggregateInput
+  }
+
+  export type StarLedgerScalarWhereWithAggregatesInput = {
+    AND?: StarLedgerScalarWhereWithAggregatesInput | StarLedgerScalarWhereWithAggregatesInput[]
+    OR?: StarLedgerScalarWhereWithAggregatesInput[]
+    NOT?: StarLedgerScalarWhereWithAggregatesInput | StarLedgerScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"StarLedger"> | string
+    influencerId?: StringWithAggregatesFilter<"StarLedger"> | string
+    delta?: FloatWithAggregatesFilter<"StarLedger"> | number
+    reason?: StringWithAggregatesFilter<"StarLedger"> | string
+    note?: StringNullableWithAggregatesFilter<"StarLedger"> | string | null
+    createdBy?: StringWithAggregatesFilter<"StarLedger"> | string
+    refSaleId?: StringNullableWithAggregatesFilter<"StarLedger"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"StarLedger"> | Date | string
+  }
+
+  export type PerformanceScoreWhereInput = {
+    AND?: PerformanceScoreWhereInput | PerformanceScoreWhereInput[]
+    OR?: PerformanceScoreWhereInput[]
+    NOT?: PerformanceScoreWhereInput | PerformanceScoreWhereInput[]
+    id?: StringFilter<"PerformanceScore"> | string
+    influencerId?: StringFilter<"PerformanceScore"> | string
+    period?: StringFilter<"PerformanceScore"> | string
+    ctr?: FloatFilter<"PerformanceScore"> | number
+    cvr?: FloatFilter<"PerformanceScore"> | number
+    volume?: IntFilter<"PerformanceScore"> | number
+    ctrNorm?: FloatFilter<"PerformanceScore"> | number
+    cvrNorm?: FloatFilter<"PerformanceScore"> | number
+    volumeNorm?: FloatFilter<"PerformanceScore"> | number
+    score?: FloatFilter<"PerformanceScore"> | number
+    commissionRate?: FloatFilter<"PerformanceScore"> | number
+    computedAt?: DateTimeFilter<"PerformanceScore"> | Date | string
+    influencer?: XOR<InfluencerScalarRelationFilter, InfluencerWhereInput>
+  }
+
+  export type PerformanceScoreOrderByWithRelationInput = {
+    id?: SortOrder
+    influencerId?: SortOrder
+    period?: SortOrder
+    ctr?: SortOrder
+    cvr?: SortOrder
+    volume?: SortOrder
+    ctrNorm?: SortOrder
+    cvrNorm?: SortOrder
+    volumeNorm?: SortOrder
+    score?: SortOrder
+    commissionRate?: SortOrder
+    computedAt?: SortOrder
+    influencer?: InfluencerOrderByWithRelationInput
+  }
+
+  export type PerformanceScoreWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    influencerId_period?: PerformanceScoreInfluencerIdPeriodCompoundUniqueInput
+    AND?: PerformanceScoreWhereInput | PerformanceScoreWhereInput[]
+    OR?: PerformanceScoreWhereInput[]
+    NOT?: PerformanceScoreWhereInput | PerformanceScoreWhereInput[]
+    influencerId?: StringFilter<"PerformanceScore"> | string
+    period?: StringFilter<"PerformanceScore"> | string
+    ctr?: FloatFilter<"PerformanceScore"> | number
+    cvr?: FloatFilter<"PerformanceScore"> | number
+    volume?: IntFilter<"PerformanceScore"> | number
+    ctrNorm?: FloatFilter<"PerformanceScore"> | number
+    cvrNorm?: FloatFilter<"PerformanceScore"> | number
+    volumeNorm?: FloatFilter<"PerformanceScore"> | number
+    score?: FloatFilter<"PerformanceScore"> | number
+    commissionRate?: FloatFilter<"PerformanceScore"> | number
+    computedAt?: DateTimeFilter<"PerformanceScore"> | Date | string
+    influencer?: XOR<InfluencerScalarRelationFilter, InfluencerWhereInput>
+  }, "id" | "influencerId_period">
+
+  export type PerformanceScoreOrderByWithAggregationInput = {
+    id?: SortOrder
+    influencerId?: SortOrder
+    period?: SortOrder
+    ctr?: SortOrder
+    cvr?: SortOrder
+    volume?: SortOrder
+    ctrNorm?: SortOrder
+    cvrNorm?: SortOrder
+    volumeNorm?: SortOrder
+    score?: SortOrder
+    commissionRate?: SortOrder
+    computedAt?: SortOrder
+    _count?: PerformanceScoreCountOrderByAggregateInput
+    _avg?: PerformanceScoreAvgOrderByAggregateInput
+    _max?: PerformanceScoreMaxOrderByAggregateInput
+    _min?: PerformanceScoreMinOrderByAggregateInput
+    _sum?: PerformanceScoreSumOrderByAggregateInput
+  }
+
+  export type PerformanceScoreScalarWhereWithAggregatesInput = {
+    AND?: PerformanceScoreScalarWhereWithAggregatesInput | PerformanceScoreScalarWhereWithAggregatesInput[]
+    OR?: PerformanceScoreScalarWhereWithAggregatesInput[]
+    NOT?: PerformanceScoreScalarWhereWithAggregatesInput | PerformanceScoreScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PerformanceScore"> | string
+    influencerId?: StringWithAggregatesFilter<"PerformanceScore"> | string
+    period?: StringWithAggregatesFilter<"PerformanceScore"> | string
+    ctr?: FloatWithAggregatesFilter<"PerformanceScore"> | number
+    cvr?: FloatWithAggregatesFilter<"PerformanceScore"> | number
+    volume?: IntWithAggregatesFilter<"PerformanceScore"> | number
+    ctrNorm?: FloatWithAggregatesFilter<"PerformanceScore"> | number
+    cvrNorm?: FloatWithAggregatesFilter<"PerformanceScore"> | number
+    volumeNorm?: FloatWithAggregatesFilter<"PerformanceScore"> | number
+    score?: FloatWithAggregatesFilter<"PerformanceScore"> | number
+    commissionRate?: FloatWithAggregatesFilter<"PerformanceScore"> | number
+    computedAt?: DateTimeWithAggregatesFilter<"PerformanceScore"> | Date | string
+  }
+
+  export type PerformanceEventWhereInput = {
+    AND?: PerformanceEventWhereInput | PerformanceEventWhereInput[]
+    OR?: PerformanceEventWhereInput[]
+    NOT?: PerformanceEventWhereInput | PerformanceEventWhereInput[]
+    id?: StringFilter<"PerformanceEvent"> | string
+    influencerId?: StringFilter<"PerformanceEvent"> | string
+    period?: StringFilter<"PerformanceEvent"> | string
+    impressions?: IntFilter<"PerformanceEvent"> | number
+    clicks?: IntFilter<"PerformanceEvent"> | number
+    updatedAt?: DateTimeFilter<"PerformanceEvent"> | Date | string
+    influencer?: XOR<InfluencerScalarRelationFilter, InfluencerWhereInput>
+  }
+
+  export type PerformanceEventOrderByWithRelationInput = {
+    id?: SortOrder
+    influencerId?: SortOrder
+    period?: SortOrder
+    impressions?: SortOrder
+    clicks?: SortOrder
+    updatedAt?: SortOrder
+    influencer?: InfluencerOrderByWithRelationInput
+  }
+
+  export type PerformanceEventWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    influencerId_period?: PerformanceEventInfluencerIdPeriodCompoundUniqueInput
+    AND?: PerformanceEventWhereInput | PerformanceEventWhereInput[]
+    OR?: PerformanceEventWhereInput[]
+    NOT?: PerformanceEventWhereInput | PerformanceEventWhereInput[]
+    influencerId?: StringFilter<"PerformanceEvent"> | string
+    period?: StringFilter<"PerformanceEvent"> | string
+    impressions?: IntFilter<"PerformanceEvent"> | number
+    clicks?: IntFilter<"PerformanceEvent"> | number
+    updatedAt?: DateTimeFilter<"PerformanceEvent"> | Date | string
+    influencer?: XOR<InfluencerScalarRelationFilter, InfluencerWhereInput>
+  }, "id" | "influencerId_period">
+
+  export type PerformanceEventOrderByWithAggregationInput = {
+    id?: SortOrder
+    influencerId?: SortOrder
+    period?: SortOrder
+    impressions?: SortOrder
+    clicks?: SortOrder
+    updatedAt?: SortOrder
+    _count?: PerformanceEventCountOrderByAggregateInput
+    _avg?: PerformanceEventAvgOrderByAggregateInput
+    _max?: PerformanceEventMaxOrderByAggregateInput
+    _min?: PerformanceEventMinOrderByAggregateInput
+    _sum?: PerformanceEventSumOrderByAggregateInput
+  }
+
+  export type PerformanceEventScalarWhereWithAggregatesInput = {
+    AND?: PerformanceEventScalarWhereWithAggregatesInput | PerformanceEventScalarWhereWithAggregatesInput[]
+    OR?: PerformanceEventScalarWhereWithAggregatesInput[]
+    NOT?: PerformanceEventScalarWhereWithAggregatesInput | PerformanceEventScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"PerformanceEvent"> | string
+    influencerId?: StringWithAggregatesFilter<"PerformanceEvent"> | string
+    period?: StringWithAggregatesFilter<"PerformanceEvent"> | string
+    impressions?: IntWithAggregatesFilter<"PerformanceEvent"> | number
+    clicks?: IntWithAggregatesFilter<"PerformanceEvent"> | number
+    updatedAt?: DateTimeWithAggregatesFilter<"PerformanceEvent"> | Date | string
+  }
+
+  export type ReferralWhereInput = {
+    AND?: ReferralWhereInput | ReferralWhereInput[]
+    OR?: ReferralWhereInput[]
+    NOT?: ReferralWhereInput | ReferralWhereInput[]
+    id?: StringFilter<"Referral"> | string
+    referrerId?: StringFilter<"Referral"> | string
+    invitedId?: StringFilter<"Referral"> | string
+    qualified?: BoolFilter<"Referral"> | boolean
+    qualifiedAt?: DateTimeNullableFilter<"Referral"> | Date | string | null
+    qualifiedPeriod?: StringNullableFilter<"Referral"> | string | null
+    reductionApplied?: IntNullableFilter<"Referral"> | number | null
+    createdAt?: DateTimeFilter<"Referral"> | Date | string
+    referrer?: XOR<InfluencerScalarRelationFilter, InfluencerWhereInput>
+    invited?: XOR<InfluencerScalarRelationFilter, InfluencerWhereInput>
+    qualifications?: ReferralQualificationListRelationFilter
+  }
+
+  export type ReferralOrderByWithRelationInput = {
+    id?: SortOrder
+    referrerId?: SortOrder
+    invitedId?: SortOrder
+    qualified?: SortOrder
+    qualifiedAt?: SortOrderInput | SortOrder
+    qualifiedPeriod?: SortOrderInput | SortOrder
+    reductionApplied?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    referrer?: InfluencerOrderByWithRelationInput
+    invited?: InfluencerOrderByWithRelationInput
+    qualifications?: ReferralQualificationOrderByRelationAggregateInput
+  }
+
+  export type ReferralWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    invitedId?: string
+    AND?: ReferralWhereInput | ReferralWhereInput[]
+    OR?: ReferralWhereInput[]
+    NOT?: ReferralWhereInput | ReferralWhereInput[]
+    referrerId?: StringFilter<"Referral"> | string
+    qualified?: BoolFilter<"Referral"> | boolean
+    qualifiedAt?: DateTimeNullableFilter<"Referral"> | Date | string | null
+    qualifiedPeriod?: StringNullableFilter<"Referral"> | string | null
+    reductionApplied?: IntNullableFilter<"Referral"> | number | null
+    createdAt?: DateTimeFilter<"Referral"> | Date | string
+    referrer?: XOR<InfluencerScalarRelationFilter, InfluencerWhereInput>
+    invited?: XOR<InfluencerScalarRelationFilter, InfluencerWhereInput>
+    qualifications?: ReferralQualificationListRelationFilter
+  }, "id" | "invitedId">
+
+  export type ReferralOrderByWithAggregationInput = {
+    id?: SortOrder
+    referrerId?: SortOrder
+    invitedId?: SortOrder
+    qualified?: SortOrder
+    qualifiedAt?: SortOrderInput | SortOrder
+    qualifiedPeriod?: SortOrderInput | SortOrder
+    reductionApplied?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: ReferralCountOrderByAggregateInput
+    _avg?: ReferralAvgOrderByAggregateInput
+    _max?: ReferralMaxOrderByAggregateInput
+    _min?: ReferralMinOrderByAggregateInput
+    _sum?: ReferralSumOrderByAggregateInput
+  }
+
+  export type ReferralScalarWhereWithAggregatesInput = {
+    AND?: ReferralScalarWhereWithAggregatesInput | ReferralScalarWhereWithAggregatesInput[]
+    OR?: ReferralScalarWhereWithAggregatesInput[]
+    NOT?: ReferralScalarWhereWithAggregatesInput | ReferralScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Referral"> | string
+    referrerId?: StringWithAggregatesFilter<"Referral"> | string
+    invitedId?: StringWithAggregatesFilter<"Referral"> | string
+    qualified?: BoolWithAggregatesFilter<"Referral"> | boolean
+    qualifiedAt?: DateTimeNullableWithAggregatesFilter<"Referral"> | Date | string | null
+    qualifiedPeriod?: StringNullableWithAggregatesFilter<"Referral"> | string | null
+    reductionApplied?: IntNullableWithAggregatesFilter<"Referral"> | number | null
+    createdAt?: DateTimeWithAggregatesFilter<"Referral"> | Date | string
+  }
+
+  export type ReferralQualificationWhereInput = {
+    AND?: ReferralQualificationWhereInput | ReferralQualificationWhereInput[]
+    OR?: ReferralQualificationWhereInput[]
+    NOT?: ReferralQualificationWhereInput | ReferralQualificationWhereInput[]
+    id?: StringFilter<"ReferralQualification"> | string
+    referralId?: StringFilter<"ReferralQualification"> | string
+    referrerId?: StringFilter<"ReferralQualification"> | string
+    period?: StringFilter<"ReferralQualification"> | string
+    reduction?: IntFilter<"ReferralQualification"> | number
+    createdAt?: DateTimeFilter<"ReferralQualification"> | Date | string
+    referral?: XOR<ReferralScalarRelationFilter, ReferralWhereInput>
+  }
+
+  export type ReferralQualificationOrderByWithRelationInput = {
+    id?: SortOrder
+    referralId?: SortOrder
+    referrerId?: SortOrder
+    period?: SortOrder
+    reduction?: SortOrder
+    createdAt?: SortOrder
+    referral?: ReferralOrderByWithRelationInput
+  }
+
+  export type ReferralQualificationWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    referralId_period?: ReferralQualificationReferralIdPeriodCompoundUniqueInput
+    AND?: ReferralQualificationWhereInput | ReferralQualificationWhereInput[]
+    OR?: ReferralQualificationWhereInput[]
+    NOT?: ReferralQualificationWhereInput | ReferralQualificationWhereInput[]
+    referralId?: StringFilter<"ReferralQualification"> | string
+    referrerId?: StringFilter<"ReferralQualification"> | string
+    period?: StringFilter<"ReferralQualification"> | string
+    reduction?: IntFilter<"ReferralQualification"> | number
+    createdAt?: DateTimeFilter<"ReferralQualification"> | Date | string
+    referral?: XOR<ReferralScalarRelationFilter, ReferralWhereInput>
+  }, "id" | "referralId_period">
+
+  export type ReferralQualificationOrderByWithAggregationInput = {
+    id?: SortOrder
+    referralId?: SortOrder
+    referrerId?: SortOrder
+    period?: SortOrder
+    reduction?: SortOrder
+    createdAt?: SortOrder
+    _count?: ReferralQualificationCountOrderByAggregateInput
+    _avg?: ReferralQualificationAvgOrderByAggregateInput
+    _max?: ReferralQualificationMaxOrderByAggregateInput
+    _min?: ReferralQualificationMinOrderByAggregateInput
+    _sum?: ReferralQualificationSumOrderByAggregateInput
+  }
+
+  export type ReferralQualificationScalarWhereWithAggregatesInput = {
+    AND?: ReferralQualificationScalarWhereWithAggregatesInput | ReferralQualificationScalarWhereWithAggregatesInput[]
+    OR?: ReferralQualificationScalarWhereWithAggregatesInput[]
+    NOT?: ReferralQualificationScalarWhereWithAggregatesInput | ReferralQualificationScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ReferralQualification"> | string
+    referralId?: StringWithAggregatesFilter<"ReferralQualification"> | string
+    referrerId?: StringWithAggregatesFilter<"ReferralQualification"> | string
+    period?: StringWithAggregatesFilter<"ReferralQualification"> | string
+    reduction?: IntWithAggregatesFilter<"ReferralQualification"> | number
+    createdAt?: DateTimeWithAggregatesFilter<"ReferralQualification"> | Date | string
   }
 
   export type OrderCreateInput = {
@@ -53256,6 +62888,104 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type AdminUserCreateInput = {
+    id?: string
+    name: string
+    username: string
+    email: string
+    password: string
+    role?: string
+    permissions?: string
+    status?: string
+    lastLoginAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AdminUserUncheckedCreateInput = {
+    id?: string
+    name: string
+    username: string
+    email: string
+    password: string
+    role?: string
+    permissions?: string
+    status?: string
+    lastLoginAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AdminUserUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    permissions?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AdminUserUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    permissions?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AdminUserCreateManyInput = {
+    id?: string
+    name: string
+    username: string
+    email: string
+    password: string
+    role?: string
+    permissions?: string
+    status?: string
+    lastLoginAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AdminUserUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    permissions?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AdminUserUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    role?: StringFieldUpdateOperationsInput | string
+    permissions?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type ContactRequestCreateInput = {
     id?: string
     name: string
@@ -53435,6 +63165,10 @@ export namespace Prisma {
     totalEarnings?: number
     pendingEarnings?: number
     totalClicks?: number
+    programUnlocked?: boolean
+    baseThrOverride?: number | null
+    unlockedAt?: Date | string | null
+    firstShareAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     shares?: ShareCreateNestedManyWithoutInfluencerInput
@@ -53445,6 +63179,11 @@ export namespace Prisma {
     campaigns?: CampaignParticipantCreateNestedManyWithoutInfluencerInput
     loyaltyAccount?: LoyaltyAccountCreateNestedOneWithoutInfluencerInput
     supportChat?: SupportChatCreateNestedOneWithoutInfluencerInput
+    starLedgerEntries?: StarLedgerCreateNestedManyWithoutInfluencerInput
+    perfScores?: PerformanceScoreCreateNestedManyWithoutInfluencerInput
+    perfEvents?: PerformanceEventCreateNestedManyWithoutInfluencerInput
+    referralsMade?: ReferralCreateNestedManyWithoutReferrerInput
+    referralReceived?: ReferralCreateNestedOneWithoutInvitedInput
   }
 
   export type InfluencerUncheckedCreateInput = {
@@ -53472,6 +63211,10 @@ export namespace Prisma {
     totalEarnings?: number
     pendingEarnings?: number
     totalClicks?: number
+    programUnlocked?: boolean
+    baseThrOverride?: number | null
+    unlockedAt?: Date | string | null
+    firstShareAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     shares?: ShareUncheckedCreateNestedManyWithoutInfluencerInput
@@ -53482,6 +63225,11 @@ export namespace Prisma {
     campaigns?: CampaignParticipantUncheckedCreateNestedManyWithoutInfluencerInput
     loyaltyAccount?: LoyaltyAccountUncheckedCreateNestedOneWithoutInfluencerInput
     supportChat?: SupportChatUncheckedCreateNestedOneWithoutInfluencerInput
+    starLedgerEntries?: StarLedgerUncheckedCreateNestedManyWithoutInfluencerInput
+    perfScores?: PerformanceScoreUncheckedCreateNestedManyWithoutInfluencerInput
+    perfEvents?: PerformanceEventUncheckedCreateNestedManyWithoutInfluencerInput
+    referralsMade?: ReferralUncheckedCreateNestedManyWithoutReferrerInput
+    referralReceived?: ReferralUncheckedCreateNestedOneWithoutInvitedInput
   }
 
   export type InfluencerUpdateInput = {
@@ -53509,6 +63257,10 @@ export namespace Prisma {
     totalEarnings?: FloatFieldUpdateOperationsInput | number
     pendingEarnings?: FloatFieldUpdateOperationsInput | number
     totalClicks?: IntFieldUpdateOperationsInput | number
+    programUnlocked?: BoolFieldUpdateOperationsInput | boolean
+    baseThrOverride?: NullableIntFieldUpdateOperationsInput | number | null
+    unlockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    firstShareAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     shares?: ShareUpdateManyWithoutInfluencerNestedInput
@@ -53519,6 +63271,11 @@ export namespace Prisma {
     campaigns?: CampaignParticipantUpdateManyWithoutInfluencerNestedInput
     loyaltyAccount?: LoyaltyAccountUpdateOneWithoutInfluencerNestedInput
     supportChat?: SupportChatUpdateOneWithoutInfluencerNestedInput
+    starLedgerEntries?: StarLedgerUpdateManyWithoutInfluencerNestedInput
+    perfScores?: PerformanceScoreUpdateManyWithoutInfluencerNestedInput
+    perfEvents?: PerformanceEventUpdateManyWithoutInfluencerNestedInput
+    referralsMade?: ReferralUpdateManyWithoutReferrerNestedInput
+    referralReceived?: ReferralUpdateOneWithoutInvitedNestedInput
   }
 
   export type InfluencerUncheckedUpdateInput = {
@@ -53546,6 +63303,10 @@ export namespace Prisma {
     totalEarnings?: FloatFieldUpdateOperationsInput | number
     pendingEarnings?: FloatFieldUpdateOperationsInput | number
     totalClicks?: IntFieldUpdateOperationsInput | number
+    programUnlocked?: BoolFieldUpdateOperationsInput | boolean
+    baseThrOverride?: NullableIntFieldUpdateOperationsInput | number | null
+    unlockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    firstShareAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     shares?: ShareUncheckedUpdateManyWithoutInfluencerNestedInput
@@ -53556,6 +63317,11 @@ export namespace Prisma {
     campaigns?: CampaignParticipantUncheckedUpdateManyWithoutInfluencerNestedInput
     loyaltyAccount?: LoyaltyAccountUncheckedUpdateOneWithoutInfluencerNestedInput
     supportChat?: SupportChatUncheckedUpdateOneWithoutInfluencerNestedInput
+    starLedgerEntries?: StarLedgerUncheckedUpdateManyWithoutInfluencerNestedInput
+    perfScores?: PerformanceScoreUncheckedUpdateManyWithoutInfluencerNestedInput
+    perfEvents?: PerformanceEventUncheckedUpdateManyWithoutInfluencerNestedInput
+    referralsMade?: ReferralUncheckedUpdateManyWithoutReferrerNestedInput
+    referralReceived?: ReferralUncheckedUpdateOneWithoutInvitedNestedInput
   }
 
   export type InfluencerCreateManyInput = {
@@ -53583,6 +63349,10 @@ export namespace Prisma {
     totalEarnings?: number
     pendingEarnings?: number
     totalClicks?: number
+    programUnlocked?: boolean
+    baseThrOverride?: number | null
+    unlockedAt?: Date | string | null
+    firstShareAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -53612,6 +63382,10 @@ export namespace Prisma {
     totalEarnings?: FloatFieldUpdateOperationsInput | number
     pendingEarnings?: FloatFieldUpdateOperationsInput | number
     totalClicks?: IntFieldUpdateOperationsInput | number
+    programUnlocked?: BoolFieldUpdateOperationsInput | boolean
+    baseThrOverride?: NullableIntFieldUpdateOperationsInput | number | null
+    unlockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    firstShareAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -53641,6 +63415,10 @@ export namespace Prisma {
     totalEarnings?: FloatFieldUpdateOperationsInput | number
     pendingEarnings?: FloatFieldUpdateOperationsInput | number
     totalClicks?: IntFieldUpdateOperationsInput | number
+    programUnlocked?: BoolFieldUpdateOperationsInput | boolean
+    baseThrOverride?: NullableIntFieldUpdateOperationsInput | number | null
+    unlockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    firstShareAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -54045,6 +63823,7 @@ export namespace Prisma {
     commissionRate?: number
     commissionAmount: number
     commissionStatus?: string
+    affiliatePeriod?: string | null
     saleDate?: Date | string
     completionDate?: Date | string | null
     refundDeadline?: Date | string | null
@@ -54071,6 +63850,7 @@ export namespace Prisma {
     commissionRate?: number
     commissionAmount: number
     commissionStatus?: string
+    affiliatePeriod?: string | null
     saleDate?: Date | string
     completionDate?: Date | string | null
     refundDeadline?: Date | string | null
@@ -54093,6 +63873,7 @@ export namespace Prisma {
     commissionRate?: FloatFieldUpdateOperationsInput | number
     commissionAmount?: FloatFieldUpdateOperationsInput | number
     commissionStatus?: StringFieldUpdateOperationsInput | string
+    affiliatePeriod?: NullableStringFieldUpdateOperationsInput | string | null
     saleDate?: DateTimeFieldUpdateOperationsInput | Date | string
     completionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refundDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -54119,6 +63900,7 @@ export namespace Prisma {
     commissionRate?: FloatFieldUpdateOperationsInput | number
     commissionAmount?: FloatFieldUpdateOperationsInput | number
     commissionStatus?: StringFieldUpdateOperationsInput | string
+    affiliatePeriod?: NullableStringFieldUpdateOperationsInput | string | null
     saleDate?: DateTimeFieldUpdateOperationsInput | Date | string
     completionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refundDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -54143,6 +63925,7 @@ export namespace Prisma {
     commissionRate?: number
     commissionAmount: number
     commissionStatus?: string
+    affiliatePeriod?: string | null
     saleDate?: Date | string
     completionDate?: Date | string | null
     refundDeadline?: Date | string | null
@@ -54163,6 +63946,7 @@ export namespace Prisma {
     commissionRate?: FloatFieldUpdateOperationsInput | number
     commissionAmount?: FloatFieldUpdateOperationsInput | number
     commissionStatus?: StringFieldUpdateOperationsInput | string
+    affiliatePeriod?: NullableStringFieldUpdateOperationsInput | string | null
     saleDate?: DateTimeFieldUpdateOperationsInput | Date | string
     completionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refundDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -54185,6 +63969,7 @@ export namespace Prisma {
     commissionRate?: FloatFieldUpdateOperationsInput | number
     commissionAmount?: FloatFieldUpdateOperationsInput | number
     commissionStatus?: StringFieldUpdateOperationsInput | string
+    affiliatePeriod?: NullableStringFieldUpdateOperationsInput | string | null
     saleDate?: DateTimeFieldUpdateOperationsInput | Date | string
     completionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refundDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -55318,6 +65103,11 @@ export namespace Prisma {
     maxParticipants?: number | null
     imageUrl?: string | null
     createdBy?: string | null
+    storyEyebrow?: string | null
+    storyTitle?: string | null
+    storySub?: string | null
+    storyFeats?: string | null
+    commissionPct?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     participants?: CampaignParticipantCreateNestedManyWithoutCampaignInput
@@ -55339,6 +65129,11 @@ export namespace Prisma {
     maxParticipants?: number | null
     imageUrl?: string | null
     createdBy?: string | null
+    storyEyebrow?: string | null
+    storyTitle?: string | null
+    storySub?: string | null
+    storyFeats?: string | null
+    commissionPct?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     participants?: CampaignParticipantUncheckedCreateNestedManyWithoutCampaignInput
@@ -55360,6 +65155,11 @@ export namespace Prisma {
     maxParticipants?: NullableIntFieldUpdateOperationsInput | number | null
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    storyEyebrow?: NullableStringFieldUpdateOperationsInput | string | null
+    storyTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    storySub?: NullableStringFieldUpdateOperationsInput | string | null
+    storyFeats?: NullableStringFieldUpdateOperationsInput | string | null
+    commissionPct?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     participants?: CampaignParticipantUpdateManyWithoutCampaignNestedInput
@@ -55381,6 +65181,11 @@ export namespace Prisma {
     maxParticipants?: NullableIntFieldUpdateOperationsInput | number | null
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    storyEyebrow?: NullableStringFieldUpdateOperationsInput | string | null
+    storyTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    storySub?: NullableStringFieldUpdateOperationsInput | string | null
+    storyFeats?: NullableStringFieldUpdateOperationsInput | string | null
+    commissionPct?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     participants?: CampaignParticipantUncheckedUpdateManyWithoutCampaignNestedInput
@@ -55402,6 +65207,11 @@ export namespace Prisma {
     maxParticipants?: number | null
     imageUrl?: string | null
     createdBy?: string | null
+    storyEyebrow?: string | null
+    storyTitle?: string | null
+    storySub?: string | null
+    storyFeats?: string | null
+    commissionPct?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -55421,6 +65231,11 @@ export namespace Prisma {
     maxParticipants?: NullableIntFieldUpdateOperationsInput | number | null
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    storyEyebrow?: NullableStringFieldUpdateOperationsInput | string | null
+    storyTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    storySub?: NullableStringFieldUpdateOperationsInput | string | null
+    storyFeats?: NullableStringFieldUpdateOperationsInput | string | null
+    commissionPct?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -55440,6 +65255,11 @@ export namespace Prisma {
     maxParticipants?: NullableIntFieldUpdateOperationsInput | number | null
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    storyEyebrow?: NullableStringFieldUpdateOperationsInput | string | null
+    storyTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    storySub?: NullableStringFieldUpdateOperationsInput | string | null
+    storyFeats?: NullableStringFieldUpdateOperationsInput | string | null
+    commissionPct?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -56012,6 +65832,487 @@ export namespace Prisma {
     sortOrder?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProgramConfigCreateInput = {
+    id?: number
+    baseThreshold?: number
+    minThreshold?: number
+    referralReduction?: number
+    startRate?: number
+    maxRate?: number
+    starToTry?: number
+    weightCvr?: number
+    weightVolume?: number
+    weightCtr?: number
+    updatedAt?: Date | string
+  }
+
+  export type ProgramConfigUncheckedCreateInput = {
+    id?: number
+    baseThreshold?: number
+    minThreshold?: number
+    referralReduction?: number
+    startRate?: number
+    maxRate?: number
+    starToTry?: number
+    weightCvr?: number
+    weightVolume?: number
+    weightCtr?: number
+    updatedAt?: Date | string
+  }
+
+  export type ProgramConfigUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    baseThreshold?: IntFieldUpdateOperationsInput | number
+    minThreshold?: IntFieldUpdateOperationsInput | number
+    referralReduction?: IntFieldUpdateOperationsInput | number
+    startRate?: FloatFieldUpdateOperationsInput | number
+    maxRate?: FloatFieldUpdateOperationsInput | number
+    starToTry?: FloatFieldUpdateOperationsInput | number
+    weightCvr?: FloatFieldUpdateOperationsInput | number
+    weightVolume?: FloatFieldUpdateOperationsInput | number
+    weightCtr?: FloatFieldUpdateOperationsInput | number
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProgramConfigUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    baseThreshold?: IntFieldUpdateOperationsInput | number
+    minThreshold?: IntFieldUpdateOperationsInput | number
+    referralReduction?: IntFieldUpdateOperationsInput | number
+    startRate?: FloatFieldUpdateOperationsInput | number
+    maxRate?: FloatFieldUpdateOperationsInput | number
+    starToTry?: FloatFieldUpdateOperationsInput | number
+    weightCvr?: FloatFieldUpdateOperationsInput | number
+    weightVolume?: FloatFieldUpdateOperationsInput | number
+    weightCtr?: FloatFieldUpdateOperationsInput | number
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProgramConfigCreateManyInput = {
+    id?: number
+    baseThreshold?: number
+    minThreshold?: number
+    referralReduction?: number
+    startRate?: number
+    maxRate?: number
+    starToTry?: number
+    weightCvr?: number
+    weightVolume?: number
+    weightCtr?: number
+    updatedAt?: Date | string
+  }
+
+  export type ProgramConfigUpdateManyMutationInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    baseThreshold?: IntFieldUpdateOperationsInput | number
+    minThreshold?: IntFieldUpdateOperationsInput | number
+    referralReduction?: IntFieldUpdateOperationsInput | number
+    startRate?: FloatFieldUpdateOperationsInput | number
+    maxRate?: FloatFieldUpdateOperationsInput | number
+    starToTry?: FloatFieldUpdateOperationsInput | number
+    weightCvr?: FloatFieldUpdateOperationsInput | number
+    weightVolume?: FloatFieldUpdateOperationsInput | number
+    weightCtr?: FloatFieldUpdateOperationsInput | number
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ProgramConfigUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    baseThreshold?: IntFieldUpdateOperationsInput | number
+    minThreshold?: IntFieldUpdateOperationsInput | number
+    referralReduction?: IntFieldUpdateOperationsInput | number
+    startRate?: FloatFieldUpdateOperationsInput | number
+    maxRate?: FloatFieldUpdateOperationsInput | number
+    starToTry?: FloatFieldUpdateOperationsInput | number
+    weightCvr?: FloatFieldUpdateOperationsInput | number
+    weightVolume?: FloatFieldUpdateOperationsInput | number
+    weightCtr?: FloatFieldUpdateOperationsInput | number
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StarLedgerCreateInput = {
+    id?: string
+    delta: number
+    reason: string
+    note?: string | null
+    createdBy?: string
+    refSaleId?: string | null
+    createdAt?: Date | string
+    influencer: InfluencerCreateNestedOneWithoutStarLedgerEntriesInput
+  }
+
+  export type StarLedgerUncheckedCreateInput = {
+    id?: string
+    influencerId: string
+    delta: number
+    reason: string
+    note?: string | null
+    createdBy?: string
+    refSaleId?: string | null
+    createdAt?: Date | string
+  }
+
+  export type StarLedgerUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    delta?: FloatFieldUpdateOperationsInput | number
+    reason?: StringFieldUpdateOperationsInput | string
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: StringFieldUpdateOperationsInput | string
+    refSaleId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    influencer?: InfluencerUpdateOneRequiredWithoutStarLedgerEntriesNestedInput
+  }
+
+  export type StarLedgerUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    influencerId?: StringFieldUpdateOperationsInput | string
+    delta?: FloatFieldUpdateOperationsInput | number
+    reason?: StringFieldUpdateOperationsInput | string
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: StringFieldUpdateOperationsInput | string
+    refSaleId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StarLedgerCreateManyInput = {
+    id?: string
+    influencerId: string
+    delta: number
+    reason: string
+    note?: string | null
+    createdBy?: string
+    refSaleId?: string | null
+    createdAt?: Date | string
+  }
+
+  export type StarLedgerUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    delta?: FloatFieldUpdateOperationsInput | number
+    reason?: StringFieldUpdateOperationsInput | string
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: StringFieldUpdateOperationsInput | string
+    refSaleId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StarLedgerUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    influencerId?: StringFieldUpdateOperationsInput | string
+    delta?: FloatFieldUpdateOperationsInput | number
+    reason?: StringFieldUpdateOperationsInput | string
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: StringFieldUpdateOperationsInput | string
+    refSaleId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PerformanceScoreCreateInput = {
+    id?: string
+    period: string
+    ctr?: number
+    cvr?: number
+    volume?: number
+    ctrNorm?: number
+    cvrNorm?: number
+    volumeNorm?: number
+    score?: number
+    commissionRate?: number
+    computedAt?: Date | string
+    influencer: InfluencerCreateNestedOneWithoutPerfScoresInput
+  }
+
+  export type PerformanceScoreUncheckedCreateInput = {
+    id?: string
+    influencerId: string
+    period: string
+    ctr?: number
+    cvr?: number
+    volume?: number
+    ctrNorm?: number
+    cvrNorm?: number
+    volumeNorm?: number
+    score?: number
+    commissionRate?: number
+    computedAt?: Date | string
+  }
+
+  export type PerformanceScoreUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    period?: StringFieldUpdateOperationsInput | string
+    ctr?: FloatFieldUpdateOperationsInput | number
+    cvr?: FloatFieldUpdateOperationsInput | number
+    volume?: IntFieldUpdateOperationsInput | number
+    ctrNorm?: FloatFieldUpdateOperationsInput | number
+    cvrNorm?: FloatFieldUpdateOperationsInput | number
+    volumeNorm?: FloatFieldUpdateOperationsInput | number
+    score?: FloatFieldUpdateOperationsInput | number
+    commissionRate?: FloatFieldUpdateOperationsInput | number
+    computedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    influencer?: InfluencerUpdateOneRequiredWithoutPerfScoresNestedInput
+  }
+
+  export type PerformanceScoreUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    influencerId?: StringFieldUpdateOperationsInput | string
+    period?: StringFieldUpdateOperationsInput | string
+    ctr?: FloatFieldUpdateOperationsInput | number
+    cvr?: FloatFieldUpdateOperationsInput | number
+    volume?: IntFieldUpdateOperationsInput | number
+    ctrNorm?: FloatFieldUpdateOperationsInput | number
+    cvrNorm?: FloatFieldUpdateOperationsInput | number
+    volumeNorm?: FloatFieldUpdateOperationsInput | number
+    score?: FloatFieldUpdateOperationsInput | number
+    commissionRate?: FloatFieldUpdateOperationsInput | number
+    computedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PerformanceScoreCreateManyInput = {
+    id?: string
+    influencerId: string
+    period: string
+    ctr?: number
+    cvr?: number
+    volume?: number
+    ctrNorm?: number
+    cvrNorm?: number
+    volumeNorm?: number
+    score?: number
+    commissionRate?: number
+    computedAt?: Date | string
+  }
+
+  export type PerformanceScoreUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    period?: StringFieldUpdateOperationsInput | string
+    ctr?: FloatFieldUpdateOperationsInput | number
+    cvr?: FloatFieldUpdateOperationsInput | number
+    volume?: IntFieldUpdateOperationsInput | number
+    ctrNorm?: FloatFieldUpdateOperationsInput | number
+    cvrNorm?: FloatFieldUpdateOperationsInput | number
+    volumeNorm?: FloatFieldUpdateOperationsInput | number
+    score?: FloatFieldUpdateOperationsInput | number
+    commissionRate?: FloatFieldUpdateOperationsInput | number
+    computedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PerformanceScoreUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    influencerId?: StringFieldUpdateOperationsInput | string
+    period?: StringFieldUpdateOperationsInput | string
+    ctr?: FloatFieldUpdateOperationsInput | number
+    cvr?: FloatFieldUpdateOperationsInput | number
+    volume?: IntFieldUpdateOperationsInput | number
+    ctrNorm?: FloatFieldUpdateOperationsInput | number
+    cvrNorm?: FloatFieldUpdateOperationsInput | number
+    volumeNorm?: FloatFieldUpdateOperationsInput | number
+    score?: FloatFieldUpdateOperationsInput | number
+    commissionRate?: FloatFieldUpdateOperationsInput | number
+    computedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PerformanceEventCreateInput = {
+    id?: string
+    period: string
+    impressions?: number
+    clicks?: number
+    updatedAt?: Date | string
+    influencer: InfluencerCreateNestedOneWithoutPerfEventsInput
+  }
+
+  export type PerformanceEventUncheckedCreateInput = {
+    id?: string
+    influencerId: string
+    period: string
+    impressions?: number
+    clicks?: number
+    updatedAt?: Date | string
+  }
+
+  export type PerformanceEventUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    period?: StringFieldUpdateOperationsInput | string
+    impressions?: IntFieldUpdateOperationsInput | number
+    clicks?: IntFieldUpdateOperationsInput | number
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    influencer?: InfluencerUpdateOneRequiredWithoutPerfEventsNestedInput
+  }
+
+  export type PerformanceEventUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    influencerId?: StringFieldUpdateOperationsInput | string
+    period?: StringFieldUpdateOperationsInput | string
+    impressions?: IntFieldUpdateOperationsInput | number
+    clicks?: IntFieldUpdateOperationsInput | number
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PerformanceEventCreateManyInput = {
+    id?: string
+    influencerId: string
+    period: string
+    impressions?: number
+    clicks?: number
+    updatedAt?: Date | string
+  }
+
+  export type PerformanceEventUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    period?: StringFieldUpdateOperationsInput | string
+    impressions?: IntFieldUpdateOperationsInput | number
+    clicks?: IntFieldUpdateOperationsInput | number
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PerformanceEventUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    influencerId?: StringFieldUpdateOperationsInput | string
+    period?: StringFieldUpdateOperationsInput | string
+    impressions?: IntFieldUpdateOperationsInput | number
+    clicks?: IntFieldUpdateOperationsInput | number
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ReferralCreateInput = {
+    id?: string
+    qualified?: boolean
+    qualifiedAt?: Date | string | null
+    qualifiedPeriod?: string | null
+    reductionApplied?: number | null
+    createdAt?: Date | string
+    referrer: InfluencerCreateNestedOneWithoutReferralsMadeInput
+    invited: InfluencerCreateNestedOneWithoutReferralReceivedInput
+    qualifications?: ReferralQualificationCreateNestedManyWithoutReferralInput
+  }
+
+  export type ReferralUncheckedCreateInput = {
+    id?: string
+    referrerId: string
+    invitedId: string
+    qualified?: boolean
+    qualifiedAt?: Date | string | null
+    qualifiedPeriod?: string | null
+    reductionApplied?: number | null
+    createdAt?: Date | string
+    qualifications?: ReferralQualificationUncheckedCreateNestedManyWithoutReferralInput
+  }
+
+  export type ReferralUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    qualified?: BoolFieldUpdateOperationsInput | boolean
+    qualifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    qualifiedPeriod?: NullableStringFieldUpdateOperationsInput | string | null
+    reductionApplied?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    referrer?: InfluencerUpdateOneRequiredWithoutReferralsMadeNestedInput
+    invited?: InfluencerUpdateOneRequiredWithoutReferralReceivedNestedInput
+    qualifications?: ReferralQualificationUpdateManyWithoutReferralNestedInput
+  }
+
+  export type ReferralUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    referrerId?: StringFieldUpdateOperationsInput | string
+    invitedId?: StringFieldUpdateOperationsInput | string
+    qualified?: BoolFieldUpdateOperationsInput | boolean
+    qualifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    qualifiedPeriod?: NullableStringFieldUpdateOperationsInput | string | null
+    reductionApplied?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    qualifications?: ReferralQualificationUncheckedUpdateManyWithoutReferralNestedInput
+  }
+
+  export type ReferralCreateManyInput = {
+    id?: string
+    referrerId: string
+    invitedId: string
+    qualified?: boolean
+    qualifiedAt?: Date | string | null
+    qualifiedPeriod?: string | null
+    reductionApplied?: number | null
+    createdAt?: Date | string
+  }
+
+  export type ReferralUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    qualified?: BoolFieldUpdateOperationsInput | boolean
+    qualifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    qualifiedPeriod?: NullableStringFieldUpdateOperationsInput | string | null
+    reductionApplied?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ReferralUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    referrerId?: StringFieldUpdateOperationsInput | string
+    invitedId?: StringFieldUpdateOperationsInput | string
+    qualified?: BoolFieldUpdateOperationsInput | boolean
+    qualifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    qualifiedPeriod?: NullableStringFieldUpdateOperationsInput | string | null
+    reductionApplied?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ReferralQualificationCreateInput = {
+    id?: string
+    referrerId: string
+    period: string
+    reduction: number
+    createdAt?: Date | string
+    referral: ReferralCreateNestedOneWithoutQualificationsInput
+  }
+
+  export type ReferralQualificationUncheckedCreateInput = {
+    id?: string
+    referralId: string
+    referrerId: string
+    period: string
+    reduction: number
+    createdAt?: Date | string
+  }
+
+  export type ReferralQualificationUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    referrerId?: StringFieldUpdateOperationsInput | string
+    period?: StringFieldUpdateOperationsInput | string
+    reduction?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    referral?: ReferralUpdateOneRequiredWithoutQualificationsNestedInput
+  }
+
+  export type ReferralQualificationUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    referralId?: StringFieldUpdateOperationsInput | string
+    referrerId?: StringFieldUpdateOperationsInput | string
+    period?: StringFieldUpdateOperationsInput | string
+    reduction?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ReferralQualificationCreateManyInput = {
+    id?: string
+    referralId: string
+    referrerId: string
+    period: string
+    reduction: number
+    createdAt?: Date | string
+  }
+
+  export type ReferralQualificationUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    referrerId?: StringFieldUpdateOperationsInput | string
+    period?: StringFieldUpdateOperationsInput | string
+    reduction?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ReferralQualificationUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    referralId?: StringFieldUpdateOperationsInput | string
+    referrerId?: StringFieldUpdateOperationsInput | string
+    period?: StringFieldUpdateOperationsInput | string
+    reduction?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -56777,6 +67078,48 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
+  export type AdminUserCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    username?: SortOrder
+    email?: SortOrder
+    password?: SortOrder
+    role?: SortOrder
+    permissions?: SortOrder
+    status?: SortOrder
+    lastLoginAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AdminUserMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    username?: SortOrder
+    email?: SortOrder
+    password?: SortOrder
+    role?: SortOrder
+    permissions?: SortOrder
+    status?: SortOrder
+    lastLoginAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AdminUserMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    username?: SortOrder
+    email?: SortOrder
+    password?: SortOrder
+    role?: SortOrder
+    permissions?: SortOrder
+    status?: SortOrder
+    lastLoginAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
   export type ContactRequestCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
@@ -56897,6 +67240,35 @@ export namespace Prisma {
     isNot?: SupportChatWhereInput | null
   }
 
+  export type StarLedgerListRelationFilter = {
+    every?: StarLedgerWhereInput
+    some?: StarLedgerWhereInput
+    none?: StarLedgerWhereInput
+  }
+
+  export type PerformanceScoreListRelationFilter = {
+    every?: PerformanceScoreWhereInput
+    some?: PerformanceScoreWhereInput
+    none?: PerformanceScoreWhereInput
+  }
+
+  export type PerformanceEventListRelationFilter = {
+    every?: PerformanceEventWhereInput
+    some?: PerformanceEventWhereInput
+    none?: PerformanceEventWhereInput
+  }
+
+  export type ReferralListRelationFilter = {
+    every?: ReferralWhereInput
+    some?: ReferralWhereInput
+    none?: ReferralWhereInput
+  }
+
+  export type ReferralNullableScalarRelationFilter = {
+    is?: ReferralWhereInput | null
+    isNot?: ReferralWhereInput | null
+  }
+
   export type ShareOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -56918,6 +67290,22 @@ export namespace Prisma {
   }
 
   export type CampaignParticipantOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type StarLedgerOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type PerformanceScoreOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type PerformanceEventOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ReferralOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -56946,6 +67334,10 @@ export namespace Prisma {
     totalEarnings?: SortOrder
     pendingEarnings?: SortOrder
     totalClicks?: SortOrder
+    programUnlocked?: SortOrder
+    baseThrOverride?: SortOrder
+    unlockedAt?: SortOrder
+    firstShareAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -56956,6 +67348,7 @@ export namespace Prisma {
     totalEarnings?: SortOrder
     pendingEarnings?: SortOrder
     totalClicks?: SortOrder
+    baseThrOverride?: SortOrder
   }
 
   export type InfluencerMaxOrderByAggregateInput = {
@@ -56983,6 +67376,10 @@ export namespace Prisma {
     totalEarnings?: SortOrder
     pendingEarnings?: SortOrder
     totalClicks?: SortOrder
+    programUnlocked?: SortOrder
+    baseThrOverride?: SortOrder
+    unlockedAt?: SortOrder
+    firstShareAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -57012,6 +67409,10 @@ export namespace Prisma {
     totalEarnings?: SortOrder
     pendingEarnings?: SortOrder
     totalClicks?: SortOrder
+    programUnlocked?: SortOrder
+    baseThrOverride?: SortOrder
+    unlockedAt?: SortOrder
+    firstShareAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -57022,6 +67423,7 @@ export namespace Prisma {
     totalEarnings?: SortOrder
     pendingEarnings?: SortOrder
     totalClicks?: SortOrder
+    baseThrOverride?: SortOrder
   }
 
   export type InfluencerScalarRelationFilter = {
@@ -57281,6 +67683,7 @@ export namespace Prisma {
     commissionRate?: SortOrder
     commissionAmount?: SortOrder
     commissionStatus?: SortOrder
+    affiliatePeriod?: SortOrder
     saleDate?: SortOrder
     completionDate?: SortOrder
     refundDeadline?: SortOrder
@@ -57313,6 +67716,7 @@ export namespace Prisma {
     commissionRate?: SortOrder
     commissionAmount?: SortOrder
     commissionStatus?: SortOrder
+    affiliatePeriod?: SortOrder
     saleDate?: SortOrder
     completionDate?: SortOrder
     refundDeadline?: SortOrder
@@ -57335,6 +67739,7 @@ export namespace Prisma {
     commissionRate?: SortOrder
     commissionAmount?: SortOrder
     commissionStatus?: SortOrder
+    affiliatePeriod?: SortOrder
     saleDate?: SortOrder
     completionDate?: SortOrder
     refundDeadline?: SortOrder
@@ -58049,6 +68454,11 @@ export namespace Prisma {
     maxParticipants?: SortOrder
     imageUrl?: SortOrder
     createdBy?: SortOrder
+    storyEyebrow?: SortOrder
+    storyTitle?: SortOrder
+    storySub?: SortOrder
+    storyFeats?: SortOrder
+    commissionPct?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -58056,6 +68466,7 @@ export namespace Prisma {
   export type CampaignAvgOrderByAggregateInput = {
     discountValue?: SortOrder
     maxParticipants?: SortOrder
+    commissionPct?: SortOrder
   }
 
   export type CampaignMaxOrderByAggregateInput = {
@@ -58073,6 +68484,11 @@ export namespace Prisma {
     maxParticipants?: SortOrder
     imageUrl?: SortOrder
     createdBy?: SortOrder
+    storyEyebrow?: SortOrder
+    storyTitle?: SortOrder
+    storySub?: SortOrder
+    storyFeats?: SortOrder
+    commissionPct?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -58092,6 +68508,11 @@ export namespace Prisma {
     maxParticipants?: SortOrder
     imageUrl?: SortOrder
     createdBy?: SortOrder
+    storyEyebrow?: SortOrder
+    storyTitle?: SortOrder
+    storySub?: SortOrder
+    storyFeats?: SortOrder
+    commissionPct?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -58099,6 +68520,7 @@ export namespace Prisma {
   export type CampaignSumOrderByAggregateInput = {
     discountValue?: SortOrder
     maxParticipants?: SortOrder
+    commissionPct?: SortOrder
   }
 
   export type CampaignScalarRelationFilter = {
@@ -58440,6 +68862,325 @@ export namespace Prisma {
     sortOrder?: SortOrder
   }
 
+  export type ProgramConfigCountOrderByAggregateInput = {
+    id?: SortOrder
+    baseThreshold?: SortOrder
+    minThreshold?: SortOrder
+    referralReduction?: SortOrder
+    startRate?: SortOrder
+    maxRate?: SortOrder
+    starToTry?: SortOrder
+    weightCvr?: SortOrder
+    weightVolume?: SortOrder
+    weightCtr?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ProgramConfigAvgOrderByAggregateInput = {
+    id?: SortOrder
+    baseThreshold?: SortOrder
+    minThreshold?: SortOrder
+    referralReduction?: SortOrder
+    startRate?: SortOrder
+    maxRate?: SortOrder
+    starToTry?: SortOrder
+    weightCvr?: SortOrder
+    weightVolume?: SortOrder
+    weightCtr?: SortOrder
+  }
+
+  export type ProgramConfigMaxOrderByAggregateInput = {
+    id?: SortOrder
+    baseThreshold?: SortOrder
+    minThreshold?: SortOrder
+    referralReduction?: SortOrder
+    startRate?: SortOrder
+    maxRate?: SortOrder
+    starToTry?: SortOrder
+    weightCvr?: SortOrder
+    weightVolume?: SortOrder
+    weightCtr?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ProgramConfigMinOrderByAggregateInput = {
+    id?: SortOrder
+    baseThreshold?: SortOrder
+    minThreshold?: SortOrder
+    referralReduction?: SortOrder
+    startRate?: SortOrder
+    maxRate?: SortOrder
+    starToTry?: SortOrder
+    weightCvr?: SortOrder
+    weightVolume?: SortOrder
+    weightCtr?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ProgramConfigSumOrderByAggregateInput = {
+    id?: SortOrder
+    baseThreshold?: SortOrder
+    minThreshold?: SortOrder
+    referralReduction?: SortOrder
+    startRate?: SortOrder
+    maxRate?: SortOrder
+    starToTry?: SortOrder
+    weightCvr?: SortOrder
+    weightVolume?: SortOrder
+    weightCtr?: SortOrder
+  }
+
+  export type StarLedgerCountOrderByAggregateInput = {
+    id?: SortOrder
+    influencerId?: SortOrder
+    delta?: SortOrder
+    reason?: SortOrder
+    note?: SortOrder
+    createdBy?: SortOrder
+    refSaleId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type StarLedgerAvgOrderByAggregateInput = {
+    delta?: SortOrder
+  }
+
+  export type StarLedgerMaxOrderByAggregateInput = {
+    id?: SortOrder
+    influencerId?: SortOrder
+    delta?: SortOrder
+    reason?: SortOrder
+    note?: SortOrder
+    createdBy?: SortOrder
+    refSaleId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type StarLedgerMinOrderByAggregateInput = {
+    id?: SortOrder
+    influencerId?: SortOrder
+    delta?: SortOrder
+    reason?: SortOrder
+    note?: SortOrder
+    createdBy?: SortOrder
+    refSaleId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type StarLedgerSumOrderByAggregateInput = {
+    delta?: SortOrder
+  }
+
+  export type PerformanceScoreInfluencerIdPeriodCompoundUniqueInput = {
+    influencerId: string
+    period: string
+  }
+
+  export type PerformanceScoreCountOrderByAggregateInput = {
+    id?: SortOrder
+    influencerId?: SortOrder
+    period?: SortOrder
+    ctr?: SortOrder
+    cvr?: SortOrder
+    volume?: SortOrder
+    ctrNorm?: SortOrder
+    cvrNorm?: SortOrder
+    volumeNorm?: SortOrder
+    score?: SortOrder
+    commissionRate?: SortOrder
+    computedAt?: SortOrder
+  }
+
+  export type PerformanceScoreAvgOrderByAggregateInput = {
+    ctr?: SortOrder
+    cvr?: SortOrder
+    volume?: SortOrder
+    ctrNorm?: SortOrder
+    cvrNorm?: SortOrder
+    volumeNorm?: SortOrder
+    score?: SortOrder
+    commissionRate?: SortOrder
+  }
+
+  export type PerformanceScoreMaxOrderByAggregateInput = {
+    id?: SortOrder
+    influencerId?: SortOrder
+    period?: SortOrder
+    ctr?: SortOrder
+    cvr?: SortOrder
+    volume?: SortOrder
+    ctrNorm?: SortOrder
+    cvrNorm?: SortOrder
+    volumeNorm?: SortOrder
+    score?: SortOrder
+    commissionRate?: SortOrder
+    computedAt?: SortOrder
+  }
+
+  export type PerformanceScoreMinOrderByAggregateInput = {
+    id?: SortOrder
+    influencerId?: SortOrder
+    period?: SortOrder
+    ctr?: SortOrder
+    cvr?: SortOrder
+    volume?: SortOrder
+    ctrNorm?: SortOrder
+    cvrNorm?: SortOrder
+    volumeNorm?: SortOrder
+    score?: SortOrder
+    commissionRate?: SortOrder
+    computedAt?: SortOrder
+  }
+
+  export type PerformanceScoreSumOrderByAggregateInput = {
+    ctr?: SortOrder
+    cvr?: SortOrder
+    volume?: SortOrder
+    ctrNorm?: SortOrder
+    cvrNorm?: SortOrder
+    volumeNorm?: SortOrder
+    score?: SortOrder
+    commissionRate?: SortOrder
+  }
+
+  export type PerformanceEventInfluencerIdPeriodCompoundUniqueInput = {
+    influencerId: string
+    period: string
+  }
+
+  export type PerformanceEventCountOrderByAggregateInput = {
+    id?: SortOrder
+    influencerId?: SortOrder
+    period?: SortOrder
+    impressions?: SortOrder
+    clicks?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PerformanceEventAvgOrderByAggregateInput = {
+    impressions?: SortOrder
+    clicks?: SortOrder
+  }
+
+  export type PerformanceEventMaxOrderByAggregateInput = {
+    id?: SortOrder
+    influencerId?: SortOrder
+    period?: SortOrder
+    impressions?: SortOrder
+    clicks?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PerformanceEventMinOrderByAggregateInput = {
+    id?: SortOrder
+    influencerId?: SortOrder
+    period?: SortOrder
+    impressions?: SortOrder
+    clicks?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type PerformanceEventSumOrderByAggregateInput = {
+    impressions?: SortOrder
+    clicks?: SortOrder
+  }
+
+  export type ReferralQualificationListRelationFilter = {
+    every?: ReferralQualificationWhereInput
+    some?: ReferralQualificationWhereInput
+    none?: ReferralQualificationWhereInput
+  }
+
+  export type ReferralQualificationOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ReferralCountOrderByAggregateInput = {
+    id?: SortOrder
+    referrerId?: SortOrder
+    invitedId?: SortOrder
+    qualified?: SortOrder
+    qualifiedAt?: SortOrder
+    qualifiedPeriod?: SortOrder
+    reductionApplied?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ReferralAvgOrderByAggregateInput = {
+    reductionApplied?: SortOrder
+  }
+
+  export type ReferralMaxOrderByAggregateInput = {
+    id?: SortOrder
+    referrerId?: SortOrder
+    invitedId?: SortOrder
+    qualified?: SortOrder
+    qualifiedAt?: SortOrder
+    qualifiedPeriod?: SortOrder
+    reductionApplied?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ReferralMinOrderByAggregateInput = {
+    id?: SortOrder
+    referrerId?: SortOrder
+    invitedId?: SortOrder
+    qualified?: SortOrder
+    qualifiedAt?: SortOrder
+    qualifiedPeriod?: SortOrder
+    reductionApplied?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ReferralSumOrderByAggregateInput = {
+    reductionApplied?: SortOrder
+  }
+
+  export type ReferralScalarRelationFilter = {
+    is?: ReferralWhereInput
+    isNot?: ReferralWhereInput
+  }
+
+  export type ReferralQualificationReferralIdPeriodCompoundUniqueInput = {
+    referralId: string
+    period: string
+  }
+
+  export type ReferralQualificationCountOrderByAggregateInput = {
+    id?: SortOrder
+    referralId?: SortOrder
+    referrerId?: SortOrder
+    period?: SortOrder
+    reduction?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ReferralQualificationAvgOrderByAggregateInput = {
+    reduction?: SortOrder
+  }
+
+  export type ReferralQualificationMaxOrderByAggregateInput = {
+    id?: SortOrder
+    referralId?: SortOrder
+    referrerId?: SortOrder
+    period?: SortOrder
+    reduction?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ReferralQualificationMinOrderByAggregateInput = {
+    id?: SortOrder
+    referralId?: SortOrder
+    referrerId?: SortOrder
+    period?: SortOrder
+    reduction?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ReferralQualificationSumOrderByAggregateInput = {
+    reduction?: SortOrder
+  }
+
   export type UserCreateNestedOneWithoutOrdersInput = {
     create?: XOR<UserCreateWithoutOrdersInput, UserUncheckedCreateWithoutOrdersInput>
     connectOrCreate?: UserCreateOrConnectWithoutOrdersInput
@@ -58712,6 +69453,40 @@ export namespace Prisma {
     connect?: SupportChatWhereUniqueInput
   }
 
+  export type StarLedgerCreateNestedManyWithoutInfluencerInput = {
+    create?: XOR<StarLedgerCreateWithoutInfluencerInput, StarLedgerUncheckedCreateWithoutInfluencerInput> | StarLedgerCreateWithoutInfluencerInput[] | StarLedgerUncheckedCreateWithoutInfluencerInput[]
+    connectOrCreate?: StarLedgerCreateOrConnectWithoutInfluencerInput | StarLedgerCreateOrConnectWithoutInfluencerInput[]
+    createMany?: StarLedgerCreateManyInfluencerInputEnvelope
+    connect?: StarLedgerWhereUniqueInput | StarLedgerWhereUniqueInput[]
+  }
+
+  export type PerformanceScoreCreateNestedManyWithoutInfluencerInput = {
+    create?: XOR<PerformanceScoreCreateWithoutInfluencerInput, PerformanceScoreUncheckedCreateWithoutInfluencerInput> | PerformanceScoreCreateWithoutInfluencerInput[] | PerformanceScoreUncheckedCreateWithoutInfluencerInput[]
+    connectOrCreate?: PerformanceScoreCreateOrConnectWithoutInfluencerInput | PerformanceScoreCreateOrConnectWithoutInfluencerInput[]
+    createMany?: PerformanceScoreCreateManyInfluencerInputEnvelope
+    connect?: PerformanceScoreWhereUniqueInput | PerformanceScoreWhereUniqueInput[]
+  }
+
+  export type PerformanceEventCreateNestedManyWithoutInfluencerInput = {
+    create?: XOR<PerformanceEventCreateWithoutInfluencerInput, PerformanceEventUncheckedCreateWithoutInfluencerInput> | PerformanceEventCreateWithoutInfluencerInput[] | PerformanceEventUncheckedCreateWithoutInfluencerInput[]
+    connectOrCreate?: PerformanceEventCreateOrConnectWithoutInfluencerInput | PerformanceEventCreateOrConnectWithoutInfluencerInput[]
+    createMany?: PerformanceEventCreateManyInfluencerInputEnvelope
+    connect?: PerformanceEventWhereUniqueInput | PerformanceEventWhereUniqueInput[]
+  }
+
+  export type ReferralCreateNestedManyWithoutReferrerInput = {
+    create?: XOR<ReferralCreateWithoutReferrerInput, ReferralUncheckedCreateWithoutReferrerInput> | ReferralCreateWithoutReferrerInput[] | ReferralUncheckedCreateWithoutReferrerInput[]
+    connectOrCreate?: ReferralCreateOrConnectWithoutReferrerInput | ReferralCreateOrConnectWithoutReferrerInput[]
+    createMany?: ReferralCreateManyReferrerInputEnvelope
+    connect?: ReferralWhereUniqueInput | ReferralWhereUniqueInput[]
+  }
+
+  export type ReferralCreateNestedOneWithoutInvitedInput = {
+    create?: XOR<ReferralCreateWithoutInvitedInput, ReferralUncheckedCreateWithoutInvitedInput>
+    connectOrCreate?: ReferralCreateOrConnectWithoutInvitedInput
+    connect?: ReferralWhereUniqueInput
+  }
+
   export type ShareUncheckedCreateNestedManyWithoutInfluencerInput = {
     create?: XOR<ShareCreateWithoutInfluencerInput, ShareUncheckedCreateWithoutInfluencerInput> | ShareCreateWithoutInfluencerInput[] | ShareUncheckedCreateWithoutInfluencerInput[]
     connectOrCreate?: ShareCreateOrConnectWithoutInfluencerInput | ShareCreateOrConnectWithoutInfluencerInput[]
@@ -58764,6 +69539,40 @@ export namespace Prisma {
     create?: XOR<SupportChatCreateWithoutInfluencerInput, SupportChatUncheckedCreateWithoutInfluencerInput>
     connectOrCreate?: SupportChatCreateOrConnectWithoutInfluencerInput
     connect?: SupportChatWhereUniqueInput
+  }
+
+  export type StarLedgerUncheckedCreateNestedManyWithoutInfluencerInput = {
+    create?: XOR<StarLedgerCreateWithoutInfluencerInput, StarLedgerUncheckedCreateWithoutInfluencerInput> | StarLedgerCreateWithoutInfluencerInput[] | StarLedgerUncheckedCreateWithoutInfluencerInput[]
+    connectOrCreate?: StarLedgerCreateOrConnectWithoutInfluencerInput | StarLedgerCreateOrConnectWithoutInfluencerInput[]
+    createMany?: StarLedgerCreateManyInfluencerInputEnvelope
+    connect?: StarLedgerWhereUniqueInput | StarLedgerWhereUniqueInput[]
+  }
+
+  export type PerformanceScoreUncheckedCreateNestedManyWithoutInfluencerInput = {
+    create?: XOR<PerformanceScoreCreateWithoutInfluencerInput, PerformanceScoreUncheckedCreateWithoutInfluencerInput> | PerformanceScoreCreateWithoutInfluencerInput[] | PerformanceScoreUncheckedCreateWithoutInfluencerInput[]
+    connectOrCreate?: PerformanceScoreCreateOrConnectWithoutInfluencerInput | PerformanceScoreCreateOrConnectWithoutInfluencerInput[]
+    createMany?: PerformanceScoreCreateManyInfluencerInputEnvelope
+    connect?: PerformanceScoreWhereUniqueInput | PerformanceScoreWhereUniqueInput[]
+  }
+
+  export type PerformanceEventUncheckedCreateNestedManyWithoutInfluencerInput = {
+    create?: XOR<PerformanceEventCreateWithoutInfluencerInput, PerformanceEventUncheckedCreateWithoutInfluencerInput> | PerformanceEventCreateWithoutInfluencerInput[] | PerformanceEventUncheckedCreateWithoutInfluencerInput[]
+    connectOrCreate?: PerformanceEventCreateOrConnectWithoutInfluencerInput | PerformanceEventCreateOrConnectWithoutInfluencerInput[]
+    createMany?: PerformanceEventCreateManyInfluencerInputEnvelope
+    connect?: PerformanceEventWhereUniqueInput | PerformanceEventWhereUniqueInput[]
+  }
+
+  export type ReferralUncheckedCreateNestedManyWithoutReferrerInput = {
+    create?: XOR<ReferralCreateWithoutReferrerInput, ReferralUncheckedCreateWithoutReferrerInput> | ReferralCreateWithoutReferrerInput[] | ReferralUncheckedCreateWithoutReferrerInput[]
+    connectOrCreate?: ReferralCreateOrConnectWithoutReferrerInput | ReferralCreateOrConnectWithoutReferrerInput[]
+    createMany?: ReferralCreateManyReferrerInputEnvelope
+    connect?: ReferralWhereUniqueInput | ReferralWhereUniqueInput[]
+  }
+
+  export type ReferralUncheckedCreateNestedOneWithoutInvitedInput = {
+    create?: XOR<ReferralCreateWithoutInvitedInput, ReferralUncheckedCreateWithoutInvitedInput>
+    connectOrCreate?: ReferralCreateOrConnectWithoutInvitedInput
+    connect?: ReferralWhereUniqueInput
   }
 
   export type ShareUpdateManyWithoutInfluencerNestedInput = {
@@ -58870,6 +69679,72 @@ export namespace Prisma {
     update?: XOR<XOR<SupportChatUpdateToOneWithWhereWithoutInfluencerInput, SupportChatUpdateWithoutInfluencerInput>, SupportChatUncheckedUpdateWithoutInfluencerInput>
   }
 
+  export type StarLedgerUpdateManyWithoutInfluencerNestedInput = {
+    create?: XOR<StarLedgerCreateWithoutInfluencerInput, StarLedgerUncheckedCreateWithoutInfluencerInput> | StarLedgerCreateWithoutInfluencerInput[] | StarLedgerUncheckedCreateWithoutInfluencerInput[]
+    connectOrCreate?: StarLedgerCreateOrConnectWithoutInfluencerInput | StarLedgerCreateOrConnectWithoutInfluencerInput[]
+    upsert?: StarLedgerUpsertWithWhereUniqueWithoutInfluencerInput | StarLedgerUpsertWithWhereUniqueWithoutInfluencerInput[]
+    createMany?: StarLedgerCreateManyInfluencerInputEnvelope
+    set?: StarLedgerWhereUniqueInput | StarLedgerWhereUniqueInput[]
+    disconnect?: StarLedgerWhereUniqueInput | StarLedgerWhereUniqueInput[]
+    delete?: StarLedgerWhereUniqueInput | StarLedgerWhereUniqueInput[]
+    connect?: StarLedgerWhereUniqueInput | StarLedgerWhereUniqueInput[]
+    update?: StarLedgerUpdateWithWhereUniqueWithoutInfluencerInput | StarLedgerUpdateWithWhereUniqueWithoutInfluencerInput[]
+    updateMany?: StarLedgerUpdateManyWithWhereWithoutInfluencerInput | StarLedgerUpdateManyWithWhereWithoutInfluencerInput[]
+    deleteMany?: StarLedgerScalarWhereInput | StarLedgerScalarWhereInput[]
+  }
+
+  export type PerformanceScoreUpdateManyWithoutInfluencerNestedInput = {
+    create?: XOR<PerformanceScoreCreateWithoutInfluencerInput, PerformanceScoreUncheckedCreateWithoutInfluencerInput> | PerformanceScoreCreateWithoutInfluencerInput[] | PerformanceScoreUncheckedCreateWithoutInfluencerInput[]
+    connectOrCreate?: PerformanceScoreCreateOrConnectWithoutInfluencerInput | PerformanceScoreCreateOrConnectWithoutInfluencerInput[]
+    upsert?: PerformanceScoreUpsertWithWhereUniqueWithoutInfluencerInput | PerformanceScoreUpsertWithWhereUniqueWithoutInfluencerInput[]
+    createMany?: PerformanceScoreCreateManyInfluencerInputEnvelope
+    set?: PerformanceScoreWhereUniqueInput | PerformanceScoreWhereUniqueInput[]
+    disconnect?: PerformanceScoreWhereUniqueInput | PerformanceScoreWhereUniqueInput[]
+    delete?: PerformanceScoreWhereUniqueInput | PerformanceScoreWhereUniqueInput[]
+    connect?: PerformanceScoreWhereUniqueInput | PerformanceScoreWhereUniqueInput[]
+    update?: PerformanceScoreUpdateWithWhereUniqueWithoutInfluencerInput | PerformanceScoreUpdateWithWhereUniqueWithoutInfluencerInput[]
+    updateMany?: PerformanceScoreUpdateManyWithWhereWithoutInfluencerInput | PerformanceScoreUpdateManyWithWhereWithoutInfluencerInput[]
+    deleteMany?: PerformanceScoreScalarWhereInput | PerformanceScoreScalarWhereInput[]
+  }
+
+  export type PerformanceEventUpdateManyWithoutInfluencerNestedInput = {
+    create?: XOR<PerformanceEventCreateWithoutInfluencerInput, PerformanceEventUncheckedCreateWithoutInfluencerInput> | PerformanceEventCreateWithoutInfluencerInput[] | PerformanceEventUncheckedCreateWithoutInfluencerInput[]
+    connectOrCreate?: PerformanceEventCreateOrConnectWithoutInfluencerInput | PerformanceEventCreateOrConnectWithoutInfluencerInput[]
+    upsert?: PerformanceEventUpsertWithWhereUniqueWithoutInfluencerInput | PerformanceEventUpsertWithWhereUniqueWithoutInfluencerInput[]
+    createMany?: PerformanceEventCreateManyInfluencerInputEnvelope
+    set?: PerformanceEventWhereUniqueInput | PerformanceEventWhereUniqueInput[]
+    disconnect?: PerformanceEventWhereUniqueInput | PerformanceEventWhereUniqueInput[]
+    delete?: PerformanceEventWhereUniqueInput | PerformanceEventWhereUniqueInput[]
+    connect?: PerformanceEventWhereUniqueInput | PerformanceEventWhereUniqueInput[]
+    update?: PerformanceEventUpdateWithWhereUniqueWithoutInfluencerInput | PerformanceEventUpdateWithWhereUniqueWithoutInfluencerInput[]
+    updateMany?: PerformanceEventUpdateManyWithWhereWithoutInfluencerInput | PerformanceEventUpdateManyWithWhereWithoutInfluencerInput[]
+    deleteMany?: PerformanceEventScalarWhereInput | PerformanceEventScalarWhereInput[]
+  }
+
+  export type ReferralUpdateManyWithoutReferrerNestedInput = {
+    create?: XOR<ReferralCreateWithoutReferrerInput, ReferralUncheckedCreateWithoutReferrerInput> | ReferralCreateWithoutReferrerInput[] | ReferralUncheckedCreateWithoutReferrerInput[]
+    connectOrCreate?: ReferralCreateOrConnectWithoutReferrerInput | ReferralCreateOrConnectWithoutReferrerInput[]
+    upsert?: ReferralUpsertWithWhereUniqueWithoutReferrerInput | ReferralUpsertWithWhereUniqueWithoutReferrerInput[]
+    createMany?: ReferralCreateManyReferrerInputEnvelope
+    set?: ReferralWhereUniqueInput | ReferralWhereUniqueInput[]
+    disconnect?: ReferralWhereUniqueInput | ReferralWhereUniqueInput[]
+    delete?: ReferralWhereUniqueInput | ReferralWhereUniqueInput[]
+    connect?: ReferralWhereUniqueInput | ReferralWhereUniqueInput[]
+    update?: ReferralUpdateWithWhereUniqueWithoutReferrerInput | ReferralUpdateWithWhereUniqueWithoutReferrerInput[]
+    updateMany?: ReferralUpdateManyWithWhereWithoutReferrerInput | ReferralUpdateManyWithWhereWithoutReferrerInput[]
+    deleteMany?: ReferralScalarWhereInput | ReferralScalarWhereInput[]
+  }
+
+  export type ReferralUpdateOneWithoutInvitedNestedInput = {
+    create?: XOR<ReferralCreateWithoutInvitedInput, ReferralUncheckedCreateWithoutInvitedInput>
+    connectOrCreate?: ReferralCreateOrConnectWithoutInvitedInput
+    upsert?: ReferralUpsertWithoutInvitedInput
+    disconnect?: ReferralWhereInput | boolean
+    delete?: ReferralWhereInput | boolean
+    connect?: ReferralWhereUniqueInput
+    update?: XOR<XOR<ReferralUpdateToOneWithWhereWithoutInvitedInput, ReferralUpdateWithoutInvitedInput>, ReferralUncheckedUpdateWithoutInvitedInput>
+  }
+
   export type ShareUncheckedUpdateManyWithoutInfluencerNestedInput = {
     create?: XOR<ShareCreateWithoutInfluencerInput, ShareUncheckedCreateWithoutInfluencerInput> | ShareCreateWithoutInfluencerInput[] | ShareUncheckedCreateWithoutInfluencerInput[]
     connectOrCreate?: ShareCreateOrConnectWithoutInfluencerInput | ShareCreateOrConnectWithoutInfluencerInput[]
@@ -58972,6 +69847,72 @@ export namespace Prisma {
     delete?: SupportChatWhereInput | boolean
     connect?: SupportChatWhereUniqueInput
     update?: XOR<XOR<SupportChatUpdateToOneWithWhereWithoutInfluencerInput, SupportChatUpdateWithoutInfluencerInput>, SupportChatUncheckedUpdateWithoutInfluencerInput>
+  }
+
+  export type StarLedgerUncheckedUpdateManyWithoutInfluencerNestedInput = {
+    create?: XOR<StarLedgerCreateWithoutInfluencerInput, StarLedgerUncheckedCreateWithoutInfluencerInput> | StarLedgerCreateWithoutInfluencerInput[] | StarLedgerUncheckedCreateWithoutInfluencerInput[]
+    connectOrCreate?: StarLedgerCreateOrConnectWithoutInfluencerInput | StarLedgerCreateOrConnectWithoutInfluencerInput[]
+    upsert?: StarLedgerUpsertWithWhereUniqueWithoutInfluencerInput | StarLedgerUpsertWithWhereUniqueWithoutInfluencerInput[]
+    createMany?: StarLedgerCreateManyInfluencerInputEnvelope
+    set?: StarLedgerWhereUniqueInput | StarLedgerWhereUniqueInput[]
+    disconnect?: StarLedgerWhereUniqueInput | StarLedgerWhereUniqueInput[]
+    delete?: StarLedgerWhereUniqueInput | StarLedgerWhereUniqueInput[]
+    connect?: StarLedgerWhereUniqueInput | StarLedgerWhereUniqueInput[]
+    update?: StarLedgerUpdateWithWhereUniqueWithoutInfluencerInput | StarLedgerUpdateWithWhereUniqueWithoutInfluencerInput[]
+    updateMany?: StarLedgerUpdateManyWithWhereWithoutInfluencerInput | StarLedgerUpdateManyWithWhereWithoutInfluencerInput[]
+    deleteMany?: StarLedgerScalarWhereInput | StarLedgerScalarWhereInput[]
+  }
+
+  export type PerformanceScoreUncheckedUpdateManyWithoutInfluencerNestedInput = {
+    create?: XOR<PerformanceScoreCreateWithoutInfluencerInput, PerformanceScoreUncheckedCreateWithoutInfluencerInput> | PerformanceScoreCreateWithoutInfluencerInput[] | PerformanceScoreUncheckedCreateWithoutInfluencerInput[]
+    connectOrCreate?: PerformanceScoreCreateOrConnectWithoutInfluencerInput | PerformanceScoreCreateOrConnectWithoutInfluencerInput[]
+    upsert?: PerformanceScoreUpsertWithWhereUniqueWithoutInfluencerInput | PerformanceScoreUpsertWithWhereUniqueWithoutInfluencerInput[]
+    createMany?: PerformanceScoreCreateManyInfluencerInputEnvelope
+    set?: PerformanceScoreWhereUniqueInput | PerformanceScoreWhereUniqueInput[]
+    disconnect?: PerformanceScoreWhereUniqueInput | PerformanceScoreWhereUniqueInput[]
+    delete?: PerformanceScoreWhereUniqueInput | PerformanceScoreWhereUniqueInput[]
+    connect?: PerformanceScoreWhereUniqueInput | PerformanceScoreWhereUniqueInput[]
+    update?: PerformanceScoreUpdateWithWhereUniqueWithoutInfluencerInput | PerformanceScoreUpdateWithWhereUniqueWithoutInfluencerInput[]
+    updateMany?: PerformanceScoreUpdateManyWithWhereWithoutInfluencerInput | PerformanceScoreUpdateManyWithWhereWithoutInfluencerInput[]
+    deleteMany?: PerformanceScoreScalarWhereInput | PerformanceScoreScalarWhereInput[]
+  }
+
+  export type PerformanceEventUncheckedUpdateManyWithoutInfluencerNestedInput = {
+    create?: XOR<PerformanceEventCreateWithoutInfluencerInput, PerformanceEventUncheckedCreateWithoutInfluencerInput> | PerformanceEventCreateWithoutInfluencerInput[] | PerformanceEventUncheckedCreateWithoutInfluencerInput[]
+    connectOrCreate?: PerformanceEventCreateOrConnectWithoutInfluencerInput | PerformanceEventCreateOrConnectWithoutInfluencerInput[]
+    upsert?: PerformanceEventUpsertWithWhereUniqueWithoutInfluencerInput | PerformanceEventUpsertWithWhereUniqueWithoutInfluencerInput[]
+    createMany?: PerformanceEventCreateManyInfluencerInputEnvelope
+    set?: PerformanceEventWhereUniqueInput | PerformanceEventWhereUniqueInput[]
+    disconnect?: PerformanceEventWhereUniqueInput | PerformanceEventWhereUniqueInput[]
+    delete?: PerformanceEventWhereUniqueInput | PerformanceEventWhereUniqueInput[]
+    connect?: PerformanceEventWhereUniqueInput | PerformanceEventWhereUniqueInput[]
+    update?: PerformanceEventUpdateWithWhereUniqueWithoutInfluencerInput | PerformanceEventUpdateWithWhereUniqueWithoutInfluencerInput[]
+    updateMany?: PerformanceEventUpdateManyWithWhereWithoutInfluencerInput | PerformanceEventUpdateManyWithWhereWithoutInfluencerInput[]
+    deleteMany?: PerformanceEventScalarWhereInput | PerformanceEventScalarWhereInput[]
+  }
+
+  export type ReferralUncheckedUpdateManyWithoutReferrerNestedInput = {
+    create?: XOR<ReferralCreateWithoutReferrerInput, ReferralUncheckedCreateWithoutReferrerInput> | ReferralCreateWithoutReferrerInput[] | ReferralUncheckedCreateWithoutReferrerInput[]
+    connectOrCreate?: ReferralCreateOrConnectWithoutReferrerInput | ReferralCreateOrConnectWithoutReferrerInput[]
+    upsert?: ReferralUpsertWithWhereUniqueWithoutReferrerInput | ReferralUpsertWithWhereUniqueWithoutReferrerInput[]
+    createMany?: ReferralCreateManyReferrerInputEnvelope
+    set?: ReferralWhereUniqueInput | ReferralWhereUniqueInput[]
+    disconnect?: ReferralWhereUniqueInput | ReferralWhereUniqueInput[]
+    delete?: ReferralWhereUniqueInput | ReferralWhereUniqueInput[]
+    connect?: ReferralWhereUniqueInput | ReferralWhereUniqueInput[]
+    update?: ReferralUpdateWithWhereUniqueWithoutReferrerInput | ReferralUpdateWithWhereUniqueWithoutReferrerInput[]
+    updateMany?: ReferralUpdateManyWithWhereWithoutReferrerInput | ReferralUpdateManyWithWhereWithoutReferrerInput[]
+    deleteMany?: ReferralScalarWhereInput | ReferralScalarWhereInput[]
+  }
+
+  export type ReferralUncheckedUpdateOneWithoutInvitedNestedInput = {
+    create?: XOR<ReferralCreateWithoutInvitedInput, ReferralUncheckedCreateWithoutInvitedInput>
+    connectOrCreate?: ReferralCreateOrConnectWithoutInvitedInput
+    upsert?: ReferralUpsertWithoutInvitedInput
+    disconnect?: ReferralWhereInput | boolean
+    delete?: ReferralWhereInput | boolean
+    connect?: ReferralWhereUniqueInput
+    update?: XOR<XOR<ReferralUpdateToOneWithWhereWithoutInvitedInput, ReferralUpdateWithoutInvitedInput>, ReferralUncheckedUpdateWithoutInvitedInput>
   }
 
   export type InfluencerCreateNestedOneWithoutSupportChatInput = {
@@ -59946,6 +70887,132 @@ export namespace Prisma {
     update?: XOR<XOR<QuotationUpdateToOneWithWhereWithoutItemsInput, QuotationUpdateWithoutItemsInput>, QuotationUncheckedUpdateWithoutItemsInput>
   }
 
+  export type InfluencerCreateNestedOneWithoutStarLedgerEntriesInput = {
+    create?: XOR<InfluencerCreateWithoutStarLedgerEntriesInput, InfluencerUncheckedCreateWithoutStarLedgerEntriesInput>
+    connectOrCreate?: InfluencerCreateOrConnectWithoutStarLedgerEntriesInput
+    connect?: InfluencerWhereUniqueInput
+  }
+
+  export type InfluencerUpdateOneRequiredWithoutStarLedgerEntriesNestedInput = {
+    create?: XOR<InfluencerCreateWithoutStarLedgerEntriesInput, InfluencerUncheckedCreateWithoutStarLedgerEntriesInput>
+    connectOrCreate?: InfluencerCreateOrConnectWithoutStarLedgerEntriesInput
+    upsert?: InfluencerUpsertWithoutStarLedgerEntriesInput
+    connect?: InfluencerWhereUniqueInput
+    update?: XOR<XOR<InfluencerUpdateToOneWithWhereWithoutStarLedgerEntriesInput, InfluencerUpdateWithoutStarLedgerEntriesInput>, InfluencerUncheckedUpdateWithoutStarLedgerEntriesInput>
+  }
+
+  export type InfluencerCreateNestedOneWithoutPerfScoresInput = {
+    create?: XOR<InfluencerCreateWithoutPerfScoresInput, InfluencerUncheckedCreateWithoutPerfScoresInput>
+    connectOrCreate?: InfluencerCreateOrConnectWithoutPerfScoresInput
+    connect?: InfluencerWhereUniqueInput
+  }
+
+  export type InfluencerUpdateOneRequiredWithoutPerfScoresNestedInput = {
+    create?: XOR<InfluencerCreateWithoutPerfScoresInput, InfluencerUncheckedCreateWithoutPerfScoresInput>
+    connectOrCreate?: InfluencerCreateOrConnectWithoutPerfScoresInput
+    upsert?: InfluencerUpsertWithoutPerfScoresInput
+    connect?: InfluencerWhereUniqueInput
+    update?: XOR<XOR<InfluencerUpdateToOneWithWhereWithoutPerfScoresInput, InfluencerUpdateWithoutPerfScoresInput>, InfluencerUncheckedUpdateWithoutPerfScoresInput>
+  }
+
+  export type InfluencerCreateNestedOneWithoutPerfEventsInput = {
+    create?: XOR<InfluencerCreateWithoutPerfEventsInput, InfluencerUncheckedCreateWithoutPerfEventsInput>
+    connectOrCreate?: InfluencerCreateOrConnectWithoutPerfEventsInput
+    connect?: InfluencerWhereUniqueInput
+  }
+
+  export type InfluencerUpdateOneRequiredWithoutPerfEventsNestedInput = {
+    create?: XOR<InfluencerCreateWithoutPerfEventsInput, InfluencerUncheckedCreateWithoutPerfEventsInput>
+    connectOrCreate?: InfluencerCreateOrConnectWithoutPerfEventsInput
+    upsert?: InfluencerUpsertWithoutPerfEventsInput
+    connect?: InfluencerWhereUniqueInput
+    update?: XOR<XOR<InfluencerUpdateToOneWithWhereWithoutPerfEventsInput, InfluencerUpdateWithoutPerfEventsInput>, InfluencerUncheckedUpdateWithoutPerfEventsInput>
+  }
+
+  export type InfluencerCreateNestedOneWithoutReferralsMadeInput = {
+    create?: XOR<InfluencerCreateWithoutReferralsMadeInput, InfluencerUncheckedCreateWithoutReferralsMadeInput>
+    connectOrCreate?: InfluencerCreateOrConnectWithoutReferralsMadeInput
+    connect?: InfluencerWhereUniqueInput
+  }
+
+  export type InfluencerCreateNestedOneWithoutReferralReceivedInput = {
+    create?: XOR<InfluencerCreateWithoutReferralReceivedInput, InfluencerUncheckedCreateWithoutReferralReceivedInput>
+    connectOrCreate?: InfluencerCreateOrConnectWithoutReferralReceivedInput
+    connect?: InfluencerWhereUniqueInput
+  }
+
+  export type ReferralQualificationCreateNestedManyWithoutReferralInput = {
+    create?: XOR<ReferralQualificationCreateWithoutReferralInput, ReferralQualificationUncheckedCreateWithoutReferralInput> | ReferralQualificationCreateWithoutReferralInput[] | ReferralQualificationUncheckedCreateWithoutReferralInput[]
+    connectOrCreate?: ReferralQualificationCreateOrConnectWithoutReferralInput | ReferralQualificationCreateOrConnectWithoutReferralInput[]
+    createMany?: ReferralQualificationCreateManyReferralInputEnvelope
+    connect?: ReferralQualificationWhereUniqueInput | ReferralQualificationWhereUniqueInput[]
+  }
+
+  export type ReferralQualificationUncheckedCreateNestedManyWithoutReferralInput = {
+    create?: XOR<ReferralQualificationCreateWithoutReferralInput, ReferralQualificationUncheckedCreateWithoutReferralInput> | ReferralQualificationCreateWithoutReferralInput[] | ReferralQualificationUncheckedCreateWithoutReferralInput[]
+    connectOrCreate?: ReferralQualificationCreateOrConnectWithoutReferralInput | ReferralQualificationCreateOrConnectWithoutReferralInput[]
+    createMany?: ReferralQualificationCreateManyReferralInputEnvelope
+    connect?: ReferralQualificationWhereUniqueInput | ReferralQualificationWhereUniqueInput[]
+  }
+
+  export type InfluencerUpdateOneRequiredWithoutReferralsMadeNestedInput = {
+    create?: XOR<InfluencerCreateWithoutReferralsMadeInput, InfluencerUncheckedCreateWithoutReferralsMadeInput>
+    connectOrCreate?: InfluencerCreateOrConnectWithoutReferralsMadeInput
+    upsert?: InfluencerUpsertWithoutReferralsMadeInput
+    connect?: InfluencerWhereUniqueInput
+    update?: XOR<XOR<InfluencerUpdateToOneWithWhereWithoutReferralsMadeInput, InfluencerUpdateWithoutReferralsMadeInput>, InfluencerUncheckedUpdateWithoutReferralsMadeInput>
+  }
+
+  export type InfluencerUpdateOneRequiredWithoutReferralReceivedNestedInput = {
+    create?: XOR<InfluencerCreateWithoutReferralReceivedInput, InfluencerUncheckedCreateWithoutReferralReceivedInput>
+    connectOrCreate?: InfluencerCreateOrConnectWithoutReferralReceivedInput
+    upsert?: InfluencerUpsertWithoutReferralReceivedInput
+    connect?: InfluencerWhereUniqueInput
+    update?: XOR<XOR<InfluencerUpdateToOneWithWhereWithoutReferralReceivedInput, InfluencerUpdateWithoutReferralReceivedInput>, InfluencerUncheckedUpdateWithoutReferralReceivedInput>
+  }
+
+  export type ReferralQualificationUpdateManyWithoutReferralNestedInput = {
+    create?: XOR<ReferralQualificationCreateWithoutReferralInput, ReferralQualificationUncheckedCreateWithoutReferralInput> | ReferralQualificationCreateWithoutReferralInput[] | ReferralQualificationUncheckedCreateWithoutReferralInput[]
+    connectOrCreate?: ReferralQualificationCreateOrConnectWithoutReferralInput | ReferralQualificationCreateOrConnectWithoutReferralInput[]
+    upsert?: ReferralQualificationUpsertWithWhereUniqueWithoutReferralInput | ReferralQualificationUpsertWithWhereUniqueWithoutReferralInput[]
+    createMany?: ReferralQualificationCreateManyReferralInputEnvelope
+    set?: ReferralQualificationWhereUniqueInput | ReferralQualificationWhereUniqueInput[]
+    disconnect?: ReferralQualificationWhereUniqueInput | ReferralQualificationWhereUniqueInput[]
+    delete?: ReferralQualificationWhereUniqueInput | ReferralQualificationWhereUniqueInput[]
+    connect?: ReferralQualificationWhereUniqueInput | ReferralQualificationWhereUniqueInput[]
+    update?: ReferralQualificationUpdateWithWhereUniqueWithoutReferralInput | ReferralQualificationUpdateWithWhereUniqueWithoutReferralInput[]
+    updateMany?: ReferralQualificationUpdateManyWithWhereWithoutReferralInput | ReferralQualificationUpdateManyWithWhereWithoutReferralInput[]
+    deleteMany?: ReferralQualificationScalarWhereInput | ReferralQualificationScalarWhereInput[]
+  }
+
+  export type ReferralQualificationUncheckedUpdateManyWithoutReferralNestedInput = {
+    create?: XOR<ReferralQualificationCreateWithoutReferralInput, ReferralQualificationUncheckedCreateWithoutReferralInput> | ReferralQualificationCreateWithoutReferralInput[] | ReferralQualificationUncheckedCreateWithoutReferralInput[]
+    connectOrCreate?: ReferralQualificationCreateOrConnectWithoutReferralInput | ReferralQualificationCreateOrConnectWithoutReferralInput[]
+    upsert?: ReferralQualificationUpsertWithWhereUniqueWithoutReferralInput | ReferralQualificationUpsertWithWhereUniqueWithoutReferralInput[]
+    createMany?: ReferralQualificationCreateManyReferralInputEnvelope
+    set?: ReferralQualificationWhereUniqueInput | ReferralQualificationWhereUniqueInput[]
+    disconnect?: ReferralQualificationWhereUniqueInput | ReferralQualificationWhereUniqueInput[]
+    delete?: ReferralQualificationWhereUniqueInput | ReferralQualificationWhereUniqueInput[]
+    connect?: ReferralQualificationWhereUniqueInput | ReferralQualificationWhereUniqueInput[]
+    update?: ReferralQualificationUpdateWithWhereUniqueWithoutReferralInput | ReferralQualificationUpdateWithWhereUniqueWithoutReferralInput[]
+    updateMany?: ReferralQualificationUpdateManyWithWhereWithoutReferralInput | ReferralQualificationUpdateManyWithWhereWithoutReferralInput[]
+    deleteMany?: ReferralQualificationScalarWhereInput | ReferralQualificationScalarWhereInput[]
+  }
+
+  export type ReferralCreateNestedOneWithoutQualificationsInput = {
+    create?: XOR<ReferralCreateWithoutQualificationsInput, ReferralUncheckedCreateWithoutQualificationsInput>
+    connectOrCreate?: ReferralCreateOrConnectWithoutQualificationsInput
+    connect?: ReferralWhereUniqueInput
+  }
+
+  export type ReferralUpdateOneRequiredWithoutQualificationsNestedInput = {
+    create?: XOR<ReferralCreateWithoutQualificationsInput, ReferralUncheckedCreateWithoutQualificationsInput>
+    connectOrCreate?: ReferralCreateOrConnectWithoutQualificationsInput
+    upsert?: ReferralUpsertWithoutQualificationsInput
+    connect?: ReferralWhereUniqueInput
+    update?: XOR<XOR<ReferralUpdateToOneWithWhereWithoutQualificationsInput, ReferralUpdateWithoutQualificationsInput>, ReferralUncheckedUpdateWithoutQualificationsInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -60713,6 +71780,7 @@ export namespace Prisma {
     commissionRate?: number
     commissionAmount: number
     commissionStatus?: string
+    affiliatePeriod?: string | null
     saleDate?: Date | string
     completionDate?: Date | string | null
     refundDeadline?: Date | string | null
@@ -60737,6 +71805,7 @@ export namespace Prisma {
     commissionRate?: number
     commissionAmount: number
     commissionStatus?: string
+    affiliatePeriod?: string | null
     saleDate?: Date | string
     completionDate?: Date | string | null
     refundDeadline?: Date | string | null
@@ -60940,6 +72009,159 @@ export namespace Prisma {
     create: XOR<SupportChatCreateWithoutInfluencerInput, SupportChatUncheckedCreateWithoutInfluencerInput>
   }
 
+  export type StarLedgerCreateWithoutInfluencerInput = {
+    id?: string
+    delta: number
+    reason: string
+    note?: string | null
+    createdBy?: string
+    refSaleId?: string | null
+    createdAt?: Date | string
+  }
+
+  export type StarLedgerUncheckedCreateWithoutInfluencerInput = {
+    id?: string
+    delta: number
+    reason: string
+    note?: string | null
+    createdBy?: string
+    refSaleId?: string | null
+    createdAt?: Date | string
+  }
+
+  export type StarLedgerCreateOrConnectWithoutInfluencerInput = {
+    where: StarLedgerWhereUniqueInput
+    create: XOR<StarLedgerCreateWithoutInfluencerInput, StarLedgerUncheckedCreateWithoutInfluencerInput>
+  }
+
+  export type StarLedgerCreateManyInfluencerInputEnvelope = {
+    data: StarLedgerCreateManyInfluencerInput | StarLedgerCreateManyInfluencerInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PerformanceScoreCreateWithoutInfluencerInput = {
+    id?: string
+    period: string
+    ctr?: number
+    cvr?: number
+    volume?: number
+    ctrNorm?: number
+    cvrNorm?: number
+    volumeNorm?: number
+    score?: number
+    commissionRate?: number
+    computedAt?: Date | string
+  }
+
+  export type PerformanceScoreUncheckedCreateWithoutInfluencerInput = {
+    id?: string
+    period: string
+    ctr?: number
+    cvr?: number
+    volume?: number
+    ctrNorm?: number
+    cvrNorm?: number
+    volumeNorm?: number
+    score?: number
+    commissionRate?: number
+    computedAt?: Date | string
+  }
+
+  export type PerformanceScoreCreateOrConnectWithoutInfluencerInput = {
+    where: PerformanceScoreWhereUniqueInput
+    create: XOR<PerformanceScoreCreateWithoutInfluencerInput, PerformanceScoreUncheckedCreateWithoutInfluencerInput>
+  }
+
+  export type PerformanceScoreCreateManyInfluencerInputEnvelope = {
+    data: PerformanceScoreCreateManyInfluencerInput | PerformanceScoreCreateManyInfluencerInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PerformanceEventCreateWithoutInfluencerInput = {
+    id?: string
+    period: string
+    impressions?: number
+    clicks?: number
+    updatedAt?: Date | string
+  }
+
+  export type PerformanceEventUncheckedCreateWithoutInfluencerInput = {
+    id?: string
+    period: string
+    impressions?: number
+    clicks?: number
+    updatedAt?: Date | string
+  }
+
+  export type PerformanceEventCreateOrConnectWithoutInfluencerInput = {
+    where: PerformanceEventWhereUniqueInput
+    create: XOR<PerformanceEventCreateWithoutInfluencerInput, PerformanceEventUncheckedCreateWithoutInfluencerInput>
+  }
+
+  export type PerformanceEventCreateManyInfluencerInputEnvelope = {
+    data: PerformanceEventCreateManyInfluencerInput | PerformanceEventCreateManyInfluencerInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ReferralCreateWithoutReferrerInput = {
+    id?: string
+    qualified?: boolean
+    qualifiedAt?: Date | string | null
+    qualifiedPeriod?: string | null
+    reductionApplied?: number | null
+    createdAt?: Date | string
+    invited: InfluencerCreateNestedOneWithoutReferralReceivedInput
+    qualifications?: ReferralQualificationCreateNestedManyWithoutReferralInput
+  }
+
+  export type ReferralUncheckedCreateWithoutReferrerInput = {
+    id?: string
+    invitedId: string
+    qualified?: boolean
+    qualifiedAt?: Date | string | null
+    qualifiedPeriod?: string | null
+    reductionApplied?: number | null
+    createdAt?: Date | string
+    qualifications?: ReferralQualificationUncheckedCreateNestedManyWithoutReferralInput
+  }
+
+  export type ReferralCreateOrConnectWithoutReferrerInput = {
+    where: ReferralWhereUniqueInput
+    create: XOR<ReferralCreateWithoutReferrerInput, ReferralUncheckedCreateWithoutReferrerInput>
+  }
+
+  export type ReferralCreateManyReferrerInputEnvelope = {
+    data: ReferralCreateManyReferrerInput | ReferralCreateManyReferrerInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ReferralCreateWithoutInvitedInput = {
+    id?: string
+    qualified?: boolean
+    qualifiedAt?: Date | string | null
+    qualifiedPeriod?: string | null
+    reductionApplied?: number | null
+    createdAt?: Date | string
+    referrer: InfluencerCreateNestedOneWithoutReferralsMadeInput
+    qualifications?: ReferralQualificationCreateNestedManyWithoutReferralInput
+  }
+
+  export type ReferralUncheckedCreateWithoutInvitedInput = {
+    id?: string
+    referrerId: string
+    qualified?: boolean
+    qualifiedAt?: Date | string | null
+    qualifiedPeriod?: string | null
+    reductionApplied?: number | null
+    createdAt?: Date | string
+    qualifications?: ReferralQualificationUncheckedCreateNestedManyWithoutReferralInput
+  }
+
+  export type ReferralCreateOrConnectWithoutInvitedInput = {
+    where: ReferralWhereUniqueInput
+    create: XOR<ReferralCreateWithoutInvitedInput, ReferralUncheckedCreateWithoutInvitedInput>
+  }
+
   export type ShareUpsertWithWhereUniqueWithoutInfluencerInput = {
     where: ShareWhereUniqueInput
     update: XOR<ShareUpdateWithoutInfluencerInput, ShareUncheckedUpdateWithoutInfluencerInput>
@@ -61043,6 +72265,7 @@ export namespace Prisma {
     commissionRate?: FloatFilter<"Sale"> | number
     commissionAmount?: FloatFilter<"Sale"> | number
     commissionStatus?: StringFilter<"Sale"> | string
+    affiliatePeriod?: StringNullableFilter<"Sale"> | string | null
     saleDate?: DateTimeFilter<"Sale"> | Date | string
     completionDate?: DateTimeNullableFilter<"Sale"> | Date | string | null
     refundDeadline?: DateTimeNullableFilter<"Sale"> | Date | string | null
@@ -61235,6 +72458,161 @@ export namespace Prisma {
     messages?: SupportMessageUncheckedUpdateManyWithoutChatNestedInput
   }
 
+  export type StarLedgerUpsertWithWhereUniqueWithoutInfluencerInput = {
+    where: StarLedgerWhereUniqueInput
+    update: XOR<StarLedgerUpdateWithoutInfluencerInput, StarLedgerUncheckedUpdateWithoutInfluencerInput>
+    create: XOR<StarLedgerCreateWithoutInfluencerInput, StarLedgerUncheckedCreateWithoutInfluencerInput>
+  }
+
+  export type StarLedgerUpdateWithWhereUniqueWithoutInfluencerInput = {
+    where: StarLedgerWhereUniqueInput
+    data: XOR<StarLedgerUpdateWithoutInfluencerInput, StarLedgerUncheckedUpdateWithoutInfluencerInput>
+  }
+
+  export type StarLedgerUpdateManyWithWhereWithoutInfluencerInput = {
+    where: StarLedgerScalarWhereInput
+    data: XOR<StarLedgerUpdateManyMutationInput, StarLedgerUncheckedUpdateManyWithoutInfluencerInput>
+  }
+
+  export type StarLedgerScalarWhereInput = {
+    AND?: StarLedgerScalarWhereInput | StarLedgerScalarWhereInput[]
+    OR?: StarLedgerScalarWhereInput[]
+    NOT?: StarLedgerScalarWhereInput | StarLedgerScalarWhereInput[]
+    id?: StringFilter<"StarLedger"> | string
+    influencerId?: StringFilter<"StarLedger"> | string
+    delta?: FloatFilter<"StarLedger"> | number
+    reason?: StringFilter<"StarLedger"> | string
+    note?: StringNullableFilter<"StarLedger"> | string | null
+    createdBy?: StringFilter<"StarLedger"> | string
+    refSaleId?: StringNullableFilter<"StarLedger"> | string | null
+    createdAt?: DateTimeFilter<"StarLedger"> | Date | string
+  }
+
+  export type PerformanceScoreUpsertWithWhereUniqueWithoutInfluencerInput = {
+    where: PerformanceScoreWhereUniqueInput
+    update: XOR<PerformanceScoreUpdateWithoutInfluencerInput, PerformanceScoreUncheckedUpdateWithoutInfluencerInput>
+    create: XOR<PerformanceScoreCreateWithoutInfluencerInput, PerformanceScoreUncheckedCreateWithoutInfluencerInput>
+  }
+
+  export type PerformanceScoreUpdateWithWhereUniqueWithoutInfluencerInput = {
+    where: PerformanceScoreWhereUniqueInput
+    data: XOR<PerformanceScoreUpdateWithoutInfluencerInput, PerformanceScoreUncheckedUpdateWithoutInfluencerInput>
+  }
+
+  export type PerformanceScoreUpdateManyWithWhereWithoutInfluencerInput = {
+    where: PerformanceScoreScalarWhereInput
+    data: XOR<PerformanceScoreUpdateManyMutationInput, PerformanceScoreUncheckedUpdateManyWithoutInfluencerInput>
+  }
+
+  export type PerformanceScoreScalarWhereInput = {
+    AND?: PerformanceScoreScalarWhereInput | PerformanceScoreScalarWhereInput[]
+    OR?: PerformanceScoreScalarWhereInput[]
+    NOT?: PerformanceScoreScalarWhereInput | PerformanceScoreScalarWhereInput[]
+    id?: StringFilter<"PerformanceScore"> | string
+    influencerId?: StringFilter<"PerformanceScore"> | string
+    period?: StringFilter<"PerformanceScore"> | string
+    ctr?: FloatFilter<"PerformanceScore"> | number
+    cvr?: FloatFilter<"PerformanceScore"> | number
+    volume?: IntFilter<"PerformanceScore"> | number
+    ctrNorm?: FloatFilter<"PerformanceScore"> | number
+    cvrNorm?: FloatFilter<"PerformanceScore"> | number
+    volumeNorm?: FloatFilter<"PerformanceScore"> | number
+    score?: FloatFilter<"PerformanceScore"> | number
+    commissionRate?: FloatFilter<"PerformanceScore"> | number
+    computedAt?: DateTimeFilter<"PerformanceScore"> | Date | string
+  }
+
+  export type PerformanceEventUpsertWithWhereUniqueWithoutInfluencerInput = {
+    where: PerformanceEventWhereUniqueInput
+    update: XOR<PerformanceEventUpdateWithoutInfluencerInput, PerformanceEventUncheckedUpdateWithoutInfluencerInput>
+    create: XOR<PerformanceEventCreateWithoutInfluencerInput, PerformanceEventUncheckedCreateWithoutInfluencerInput>
+  }
+
+  export type PerformanceEventUpdateWithWhereUniqueWithoutInfluencerInput = {
+    where: PerformanceEventWhereUniqueInput
+    data: XOR<PerformanceEventUpdateWithoutInfluencerInput, PerformanceEventUncheckedUpdateWithoutInfluencerInput>
+  }
+
+  export type PerformanceEventUpdateManyWithWhereWithoutInfluencerInput = {
+    where: PerformanceEventScalarWhereInput
+    data: XOR<PerformanceEventUpdateManyMutationInput, PerformanceEventUncheckedUpdateManyWithoutInfluencerInput>
+  }
+
+  export type PerformanceEventScalarWhereInput = {
+    AND?: PerformanceEventScalarWhereInput | PerformanceEventScalarWhereInput[]
+    OR?: PerformanceEventScalarWhereInput[]
+    NOT?: PerformanceEventScalarWhereInput | PerformanceEventScalarWhereInput[]
+    id?: StringFilter<"PerformanceEvent"> | string
+    influencerId?: StringFilter<"PerformanceEvent"> | string
+    period?: StringFilter<"PerformanceEvent"> | string
+    impressions?: IntFilter<"PerformanceEvent"> | number
+    clicks?: IntFilter<"PerformanceEvent"> | number
+    updatedAt?: DateTimeFilter<"PerformanceEvent"> | Date | string
+  }
+
+  export type ReferralUpsertWithWhereUniqueWithoutReferrerInput = {
+    where: ReferralWhereUniqueInput
+    update: XOR<ReferralUpdateWithoutReferrerInput, ReferralUncheckedUpdateWithoutReferrerInput>
+    create: XOR<ReferralCreateWithoutReferrerInput, ReferralUncheckedCreateWithoutReferrerInput>
+  }
+
+  export type ReferralUpdateWithWhereUniqueWithoutReferrerInput = {
+    where: ReferralWhereUniqueInput
+    data: XOR<ReferralUpdateWithoutReferrerInput, ReferralUncheckedUpdateWithoutReferrerInput>
+  }
+
+  export type ReferralUpdateManyWithWhereWithoutReferrerInput = {
+    where: ReferralScalarWhereInput
+    data: XOR<ReferralUpdateManyMutationInput, ReferralUncheckedUpdateManyWithoutReferrerInput>
+  }
+
+  export type ReferralScalarWhereInput = {
+    AND?: ReferralScalarWhereInput | ReferralScalarWhereInput[]
+    OR?: ReferralScalarWhereInput[]
+    NOT?: ReferralScalarWhereInput | ReferralScalarWhereInput[]
+    id?: StringFilter<"Referral"> | string
+    referrerId?: StringFilter<"Referral"> | string
+    invitedId?: StringFilter<"Referral"> | string
+    qualified?: BoolFilter<"Referral"> | boolean
+    qualifiedAt?: DateTimeNullableFilter<"Referral"> | Date | string | null
+    qualifiedPeriod?: StringNullableFilter<"Referral"> | string | null
+    reductionApplied?: IntNullableFilter<"Referral"> | number | null
+    createdAt?: DateTimeFilter<"Referral"> | Date | string
+  }
+
+  export type ReferralUpsertWithoutInvitedInput = {
+    update: XOR<ReferralUpdateWithoutInvitedInput, ReferralUncheckedUpdateWithoutInvitedInput>
+    create: XOR<ReferralCreateWithoutInvitedInput, ReferralUncheckedCreateWithoutInvitedInput>
+    where?: ReferralWhereInput
+  }
+
+  export type ReferralUpdateToOneWithWhereWithoutInvitedInput = {
+    where?: ReferralWhereInput
+    data: XOR<ReferralUpdateWithoutInvitedInput, ReferralUncheckedUpdateWithoutInvitedInput>
+  }
+
+  export type ReferralUpdateWithoutInvitedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    qualified?: BoolFieldUpdateOperationsInput | boolean
+    qualifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    qualifiedPeriod?: NullableStringFieldUpdateOperationsInput | string | null
+    reductionApplied?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    referrer?: InfluencerUpdateOneRequiredWithoutReferralsMadeNestedInput
+    qualifications?: ReferralQualificationUpdateManyWithoutReferralNestedInput
+  }
+
+  export type ReferralUncheckedUpdateWithoutInvitedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    referrerId?: StringFieldUpdateOperationsInput | string
+    qualified?: BoolFieldUpdateOperationsInput | boolean
+    qualifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    qualifiedPeriod?: NullableStringFieldUpdateOperationsInput | string | null
+    reductionApplied?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    qualifications?: ReferralQualificationUncheckedUpdateManyWithoutReferralNestedInput
+  }
+
   export type InfluencerCreateWithoutSupportChatInput = {
     id?: string
     fullName: string
@@ -61260,6 +72638,10 @@ export namespace Prisma {
     totalEarnings?: number
     pendingEarnings?: number
     totalClicks?: number
+    programUnlocked?: boolean
+    baseThrOverride?: number | null
+    unlockedAt?: Date | string | null
+    firstShareAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     shares?: ShareCreateNestedManyWithoutInfluencerInput
@@ -61269,6 +72651,11 @@ export namespace Prisma {
     linkClicks?: LinkClickCreateNestedManyWithoutInfluencerInput
     campaigns?: CampaignParticipantCreateNestedManyWithoutInfluencerInput
     loyaltyAccount?: LoyaltyAccountCreateNestedOneWithoutInfluencerInput
+    starLedgerEntries?: StarLedgerCreateNestedManyWithoutInfluencerInput
+    perfScores?: PerformanceScoreCreateNestedManyWithoutInfluencerInput
+    perfEvents?: PerformanceEventCreateNestedManyWithoutInfluencerInput
+    referralsMade?: ReferralCreateNestedManyWithoutReferrerInput
+    referralReceived?: ReferralCreateNestedOneWithoutInvitedInput
   }
 
   export type InfluencerUncheckedCreateWithoutSupportChatInput = {
@@ -61296,6 +72683,10 @@ export namespace Prisma {
     totalEarnings?: number
     pendingEarnings?: number
     totalClicks?: number
+    programUnlocked?: boolean
+    baseThrOverride?: number | null
+    unlockedAt?: Date | string | null
+    firstShareAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     shares?: ShareUncheckedCreateNestedManyWithoutInfluencerInput
@@ -61305,6 +72696,11 @@ export namespace Prisma {
     linkClicks?: LinkClickUncheckedCreateNestedManyWithoutInfluencerInput
     campaigns?: CampaignParticipantUncheckedCreateNestedManyWithoutInfluencerInput
     loyaltyAccount?: LoyaltyAccountUncheckedCreateNestedOneWithoutInfluencerInput
+    starLedgerEntries?: StarLedgerUncheckedCreateNestedManyWithoutInfluencerInput
+    perfScores?: PerformanceScoreUncheckedCreateNestedManyWithoutInfluencerInput
+    perfEvents?: PerformanceEventUncheckedCreateNestedManyWithoutInfluencerInput
+    referralsMade?: ReferralUncheckedCreateNestedManyWithoutReferrerInput
+    referralReceived?: ReferralUncheckedCreateNestedOneWithoutInvitedInput
   }
 
   export type InfluencerCreateOrConnectWithoutSupportChatInput = {
@@ -61372,6 +72768,10 @@ export namespace Prisma {
     totalEarnings?: FloatFieldUpdateOperationsInput | number
     pendingEarnings?: FloatFieldUpdateOperationsInput | number
     totalClicks?: IntFieldUpdateOperationsInput | number
+    programUnlocked?: BoolFieldUpdateOperationsInput | boolean
+    baseThrOverride?: NullableIntFieldUpdateOperationsInput | number | null
+    unlockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    firstShareAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     shares?: ShareUpdateManyWithoutInfluencerNestedInput
@@ -61381,6 +72781,11 @@ export namespace Prisma {
     linkClicks?: LinkClickUpdateManyWithoutInfluencerNestedInput
     campaigns?: CampaignParticipantUpdateManyWithoutInfluencerNestedInput
     loyaltyAccount?: LoyaltyAccountUpdateOneWithoutInfluencerNestedInput
+    starLedgerEntries?: StarLedgerUpdateManyWithoutInfluencerNestedInput
+    perfScores?: PerformanceScoreUpdateManyWithoutInfluencerNestedInput
+    perfEvents?: PerformanceEventUpdateManyWithoutInfluencerNestedInput
+    referralsMade?: ReferralUpdateManyWithoutReferrerNestedInput
+    referralReceived?: ReferralUpdateOneWithoutInvitedNestedInput
   }
 
   export type InfluencerUncheckedUpdateWithoutSupportChatInput = {
@@ -61408,6 +72813,10 @@ export namespace Prisma {
     totalEarnings?: FloatFieldUpdateOperationsInput | number
     pendingEarnings?: FloatFieldUpdateOperationsInput | number
     totalClicks?: IntFieldUpdateOperationsInput | number
+    programUnlocked?: BoolFieldUpdateOperationsInput | boolean
+    baseThrOverride?: NullableIntFieldUpdateOperationsInput | number | null
+    unlockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    firstShareAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     shares?: ShareUncheckedUpdateManyWithoutInfluencerNestedInput
@@ -61417,6 +72826,11 @@ export namespace Prisma {
     linkClicks?: LinkClickUncheckedUpdateManyWithoutInfluencerNestedInput
     campaigns?: CampaignParticipantUncheckedUpdateManyWithoutInfluencerNestedInput
     loyaltyAccount?: LoyaltyAccountUncheckedUpdateOneWithoutInfluencerNestedInput
+    starLedgerEntries?: StarLedgerUncheckedUpdateManyWithoutInfluencerNestedInput
+    perfScores?: PerformanceScoreUncheckedUpdateManyWithoutInfluencerNestedInput
+    perfEvents?: PerformanceEventUncheckedUpdateManyWithoutInfluencerNestedInput
+    referralsMade?: ReferralUncheckedUpdateManyWithoutReferrerNestedInput
+    referralReceived?: ReferralUncheckedUpdateOneWithoutInvitedNestedInput
   }
 
   export type SupportMessageUpsertWithWhereUniqueWithoutChatInput = {
@@ -61527,6 +72941,10 @@ export namespace Prisma {
     totalEarnings?: number
     pendingEarnings?: number
     totalClicks?: number
+    programUnlocked?: boolean
+    baseThrOverride?: number | null
+    unlockedAt?: Date | string | null
+    firstShareAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     customers?: CustomerCreateNestedManyWithoutInfluencerInput
@@ -61536,6 +72954,11 @@ export namespace Prisma {
     campaigns?: CampaignParticipantCreateNestedManyWithoutInfluencerInput
     loyaltyAccount?: LoyaltyAccountCreateNestedOneWithoutInfluencerInput
     supportChat?: SupportChatCreateNestedOneWithoutInfluencerInput
+    starLedgerEntries?: StarLedgerCreateNestedManyWithoutInfluencerInput
+    perfScores?: PerformanceScoreCreateNestedManyWithoutInfluencerInput
+    perfEvents?: PerformanceEventCreateNestedManyWithoutInfluencerInput
+    referralsMade?: ReferralCreateNestedManyWithoutReferrerInput
+    referralReceived?: ReferralCreateNestedOneWithoutInvitedInput
   }
 
   export type InfluencerUncheckedCreateWithoutSharesInput = {
@@ -61563,6 +72986,10 @@ export namespace Prisma {
     totalEarnings?: number
     pendingEarnings?: number
     totalClicks?: number
+    programUnlocked?: boolean
+    baseThrOverride?: number | null
+    unlockedAt?: Date | string | null
+    firstShareAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     customers?: CustomerUncheckedCreateNestedManyWithoutInfluencerInput
@@ -61572,6 +72999,11 @@ export namespace Prisma {
     campaigns?: CampaignParticipantUncheckedCreateNestedManyWithoutInfluencerInput
     loyaltyAccount?: LoyaltyAccountUncheckedCreateNestedOneWithoutInfluencerInput
     supportChat?: SupportChatUncheckedCreateNestedOneWithoutInfluencerInput
+    starLedgerEntries?: StarLedgerUncheckedCreateNestedManyWithoutInfluencerInput
+    perfScores?: PerformanceScoreUncheckedCreateNestedManyWithoutInfluencerInput
+    perfEvents?: PerformanceEventUncheckedCreateNestedManyWithoutInfluencerInput
+    referralsMade?: ReferralUncheckedCreateNestedManyWithoutReferrerInput
+    referralReceived?: ReferralUncheckedCreateNestedOneWithoutInvitedInput
   }
 
   export type InfluencerCreateOrConnectWithoutSharesInput = {
@@ -61651,6 +73083,10 @@ export namespace Prisma {
     totalEarnings?: FloatFieldUpdateOperationsInput | number
     pendingEarnings?: FloatFieldUpdateOperationsInput | number
     totalClicks?: IntFieldUpdateOperationsInput | number
+    programUnlocked?: BoolFieldUpdateOperationsInput | boolean
+    baseThrOverride?: NullableIntFieldUpdateOperationsInput | number | null
+    unlockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    firstShareAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     customers?: CustomerUpdateManyWithoutInfluencerNestedInput
@@ -61660,6 +73096,11 @@ export namespace Prisma {
     campaigns?: CampaignParticipantUpdateManyWithoutInfluencerNestedInput
     loyaltyAccount?: LoyaltyAccountUpdateOneWithoutInfluencerNestedInput
     supportChat?: SupportChatUpdateOneWithoutInfluencerNestedInput
+    starLedgerEntries?: StarLedgerUpdateManyWithoutInfluencerNestedInput
+    perfScores?: PerformanceScoreUpdateManyWithoutInfluencerNestedInput
+    perfEvents?: PerformanceEventUpdateManyWithoutInfluencerNestedInput
+    referralsMade?: ReferralUpdateManyWithoutReferrerNestedInput
+    referralReceived?: ReferralUpdateOneWithoutInvitedNestedInput
   }
 
   export type InfluencerUncheckedUpdateWithoutSharesInput = {
@@ -61687,6 +73128,10 @@ export namespace Prisma {
     totalEarnings?: FloatFieldUpdateOperationsInput | number
     pendingEarnings?: FloatFieldUpdateOperationsInput | number
     totalClicks?: IntFieldUpdateOperationsInput | number
+    programUnlocked?: BoolFieldUpdateOperationsInput | boolean
+    baseThrOverride?: NullableIntFieldUpdateOperationsInput | number | null
+    unlockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    firstShareAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     customers?: CustomerUncheckedUpdateManyWithoutInfluencerNestedInput
@@ -61696,6 +73141,11 @@ export namespace Prisma {
     campaigns?: CampaignParticipantUncheckedUpdateManyWithoutInfluencerNestedInput
     loyaltyAccount?: LoyaltyAccountUncheckedUpdateOneWithoutInfluencerNestedInput
     supportChat?: SupportChatUncheckedUpdateOneWithoutInfluencerNestedInput
+    starLedgerEntries?: StarLedgerUncheckedUpdateManyWithoutInfluencerNestedInput
+    perfScores?: PerformanceScoreUncheckedUpdateManyWithoutInfluencerNestedInput
+    perfEvents?: PerformanceEventUncheckedUpdateManyWithoutInfluencerNestedInput
+    referralsMade?: ReferralUncheckedUpdateManyWithoutReferrerNestedInput
+    referralReceived?: ReferralUncheckedUpdateOneWithoutInvitedNestedInput
   }
 
   export type LinkClickUpsertWithWhereUniqueWithoutShareInput = {
@@ -61739,6 +73189,10 @@ export namespace Prisma {
     totalEarnings?: number
     pendingEarnings?: number
     totalClicks?: number
+    programUnlocked?: boolean
+    baseThrOverride?: number | null
+    unlockedAt?: Date | string | null
+    firstShareAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     shares?: ShareCreateNestedManyWithoutInfluencerInput
@@ -61748,6 +73202,11 @@ export namespace Prisma {
     campaigns?: CampaignParticipantCreateNestedManyWithoutInfluencerInput
     loyaltyAccount?: LoyaltyAccountCreateNestedOneWithoutInfluencerInput
     supportChat?: SupportChatCreateNestedOneWithoutInfluencerInput
+    starLedgerEntries?: StarLedgerCreateNestedManyWithoutInfluencerInput
+    perfScores?: PerformanceScoreCreateNestedManyWithoutInfluencerInput
+    perfEvents?: PerformanceEventCreateNestedManyWithoutInfluencerInput
+    referralsMade?: ReferralCreateNestedManyWithoutReferrerInput
+    referralReceived?: ReferralCreateNestedOneWithoutInvitedInput
   }
 
   export type InfluencerUncheckedCreateWithoutCustomersInput = {
@@ -61775,6 +73234,10 @@ export namespace Prisma {
     totalEarnings?: number
     pendingEarnings?: number
     totalClicks?: number
+    programUnlocked?: boolean
+    baseThrOverride?: number | null
+    unlockedAt?: Date | string | null
+    firstShareAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     shares?: ShareUncheckedCreateNestedManyWithoutInfluencerInput
@@ -61784,6 +73247,11 @@ export namespace Prisma {
     campaigns?: CampaignParticipantUncheckedCreateNestedManyWithoutInfluencerInput
     loyaltyAccount?: LoyaltyAccountUncheckedCreateNestedOneWithoutInfluencerInput
     supportChat?: SupportChatUncheckedCreateNestedOneWithoutInfluencerInput
+    starLedgerEntries?: StarLedgerUncheckedCreateNestedManyWithoutInfluencerInput
+    perfScores?: PerformanceScoreUncheckedCreateNestedManyWithoutInfluencerInput
+    perfEvents?: PerformanceEventUncheckedCreateNestedManyWithoutInfluencerInput
+    referralsMade?: ReferralUncheckedCreateNestedManyWithoutReferrerInput
+    referralReceived?: ReferralUncheckedCreateNestedOneWithoutInvitedInput
   }
 
   export type InfluencerCreateOrConnectWithoutCustomersInput = {
@@ -61798,6 +73266,7 @@ export namespace Prisma {
     commissionRate?: number
     commissionAmount: number
     commissionStatus?: string
+    affiliatePeriod?: string | null
     saleDate?: Date | string
     completionDate?: Date | string | null
     refundDeadline?: Date | string | null
@@ -61822,6 +73291,7 @@ export namespace Prisma {
     commissionRate?: number
     commissionAmount: number
     commissionStatus?: string
+    affiliatePeriod?: string | null
     saleDate?: Date | string
     completionDate?: Date | string | null
     refundDeadline?: Date | string | null
@@ -61883,6 +73353,10 @@ export namespace Prisma {
     totalEarnings?: FloatFieldUpdateOperationsInput | number
     pendingEarnings?: FloatFieldUpdateOperationsInput | number
     totalClicks?: IntFieldUpdateOperationsInput | number
+    programUnlocked?: BoolFieldUpdateOperationsInput | boolean
+    baseThrOverride?: NullableIntFieldUpdateOperationsInput | number | null
+    unlockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    firstShareAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     shares?: ShareUpdateManyWithoutInfluencerNestedInput
@@ -61892,6 +73366,11 @@ export namespace Prisma {
     campaigns?: CampaignParticipantUpdateManyWithoutInfluencerNestedInput
     loyaltyAccount?: LoyaltyAccountUpdateOneWithoutInfluencerNestedInput
     supportChat?: SupportChatUpdateOneWithoutInfluencerNestedInput
+    starLedgerEntries?: StarLedgerUpdateManyWithoutInfluencerNestedInput
+    perfScores?: PerformanceScoreUpdateManyWithoutInfluencerNestedInput
+    perfEvents?: PerformanceEventUpdateManyWithoutInfluencerNestedInput
+    referralsMade?: ReferralUpdateManyWithoutReferrerNestedInput
+    referralReceived?: ReferralUpdateOneWithoutInvitedNestedInput
   }
 
   export type InfluencerUncheckedUpdateWithoutCustomersInput = {
@@ -61919,6 +73398,10 @@ export namespace Prisma {
     totalEarnings?: FloatFieldUpdateOperationsInput | number
     pendingEarnings?: FloatFieldUpdateOperationsInput | number
     totalClicks?: IntFieldUpdateOperationsInput | number
+    programUnlocked?: BoolFieldUpdateOperationsInput | boolean
+    baseThrOverride?: NullableIntFieldUpdateOperationsInput | number | null
+    unlockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    firstShareAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     shares?: ShareUncheckedUpdateManyWithoutInfluencerNestedInput
@@ -61928,6 +73411,11 @@ export namespace Prisma {
     campaigns?: CampaignParticipantUncheckedUpdateManyWithoutInfluencerNestedInput
     loyaltyAccount?: LoyaltyAccountUncheckedUpdateOneWithoutInfluencerNestedInput
     supportChat?: SupportChatUncheckedUpdateOneWithoutInfluencerNestedInput
+    starLedgerEntries?: StarLedgerUncheckedUpdateManyWithoutInfluencerNestedInput
+    perfScores?: PerformanceScoreUncheckedUpdateManyWithoutInfluencerNestedInput
+    perfEvents?: PerformanceEventUncheckedUpdateManyWithoutInfluencerNestedInput
+    referralsMade?: ReferralUncheckedUpdateManyWithoutReferrerNestedInput
+    referralReceived?: ReferralUncheckedUpdateOneWithoutInvitedNestedInput
   }
 
   export type SaleUpsertWithWhereUniqueWithoutCustomerInput = {
@@ -62012,6 +73500,10 @@ export namespace Prisma {
     totalEarnings?: number
     pendingEarnings?: number
     totalClicks?: number
+    programUnlocked?: boolean
+    baseThrOverride?: number | null
+    unlockedAt?: Date | string | null
+    firstShareAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     shares?: ShareCreateNestedManyWithoutInfluencerInput
@@ -62021,6 +73513,11 @@ export namespace Prisma {
     campaigns?: CampaignParticipantCreateNestedManyWithoutInfluencerInput
     loyaltyAccount?: LoyaltyAccountCreateNestedOneWithoutInfluencerInput
     supportChat?: SupportChatCreateNestedOneWithoutInfluencerInput
+    starLedgerEntries?: StarLedgerCreateNestedManyWithoutInfluencerInput
+    perfScores?: PerformanceScoreCreateNestedManyWithoutInfluencerInput
+    perfEvents?: PerformanceEventCreateNestedManyWithoutInfluencerInput
+    referralsMade?: ReferralCreateNestedManyWithoutReferrerInput
+    referralReceived?: ReferralCreateNestedOneWithoutInvitedInput
   }
 
   export type InfluencerUncheckedCreateWithoutSalesInput = {
@@ -62048,6 +73545,10 @@ export namespace Prisma {
     totalEarnings?: number
     pendingEarnings?: number
     totalClicks?: number
+    programUnlocked?: boolean
+    baseThrOverride?: number | null
+    unlockedAt?: Date | string | null
+    firstShareAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     shares?: ShareUncheckedCreateNestedManyWithoutInfluencerInput
@@ -62057,6 +73558,11 @@ export namespace Prisma {
     campaigns?: CampaignParticipantUncheckedCreateNestedManyWithoutInfluencerInput
     loyaltyAccount?: LoyaltyAccountUncheckedCreateNestedOneWithoutInfluencerInput
     supportChat?: SupportChatUncheckedCreateNestedOneWithoutInfluencerInput
+    starLedgerEntries?: StarLedgerUncheckedCreateNestedManyWithoutInfluencerInput
+    perfScores?: PerformanceScoreUncheckedCreateNestedManyWithoutInfluencerInput
+    perfEvents?: PerformanceEventUncheckedCreateNestedManyWithoutInfluencerInput
+    referralsMade?: ReferralUncheckedCreateNestedManyWithoutReferrerInput
+    referralReceived?: ReferralUncheckedCreateNestedOneWithoutInvitedInput
   }
 
   export type InfluencerCreateOrConnectWithoutSalesInput = {
@@ -62211,6 +73717,10 @@ export namespace Prisma {
     totalEarnings?: FloatFieldUpdateOperationsInput | number
     pendingEarnings?: FloatFieldUpdateOperationsInput | number
     totalClicks?: IntFieldUpdateOperationsInput | number
+    programUnlocked?: BoolFieldUpdateOperationsInput | boolean
+    baseThrOverride?: NullableIntFieldUpdateOperationsInput | number | null
+    unlockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    firstShareAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     shares?: ShareUpdateManyWithoutInfluencerNestedInput
@@ -62220,6 +73730,11 @@ export namespace Prisma {
     campaigns?: CampaignParticipantUpdateManyWithoutInfluencerNestedInput
     loyaltyAccount?: LoyaltyAccountUpdateOneWithoutInfluencerNestedInput
     supportChat?: SupportChatUpdateOneWithoutInfluencerNestedInput
+    starLedgerEntries?: StarLedgerUpdateManyWithoutInfluencerNestedInput
+    perfScores?: PerformanceScoreUpdateManyWithoutInfluencerNestedInput
+    perfEvents?: PerformanceEventUpdateManyWithoutInfluencerNestedInput
+    referralsMade?: ReferralUpdateManyWithoutReferrerNestedInput
+    referralReceived?: ReferralUpdateOneWithoutInvitedNestedInput
   }
 
   export type InfluencerUncheckedUpdateWithoutSalesInput = {
@@ -62247,6 +73762,10 @@ export namespace Prisma {
     totalEarnings?: FloatFieldUpdateOperationsInput | number
     pendingEarnings?: FloatFieldUpdateOperationsInput | number
     totalClicks?: IntFieldUpdateOperationsInput | number
+    programUnlocked?: BoolFieldUpdateOperationsInput | boolean
+    baseThrOverride?: NullableIntFieldUpdateOperationsInput | number | null
+    unlockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    firstShareAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     shares?: ShareUncheckedUpdateManyWithoutInfluencerNestedInput
@@ -62256,6 +73775,11 @@ export namespace Prisma {
     campaigns?: CampaignParticipantUncheckedUpdateManyWithoutInfluencerNestedInput
     loyaltyAccount?: LoyaltyAccountUncheckedUpdateOneWithoutInfluencerNestedInput
     supportChat?: SupportChatUncheckedUpdateOneWithoutInfluencerNestedInput
+    starLedgerEntries?: StarLedgerUncheckedUpdateManyWithoutInfluencerNestedInput
+    perfScores?: PerformanceScoreUncheckedUpdateManyWithoutInfluencerNestedInput
+    perfEvents?: PerformanceEventUncheckedUpdateManyWithoutInfluencerNestedInput
+    referralsMade?: ReferralUncheckedUpdateManyWithoutReferrerNestedInput
+    referralReceived?: ReferralUncheckedUpdateOneWithoutInvitedNestedInput
   }
 
   export type PaymentSaleUpsertWithWhereUniqueWithoutSaleInput = {
@@ -62345,6 +73869,10 @@ export namespace Prisma {
     totalEarnings?: number
     pendingEarnings?: number
     totalClicks?: number
+    programUnlocked?: boolean
+    baseThrOverride?: number | null
+    unlockedAt?: Date | string | null
+    firstShareAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     shares?: ShareCreateNestedManyWithoutInfluencerInput
@@ -62354,6 +73882,11 @@ export namespace Prisma {
     campaigns?: CampaignParticipantCreateNestedManyWithoutInfluencerInput
     loyaltyAccount?: LoyaltyAccountCreateNestedOneWithoutInfluencerInput
     supportChat?: SupportChatCreateNestedOneWithoutInfluencerInput
+    starLedgerEntries?: StarLedgerCreateNestedManyWithoutInfluencerInput
+    perfScores?: PerformanceScoreCreateNestedManyWithoutInfluencerInput
+    perfEvents?: PerformanceEventCreateNestedManyWithoutInfluencerInput
+    referralsMade?: ReferralCreateNestedManyWithoutReferrerInput
+    referralReceived?: ReferralCreateNestedOneWithoutInvitedInput
   }
 
   export type InfluencerUncheckedCreateWithoutPaymentsInput = {
@@ -62381,6 +73914,10 @@ export namespace Prisma {
     totalEarnings?: number
     pendingEarnings?: number
     totalClicks?: number
+    programUnlocked?: boolean
+    baseThrOverride?: number | null
+    unlockedAt?: Date | string | null
+    firstShareAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     shares?: ShareUncheckedCreateNestedManyWithoutInfluencerInput
@@ -62390,6 +73927,11 @@ export namespace Prisma {
     campaigns?: CampaignParticipantUncheckedCreateNestedManyWithoutInfluencerInput
     loyaltyAccount?: LoyaltyAccountUncheckedCreateNestedOneWithoutInfluencerInput
     supportChat?: SupportChatUncheckedCreateNestedOneWithoutInfluencerInput
+    starLedgerEntries?: StarLedgerUncheckedCreateNestedManyWithoutInfluencerInput
+    perfScores?: PerformanceScoreUncheckedCreateNestedManyWithoutInfluencerInput
+    perfEvents?: PerformanceEventUncheckedCreateNestedManyWithoutInfluencerInput
+    referralsMade?: ReferralUncheckedCreateNestedManyWithoutReferrerInput
+    referralReceived?: ReferralUncheckedCreateNestedOneWithoutInvitedInput
   }
 
   export type InfluencerCreateOrConnectWithoutPaymentsInput = {
@@ -62451,6 +73993,10 @@ export namespace Prisma {
     totalEarnings?: FloatFieldUpdateOperationsInput | number
     pendingEarnings?: FloatFieldUpdateOperationsInput | number
     totalClicks?: IntFieldUpdateOperationsInput | number
+    programUnlocked?: BoolFieldUpdateOperationsInput | boolean
+    baseThrOverride?: NullableIntFieldUpdateOperationsInput | number | null
+    unlockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    firstShareAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     shares?: ShareUpdateManyWithoutInfluencerNestedInput
@@ -62460,6 +74006,11 @@ export namespace Prisma {
     campaigns?: CampaignParticipantUpdateManyWithoutInfluencerNestedInput
     loyaltyAccount?: LoyaltyAccountUpdateOneWithoutInfluencerNestedInput
     supportChat?: SupportChatUpdateOneWithoutInfluencerNestedInput
+    starLedgerEntries?: StarLedgerUpdateManyWithoutInfluencerNestedInput
+    perfScores?: PerformanceScoreUpdateManyWithoutInfluencerNestedInput
+    perfEvents?: PerformanceEventUpdateManyWithoutInfluencerNestedInput
+    referralsMade?: ReferralUpdateManyWithoutReferrerNestedInput
+    referralReceived?: ReferralUpdateOneWithoutInvitedNestedInput
   }
 
   export type InfluencerUncheckedUpdateWithoutPaymentsInput = {
@@ -62487,6 +74038,10 @@ export namespace Prisma {
     totalEarnings?: FloatFieldUpdateOperationsInput | number
     pendingEarnings?: FloatFieldUpdateOperationsInput | number
     totalClicks?: IntFieldUpdateOperationsInput | number
+    programUnlocked?: BoolFieldUpdateOperationsInput | boolean
+    baseThrOverride?: NullableIntFieldUpdateOperationsInput | number | null
+    unlockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    firstShareAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     shares?: ShareUncheckedUpdateManyWithoutInfluencerNestedInput
@@ -62496,6 +74051,11 @@ export namespace Prisma {
     campaigns?: CampaignParticipantUncheckedUpdateManyWithoutInfluencerNestedInput
     loyaltyAccount?: LoyaltyAccountUncheckedUpdateOneWithoutInfluencerNestedInput
     supportChat?: SupportChatUncheckedUpdateOneWithoutInfluencerNestedInput
+    starLedgerEntries?: StarLedgerUncheckedUpdateManyWithoutInfluencerNestedInput
+    perfScores?: PerformanceScoreUncheckedUpdateManyWithoutInfluencerNestedInput
+    perfEvents?: PerformanceEventUncheckedUpdateManyWithoutInfluencerNestedInput
+    referralsMade?: ReferralUncheckedUpdateManyWithoutReferrerNestedInput
+    referralReceived?: ReferralUncheckedUpdateOneWithoutInvitedNestedInput
   }
 
   export type PaymentSaleUpsertWithWhereUniqueWithoutPaymentInput = {
@@ -62560,6 +74120,7 @@ export namespace Prisma {
     commissionRate?: number
     commissionAmount: number
     commissionStatus?: string
+    affiliatePeriod?: string | null
     saleDate?: Date | string
     completionDate?: Date | string | null
     refundDeadline?: Date | string | null
@@ -62585,6 +74146,7 @@ export namespace Prisma {
     commissionRate?: number
     commissionAmount: number
     commissionStatus?: string
+    affiliatePeriod?: string | null
     saleDate?: Date | string
     completionDate?: Date | string | null
     refundDeadline?: Date | string | null
@@ -62667,6 +74229,7 @@ export namespace Prisma {
     commissionRate?: FloatFieldUpdateOperationsInput | number
     commissionAmount?: FloatFieldUpdateOperationsInput | number
     commissionStatus?: StringFieldUpdateOperationsInput | string
+    affiliatePeriod?: NullableStringFieldUpdateOperationsInput | string | null
     saleDate?: DateTimeFieldUpdateOperationsInput | Date | string
     completionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refundDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -62692,6 +74255,7 @@ export namespace Prisma {
     commissionRate?: FloatFieldUpdateOperationsInput | number
     commissionAmount?: FloatFieldUpdateOperationsInput | number
     commissionStatus?: StringFieldUpdateOperationsInput | string
+    affiliatePeriod?: NullableStringFieldUpdateOperationsInput | string | null
     saleDate?: DateTimeFieldUpdateOperationsInput | Date | string
     completionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refundDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -62731,6 +74295,10 @@ export namespace Prisma {
     totalEarnings?: number
     pendingEarnings?: number
     totalClicks?: number
+    programUnlocked?: boolean
+    baseThrOverride?: number | null
+    unlockedAt?: Date | string | null
+    firstShareAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     shares?: ShareCreateNestedManyWithoutInfluencerInput
@@ -62740,6 +74308,11 @@ export namespace Prisma {
     linkClicks?: LinkClickCreateNestedManyWithoutInfluencerInput
     campaigns?: CampaignParticipantCreateNestedManyWithoutInfluencerInput
     supportChat?: SupportChatCreateNestedOneWithoutInfluencerInput
+    starLedgerEntries?: StarLedgerCreateNestedManyWithoutInfluencerInput
+    perfScores?: PerformanceScoreCreateNestedManyWithoutInfluencerInput
+    perfEvents?: PerformanceEventCreateNestedManyWithoutInfluencerInput
+    referralsMade?: ReferralCreateNestedManyWithoutReferrerInput
+    referralReceived?: ReferralCreateNestedOneWithoutInvitedInput
   }
 
   export type InfluencerUncheckedCreateWithoutLoyaltyAccountInput = {
@@ -62767,6 +74340,10 @@ export namespace Prisma {
     totalEarnings?: number
     pendingEarnings?: number
     totalClicks?: number
+    programUnlocked?: boolean
+    baseThrOverride?: number | null
+    unlockedAt?: Date | string | null
+    firstShareAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     shares?: ShareUncheckedCreateNestedManyWithoutInfluencerInput
@@ -62776,6 +74353,11 @@ export namespace Prisma {
     linkClicks?: LinkClickUncheckedCreateNestedManyWithoutInfluencerInput
     campaigns?: CampaignParticipantUncheckedCreateNestedManyWithoutInfluencerInput
     supportChat?: SupportChatUncheckedCreateNestedOneWithoutInfluencerInput
+    starLedgerEntries?: StarLedgerUncheckedCreateNestedManyWithoutInfluencerInput
+    perfScores?: PerformanceScoreUncheckedCreateNestedManyWithoutInfluencerInput
+    perfEvents?: PerformanceEventUncheckedCreateNestedManyWithoutInfluencerInput
+    referralsMade?: ReferralUncheckedCreateNestedManyWithoutReferrerInput
+    referralReceived?: ReferralUncheckedCreateNestedOneWithoutInvitedInput
   }
 
   export type InfluencerCreateOrConnectWithoutLoyaltyAccountInput = {
@@ -62957,6 +74539,10 @@ export namespace Prisma {
     totalEarnings?: FloatFieldUpdateOperationsInput | number
     pendingEarnings?: FloatFieldUpdateOperationsInput | number
     totalClicks?: IntFieldUpdateOperationsInput | number
+    programUnlocked?: BoolFieldUpdateOperationsInput | boolean
+    baseThrOverride?: NullableIntFieldUpdateOperationsInput | number | null
+    unlockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    firstShareAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     shares?: ShareUpdateManyWithoutInfluencerNestedInput
@@ -62966,6 +74552,11 @@ export namespace Prisma {
     linkClicks?: LinkClickUpdateManyWithoutInfluencerNestedInput
     campaigns?: CampaignParticipantUpdateManyWithoutInfluencerNestedInput
     supportChat?: SupportChatUpdateOneWithoutInfluencerNestedInput
+    starLedgerEntries?: StarLedgerUpdateManyWithoutInfluencerNestedInput
+    perfScores?: PerformanceScoreUpdateManyWithoutInfluencerNestedInput
+    perfEvents?: PerformanceEventUpdateManyWithoutInfluencerNestedInput
+    referralsMade?: ReferralUpdateManyWithoutReferrerNestedInput
+    referralReceived?: ReferralUpdateOneWithoutInvitedNestedInput
   }
 
   export type InfluencerUncheckedUpdateWithoutLoyaltyAccountInput = {
@@ -62993,6 +74584,10 @@ export namespace Prisma {
     totalEarnings?: FloatFieldUpdateOperationsInput | number
     pendingEarnings?: FloatFieldUpdateOperationsInput | number
     totalClicks?: IntFieldUpdateOperationsInput | number
+    programUnlocked?: BoolFieldUpdateOperationsInput | boolean
+    baseThrOverride?: NullableIntFieldUpdateOperationsInput | number | null
+    unlockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    firstShareAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     shares?: ShareUncheckedUpdateManyWithoutInfluencerNestedInput
@@ -63002,6 +74597,11 @@ export namespace Prisma {
     linkClicks?: LinkClickUncheckedUpdateManyWithoutInfluencerNestedInput
     campaigns?: CampaignParticipantUncheckedUpdateManyWithoutInfluencerNestedInput
     supportChat?: SupportChatUncheckedUpdateOneWithoutInfluencerNestedInput
+    starLedgerEntries?: StarLedgerUncheckedUpdateManyWithoutInfluencerNestedInput
+    perfScores?: PerformanceScoreUncheckedUpdateManyWithoutInfluencerNestedInput
+    perfEvents?: PerformanceEventUncheckedUpdateManyWithoutInfluencerNestedInput
+    referralsMade?: ReferralUncheckedUpdateManyWithoutReferrerNestedInput
+    referralReceived?: ReferralUncheckedUpdateOneWithoutInvitedNestedInput
   }
 
   export type LoyaltyTransactionUpsertWithWhereUniqueWithoutAccountInput = {
@@ -63147,6 +74747,7 @@ export namespace Prisma {
     commissionRate?: number
     commissionAmount: number
     commissionStatus?: string
+    affiliatePeriod?: string | null
     saleDate?: Date | string
     completionDate?: Date | string | null
     refundDeadline?: Date | string | null
@@ -63172,6 +74773,7 @@ export namespace Prisma {
     commissionRate?: number
     commissionAmount: number
     commissionStatus?: string
+    affiliatePeriod?: string | null
     saleDate?: Date | string
     completionDate?: Date | string | null
     refundDeadline?: Date | string | null
@@ -63317,6 +74919,7 @@ export namespace Prisma {
     commissionRate?: FloatFieldUpdateOperationsInput | number
     commissionAmount?: FloatFieldUpdateOperationsInput | number
     commissionStatus?: StringFieldUpdateOperationsInput | string
+    affiliatePeriod?: NullableStringFieldUpdateOperationsInput | string | null
     saleDate?: DateTimeFieldUpdateOperationsInput | Date | string
     completionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refundDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -63342,6 +74945,7 @@ export namespace Prisma {
     commissionRate?: FloatFieldUpdateOperationsInput | number
     commissionAmount?: FloatFieldUpdateOperationsInput | number
     commissionStatus?: StringFieldUpdateOperationsInput | string
+    affiliatePeriod?: NullableStringFieldUpdateOperationsInput | string | null
     saleDate?: DateTimeFieldUpdateOperationsInput | Date | string
     completionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refundDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -63860,6 +75464,10 @@ export namespace Prisma {
     totalEarnings?: number
     pendingEarnings?: number
     totalClicks?: number
+    programUnlocked?: boolean
+    baseThrOverride?: number | null
+    unlockedAt?: Date | string | null
+    firstShareAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     shares?: ShareCreateNestedManyWithoutInfluencerInput
@@ -63869,6 +75477,11 @@ export namespace Prisma {
     campaigns?: CampaignParticipantCreateNestedManyWithoutInfluencerInput
     loyaltyAccount?: LoyaltyAccountCreateNestedOneWithoutInfluencerInput
     supportChat?: SupportChatCreateNestedOneWithoutInfluencerInput
+    starLedgerEntries?: StarLedgerCreateNestedManyWithoutInfluencerInput
+    perfScores?: PerformanceScoreCreateNestedManyWithoutInfluencerInput
+    perfEvents?: PerformanceEventCreateNestedManyWithoutInfluencerInput
+    referralsMade?: ReferralCreateNestedManyWithoutReferrerInput
+    referralReceived?: ReferralCreateNestedOneWithoutInvitedInput
   }
 
   export type InfluencerUncheckedCreateWithoutLinkClicksInput = {
@@ -63896,6 +75509,10 @@ export namespace Prisma {
     totalEarnings?: number
     pendingEarnings?: number
     totalClicks?: number
+    programUnlocked?: boolean
+    baseThrOverride?: number | null
+    unlockedAt?: Date | string | null
+    firstShareAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     shares?: ShareUncheckedCreateNestedManyWithoutInfluencerInput
@@ -63905,6 +75522,11 @@ export namespace Prisma {
     campaigns?: CampaignParticipantUncheckedCreateNestedManyWithoutInfluencerInput
     loyaltyAccount?: LoyaltyAccountUncheckedCreateNestedOneWithoutInfluencerInput
     supportChat?: SupportChatUncheckedCreateNestedOneWithoutInfluencerInput
+    starLedgerEntries?: StarLedgerUncheckedCreateNestedManyWithoutInfluencerInput
+    perfScores?: PerformanceScoreUncheckedCreateNestedManyWithoutInfluencerInput
+    perfEvents?: PerformanceEventUncheckedCreateNestedManyWithoutInfluencerInput
+    referralsMade?: ReferralUncheckedCreateNestedManyWithoutReferrerInput
+    referralReceived?: ReferralUncheckedCreateNestedOneWithoutInvitedInput
   }
 
   export type InfluencerCreateOrConnectWithoutLinkClicksInput = {
@@ -63991,6 +75613,10 @@ export namespace Prisma {
     totalEarnings?: FloatFieldUpdateOperationsInput | number
     pendingEarnings?: FloatFieldUpdateOperationsInput | number
     totalClicks?: IntFieldUpdateOperationsInput | number
+    programUnlocked?: BoolFieldUpdateOperationsInput | boolean
+    baseThrOverride?: NullableIntFieldUpdateOperationsInput | number | null
+    unlockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    firstShareAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     shares?: ShareUpdateManyWithoutInfluencerNestedInput
@@ -64000,6 +75626,11 @@ export namespace Prisma {
     campaigns?: CampaignParticipantUpdateManyWithoutInfluencerNestedInput
     loyaltyAccount?: LoyaltyAccountUpdateOneWithoutInfluencerNestedInput
     supportChat?: SupportChatUpdateOneWithoutInfluencerNestedInput
+    starLedgerEntries?: StarLedgerUpdateManyWithoutInfluencerNestedInput
+    perfScores?: PerformanceScoreUpdateManyWithoutInfluencerNestedInput
+    perfEvents?: PerformanceEventUpdateManyWithoutInfluencerNestedInput
+    referralsMade?: ReferralUpdateManyWithoutReferrerNestedInput
+    referralReceived?: ReferralUpdateOneWithoutInvitedNestedInput
   }
 
   export type InfluencerUncheckedUpdateWithoutLinkClicksInput = {
@@ -64027,6 +75658,10 @@ export namespace Prisma {
     totalEarnings?: FloatFieldUpdateOperationsInput | number
     pendingEarnings?: FloatFieldUpdateOperationsInput | number
     totalClicks?: IntFieldUpdateOperationsInput | number
+    programUnlocked?: BoolFieldUpdateOperationsInput | boolean
+    baseThrOverride?: NullableIntFieldUpdateOperationsInput | number | null
+    unlockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    firstShareAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     shares?: ShareUncheckedUpdateManyWithoutInfluencerNestedInput
@@ -64036,6 +75671,11 @@ export namespace Prisma {
     campaigns?: CampaignParticipantUncheckedUpdateManyWithoutInfluencerNestedInput
     loyaltyAccount?: LoyaltyAccountUncheckedUpdateOneWithoutInfluencerNestedInput
     supportChat?: SupportChatUncheckedUpdateOneWithoutInfluencerNestedInput
+    starLedgerEntries?: StarLedgerUncheckedUpdateManyWithoutInfluencerNestedInput
+    perfScores?: PerformanceScoreUncheckedUpdateManyWithoutInfluencerNestedInput
+    perfEvents?: PerformanceEventUncheckedUpdateManyWithoutInfluencerNestedInput
+    referralsMade?: ReferralUncheckedUpdateManyWithoutReferrerNestedInput
+    referralReceived?: ReferralUncheckedUpdateOneWithoutInvitedNestedInput
   }
 
   export type ShareUpsertWithoutLinkClicksInput = {
@@ -64203,6 +75843,11 @@ export namespace Prisma {
     maxParticipants?: number | null
     imageUrl?: string | null
     createdBy?: string | null
+    storyEyebrow?: string | null
+    storyTitle?: string | null
+    storySub?: string | null
+    storyFeats?: string | null
+    commissionPct?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     codeUsages?: CampaignCodeUsageCreateNestedManyWithoutCampaignInput
@@ -64223,6 +75868,11 @@ export namespace Prisma {
     maxParticipants?: number | null
     imageUrl?: string | null
     createdBy?: string | null
+    storyEyebrow?: string | null
+    storyTitle?: string | null
+    storySub?: string | null
+    storyFeats?: string | null
+    commissionPct?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     codeUsages?: CampaignCodeUsageUncheckedCreateNestedManyWithoutCampaignInput
@@ -64258,6 +75908,10 @@ export namespace Prisma {
     totalEarnings?: number
     pendingEarnings?: number
     totalClicks?: number
+    programUnlocked?: boolean
+    baseThrOverride?: number | null
+    unlockedAt?: Date | string | null
+    firstShareAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     shares?: ShareCreateNestedManyWithoutInfluencerInput
@@ -64267,6 +75921,11 @@ export namespace Prisma {
     linkClicks?: LinkClickCreateNestedManyWithoutInfluencerInput
     loyaltyAccount?: LoyaltyAccountCreateNestedOneWithoutInfluencerInput
     supportChat?: SupportChatCreateNestedOneWithoutInfluencerInput
+    starLedgerEntries?: StarLedgerCreateNestedManyWithoutInfluencerInput
+    perfScores?: PerformanceScoreCreateNestedManyWithoutInfluencerInput
+    perfEvents?: PerformanceEventCreateNestedManyWithoutInfluencerInput
+    referralsMade?: ReferralCreateNestedManyWithoutReferrerInput
+    referralReceived?: ReferralCreateNestedOneWithoutInvitedInput
   }
 
   export type InfluencerUncheckedCreateWithoutCampaignsInput = {
@@ -64294,6 +75953,10 @@ export namespace Prisma {
     totalEarnings?: number
     pendingEarnings?: number
     totalClicks?: number
+    programUnlocked?: boolean
+    baseThrOverride?: number | null
+    unlockedAt?: Date | string | null
+    firstShareAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     shares?: ShareUncheckedCreateNestedManyWithoutInfluencerInput
@@ -64303,6 +75966,11 @@ export namespace Prisma {
     linkClicks?: LinkClickUncheckedCreateNestedManyWithoutInfluencerInput
     loyaltyAccount?: LoyaltyAccountUncheckedCreateNestedOneWithoutInfluencerInput
     supportChat?: SupportChatUncheckedCreateNestedOneWithoutInfluencerInput
+    starLedgerEntries?: StarLedgerUncheckedCreateNestedManyWithoutInfluencerInput
+    perfScores?: PerformanceScoreUncheckedCreateNestedManyWithoutInfluencerInput
+    perfEvents?: PerformanceEventUncheckedCreateNestedManyWithoutInfluencerInput
+    referralsMade?: ReferralUncheckedCreateNestedManyWithoutReferrerInput
+    referralReceived?: ReferralUncheckedCreateNestedOneWithoutInvitedInput
   }
 
   export type InfluencerCreateOrConnectWithoutCampaignsInput = {
@@ -64364,6 +76032,11 @@ export namespace Prisma {
     maxParticipants?: NullableIntFieldUpdateOperationsInput | number | null
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    storyEyebrow?: NullableStringFieldUpdateOperationsInput | string | null
+    storyTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    storySub?: NullableStringFieldUpdateOperationsInput | string | null
+    storyFeats?: NullableStringFieldUpdateOperationsInput | string | null
+    commissionPct?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     codeUsages?: CampaignCodeUsageUpdateManyWithoutCampaignNestedInput
@@ -64384,6 +76057,11 @@ export namespace Prisma {
     maxParticipants?: NullableIntFieldUpdateOperationsInput | number | null
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    storyEyebrow?: NullableStringFieldUpdateOperationsInput | string | null
+    storyTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    storySub?: NullableStringFieldUpdateOperationsInput | string | null
+    storyFeats?: NullableStringFieldUpdateOperationsInput | string | null
+    commissionPct?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     codeUsages?: CampaignCodeUsageUncheckedUpdateManyWithoutCampaignNestedInput
@@ -64425,6 +76103,10 @@ export namespace Prisma {
     totalEarnings?: FloatFieldUpdateOperationsInput | number
     pendingEarnings?: FloatFieldUpdateOperationsInput | number
     totalClicks?: IntFieldUpdateOperationsInput | number
+    programUnlocked?: BoolFieldUpdateOperationsInput | boolean
+    baseThrOverride?: NullableIntFieldUpdateOperationsInput | number | null
+    unlockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    firstShareAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     shares?: ShareUpdateManyWithoutInfluencerNestedInput
@@ -64434,6 +76116,11 @@ export namespace Prisma {
     linkClicks?: LinkClickUpdateManyWithoutInfluencerNestedInput
     loyaltyAccount?: LoyaltyAccountUpdateOneWithoutInfluencerNestedInput
     supportChat?: SupportChatUpdateOneWithoutInfluencerNestedInput
+    starLedgerEntries?: StarLedgerUpdateManyWithoutInfluencerNestedInput
+    perfScores?: PerformanceScoreUpdateManyWithoutInfluencerNestedInput
+    perfEvents?: PerformanceEventUpdateManyWithoutInfluencerNestedInput
+    referralsMade?: ReferralUpdateManyWithoutReferrerNestedInput
+    referralReceived?: ReferralUpdateOneWithoutInvitedNestedInput
   }
 
   export type InfluencerUncheckedUpdateWithoutCampaignsInput = {
@@ -64461,6 +76148,10 @@ export namespace Prisma {
     totalEarnings?: FloatFieldUpdateOperationsInput | number
     pendingEarnings?: FloatFieldUpdateOperationsInput | number
     totalClicks?: IntFieldUpdateOperationsInput | number
+    programUnlocked?: BoolFieldUpdateOperationsInput | boolean
+    baseThrOverride?: NullableIntFieldUpdateOperationsInput | number | null
+    unlockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    firstShareAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     shares?: ShareUncheckedUpdateManyWithoutInfluencerNestedInput
@@ -64470,6 +76161,11 @@ export namespace Prisma {
     linkClicks?: LinkClickUncheckedUpdateManyWithoutInfluencerNestedInput
     loyaltyAccount?: LoyaltyAccountUncheckedUpdateOneWithoutInfluencerNestedInput
     supportChat?: SupportChatUncheckedUpdateOneWithoutInfluencerNestedInput
+    starLedgerEntries?: StarLedgerUncheckedUpdateManyWithoutInfluencerNestedInput
+    perfScores?: PerformanceScoreUncheckedUpdateManyWithoutInfluencerNestedInput
+    perfEvents?: PerformanceEventUncheckedUpdateManyWithoutInfluencerNestedInput
+    referralsMade?: ReferralUncheckedUpdateManyWithoutReferrerNestedInput
+    referralReceived?: ReferralUncheckedUpdateOneWithoutInvitedNestedInput
   }
 
   export type CampaignCodeUsageUpsertWithWhereUniqueWithoutParticipantInput = {
@@ -64503,6 +76199,11 @@ export namespace Prisma {
     maxParticipants?: number | null
     imageUrl?: string | null
     createdBy?: string | null
+    storyEyebrow?: string | null
+    storyTitle?: string | null
+    storySub?: string | null
+    storyFeats?: string | null
+    commissionPct?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     participants?: CampaignParticipantCreateNestedManyWithoutCampaignInput
@@ -64523,6 +76224,11 @@ export namespace Prisma {
     maxParticipants?: number | null
     imageUrl?: string | null
     createdBy?: string | null
+    storyEyebrow?: string | null
+    storyTitle?: string | null
+    storySub?: string | null
+    storyFeats?: string | null
+    commissionPct?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     participants?: CampaignParticipantUncheckedCreateNestedManyWithoutCampaignInput
@@ -64582,6 +76288,11 @@ export namespace Prisma {
     maxParticipants?: NullableIntFieldUpdateOperationsInput | number | null
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    storyEyebrow?: NullableStringFieldUpdateOperationsInput | string | null
+    storyTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    storySub?: NullableStringFieldUpdateOperationsInput | string | null
+    storyFeats?: NullableStringFieldUpdateOperationsInput | string | null
+    commissionPct?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     participants?: CampaignParticipantUpdateManyWithoutCampaignNestedInput
@@ -64602,6 +76313,11 @@ export namespace Prisma {
     maxParticipants?: NullableIntFieldUpdateOperationsInput | number | null
     imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
     createdBy?: NullableStringFieldUpdateOperationsInput | string | null
+    storyEyebrow?: NullableStringFieldUpdateOperationsInput | string | null
+    storyTitle?: NullableStringFieldUpdateOperationsInput | string | null
+    storySub?: NullableStringFieldUpdateOperationsInput | string | null
+    storyFeats?: NullableStringFieldUpdateOperationsInput | string | null
+    commissionPct?: NullableFloatFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     participants?: CampaignParticipantUncheckedUpdateManyWithoutCampaignNestedInput
@@ -64807,6 +76523,1100 @@ export namespace Prisma {
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InfluencerCreateWithoutStarLedgerEntriesInput = {
+    id?: string
+    fullName: string
+    email: string
+    password: string
+    phone: string
+    tcNo?: string | null
+    birthDate?: string | null
+    avatarUrl?: string | null
+    instagramHandle?: string | null
+    instagramFollowers?: number | null
+    tiktokHandle?: string | null
+    youtubeHandle?: string | null
+    tier?: string
+    uniqueCode: string
+    uniqueUrl: string
+    status?: string
+    rejectReason?: string | null
+    bankIban?: string | null
+    bankName?: string | null
+    bankAccountName?: string | null
+    totalSales?: number
+    totalEarnings?: number
+    pendingEarnings?: number
+    totalClicks?: number
+    programUnlocked?: boolean
+    baseThrOverride?: number | null
+    unlockedAt?: Date | string | null
+    firstShareAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    shares?: ShareCreateNestedManyWithoutInfluencerInput
+    customers?: CustomerCreateNestedManyWithoutInfluencerInput
+    sales?: SaleCreateNestedManyWithoutInfluencerInput
+    payments?: PaymentCreateNestedManyWithoutInfluencerInput
+    linkClicks?: LinkClickCreateNestedManyWithoutInfluencerInput
+    campaigns?: CampaignParticipantCreateNestedManyWithoutInfluencerInput
+    loyaltyAccount?: LoyaltyAccountCreateNestedOneWithoutInfluencerInput
+    supportChat?: SupportChatCreateNestedOneWithoutInfluencerInput
+    perfScores?: PerformanceScoreCreateNestedManyWithoutInfluencerInput
+    perfEvents?: PerformanceEventCreateNestedManyWithoutInfluencerInput
+    referralsMade?: ReferralCreateNestedManyWithoutReferrerInput
+    referralReceived?: ReferralCreateNestedOneWithoutInvitedInput
+  }
+
+  export type InfluencerUncheckedCreateWithoutStarLedgerEntriesInput = {
+    id?: string
+    fullName: string
+    email: string
+    password: string
+    phone: string
+    tcNo?: string | null
+    birthDate?: string | null
+    avatarUrl?: string | null
+    instagramHandle?: string | null
+    instagramFollowers?: number | null
+    tiktokHandle?: string | null
+    youtubeHandle?: string | null
+    tier?: string
+    uniqueCode: string
+    uniqueUrl: string
+    status?: string
+    rejectReason?: string | null
+    bankIban?: string | null
+    bankName?: string | null
+    bankAccountName?: string | null
+    totalSales?: number
+    totalEarnings?: number
+    pendingEarnings?: number
+    totalClicks?: number
+    programUnlocked?: boolean
+    baseThrOverride?: number | null
+    unlockedAt?: Date | string | null
+    firstShareAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    shares?: ShareUncheckedCreateNestedManyWithoutInfluencerInput
+    customers?: CustomerUncheckedCreateNestedManyWithoutInfluencerInput
+    sales?: SaleUncheckedCreateNestedManyWithoutInfluencerInput
+    payments?: PaymentUncheckedCreateNestedManyWithoutInfluencerInput
+    linkClicks?: LinkClickUncheckedCreateNestedManyWithoutInfluencerInput
+    campaigns?: CampaignParticipantUncheckedCreateNestedManyWithoutInfluencerInput
+    loyaltyAccount?: LoyaltyAccountUncheckedCreateNestedOneWithoutInfluencerInput
+    supportChat?: SupportChatUncheckedCreateNestedOneWithoutInfluencerInput
+    perfScores?: PerformanceScoreUncheckedCreateNestedManyWithoutInfluencerInput
+    perfEvents?: PerformanceEventUncheckedCreateNestedManyWithoutInfluencerInput
+    referralsMade?: ReferralUncheckedCreateNestedManyWithoutReferrerInput
+    referralReceived?: ReferralUncheckedCreateNestedOneWithoutInvitedInput
+  }
+
+  export type InfluencerCreateOrConnectWithoutStarLedgerEntriesInput = {
+    where: InfluencerWhereUniqueInput
+    create: XOR<InfluencerCreateWithoutStarLedgerEntriesInput, InfluencerUncheckedCreateWithoutStarLedgerEntriesInput>
+  }
+
+  export type InfluencerUpsertWithoutStarLedgerEntriesInput = {
+    update: XOR<InfluencerUpdateWithoutStarLedgerEntriesInput, InfluencerUncheckedUpdateWithoutStarLedgerEntriesInput>
+    create: XOR<InfluencerCreateWithoutStarLedgerEntriesInput, InfluencerUncheckedCreateWithoutStarLedgerEntriesInput>
+    where?: InfluencerWhereInput
+  }
+
+  export type InfluencerUpdateToOneWithWhereWithoutStarLedgerEntriesInput = {
+    where?: InfluencerWhereInput
+    data: XOR<InfluencerUpdateWithoutStarLedgerEntriesInput, InfluencerUncheckedUpdateWithoutStarLedgerEntriesInput>
+  }
+
+  export type InfluencerUpdateWithoutStarLedgerEntriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    tcNo?: NullableStringFieldUpdateOperationsInput | string | null
+    birthDate?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramFollowers?: NullableIntFieldUpdateOperationsInput | number | null
+    tiktokHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    youtubeHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    tier?: StringFieldUpdateOperationsInput | string
+    uniqueCode?: StringFieldUpdateOperationsInput | string
+    uniqueUrl?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    rejectReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bankIban?: NullableStringFieldUpdateOperationsInput | string | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountName?: NullableStringFieldUpdateOperationsInput | string | null
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalEarnings?: FloatFieldUpdateOperationsInput | number
+    pendingEarnings?: FloatFieldUpdateOperationsInput | number
+    totalClicks?: IntFieldUpdateOperationsInput | number
+    programUnlocked?: BoolFieldUpdateOperationsInput | boolean
+    baseThrOverride?: NullableIntFieldUpdateOperationsInput | number | null
+    unlockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    firstShareAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shares?: ShareUpdateManyWithoutInfluencerNestedInput
+    customers?: CustomerUpdateManyWithoutInfluencerNestedInput
+    sales?: SaleUpdateManyWithoutInfluencerNestedInput
+    payments?: PaymentUpdateManyWithoutInfluencerNestedInput
+    linkClicks?: LinkClickUpdateManyWithoutInfluencerNestedInput
+    campaigns?: CampaignParticipantUpdateManyWithoutInfluencerNestedInput
+    loyaltyAccount?: LoyaltyAccountUpdateOneWithoutInfluencerNestedInput
+    supportChat?: SupportChatUpdateOneWithoutInfluencerNestedInput
+    perfScores?: PerformanceScoreUpdateManyWithoutInfluencerNestedInput
+    perfEvents?: PerformanceEventUpdateManyWithoutInfluencerNestedInput
+    referralsMade?: ReferralUpdateManyWithoutReferrerNestedInput
+    referralReceived?: ReferralUpdateOneWithoutInvitedNestedInput
+  }
+
+  export type InfluencerUncheckedUpdateWithoutStarLedgerEntriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    tcNo?: NullableStringFieldUpdateOperationsInput | string | null
+    birthDate?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramFollowers?: NullableIntFieldUpdateOperationsInput | number | null
+    tiktokHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    youtubeHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    tier?: StringFieldUpdateOperationsInput | string
+    uniqueCode?: StringFieldUpdateOperationsInput | string
+    uniqueUrl?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    rejectReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bankIban?: NullableStringFieldUpdateOperationsInput | string | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountName?: NullableStringFieldUpdateOperationsInput | string | null
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalEarnings?: FloatFieldUpdateOperationsInput | number
+    pendingEarnings?: FloatFieldUpdateOperationsInput | number
+    totalClicks?: IntFieldUpdateOperationsInput | number
+    programUnlocked?: BoolFieldUpdateOperationsInput | boolean
+    baseThrOverride?: NullableIntFieldUpdateOperationsInput | number | null
+    unlockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    firstShareAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shares?: ShareUncheckedUpdateManyWithoutInfluencerNestedInput
+    customers?: CustomerUncheckedUpdateManyWithoutInfluencerNestedInput
+    sales?: SaleUncheckedUpdateManyWithoutInfluencerNestedInput
+    payments?: PaymentUncheckedUpdateManyWithoutInfluencerNestedInput
+    linkClicks?: LinkClickUncheckedUpdateManyWithoutInfluencerNestedInput
+    campaigns?: CampaignParticipantUncheckedUpdateManyWithoutInfluencerNestedInput
+    loyaltyAccount?: LoyaltyAccountUncheckedUpdateOneWithoutInfluencerNestedInput
+    supportChat?: SupportChatUncheckedUpdateOneWithoutInfluencerNestedInput
+    perfScores?: PerformanceScoreUncheckedUpdateManyWithoutInfluencerNestedInput
+    perfEvents?: PerformanceEventUncheckedUpdateManyWithoutInfluencerNestedInput
+    referralsMade?: ReferralUncheckedUpdateManyWithoutReferrerNestedInput
+    referralReceived?: ReferralUncheckedUpdateOneWithoutInvitedNestedInput
+  }
+
+  export type InfluencerCreateWithoutPerfScoresInput = {
+    id?: string
+    fullName: string
+    email: string
+    password: string
+    phone: string
+    tcNo?: string | null
+    birthDate?: string | null
+    avatarUrl?: string | null
+    instagramHandle?: string | null
+    instagramFollowers?: number | null
+    tiktokHandle?: string | null
+    youtubeHandle?: string | null
+    tier?: string
+    uniqueCode: string
+    uniqueUrl: string
+    status?: string
+    rejectReason?: string | null
+    bankIban?: string | null
+    bankName?: string | null
+    bankAccountName?: string | null
+    totalSales?: number
+    totalEarnings?: number
+    pendingEarnings?: number
+    totalClicks?: number
+    programUnlocked?: boolean
+    baseThrOverride?: number | null
+    unlockedAt?: Date | string | null
+    firstShareAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    shares?: ShareCreateNestedManyWithoutInfluencerInput
+    customers?: CustomerCreateNestedManyWithoutInfluencerInput
+    sales?: SaleCreateNestedManyWithoutInfluencerInput
+    payments?: PaymentCreateNestedManyWithoutInfluencerInput
+    linkClicks?: LinkClickCreateNestedManyWithoutInfluencerInput
+    campaigns?: CampaignParticipantCreateNestedManyWithoutInfluencerInput
+    loyaltyAccount?: LoyaltyAccountCreateNestedOneWithoutInfluencerInput
+    supportChat?: SupportChatCreateNestedOneWithoutInfluencerInput
+    starLedgerEntries?: StarLedgerCreateNestedManyWithoutInfluencerInput
+    perfEvents?: PerformanceEventCreateNestedManyWithoutInfluencerInput
+    referralsMade?: ReferralCreateNestedManyWithoutReferrerInput
+    referralReceived?: ReferralCreateNestedOneWithoutInvitedInput
+  }
+
+  export type InfluencerUncheckedCreateWithoutPerfScoresInput = {
+    id?: string
+    fullName: string
+    email: string
+    password: string
+    phone: string
+    tcNo?: string | null
+    birthDate?: string | null
+    avatarUrl?: string | null
+    instagramHandle?: string | null
+    instagramFollowers?: number | null
+    tiktokHandle?: string | null
+    youtubeHandle?: string | null
+    tier?: string
+    uniqueCode: string
+    uniqueUrl: string
+    status?: string
+    rejectReason?: string | null
+    bankIban?: string | null
+    bankName?: string | null
+    bankAccountName?: string | null
+    totalSales?: number
+    totalEarnings?: number
+    pendingEarnings?: number
+    totalClicks?: number
+    programUnlocked?: boolean
+    baseThrOverride?: number | null
+    unlockedAt?: Date | string | null
+    firstShareAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    shares?: ShareUncheckedCreateNestedManyWithoutInfluencerInput
+    customers?: CustomerUncheckedCreateNestedManyWithoutInfluencerInput
+    sales?: SaleUncheckedCreateNestedManyWithoutInfluencerInput
+    payments?: PaymentUncheckedCreateNestedManyWithoutInfluencerInput
+    linkClicks?: LinkClickUncheckedCreateNestedManyWithoutInfluencerInput
+    campaigns?: CampaignParticipantUncheckedCreateNestedManyWithoutInfluencerInput
+    loyaltyAccount?: LoyaltyAccountUncheckedCreateNestedOneWithoutInfluencerInput
+    supportChat?: SupportChatUncheckedCreateNestedOneWithoutInfluencerInput
+    starLedgerEntries?: StarLedgerUncheckedCreateNestedManyWithoutInfluencerInput
+    perfEvents?: PerformanceEventUncheckedCreateNestedManyWithoutInfluencerInput
+    referralsMade?: ReferralUncheckedCreateNestedManyWithoutReferrerInput
+    referralReceived?: ReferralUncheckedCreateNestedOneWithoutInvitedInput
+  }
+
+  export type InfluencerCreateOrConnectWithoutPerfScoresInput = {
+    where: InfluencerWhereUniqueInput
+    create: XOR<InfluencerCreateWithoutPerfScoresInput, InfluencerUncheckedCreateWithoutPerfScoresInput>
+  }
+
+  export type InfluencerUpsertWithoutPerfScoresInput = {
+    update: XOR<InfluencerUpdateWithoutPerfScoresInput, InfluencerUncheckedUpdateWithoutPerfScoresInput>
+    create: XOR<InfluencerCreateWithoutPerfScoresInput, InfluencerUncheckedCreateWithoutPerfScoresInput>
+    where?: InfluencerWhereInput
+  }
+
+  export type InfluencerUpdateToOneWithWhereWithoutPerfScoresInput = {
+    where?: InfluencerWhereInput
+    data: XOR<InfluencerUpdateWithoutPerfScoresInput, InfluencerUncheckedUpdateWithoutPerfScoresInput>
+  }
+
+  export type InfluencerUpdateWithoutPerfScoresInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    tcNo?: NullableStringFieldUpdateOperationsInput | string | null
+    birthDate?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramFollowers?: NullableIntFieldUpdateOperationsInput | number | null
+    tiktokHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    youtubeHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    tier?: StringFieldUpdateOperationsInput | string
+    uniqueCode?: StringFieldUpdateOperationsInput | string
+    uniqueUrl?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    rejectReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bankIban?: NullableStringFieldUpdateOperationsInput | string | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountName?: NullableStringFieldUpdateOperationsInput | string | null
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalEarnings?: FloatFieldUpdateOperationsInput | number
+    pendingEarnings?: FloatFieldUpdateOperationsInput | number
+    totalClicks?: IntFieldUpdateOperationsInput | number
+    programUnlocked?: BoolFieldUpdateOperationsInput | boolean
+    baseThrOverride?: NullableIntFieldUpdateOperationsInput | number | null
+    unlockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    firstShareAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shares?: ShareUpdateManyWithoutInfluencerNestedInput
+    customers?: CustomerUpdateManyWithoutInfluencerNestedInput
+    sales?: SaleUpdateManyWithoutInfluencerNestedInput
+    payments?: PaymentUpdateManyWithoutInfluencerNestedInput
+    linkClicks?: LinkClickUpdateManyWithoutInfluencerNestedInput
+    campaigns?: CampaignParticipantUpdateManyWithoutInfluencerNestedInput
+    loyaltyAccount?: LoyaltyAccountUpdateOneWithoutInfluencerNestedInput
+    supportChat?: SupportChatUpdateOneWithoutInfluencerNestedInput
+    starLedgerEntries?: StarLedgerUpdateManyWithoutInfluencerNestedInput
+    perfEvents?: PerformanceEventUpdateManyWithoutInfluencerNestedInput
+    referralsMade?: ReferralUpdateManyWithoutReferrerNestedInput
+    referralReceived?: ReferralUpdateOneWithoutInvitedNestedInput
+  }
+
+  export type InfluencerUncheckedUpdateWithoutPerfScoresInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    tcNo?: NullableStringFieldUpdateOperationsInput | string | null
+    birthDate?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramFollowers?: NullableIntFieldUpdateOperationsInput | number | null
+    tiktokHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    youtubeHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    tier?: StringFieldUpdateOperationsInput | string
+    uniqueCode?: StringFieldUpdateOperationsInput | string
+    uniqueUrl?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    rejectReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bankIban?: NullableStringFieldUpdateOperationsInput | string | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountName?: NullableStringFieldUpdateOperationsInput | string | null
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalEarnings?: FloatFieldUpdateOperationsInput | number
+    pendingEarnings?: FloatFieldUpdateOperationsInput | number
+    totalClicks?: IntFieldUpdateOperationsInput | number
+    programUnlocked?: BoolFieldUpdateOperationsInput | boolean
+    baseThrOverride?: NullableIntFieldUpdateOperationsInput | number | null
+    unlockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    firstShareAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shares?: ShareUncheckedUpdateManyWithoutInfluencerNestedInput
+    customers?: CustomerUncheckedUpdateManyWithoutInfluencerNestedInput
+    sales?: SaleUncheckedUpdateManyWithoutInfluencerNestedInput
+    payments?: PaymentUncheckedUpdateManyWithoutInfluencerNestedInput
+    linkClicks?: LinkClickUncheckedUpdateManyWithoutInfluencerNestedInput
+    campaigns?: CampaignParticipantUncheckedUpdateManyWithoutInfluencerNestedInput
+    loyaltyAccount?: LoyaltyAccountUncheckedUpdateOneWithoutInfluencerNestedInput
+    supportChat?: SupportChatUncheckedUpdateOneWithoutInfluencerNestedInput
+    starLedgerEntries?: StarLedgerUncheckedUpdateManyWithoutInfluencerNestedInput
+    perfEvents?: PerformanceEventUncheckedUpdateManyWithoutInfluencerNestedInput
+    referralsMade?: ReferralUncheckedUpdateManyWithoutReferrerNestedInput
+    referralReceived?: ReferralUncheckedUpdateOneWithoutInvitedNestedInput
+  }
+
+  export type InfluencerCreateWithoutPerfEventsInput = {
+    id?: string
+    fullName: string
+    email: string
+    password: string
+    phone: string
+    tcNo?: string | null
+    birthDate?: string | null
+    avatarUrl?: string | null
+    instagramHandle?: string | null
+    instagramFollowers?: number | null
+    tiktokHandle?: string | null
+    youtubeHandle?: string | null
+    tier?: string
+    uniqueCode: string
+    uniqueUrl: string
+    status?: string
+    rejectReason?: string | null
+    bankIban?: string | null
+    bankName?: string | null
+    bankAccountName?: string | null
+    totalSales?: number
+    totalEarnings?: number
+    pendingEarnings?: number
+    totalClicks?: number
+    programUnlocked?: boolean
+    baseThrOverride?: number | null
+    unlockedAt?: Date | string | null
+    firstShareAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    shares?: ShareCreateNestedManyWithoutInfluencerInput
+    customers?: CustomerCreateNestedManyWithoutInfluencerInput
+    sales?: SaleCreateNestedManyWithoutInfluencerInput
+    payments?: PaymentCreateNestedManyWithoutInfluencerInput
+    linkClicks?: LinkClickCreateNestedManyWithoutInfluencerInput
+    campaigns?: CampaignParticipantCreateNestedManyWithoutInfluencerInput
+    loyaltyAccount?: LoyaltyAccountCreateNestedOneWithoutInfluencerInput
+    supportChat?: SupportChatCreateNestedOneWithoutInfluencerInput
+    starLedgerEntries?: StarLedgerCreateNestedManyWithoutInfluencerInput
+    perfScores?: PerformanceScoreCreateNestedManyWithoutInfluencerInput
+    referralsMade?: ReferralCreateNestedManyWithoutReferrerInput
+    referralReceived?: ReferralCreateNestedOneWithoutInvitedInput
+  }
+
+  export type InfluencerUncheckedCreateWithoutPerfEventsInput = {
+    id?: string
+    fullName: string
+    email: string
+    password: string
+    phone: string
+    tcNo?: string | null
+    birthDate?: string | null
+    avatarUrl?: string | null
+    instagramHandle?: string | null
+    instagramFollowers?: number | null
+    tiktokHandle?: string | null
+    youtubeHandle?: string | null
+    tier?: string
+    uniqueCode: string
+    uniqueUrl: string
+    status?: string
+    rejectReason?: string | null
+    bankIban?: string | null
+    bankName?: string | null
+    bankAccountName?: string | null
+    totalSales?: number
+    totalEarnings?: number
+    pendingEarnings?: number
+    totalClicks?: number
+    programUnlocked?: boolean
+    baseThrOverride?: number | null
+    unlockedAt?: Date | string | null
+    firstShareAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    shares?: ShareUncheckedCreateNestedManyWithoutInfluencerInput
+    customers?: CustomerUncheckedCreateNestedManyWithoutInfluencerInput
+    sales?: SaleUncheckedCreateNestedManyWithoutInfluencerInput
+    payments?: PaymentUncheckedCreateNestedManyWithoutInfluencerInput
+    linkClicks?: LinkClickUncheckedCreateNestedManyWithoutInfluencerInput
+    campaigns?: CampaignParticipantUncheckedCreateNestedManyWithoutInfluencerInput
+    loyaltyAccount?: LoyaltyAccountUncheckedCreateNestedOneWithoutInfluencerInput
+    supportChat?: SupportChatUncheckedCreateNestedOneWithoutInfluencerInput
+    starLedgerEntries?: StarLedgerUncheckedCreateNestedManyWithoutInfluencerInput
+    perfScores?: PerformanceScoreUncheckedCreateNestedManyWithoutInfluencerInput
+    referralsMade?: ReferralUncheckedCreateNestedManyWithoutReferrerInput
+    referralReceived?: ReferralUncheckedCreateNestedOneWithoutInvitedInput
+  }
+
+  export type InfluencerCreateOrConnectWithoutPerfEventsInput = {
+    where: InfluencerWhereUniqueInput
+    create: XOR<InfluencerCreateWithoutPerfEventsInput, InfluencerUncheckedCreateWithoutPerfEventsInput>
+  }
+
+  export type InfluencerUpsertWithoutPerfEventsInput = {
+    update: XOR<InfluencerUpdateWithoutPerfEventsInput, InfluencerUncheckedUpdateWithoutPerfEventsInput>
+    create: XOR<InfluencerCreateWithoutPerfEventsInput, InfluencerUncheckedCreateWithoutPerfEventsInput>
+    where?: InfluencerWhereInput
+  }
+
+  export type InfluencerUpdateToOneWithWhereWithoutPerfEventsInput = {
+    where?: InfluencerWhereInput
+    data: XOR<InfluencerUpdateWithoutPerfEventsInput, InfluencerUncheckedUpdateWithoutPerfEventsInput>
+  }
+
+  export type InfluencerUpdateWithoutPerfEventsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    tcNo?: NullableStringFieldUpdateOperationsInput | string | null
+    birthDate?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramFollowers?: NullableIntFieldUpdateOperationsInput | number | null
+    tiktokHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    youtubeHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    tier?: StringFieldUpdateOperationsInput | string
+    uniqueCode?: StringFieldUpdateOperationsInput | string
+    uniqueUrl?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    rejectReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bankIban?: NullableStringFieldUpdateOperationsInput | string | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountName?: NullableStringFieldUpdateOperationsInput | string | null
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalEarnings?: FloatFieldUpdateOperationsInput | number
+    pendingEarnings?: FloatFieldUpdateOperationsInput | number
+    totalClicks?: IntFieldUpdateOperationsInput | number
+    programUnlocked?: BoolFieldUpdateOperationsInput | boolean
+    baseThrOverride?: NullableIntFieldUpdateOperationsInput | number | null
+    unlockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    firstShareAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shares?: ShareUpdateManyWithoutInfluencerNestedInput
+    customers?: CustomerUpdateManyWithoutInfluencerNestedInput
+    sales?: SaleUpdateManyWithoutInfluencerNestedInput
+    payments?: PaymentUpdateManyWithoutInfluencerNestedInput
+    linkClicks?: LinkClickUpdateManyWithoutInfluencerNestedInput
+    campaigns?: CampaignParticipantUpdateManyWithoutInfluencerNestedInput
+    loyaltyAccount?: LoyaltyAccountUpdateOneWithoutInfluencerNestedInput
+    supportChat?: SupportChatUpdateOneWithoutInfluencerNestedInput
+    starLedgerEntries?: StarLedgerUpdateManyWithoutInfluencerNestedInput
+    perfScores?: PerformanceScoreUpdateManyWithoutInfluencerNestedInput
+    referralsMade?: ReferralUpdateManyWithoutReferrerNestedInput
+    referralReceived?: ReferralUpdateOneWithoutInvitedNestedInput
+  }
+
+  export type InfluencerUncheckedUpdateWithoutPerfEventsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    tcNo?: NullableStringFieldUpdateOperationsInput | string | null
+    birthDate?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramFollowers?: NullableIntFieldUpdateOperationsInput | number | null
+    tiktokHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    youtubeHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    tier?: StringFieldUpdateOperationsInput | string
+    uniqueCode?: StringFieldUpdateOperationsInput | string
+    uniqueUrl?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    rejectReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bankIban?: NullableStringFieldUpdateOperationsInput | string | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountName?: NullableStringFieldUpdateOperationsInput | string | null
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalEarnings?: FloatFieldUpdateOperationsInput | number
+    pendingEarnings?: FloatFieldUpdateOperationsInput | number
+    totalClicks?: IntFieldUpdateOperationsInput | number
+    programUnlocked?: BoolFieldUpdateOperationsInput | boolean
+    baseThrOverride?: NullableIntFieldUpdateOperationsInput | number | null
+    unlockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    firstShareAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shares?: ShareUncheckedUpdateManyWithoutInfluencerNestedInput
+    customers?: CustomerUncheckedUpdateManyWithoutInfluencerNestedInput
+    sales?: SaleUncheckedUpdateManyWithoutInfluencerNestedInput
+    payments?: PaymentUncheckedUpdateManyWithoutInfluencerNestedInput
+    linkClicks?: LinkClickUncheckedUpdateManyWithoutInfluencerNestedInput
+    campaigns?: CampaignParticipantUncheckedUpdateManyWithoutInfluencerNestedInput
+    loyaltyAccount?: LoyaltyAccountUncheckedUpdateOneWithoutInfluencerNestedInput
+    supportChat?: SupportChatUncheckedUpdateOneWithoutInfluencerNestedInput
+    starLedgerEntries?: StarLedgerUncheckedUpdateManyWithoutInfluencerNestedInput
+    perfScores?: PerformanceScoreUncheckedUpdateManyWithoutInfluencerNestedInput
+    referralsMade?: ReferralUncheckedUpdateManyWithoutReferrerNestedInput
+    referralReceived?: ReferralUncheckedUpdateOneWithoutInvitedNestedInput
+  }
+
+  export type InfluencerCreateWithoutReferralsMadeInput = {
+    id?: string
+    fullName: string
+    email: string
+    password: string
+    phone: string
+    tcNo?: string | null
+    birthDate?: string | null
+    avatarUrl?: string | null
+    instagramHandle?: string | null
+    instagramFollowers?: number | null
+    tiktokHandle?: string | null
+    youtubeHandle?: string | null
+    tier?: string
+    uniqueCode: string
+    uniqueUrl: string
+    status?: string
+    rejectReason?: string | null
+    bankIban?: string | null
+    bankName?: string | null
+    bankAccountName?: string | null
+    totalSales?: number
+    totalEarnings?: number
+    pendingEarnings?: number
+    totalClicks?: number
+    programUnlocked?: boolean
+    baseThrOverride?: number | null
+    unlockedAt?: Date | string | null
+    firstShareAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    shares?: ShareCreateNestedManyWithoutInfluencerInput
+    customers?: CustomerCreateNestedManyWithoutInfluencerInput
+    sales?: SaleCreateNestedManyWithoutInfluencerInput
+    payments?: PaymentCreateNestedManyWithoutInfluencerInput
+    linkClicks?: LinkClickCreateNestedManyWithoutInfluencerInput
+    campaigns?: CampaignParticipantCreateNestedManyWithoutInfluencerInput
+    loyaltyAccount?: LoyaltyAccountCreateNestedOneWithoutInfluencerInput
+    supportChat?: SupportChatCreateNestedOneWithoutInfluencerInput
+    starLedgerEntries?: StarLedgerCreateNestedManyWithoutInfluencerInput
+    perfScores?: PerformanceScoreCreateNestedManyWithoutInfluencerInput
+    perfEvents?: PerformanceEventCreateNestedManyWithoutInfluencerInput
+    referralReceived?: ReferralCreateNestedOneWithoutInvitedInput
+  }
+
+  export type InfluencerUncheckedCreateWithoutReferralsMadeInput = {
+    id?: string
+    fullName: string
+    email: string
+    password: string
+    phone: string
+    tcNo?: string | null
+    birthDate?: string | null
+    avatarUrl?: string | null
+    instagramHandle?: string | null
+    instagramFollowers?: number | null
+    tiktokHandle?: string | null
+    youtubeHandle?: string | null
+    tier?: string
+    uniqueCode: string
+    uniqueUrl: string
+    status?: string
+    rejectReason?: string | null
+    bankIban?: string | null
+    bankName?: string | null
+    bankAccountName?: string | null
+    totalSales?: number
+    totalEarnings?: number
+    pendingEarnings?: number
+    totalClicks?: number
+    programUnlocked?: boolean
+    baseThrOverride?: number | null
+    unlockedAt?: Date | string | null
+    firstShareAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    shares?: ShareUncheckedCreateNestedManyWithoutInfluencerInput
+    customers?: CustomerUncheckedCreateNestedManyWithoutInfluencerInput
+    sales?: SaleUncheckedCreateNestedManyWithoutInfluencerInput
+    payments?: PaymentUncheckedCreateNestedManyWithoutInfluencerInput
+    linkClicks?: LinkClickUncheckedCreateNestedManyWithoutInfluencerInput
+    campaigns?: CampaignParticipantUncheckedCreateNestedManyWithoutInfluencerInput
+    loyaltyAccount?: LoyaltyAccountUncheckedCreateNestedOneWithoutInfluencerInput
+    supportChat?: SupportChatUncheckedCreateNestedOneWithoutInfluencerInput
+    starLedgerEntries?: StarLedgerUncheckedCreateNestedManyWithoutInfluencerInput
+    perfScores?: PerformanceScoreUncheckedCreateNestedManyWithoutInfluencerInput
+    perfEvents?: PerformanceEventUncheckedCreateNestedManyWithoutInfluencerInput
+    referralReceived?: ReferralUncheckedCreateNestedOneWithoutInvitedInput
+  }
+
+  export type InfluencerCreateOrConnectWithoutReferralsMadeInput = {
+    where: InfluencerWhereUniqueInput
+    create: XOR<InfluencerCreateWithoutReferralsMadeInput, InfluencerUncheckedCreateWithoutReferralsMadeInput>
+  }
+
+  export type InfluencerCreateWithoutReferralReceivedInput = {
+    id?: string
+    fullName: string
+    email: string
+    password: string
+    phone: string
+    tcNo?: string | null
+    birthDate?: string | null
+    avatarUrl?: string | null
+    instagramHandle?: string | null
+    instagramFollowers?: number | null
+    tiktokHandle?: string | null
+    youtubeHandle?: string | null
+    tier?: string
+    uniqueCode: string
+    uniqueUrl: string
+    status?: string
+    rejectReason?: string | null
+    bankIban?: string | null
+    bankName?: string | null
+    bankAccountName?: string | null
+    totalSales?: number
+    totalEarnings?: number
+    pendingEarnings?: number
+    totalClicks?: number
+    programUnlocked?: boolean
+    baseThrOverride?: number | null
+    unlockedAt?: Date | string | null
+    firstShareAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    shares?: ShareCreateNestedManyWithoutInfluencerInput
+    customers?: CustomerCreateNestedManyWithoutInfluencerInput
+    sales?: SaleCreateNestedManyWithoutInfluencerInput
+    payments?: PaymentCreateNestedManyWithoutInfluencerInput
+    linkClicks?: LinkClickCreateNestedManyWithoutInfluencerInput
+    campaigns?: CampaignParticipantCreateNestedManyWithoutInfluencerInput
+    loyaltyAccount?: LoyaltyAccountCreateNestedOneWithoutInfluencerInput
+    supportChat?: SupportChatCreateNestedOneWithoutInfluencerInput
+    starLedgerEntries?: StarLedgerCreateNestedManyWithoutInfluencerInput
+    perfScores?: PerformanceScoreCreateNestedManyWithoutInfluencerInput
+    perfEvents?: PerformanceEventCreateNestedManyWithoutInfluencerInput
+    referralsMade?: ReferralCreateNestedManyWithoutReferrerInput
+  }
+
+  export type InfluencerUncheckedCreateWithoutReferralReceivedInput = {
+    id?: string
+    fullName: string
+    email: string
+    password: string
+    phone: string
+    tcNo?: string | null
+    birthDate?: string | null
+    avatarUrl?: string | null
+    instagramHandle?: string | null
+    instagramFollowers?: number | null
+    tiktokHandle?: string | null
+    youtubeHandle?: string | null
+    tier?: string
+    uniqueCode: string
+    uniqueUrl: string
+    status?: string
+    rejectReason?: string | null
+    bankIban?: string | null
+    bankName?: string | null
+    bankAccountName?: string | null
+    totalSales?: number
+    totalEarnings?: number
+    pendingEarnings?: number
+    totalClicks?: number
+    programUnlocked?: boolean
+    baseThrOverride?: number | null
+    unlockedAt?: Date | string | null
+    firstShareAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    shares?: ShareUncheckedCreateNestedManyWithoutInfluencerInput
+    customers?: CustomerUncheckedCreateNestedManyWithoutInfluencerInput
+    sales?: SaleUncheckedCreateNestedManyWithoutInfluencerInput
+    payments?: PaymentUncheckedCreateNestedManyWithoutInfluencerInput
+    linkClicks?: LinkClickUncheckedCreateNestedManyWithoutInfluencerInput
+    campaigns?: CampaignParticipantUncheckedCreateNestedManyWithoutInfluencerInput
+    loyaltyAccount?: LoyaltyAccountUncheckedCreateNestedOneWithoutInfluencerInput
+    supportChat?: SupportChatUncheckedCreateNestedOneWithoutInfluencerInput
+    starLedgerEntries?: StarLedgerUncheckedCreateNestedManyWithoutInfluencerInput
+    perfScores?: PerformanceScoreUncheckedCreateNestedManyWithoutInfluencerInput
+    perfEvents?: PerformanceEventUncheckedCreateNestedManyWithoutInfluencerInput
+    referralsMade?: ReferralUncheckedCreateNestedManyWithoutReferrerInput
+  }
+
+  export type InfluencerCreateOrConnectWithoutReferralReceivedInput = {
+    where: InfluencerWhereUniqueInput
+    create: XOR<InfluencerCreateWithoutReferralReceivedInput, InfluencerUncheckedCreateWithoutReferralReceivedInput>
+  }
+
+  export type ReferralQualificationCreateWithoutReferralInput = {
+    id?: string
+    referrerId: string
+    period: string
+    reduction: number
+    createdAt?: Date | string
+  }
+
+  export type ReferralQualificationUncheckedCreateWithoutReferralInput = {
+    id?: string
+    referrerId: string
+    period: string
+    reduction: number
+    createdAt?: Date | string
+  }
+
+  export type ReferralQualificationCreateOrConnectWithoutReferralInput = {
+    where: ReferralQualificationWhereUniqueInput
+    create: XOR<ReferralQualificationCreateWithoutReferralInput, ReferralQualificationUncheckedCreateWithoutReferralInput>
+  }
+
+  export type ReferralQualificationCreateManyReferralInputEnvelope = {
+    data: ReferralQualificationCreateManyReferralInput | ReferralQualificationCreateManyReferralInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type InfluencerUpsertWithoutReferralsMadeInput = {
+    update: XOR<InfluencerUpdateWithoutReferralsMadeInput, InfluencerUncheckedUpdateWithoutReferralsMadeInput>
+    create: XOR<InfluencerCreateWithoutReferralsMadeInput, InfluencerUncheckedCreateWithoutReferralsMadeInput>
+    where?: InfluencerWhereInput
+  }
+
+  export type InfluencerUpdateToOneWithWhereWithoutReferralsMadeInput = {
+    where?: InfluencerWhereInput
+    data: XOR<InfluencerUpdateWithoutReferralsMadeInput, InfluencerUncheckedUpdateWithoutReferralsMadeInput>
+  }
+
+  export type InfluencerUpdateWithoutReferralsMadeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    tcNo?: NullableStringFieldUpdateOperationsInput | string | null
+    birthDate?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramFollowers?: NullableIntFieldUpdateOperationsInput | number | null
+    tiktokHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    youtubeHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    tier?: StringFieldUpdateOperationsInput | string
+    uniqueCode?: StringFieldUpdateOperationsInput | string
+    uniqueUrl?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    rejectReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bankIban?: NullableStringFieldUpdateOperationsInput | string | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountName?: NullableStringFieldUpdateOperationsInput | string | null
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalEarnings?: FloatFieldUpdateOperationsInput | number
+    pendingEarnings?: FloatFieldUpdateOperationsInput | number
+    totalClicks?: IntFieldUpdateOperationsInput | number
+    programUnlocked?: BoolFieldUpdateOperationsInput | boolean
+    baseThrOverride?: NullableIntFieldUpdateOperationsInput | number | null
+    unlockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    firstShareAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shares?: ShareUpdateManyWithoutInfluencerNestedInput
+    customers?: CustomerUpdateManyWithoutInfluencerNestedInput
+    sales?: SaleUpdateManyWithoutInfluencerNestedInput
+    payments?: PaymentUpdateManyWithoutInfluencerNestedInput
+    linkClicks?: LinkClickUpdateManyWithoutInfluencerNestedInput
+    campaigns?: CampaignParticipantUpdateManyWithoutInfluencerNestedInput
+    loyaltyAccount?: LoyaltyAccountUpdateOneWithoutInfluencerNestedInput
+    supportChat?: SupportChatUpdateOneWithoutInfluencerNestedInput
+    starLedgerEntries?: StarLedgerUpdateManyWithoutInfluencerNestedInput
+    perfScores?: PerformanceScoreUpdateManyWithoutInfluencerNestedInput
+    perfEvents?: PerformanceEventUpdateManyWithoutInfluencerNestedInput
+    referralReceived?: ReferralUpdateOneWithoutInvitedNestedInput
+  }
+
+  export type InfluencerUncheckedUpdateWithoutReferralsMadeInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    tcNo?: NullableStringFieldUpdateOperationsInput | string | null
+    birthDate?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramFollowers?: NullableIntFieldUpdateOperationsInput | number | null
+    tiktokHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    youtubeHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    tier?: StringFieldUpdateOperationsInput | string
+    uniqueCode?: StringFieldUpdateOperationsInput | string
+    uniqueUrl?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    rejectReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bankIban?: NullableStringFieldUpdateOperationsInput | string | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountName?: NullableStringFieldUpdateOperationsInput | string | null
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalEarnings?: FloatFieldUpdateOperationsInput | number
+    pendingEarnings?: FloatFieldUpdateOperationsInput | number
+    totalClicks?: IntFieldUpdateOperationsInput | number
+    programUnlocked?: BoolFieldUpdateOperationsInput | boolean
+    baseThrOverride?: NullableIntFieldUpdateOperationsInput | number | null
+    unlockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    firstShareAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shares?: ShareUncheckedUpdateManyWithoutInfluencerNestedInput
+    customers?: CustomerUncheckedUpdateManyWithoutInfluencerNestedInput
+    sales?: SaleUncheckedUpdateManyWithoutInfluencerNestedInput
+    payments?: PaymentUncheckedUpdateManyWithoutInfluencerNestedInput
+    linkClicks?: LinkClickUncheckedUpdateManyWithoutInfluencerNestedInput
+    campaigns?: CampaignParticipantUncheckedUpdateManyWithoutInfluencerNestedInput
+    loyaltyAccount?: LoyaltyAccountUncheckedUpdateOneWithoutInfluencerNestedInput
+    supportChat?: SupportChatUncheckedUpdateOneWithoutInfluencerNestedInput
+    starLedgerEntries?: StarLedgerUncheckedUpdateManyWithoutInfluencerNestedInput
+    perfScores?: PerformanceScoreUncheckedUpdateManyWithoutInfluencerNestedInput
+    perfEvents?: PerformanceEventUncheckedUpdateManyWithoutInfluencerNestedInput
+    referralReceived?: ReferralUncheckedUpdateOneWithoutInvitedNestedInput
+  }
+
+  export type InfluencerUpsertWithoutReferralReceivedInput = {
+    update: XOR<InfluencerUpdateWithoutReferralReceivedInput, InfluencerUncheckedUpdateWithoutReferralReceivedInput>
+    create: XOR<InfluencerCreateWithoutReferralReceivedInput, InfluencerUncheckedCreateWithoutReferralReceivedInput>
+    where?: InfluencerWhereInput
+  }
+
+  export type InfluencerUpdateToOneWithWhereWithoutReferralReceivedInput = {
+    where?: InfluencerWhereInput
+    data: XOR<InfluencerUpdateWithoutReferralReceivedInput, InfluencerUncheckedUpdateWithoutReferralReceivedInput>
+  }
+
+  export type InfluencerUpdateWithoutReferralReceivedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    tcNo?: NullableStringFieldUpdateOperationsInput | string | null
+    birthDate?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramFollowers?: NullableIntFieldUpdateOperationsInput | number | null
+    tiktokHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    youtubeHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    tier?: StringFieldUpdateOperationsInput | string
+    uniqueCode?: StringFieldUpdateOperationsInput | string
+    uniqueUrl?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    rejectReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bankIban?: NullableStringFieldUpdateOperationsInput | string | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountName?: NullableStringFieldUpdateOperationsInput | string | null
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalEarnings?: FloatFieldUpdateOperationsInput | number
+    pendingEarnings?: FloatFieldUpdateOperationsInput | number
+    totalClicks?: IntFieldUpdateOperationsInput | number
+    programUnlocked?: BoolFieldUpdateOperationsInput | boolean
+    baseThrOverride?: NullableIntFieldUpdateOperationsInput | number | null
+    unlockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    firstShareAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shares?: ShareUpdateManyWithoutInfluencerNestedInput
+    customers?: CustomerUpdateManyWithoutInfluencerNestedInput
+    sales?: SaleUpdateManyWithoutInfluencerNestedInput
+    payments?: PaymentUpdateManyWithoutInfluencerNestedInput
+    linkClicks?: LinkClickUpdateManyWithoutInfluencerNestedInput
+    campaigns?: CampaignParticipantUpdateManyWithoutInfluencerNestedInput
+    loyaltyAccount?: LoyaltyAccountUpdateOneWithoutInfluencerNestedInput
+    supportChat?: SupportChatUpdateOneWithoutInfluencerNestedInput
+    starLedgerEntries?: StarLedgerUpdateManyWithoutInfluencerNestedInput
+    perfScores?: PerformanceScoreUpdateManyWithoutInfluencerNestedInput
+    perfEvents?: PerformanceEventUpdateManyWithoutInfluencerNestedInput
+    referralsMade?: ReferralUpdateManyWithoutReferrerNestedInput
+  }
+
+  export type InfluencerUncheckedUpdateWithoutReferralReceivedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullName?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    tcNo?: NullableStringFieldUpdateOperationsInput | string | null
+    birthDate?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    instagramFollowers?: NullableIntFieldUpdateOperationsInput | number | null
+    tiktokHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    youtubeHandle?: NullableStringFieldUpdateOperationsInput | string | null
+    tier?: StringFieldUpdateOperationsInput | string
+    uniqueCode?: StringFieldUpdateOperationsInput | string
+    uniqueUrl?: StringFieldUpdateOperationsInput | string
+    status?: StringFieldUpdateOperationsInput | string
+    rejectReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bankIban?: NullableStringFieldUpdateOperationsInput | string | null
+    bankName?: NullableStringFieldUpdateOperationsInput | string | null
+    bankAccountName?: NullableStringFieldUpdateOperationsInput | string | null
+    totalSales?: IntFieldUpdateOperationsInput | number
+    totalEarnings?: FloatFieldUpdateOperationsInput | number
+    pendingEarnings?: FloatFieldUpdateOperationsInput | number
+    totalClicks?: IntFieldUpdateOperationsInput | number
+    programUnlocked?: BoolFieldUpdateOperationsInput | boolean
+    baseThrOverride?: NullableIntFieldUpdateOperationsInput | number | null
+    unlockedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    firstShareAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    shares?: ShareUncheckedUpdateManyWithoutInfluencerNestedInput
+    customers?: CustomerUncheckedUpdateManyWithoutInfluencerNestedInput
+    sales?: SaleUncheckedUpdateManyWithoutInfluencerNestedInput
+    payments?: PaymentUncheckedUpdateManyWithoutInfluencerNestedInput
+    linkClicks?: LinkClickUncheckedUpdateManyWithoutInfluencerNestedInput
+    campaigns?: CampaignParticipantUncheckedUpdateManyWithoutInfluencerNestedInput
+    loyaltyAccount?: LoyaltyAccountUncheckedUpdateOneWithoutInfluencerNestedInput
+    supportChat?: SupportChatUncheckedUpdateOneWithoutInfluencerNestedInput
+    starLedgerEntries?: StarLedgerUncheckedUpdateManyWithoutInfluencerNestedInput
+    perfScores?: PerformanceScoreUncheckedUpdateManyWithoutInfluencerNestedInput
+    perfEvents?: PerformanceEventUncheckedUpdateManyWithoutInfluencerNestedInput
+    referralsMade?: ReferralUncheckedUpdateManyWithoutReferrerNestedInput
+  }
+
+  export type ReferralQualificationUpsertWithWhereUniqueWithoutReferralInput = {
+    where: ReferralQualificationWhereUniqueInput
+    update: XOR<ReferralQualificationUpdateWithoutReferralInput, ReferralQualificationUncheckedUpdateWithoutReferralInput>
+    create: XOR<ReferralQualificationCreateWithoutReferralInput, ReferralQualificationUncheckedCreateWithoutReferralInput>
+  }
+
+  export type ReferralQualificationUpdateWithWhereUniqueWithoutReferralInput = {
+    where: ReferralQualificationWhereUniqueInput
+    data: XOR<ReferralQualificationUpdateWithoutReferralInput, ReferralQualificationUncheckedUpdateWithoutReferralInput>
+  }
+
+  export type ReferralQualificationUpdateManyWithWhereWithoutReferralInput = {
+    where: ReferralQualificationScalarWhereInput
+    data: XOR<ReferralQualificationUpdateManyMutationInput, ReferralQualificationUncheckedUpdateManyWithoutReferralInput>
+  }
+
+  export type ReferralQualificationScalarWhereInput = {
+    AND?: ReferralQualificationScalarWhereInput | ReferralQualificationScalarWhereInput[]
+    OR?: ReferralQualificationScalarWhereInput[]
+    NOT?: ReferralQualificationScalarWhereInput | ReferralQualificationScalarWhereInput[]
+    id?: StringFilter<"ReferralQualification"> | string
+    referralId?: StringFilter<"ReferralQualification"> | string
+    referrerId?: StringFilter<"ReferralQualification"> | string
+    period?: StringFilter<"ReferralQualification"> | string
+    reduction?: IntFilter<"ReferralQualification"> | number
+    createdAt?: DateTimeFilter<"ReferralQualification"> | Date | string
+  }
+
+  export type ReferralCreateWithoutQualificationsInput = {
+    id?: string
+    qualified?: boolean
+    qualifiedAt?: Date | string | null
+    qualifiedPeriod?: string | null
+    reductionApplied?: number | null
+    createdAt?: Date | string
+    referrer: InfluencerCreateNestedOneWithoutReferralsMadeInput
+    invited: InfluencerCreateNestedOneWithoutReferralReceivedInput
+  }
+
+  export type ReferralUncheckedCreateWithoutQualificationsInput = {
+    id?: string
+    referrerId: string
+    invitedId: string
+    qualified?: boolean
+    qualifiedAt?: Date | string | null
+    qualifiedPeriod?: string | null
+    reductionApplied?: number | null
+    createdAt?: Date | string
+  }
+
+  export type ReferralCreateOrConnectWithoutQualificationsInput = {
+    where: ReferralWhereUniqueInput
+    create: XOR<ReferralCreateWithoutQualificationsInput, ReferralUncheckedCreateWithoutQualificationsInput>
+  }
+
+  export type ReferralUpsertWithoutQualificationsInput = {
+    update: XOR<ReferralUpdateWithoutQualificationsInput, ReferralUncheckedUpdateWithoutQualificationsInput>
+    create: XOR<ReferralCreateWithoutQualificationsInput, ReferralUncheckedCreateWithoutQualificationsInput>
+    where?: ReferralWhereInput
+  }
+
+  export type ReferralUpdateToOneWithWhereWithoutQualificationsInput = {
+    where?: ReferralWhereInput
+    data: XOR<ReferralUpdateWithoutQualificationsInput, ReferralUncheckedUpdateWithoutQualificationsInput>
+  }
+
+  export type ReferralUpdateWithoutQualificationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    qualified?: BoolFieldUpdateOperationsInput | boolean
+    qualifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    qualifiedPeriod?: NullableStringFieldUpdateOperationsInput | string | null
+    reductionApplied?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    referrer?: InfluencerUpdateOneRequiredWithoutReferralsMadeNestedInput
+    invited?: InfluencerUpdateOneRequiredWithoutReferralReceivedNestedInput
+  }
+
+  export type ReferralUncheckedUpdateWithoutQualificationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    referrerId?: StringFieldUpdateOperationsInput | string
+    invitedId?: StringFieldUpdateOperationsInput | string
+    qualified?: BoolFieldUpdateOperationsInput | boolean
+    qualifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    qualifiedPeriod?: NullableStringFieldUpdateOperationsInput | string | null
+    reductionApplied?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type PostCreateManyCategoryInput = {
@@ -65120,6 +77930,7 @@ export namespace Prisma {
     commissionRate?: number
     commissionAmount: number
     commissionStatus?: string
+    affiliatePeriod?: string | null
     saleDate?: Date | string
     completionDate?: Date | string | null
     refundDeadline?: Date | string | null
@@ -65168,6 +77979,48 @@ export namespace Prisma {
     uniqueCode: string
     joinedAt?: Date | string
     usageCount?: number
+  }
+
+  export type StarLedgerCreateManyInfluencerInput = {
+    id?: string
+    delta: number
+    reason: string
+    note?: string | null
+    createdBy?: string
+    refSaleId?: string | null
+    createdAt?: Date | string
+  }
+
+  export type PerformanceScoreCreateManyInfluencerInput = {
+    id?: string
+    period: string
+    ctr?: number
+    cvr?: number
+    volume?: number
+    ctrNorm?: number
+    cvrNorm?: number
+    volumeNorm?: number
+    score?: number
+    commissionRate?: number
+    computedAt?: Date | string
+  }
+
+  export type PerformanceEventCreateManyInfluencerInput = {
+    id?: string
+    period: string
+    impressions?: number
+    clicks?: number
+    updatedAt?: Date | string
+  }
+
+  export type ReferralCreateManyReferrerInput = {
+    id?: string
+    invitedId: string
+    qualified?: boolean
+    qualifiedAt?: Date | string | null
+    qualifiedPeriod?: string | null
+    reductionApplied?: number | null
+    createdAt?: Date | string
   }
 
   export type ShareUpdateWithoutInfluencerInput = {
@@ -65286,6 +78139,7 @@ export namespace Prisma {
     commissionRate?: FloatFieldUpdateOperationsInput | number
     commissionAmount?: FloatFieldUpdateOperationsInput | number
     commissionStatus?: StringFieldUpdateOperationsInput | string
+    affiliatePeriod?: NullableStringFieldUpdateOperationsInput | string | null
     saleDate?: DateTimeFieldUpdateOperationsInput | Date | string
     completionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refundDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -65310,6 +78164,7 @@ export namespace Prisma {
     commissionRate?: FloatFieldUpdateOperationsInput | number
     commissionAmount?: FloatFieldUpdateOperationsInput | number
     commissionStatus?: StringFieldUpdateOperationsInput | string
+    affiliatePeriod?: NullableStringFieldUpdateOperationsInput | string | null
     saleDate?: DateTimeFieldUpdateOperationsInput | Date | string
     completionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refundDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -65333,6 +78188,7 @@ export namespace Prisma {
     commissionRate?: FloatFieldUpdateOperationsInput | number
     commissionAmount?: FloatFieldUpdateOperationsInput | number
     commissionStatus?: StringFieldUpdateOperationsInput | string
+    affiliatePeriod?: NullableStringFieldUpdateOperationsInput | string | null
     saleDate?: DateTimeFieldUpdateOperationsInput | Date | string
     completionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refundDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -65461,6 +78317,134 @@ export namespace Prisma {
     usageCount?: IntFieldUpdateOperationsInput | number
   }
 
+  export type StarLedgerUpdateWithoutInfluencerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    delta?: FloatFieldUpdateOperationsInput | number
+    reason?: StringFieldUpdateOperationsInput | string
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: StringFieldUpdateOperationsInput | string
+    refSaleId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StarLedgerUncheckedUpdateWithoutInfluencerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    delta?: FloatFieldUpdateOperationsInput | number
+    reason?: StringFieldUpdateOperationsInput | string
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: StringFieldUpdateOperationsInput | string
+    refSaleId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type StarLedgerUncheckedUpdateManyWithoutInfluencerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    delta?: FloatFieldUpdateOperationsInput | number
+    reason?: StringFieldUpdateOperationsInput | string
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    createdBy?: StringFieldUpdateOperationsInput | string
+    refSaleId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PerformanceScoreUpdateWithoutInfluencerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    period?: StringFieldUpdateOperationsInput | string
+    ctr?: FloatFieldUpdateOperationsInput | number
+    cvr?: FloatFieldUpdateOperationsInput | number
+    volume?: IntFieldUpdateOperationsInput | number
+    ctrNorm?: FloatFieldUpdateOperationsInput | number
+    cvrNorm?: FloatFieldUpdateOperationsInput | number
+    volumeNorm?: FloatFieldUpdateOperationsInput | number
+    score?: FloatFieldUpdateOperationsInput | number
+    commissionRate?: FloatFieldUpdateOperationsInput | number
+    computedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PerformanceScoreUncheckedUpdateWithoutInfluencerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    period?: StringFieldUpdateOperationsInput | string
+    ctr?: FloatFieldUpdateOperationsInput | number
+    cvr?: FloatFieldUpdateOperationsInput | number
+    volume?: IntFieldUpdateOperationsInput | number
+    ctrNorm?: FloatFieldUpdateOperationsInput | number
+    cvrNorm?: FloatFieldUpdateOperationsInput | number
+    volumeNorm?: FloatFieldUpdateOperationsInput | number
+    score?: FloatFieldUpdateOperationsInput | number
+    commissionRate?: FloatFieldUpdateOperationsInput | number
+    computedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PerformanceScoreUncheckedUpdateManyWithoutInfluencerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    period?: StringFieldUpdateOperationsInput | string
+    ctr?: FloatFieldUpdateOperationsInput | number
+    cvr?: FloatFieldUpdateOperationsInput | number
+    volume?: IntFieldUpdateOperationsInput | number
+    ctrNorm?: FloatFieldUpdateOperationsInput | number
+    cvrNorm?: FloatFieldUpdateOperationsInput | number
+    volumeNorm?: FloatFieldUpdateOperationsInput | number
+    score?: FloatFieldUpdateOperationsInput | number
+    commissionRate?: FloatFieldUpdateOperationsInput | number
+    computedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PerformanceEventUpdateWithoutInfluencerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    period?: StringFieldUpdateOperationsInput | string
+    impressions?: IntFieldUpdateOperationsInput | number
+    clicks?: IntFieldUpdateOperationsInput | number
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PerformanceEventUncheckedUpdateWithoutInfluencerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    period?: StringFieldUpdateOperationsInput | string
+    impressions?: IntFieldUpdateOperationsInput | number
+    clicks?: IntFieldUpdateOperationsInput | number
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PerformanceEventUncheckedUpdateManyWithoutInfluencerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    period?: StringFieldUpdateOperationsInput | string
+    impressions?: IntFieldUpdateOperationsInput | number
+    clicks?: IntFieldUpdateOperationsInput | number
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ReferralUpdateWithoutReferrerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    qualified?: BoolFieldUpdateOperationsInput | boolean
+    qualifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    qualifiedPeriod?: NullableStringFieldUpdateOperationsInput | string | null
+    reductionApplied?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    invited?: InfluencerUpdateOneRequiredWithoutReferralReceivedNestedInput
+    qualifications?: ReferralQualificationUpdateManyWithoutReferralNestedInput
+  }
+
+  export type ReferralUncheckedUpdateWithoutReferrerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    invitedId?: StringFieldUpdateOperationsInput | string
+    qualified?: BoolFieldUpdateOperationsInput | boolean
+    qualifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    qualifiedPeriod?: NullableStringFieldUpdateOperationsInput | string | null
+    reductionApplied?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    qualifications?: ReferralQualificationUncheckedUpdateManyWithoutReferralNestedInput
+  }
+
+  export type ReferralUncheckedUpdateManyWithoutReferrerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    invitedId?: StringFieldUpdateOperationsInput | string
+    qualified?: BoolFieldUpdateOperationsInput | boolean
+    qualifiedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    qualifiedPeriod?: NullableStringFieldUpdateOperationsInput | string | null
+    reductionApplied?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type SupportMessageCreateManyChatInput = {
     id?: string
     senderType: string
@@ -65549,6 +78533,7 @@ export namespace Prisma {
     commissionRate?: number
     commissionAmount: number
     commissionStatus?: string
+    affiliatePeriod?: string | null
     saleDate?: Date | string
     completionDate?: Date | string | null
     refundDeadline?: Date | string | null
@@ -65569,6 +78554,7 @@ export namespace Prisma {
     commissionRate?: FloatFieldUpdateOperationsInput | number
     commissionAmount?: FloatFieldUpdateOperationsInput | number
     commissionStatus?: StringFieldUpdateOperationsInput | string
+    affiliatePeriod?: NullableStringFieldUpdateOperationsInput | string | null
     saleDate?: DateTimeFieldUpdateOperationsInput | Date | string
     completionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refundDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -65593,6 +78579,7 @@ export namespace Prisma {
     commissionRate?: FloatFieldUpdateOperationsInput | number
     commissionAmount?: FloatFieldUpdateOperationsInput | number
     commissionStatus?: StringFieldUpdateOperationsInput | string
+    affiliatePeriod?: NullableStringFieldUpdateOperationsInput | string | null
     saleDate?: DateTimeFieldUpdateOperationsInput | Date | string
     completionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refundDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -65616,6 +78603,7 @@ export namespace Prisma {
     commissionRate?: FloatFieldUpdateOperationsInput | number
     commissionAmount?: FloatFieldUpdateOperationsInput | number
     commissionStatus?: StringFieldUpdateOperationsInput | string
+    affiliatePeriod?: NullableStringFieldUpdateOperationsInput | string | null
     saleDate?: DateTimeFieldUpdateOperationsInput | Date | string
     completionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     refundDeadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -66292,6 +79280,38 @@ export namespace Prisma {
     extraBedPriceUsd?: FloatFieldUpdateOperationsInput | number
     saleTotalUsd?: FloatFieldUpdateOperationsInput | number
     sortOrder?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ReferralQualificationCreateManyReferralInput = {
+    id?: string
+    referrerId: string
+    period: string
+    reduction: number
+    createdAt?: Date | string
+  }
+
+  export type ReferralQualificationUpdateWithoutReferralInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    referrerId?: StringFieldUpdateOperationsInput | string
+    period?: StringFieldUpdateOperationsInput | string
+    reduction?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ReferralQualificationUncheckedUpdateWithoutReferralInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    referrerId?: StringFieldUpdateOperationsInput | string
+    period?: StringFieldUpdateOperationsInput | string
+    reduction?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ReferralQualificationUncheckedUpdateManyWithoutReferralInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    referrerId?: StringFieldUpdateOperationsInput | string
+    period?: StringFieldUpdateOperationsInput | string
+    reduction?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

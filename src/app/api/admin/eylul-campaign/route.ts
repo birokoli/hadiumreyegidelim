@@ -4,7 +4,11 @@ import { prisma } from "@/lib/prisma";
 import { getAdminSession } from "@/lib/admin-auth";
 import {
   DEFAULT_EYLUL_CAMPAIGN,
+  DEFAULT_ILK_UMREM_CAMPAIGN,
+  DEFAULT_HANIM_UMRESI_CAMPAIGN,
   EYLUL_CAMPAIGN_SETTING_KEY,
+  ILK_UMREM_CAMPAIGN_SETTING_KEY,
+  HANIM_UMRESI_CAMPAIGN_SETTING_KEY,
   parseEylulCampaign,
 } from "@/lib/eylul-campaign";
 
@@ -21,10 +25,13 @@ export async function GET() {
     return NextResponse.json({ error: "Yetkisiz işlem" }, { status: 401 });
   }
 
-  const setting = await prisma.setting.findUnique({
-    where: { key: EYLUL_CAMPAIGN_SETTING_KEY },
+  const rows = await prisma.setting.findMany({ where: { key: { in: [EYLUL_CAMPAIGN_SETTING_KEY, ILK_UMREM_CAMPAIGN_SETTING_KEY, HANIM_UMRESI_CAMPAIGN_SETTING_KEY] } } });
+  const settings = Object.fromEntries(rows.map((row) => [row.key, row.value]));
+  return NextResponse.json({
+    ad1: parseEylulCampaign(settings[EYLUL_CAMPAIGN_SETTING_KEY], DEFAULT_EYLUL_CAMPAIGN),
+    ad2: parseEylulCampaign(settings[ILK_UMREM_CAMPAIGN_SETTING_KEY], DEFAULT_ILK_UMREM_CAMPAIGN),
+    ad3: parseEylulCampaign(settings[HANIM_UMRESI_CAMPAIGN_SETTING_KEY], DEFAULT_HANIM_UMRESI_CAMPAIGN),
   });
-  return NextResponse.json(parseEylulCampaign(setting?.value));
 }
 
 export async function POST(request: Request) {
@@ -33,15 +40,20 @@ export async function POST(request: Request) {
   }
 
   const body = await request.json();
-  const config = parseEylulCampaign(JSON.stringify({ ...DEFAULT_EYLUL_CAMPAIGN, ...body }));
-
-  await prisma.setting.upsert({
-    where: { key: EYLUL_CAMPAIGN_SETTING_KEY },
-    update: { value: JSON.stringify(config) },
-    create: { key: EYLUL_CAMPAIGN_SETTING_KEY, value: JSON.stringify(config) },
-  });
+  const configs = {
+    ad1: parseEylulCampaign(JSON.stringify(body.ad1), DEFAULT_EYLUL_CAMPAIGN),
+    ad2: parseEylulCampaign(JSON.stringify(body.ad2), DEFAULT_ILK_UMREM_CAMPAIGN),
+    ad3: parseEylulCampaign(JSON.stringify(body.ad3), DEFAULT_HANIM_UMRESI_CAMPAIGN),
+  };
+  await prisma.$transaction([
+    prisma.setting.upsert({ where: { key: EYLUL_CAMPAIGN_SETTING_KEY }, update: { value: JSON.stringify(configs.ad1) }, create: { key: EYLUL_CAMPAIGN_SETTING_KEY, value: JSON.stringify(configs.ad1) } }),
+    prisma.setting.upsert({ where: { key: ILK_UMREM_CAMPAIGN_SETTING_KEY }, update: { value: JSON.stringify(configs.ad2) }, create: { key: ILK_UMREM_CAMPAIGN_SETTING_KEY, value: JSON.stringify(configs.ad2) } }),
+    prisma.setting.upsert({ where: { key: HANIM_UMRESI_CAMPAIGN_SETTING_KEY }, update: { value: JSON.stringify(configs.ad3) }, create: { key: HANIM_UMRESI_CAMPAIGN_SETTING_KEY, value: JSON.stringify(configs.ad3) } }),
+  ]);
 
   revalidatePath("/eylul-umresi");
+  revalidatePath("/ilk-umrem");
+  revalidatePath("/hanim-umresi");
   revalidatePath("/");
-  return NextResponse.json({ success: true, config });
+  return NextResponse.json({ success: true, configs });
 }

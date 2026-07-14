@@ -4,7 +4,7 @@ import Image from "next/image";
 import BrandImageFallback from "@/components/ui/BrandImageFallback";
 import { prisma } from "@/lib/prisma";
 import { Metadata } from "next";
-import { EYLUL_CAMPAIGN_SETTING_KEY, parseEylulCampaign } from "@/lib/eylul-campaign";
+import { DEFAULT_HANIM_UMRESI_CAMPAIGN, DEFAULT_ILK_UMREM_CAMPAIGN, EYLUL_CAMPAIGN_SETTING_KEY, HANIM_UMRESI_CAMPAIGN_SETTING_KEY, ILK_UMREM_CAMPAIGN_SETTING_KEY, parseEylulCampaign } from "@/lib/eylul-campaign";
 
 export const metadata: Metadata = {
   title: { absolute: "Bireysel Umre 2026 — Kendi Umreni Tasarla | HadiUmreyeGidelim" },
@@ -32,6 +32,8 @@ export default async function Home() {
   const settingsArray = await prisma.setting.findMany();
   const settings = settingsArray.reduce((acc, s) => { acc[s.key] = s.value; return acc; }, {} as Record<string, string>);
   const eylulCampaign = parseEylulCampaign(settings[EYLUL_CAMPAIGN_SETTING_KEY]);
+  const ilkUmremCampaign = parseEylulCampaign(settings[ILK_UMREM_CAMPAIGN_SETTING_KEY], DEFAULT_ILK_UMREM_CAMPAIGN);
+  const hanimCampaign = parseEylulCampaign(settings[HANIM_UMRESI_CAMPAIGN_SETTING_KEY], DEFAULT_HANIM_UMRESI_CAMPAIGN);
 
   const home_banner_image = settings.home_banner_image || "https://lh3.googleusercontent.com/aida-public/AB6AXuCeWn_hW89LbHLjNkEyCjXnO56IpdLz_zRwB9BvtIjHV_CSU9n_ADpxoS-K9Y4UqzQtVdJ9tM238gIiQ3fIEgF50wPqba1ofx6HeAab2E8EYwvLnq_w13P3UCdpuZloJ2P_FBbqiM4ZrKqELKyG3sgBrj2SCUi6yLGc39nIApI_ip6uasqiKaUGRcpE7WnqmMcqOZVc-CUXOaphNXOHK18KEZCYKehmVy4cZRQP0tk7_PHK5iJh4cVmqsN9DeHNleLOmi97WPx_9Gw";
   
@@ -41,8 +43,6 @@ export default async function Home() {
   
   const whatsappNumber = settings.WHATSAPP_NUMBER ? settings.WHATSAPP_NUMBER.replace('+', '') : "905404010038";
   const whatsappMessage = settings.WHATSAPP_MESSAGE ? encodeURIComponent(settings.WHATSAPP_MESSAGE) : "Merhaba, ana sayfanızdan ulaşıyorum, hizmetleriniz hakkında bilgi almak istiyorum.";
-  const readyCtaWhatsapp = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(eylulCampaign.readyCtaWhatsappMessage)}`;
-  const finalAdsWhatsapp = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(eylulCampaign.finalAdsWhatsappMessage)}`;
 
   const homeCta = settings.HOME_CTA || "NİYET ET VE PLANLA";
   const whatsappCta = settings.WHATSAPP_CTA || "WHATSAPP DANIŞMANLIK";
@@ -352,32 +352,32 @@ export default async function Home() {
           <div className="grid md:grid-cols-[0.8fr_1.2fr] items-stretch">
             <div className="relative min-h-[260px] md:min-h-full overflow-hidden">
               <img
-                src={eylulCampaign.readyCtaImage}
-                alt={eylulCampaign.readyCtaTitle}
+                src={ilkUmremCampaign.heroImage}
+                alt={ilkUmremCampaign.homeTitle}
                 className="absolute inset-0 w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-primary/80 md:bg-gradient-to-r md:from-primary/10 md:to-primary/90" />
               <div className="absolute inset-0 flex items-end p-7 md:p-9">
                 <p className="text-white text-xs font-bold uppercase tracking-[0.2em] flex items-center gap-2">
                   <span className="material-symbols-outlined text-[#FFD166] text-[18px]" style={{ fontVariationSettings: "'FILL' 1" }}>event_available</span>
-                  {eylulCampaign.readyCtaNote}
+                  {ilkUmremCampaign.homeFeatures[0]}
                 </p>
               </div>
             </div>
             <div className="p-8 md:p-12 lg:p-14 flex flex-col justify-center">
               <span className="text-secondary font-bold tracking-widest uppercase text-[10px] block mb-3 border-l-2 border-secondary pl-3">
-                {eylulCampaign.readyCtaKicker}
+                {ilkUmremCampaign.homeBadge}
               </span>
               <h2 className="font-headline text-3xl md:text-4xl text-primary font-bold leading-tight mb-4">
-                {eylulCampaign.readyCtaTitle}
+                {ilkUmremCampaign.homeTitle}
               </h2>
               <p className="text-on-surface-variant text-sm leading-relaxed mb-8 max-w-xl">
-                {eylulCampaign.readyCtaDescription}
+                {ilkUmremCampaign.homeDescription}
               </p>
-              <a href={readyCtaWhatsapp} target="_blank" rel="noopener noreferrer" className="w-fit inline-flex items-center gap-3 bg-secondary text-white font-bold uppercase tracking-widest text-xs px-7 py-4 rounded-xl shadow-lg hover:bg-primary transition-colors">
-                {eylulCampaign.readyCtaButton}
-                <span className="material-symbols-outlined text-[18px]">chat</span>
-              </a>
+              <Link href="/ilk-umrem" className="w-fit inline-flex items-center gap-3 bg-secondary text-white font-bold uppercase tracking-widest text-xs px-7 py-4 rounded-xl shadow-lg hover:bg-primary transition-colors">
+                {ilkUmremCampaign.homeButton}
+                <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+              </Link>
             </div>
           </div>
         </div>
@@ -545,29 +545,29 @@ export default async function Home() {
       {/* Footer Öncesi Son ADS */}
       <section className="relative overflow-hidden bg-primary text-white py-20 md:py-24">
         <div className="absolute inset-0 opacity-20">
-          <img src={eylulCampaign.finalAdsImage} alt="" className="w-full h-full object-cover" />
+          <img src={hanimCampaign.heroImage} alt="" className="w-full h-full object-cover" />
         </div>
         <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/95 to-[#001944]/85" />
         <div className="relative z-10 max-w-screen-xl mx-auto px-8 flex flex-col lg:flex-row lg:items-center justify-between gap-10">
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 px-4 py-2 mb-5 rounded-full bg-[#FFD166]/15 border border-[#FFD166]/30 text-[#FFD166] text-[10px] font-bold uppercase tracking-[0.2em]">
               <span className="material-symbols-outlined text-[15px]" style={{ fontVariationSettings: "'FILL' 1" }}>campaign</span>
-              {eylulCampaign.finalAdsBadge}
+              {hanimCampaign.homeBadge}
             </div>
             <h2 className="font-headline text-4xl md:text-5xl font-bold leading-tight mb-4">
-              {eylulCampaign.finalAdsTitle}
+              {hanimCampaign.homeTitle}
             </h2>
             <p className="text-white/80 text-base md:text-lg leading-relaxed mb-4 max-w-2xl">
-              {eylulCampaign.finalAdsDescription}
+              {hanimCampaign.homeDescription}
             </p>
             <p className="text-white/55 text-xs font-bold uppercase tracking-widest">
-              {eylulCampaign.finalAdsNote}
+              {hanimCampaign.homeFeatures.join(" · ")}
             </p>
           </div>
-          <a href={finalAdsWhatsapp} target="_blank" rel="noopener noreferrer" className="shrink-0 inline-flex items-center justify-center gap-3 bg-[#FFD166] text-primary font-bold uppercase tracking-widest text-xs px-9 py-5 rounded-2xl shadow-2xl hover:bg-white hover:scale-105 transition-all">
-            {eylulCampaign.finalAdsButton}
-            <span className="material-symbols-outlined text-[19px]">chat</span>
-          </a>
+          <Link href="/hanim-umresi" className="shrink-0 inline-flex items-center justify-center gap-3 bg-[#FFD166] text-primary font-bold uppercase tracking-widest text-xs px-9 py-5 rounded-2xl shadow-2xl hover:bg-white hover:scale-105 transition-all">
+            {hanimCampaign.homeButton}
+            <span className="material-symbols-outlined text-[19px]">arrow_forward</span>
+          </Link>
         </div>
       </section>
     </>

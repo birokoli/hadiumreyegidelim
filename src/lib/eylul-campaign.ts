@@ -72,6 +72,8 @@ export type EylulCampaignConfig = {
 };
 
 export const EYLUL_CAMPAIGN_SETTING_KEY = "EYLUL_CAMPAIGN_CONFIG";
+export const ILK_UMREM_CAMPAIGN_SETTING_KEY = "ILK_UMREM_CAMPAIGN_CONFIG";
+export const HANIM_UMRESI_CAMPAIGN_SETTING_KEY = "HANIM_UMRESI_CAMPAIGN_CONFIG";
 
 export const DEFAULT_EYLUL_CAMPAIGN: EylulCampaignConfig = {
   seoTitle: "Eylül Grup Umresi — 10, 15 ve 20 Günlük Programlar | HadiUmreyeGidelim",
@@ -156,27 +158,103 @@ export const DEFAULT_EYLUL_CAMPAIGN: EylulCampaignConfig = {
   finalAdsWhatsappMessage: "Merhaba, Hanım Umresi Kampanyası hakkında bilgi almak istiyorum.",
 };
 
-export function parseEylulCampaign(value?: string | null): EylulCampaignConfig {
-  if (!value) return DEFAULT_EYLUL_CAMPAIGN;
+export const DEFAULT_ILK_UMREM_CAMPAIGN: EylulCampaignConfig = {
+  ...DEFAULT_EYLUL_CAMPAIGN,
+  seoTitle: "İlk Umrem Kampanyası | Hadi Umreye Gidelim",
+  seoDescription: "İlk kez umreye gidecek misafirlerimize özel, hazırlıktan ibadetlerin tamamlanmasına kadar rehberli umre programı.",
+  heroImage: DEFAULT_EYLUL_CAMPAIGN.readyCtaImage,
+  footerImage: DEFAULT_EYLUL_CAMPAIGN.readyCtaImage,
+  badgeText: "İLK KEZ UMREYE GİDECEKLERE ÖZEL",
+  title: "İlk Umrem",
+  highlightedTitle: "Kampanyası",
+  startingPrice: "Bilgi Al",
+  priceSuffix: "",
+  departureOneLabel: "Program",
+  departureOne: "Müsait Tarihler",
+  departureTwoLabel: "Detaylar",
+  departureTwo: "WhatsApp'tan Bilgi Al",
+  dateSummary: "Müsait tarihler ve program seçenekleri için bize ulaşın",
+  capacity: "Sınırlı",
+  heroNote: "İlk kez umreye gideceklere özel rehberli program",
+  whatsappMessage: "Merhaba, İlk Umrem Kampanyası hakkında bilgi almak istiyorum.",
+  packages: DEFAULT_EYLUL_CAMPAIGN.packages.map((item) => ({ ...item, double: "Bilgi Al", triple: "Bilgi Al", quad: "Bilgi Al" })),
+  childTwoToEleven: "Bilgi Al",
+  childZeroToTwo: "Bilgi Al",
+  notes: ["Program ilk kez umreye gidecek misafirlerimize özel rehberlikle hazırlanır.", "Tarih, süre ve fiyat seçenekleri için danışmanlarımızdan bilgi alabilirsiniz.", "Kontenjanlar program tarihine göre değişebilir."],
+  faqs: [
+    { q: "İlk kez umreye gideceğim, rehberlik sağlanıyor mu?", a: "Evet. Hazırlık sürecinden ibadetlerin tamamlanmasına kadar adım adım rehberlik sağlanır." },
+    { q: "Program tarihleri nasıl öğrenilir?", a: "Güncel müsait tarihler ve program seçenekleri için WhatsApp üzerinden bilgi alabilirsiniz." },
+    { q: "Vize ve uçak işlemlerinde destek var mı?", a: "Seçtiğiniz programın kapsamına göre vize, uçuş ve konaklama süreçlerinde ekibimiz yardımcı olur." },
+  ],
+  footerTitle: "İlk Manevi Yolculuğunuzu Birlikte Planlayalım",
+  footerDescription: "İlk umrenizde ihtiyaç duyacağınız rehberlik ve program detayları için bize ulaşın.",
+  footerNote: "İlk kez umreye gideceklere özel rehberlik",
+  homeBadge: "İLK MANEVİ YOLCULUĞUNUZ",
+  homeTitle: "İlk Umrem Kampanyası",
+  homeDescription: "Hazırlık aşamasından ibadetlerin tamamlanmasına kadar rehberli ve güvenli bir program.",
+  homeButton: "İlk Umrem'i İncele",
+  homeFeatures: ["Adım Adım Rehberlik", "Vize ve Uçuş Desteği", "İbadet Rehberliği", "7/24 WhatsApp"],
+};
+
+export const DEFAULT_HANIM_UMRESI_CAMPAIGN: EylulCampaignConfig = {
+  ...DEFAULT_EYLUL_CAMPAIGN,
+  seoTitle: "Hanım Umresi Kampanyası | Hadi Umreye Gidelim",
+  seoDescription: "Hanım misafirlerimize özel, huzurlu ve güvenli grup düzeniyle hazırlanan umre programı.",
+  heroImage: DEFAULT_EYLUL_CAMPAIGN.finalAdsImage,
+  footerImage: DEFAULT_EYLUL_CAMPAIGN.finalAdsImage,
+  badgeText: "HANIMLARA ÖZEL MANEVİ YOLCULUK",
+  title: "Hanım Umresi",
+  highlightedTitle: "Kampanyası",
+  startingPrice: "Bilgi Al",
+  priceSuffix: "",
+  departureOneLabel: "Program",
+  departureOne: "Müsait Tarihler",
+  departureTwoLabel: "Grup",
+  departureTwo: "Hanımlara Özel",
+  dateSummary: "Müsait tarihler ve program seçenekleri için bize ulaşın",
+  capacity: "Sınırlı",
+  heroNote: "Hanım misafirlerimize özel huzurlu ve güvenli grup düzeni",
+  whatsappMessage: "Merhaba, Hanım Umresi Kampanyası hakkında bilgi almak istiyorum.",
+  packages: DEFAULT_EYLUL_CAMPAIGN.packages.map((item) => ({ ...item, double: "Bilgi Al", triple: "Bilgi Al", quad: "Bilgi Al" })),
+  childTwoToEleven: "Bilgi Al",
+  childZeroToTwo: "Bilgi Al",
+  notes: ["Program hanım misafirlerimize özel grup düzeniyle hazırlanır.", "Tarih, süre ve fiyat seçenekleri için danışmanlarımızdan bilgi alabilirsiniz.", "Kontenjanlar program tarihine göre değişebilir."],
+  faqs: [
+    { q: "Program yalnızca hanımlara mı özel?", a: "Evet. Bu kampanya hanım misafirlerimize özel grup düzeniyle planlanır." },
+    { q: "Program tarihleri nasıl öğrenilir?", a: "Güncel müsait tarihler ve program seçenekleri için WhatsApp üzerinden bilgi alabilirsiniz." },
+    { q: "Programda rehberlik sağlanıyor mu?", a: "Evet. Yolculuk ve ibadet sürecinde grup rehberliği sağlanır." },
+  ],
+  footerTitle: "Hanımlara Özel Manevi Yolculuk",
+  footerDescription: "Huzurlu ve güvenli grup düzeniyle programınızı birlikte planlayalım.",
+  footerNote: "Program detayları ve müsait tarihler için bize ulaşın",
+  homeBadge: "HANIMLARA ÖZEL MANEVİ YOLCULUK",
+  homeTitle: "Hanım Umresi Kampanyası",
+  homeDescription: "Hanım misafirlerimize özel, huzurlu ve güvenli grup düzeniyle manevi yolculuk.",
+  homeButton: "Hanım Umresi'ni İncele",
+  homeFeatures: ["Hanımlara Özel Grup", "Rehberlik", "Güvenli Program", "7/24 WhatsApp"],
+};
+
+export function parseEylulCampaign(value?: string | null, fallback = DEFAULT_EYLUL_CAMPAIGN): EylulCampaignConfig {
+  if (!value) return fallback;
   try {
     const parsed = JSON.parse(value) as Partial<EylulCampaignConfig> & { includedServices?: string[] };
     const legacyIncluded = Array.isArray(parsed.includedServices)
       ? parsed.includedServices.map((label, index) => ({ ...DEFAULT_EYLUL_CAMPAIGN.includedItems[index], label }))
       : undefined;
     return {
-      ...DEFAULT_EYLUL_CAMPAIGN,
+      ...fallback,
       ...parsed,
       packages: Array.isArray(parsed.packages) && parsed.packages.length
-        ? parsed.packages.slice(0, 3).map((item, index) => ({ ...DEFAULT_EYLUL_CAMPAIGN.packages[index], ...item }))
-        : DEFAULT_EYLUL_CAMPAIGN.packages,
+        ? parsed.packages.slice(0, 3).map((item, index) => ({ ...fallback.packages[index], ...item }))
+        : fallback.packages,
       includedItems: Array.isArray(parsed.includedItems) && parsed.includedItems.length
-        ? parsed.includedItems.map((item, index) => ({ ...DEFAULT_EYLUL_CAMPAIGN.includedItems[index], ...item }))
-        : legacyIncluded || DEFAULT_EYLUL_CAMPAIGN.includedItems,
-      notes: Array.isArray(parsed.notes) && parsed.notes.length ? parsed.notes.filter(Boolean) : DEFAULT_EYLUL_CAMPAIGN.notes,
-      faqs: Array.isArray(parsed.faqs) && parsed.faqs.length ? parsed.faqs.map((item) => ({ q: item.q || "", a: item.a || "" })) : DEFAULT_EYLUL_CAMPAIGN.faqs,
-      homeFeatures: Array.isArray(parsed.homeFeatures) && parsed.homeFeatures.length ? parsed.homeFeatures.filter(Boolean) : DEFAULT_EYLUL_CAMPAIGN.homeFeatures,
+        ? parsed.includedItems.map((item, index) => ({ ...fallback.includedItems[index], ...item }))
+        : legacyIncluded || fallback.includedItems,
+      notes: Array.isArray(parsed.notes) && parsed.notes.length ? parsed.notes.filter(Boolean) : fallback.notes,
+      faqs: Array.isArray(parsed.faqs) && parsed.faqs.length ? parsed.faqs.map((item) => ({ q: item.q || "", a: item.a || "" })) : fallback.faqs,
+      homeFeatures: Array.isArray(parsed.homeFeatures) && parsed.homeFeatures.length ? parsed.homeFeatures.filter(Boolean) : fallback.homeFeatures,
     };
   } catch {
-    return DEFAULT_EYLUL_CAMPAIGN;
+    return fallback;
   }
 }

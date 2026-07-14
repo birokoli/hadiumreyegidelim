@@ -10,59 +10,15 @@ export async function generateMetadata(): Promise<Metadata> {
   const setting = await prisma.setting.findUnique({ where: { key: EYLUL_CAMPAIGN_SETTING_KEY } });
   const campaign = parseEylulCampaign(setting?.value);
   return {
-    title: `${campaign.title} ${campaign.highlightedTitle} — Grup Umresi | HadiUmreyeGidelim`,
-    description: `${campaign.departureOne} veya ${campaign.departureTwo} çıkışlı grup umresi. Kişi başı ${campaign.startingPrice}'den başlayan fiyatlarla vize, uçak bileti, otel ve mübarek yerler turu dahil.`,
+    title: campaign.seoTitle,
+    description: campaign.seoDescription,
     alternates: { canonical: "/eylul-umresi" },
   };
 }
 
 export const revalidate = 60;
 
-const INCLUDED_ICONS = [
-  {
-    icon: "flight",
-    label: "Gidiş – Dönüş Uçak Bileti",
-    detail: "Pakete dahil",
-  },
-  {
-    icon: "badge",
-    label: "Umre Vizesi",
-    detail: "Pakete dahil",
-  },
-  {
-    icon: "hotel",
-    label: "Otel Konaklaması",
-    detail: "Kâbe'ye yürüme mesafesinde",
-  },
-  {
-    icon: "mosque",
-    label: "Tüm Mübarek Yerler Turu",
-    detail: "Program dahilinde",
-  },
-];
-
-function getFaqs(capacity: string, hotelDetail: string) {
-  return [
-  {
-    q: "Uçak bileti ve vize dahil mi?",
-    a: "Evet. Gidiş–dönüş uçak bileti ve umre vizesi belirtilen kişi başı paket fiyatlarına dahildir.",
-  },
-  {
-    q: "Otel Kâbe'ye ne kadar uzaklıkta?",
-    a: `Konaklama yapılacak otel ${hotelDetail.toLocaleLowerCase("tr-TR")}.`,
-  },
-  {
-    q: "Fiyatlar oda başına mı, kişi başına mı?",
-    a: "Bütün fiyatlar kişi başı ücretlerdir. Yetişkin fiyatı, tercih edilen program süresine ve oda tipine göre belirlenir.",
-  },
-  {
-    q: "Kontenjan kaç kişi?",
-    a: `Bu grup umresi için toplam kontenjan ${capacity} kişidir.`,
-  },
-  ];
-}
-
-export default async function AgustosKampanyasiPage() {
+export default async function AdsPage() {
   const settingsArray = await prisma.setting.findMany();
   const settings = settingsArray.reduce(
     (acc, s) => {
@@ -74,15 +30,9 @@ export default async function AgustosKampanyasiPage() {
   const campaign = parseEylulCampaign(settings[EYLUL_CAMPAIGN_SETTING_KEY]);
   const packages = campaign.packages;
   const childPrices = [
-    { icon: "child_care", label: "2–11 Yaş Çocuk", price: campaign.childTwoToEleven },
-    { icon: "baby_changing_station", label: "0–2 Yaş Çocuk", price: campaign.childZeroToTwo },
+    { icon: "child_care", label: campaign.childTwoToElevenLabel, price: campaign.childTwoToEleven },
+    { icon: "baby_changing_station", label: campaign.childZeroToTwoLabel, price: campaign.childZeroToTwo },
   ];
-  const included = campaign.includedServices.map((label, index) => ({
-    icon: INCLUDED_ICONS[index]?.icon || "check_circle",
-    label,
-    detail: label.toLocaleLowerCase("tr-TR").includes("otel") ? campaign.hotelDetail : "Pakete dahil",
-  }));
-  const faqs = getFaqs(campaign.capacity, campaign.hotelDetail);
 
   const whatsappNumber = settings.WHATSAPP_NUMBER
     ? settings.WHATSAPP_NUMBER.replace("+", "")
@@ -98,8 +48,8 @@ export default async function AgustosKampanyasiPage() {
       <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img
-            src="https://images.unsplash.com/photo-1564769625905-50e93615e769?q=80&w=2600&auto=format&fit=crop"
-            alt="Kâbe Manzarası – Eylül Grup Umresi"
+            src={campaign.heroImage}
+            alt={`${campaign.title} ${campaign.highlightedTitle}`}
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-br from-primary/92 via-primary/75 to-[#001944]/85" />
@@ -110,7 +60,7 @@ export default async function AgustosKampanyasiPage() {
             <span className="material-symbols-outlined text-[13px]" style={{ fontVariationSettings: "'FILL' 1" }}>
               campaign
             </span>
-            SINIRLI KONTENJAN — {campaign.departureOne} VEYA {campaign.departureTwo} ÇIKIŞLI
+            {campaign.badgeText}
           </div>
 
           <h1 className="font-headline text-5xl md:text-7xl text-white font-bold leading-[1.1] mb-4 drop-shadow-xl max-w-4xl mx-auto">
@@ -121,20 +71,20 @@ export default async function AgustosKampanyasiPage() {
             <span className="text-[#FFD166] text-6xl md:text-7xl font-headline font-bold drop-shadow-lg">
               {campaign.startingPrice}
             </span>
-            <span className="text-white/80 text-xl font-headline italic">/ kişi başı</span>
+            <span className="text-white/80 text-xl font-headline italic">{campaign.priceSuffix}</span>
           </div>
 
           <p className="text-white/90 text-lg md:text-xl font-headline mb-10 tracking-wide">
-            📅 {campaign.departureOne} veya {campaign.departureTwo} &nbsp;·&nbsp; {packages.map((item) => item.days.replace(" Umre", "")).join(", ")}
+            📅 {campaign.dateSummary}
           </p>
 
           <a href={heroWa} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 bg-[#25D366] text-white px-10 py-5 rounded-2xl font-bold tracking-widest text-sm uppercase shadow-2xl hover:bg-[#128C7E] active:scale-95 transition-all">
             <span className="material-symbols-outlined text-[22px]" style={{ fontVariationSettings: "'FILL' 1" }}>chat</span>
-            WhatsApp&apos;a Yaz
+            {campaign.heroButton}
           </a>
 
           <p className="text-white/50 text-xs mt-5 tracking-widest uppercase">
-            Grup umresi · Toplam {campaign.capacity} kişilik kontenjan
+            {campaign.heroNote}
           </p>
         </div>
       </section>
@@ -145,7 +95,7 @@ export default async function AgustosKampanyasiPage() {
             <div className="flex items-center gap-3">
               <span className="material-symbols-outlined text-[#FFD166] text-2xl" style={{ fontVariationSettings: "'FILL' 1" }}>flight_takeoff</span>
               <div className="text-left">
-                <p className="text-[10px] uppercase tracking-widest text-white/60 font-bold">1. Çıkış</p>
+                <p className="text-[10px] uppercase tracking-widest text-white/60 font-bold">{campaign.departureOneLabel}</p>
                 <p className="font-bold text-sm">{campaign.departureOne}</p>
               </div>
             </div>
@@ -153,14 +103,14 @@ export default async function AgustosKampanyasiPage() {
             <div className="flex items-center gap-3">
               <span className="material-symbols-outlined text-[#FFD166] text-2xl" style={{ fontVariationSettings: "'FILL' 1" }}>flight_takeoff</span>
               <div className="text-left">
-                <p className="text-[10px] uppercase tracking-widest text-white/60 font-bold">2. Çıkış</p>
+                <p className="text-[10px] uppercase tracking-widest text-white/60 font-bold">{campaign.departureTwoLabel}</p>
                 <p className="font-bold text-sm">{campaign.departureTwo}</p>
               </div>
             </div>
             <div className="hidden sm:block w-px h-10 bg-white/20" />
             <a href={heroWa} target="_blank" rel="noopener noreferrer" className="shrink-0 bg-[#25D366] text-white font-bold text-xs uppercase tracking-widest px-6 py-3 rounded-xl hover:bg-[#128C7E] transition-colors shadow-lg flex items-center gap-2">
               <span className="material-symbols-outlined text-[16px]" style={{ fontVariationSettings: "'FILL' 1" }}>chat</span>
-              Yer Ayırt
+              {campaign.reserveButton}
             </a>
           </div>
         </div>
@@ -169,8 +119,8 @@ export default async function AgustosKampanyasiPage() {
       <section className="py-20 bg-surface-container-lowest">
         <div className="max-w-screen-xl mx-auto px-6 md:px-8">
           <div className="text-center mb-12">
-            <span className="text-secondary font-bold tracking-widest uppercase text-[10px] block mb-3 border-l-2 border-secondary pl-3 w-fit mx-auto">Program Seçenekleri</span>
-            <h2 className="font-headline text-3xl md:text-4xl text-primary font-bold">Kişi Başı Umre Fiyatları</h2>
+            <span className="text-secondary font-bold tracking-widest uppercase text-[10px] block mb-3 border-l-2 border-secondary pl-3 w-fit mx-auto">{campaign.packagesKicker}</span>
+            <h2 className="font-headline text-3xl md:text-4xl text-primary font-bold">{campaign.packagesTitle}</h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
@@ -178,9 +128,9 @@ export default async function AgustosKampanyasiPage() {
               <div key={item.days} className="bg-white rounded-2xl p-6 border border-secondary/10 shadow-sm hover:-translate-y-0.5 hover:shadow-md transition-all">
                 <h3 className="font-headline text-xl text-primary font-bold mb-5">{item.days}</h3>
                 <div className="space-y-3 text-sm">
-                  <div className="flex items-center justify-between gap-4"><span className="text-on-surface-variant">2 Kişilik Oda</span><strong className="text-secondary text-lg">{item.double}</strong></div>
-                  <div className="flex items-center justify-between gap-4"><span className="text-on-surface-variant">3 Kişilik Oda</span><strong className="text-secondary text-lg">{item.triple}</strong></div>
-                  <div className="flex items-center justify-between gap-4"><span className="text-on-surface-variant">4 Kişilik Oda</span><strong className="text-secondary text-lg">{item.quad}</strong></div>
+                  <div className="flex items-center justify-between gap-4"><span className="text-on-surface-variant">{campaign.roomDoubleLabel}</span><strong className="text-secondary text-lg">{item.double}</strong></div>
+                  <div className="flex items-center justify-between gap-4"><span className="text-on-surface-variant">{campaign.roomTripleLabel}</span><strong className="text-secondary text-lg">{item.triple}</strong></div>
+                  <div className="flex items-center justify-between gap-4"><span className="text-on-surface-variant">{campaign.roomQuadLabel}</span><strong className="text-secondary text-lg">{item.quad}</strong></div>
                 </div>
               </div>
             ))}
@@ -189,7 +139,7 @@ export default async function AgustosKampanyasiPage() {
           <div className="mt-10 text-center">
             <a href={heroWa} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 bg-[#25D366] text-white px-8 py-4 rounded-2xl font-bold tracking-widest text-sm uppercase shadow-xl hover:bg-[#128C7E] transition-all">
               <span className="material-symbols-outlined text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>chat</span>
-              Paket Hakkında Bilgi Al
+              {campaign.packagesButton}
             </a>
           </div>
         </div>
@@ -198,8 +148,8 @@ export default async function AgustosKampanyasiPage() {
       <section className="py-20 bg-surface">
         <div className="max-w-screen-xl mx-auto px-6 md:px-8">
           <div className="text-center mb-12">
-            <span className="text-on-surface-variant font-bold tracking-widest uppercase text-[10px] block mb-3 border-l-2 border-outline-variant pl-3 w-fit mx-auto">Çocuk Fiyatları</span>
-            <h2 className="font-headline text-3xl md:text-4xl text-primary font-bold">Çocuklar İçin Kişi Başı Ücretler</h2>
+            <span className="text-on-surface-variant font-bold tracking-widest uppercase text-[10px] block mb-3 border-l-2 border-outline-variant pl-3 w-fit mx-auto">{campaign.childKicker}</span>
+            <h2 className="font-headline text-3xl md:text-4xl text-primary font-bold">{campaign.childTitle}</h2>
           </div>
           <div className="max-w-2xl mx-auto space-y-3">
             {childPrices.map((item) => (
@@ -216,11 +166,11 @@ export default async function AgustosKampanyasiPage() {
       <section className="py-20 bg-surface-container-lowest">
         <div className="max-w-screen-xl mx-auto px-6 md:px-8">
           <div className="text-center mb-12">
-            <span className="text-secondary font-bold tracking-widest uppercase text-[10px] block mb-3 border-l-2 border-secondary pl-3 w-fit mx-auto">Pakete Dahil</span>
-            <h2 className="font-headline text-3xl md:text-4xl text-primary font-bold">Her Şey Düşünüldü</h2>
+            <span className="text-secondary font-bold tracking-widest uppercase text-[10px] block mb-3 border-l-2 border-secondary pl-3 w-fit mx-auto">{campaign.includedKicker}</span>
+            <h2 className="font-headline text-3xl md:text-4xl text-primary font-bold">{campaign.includedTitle}</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {included.map((item) => (
+            {campaign.includedItems.map((item) => (
               <div key={item.label} className="bg-white rounded-2xl p-6 border border-secondary/10 shadow-sm flex items-start gap-4 hover:-translate-y-0.5 hover:shadow-md transition-all">
                 <div className="shrink-0 w-11 h-11 rounded-xl bg-secondary/10 flex items-center justify-center text-secondary">
                   <span className="material-symbols-outlined text-[22px]" style={{ fontVariationSettings: "'FILL' 1" }}>{item.icon}</span>
@@ -238,9 +188,9 @@ export default async function AgustosKampanyasiPage() {
       <section className="py-16 bg-primary/5 border-y border-primary/10">
         <div className="max-w-screen-md mx-auto px-6 md:px-8 text-center">
           <span className="material-symbols-outlined text-primary text-5xl mb-4 block" style={{ fontVariationSettings: "'FILL' 1" }}>info</span>
-          <h2 className="font-headline text-2xl md:text-3xl text-primary font-bold mb-4">Fiyat ve Kontenjan Notu</h2>
+          <h2 className="font-headline text-2xl md:text-3xl text-primary font-bold mb-4">{campaign.notesTitle}</h2>
           <div className="space-y-3 text-on-surface-variant text-sm leading-relaxed max-w-lg mx-auto">
-            {["Bütün fiyatlar kişi başı ücrettir.", `Program grup umresidir ve toplam kontenjan ${campaign.capacity} kişidir.`, `Otel ${campaign.hotelDetail.toLocaleLowerCase("tr-TR")}.`].map((note) => (
+            {campaign.notes.map((note) => (
               <p key={note} className="flex items-start gap-2">
                 <span className="material-symbols-outlined text-secondary text-[18px] mt-0.5 shrink-0" style={{ fontVariationSettings: "'FILL' 1" }}>check_circle</span>
                 {note}
@@ -249,7 +199,7 @@ export default async function AgustosKampanyasiPage() {
           </div>
           <a href={heroWa} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 bg-[#25D366] text-white px-8 py-4 rounded-2xl font-bold tracking-widest text-sm uppercase shadow-xl hover:bg-[#128C7E] transition-all mt-8">
             <span className="material-symbols-outlined text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>chat</span>
-            Fiyat Hesaplat
+            {campaign.notesButton}
           </a>
         </div>
       </section>
@@ -257,11 +207,11 @@ export default async function AgustosKampanyasiPage() {
       <section className="py-20 bg-surface-container-lowest">
         <div className="max-w-screen-md mx-auto px-6 md:px-8">
           <div className="text-center mb-12">
-            <span className="text-secondary font-bold tracking-widest uppercase text-[10px] block mb-3 border-l-2 border-secondary pl-3 w-fit mx-auto">Sıkça Sorulan Sorular</span>
-            <h2 className="font-headline text-3xl md:text-4xl text-primary font-bold">Aklınızdaki Sorular</h2>
+            <span className="text-secondary font-bold tracking-widest uppercase text-[10px] block mb-3 border-l-2 border-secondary pl-3 w-fit mx-auto">{campaign.faqKicker}</span>
+            <h2 className="font-headline text-3xl md:text-4xl text-primary font-bold">{campaign.faqTitle}</h2>
           </div>
           <div className="space-y-5">
-            {faqs.map((faq) => (
+            {campaign.faqs.map((faq) => (
               <div key={faq.q} className="bg-white rounded-2xl p-6 shadow-sm border border-outline-variant/20 hover:shadow-md transition-shadow">
                 <h3 className="font-bold text-primary mb-3 flex items-start gap-2">
                   <span className="material-symbols-outlined text-secondary text-[20px] mt-0.5 shrink-0" style={{ fontVariationSettings: "'FILL' 1" }}>help</span>
@@ -274,7 +224,7 @@ export default async function AgustosKampanyasiPage() {
           <div className="mt-10 text-center">
             <a href={heroWa} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 bg-[#25D366] text-white px-8 py-4 rounded-2xl font-bold tracking-widest text-sm uppercase shadow-xl hover:bg-[#128C7E] transition-all">
               <span className="material-symbols-outlined text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>chat</span>
-              Sorunuzu Sorun
+              {campaign.faqButton}
             </a>
           </div>
         </div>
@@ -282,17 +232,15 @@ export default async function AgustosKampanyasiPage() {
 
       <section className="py-20 bg-primary text-white relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
-          <img src="https://images.unsplash.com/photo-1591604466107-ec97de577aff?q=80&w=2600&auto=format&fit=crop" alt="" className="w-full h-full object-cover" />
+          <img src={campaign.footerImage} alt="" className="w-full h-full object-cover" />
         </div>
         <div className="relative z-10 max-w-screen-xl mx-auto px-6 md:px-8 text-center">
-          <h2 className="font-headline text-4xl md:text-5xl font-bold mb-4">{campaign.departureOne} veya {campaign.departureTwo} Çıkışlı</h2>
-          <p className="text-white/80 text-lg mb-2 max-w-xl mx-auto">
-            Kişi başı <span className="text-[#FFD166] font-bold text-2xl">{campaign.startingPrice}</span> ile manevi yolculuğunuzu şimdi planlayın.
-          </p>
-          <p className="text-white/50 text-xs tracking-widest uppercase mb-10">Grup umresi · Toplam {campaign.capacity} kişilik kontenjan</p>
+          <h2 className="font-headline text-4xl md:text-5xl font-bold mb-4">{campaign.footerTitle}</h2>
+          <p className="text-white/80 text-lg mb-2 max-w-xl mx-auto">{campaign.footerDescription}</p>
+          <p className="text-white/50 text-xs tracking-widest uppercase mb-10">{campaign.footerNote}</p>
           <a href={heroWa} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 bg-[#25D366] text-white px-12 py-5 rounded-2xl font-bold tracking-widest text-sm uppercase shadow-2xl hover:bg-[#128C7E] active:scale-95 transition-all">
             <span className="material-symbols-outlined text-[22px]" style={{ fontVariationSettings: "'FILL' 1" }}>chat</span>
-            WhatsApp&apos;a Yaz
+            {campaign.footerButton}
           </a>
         </div>
       </section>

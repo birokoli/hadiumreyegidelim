@@ -160,8 +160,8 @@ export default async function Home() {
             {/* Sol görsel şerit */}
             <div className="hidden md:block md:w-72 lg:w-96 relative shrink-0 overflow-hidden">
               <img
-                src="https://images.unsplash.com/photo-1564769625905-50e93615e769?q=80&w=800&auto=format&fit=crop"
-                alt="Eylül Grup Umresi Kampanyası"
+                src={eylulCampaign.heroImage}
+                alt={eylulCampaign.homeTitle}
                 className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700"
               />
               <div className="absolute inset-0 bg-gradient-to-r from-transparent to-primary" />
@@ -172,25 +172,25 @@ export default async function Home() {
                 <div>
                   <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-4 rounded-full bg-[#FFD166]/20 border border-[#FFD166]/30 text-[#FFD166] font-bold text-[9px] tracking-[0.3em] uppercase">
                     <span className="material-symbols-outlined text-[12px]" style={{ fontVariationSettings: "'FILL' 1" }}>campaign</span>
-                    {eylulCampaign.capacity} KİŞİLİK KONTENJAN · {eylulCampaign.departureOne} VEYA {eylulCampaign.departureTwo}
+                    {eylulCampaign.homeBadge}
                   </div>
                   <h2 className="font-headline text-3xl md:text-4xl text-white font-bold leading-tight mb-2 group-hover:text-[#FFD166] transition-colors duration-300">
-                    {eylulCampaign.title} {eylulCampaign.highlightedTitle} — Kişi Başı {eylulCampaign.startingPrice}&apos;den
+                    {eylulCampaign.homeTitle}
                   </h2>
                   <p className="text-white/70 text-sm max-w-lg leading-relaxed">
-                    {eylulCampaign.packages.map((item) => item.days.replace(" Umre", "")).join(", ")} programları · {eylulCampaign.includedServices.join(", ")} dahil.
+                    {eylulCampaign.homeDescription}
                   </p>
                 </div>
                 <div className="shrink-0">
                   <span className="inline-flex items-center gap-3 bg-[#FFD166] text-primary font-bold uppercase tracking-widest text-xs px-8 py-4 rounded-2xl shadow-2xl group-hover:bg-white group-hover:scale-105 transition-all">
-                    Kampanyayı İncele
+                    {eylulCampaign.homeButton}
                     <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
                   </span>
                 </div>
               </div>
               {/* Mini özellikler */}
               <div className="flex flex-wrap gap-x-8 gap-y-2 mt-6 pt-6 border-t border-white/10">
-                {[`${eylulCampaign.hotelDetail} otel`, ...eylulCampaign.includedServices.filter((item) => !item.toLocaleLowerCase("tr-TR").includes("otel"))].slice(0, 4).map((item) => (
+                {eylulCampaign.homeFeatures.map((item) => (
                   <span key={item} className="flex items-center gap-1.5 text-white/60 text-[11px] font-bold uppercase tracking-widest">
                     <span className="material-symbols-outlined text-[#FFD166] text-[14px]" style={{ fontVariationSettings: "'FILL' 1" }}>check_circle</span>
                     {item}

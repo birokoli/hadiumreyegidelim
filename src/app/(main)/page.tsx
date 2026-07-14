@@ -154,7 +154,7 @@ export default async function Home() {
       {/* Eylül Grup Umresi Kampanya Banner */}
       <section className="bg-primary py-0 overflow-hidden">
         <div className="max-w-screen-2xl mx-auto">
-          <Link href="/agustos-kampanyasi" className="group flex flex-col md:flex-row items-stretch min-h-[220px] relative">
+          <Link href="/eylul-umresi" className="group flex flex-col md:flex-row items-stretch min-h-[220px] relative">
             {/* Sol görsel şerit */}
             <div className="hidden md:block md:w-72 lg:w-96 relative shrink-0 overflow-hidden">
               <img

@@ -151,7 +151,7 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Ağustos 2025 Kampanya Banner */}
+      {/* Eylül Grup Umresi Kampanya Banner */}
       <section className="bg-primary py-0 overflow-hidden">
         <div className="max-w-screen-2xl mx-auto">
           <Link href="/agustos-kampanyasi" className="group flex flex-col md:flex-row items-stretch min-h-[220px] relative">
@@ -159,7 +159,7 @@ export default async function Home() {
             <div className="hidden md:block md:w-72 lg:w-96 relative shrink-0 overflow-hidden">
               <img
                 src="https://images.unsplash.com/photo-1564769625905-50e93615e769?q=80&w=800&auto=format&fit=crop"
-                alt="Ağustos 2025 Bireysel Umre Kampanyası"
+                alt="Eylül Grup Umresi Kampanyası"
                 className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700"
               />
               <div className="absolute inset-0 bg-gradient-to-r from-transparent to-primary" />
@@ -170,13 +170,13 @@ export default async function Home() {
                 <div>
                   <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-4 rounded-full bg-[#FFD166]/20 border border-[#FFD166]/30 text-[#FFD166] font-bold text-[9px] tracking-[0.3em] uppercase">
                     <span className="material-symbols-outlined text-[12px]" style={{ fontVariationSettings: "'FILL' 1" }}>campaign</span>
-                    SINIRLI KONTENJAN · 10–19 AĞUSTOS 2025
+                    35 KİŞİLİK KONTENJAN · 15 VEYA 25 EYLÜL
                   </div>
                   <h2 className="font-headline text-3xl md:text-4xl text-white font-bold leading-tight mb-2 group-hover:text-[#FFD166] transition-colors duration-300">
-                    9 Günlük Bireysel Umre — Kişi Başı $360
+                    Eylül Grup Umresi — Kişi Başı $1.250&apos;den
                   </h2>
                   <p className="text-white/70 text-sm max-w-lg leading-relaxed">
-                    Mekke 6 gece + Medine 3 gece · Hızlı tren, transfer ve kahvaltılar dahil. Uçak bileti opsiyonel.
+                    10, 15 veya 20 günlük programlar · Vize, uçak bileti, otel ve tüm mübarek yerler turu dahil.
                   </p>
                 </div>
                 <div className="shrink-0">
@@ -188,7 +188,7 @@ export default async function Home() {
               </div>
               {/* Mini özellikler */}
               <div className="flex flex-wrap gap-x-8 gap-y-2 mt-6 pt-6 border-t border-white/10">
-                {["Al Hidayah Towers – Mekke", "Sedra Global Hotel – Medine", "Hızlı Tren Dahil", "Eco VIP Transfer"].map((item) => (
+                {["Kâbe'ye Yürüme Mesafesinde Otel", "Vize Dahil", "Uçak Bileti Dahil", "Mübarek Yerler Turu Dahil"].map((item) => (
                   <span key={item} className="flex items-center gap-1.5 text-white/60 text-[11px] font-bold uppercase tracking-widest">
                     <span className="material-symbols-outlined text-[#FFD166] text-[14px]" style={{ fontVariationSettings: "'FILL' 1" }}>check_circle</span>
                     {item}

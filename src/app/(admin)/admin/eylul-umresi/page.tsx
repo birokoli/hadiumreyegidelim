@@ -19,6 +19,7 @@ export default function AdsAdminPage() {
   const [form, setForm] = useState<EylulCampaignConfig>(DEFAULT_EYLUL_CAMPAIGN);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [activeAdTab, setActiveAdTab] = useState<1 | 2 | 3>(1);
   const [message, setMessage] = useState<{ ok: boolean; text: string } | null>(null);
 
   useEffect(() => {
@@ -56,7 +57,28 @@ export default function AdsAdminPage() {
       <Link href="/eylul-umresi" target="_blank" className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-[#003781] hover:bg-slate-50"><span className="material-symbols-outlined text-[18px]">open_in_new</span>Canlı Sayfayı Aç</Link>
     </div>
 
+    <div className="mb-6 grid gap-3 md:grid-cols-3" role="tablist" aria-label="Reklam grupları">
+      {([
+        { id: 1 as const, label: "1. Reklam", title: "Eylül Grup Umresi", icon: "calendar_month" },
+        { id: 2 as const, label: "2. Reklam", title: "İlk Umrem Kampanyası", icon: "mosque" },
+        { id: 3 as const, label: "3. Reklam", title: "Hanım Umresi Kampanyası", icon: "diversity_1" },
+      ]).map((tab) => (
+        <button
+          key={tab.id}
+          type="button"
+          role="tab"
+          aria-selected={activeAdTab === tab.id}
+          onClick={() => { setActiveAdTab(tab.id); setMessage(null); }}
+          className={`flex items-center gap-3 rounded-2xl border p-4 text-left transition-all ${activeAdTab === tab.id ? "border-[#003781] bg-[#003781] text-white shadow-lg" : "border-slate-200 bg-white text-slate-700 hover:border-[#003781]/30 hover:bg-slate-50"}`}
+        >
+          <span className={`material-symbols-outlined text-[24px] ${activeAdTab === tab.id ? "text-[#FFD166]" : "text-[#003781]"}`} style={{ fontVariationSettings: "'FILL' 1" }}>{tab.icon}</span>
+          <span><span className={`block text-[10px] font-bold uppercase tracking-widest ${activeAdTab === tab.id ? "text-white/60" : "text-slate-400"}`}>{tab.label}</span><span className="mt-1 block text-sm font-bold">{tab.title}</span></span>
+        </button>
+      ))}
+    </div>
+
     <form onSubmit={save} className="space-y-6">
+      {activeAdTab === 1 && <>
       <Section title="SEO Ayarları" description="Google arama sonuçlarında görünen başlık ve açıklama."><div className="grid gap-5"><Field label="SEO Başlığı" value={form.seoTitle} onChange={(v) => setField("seoTitle", v)} /><Field label="SEO Açıklaması" rows={3} value={form.seoDescription} onChange={(v) => setField("seoDescription", v)} /></div></Section>
 
       <Section title="Kapak Alanı" description="Sayfanın en üstündeki ana reklam alanının bütün içerikleri.">
@@ -78,10 +100,15 @@ export default function AdsAdminPage() {
       <Section title="Sayfa Sonu Çağrı Alanı"><div className="grid gap-5 md:grid-cols-2"><Field label="Arka Plan Görseli URL" value={form.footerImage} onChange={(v) => setField("footerImage", v)} /><Field label="Başlık" value={form.footerTitle} onChange={(v) => setField("footerTitle", v)} /><Field label="Açıklama" value={form.footerDescription} onChange={(v) => setField("footerDescription", v)} /><Field label="Alt Not" value={form.footerNote} onChange={(v) => setField("footerNote", v)} /><Field label="Buton" value={form.footerButton} onChange={(v) => setField("footerButton", v)} /></div></Section>
 
       <Section title="Ana Sayfa Reklam Bandı" description="Ana sayfadaki koyu renkli kampanya reklamının bütün metinleri."><div className="grid gap-5 md:grid-cols-2"><Field label="Rozet Metni" value={form.homeBadge} onChange={(v) => setField("homeBadge", v)} /><Field label="Başlık" value={form.homeTitle} onChange={(v) => setField("homeTitle", v)} /><Field label="Açıklama" rows={3} value={form.homeDescription} onChange={(v) => setField("homeDescription", v)} /><Field label="Buton" value={form.homeButton} onChange={(v) => setField("homeButton", v)} /></div><label className="mt-5 block"><span className={labelClass}>Mini Özellikler — Her Satıra Bir Özellik</span><textarea className={inputClass} rows={6} value={form.homeFeatures.join("\n")} onChange={(e) => setField("homeFeatures", e.target.value.split("\n"))} /></label></Section>
+      </>}
 
+      {activeAdTab === 2 && <>
       <Section title="Hazır Program CTA — İlk Umrem" description="Ana sayfadaki Adım Adım Yolculuk bölümünden hemen sonra gösterilir."><div className="grid gap-5 md:grid-cols-2"><Field label="Üst Etiket" value={form.readyCtaKicker} onChange={(v) => setField("readyCtaKicker", v)} /><Field label="Başlık" value={form.readyCtaTitle} onChange={(v) => setField("readyCtaTitle", v)} /><Field label="Açıklama" rows={3} value={form.readyCtaDescription} onChange={(v) => setField("readyCtaDescription", v)} /><Field label="Alt Not" value={form.readyCtaNote} onChange={(v) => setField("readyCtaNote", v)} /><Field label="Buton" value={form.readyCtaButton} onChange={(v) => setField("readyCtaButton", v)} /><Field label="Görsel URL" value={form.readyCtaImage} onChange={(v) => setField("readyCtaImage", v)} /><Field label="WhatsApp Hazır Mesajı" rows={3} value={form.readyCtaWhatsappMessage} onChange={(v) => setField("readyCtaWhatsappMessage", v)} /></div></Section>
+      </>}
 
+      {activeAdTab === 3 && <>
       <Section title="Footer Öncesi Son ADS — Hanım Umresi" description="Ana sayfadaki SSS bölümünün altında, footer'dan hemen önce gösterilir."><div className="grid gap-5 md:grid-cols-2"><Field label="Rozet Metni" value={form.finalAdsBadge} onChange={(v) => setField("finalAdsBadge", v)} /><Field label="Başlık" value={form.finalAdsTitle} onChange={(v) => setField("finalAdsTitle", v)} /><Field label="Açıklama" rows={3} value={form.finalAdsDescription} onChange={(v) => setField("finalAdsDescription", v)} /><Field label="Alt Not" value={form.finalAdsNote} onChange={(v) => setField("finalAdsNote", v)} /><Field label="Buton" value={form.finalAdsButton} onChange={(v) => setField("finalAdsButton", v)} /><Field label="Görsel URL" value={form.finalAdsImage} onChange={(v) => setField("finalAdsImage", v)} /><Field label="WhatsApp Hazır Mesajı" rows={3} value={form.finalAdsWhatsappMessage} onChange={(v) => setField("finalAdsWhatsappMessage", v)} /></div></Section>
+      </>}
 
       <div className="sticky bottom-4 flex flex-col items-stretch gap-3 rounded-2xl border border-slate-200 bg-white/95 p-4 shadow-xl backdrop-blur sm:flex-row sm:items-center sm:justify-between"><div>{message && <p className={`text-sm font-bold ${message.ok ? "text-emerald-600" : "text-red-600"}`}>{message.text}</p>}</div><button type="submit" disabled={saving} className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#003781] px-7 py-3.5 text-sm font-bold text-white shadow-lg hover:bg-[#002b66] disabled:opacity-60"><span className={`material-symbols-outlined text-[19px] ${saving ? "animate-spin" : ""}`}>{saving ? "progress_activity" : "save"}</span>{saving ? "Kaydediliyor..." : "ADS Sayfasını Kaydet"}</button></div>
     </form>

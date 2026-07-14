@@ -55,6 +55,16 @@ export type EylulCampaignConfig = {
   homeDescription: string;
   homeButton: string;
   homeFeatures: string[];
+  readyCtaKicker: string;
+  readyCtaTitle: string;
+  readyCtaDescription: string;
+  readyCtaNote: string;
+  readyCtaButton: string;
+  finalAdsBadge: string;
+  finalAdsTitle: string;
+  finalAdsDescription: string;
+  finalAdsNote: string;
+  finalAdsButton: string;
 };
 
 export const EYLUL_CAMPAIGN_SETTING_KEY = "EYLUL_CAMPAIGN_CONFIG";
@@ -126,6 +136,16 @@ export const DEFAULT_EYLUL_CAMPAIGN: EylulCampaignConfig = {
   homeDescription: "10, 15 veya 20 günlük programlar · Vize, uçak bileti, otel ve tüm mübarek yerler turu dahil.",
   homeButton: "Kampanyayı İncele",
   homeFeatures: ["Kâbe'ye Yürüme Mesafesinde Otel", "Vize Dahil", "Uçak Bileti Dahil", "Mübarek Yerler Turu Dahil"],
+  readyCtaKicker: "Hazır Programı Tercih Edin",
+  readyCtaTitle: "Tarih ve fiyatı belli grup umresiyle hemen yerinizi ayırın.",
+  readyCtaDescription: "Kendi programınızı oluşturmak yerine 15 veya 25 Eylül çıkışlı, vize ve uçak bileti dahil hazır grubumuza katılabilirsiniz.",
+  readyCtaNote: "10, 15 veya 20 günlük program seçenekleri",
+  readyCtaButton: "Hazır Programı İncele",
+  finalAdsBadge: "SON 35 KİŞİLİK KONTENJAN",
+  finalAdsTitle: "Eylül Grup Umresinde Yerinizi Ayırın",
+  finalAdsDescription: "Kişi başı $1.250’den başlayan fiyatlarla vize, uçak bileti, otel ve mübarek yerler turu dahil.",
+  finalAdsNote: "15 veya 25 Eylül çıkışlı · Kâbe’ye yürüme mesafesinde otel",
+  finalAdsButton: "Kampanyayı İncele",
 };
 
 export function parseEylulCampaign(value?: string | null): EylulCampaignConfig {

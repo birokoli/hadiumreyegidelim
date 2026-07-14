@@ -344,6 +344,43 @@ export default async function Home() {
         </div>
       </section>
 
+      {/* Hazır Program CTA */}
+      <section className="bg-surface py-0 px-6 md:px-8 pb-24 md:pb-32">
+        <div className="max-w-screen-xl mx-auto overflow-hidden rounded-3xl border border-secondary/15 bg-white shadow-xl">
+          <div className="grid md:grid-cols-[0.8fr_1.2fr] items-stretch">
+            <div className="relative min-h-[260px] md:min-h-full overflow-hidden">
+              <img
+                src={eylulCampaign.heroImage}
+                alt={eylulCampaign.readyCtaTitle}
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-primary/80 md:bg-gradient-to-r md:from-primary/10 md:to-primary/90" />
+              <div className="absolute inset-0 flex items-end p-7 md:p-9">
+                <p className="text-white text-xs font-bold uppercase tracking-[0.2em] flex items-center gap-2">
+                  <span className="material-symbols-outlined text-[#FFD166] text-[18px]" style={{ fontVariationSettings: "'FILL' 1" }}>event_available</span>
+                  {eylulCampaign.readyCtaNote}
+                </p>
+              </div>
+            </div>
+            <div className="p-8 md:p-12 lg:p-14 flex flex-col justify-center">
+              <span className="text-secondary font-bold tracking-widest uppercase text-[10px] block mb-3 border-l-2 border-secondary pl-3">
+                {eylulCampaign.readyCtaKicker}
+              </span>
+              <h2 className="font-headline text-3xl md:text-4xl text-primary font-bold leading-tight mb-4">
+                {eylulCampaign.readyCtaTitle}
+              </h2>
+              <p className="text-on-surface-variant text-sm leading-relaxed mb-8 max-w-xl">
+                {eylulCampaign.readyCtaDescription}
+              </p>
+              <Link href="/eylul-umresi" className="w-fit inline-flex items-center gap-3 bg-secondary text-white font-bold uppercase tracking-widest text-xs px-7 py-4 rounded-xl shadow-lg hover:bg-primary transition-colors">
+                {eylulCampaign.readyCtaButton}
+                <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section className="py-24 md:py-32 bg-surface-container">
         <div className="max-w-screen-2xl mx-auto px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-6 h-auto md:h-[600px] lg:h-[700px]">
@@ -500,6 +537,35 @@ export default async function Home() {
               </p>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Footer Öncesi Son ADS */}
+      <section className="relative overflow-hidden bg-primary text-white py-20 md:py-24">
+        <div className="absolute inset-0 opacity-20">
+          <img src={eylulCampaign.footerImage} alt="" className="w-full h-full object-cover" />
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/95 to-[#001944]/85" />
+        <div className="relative z-10 max-w-screen-xl mx-auto px-8 flex flex-col lg:flex-row lg:items-center justify-between gap-10">
+          <div className="max-w-3xl">
+            <div className="inline-flex items-center gap-2 px-4 py-2 mb-5 rounded-full bg-[#FFD166]/15 border border-[#FFD166]/30 text-[#FFD166] text-[10px] font-bold uppercase tracking-[0.2em]">
+              <span className="material-symbols-outlined text-[15px]" style={{ fontVariationSettings: "'FILL' 1" }}>campaign</span>
+              {eylulCampaign.finalAdsBadge}
+            </div>
+            <h2 className="font-headline text-4xl md:text-5xl font-bold leading-tight mb-4">
+              {eylulCampaign.finalAdsTitle}
+            </h2>
+            <p className="text-white/80 text-base md:text-lg leading-relaxed mb-4 max-w-2xl">
+              {eylulCampaign.finalAdsDescription}
+            </p>
+            <p className="text-white/55 text-xs font-bold uppercase tracking-widest">
+              {eylulCampaign.finalAdsNote}
+            </p>
+          </div>
+          <Link href="/eylul-umresi" className="shrink-0 inline-flex items-center justify-center gap-3 bg-[#FFD166] text-primary font-bold uppercase tracking-widest text-xs px-9 py-5 rounded-2xl shadow-2xl hover:bg-white hover:scale-105 transition-all">
+            {eylulCampaign.finalAdsButton}
+            <span className="material-symbols-outlined text-[19px]">arrow_forward</span>
+          </Link>
         </div>
       </section>
     </>

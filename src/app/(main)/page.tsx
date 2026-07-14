@@ -41,6 +41,8 @@ export default async function Home() {
   
   const whatsappNumber = settings.WHATSAPP_NUMBER ? settings.WHATSAPP_NUMBER.replace('+', '') : "905404010038";
   const whatsappMessage = settings.WHATSAPP_MESSAGE ? encodeURIComponent(settings.WHATSAPP_MESSAGE) : "Merhaba, ana sayfanızdan ulaşıyorum, hizmetleriniz hakkında bilgi almak istiyorum.";
+  const readyCtaWhatsapp = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(eylulCampaign.readyCtaWhatsappMessage)}`;
+  const finalAdsWhatsapp = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(eylulCampaign.finalAdsWhatsappMessage)}`;
 
   const homeCta = settings.HOME_CTA || "NİYET ET VE PLANLA";
   const whatsappCta = settings.WHATSAPP_CTA || "WHATSAPP DANIŞMANLIK";
@@ -160,7 +162,7 @@ export default async function Home() {
             {/* Sol görsel şerit */}
             <div className="hidden md:block md:w-72 lg:w-96 relative shrink-0 overflow-hidden">
               <img
-                src={eylulCampaign.heroImage}
+                src={eylulCampaign.readyCtaImage}
                 alt={eylulCampaign.homeTitle}
                 className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700"
               />
@@ -372,10 +374,10 @@ export default async function Home() {
               <p className="text-on-surface-variant text-sm leading-relaxed mb-8 max-w-xl">
                 {eylulCampaign.readyCtaDescription}
               </p>
-              <Link href="/eylul-umresi" className="w-fit inline-flex items-center gap-3 bg-secondary text-white font-bold uppercase tracking-widest text-xs px-7 py-4 rounded-xl shadow-lg hover:bg-primary transition-colors">
+              <a href={readyCtaWhatsapp} target="_blank" rel="noopener noreferrer" className="w-fit inline-flex items-center gap-3 bg-secondary text-white font-bold uppercase tracking-widest text-xs px-7 py-4 rounded-xl shadow-lg hover:bg-primary transition-colors">
                 {eylulCampaign.readyCtaButton}
-                <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
-              </Link>
+                <span className="material-symbols-outlined text-[18px]">chat</span>
+              </a>
             </div>
           </div>
         </div>
@@ -543,7 +545,7 @@ export default async function Home() {
       {/* Footer Öncesi Son ADS */}
       <section className="relative overflow-hidden bg-primary text-white py-20 md:py-24">
         <div className="absolute inset-0 opacity-20">
-          <img src={eylulCampaign.footerImage} alt="" className="w-full h-full object-cover" />
+          <img src={eylulCampaign.finalAdsImage} alt="" className="w-full h-full object-cover" />
         </div>
         <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/95 to-[#001944]/85" />
         <div className="relative z-10 max-w-screen-xl mx-auto px-8 flex flex-col lg:flex-row lg:items-center justify-between gap-10">
@@ -562,10 +564,10 @@ export default async function Home() {
               {eylulCampaign.finalAdsNote}
             </p>
           </div>
-          <Link href="/eylul-umresi" className="shrink-0 inline-flex items-center justify-center gap-3 bg-[#FFD166] text-primary font-bold uppercase tracking-widest text-xs px-9 py-5 rounded-2xl shadow-2xl hover:bg-white hover:scale-105 transition-all">
+          <a href={finalAdsWhatsapp} target="_blank" rel="noopener noreferrer" className="shrink-0 inline-flex items-center justify-center gap-3 bg-[#FFD166] text-primary font-bold uppercase tracking-widest text-xs px-9 py-5 rounded-2xl shadow-2xl hover:bg-white hover:scale-105 transition-all">
             {eylulCampaign.finalAdsButton}
-            <span className="material-symbols-outlined text-[19px]">arrow_forward</span>
-          </Link>
+            <span className="material-symbols-outlined text-[19px]">chat</span>
+          </a>
         </div>
       </section>
     </>

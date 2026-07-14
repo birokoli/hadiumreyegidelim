@@ -60,11 +60,15 @@ export type EylulCampaignConfig = {
   readyCtaDescription: string;
   readyCtaNote: string;
   readyCtaButton: string;
+  readyCtaImage: string;
+  readyCtaWhatsappMessage: string;
   finalAdsBadge: string;
   finalAdsTitle: string;
   finalAdsDescription: string;
   finalAdsNote: string;
   finalAdsButton: string;
+  finalAdsImage: string;
+  finalAdsWhatsappMessage: string;
 };
 
 export const EYLUL_CAMPAIGN_SETTING_KEY = "EYLUL_CAMPAIGN_CONFIG";
@@ -136,16 +140,20 @@ export const DEFAULT_EYLUL_CAMPAIGN: EylulCampaignConfig = {
   homeDescription: "10, 15 veya 20 günlük programlar · Vize, uçak bileti, otel ve tüm mübarek yerler turu dahil.",
   homeButton: "Kampanyayı İncele",
   homeFeatures: ["Kâbe'ye Yürüme Mesafesinde Otel", "Vize Dahil", "Uçak Bileti Dahil", "Mübarek Yerler Turu Dahil"],
-  readyCtaKicker: "Hazır Programı Tercih Edin",
-  readyCtaTitle: "Tarih ve fiyatı belli grup umresiyle hemen yerinizi ayırın.",
-  readyCtaDescription: "Kendi programınızı oluşturmak yerine 15 veya 25 Eylül çıkışlı, vize ve uçak bileti dahil hazır grubumuza katılabilirsiniz.",
-  readyCtaNote: "10, 15 veya 20 günlük program seçenekleri",
-  readyCtaButton: "Hazır Programı İncele",
-  finalAdsBadge: "SON 35 KİŞİLİK KONTENJAN",
-  finalAdsTitle: "Eylül Grup Umresinde Yerinizi Ayırın",
-  finalAdsDescription: "Kişi başı $1.250’den başlayan fiyatlarla vize, uçak bileti, otel ve mübarek yerler turu dahil.",
-  finalAdsNote: "15 veya 25 Eylül çıkışlı · Kâbe’ye yürüme mesafesinde otel",
-  finalAdsButton: "Kampanyayı İncele",
+  readyCtaKicker: "İlk Manevi Yolculuğunuz",
+  readyCtaTitle: "İlk Umrem Kampanyası",
+  readyCtaDescription: "İlk kez umreye gidecek misafirlerimiz için hazırlık aşamasından ibadetlerin tamamlanmasına kadar rehberli ve güvenli bir program.",
+  readyCtaNote: "İlk kez umreye gideceklere özel rehberlik",
+  readyCtaButton: "İlk Umrem İçin Bilgi Al",
+  readyCtaImage: "https://images.unsplash.com/photo-1591604466107-ec97de577aff?q=80&w=1600&auto=format&fit=crop",
+  readyCtaWhatsappMessage: "Merhaba, İlk Umrem Kampanyası hakkında bilgi almak istiyorum.",
+  finalAdsBadge: "HANIMLARA ÖZEL MANEVİ YOLCULUK",
+  finalAdsTitle: "Hanım Umresi Kampanyası",
+  finalAdsDescription: "Hanım misafirlerimize özel, huzurlu ve güvenli grup düzeniyle manevi yolculuğunuzu birlikte planlayalım.",
+  finalAdsNote: "Program detayları ve müsait tarihler için bize ulaşın",
+  finalAdsButton: "Hanım Umresi İçin Bilgi Al",
+  finalAdsImage: "https://images.unsplash.com/photo-1565552645632-d725f8bfc19a?q=80&w=2600&auto=format&fit=crop",
+  finalAdsWhatsappMessage: "Merhaba, Hanım Umresi Kampanyası hakkında bilgi almak istiyorum.",
 };
 
 export function parseEylulCampaign(value?: string | null): EylulCampaignConfig {

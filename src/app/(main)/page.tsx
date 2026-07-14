@@ -162,9 +162,9 @@ export default async function Home() {
             {/* Sol görsel şerit */}
             <div className="hidden md:block md:w-72 lg:w-96 relative shrink-0 overflow-hidden">
               <img
-                src={eylulCampaign.readyCtaImage}
+                src={eylulCampaign.heroImage}
                 alt={eylulCampaign.homeTitle}
-                className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700"
+                className="absolute inset-0 w-full h-full object-cover object-right opacity-60 group-hover:scale-105 transition-transform duration-700"
               />
               <div className="absolute inset-0 bg-gradient-to-r from-transparent to-primary" />
             </div>
@@ -352,7 +352,7 @@ export default async function Home() {
           <div className="grid md:grid-cols-[0.8fr_1.2fr] items-stretch">
             <div className="relative min-h-[260px] md:min-h-full overflow-hidden">
               <img
-                src={eylulCampaign.heroImage}
+                src={eylulCampaign.readyCtaImage}
                 alt={eylulCampaign.readyCtaTitle}
                 className="absolute inset-0 w-full h-full object-cover"
               />

@@ -46,6 +46,7 @@ const menuGroups: { title: string; links: { href: string; icon: string; label: s
       { href: "/admin/influencers", icon: "person_celebrate", label: "Influencer Yönetimi", permission: "marketing" },
       { href: "/admin/affiliate",   icon: "star",             label: "Affiliate Program", permission: "marketing" },
       { href: "/admin/campaigns",   icon: "campaign",         label: "Kampanyalar", permission: "marketing" },
+      { href: "/admin/eylul-umresi", icon: "ads_click",        label: "Eylül Umresi Reklamı", permission: "marketing" },
       { href: "/admin/support",     icon: "support_agent",    label: "Canlı Destek", permission: "marketing" },
     ],
   },

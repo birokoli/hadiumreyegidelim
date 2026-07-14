@@ -4,6 +4,7 @@ import Image from "next/image";
 import BrandImageFallback from "@/components/ui/BrandImageFallback";
 import { prisma } from "@/lib/prisma";
 import { Metadata } from "next";
+import { EYLUL_CAMPAIGN_SETTING_KEY, parseEylulCampaign } from "@/lib/eylul-campaign";
 
 export const metadata: Metadata = {
   title: { absolute: "Bireysel Umre 2026 — Kendi Umreni Tasarla | HadiUmreyeGidelim" },
@@ -30,6 +31,7 @@ export default async function Home() {
 
   const settingsArray = await prisma.setting.findMany();
   const settings = settingsArray.reduce((acc, s) => { acc[s.key] = s.value; return acc; }, {} as Record<string, string>);
+  const eylulCampaign = parseEylulCampaign(settings[EYLUL_CAMPAIGN_SETTING_KEY]);
 
   const home_banner_image = settings.home_banner_image || "https://lh3.googleusercontent.com/aida-public/AB6AXuCeWn_hW89LbHLjNkEyCjXnO56IpdLz_zRwB9BvtIjHV_CSU9n_ADpxoS-K9Y4UqzQtVdJ9tM238gIiQ3fIEgF50wPqba1ofx6HeAab2E8EYwvLnq_w13P3UCdpuZloJ2P_FBbqiM4ZrKqELKyG3sgBrj2SCUi6yLGc39nIApI_ip6uasqiKaUGRcpE7WnqmMcqOZVc-CUXOaphNXOHK18KEZCYKehmVy4cZRQP0tk7_PHK5iJh4cVmqsN9DeHNleLOmi97WPx_9Gw";
   
@@ -170,13 +172,13 @@ export default async function Home() {
                 <div>
                   <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-4 rounded-full bg-[#FFD166]/20 border border-[#FFD166]/30 text-[#FFD166] font-bold text-[9px] tracking-[0.3em] uppercase">
                     <span className="material-symbols-outlined text-[12px]" style={{ fontVariationSettings: "'FILL' 1" }}>campaign</span>
-                    35 KİŞİLİK KONTENJAN · 15 VEYA 25 EYLÜL
+                    {eylulCampaign.capacity} KİŞİLİK KONTENJAN · {eylulCampaign.departureOne} VEYA {eylulCampaign.departureTwo}
                   </div>
                   <h2 className="font-headline text-3xl md:text-4xl text-white font-bold leading-tight mb-2 group-hover:text-[#FFD166] transition-colors duration-300">
-                    Eylül Grup Umresi — Kişi Başı $1.250&apos;den
+                    {eylulCampaign.title} {eylulCampaign.highlightedTitle} — Kişi Başı {eylulCampaign.startingPrice}&apos;den
                   </h2>
                   <p className="text-white/70 text-sm max-w-lg leading-relaxed">
-                    10, 15 veya 20 günlük programlar · Vize, uçak bileti, otel ve tüm mübarek yerler turu dahil.
+                    {eylulCampaign.packages.map((item) => item.days.replace(" Umre", "")).join(", ")} programları · {eylulCampaign.includedServices.join(", ")} dahil.
                   </p>
                 </div>
                 <div className="shrink-0">
@@ -188,7 +190,7 @@ export default async function Home() {
               </div>
               {/* Mini özellikler */}
               <div className="flex flex-wrap gap-x-8 gap-y-2 mt-6 pt-6 border-t border-white/10">
-                {["Kâbe'ye Yürüme Mesafesinde Otel", "Vize Dahil", "Uçak Bileti Dahil", "Mübarek Yerler Turu Dahil"].map((item) => (
+                {[`${eylulCampaign.hotelDetail} otel`, ...eylulCampaign.includedServices.filter((item) => !item.toLocaleLowerCase("tr-TR").includes("otel"))].slice(0, 4).map((item) => (
                   <span key={item} className="flex items-center gap-1.5 text-white/60 text-[11px] font-bold uppercase tracking-widest">
                     <span className="material-symbols-outlined text-[#FFD166] text-[14px]" style={{ fontVariationSettings: "'FILL' 1" }}>check_circle</span>
                     {item}

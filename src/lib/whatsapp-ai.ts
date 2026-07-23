@@ -158,7 +158,19 @@ function extractSalesContext(message: string, history: { direction: string; cont
   const inboundMessages = [...history.filter((item) => item.direction === "INBOUND").map((item) => item.content), message];
   const text = inboundMessages.join(" ").toLocaleLowerCase("tr-TR");
   const latest = message.toLocaleLowerCase("tr-TR").trim();
-  const people = text.match(/(\d+)\s*(?:kişi|kisiyiz|kişiyiz)/);
+  let peopleCount: number | undefined;
+  for (const inbound of [...inboundMessages].reverse()) {
+    const normalized = inbound.toLocaleLowerCase("tr-TR");
+    const numericPeople = normalized.match(/(\d+)\s*(?:kişi|kisi|kişiyiz|kisiyiz)/);
+    if (numericPeople) {
+      peopleCount = Number(numericPeople[1]);
+      break;
+    }
+    if (/\b(?:tek(?:im| başıma| gideceğim| gidecegim)?|bir kişi|bir kisi|yalnız|yalniz)\b/.test(normalized)) {
+      peopleCount = 1;
+      break;
+    }
+  }
   const medinaDays = text.match(/(\d+)\s*(?:gün|gun|gece)\s*medine|medine(?:'de|de)?\s*(\d+)\s*(?:gün|gun|gece)/);
   const durationCandidates = [...text.matchAll(/(\d+)\s*(?:gün|gun)/g)]
     .filter((match) => !/medine/.test(text.slice(Math.max(0, (match.index || 0) - 12), (match.index || 0) + match[0].length + 12)));
@@ -179,7 +191,7 @@ function extractSalesContext(message: string, history: { direction: string; cont
   }
   const context: SalesContext = {
     umrahType,
-    people: people ? Number(people[1]) : undefined,
+    people: peopleCount,
     days: days ? Number(days[1]) : undefined,
     medinaDays: medinaDays ? Number(medinaDays[1] || medinaDays[2]) : undefined,
     roomOccupancy: roomOccupancy ? Number(roomOccupancy[1]) as 2 | 3 | 4 : undefined,
@@ -500,14 +512,14 @@ function enforceAddressing(
   }
   if (conversationStarted) {
     cleaned = cleaned
-      .replace(/^(?:(?:merhaba|selam(?:lar)?|selamün?\s*aleyküm|(?:ve\s+)?aleyküm\s*selam)[^.!?\n]*[.!?]\s*)+/i, "")
+      .replace(/^(?:(?:merhaba|selam(?:lar)?|selam[ıiuü]n?\s*aleyküm|(?:ve\s+)?aleyküm\s*selam)[^.!?\n]*[.!?]\s*)+/i, "")
       .replace(/^(?:[A-ZÇĞİÖŞÜ][a-zçğıöşü]+\s+(?:bey|hanım)[,.]?\s*)/i, "");
-  } else if (/^\s*(?:merhaba|selam(?:lar)?|selamün?\s*aleyküm|aleyküm\s*selam)\b/i.test(incomingMessage || "")) {
-    const canonicalGreeting = /selamün?\s*aleyküm|aleyküm\s*selam/i.test(incomingMessage || "")
+  } else if (/^\s*(?:merhaba|selam(?:lar)?|selam[ıiuü]n?\s*aleyküm|aleyküm\s*selam)\b/i.test(incomingMessage || "")) {
+    const canonicalGreeting = /selam[ıiuü]n?\s*aleyküm|aleyküm\s*selam/i.test(incomingMessage || "")
       ? `Ve aleyküm selam ${explicitTitle ? `${firstName} ${explicitTitle}` : "efendim"}.`
       : `Selamünaleyküm ${explicitTitle ? `${firstName} ${explicitTitle}` : "efendim"}.`;
     cleaned = cleaned.replace(
-      /^(?:(?:merhaba|selam(?:lar)?|selamün?\s*aleyküm|ve\s+aleyküm\s*selam|aleyküm\s*selam)[^.!?\n]*[.!?]\s*)+/i,
+      /^(?:(?:merhaba|selam(?:lar)?|selam[ıiuü]n?\s*aleyküm|ve\s+aleyküm\s*selam|aleyküm\s*selam)[^.!?\n]*[.!?]\s*)+/i,
       "",
     );
     cleaned = `${canonicalGreeting} ${cleaned}`.trim();

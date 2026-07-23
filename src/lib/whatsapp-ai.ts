@@ -242,7 +242,11 @@ async function generateSafeFallback(message: string, config: WhatsAppAIConfig, h
     intent = "individual_umrah";
     leadType = "BIREYSEL";
   } else if (context.umrahType === "grup" && /eylül|eylul/.test(context.month || "")) {
-    if (!context.departureDate) {
+    if (/(bebek|0\s*[-–]\s*2)/.test(normalized)) {
+      reply = `0–2 yaş bebek için kişi başı ${campaign.childZeroToTwo.replace("$", "")} USD'dir. Fiyat Dolar kuru endekslidir ve uçak bileti pakete dâhildir.`;
+    } else if (/(çocuk|cocuk|yaş|yas)/.test(normalized)) {
+      reply = `2–11 yaş çocuk için kişi başı ${campaign.childTwoToEleven.replace("$", "")} USD'dir. Fiyat Dolar kuru endekslidir ve uçak bileti pakete dâhildir.`;
+    } else if (!context.departureDate) {
       reply = `${context.people ? `${context.people} kişi için ` : ""}Eylül grup umresi talebinizi not aldım. 15 Eylül mü, 25 Eylül mü çıkış yapmak istersiniz efendim?`;
     } else if (!context.days) {
       reply = `${context.departureDate} çıkışlı${context.people ? ` ${context.people} kişilik` : ""} grup umresi talebinizi not aldım. 10, 15 veya 20 günlük programdan hangisini düşünüyorsunuz efendim?`;
@@ -448,7 +452,7 @@ function validateGroundedReply(params: {
 function isTrivialOrTestMessage(message: string) {
   const normalized = message.toLocaleLowerCase("tr-TR").trim();
   if (/(?:^|\b)(?:canlı|canli|deneme|test)(?:\b|$)/i.test(normalized)) return true;
-  const hasSalesMeaning = /(umre|paket|tur|fiyat|ücret|otel|vize|uçuş|transfer|mekke|medine|kabe|grup|bireysel|hanım|ilk umrem|rezervasyon|bilgi)/i.test(normalized);
+  const hasSalesMeaning = /(umre|paket|tur|fiyat|ücret|otel|vize|uçuş|transfer|mekke|medine|kabe|grup|bireysel|hanım|ilk umrem|rezervasyon|bilgi|kişi|kişiyiz|çocuk|bebek|gün|gece|oda|eylül)/i.test(normalized);
   const meaningfulLetters = normalized.replace(/[^a-zçğıöşü]/gi, "");
   return !hasSalesMeaning && meaningfulLetters.length < 8;
 }

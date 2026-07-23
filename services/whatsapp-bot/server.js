@@ -30,8 +30,47 @@ function authorized(req, res, next) {
   next();
 }
 
-app.get("/health", (_req, res) => res.json({ ok: true, status: state.status }));
+app.get("/health", async (_req, res) => {
+  let connectionState = null;
+  try { connectionState = await client.getState(); } catch {}
+  const ok = state.status === "BAĞLI" && connectionState === "CONNECTED";
+  res.status(ok ? 200 : 503).json({ ok, status: state.status, connectionState });
+});
 app.get("/status", authorized, (_req, res) => res.json(state));
+app.get("/diagnostics", authorized, async (_req, res) => {
+  try {
+    const connectionState = await client.getState();
+    const chats = await client.getChats();
+    const recentChats = chats
+      .filter((chat) => !chat.isGroup)
+      .sort((a, b) => Number(b.timestamp || 0) - Number(a.timestamp || 0))
+      .slice(0, 10)
+      .map((chat) => ({
+        idSuffix: String(chat.id?._serialized || "").slice(-10),
+        timestamp: chat.timestamp || null,
+        unreadCount: chat.unreadCount || 0,
+        lastMessageId: chat.lastMessage?.id?._serialized || null,
+        lastMessageFromMe: chat.lastMessage?.fromMe ?? null,
+        lastMessageTimestamp: chat.lastMessage?.timestamp || null,
+      }));
+    res.json({
+      processStartedAt: processStartedAt.toISOString(),
+      connectionState,
+      status: state,
+      account: client.info?.wid?.user || null,
+      eventListeners: {
+        message: client.listenerCount("message"),
+        messageCreate: client.listenerCount("message_create"),
+        messageCiphertext: client.listenerCount("message_ciphertext"),
+        unreadCount: client.listenerCount("unread_count"),
+      },
+      chatCount: chats.length,
+      recentChats,
+    });
+  } catch (error) {
+    res.status(500).json({ error: String(error), status: state });
+  }
+});
 app.post("/reset", authorized, async (_req, res) => {
   update({ status: "SIFIRLANIYOR", qr: null, error: null });
   try { await client.logout(); } catch {}
@@ -60,11 +99,14 @@ const client = new Client({
   },
 });
 
+const processStartedAt = new Date();
 client.on("qr", async (qr) => { update({ status: "QR_BEKLİYOR", qr: await QRCode.toDataURL(qr), phone: null, error: null }); await syncStatus(); });
 client.on("authenticated", async () => { update({ status: "DOĞRULANDI", qr: null, error: null }); await syncStatus(); });
 client.on("ready", async () => { update({ status: "BAĞLI", qr: null, phone: client.info?.wid?.user || null, error: null }); await syncStatus(); });
 client.on("auth_failure", async (error) => { update({ status: "DOĞRULAMA_HATASI", qr: null, error: String(error) }); await syncStatus(); });
 client.on("disconnected", async (reason) => { update({ status: "BAĞLANTI_KESİLDİ", qr: null, phone: null, error: String(reason) }); await syncStatus(); });
+client.on("change_state", (nextState) => console.log(`[state] WhatsApp durumu: ${nextState}`));
+client.on("loading_screen", (percent, message) => console.log(`[loading] %${percent} ${message}`));
 
 async function reconcileConnection() {
   try {
@@ -118,9 +160,52 @@ async function handleIncomingMessage(message, eventName) {
 // iki defa yanıt vermesini engeller.
 client.on("message", (message) => handleIncomingMessage(message, "message"));
 client.on("message_create", (message) => handleIncomingMessage(message, "message_create"));
+client.on("message_ciphertext", (message) => {
+  const externalId = message.id?._serialized;
+  console.log(`[message_ciphertext] Mesaj alındı: ${externalId || "kimlik yok"}`);
+  if (!externalId) return;
+  setTimeout(async () => {
+    try {
+      const decryptedMessage = await client.getMessageById(externalId);
+      if (decryptedMessage) await handleIncomingMessage(decryptedMessage, "message_ciphertext");
+    } catch (error) {
+      console.error("[message_ciphertext]", error);
+    }
+  }, 2_000);
+});
+client.on("message_ciphertext_failed", (message) => {
+  console.error(`[message_ciphertext_failed] Mesaj çözülemedi: ${message.id?._serialized || "kimlik yok"}`);
+});
+client.on("unread_count", async (chat) => {
+  try {
+    const unreadCount = Math.min(Math.max(Number(chat.unreadCount || 1), 1), 10);
+    console.log(`[unread_count] ${unreadCount} okunmamış mesaj`);
+    const messages = await chat.fetchMessages({ limit: unreadCount });
+    for (const message of messages.filter((item) => !item.fromMe)) {
+      await handleIncomingMessage(message, "unread_count");
+    }
+  } catch (error) {
+    console.error("[unread_count]", error);
+  }
+});
 
-client.initialize().catch((error) => update({ status: "HATA", error: String(error) }));
+client.initialize().catch(async (error) => {
+  update({ status: "HATA", phone: null, error: String(error) });
+  console.error("[initialize]", error);
+  await syncStatus();
+  try { await client.destroy(); } catch {}
+  // launchd temiz bir tarayıcı süreciyle yeniden başlatsın.
+  setTimeout(() => process.exit(1), 1_000);
+});
 setInterval(syncStatus, 30_000);
 setInterval(reconcileConnection, 10_000);
 syncStatus();
 app.listen(PORT, () => console.log(`WhatsApp QR bot ${PORT} portunda çalışıyor`));
+
+async function shutdown(signal) {
+  console.log(`[shutdown] ${signal}`);
+  try { await client.destroy(); } catch {}
+  process.exit(0);
+}
+process.once("SIGTERM", () => shutdown("SIGTERM"));
+process.once("SIGINT", () => shutdown("SIGINT"));

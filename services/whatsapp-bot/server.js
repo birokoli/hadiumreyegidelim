@@ -185,9 +185,18 @@ client.on("message_ciphertext_failed", (message) => {
 });
 client.on("unread_count", async (chat) => {
   try {
+    // Güncel WhatsApp Web sürümünde fetchMessages/getChats bazı LID
+    // sohbetlerinde takılabiliyor. Tetikleyiciyle gelen son mesajı önce
+    // doğrudan işle; geçmiş liste yalnızca yedek olarak kullanılsın.
+    if (chat.lastMessage && !chat.lastMessage.fromMe) {
+      await handleIncomingMessage(chat.lastMessage, "unread_count_last");
+    }
     const unreadCount = Math.min(Math.max(Number(chat.unreadCount || 1), 1), 10);
     console.log(`[unread_count] ${unreadCount} okunmamış mesaj`);
-    const messages = await chat.fetchMessages({ limit: unreadCount });
+    const messages = await Promise.race([
+      chat.fetchMessages({ limit: unreadCount }),
+      new Promise((_, reject) => setTimeout(() => reject(new Error("fetchMessages zaman aşımı")), 5_000)),
+    ]);
     for (const message of messages.filter((item) => !item.fromMe)) {
       await handleIncomingMessage(message, "unread_count");
     }

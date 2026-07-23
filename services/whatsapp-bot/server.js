@@ -1,3 +1,4 @@
+require("dotenv").config({ path: process.env.WHATSAPP_BOT_ENV || ".env.local" });
 const express = require("express");
 const QRCode = require("qrcode");
 const { Client, LocalAuth } = require("whatsapp-web.js");

@@ -11,8 +11,17 @@ const SESSION_PATH = process.env.WHATSAPP_SESSION_PATH || "/data/.wwebjs_auth";
 
 if (!BOT_TOKEN) throw new Error("WHATSAPP_BOT_TOKEN tanımlı değil");
 
-const state = { status: "BAŞLATILIYOR", qr: null, phone: null, error: null, lastEventAt: new Date().toISOString() };
+const state = {
+  status: "BAŞLATILIYOR",
+  qr: null,
+  phone: null,
+  error: null,
+  lastInboundAt: null,
+  lastInboundFrom: null,
+  lastEventAt: new Date().toISOString(),
+};
 const update = (patch) => Object.assign(state, patch, { lastEventAt: new Date().toISOString() });
+const handledMessages = new Map();
 const app = express();
 app.use(express.json());
 
@@ -67,11 +76,18 @@ async function reconcileConnection() {
   } catch {}
 }
 
-client.on("message", async (message) => {
+async function handleIncomingMessage(message, eventName) {
   if (message.fromMe || message.isStatus || message.from === "status@broadcast" || message.from.endsWith("@g.us") || !message.body?.trim()) return;
+  const externalId = message.id?._serialized || message.id?.id || `${message.from}-${message.timestamp}`;
+  if (handledMessages.has(externalId)) return;
+  handledMessages.set(externalId, Date.now());
+  for (const [id, handledAt] of handledMessages) {
+    if (Date.now() - handledAt > 10 * 60_000) handledMessages.delete(id);
+  }
+  update({ lastInboundAt: new Date().toISOString(), lastInboundFrom: message.from, error: null });
+  console.log(`[${eventName}] Gelen mesaj: ${message.from} (${externalId})`);
   try {
     const contact = await message.getContact();
-    const externalId = message.id?._serialized || message.id?.id || `${message.from}-${message.timestamp}`;
     const customerPhone = contact.number || message.from.replace(/@(c|lid)\.us$/, "");
     const response = await fetch(`${ADMIN_URL}/api/whatsapp/worker/message`, {
       method: "POST",
@@ -85,12 +101,23 @@ client.on("message", async (message) => {
     });
     if (!response.ok) throw new Error(`Site yanıtı ${response.status}: ${(await response.text()).slice(0, 300)}`);
     const result = await response.json();
-    if (result.reply) await message.reply(result.reply);
+    if (result.reply) {
+      await message.reply(result.reply);
+      console.log(`[${eventName}] Yanıt gönderildi: ${customerPhone}`);
+    } else {
+      console.log(`[${eventName}] AI yanıt üretmedi: ${result.reason || "neden belirtilmedi"}`);
+    }
   } catch (error) {
     console.error("[message]", error);
     update({ error: String(error) });
   }
-});
+}
+
+// Bazı güncel WhatsApp Web sürümlerinde yalnızca message_create olayı
+// güvenilir biçimde tetiklenebiliyor. Tekilleştirme iki olayın aynı mesaja
+// iki defa yanıt vermesini engeller.
+client.on("message", (message) => handleIncomingMessage(message, "message"));
+client.on("message_create", (message) => handleIncomingMessage(message, "message_create"));
 
 client.initialize().catch((error) => update({ status: "HATA", error: String(error) }));
 setInterval(syncStatus, 30_000);

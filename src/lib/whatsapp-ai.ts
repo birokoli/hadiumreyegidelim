@@ -112,7 +112,7 @@ async function buildLiveKnowledge() {
   ].join("\n\n");
 }
 
-export type AIReply = { reply: string; intent: string; leadType: string; leadScore: number; handoff: boolean; handoffReason: string; fallback?: boolean; warning?: string };
+export type AIReply = { reply: string; intent: string; leadType: string; leadScore: number; handoff: boolean; handoffReason: string; provider?: string; fallback?: boolean; warning?: string };
 
 async function generateSafeFallback(message: string, config: WhatsAppAIConfig): Promise<AIReply> {
   const normalized = message.toLocaleLowerCase("tr-TR");
@@ -158,9 +158,47 @@ async function generateSafeFallback(message: string, config: WhatsAppAIConfig): 
     leadScore: handoff ? 80 : 35,
     handoff,
     handoffReason: handoff ? "Müşteri temsilci talep etti" : "",
+    provider: "Güvenli hazır yanıt",
     fallback: true,
-    warning: "Gemini kotası kullanılamadığı için güvenli hazır yanıt üretildi.",
+    warning: "Çevrimiçi model kotası kullanılamadığı için güvenli hazır yanıt üretildi.",
   };
+}
+
+const GITHUB_MODELS = [
+  "meta/llama-4-scout-17b-16e-instruct",
+  "deepseek/deepseek-v3-0324",
+  "openai/gpt-5",
+];
+
+function validModelReply(value: Partial<AIReply>) {
+  const reply = String(value.reply || "").trim();
+  return reply.length >= 10
+    && reply.length <= 1200
+    && !/(sistem talimat|bilgi tabanım|api key|yapay zek[aâ] modeliyim)/i.test(reply);
+}
+
+async function callGitHubModel(model: string, prompt: string, token: string) {
+  const response = await fetch("https://models.github.ai/inference/chat/completions", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: "application/vnd.github+json",
+      "Content-Type": "application/json",
+      "X-GitHub-Api-Version": "2026-03-10",
+    },
+    body: JSON.stringify({
+      model,
+      messages: [{ role: "user", content: prompt }],
+      response_format: { type: "json_object" },
+      max_tokens: 700,
+    }),
+    signal: AbortSignal.timeout(18_000),
+  });
+  if (!response.ok) throw new Error(`GitHub Models ${response.status}`);
+  const body = await response.json() as { choices?: Array<{ message?: { content?: string } }> };
+  const parsed = JSON.parse(String(body.choices?.[0]?.message?.content || "{}")) as Partial<AIReply>;
+  if (!validModelReply(parsed)) throw new Error("Geçersiz model yanıtı");
+  return parsed;
 }
 
 export async function generateWhatsAppReply(params: {
@@ -170,14 +208,9 @@ export async function generateWhatsAppReply(params: {
   config?: WhatsAppAIConfig;
 }): Promise<AIReply> {
   const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) throw new Error("GEMINI_API_KEY tanımlı değil");
+  const githubToken = process.env.GITHUB_MODELS_TOKEN;
   const config = params.config || await getWhatsAppAIConfig();
   const liveKnowledge = await buildLiveKnowledge();
-  const genAI = new GoogleGenerativeAI(apiKey);
-  const model = genAI.getGenerativeModel({
-    model: process.env.GEMINI_WHATSAPP_MODEL || "gemini-2.0-flash",
-    generationConfig: { responseMimeType: "application/json", temperature: 0.2, maxOutputTokens: 700 },
-  });
   const prompt = `Sen ${config.assistantName} isimli Türkçe WhatsApp satış ve müşteri destek asistanısın.
 
 KİMLİK VE ÜSLUP:
@@ -212,13 +245,31 @@ YENİ MESAJ: ${params.message}
 
 Sadece şu JSON biçiminde cevap ver:
 {"reply":"Türkçe WhatsApp yanıtı","intent":"greeting|individual_umrah|group_umrah|price|booking|support|complaint|other","leadType":"BIREYSEL|GRUP|KARARSIZ","leadScore":0,"handoff":false,"handoffReason":""}`;
-  let parsed: Partial<AIReply>;
-  try {
-    const result = await model.generateContent(prompt);
-    parsed = JSON.parse(result.response.text().trim()) as Partial<AIReply>;
-  } catch {
-    return generateSafeFallback(params.message, config);
+  let parsed: Partial<AIReply> = {};
+  let provider = "";
+  if (githubToken) {
+    for (const modelName of GITHUB_MODELS) {
+      try {
+        parsed = await callGitHubModel(modelName, prompt, githubToken);
+        provider = `GitHub Models · ${modelName}`;
+        break;
+      } catch {}
+    }
   }
+  if (!provider && apiKey) {
+    try {
+      const genAI = new GoogleGenerativeAI(apiKey);
+      const model = genAI.getGenerativeModel({
+        model: process.env.GEMINI_WHATSAPP_MODEL || "gemini-2.0-flash",
+        generationConfig: { responseMimeType: "application/json", temperature: 0.2, maxOutputTokens: 700 },
+      });
+      const result = await model.generateContent(prompt);
+      parsed = JSON.parse(result.response.text().trim()) as Partial<AIReply>;
+      if (!validModelReply(parsed)) throw new Error("Geçersiz Gemini yanıtı");
+      provider = `Gemini · ${process.env.GEMINI_WHATSAPP_MODEL || "gemini-2.0-flash"}`;
+    } catch {}
+  }
+  if (!provider) return generateSafeFallback(params.message, config);
   const keywordHandoff = config.handoffKeywords.some((word) => params.message.toLocaleLowerCase("tr-TR").includes(word.toLocaleLowerCase("tr-TR")));
   return {
     reply: String(parsed.reply || config.outOfHoursMessage).slice(0, 3500),
@@ -227,5 +278,6 @@ Sadece şu JSON biçiminde cevap ver:
     leadScore: Math.max(0, Math.min(100, Number(parsed.leadScore) || 0)),
     handoff: Boolean(parsed.handoff) || keywordHandoff,
     handoffReason: keywordHandoff ? "Müşteri temsilci talep etti" : String(parsed.handoffReason || ""),
+    provider,
   };
 }

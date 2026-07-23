@@ -30,6 +30,7 @@ export async function GET() {
     stats: { conversations: conversations.length, totalMessages, aiMessages, handoffCount },
     connection: {
       gemini: Boolean(process.env.GEMINI_API_KEY),
+      githubModels: Boolean(process.env.GITHUB_MODELS_TOKEN),
       whatsapp: bot.status === "BAĞLI",
       model: process.env.GEMINI_WHATSAPP_MODEL || "gemini-2.0-flash",
       bot,

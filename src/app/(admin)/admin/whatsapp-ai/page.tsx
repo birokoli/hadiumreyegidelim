@@ -16,11 +16,14 @@ const input = "w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text
 export default function WhatsAppAIPage() {
   const [data, setData] = useState<DashboardData | null>(null);
   const [config, setConfig] = useState(DEFAULT_WHATSAPP_AI_CONFIG);
-  const [tab, setTab] = useState<"overview" | "connection" | "knowledge" | "test">("overview");
+  const [tab, setTab] = useState<"overview" | "connection" | "knowledge" | "test" | "ollama">("overview");
   const [testMessage, setTestMessage] = useState("Eşimle birlikte bireysel umreye gitmek istiyoruz, grup umresinden farkı nedir?");
   const [testWarning, setTestWarning] = useState("");
   const [testProvider, setTestProvider] = useState("");
   const [testHistory, setTestHistory] = useState<Array<{ direction: "INBOUND" | "OUTBOUND"; content: string }>>([]);
+  const [ollamaMessage, setOllamaMessage] = useState("");
+  const [ollamaError, setOllamaError] = useState("");
+  const [ollamaHistory, setOllamaHistory] = useState<Array<{ role: "user" | "assistant"; content: string }>>([]);
   const [conversationFilter, setConversationFilter] = useState<"all" | "answered" | "unanswered" | "handoff">("all");
   const [openConversation, setOpenConversation] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -72,6 +75,22 @@ export default function WhatsAppAIPage() {
     setBusy(false);
   };
 
+  const testOllama = async () => {
+    const message = ollamaMessage.trim();
+    if (!message || busy) return;
+    const nextHistory = [...ollamaHistory, { role: "user" as const, content: message }];
+    setOllamaHistory(nextHistory); setOllamaMessage(""); setOllamaError(""); setBusy(true);
+    const response = await fetch("/api/admin/whatsapp-ai/ollama", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ messages: nextHistory }),
+    });
+    const json = await response.json();
+    if (response.ok) setOllamaHistory((current) => [...current, { role: "assistant", content: json.reply }].slice(-20));
+    else setOllamaError(json.error || "Bağlantı hatası: Sunucu kapalı olabilir");
+    setBusy(false);
+  };
+
   if (!data) return <div className="p-8 text-slate-500">WhatsApp AI merkezi yükleniyor...</div>;
   const conversationState = (conversation: DashboardData["conversations"][number]) => {
     if (conversation.status === "HUMAN_NEEDED") return "handoff";
@@ -94,7 +113,7 @@ export default function WhatsAppAIPage() {
     </div>
 
     <div className="flex flex-wrap gap-2 rounded-2xl border border-slate-200 bg-white p-2">
-      {[["overview","Genel Bakış"],["connection","QR Bağlantısı"],["knowledge","Asistan & Bilgi Tabanı"],["test","Yanıt Testi"]].map(([id,label]) => <button key={id} onClick={() => setTab(id as typeof tab)} className={`rounded-xl px-5 py-3 text-sm font-bold ${tab === id ? "bg-[#003781] text-white" : "text-slate-500 hover:bg-slate-50"}`}>{label}</button>)}
+      {[["overview","Genel Bakış"],["connection","QR Bağlantısı"],["knowledge","Asistan & Bilgi Tabanı"],["test","Yanıt Testi"],["ollama","Ollama Sohbeti"]].map(([id,label]) => <button key={id} onClick={() => setTab(id as typeof tab)} className={`rounded-xl px-5 py-3 text-sm font-bold ${tab === id ? "bg-[#003781] text-white" : "text-slate-500 hover:bg-slate-50"}`}>{label}</button>)}
     </div>
 
     {tab === "overview" && <>
@@ -140,6 +159,28 @@ export default function WhatsAppAIPage() {
     {tab === "test" && <section className="grid gap-5 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm lg:grid-cols-2">
       <div><div className="flex items-center justify-between"><h2 className="font-bold text-slate-900">Müşteri Mesajını Deneyin</h2><button onClick={() => { setTestHistory([]); setTestWarning(""); setTestProvider(""); }} className="text-xs font-bold text-red-600">Sohbeti Sıfırla</button></div><p className="mb-4 text-sm text-slate-500">Gerçek WhatsApp mesajı göndermeden bağlı AI modellerinin yanıtını ve konuşma sürekliliğini deneyin.</p><textarea rows={10} className={input} value={testMessage} onChange={(e) => setTestMessage(e.target.value)}/><button disabled={busy || !testMessage.trim()} onClick={test} className="mt-4 rounded-xl bg-[#25D366] px-7 py-3 text-sm font-bold text-white disabled:opacity-50">{busy ? "Yanıt hazırlanıyor..." : "Yanıtı Test Et"}</button></div>
       <div className="rounded-2xl bg-[#efeae2] p-5"><div className="mb-3 flex items-center justify-between gap-3"><p className="text-xs font-bold uppercase tracking-widest text-slate-500">Deneme Sohbeti</p>{testProvider ? <span className="rounded-full bg-white px-3 py-1 text-[10px] font-bold text-[#003781] shadow-sm">{testProvider}</span> : null}</div>{testWarning ? <div className="mb-3 rounded-xl bg-amber-50 p-3 text-xs font-semibold text-amber-800">{testWarning}</div> : null}<div className="max-h-96 space-y-2 overflow-y-auto">{testHistory.length ? testHistory.map((message, index) => <div key={`${index}-${message.direction}`} className={`flex ${message.direction === "INBOUND" ? "justify-end" : "justify-start"}`}><div className={`max-w-[90%] whitespace-pre-wrap rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-sm ${message.direction === "INBOUND" ? "rounded-tr-sm bg-[#d9fdd3]" : "rounded-tl-sm bg-white"}`}>{message.content}</div></div>) : <div className="min-h-40 rounded-2xl bg-white p-4 text-sm text-slate-400 shadow-sm">Test yanıtı burada görünecek.</div>}</div></div>
+    </section>}
+
+    {tab === "ollama" && <section className="relative overflow-hidden rounded-[28px] bg-[#07101f] p-4 text-white shadow-2xl md:p-7">
+      <div className="pointer-events-none absolute -left-20 -top-24 h-72 w-72 rounded-full bg-blue-500/20 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-24 right-0 h-72 w-72 rounded-full bg-emerald-400/15 blur-3xl" />
+      <div className="relative mx-auto max-w-4xl">
+        <div className="mb-5 flex items-center justify-between rounded-2xl border border-white/10 bg-white/[.06] p-4 backdrop-blur-xl">
+          <div><p className="text-xs font-bold uppercase tracking-[.2em] text-emerald-300">Yerel Yapay Zeka</p><h2 className="mt-1 text-xl font-bold">Ollama · llama3.2</h2></div>
+          <div className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-full bg-emerald-400 shadow-[0_0_14px_#34d399]" /><span className="text-xs text-slate-300">Windows / ngrok</span></div>
+        </div>
+        <div className="flex min-h-[430px] max-h-[58vh] flex-col gap-3 overflow-y-auto rounded-3xl border border-white/10 bg-black/20 p-4 backdrop-blur-xl md:p-6">
+          {ollamaHistory.length === 0 ? <div className="m-auto max-w-md text-center"><span className="material-symbols-outlined text-5xl text-blue-300">neurology</span><h3 className="mt-3 text-lg font-bold">Ollama bağlantısını deneyin</h3><p className="mt-2 text-sm leading-relaxed text-slate-400">Mesajınız güvenli Vercel geçidi üzerinden Windows bilgisayarınızdaki llama3.2 modeline gönderilir.</p></div> :
+            ollamaHistory.map((message, index) => <div key={`${message.role}-${index}`} className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}><div className={`max-w-[88%] whitespace-pre-wrap rounded-2xl px-4 py-3 text-sm leading-relaxed ${message.role === "user" ? "rounded-br-md bg-blue-600 text-white" : "rounded-bl-md border border-white/10 bg-white/10 text-slate-100 backdrop-blur"}`}>{message.content}</div></div>)}
+          {busy ? <div className="flex justify-start"><div className="rounded-2xl rounded-bl-md border border-white/10 bg-white/10 px-4 py-3 text-sm text-slate-300">Cevap yazılıyor<span className="animate-pulse">...</span></div></div> : null}
+        </div>
+        {ollamaError ? <div className="mt-3 rounded-xl border border-red-400/20 bg-red-500/10 px-4 py-3 text-sm text-red-200">{ollamaError}</div> : null}
+        <div className="mt-4 flex gap-3 rounded-2xl border border-white/10 bg-white/[.07] p-2 backdrop-blur-xl">
+          <textarea rows={2} value={ollamaMessage} onChange={(event) => setOllamaMessage(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter" && !event.shiftKey) { event.preventDefault(); testOllama(); } }} placeholder="llama3.2 modeline mesaj yazın..." className="min-h-12 flex-1 resize-none bg-transparent px-3 py-2 text-sm text-white outline-none placeholder:text-slate-500" />
+          <button disabled={busy || !ollamaMessage.trim()} onClick={testOllama} className="self-end rounded-xl bg-white px-5 py-3 text-sm font-bold text-slate-950 transition hover:bg-blue-100 disabled:cursor-not-allowed disabled:opacity-40">{busy ? "Bekleyin" : "Gönder"}</button>
+        </div>
+        <div className="mt-3 flex justify-end"><button onClick={() => { setOllamaHistory([]); setOllamaError(""); }} className="text-xs font-semibold text-slate-400 hover:text-white">Sohbeti temizle</button></div>
+      </div>
     </section>}
   </div>;
 }

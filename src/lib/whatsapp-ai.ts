@@ -216,6 +216,28 @@ const GITHUB_MODELS = [
   "openai/gpt-5",
 ];
 
+async function callOllama(prompt: string) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 25_000);
+  const response = await fetch(`${process.env.OLLAMA_BASE_URL || "https://crawling-lusty-scarecrow.ngrok-free.dev"}/api/chat`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "ngrok-skip-browser-warning": "true" },
+    body: JSON.stringify({
+      model: process.env.OLLAMA_MODEL || "llama3.2",
+      messages: [{ role: "user", content: prompt }],
+      stream: false,
+      format: "json",
+    }),
+    cache: "no-store",
+    signal: controller.signal,
+  }).finally(() => clearTimeout(timeout));
+  if (!response.ok) throw new Error(`Ollama ${response.status}`);
+  const body = await response.json() as { message?: { content?: string } };
+  const parsed = JSON.parse(extractFirstJsonObject(String(body.message?.content || ""))) as Partial<AIReply>;
+  if (!validModelReply(parsed)) throw new Error("Geçersiz Ollama yanıtı");
+  return parsed;
+}
+
 function validModelReply(value: Partial<AIReply>) {
   const reply = String(value.reply || "").trim();
   return reply.length >= 10
@@ -382,7 +404,13 @@ Sadece şu JSON biçiminde cevap ver:
   let parsed: Partial<AIReply> = {};
   let provider = "";
   const providerErrors: string[] = [];
-  if (githubToken) {
+  try {
+    parsed = await callOllama(prompt);
+    provider = `Ollama · ${process.env.OLLAMA_MODEL || "llama3.2"}`;
+  } catch (error) {
+    providerErrors.push(`Ollama: ${error instanceof Error ? error.message : "bağlantı hatası"}`);
+  }
+  if (!provider && githubToken) {
     for (const modelName of GITHUB_MODELS) {
       try {
         parsed = await callGitHubModel(modelName, prompt, githubToken);

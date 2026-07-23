@@ -1,10 +1,9 @@
 import { NextResponse } from "next/server";
 import { getAdminSession } from "@/lib/admin-auth";
+import { generateWhatsAppReply } from "@/lib/whatsapp-ai";
 
 export const runtime = "nodejs";
 export const maxDuration = 60;
-
-const DEFAULT_OLLAMA_URL = "https://crawling-lusty-scarecrow.ngrok-free.dev";
 
 export async function POST(request: Request) {
   const session = await getAdminSession();
@@ -22,24 +21,17 @@ export async function POST(request: Request) {
       : [];
     if (!messages.length) return NextResponse.json({ error: "Mesaj gerekli" }, { status: 400 });
 
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 55_000);
-    const response = await fetch(`${process.env.OLLAMA_BASE_URL || DEFAULT_OLLAMA_URL}/api/chat`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "ngrok-skip-browser-warning": "true",
-      },
-      body: JSON.stringify({ model: process.env.OLLAMA_MODEL || "llama3.2", messages, stream: false }),
-      cache: "no-store",
-      signal: controller.signal,
-    }).finally(() => clearTimeout(timeout));
-
-    if (!response.ok) throw new Error(`Ollama ${response.status}`);
-    const result = await response.json() as { message?: { content?: string } };
-    const reply = String(result.message?.content || "").trim();
-    if (!reply) throw new Error("Ollama boş yanıt döndürdü");
-    return NextResponse.json({ reply, provider: `Ollama · ${process.env.OLLAMA_MODEL || "llama3.2"}` });
+    const latest = messages.at(-1);
+    if (!latest || latest.role !== "user") return NextResponse.json({ error: "Müşteri mesajı gerekli" }, { status: 400 });
+    const result = await generateWhatsAppReply({
+      message: latest.content,
+      customerName: "Test Müşterisi",
+      history: messages.slice(0, -1).map((message: { role: string; content: string }) => ({
+        direction: message.role === "assistant" ? "OUTBOUND" : "INBOUND",
+        content: message.content,
+      })),
+    });
+    return NextResponse.json({ reply: result.reply, provider: result.provider, warning: result.warning });
   } catch {
     return NextResponse.json({ error: "Bağlantı hatası: Sunucu kapalı olabilir" }, { status: 502 });
   }

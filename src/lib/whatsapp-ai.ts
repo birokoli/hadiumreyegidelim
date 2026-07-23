@@ -161,7 +161,7 @@ function extractSalesContext(message: string, history: { direction: string; cont
   let peopleCount: number | undefined;
   for (const inbound of [...inboundMessages].reverse()) {
     const normalized = inbound.toLocaleLowerCase("tr-TR");
-    const numericPeople = normalized.match(/(\d+)\s*(?:kişi|kisi|kişiyiz|kisiyiz)/);
+    const numericPeople = normalized.match(/(\d+)\s*(?:kişi(?:yiz)?|kisi(?:yiz)?)\b/);
     if (numericPeople) {
       peopleCount = Number(numericPeople[1]);
       break;
@@ -175,7 +175,17 @@ function extractSalesContext(message: string, history: { direction: string; cont
   const durationCandidates = [...text.matchAll(/(\d+)\s*(?:gün|gun)/g)]
     .filter((match) => !/medine/.test(text.slice(Math.max(0, (match.index || 0) - 12), (match.index || 0) + match[0].length + 12)));
   const days = durationCandidates.at(-1);
-  const roomOccupancy = text.match(/\b([234])\s*kişilik\s*oda\b/i);
+  let roomOccupancy: 2 | 3 | 4 | undefined;
+  for (const inbound of [...inboundMessages].reverse()) {
+    const explicitRoom = inbound.match(/\b([234])\s*kişilik(?:\s*oda(?:da|yı|yi|dan|dan)?)?\b/i);
+    if (explicitRoom) {
+      roomOccupancy = Number(explicitRoom[1]) as 2 | 3 | 4;
+      break;
+    }
+  }
+  if (!roomOccupancy && /^[234]$/.test(latest) && history.some((item) => item.direction === "OUTBOUND" && /2,\s*3\s*veya\s*4 kişilik oda/i.test(item.content))) {
+    roomOccupancy = Number(latest) as 2 | 3 | 4;
+  }
   const budget = text.match(/(\d[\d.]*)\s*(?:₺|tl)\s*(?:bütçe|butce)?/);
   let umrahType: SalesContext["umrahType"];
   for (const inbound of [...inboundMessages].reverse()) {
@@ -194,7 +204,7 @@ function extractSalesContext(message: string, history: { direction: string; cont
     people: peopleCount,
     days: days ? Number(days[1]) : undefined,
     medinaDays: medinaDays ? Number(medinaDays[1] || medinaDays[2]) : undefined,
-    roomOccupancy: roomOccupancy ? Number(roomOccupancy[1]) as 2 | 3 | 4 : undefined,
+    roomOccupancy,
     month: text.match(/\b(ocak|şubat|subat|mart|nisan|mayıs|mayis|haziran|temmuz|ağustos|agustos|eylül|eylul|ekim|kasım|kasim|aralık|aralik)(?:'?(?:deki|daki))?\b/)?.[1],
     departureDate: text.match(/\b(15|25)\s*(?:eylül|eylul)(?:'?(?:deki|daki))?\b/)?.[1]
       ? `${text.match(/\b(15|25)\s*(?:eylül|eylul)(?:'?(?:deki|daki))?\b/)?.[1]} Eylül`
@@ -471,6 +481,15 @@ function isTrivialOrTestMessage(message: string) {
   return !hasSalesMeaning && meaningfulLetters.length < 8;
 }
 
+function isContextualShortAnswer(message: string, history: { direction: string; content: string }[]) {
+  const latestQuestion = [...history].reverse().find((item) => item.direction === "OUTBOUND")?.content || "";
+  const normalized = message.toLocaleLowerCase("tr-TR").trim();
+  if (/^[234]$/.test(normalized) && /2,\s*3\s*veya\s*4 kişilik oda/i.test(latestQuestion)) return true;
+  if (/^\d{1,2}$/.test(normalized) && /kaç gün|kac gun/i.test(latestQuestion)) return true;
+  if (/^(?:\d+\s*(?:kişi|kisi)|tek(?:im)?|bir kişi|bir kisi)$/.test(normalized) && /kaç kişi|kac kisi/i.test(latestQuestion)) return true;
+  return false;
+}
+
 function extractFirstJsonObject(content: string) {
   const start = content.indexOf("{");
   if (start < 0) throw new Error("Model JSON döndürmedi");
@@ -581,7 +600,7 @@ export async function generateWhatsAppReply(params: {
   const customerAddress = explicitTitle
     ? `${params.customerName?.trim().split(/\s+/)[0]} ${explicitTitle[0].toLocaleUpperCase("tr-TR")}${explicitTitle.slice(1).toLocaleLowerCase("tr-TR")}`
     : "efendim";
-  if (isTrivialOrTestMessage(params.message)) {
+  if (isTrivialOrTestMessage(params.message) && !isContextualShortAnswer(params.message, history)) {
     return {
       reply: conversationStarted
         ? "Mesajınız ulaştı efendim. Umre planlamanızla ilgili hangi konuda yardımcı olmamı istersiniz?"

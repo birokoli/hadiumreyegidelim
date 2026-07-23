@@ -100,9 +100,10 @@ const client = new Client({
 });
 
 const processStartedAt = new Date();
-client.on("qr", async (qr) => { update({ status: "QR_BEKLİYOR", qr: await QRCode.toDataURL(qr), phone: null, error: null }); await syncStatus(); });
-client.on("authenticated", async () => { update({ status: "DOĞRULANDI", qr: null, error: null }); await syncStatus(); });
-client.on("ready", async () => { update({ status: "BAĞLI", qr: null, phone: client.info?.wid?.user || null, error: null }); await syncStatus(); });
+let initializationCompleted = false;
+client.on("qr", async (qr) => { initializationCompleted = true; update({ status: "QR_BEKLİYOR", qr: await QRCode.toDataURL(qr), phone: null, error: null }); await syncStatus(); });
+client.on("authenticated", async () => { initializationCompleted = true; update({ status: "DOĞRULANDI", qr: null, error: null }); await syncStatus(); });
+client.on("ready", async () => { initializationCompleted = true; update({ status: "BAĞLI", qr: null, phone: client.info?.wid?.user || null, error: null }); await syncStatus(); });
 client.on("auth_failure", async (error) => { update({ status: "DOĞRULAMA_HATASI", qr: null, error: String(error) }); await syncStatus(); });
 client.on("disconnected", async (reason) => { update({ status: "BAĞLANTI_KESİLDİ", qr: null, phone: null, error: String(reason) }); await syncStatus(); });
 client.on("change_state", (nextState) => console.log(`[state] WhatsApp durumu: ${nextState}`));
@@ -189,6 +190,11 @@ client.on("unread_count", async (chat) => {
   }
 });
 
+// Sağlık ve teşhis uçları WhatsApp Web başlatılırken de erişilebilir olmalı.
+// Önceden initialize() takıldığında Express hiç ayağa kalkmıyor, launchd ise
+// süreci çalışıyor sanıyordu.
+app.listen(PORT, () => console.log(`WhatsApp QR bot ${PORT} portunda çalışıyor`));
+
 client.initialize().catch(async (error) => {
   update({ status: "HATA", phone: null, error: String(error) });
   console.error("[initialize]", error);
@@ -197,10 +203,17 @@ client.initialize().catch(async (error) => {
   // launchd temiz bir tarayıcı süreciyle yeniden başlatsın.
   setTimeout(() => process.exit(1), 1_000);
 });
+setTimeout(async () => {
+  if (initializationCompleted) return;
+  update({ status: "BAŞLATMA_ZAMAN_AŞIMI", phone: null, error: "WhatsApp Web 120 saniye içinde başlatılamadı." });
+  console.error("[initialize] 120 saniyelik başlatma zaman aşımı; servis yeniden başlatılıyor");
+  await syncStatus();
+  try { await client.destroy(); } catch {}
+  process.exit(1);
+}, 120_000).unref();
 setInterval(syncStatus, 30_000);
 setInterval(reconcileConnection, 10_000);
 syncStatus();
-app.listen(PORT, () => console.log(`WhatsApp QR bot ${PORT} portunda çalışıyor`));
 
 async function shutdown(signal) {
   console.log(`[shutdown] ${signal}`);

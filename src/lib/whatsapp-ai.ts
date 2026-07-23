@@ -114,7 +114,7 @@ async function buildLiveKnowledge() {
 
 export type AIReply = { reply: string; intent: string; leadType: string; leadScore: number; handoff: boolean; handoffReason: string; provider?: string; fallback?: boolean; warning?: string };
 
-type SalesContext = { umrahType?: "bireysel" | "grup"; people?: number; days?: number; budget?: string; budgetScopeKnown: boolean; preferences: string[] };
+type SalesContext = { umrahType?: "bireysel" | "grup"; people?: number; days?: number; month?: string; budget?: string; budgetScopeKnown: boolean; preferences: string[] };
 
 function extractSalesContext(message: string, history: { direction: string; content: string }[] = []): SalesContext {
   const text = [...history.filter((item) => item.direction === "INBOUND").map((item) => item.content), message].join(" ").toLocaleLowerCase("tr-TR");
@@ -126,6 +126,7 @@ function extractSalesContext(message: string, history: { direction: string; cont
     umrahType: /\bbireysel\b/.test(text) ? "bireysel" : /\bgrup\b/.test(text) ? "grup" : undefined,
     people: people ? Number(people[1]) : undefined,
     days: days ? Number(days[1]) : undefined,
+    month: text.match(/\b(ocak|şubat|subat|mart|nisan|mayıs|mayis|haziran|temmuz|ağustos|agustos|eylül|eylul|ekim|kasım|kasim|aralık|aralik)\b/)?.[1],
     budget: budget?.[1] ? `${budget[1]} TL` : undefined,
     budgetScopeKnown: /kişi başı|kisi basi|toplam bütçe|toplam butce|toplamda/.test(text),
     preferences: [],
@@ -145,6 +146,11 @@ function individualSalesReply(context: SalesContext) {
   if (!context.people) return "Bireysel umre planlamanız için kaç kişi olacağınızı öğrenebilir miyim efendim?";
   if (!context.days) return `${context.people} kişilik bireysel umre talebinizi not aldım. Kaç günlük bir program düşünüyorsunuz efendim?`;
   return `${known} talebinizi not aldım. Bireysel umre fiyatı tarih, uçuş, otel ve anlık müsaitliğe göre hazırlanır; teyit edilmemiş rakam vermeyeyim. Düşündüğünüz gidiş tarihini paylaşır mısınız efendim?`;
+}
+
+function unverifiedGroupMonthReply(context: SalesContext) {
+  const month = /ağustos|agustos/.test(context.month || "") ? "Ağustos" : context.month;
+  return `${month} için sistemimizde teyit edilmiş bir grup paketi görünmüyor; var veya dolu diyerek yanlış bilgi vermeyeyim. ${context.people ? `${context.people} kişi` : "Kişi sayınızı"}${context.days ? ` ve ${context.days} gün` : ""} olarak not aldım. Bu dönem için temsilcimizin müsaitlik kontrolü yapmasını ister misiniz?`;
 }
 
 async function generateSafeFallback(message: string, config: WhatsAppAIConfig, history: { direction: string; content: string }[] = [], diagnostic?: string): Promise<AIReply> {
@@ -260,7 +266,7 @@ function enforceAddressing(
   }
   if (conversationStarted) {
     cleaned = cleaned
-      .replace(/^(merhaba|selam(?:lar)?|selamün?\s*aleyküm|(?:ve\s+)?aleyküm\s*selam)(?:\s+[^,.!?\n]+)?[,.:;!?]\s*/i, "")
+      .replace(/^(?:(?:merhaba|selam(?:lar)?|selamün?\s*aleyküm|(?:ve\s+)?aleyküm\s*selam)[^.!?\n]*[.!?]\s*)+/i, "")
       .replace(/^(?:[A-ZÇĞİÖŞÜ][a-zçğıöşü]+\s+(?:bey|hanım)[,.]?\s*)/i, "");
   } else if (/^\s*(?:merhaba|selam(?:lar)?|selamün?\s*aleyküm|aleyküm\s*selam)\b/i.test(incomingMessage || "")) {
     const canonicalGreeting = /selamün?\s*aleyküm|aleyküm\s*selam/i.test(incomingMessage || "")
@@ -312,6 +318,8 @@ export async function generateWhatsAppReply(params: {
   const history = (params.history || []).slice(-10);
   const conversationStarted = history.some((message) => message.direction === "OUTBOUND");
   const salesContext = extractSalesContext(params.message, history);
+  const greetingComplaint = conversationStarted && /(niye|neden).*(selam|merhaba)|sürekli.*(selam|merhaba)|tekrar.*(selam|merhaba)/i.test(params.message);
+  const unverifiedGroupMonth = salesContext.umrahType === "grup" && Boolean(salesContext.month) && !/eylül|eylul/.test(salesContext.month || "");
   const explicitTitle = params.customerName?.match(/\b(bey|hanım)\b/i)?.[1];
   const customerAddress = explicitTitle
     ? `${params.customerName?.trim().split(/\s+/)[0]} ${explicitTitle[0].toLocaleUpperCase("tr-TR")}${explicitTitle.slice(1).toLocaleLowerCase("tr-TR")}`
@@ -408,6 +416,8 @@ Sadece şu JSON biçiminde cevap ver:
       params.customerName,
       params.message,
     );
+    if (greetingComplaint) fallback.reply = `Haklısınız efendim, gereksiz selam tekrarı oldu; özür dilerim. ${unverifiedGroupMonth ? unverifiedGroupMonthReply(salesContext) : "Bundan sonra konuşmaya kaldığımız yerden devam edeceğim."}`;
+    else if (unverifiedGroupMonth) fallback.reply = unverifiedGroupMonthReply(salesContext);
     return fallback;
   }
   const keywordHandoff = config.handoffKeywords.some((word) => params.message.toLocaleLowerCase("tr-TR").includes(word.toLocaleLowerCase("tr-TR")));
@@ -420,6 +430,8 @@ Sadece şu JSON biçiminde cevap ver:
   if (salesContext.umrahType === "bireysel" && /(?:\d[\d.]*)\s*(?:₺|tl|usd|\$)/i.test(cleanedReply)) {
     cleanedReply = individualSalesReply(salesContext);
   }
+  if (greetingComplaint) cleanedReply = `Haklısınız efendim, gereksiz selam tekrarı oldu; özür dilerim. ${unverifiedGroupMonth ? unverifiedGroupMonthReply(salesContext) : "Bundan sonra konuşmaya kaldığımız yerden devam edeceğim."}`;
+  else if (unverifiedGroupMonth) cleanedReply = unverifiedGroupMonthReply(salesContext);
   return {
     reply: cleanedReply || config.outOfHoursMessage,
     intent: String(parsed.intent || "other"),

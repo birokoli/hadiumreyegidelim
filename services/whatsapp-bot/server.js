@@ -40,19 +40,25 @@ app.get("/status", authorized, (_req, res) => res.json(state));
 app.get("/diagnostics", authorized, async (_req, res) => {
   try {
     const connectionState = await client.getState();
-    const chats = await client.getChats();
-    const recentChats = chats
-      .filter((chat) => !chat.isGroup)
-      .sort((a, b) => Number(b.timestamp || 0) - Number(a.timestamp || 0))
-      .slice(0, 10)
-      .map((chat) => ({
-        idSuffix: String(chat.id?._serialized || "").slice(-10),
-        timestamp: chat.timestamp || null,
-        unreadCount: chat.unreadCount || 0,
-        lastMessageId: chat.lastMessage?.id?._serialized || null,
-        lastMessageFromMe: chat.lastMessage?.fromMe ?? null,
-        lastMessageTimestamp: chat.lastMessage?.timestamp || null,
-      }));
+    let recentChats = [];
+    let chatError = null;
+    try {
+      const chats = await client.getChats();
+      recentChats = chats
+        .filter((chat) => !chat.isGroup)
+        .sort((a, b) => Number(b.timestamp || 0) - Number(a.timestamp || 0))
+        .slice(0, 10)
+        .map((chat) => ({
+          idSuffix: String(chat.id?._serialized || "").slice(-10),
+          timestamp: chat.timestamp || null,
+          unreadCount: chat.unreadCount || 0,
+          lastMessageId: chat.lastMessage?.id?._serialized || null,
+          lastMessageFromMe: chat.lastMessage?.fromMe ?? null,
+          lastMessageTimestamp: chat.lastMessage?.timestamp || null,
+        }));
+    } catch (error) {
+      chatError = String(error);
+    }
     res.json({
       processStartedAt: processStartedAt.toISOString(),
       connectionState,
@@ -64,7 +70,7 @@ app.get("/diagnostics", authorized, async (_req, res) => {
         messageCiphertext: client.listenerCount("message_ciphertext"),
         unreadCount: client.listenerCount("unread_count"),
       },
-      chatCount: chats.length,
+      chatError,
       recentChats,
     });
   } catch (error) {
@@ -190,6 +196,37 @@ client.on("unread_count", async (chat) => {
   }
 });
 
+async function pollRecentInboundMessages() {
+  if (state.status !== "BAĞLI" || !client.pupPage) return;
+  try {
+    const minimumTimestamp = Math.floor(processStartedAt.getTime() / 1000) - 10;
+    const messageIds = await client.pupPage.evaluate((since) => {
+      const chats = window.Store?.Chat?.getModelsArray?.() || [];
+      const found = [];
+      for (const chat of chats) {
+        const chatId = String(chat.id?._serialized || "");
+        if (chatId.endsWith("@g.us") || chatId === "status@broadcast") continue;
+        const messages = chat.msgs?.getModelsArray?.() || [];
+        for (const message of messages) {
+          const id = message.id?._serialized;
+          const timestamp = Number(message.t || message.timestamp || 0);
+          if (id && !message.id?.fromMe && timestamp >= since && typeof message.body === "string" && message.body.trim()) {
+            found.push({ id, timestamp });
+          }
+        }
+      }
+      return found.sort((a, b) => a.timestamp - b.timestamp).slice(-30).map((item) => item.id);
+    }, minimumTimestamp);
+    for (const messageId of messageIds) {
+      if (handledMessages.has(messageId)) continue;
+      const message = await client.getMessageById(messageId);
+      if (message) await handleIncomingMessage(message, "poll");
+    }
+  } catch (error) {
+    console.error("[poll]", error);
+  }
+}
+
 // Sağlık ve teşhis uçları WhatsApp Web başlatılırken de erişilebilir olmalı.
 // Önceden initialize() takıldığında Express hiç ayağa kalkmıyor, launchd ise
 // süreci çalışıyor sanıyordu.
@@ -213,6 +250,7 @@ setTimeout(async () => {
 }, 120_000).unref();
 setInterval(syncStatus, 30_000);
 setInterval(reconcileConnection, 10_000);
+setInterval(pollRecentInboundMessages, 4_000);
 syncStatus();
 
 async function shutdown(signal) {

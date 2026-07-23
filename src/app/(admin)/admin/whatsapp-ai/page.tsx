@@ -76,6 +76,28 @@ export default function WhatsAppAIPage() {
     if (response.ok) load();
   };
 
+  const cleanupConversations = async (conversationId?: string) => {
+    const warning = conversationId
+      ? "Bu konuşma ve içindeki bütün mesajlar kalıcı olarak silinecek. Devam edilsin mi?"
+      : "Paneldeki TÜM WhatsApp konuşmaları ve mesajları kalıcı olarak silinecek. Devam edilsin mi?";
+    if (!window.confirm(warning)) return;
+    setBusy(true); setNotice("");
+    const response = await fetch("/api/admin/whatsapp-ai/conversations", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(conversationId ? { conversationId } : { all: true }),
+    });
+    const json = await response.json();
+    setNotice(response.ok
+      ? `${json.conversations} konuşma ve ${json.messages} mesaj temizlendi.`
+      : json.error || "Konuşmalar temizlenemedi.");
+    setBusy(false);
+    if (response.ok) {
+      setOpenConversation(null);
+      load();
+    }
+  };
+
   const test = async () => {
     setBusy(true); setTestWarning(""); setTestProvider("");
     const response = await fetch("/api/admin/whatsapp-ai/test", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ message: testMessage, history: testHistory }) });
@@ -137,7 +159,7 @@ export default function WhatsAppAIPage() {
         {[["Konuşma",data.stats.conversations,"forum"],["Toplam Mesaj",data.stats.totalMessages,"chat"],["AI Yanıtı",data.stats.aiMessages,"smart_toy"],["Temsilci Bekleyen",data.stats.handoffCount,"support_agent"]].map(([label,value,icon]) => <div key={String(label)} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><span className="material-symbols-outlined text-[#003781]">{icon}</span><p className="mt-4 text-3xl font-bold text-slate-900">{value}</p><p className="text-sm text-slate-500">{label}</p></div>)}
       </div>
       <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-        <div className="border-b border-slate-100 px-6 py-5"><div className="flex flex-wrap items-start justify-between gap-3"><div><h2 className="font-bold text-slate-900">Müşteri Mesajları ve AI Yanıtları</h2><p className="mt-1 text-sm text-slate-500">Gelen mesajları, AI cevaplarını ve temsilci bekleyen konuşmaları buradan takip edin.</p></div><button disabled={busy} onClick={cleanupSyntheticTests} className="rounded-xl border border-red-200 px-4 py-2 text-xs font-bold text-red-600 hover:bg-red-50 disabled:opacity-50">Test kayıtlarını temizle</button></div><div className="mt-4 flex flex-wrap gap-2">{[
+        <div className="border-b border-slate-100 px-6 py-5"><div className="flex flex-wrap items-start justify-between gap-3"><div><h2 className="font-bold text-slate-900">Müşteri Mesajları ve AI Yanıtları</h2><p className="mt-1 text-sm text-slate-500">Gelen mesajları, AI cevaplarını ve temsilci bekleyen konuşmaları buradan takip edin.</p></div><div className="flex flex-wrap gap-2"><button disabled={busy} onClick={cleanupSyntheticTests} className="rounded-xl border border-red-200 px-4 py-2 text-xs font-bold text-red-600 hover:bg-red-50 disabled:opacity-50">Tanımlı testleri temizle</button><button disabled={busy || data.conversations.length === 0} onClick={() => cleanupConversations()} className="rounded-xl bg-red-600 px-4 py-2 text-xs font-bold text-white hover:bg-red-700 disabled:opacity-50">Tüm konuşmaları temizle</button></div></div><div className="mt-4 flex flex-wrap gap-2">{[
           ["all", `Tümü (${data.conversations.length})`],
           ["answered", `AI Yanıtladı (${answerCounts.answered})`],
           ["unanswered", `Yanıtlanmadı (${answerCounts.unanswered})`],
@@ -149,7 +171,7 @@ export default function WhatsAppAIPage() {
             const state = conversationState(c);
             const stateLabel = state === "answered" ? "AI Yanıtladı" : state === "unanswered" ? "Yanıtlanmadı" : "Temsilci Bekliyor";
             const stateClass = state === "answered" ? "bg-emerald-50 text-emerald-700" : state === "unanswered" ? "bg-red-50 text-red-700" : "bg-amber-50 text-amber-700";
-            return <div key={c.id} className="px-6 py-4"><button onClick={() => setOpenConversation(openConversation === c.id ? null : c.id)} className="grid w-full gap-3 text-left md:grid-cols-[1fr_2fr_auto] md:items-center"><div><p className="font-bold text-slate-800">{c.name || c.phone}</p><p className="text-xs text-slate-400">+{c.phone}</p></div><p className="truncate text-sm text-slate-500">{c.messages.at(-1)?.content}</p><div className="flex items-center gap-2"><span className={`rounded-full px-2.5 py-1 text-xs font-bold ${stateClass}`}>{stateLabel}</span><span className="text-xs font-bold text-slate-400">{c.leadType || "KARARSIZ"} · %{c.leadScore}</span></div></button>{openConversation === c.id ? <div className="mt-4 space-y-2 rounded-2xl bg-[#efeae2] p-4">{c.messages.map((message) => <div key={message.id} className={`flex ${message.direction === "INBOUND" ? "justify-start" : "justify-end"}`}><div className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm shadow-sm ${message.direction === "INBOUND" ? "rounded-tl-sm bg-white text-slate-700" : "rounded-tr-sm bg-[#d9fdd3] text-slate-800"}`}><p className="mb-1 text-[10px] font-bold uppercase text-slate-400">{message.direction === "INBOUND" ? "Müşteri" : message.source === "ai" ? "AI Yanıtı" : "Temsilci"}</p><p className="whitespace-pre-wrap">{message.content}</p></div></div>)}</div> : null}</div>;
+            return <div key={c.id} className="px-6 py-4"><div className="flex items-start gap-3"><button onClick={() => setOpenConversation(openConversation === c.id ? null : c.id)} className="grid min-w-0 flex-1 gap-3 text-left md:grid-cols-[1fr_2fr_auto] md:items-center"><div><p className="font-bold text-slate-800">{c.name || c.phone}</p><p className="text-xs text-slate-400">+{c.phone}</p></div><p className="truncate text-sm text-slate-500">{c.messages.at(-1)?.content}</p><div className="flex items-center gap-2"><span className={`rounded-full px-2.5 py-1 text-xs font-bold ${stateClass}`}>{stateLabel}</span><span className="text-xs font-bold text-slate-400">{c.leadType || "KARARSIZ"} · %{c.leadScore}</span></div></button><button disabled={busy} onClick={() => cleanupConversations(c.id)} title="Konuşmayı sil" className="rounded-lg p-2 text-slate-300 hover:bg-red-50 hover:text-red-600 disabled:opacity-50"><span className="material-symbols-outlined text-xl">delete</span></button></div>{openConversation === c.id ? <div className="mt-4 space-y-2 rounded-2xl bg-[#efeae2] p-4">{c.messages.map((message) => <div key={message.id} className={`flex ${message.direction === "INBOUND" ? "justify-start" : "justify-end"}`}><div className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm shadow-sm ${message.direction === "INBOUND" ? "rounded-tl-sm bg-white text-slate-700" : "rounded-tr-sm bg-[#d9fdd3] text-slate-800"}`}><p className="mb-1 text-[10px] font-bold uppercase text-slate-400">{message.direction === "INBOUND" ? "Müşteri" : message.source === "ai" ? "AI Yanıtı" : "Temsilci"}</p><p className="whitespace-pre-wrap">{message.content}</p></div></div>)}</div> : null}</div>;
           })}</div>}
       </section>
     </>}

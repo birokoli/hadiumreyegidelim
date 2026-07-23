@@ -257,13 +257,18 @@ async function callOllamaModel(
 async function callOllamaWorkflow(prompt: string, customerMessage: string, salesContext: SalesContext) {
   const gemmaModel = process.env.OLLAMA_REVIEW_MODEL || "gemma2:2b";
   const llamaModel = process.env.OLLAMA_MODEL || "llama3.2";
-  const strategy = await callOllamaModel(gemmaModel, [
-    {
-      role: "system",
-      content: "Sen Türkçe Umre satış stratejistisin. Yanıt yazma. Müşterinin niyetini, bilinen bilgileri, sıradaki tek satış adımını ve kaçınılması gereken hataları en fazla 6 kısa satırla çıkar. Bilgi ve fiyat uydurma.",
-    },
-    { role: "user", content: `Müşteri mesajı: ${customerMessage}\nBilinen müşteri kartı: ${JSON.stringify(salesContext)}` },
-  ], 30_000);
+  let strategy = "Müşterinin verdiği bilgileri tekrar sorma; yalnızca sıradaki eksik satış bilgisini sor. Bilgi ve fiyat uydurma.";
+  try {
+    strategy = await callOllamaModel(gemmaModel, [
+      {
+        role: "system",
+        content: "Sen Türkçe Umre satış stratejistisin. Yanıt yazma. Müşterinin niyetini, bilinen bilgileri, sıradaki tek satış adımını ve kaçınılması gereken hataları en fazla 6 kısa satırla çıkar. Bilgi ve fiyat uydurma.",
+      },
+      { role: "user", content: `Müşteri mesajı: ${customerMessage}\nBilinen müşteri kartı: ${JSON.stringify(salesContext)}` },
+    ], 25_000);
+  } catch {
+    // Strateji modeli geçici olarak hata verse de ana satış modeli güvenli varsayılan stratejiyle devam eder.
+  }
 
   const rawAnswer = await callOllamaModel(llamaModel, [
     {
@@ -271,20 +276,24 @@ async function callOllamaWorkflow(prompt: string, customerMessage: string, sales
       content: "Sen Hadi Umreye Gidelim şirketinin kıdemli WhatsApp satış uzmanısın. Aşağıdaki şirket talimatlarının tamamına uy ve yalnızca istenen JSON'u üret.",
     },
     { role: "user", content: `${prompt}\n\nGEMMA SATIŞ STRATEJİSİ:\n${strategy}` },
-  ], 55_000, true);
+  ], 90_000, true);
+  const rawParsed = JSON.parse(extractFirstJsonObject(rawAnswer)) as Partial<AIReply>;
+  if (!validModelReply(rawParsed)) throw new Error("Geçersiz Llama yanıtı");
 
-  const finalContent = await callOllamaModel(gemmaModel, [
-    {
-      role: "system",
-      content: `Sen son kalite kontrol uzmanısın. Verilen JSON yapısını ve reply dışındaki alanları koru. Yalnızca reply metnindeki Türkçe, imla ve doğallığı düzelt.
+  try {
+    const finalContent = await callOllamaModel(gemmaModel, [
+      {
+        role: "system",
+        content: `Sen son kalite kontrol uzmanısın. Verilen JSON yapısını ve reply dışındaki alanları koru. Yalnızca reply metnindeki Türkçe, imla ve doğallığı düzelt.
 Kesinlikle yeni fiyat, tarih, otel, uçuş, kontenjan, kampanya, kişi veya hizmet ekleme. Mevcut rakamları değiştirme. Selamı tekrarlama. En fazla 450 karakter kullan. Yalnızca geçerli JSON üret.`,
-    },
-    { role: "user", content: rawAnswer },
-  ], 30_000, true);
-
-  const parsed = JSON.parse(extractFirstJsonObject(finalContent)) as Partial<AIReply>;
-  if (!validModelReply(parsed)) throw new Error("Geçersiz Ollama yanıtı");
-  return parsed;
+      },
+      { role: "user", content: rawAnswer },
+    ], 25_000, true);
+    const parsed = JSON.parse(extractFirstJsonObject(finalContent)) as Partial<AIReply>;
+    return validModelReply(parsed) ? parsed : rawParsed;
+  } catch {
+    return rawParsed;
+  }
 }
 
 function validModelReply(value: Partial<AIReply>) {
@@ -349,7 +358,16 @@ function enforceAddressing(
     );
     cleaned = `${canonicalGreeting} ${cleaned}`.trim();
   }
-  return cleaned.replace(/\befendim(?:\s+efendim)+\b/gi, "efendim").trim();
+  let addressCount = 0;
+  return cleaned
+    .replace(/\befendim(?:\s+efendim)+\b/gi, "efendim")
+    .replace(/\befendim\b/gi, (match) => {
+      addressCount += 1;
+      return addressCount === 1 ? match : "";
+    })
+    .replace(/\s+([,.!?])/g, "$1")
+    .replace(/\s{2,}/g, " ")
+    .trim();
 }
 
 async function callGitHubModel(model: string, prompt: string, token: string) {

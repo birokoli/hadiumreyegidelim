@@ -35,6 +35,20 @@ export default function WhatsAppAIPage() {
       });
   }, []);
 
+  useEffect(() => {
+    if (tab !== "connection") return;
+    const refreshQr = () => {
+      fetch("/api/admin/whatsapp-ai", { cache: "no-store" })
+        .then((response) => response.json().then((json) => ({ response, json })))
+        .then(({ response, json }) => {
+          if (response.ok) setData(json);
+        });
+    };
+    refreshQr();
+    const interval = window.setInterval(refreshQr, 8_000);
+    return () => window.clearInterval(interval);
+  }, [tab]);
+
   const save = async () => {
     setBusy(true); setNotice("");
     const response = await fetch("/api/admin/whatsapp-ai", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(config) });
@@ -82,7 +96,7 @@ export default function WhatsAppAIPage() {
         {data.connection.bot.qr ? <Image src={data.connection.bot.qr} alt="WhatsApp bağlantı QR kodu" width={320} height={320} unoptimized className="w-full max-w-72 rounded-xl bg-white p-3 shadow-md" /> :
           <div className="text-center"><span className={`material-symbols-outlined text-6xl ${data.connection.whatsapp ? "text-emerald-500" : "text-slate-300"}`}>{data.connection.whatsapp ? "check_circle" : "qr_code_2"}</span><p className="mt-3 font-bold text-slate-700">{data.connection.whatsapp ? "WhatsApp bağlı" : "QR kod henüz hazır değil"}</p><p className="mt-1 text-sm text-slate-400">{data.connection.bot.status}</p></div>}
       </div>
-      <div><p className="text-xs font-bold uppercase tracking-widest text-emerald-600">Bağlı Cihaz Yöntemi</p><h2 className="mt-2 text-xl font-bold text-slate-900">WhatsApp Business Numaranızı Bağlayın</h2><ol className="mt-5 space-y-4 text-sm leading-relaxed text-slate-600"><li><b>1.</b> Telefonda WhatsApp Business uygulamasını açın.</li><li><b>2.</b> Ayarlar → Bağlı Cihazlar → Cihaz Bağla bölümüne girin.</li><li><b>3.</b> Soldaki QR kodu telefonunuzla okutun.</li><li><b>4.</b> Durum “BAĞLI” olduğunda numaranız telefonda açık kalırken AI gelen mesajlara dönüş yapar.</li></ol><div className="mt-6 rounded-xl bg-blue-50 p-4 text-sm text-blue-800"><b>Servis durumu:</b> {data.connection.bot.status}{data.connection.bot.phone ? ` · +${data.connection.bot.phone}` : ""}{data.connection.bot.error ? <div className="mt-1 text-xs text-red-600">{data.connection.bot.error}</div> : null}</div><button onClick={load} className="mt-5 rounded-xl border border-slate-200 px-5 py-3 text-sm font-bold text-[#003781] hover:bg-slate-50">Durumu ve QR’ı Yenile</button></div>
+      <div><p className="text-xs font-bold uppercase tracking-widest text-emerald-600">Bağlı Cihaz Yöntemi</p><h2 className="mt-2 text-xl font-bold text-slate-900">WhatsApp Business Numaranızı Bağlayın</h2><p className="mt-3 rounded-xl bg-emerald-50 p-3 text-sm text-emerald-800">Bu kod WhatsApp Web’in gerçek bağlantı kodudur ve 8 saniyede bir otomatik yenilenir. Mevcut telefon veya Safari oturumundan çıkış yapmayın.</p><ol className="mt-5 space-y-4 text-sm leading-relaxed text-slate-600"><li><b>1.</b> Telefonda WhatsApp Business uygulamasını açın.</li><li><b>2.</b> Ayarlar → Bağlı Cihazlar → Cihaz Bağla bölümüne girin.</li><li><b>3.</b> Soldaki QR kodu telefonunuzla okutun.</li><li><b>4.</b> Durum “BAĞLI” olduğunda numaranız telefonda açık kalırken AI gelen mesajlara dönüş yapar.</li></ol><div className="mt-6 rounded-xl bg-blue-50 p-4 text-sm text-blue-800"><b>Servis durumu:</b> {data.connection.bot.status}{data.connection.bot.phone ? ` · +${data.connection.bot.phone}` : ""}{data.connection.bot.error ? <div className="mt-1 text-xs text-red-600">{data.connection.bot.error}</div> : null}</div><button onClick={load} className="mt-5 rounded-xl border border-slate-200 px-5 py-3 text-sm font-bold text-[#003781] hover:bg-slate-50">Durumu ve QR’ı Yenile</button></div>
     </section>}
 
     {tab === "knowledge" && <div className="space-y-5">

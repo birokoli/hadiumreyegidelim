@@ -211,10 +211,18 @@ function unverifiedGroupMonthReply(context: SalesContext) {
   return `${month} için sistemimizde teyit edilmiş bir grup paketi görünmüyor; var veya dolu diyerek yanlış bilgi vermeyeyim. ${context.people ? `${context.people} kişi` : "Kişi sayınızı"}${context.days ? ` ve ${context.days} gün` : ""} olarak not aldım. Bu dönem için temsilcimizin müsaitlik kontrolü yapmasını ister misiniz?`;
 }
 
+function customerRequestsHandoff(message: string, keywords: string[]) {
+  const normalized = message.toLocaleLowerCase("tr-TR");
+  return keywords.some((word) => {
+    const escaped = word.toLocaleLowerCase("tr-TR").replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    return new RegExp(`(?:^|\\s|[,.!?])${escaped}(?:$|\\s|[,.!?])`, "i").test(normalized);
+  });
+}
+
 async function generateSafeFallback(message: string, config: WhatsAppAIConfig, history: { direction: string; content: string }[] = [], diagnostic?: string): Promise<AIReply> {
   const normalized = message.toLocaleLowerCase("tr-TR");
   const context = extractSalesContext(message, history);
-  let handoff = config.handoffKeywords.some((word) => normalized.includes(word.toLocaleLowerCase("tr-TR")));
+  let handoff = customerRequestsHandoff(message, config.handoffKeywords);
   let handoffReason = handoff ? "Müşteri temsilci talep etti" : "";
   const campaignSetting = await prisma.setting.findUnique({ where: { key: EYLUL_CAMPAIGN_SETTING_KEY } });
   const campaign = parseEylulCampaign(campaignSetting?.value, DEFAULT_EYLUL_CAMPAIGN);
@@ -569,6 +577,12 @@ export async function generateWhatsAppReply(params: {
       fallback: true,
     };
   }
+  if (/(pahalı|pahali|fiyat araştır|fiyat arastir|başka yerlere bak|baska yerlere bak|daha ucuz)/i.test(params.message)) {
+    const safe = await generateSafeFallback(params.message, config, history);
+    safe.reply = enforceAddressing(safe.reply, conversationStarted, params.customerName, params.message);
+    safe.provider = "Hızlı itiraz yönetimi";
+    return safe;
+  }
   if (salesContext.umrahType === "grup") {
     const safe = await generateSafeFallback(params.message, config, history);
     safe.reply = enforceAddressing(safe.reply, conversationStarted, params.customerName, params.message);
@@ -688,7 +702,7 @@ Sadece şu JSON biçiminde cevap ver:
     else if (unverifiedGroupMonth) fallback.reply = unverifiedGroupMonthReply(salesContext);
     return fallback;
   }
-  const keywordHandoff = config.handoffKeywords.some((word) => params.message.toLocaleLowerCase("tr-TR").includes(word.toLocaleLowerCase("tr-TR")));
+  const keywordHandoff = customerRequestsHandoff(params.message, config.handoffKeywords);
   let cleanedReply = enforceAddressing(
     String(parsed.reply || config.outOfHoursMessage).slice(0, 3500),
     conversationStarted,

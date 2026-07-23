@@ -258,9 +258,28 @@ async function generateSafeFallback(message: string, config: WhatsAppAIConfig, h
   let leadType = "KARARSIZ";
 
   const objection = /(pahalı|pahali|fiyat araştır|fiyat arastir|başka yerlere bak|baska yerlere bak|daha ucuz)/.test(normalized);
+  const repeatedAnswerComplaint = /(neden|niye).*(sabit|aynı|ayni|tekrar)|sabit cevap|aynı cevap|ayni cevap/.test(normalized);
+  const medinaHotelQuestion = /medine.*otel|otel.*medine/.test(normalized);
+  const availabilityQuestion = /(müsait|musait|yer var|kontenjan).*(mı|mi|mu|mü|var)|(?:müsaitlik|musaitlik|kontenjan)/.test(normalized);
   if (handoff) {
     reply = "Elbette, talebinizi müşteri temsilcimize aktarıyorum. Uygun olduğunuz saat aralığını yazar mısınız?";
     intent = "support";
+  } else if (repeatedAnswerComplaint) {
+    reply = "Haklısınız efendim; sorunuzu yanlış yorumlayıp önceki paket bilgisini tekrarladım. Sorunuza doğrudan cevap vererek devam edeceğim.";
+    intent = "complaint";
+  } else if (medinaHotelQuestion) {
+    reply = "Evet, programda Medine konaklaması bulunuyor. Ancak otelin adı ve güncel müsaitliği kesinleşmeden yanlış bilgi vermeyeyim; bu ayrıntıyı temsilcimizden teyit edelim.";
+    intent = "group_umrah";
+    leadType = "GRUP";
+    handoff = true;
+    handoffReason = "Medine oteli ve müsaitlik teyidi gerekli";
+  } else if (availabilityQuestion) {
+    const roomText = context.roomOccupancy ? `${context.roomOccupancy} kişilik oda için ` : "";
+    reply = `${roomText}güncel müsaitlik anlık değişebiliyor. Kesin yer bilgisi vermeden önce rezervasyon ekibimizden kontrol edelim; talebinizi teyide aktarıyorum.`;
+    intent = "booking";
+    leadType = context.umrahType === "grup" ? "GRUP" : "KARARSIZ";
+    handoff = true;
+    handoffReason = "Güncel oda veya kontenjan müsaitliği teyidi gerekli";
   } else if (objection) {
     reply = "Araştırma yapmanız çok doğal efendim. Kıyaslama yaparken otelin Kâbe’ye gerçek mesafesine, rehberlik hizmetinin kapsamına ve paketin her şey dâhil olup olmadığına dikkat etmenizi tavsiye ederim. İncelediğiniz seçenek varsa birlikte karşılaştırabiliriz.";
     intent = "price";
@@ -635,14 +654,6 @@ export async function generateWhatsAppReply(params: {
     safe.provider = "Hızlı itiraz yönetimi";
     return safe;
   }
-  if (salesContext.umrahType === "grup") {
-    const safe = await generateSafeFallback(params.message, config, history);
-    safe.reply = enforceAddressing(safe.reply, conversationStarted, params.customerName, params.message);
-    safe.provider = /eylül|eylul/.test(salesContext.month || "")
-      ? "Doğrulanmış Eylül kampanya verisi"
-      : "Hızlı grup umresi satış akışı";
-    return safe;
-  }
   const prompt = `Sen ${config.assistantName} isimli Türkçe WhatsApp satış ve müşteri destek asistanısın.
 
 KİMLİK VE ÜSLUP:
@@ -656,6 +667,9 @@ ${config.salesRules}
 - Bilgi tabanında bulunmayan bir ayrıntı sorulursa açıkça "Bu ayrıntıyı teyit edip size net bilgi verelim" de ve temsilciye aktar.
 - Müşterinin bireysel mi grup mu istediğini anlamaya çalış; farklarını gerçek bir danışman gibi açıkla.
 - Müşterinin sorduğu soruya önce doğrudan cevap ver; ardından yalnızca ilerlemek için gerekli tek bir soru sor.
+- Son müşteri mesajı, konuşmanın önceki satış adımlarından daha önceliklidir. Müşteri otel, Medine, müsaitlik, itiraz, şikâyet veya açıklama sorarsa eski paket özetini tekrarlama; yalnızca o mesaja uygun cevap ver.
+- Daha önce verdiğin bir paragrafı aynen veya küçük değişikliklerle yeniden gönderme. Doğal bir insan gibi müşterinin son cümlesini anlayıp konuşmayı oradan sürdür.
+- Müşterinin duygusuna kısa ve doğal biçimde karşılık ver. Hata yaptığını söylüyorsa savunmaya geçmeden kabul et ve aynı hatayı tekrarlama.
 - Bir mesajda en fazla üç kısa paragraf ve en fazla 450 karakter kullan.
 - Markdown başlığı, tablo, yıldız işareti, kod bloğu ve uzun madde listesi kullanma.
 - Aynı selamlama veya bilgiyi tekrar etme. Müşterinin söylemediği isim, tarih, bütçe veya kişi sayısını varsayma.

@@ -57,6 +57,16 @@ client.on("ready", async () => { update({ status: "BAĞLI", qr: null, phone: cli
 client.on("auth_failure", async (error) => { update({ status: "DOĞRULAMA_HATASI", qr: null, error: String(error) }); await syncStatus(); });
 client.on("disconnected", async (reason) => { update({ status: "BAĞLANTI_KESİLDİ", qr: null, phone: null, error: String(reason) }); await syncStatus(); });
 
+async function reconcileConnection() {
+  try {
+    const connectionState = await client.getState();
+    if (connectionState === "CONNECTED" && state.status !== "BAĞLI") {
+      update({ status: "BAĞLI", qr: null, phone: client.info?.wid?.user || state.phone, error: null });
+      await syncStatus();
+    }
+  } catch {}
+}
+
 client.on("message", async (message) => {
   if (message.fromMe || message.isStatus || message.from === "status@broadcast" || message.from.endsWith("@g.us") || !message.body?.trim()) return;
   try {
@@ -82,5 +92,6 @@ client.on("message", async (message) => {
 
 client.initialize().catch((error) => update({ status: "HATA", error: String(error) }));
 setInterval(syncStatus, 30_000);
+setInterval(reconcileConnection, 10_000);
 syncStatus();
 app.listen(PORT, () => console.log(`WhatsApp QR bot ${PORT} portunda çalışıyor`));

@@ -90,7 +90,6 @@ export default function WhatsAppAIPage() {
     if (response.ok) {
       setOllamaHistory((current) => [...current, { role: "assistant", content: json.reply }].slice(-20));
       setOllamaProvider(json.provider || "Güvenli hazır yanıt");
-      if (json.warning) setOllamaError(json.warning);
     }
     else setOllamaError(json.error || "Bağlantı hatası: Sunucu kapalı olabilir");
     setBusy(false);

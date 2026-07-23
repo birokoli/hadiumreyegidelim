@@ -114,7 +114,7 @@ async function buildLiveKnowledge() {
 
 export type AIReply = { reply: string; intent: string; leadType: string; leadScore: number; handoff: boolean; handoffReason: string; provider?: string; fallback?: boolean; warning?: string };
 
-type SalesContext = { umrahType?: "bireysel" | "grup"; people?: number; days?: number; month?: string; budget?: string; budgetScopeKnown: boolean; preferences: string[] };
+type SalesContext = { umrahType?: "bireysel" | "grup"; people?: number; days?: number; month?: string; departureDate?: string; budget?: string; budgetScopeKnown: boolean; preferences: string[] };
 
 function extractSalesContext(message: string, history: { direction: string; content: string }[] = []): SalesContext {
   const text = [...history.filter((item) => item.direction === "INBOUND").map((item) => item.content), message].join(" ").toLocaleLowerCase("tr-TR");
@@ -123,10 +123,11 @@ function extractSalesContext(message: string, history: { direction: string; cont
   const days = text.match(/(\d+)\s*(?:gün|gun)/);
   const budget = text.match(/(\d[\d.]*)\s*(?:₺|tl)\s*(?:bütçe|butce)?/);
   const context: SalesContext = {
-    umrahType: /\bbireysel\b/.test(text) ? "bireysel" : /\bgrup\b/.test(text) ? "grup" : undefined,
+    umrahType: /\bbireysel\b/.test(text) ? "bireysel" : /\bgrup\b|\b(?:15|25)\s*(?:eylül|eylul)\b/.test(text) ? "grup" : undefined,
     people: people ? Number(people[1]) : undefined,
     days: days ? Number(days[1]) : undefined,
     month: text.match(/\b(ocak|şubat|subat|mart|nisan|mayıs|mayis|haziran|temmuz|ağustos|agustos|eylül|eylul|ekim|kasım|kasim|aralık|aralik)\b/)?.[1],
+    departureDate: text.match(/\b(15|25)\s*(?:eylül|eylul)\b/)?.[0]?.replace(/eylul/i, "Eylül"),
     budget: budget?.[1] ? `${budget[1]} TL` : undefined,
     budgetScopeKnown: /kişi başı|kisi basi|toplam bütçe|toplam butce|toplamda/.test(text),
     preferences: [],
@@ -170,6 +171,16 @@ async function generateSafeFallback(message: string, config: WhatsAppAIConfig, h
     reply = individualSalesReply(context);
     intent = "individual_umrah";
     leadType = "BIREYSEL";
+  } else if (context.umrahType === "grup" && /eylül|eylul/.test(context.month || "")) {
+    if (!context.departureDate) {
+      reply = `${context.people ? `${context.people} kişi için ` : ""}Eylül grup umresi talebinizi not aldım. 15 Eylül mü, 25 Eylül mü çıkış yapmak istersiniz efendim?`;
+    } else if (!context.days) {
+      reply = `${context.departureDate} çıkışlı${context.people ? ` ${context.people} kişilik` : ""} grup umresi talebinizi not aldım. 10, 15 veya 20 günlük programdan hangisini düşünüyorsunuz efendim?`;
+    } else {
+      reply = `${context.departureDate} çıkışlı ${context.days} günlük${context.people ? ` ${context.people} kişilik` : ""} talebinizi not aldım. 2, 3 veya 4 kişilik odadan hangisini tercih edersiniz efendim?`;
+    }
+    intent = "group_umrah";
+    leadType = "GRUP";
   } else if (/(hanım|hanim)/.test(normalized)) {
     reply = "Hanım Umresi, hanım misafirlerimize özel grup düzeni ve rehberlikle planlanır. Güncel tarih ve fiyatı temsilcimiz teyit edecektir. Kaç kişi katılmayı düşünüyorsunuz?";
     intent = "group_umrah";

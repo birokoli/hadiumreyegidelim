@@ -218,7 +218,7 @@ const GITHUB_MODELS = [
 
 async function callOllama(prompt: string) {
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 25_000);
+  const timeout = setTimeout(() => controller.abort(), 50_000);
   const response = await fetch(`${process.env.OLLAMA_BASE_URL || "https://crawling-lusty-scarecrow.ngrok-free.dev"}/api/chat`, {
     method: "POST",
     headers: { "Content-Type": "application/json", "ngrok-skip-browser-warning": "true" },

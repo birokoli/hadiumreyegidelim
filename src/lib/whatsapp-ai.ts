@@ -11,6 +11,7 @@ import {
 } from "@/lib/eylul-campaign";
 
 export const WHATSAPP_AI_SETTING_KEY = "WHATSAPP_AI_CONFIG";
+export const WHATSAPP_BOT_STATUS_SETTING_KEY = "WHATSAPP_BOT_STATUS";
 
 let tablesReady = false;
 export async function ensureWhatsAppAITables() {

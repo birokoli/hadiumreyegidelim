@@ -27,6 +27,18 @@ app.post("/reset", authorized, async (_req, res) => {
   res.json({ success: true });
 });
 
+async function syncStatus() {
+  try {
+    await fetch(`${WEBSITE_URL}/api/whatsapp/worker/status`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${BOT_TOKEN}`, "Content-Type": "application/json" },
+      body: JSON.stringify(state),
+    });
+  } catch (error) {
+    console.error("[status]", error);
+  }
+}
+
 const client = new Client({
   authStrategy: new LocalAuth({ dataPath: SESSION_PATH, clientId: "hadi-umreye" }),
   puppeteer: {
@@ -36,11 +48,11 @@ const client = new Client({
   },
 });
 
-client.on("qr", async (qr) => update({ status: "QR_BEKLİYOR", qr: await QRCode.toDataURL(qr), phone: null, error: null }));
-client.on("authenticated", () => update({ status: "DOĞRULANDI", qr: null, error: null }));
-client.on("ready", () => update({ status: "BAĞLI", qr: null, phone: client.info?.wid?.user || null, error: null }));
-client.on("auth_failure", (error) => update({ status: "DOĞRULAMA_HATASI", qr: null, error: String(error) }));
-client.on("disconnected", (reason) => update({ status: "BAĞLANTI_KESİLDİ", qr: null, phone: null, error: String(reason) }));
+client.on("qr", async (qr) => { update({ status: "QR_BEKLİYOR", qr: await QRCode.toDataURL(qr), phone: null, error: null }); await syncStatus(); });
+client.on("authenticated", async () => { update({ status: "DOĞRULANDI", qr: null, error: null }); await syncStatus(); });
+client.on("ready", async () => { update({ status: "BAĞLI", qr: null, phone: client.info?.wid?.user || null, error: null }); await syncStatus(); });
+client.on("auth_failure", async (error) => { update({ status: "DOĞRULAMA_HATASI", qr: null, error: String(error) }); await syncStatus(); });
+client.on("disconnected", async (reason) => { update({ status: "BAĞLANTI_KESİLDİ", qr: null, phone: null, error: String(reason) }); await syncStatus(); });
 
 client.on("message", async (message) => {
   if (message.fromMe || message.isStatus || message.from === "status@broadcast" || message.from.endsWith("@g.us") || !message.body?.trim()) return;
@@ -66,4 +78,6 @@ client.on("message", async (message) => {
 });
 
 client.initialize().catch((error) => update({ status: "HATA", error: String(error) }));
+setInterval(syncStatus, 30_000);
+syncStatus();
 app.listen(PORT, () => console.log(`WhatsApp QR bot ${PORT} portunda çalışıyor`));

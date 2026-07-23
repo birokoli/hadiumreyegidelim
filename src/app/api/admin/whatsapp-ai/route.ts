@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getAdminSession } from "@/lib/admin-auth";
-import { ensureWhatsAppAITables, getWhatsAppAIConfig, parseWhatsAppAIConfig, WHATSAPP_AI_SETTING_KEY } from "@/lib/whatsapp-ai";
+import { ensureWhatsAppAITables, getWhatsAppAIConfig, parseWhatsAppAIConfig, WHATSAPP_AI_SETTING_KEY, WHATSAPP_BOT_STATUS_SETTING_KEY } from "@/lib/whatsapp-ai";
 
 async function authorized() {
   const session = await getAdminSession();
@@ -11,27 +11,19 @@ async function authorized() {
 export async function GET() {
   if (!(await authorized())) return NextResponse.json({ error: "Yetkisiz işlem" }, { status: 401 });
   await ensureWhatsAppAITables();
-  let bot = { status: "SERVİS_EKSİK", qr: null as string | null, phone: null as string | null, error: null as string | null };
-  if (process.env.WHATSAPP_BOT_URL && process.env.WHATSAPP_BOT_TOKEN) {
-    try {
-      const response = await fetch(`${process.env.WHATSAPP_BOT_URL.replace(/\/$/, "")}/status`, {
-        headers: { Authorization: `Bearer ${process.env.WHATSAPP_BOT_TOKEN}` },
-        cache: "no-store",
-        signal: AbortSignal.timeout(5000),
-      });
-      if (response.ok) bot = await response.json();
-      else bot = { ...bot, status: "SERVİS_HATASI", error: `HTTP ${response.status}` };
-    } catch (error) {
-      bot = { ...bot, status: "SERVİSE_ULAŞILAMIYOR", error: error instanceof Error ? error.message : "Bağlantı hatası" };
-    }
-  }
-  const [config, conversations, totalMessages, aiMessages, handoffCount] = await Promise.all([
+  const [config, conversations, totalMessages, aiMessages, handoffCount, botStatusSetting] = await Promise.all([
     getWhatsAppAIConfig(),
     prisma.whatsAppConversation.findMany({ orderBy: { lastMessageAt: "desc" }, take: 50, include: { messages: { orderBy: { createdAt: "desc" }, take: 1 } } }),
     prisma.whatsAppMessage.count(),
     prisma.whatsAppMessage.count({ where: { source: "ai" } }),
     prisma.whatsAppConversation.count({ where: { status: "HUMAN_NEEDED" } }),
+    prisma.setting.findUnique({ where: { key: WHATSAPP_BOT_STATUS_SETTING_KEY } }),
   ]);
+  let bot = { status: "YEREL_SERVİS_BEKLENİYOR", qr: null as string | null, phone: null as string | null, error: null as string | null, lastEventAt: null as string | null };
+  try {
+    if (botStatusSetting?.value) bot = { ...bot, ...JSON.parse(botStatusSetting.value) };
+    if (bot.lastEventAt && Date.now() - new Date(bot.lastEventAt).getTime() > 90_000) bot.status = "YEREL_SERVİS_ÇEVRİMDIŞI";
+  } catch {}
   return NextResponse.json({
     config,
     conversations,

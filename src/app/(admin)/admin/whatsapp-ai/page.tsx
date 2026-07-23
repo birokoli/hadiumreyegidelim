@@ -67,7 +67,7 @@ export default function WhatsAppAIPage() {
 
   const cleanupSyntheticTests = async () => {
     setBusy(true); setNotice("");
-    const response = await fetch("/api/admin/whatsapp-ai", { method: "DELETE" });
+    const response = await fetch("/api/admin/whatsapp-ai/cleanup-tests", { method: "POST" });
     const json = await response.json();
     setNotice(response.ok
       ? `${json.conversations} test konuşması ve ${json.messages} test mesajı temizlendi.`

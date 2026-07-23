@@ -138,13 +138,14 @@ async function buildLiveKnowledge() {
 
 export type AIReply = { reply: string; intent: string; leadType: string; leadScore: number; handoff: boolean; handoffReason: string; provider?: string; fallback?: boolean; warning?: string };
 
-type SalesContext = { umrahType?: "bireysel" | "grup"; people?: number; days?: number; month?: string; departureDate?: string; budget?: string; budgetScopeKnown: boolean; preferences: string[] };
+type SalesContext = { umrahType?: "bireysel" | "grup"; people?: number; days?: number; roomOccupancy?: 2 | 3 | 4; month?: string; departureDate?: string; budget?: string; budgetScopeKnown: boolean; preferences: string[] };
 
 function salesContextForModel(context: SalesContext) {
   return [
     context.umrahType ? `Umre türü: ${context.umrahType}` : null,
     context.people ? `Kişi sayısı: ${context.people}` : null,
     context.days ? `Süre: ${context.days} gün` : null,
+    context.roomOccupancy ? `Oda tipi: ${context.roomOccupancy} kişilik oda` : null,
     context.month ? `Ay: ${context.month}` : null,
     context.departureDate ? `Çıkış: ${context.departureDate}` : null,
     context.budget ? `Bütçe: ${context.budget}${context.budgetScopeKnown ? " (kapsamı belli)" : " (kişi başı mı toplam mı teyit edilmeli)"}` : null,
@@ -157,11 +158,13 @@ function extractSalesContext(message: string, history: { direction: string; cont
   const latest = message.toLocaleLowerCase("tr-TR").trim();
   const people = text.match(/(\d+)\s*(?:kişi|kisiyiz|kişiyiz)/);
   const days = text.match(/(\d+)\s*(?:gün|gun)/);
+  const roomOccupancy = text.match(/\b([234])\s*kişilik\s*oda\b/i);
   const budget = text.match(/(\d[\d.]*)\s*(?:₺|tl)\s*(?:bütçe|butce)?/);
   const context: SalesContext = {
     umrahType: /\bbireysel\b/.test(text) ? "bireysel" : /\bgrup\b|\b(?:15|25)\s*(?:eylül|eylul)\b/.test(text) ? "grup" : undefined,
     people: people ? Number(people[1]) : undefined,
     days: days ? Number(days[1]) : undefined,
+    roomOccupancy: roomOccupancy ? Number(roomOccupancy[1]) as 2 | 3 | 4 : undefined,
     month: text.match(/\b(ocak|şubat|subat|mart|nisan|mayıs|mayis|haziran|temmuz|ağustos|agustos|eylül|eylul|ekim|kasım|kasim|aralık|aralik)\b/)?.[1],
     departureDate: text.match(/\b(15|25)\s*(?:eylül|eylul)\b/)?.[0]?.replace(/eylul/i, "Eylül"),
     budget: budget?.[1] ? `${budget[1]} TL` : undefined,
@@ -193,7 +196,8 @@ function unverifiedGroupMonthReply(context: SalesContext) {
 async function generateSafeFallback(message: string, config: WhatsAppAIConfig, history: { direction: string; content: string }[] = [], diagnostic?: string): Promise<AIReply> {
   const normalized = message.toLocaleLowerCase("tr-TR");
   const context = extractSalesContext(message, history);
-  const handoff = config.handoffKeywords.some((word) => normalized.includes(word.toLocaleLowerCase("tr-TR")));
+  let handoff = config.handoffKeywords.some((word) => normalized.includes(word.toLocaleLowerCase("tr-TR")));
+  let handoffReason = handoff ? "Müşteri temsilci talep etti" : "";
   const campaignSetting = await prisma.setting.findUnique({ where: { key: EYLUL_CAMPAIGN_SETTING_KEY } });
   const campaign = parseEylulCampaign(campaignSetting?.value, DEFAULT_EYLUL_CAMPAIGN);
   let reply = "Size doğru bilgi verebilmem için grup umresi mi, bireysel umre mi düşündüğünüzü ve kaç kişi olacağınızı paylaşır mısınız?";
@@ -212,8 +216,22 @@ async function generateSafeFallback(message: string, config: WhatsAppAIConfig, h
       reply = `${context.people ? `${context.people} kişi için ` : ""}Eylül grup umresi talebinizi not aldım. 15 Eylül mü, 25 Eylül mü çıkış yapmak istersiniz efendim?`;
     } else if (!context.days) {
       reply = `${context.departureDate} çıkışlı${context.people ? ` ${context.people} kişilik` : ""} grup umresi talebinizi not aldım. 10, 15 veya 20 günlük programdan hangisini düşünüyorsunuz efendim?`;
-    } else {
+    } else if (!context.roomOccupancy) {
       reply = `${context.departureDate} çıkışlı ${context.days} günlük${context.people ? ` ${context.people} kişilik` : ""} talebinizi not aldım. 2, 3 veya 4 kişilik odadan hangisini tercih edersiniz efendim?`;
+    } else {
+      const selectedPackage = campaign.packages.find((item) => item.days.startsWith(String(context.days)));
+      const selectedPrice = selectedPackage
+        ? context.roomOccupancy === 2 ? selectedPackage.double : context.roomOccupancy === 3 ? selectedPackage.triple : selectedPackage.quad
+        : null;
+      if (selectedPrice && selectedPrice !== "Bilgi Al") {
+        const price = `${selectedPrice.replace("$", "")} USD`;
+        const inclusions = campaign.includedItems.map((item) => item.label.toLocaleLowerCase("tr-TR")).join(", ");
+        reply = `${context.departureDate} çıkışlı ${context.days} günlük grup umresinde ${context.roomOccupancy} kişilik oda kişi başı ${price}. Pakete ${inclusions} dahildir. Otel ${campaign.hotelDetail.toLocaleLowerCase("tr-TR")}; toplam kontenjan ${campaign.capacity} kişidir. Sizin için yer ayırtmamızı ister misiniz?`;
+      } else {
+        reply = "Bu programın güncel fiyatını temsilcimizden teyit edip size net bilgi verelim. Talebinizi aktarmamı ister misiniz?";
+        handoff = true;
+        handoffReason = "Güncel kampanya fiyatı teyidi gerekli";
+      }
     }
     intent = "group_umrah";
     leadType = "GRUP";
@@ -248,7 +266,7 @@ async function generateSafeFallback(message: string, config: WhatsAppAIConfig, h
     leadType,
     leadScore: handoff ? 80 : 35,
     handoff,
-    handoffReason: handoff ? "Müşteri temsilci talep etti" : "",
+    handoffReason,
     provider: "Güvenli hazır yanıt",
     fallback: true,
     warning: diagnostic
@@ -513,6 +531,12 @@ export async function generateWhatsAppReply(params: {
       provider: "Güvenli karşılama",
       fallback: true,
     };
+  }
+  if (salesContext.umrahType === "grup" && /eylül|eylul/.test(salesContext.month || "")) {
+    const safe = await generateSafeFallback(params.message, config, history);
+    safe.reply = enforceAddressing(safe.reply, conversationStarted, params.customerName, params.message);
+    safe.provider = "Doğrulanmış Eylül kampanya verisi";
+    return safe;
   }
   const prompt = `Sen ${config.assistantName} isimli Türkçe WhatsApp satış ve müşteri destek asistanısın.
 

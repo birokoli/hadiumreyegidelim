@@ -138,13 +138,14 @@ async function buildLiveKnowledge() {
 
 export type AIReply = { reply: string; intent: string; leadType: string; leadScore: number; handoff: boolean; handoffReason: string; provider?: string; fallback?: boolean; warning?: string };
 
-type SalesContext = { umrahType?: "bireysel" | "grup"; people?: number; days?: number; roomOccupancy?: 2 | 3 | 4; month?: string; departureDate?: string; budget?: string; budgetScopeKnown: boolean; preferences: string[] };
+type SalesContext = { umrahType?: "bireysel" | "grup"; people?: number; days?: number; medinaDays?: number; roomOccupancy?: 2 | 3 | 4; month?: string; departureDate?: string; budget?: string; budgetScopeKnown: boolean; preferences: string[] };
 
 function salesContextForModel(context: SalesContext) {
   return [
     context.umrahType ? `Umre türü: ${context.umrahType}` : null,
     context.people ? `Kişi sayısı: ${context.people}` : null,
     context.days ? `Süre: ${context.days} gün` : null,
+    context.medinaDays ? `Medine konaklaması: ${context.medinaDays} gün` : null,
     context.roomOccupancy ? `Oda tipi: ${context.roomOccupancy} kişilik oda` : null,
     context.month ? `Ay: ${context.month}` : null,
     context.departureDate ? `Çıkış: ${context.departureDate}` : null,
@@ -154,16 +155,33 @@ function salesContextForModel(context: SalesContext) {
 }
 
 function extractSalesContext(message: string, history: { direction: string; content: string }[] = []): SalesContext {
-  const text = [...history.filter((item) => item.direction === "INBOUND").map((item) => item.content), message].join(" ").toLocaleLowerCase("tr-TR");
+  const inboundMessages = [...history.filter((item) => item.direction === "INBOUND").map((item) => item.content), message];
+  const text = inboundMessages.join(" ").toLocaleLowerCase("tr-TR");
   const latest = message.toLocaleLowerCase("tr-TR").trim();
   const people = text.match(/(\d+)\s*(?:kişi|kisiyiz|kişiyiz)/);
-  const days = text.match(/(\d+)\s*(?:gün|gun)/);
+  const medinaDays = text.match(/(\d+)\s*(?:gün|gun|gece)\s*medine|medine(?:'de|de)?\s*(\d+)\s*(?:gün|gun|gece)/);
+  const durationCandidates = [...text.matchAll(/(\d+)\s*(?:gün|gun)/g)]
+    .filter((match) => !/medine/.test(text.slice(Math.max(0, (match.index || 0) - 12), (match.index || 0) + match[0].length + 12)));
+  const days = durationCandidates.at(-1);
   const roomOccupancy = text.match(/\b([234])\s*kişilik\s*oda\b/i);
   const budget = text.match(/(\d[\d.]*)\s*(?:₺|tl)\s*(?:bütçe|butce)?/);
+  let umrahType: SalesContext["umrahType"];
+  for (const inbound of [...inboundMessages].reverse()) {
+    const normalized = inbound.toLocaleLowerCase("tr-TR");
+    if (/\bgrup\b|\b(?:15|25)\s*(?:eylül|eylul)\b/.test(normalized)) {
+      umrahType = "grup";
+      break;
+    }
+    if (/\bbireysel\b/.test(normalized)) {
+      umrahType = "bireysel";
+      break;
+    }
+  }
   const context: SalesContext = {
-    umrahType: /\bbireysel\b/.test(text) ? "bireysel" : /\bgrup\b|\b(?:15|25)\s*(?:eylül|eylul)\b/.test(text) ? "grup" : undefined,
+    umrahType,
     people: people ? Number(people[1]) : undefined,
     days: days ? Number(days[1]) : undefined,
+    medinaDays: medinaDays ? Number(medinaDays[1] || medinaDays[2]) : undefined,
     roomOccupancy: roomOccupancy ? Number(roomOccupancy[1]) as 2 | 3 | 4 : undefined,
     month: text.match(/\b(ocak|şubat|subat|mart|nisan|mayıs|mayis|haziran|temmuz|ağustos|agustos|eylül|eylul|ekim|kasım|kasim|aralık|aralik)\b/)?.[1],
     departureDate: text.match(/\b(15|25)\s*(?:eylül|eylul)\b/)?.[0]?.replace(/eylul/i, "Eylül"),
@@ -233,6 +251,15 @@ async function generateSafeFallback(message: string, config: WhatsAppAIConfig, h
         handoffReason = "Güncel kampanya fiyatı teyidi gerekli";
       }
     }
+    intent = "group_umrah";
+    leadType = "GRUP";
+  } else if (context.umrahType === "grup") {
+    const known = [
+      context.people ? `${context.people} kişi` : null,
+      context.medinaDays ? `Medine'de ${context.medinaDays} gün` : null,
+      context.preferences.includes("Medine dönüş") ? "Medine dönüş" : null,
+    ].filter(Boolean).join(", ");
+    reply = `${known ? `${known} olarak not aldım. ` : ""}Grup umresi için düşündüğünüz çıkış ayı veya tarihi nedir efendim? Tarihe göre mevcut programları netleştireyim.`;
     intent = "group_umrah";
     leadType = "GRUP";
   } else if (/(hanım|hanim)/.test(normalized)) {
@@ -309,45 +336,20 @@ async function callOllamaModel(
 }
 
 async function callOllamaWorkflow(prompt: string, customerMessage: string, salesContext: SalesContext) {
-  const gemmaModel = process.env.OLLAMA_REVIEW_MODEL || "gemma2:2b";
   const llamaModel = process.env.OLLAMA_MODEL || "llama3.2";
-  let strategy = "Müşterinin verdiği bilgileri tekrar sorma; yalnızca sıradaki eksik satış bilgisini sor. Bilgi ve fiyat uydurma.";
-  try {
-    strategy = await callOllamaModel(gemmaModel, [
-      {
-        role: "system",
-        content: "Sen Türkçe Umre satış stratejistisin. Yanıt yazma. Müşterinin niyetini, bilinen bilgileri, sıradaki tek satış adımını ve kaçınılması gereken hataları en fazla 6 kısa satırla çıkar. Bilgi ve fiyat uydurma.",
-      },
-      { role: "user", content: `Müşteri mesajı: ${customerMessage}\nDoğrulanmış müşteri bilgileri:\n${salesContextForModel(salesContext)}` },
-    ], 25_000);
-  } catch {
-    // Strateji modeli geçici olarak hata verse de ana satış modeli güvenli varsayılan stratejiyle devam eder.
-  }
-
   const rawAnswer = await callOllamaModel(llamaModel, [
     {
       role: "system",
       content: "Sen Hadi Umreye Gidelim şirketinin kıdemli WhatsApp satış uzmanısın. Aşağıdaki şirket talimatlarının tamamına uy ve yalnızca istenen JSON'u üret.",
     },
-    { role: "user", content: `${prompt}\n\nGEMMA SATIŞ STRATEJİSİ:\n${strategy}` },
-  ], 90_000, true);
+    {
+      role: "user",
+      content: `${prompt}\n\nHIZLI SATIŞ PLANI:\nMüşterinin verdiği bilgileri tekrar sorma. Sorusuna doğrudan cevap ver, yalnızca sıradaki tek eksik bilgiyi sor. Bilgi ve fiyat uydurma.\nMüşteri mesajı: ${customerMessage}\nDoğrulanmış müşteri bilgileri:\n${salesContextForModel(salesContext)}`,
+    },
+  ], 35_000, true);
   const rawParsed = JSON.parse(extractFirstJsonObject(rawAnswer)) as Partial<AIReply>;
   if (!validModelReply(rawParsed)) throw new Error("Geçersiz Llama yanıtı");
-
-  try {
-    const finalContent = await callOllamaModel(gemmaModel, [
-      {
-        role: "system",
-        content: `Sen son kalite kontrol uzmanısın. Verilen JSON yapısını ve reply dışındaki alanları koru. Yalnızca reply metnindeki Türkçe, imla ve doğallığı düzelt.
-Kesinlikle yeni fiyat, tarih, otel, uçuş, kontenjan, kampanya, kişi veya hizmet ekleme. Yanlış, gereksiz veya kaynağı belirsiz bir rakam varsa rakamı silip temsilci teyidi iste. Dahili alan adlarını, İngilizce sistem sözcüklerini ve teknik notları tamamen kaldır. Selamı tekrarlama. En fazla 450 karakter kullan. Yalnızca geçerli JSON üret.`,
-      },
-      { role: "user", content: rawAnswer },
-    ], 25_000, true);
-    const parsed = JSON.parse(extractFirstJsonObject(finalContent)) as Partial<AIReply>;
-    return validModelReply(parsed) ? parsed : rawParsed;
-  } catch {
-    return rawParsed;
-  }
+  return rawParsed;
 }
 
 function validModelReply(value: Partial<AIReply>) {
@@ -532,10 +534,12 @@ export async function generateWhatsAppReply(params: {
       fallback: true,
     };
   }
-  if (salesContext.umrahType === "grup" && /eylül|eylul/.test(salesContext.month || "")) {
+  if (salesContext.umrahType === "grup") {
     const safe = await generateSafeFallback(params.message, config, history);
     safe.reply = enforceAddressing(safe.reply, conversationStarted, params.customerName, params.message);
-    safe.provider = "Doğrulanmış Eylül kampanya verisi";
+    safe.provider = /eylül|eylul/.test(salesContext.month || "")
+      ? "Doğrulanmış Eylül kampanya verisi"
+      : "Hızlı grup umresi satış akışı";
     return safe;
   }
   const prompt = `Sen ${config.assistantName} isimli Türkçe WhatsApp satış ve müşteri destek asistanısın.

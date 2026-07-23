@@ -138,12 +138,14 @@ async function buildLiveKnowledge() {
 
 export type AIReply = { reply: string; intent: string; leadType: string; leadScore: number; handoff: boolean; handoffReason: string; provider?: string; fallback?: boolean; warning?: string };
 
-type SalesContext = { umrahType?: "bireysel" | "grup"; people?: number; days?: number; medinaDays?: number; roomOccupancy?: 2 | 3 | 4; month?: string; departureDate?: string; budget?: string; budgetScopeKnown: boolean; preferences: string[] };
+type SalesContext = { umrahType?: "bireysel" | "grup"; people?: number; adults?: number; children?: number; days?: number; medinaDays?: number; roomOccupancy?: 2 | 3 | 4; month?: string; departureDate?: string; budget?: string; budgetScopeKnown: boolean; preferences: string[] };
 
 function salesContextForModel(context: SalesContext) {
   return [
     context.umrahType ? `Umre türü: ${context.umrahType}` : null,
     context.people ? `Kişi sayısı: ${context.people}` : null,
+    context.adults !== undefined ? `Yetişkin sayısı: ${context.adults}` : null,
+    context.children !== undefined ? `Çocuk sayısı: ${context.children}` : null,
     context.days ? `Süre: ${context.days} gün` : null,
     context.medinaDays ? `Medine konaklaması: ${context.medinaDays} gün` : null,
     context.roomOccupancy ? `Oda tipi: ${context.roomOccupancy} kişilik oda` : null,
@@ -172,6 +174,12 @@ function extractSalesContext(message: string, history: { direction: string; cont
     }
   }
   const medinaDays = text.match(/(\d+)\s*(?:gün|gun|gece)\s*medine|medine(?:'de|de)?\s*(\d+)\s*(?:gün|gun|gece)/);
+  const composition = [...inboundMessages].reverse().map((item) =>
+    item.toLocaleLowerCase("tr-TR").match(/(\d+)\s*yetişkin(?:\s+ve)?\s*(\d+)\s*çocuk|(\d+)\s*çocuk(?:\s+ve)?\s*(\d+)\s*yetişkin/)
+  ).find(Boolean);
+  const adults = composition ? Number(composition[1] || composition[4]) : undefined;
+  const children = composition ? Number(composition[2] || composition[3]) : undefined;
+  if (adults !== undefined && children !== undefined) peopleCount = adults + children;
   const durationCandidates = [...text.matchAll(/(\d+)\s*(?:gün|gun)/g)]
     .filter((match) => !/medine/.test(text.slice(Math.max(0, (match.index || 0) - 12), (match.index || 0) + match[0].length + 12)));
   const days = durationCandidates.at(-1);
@@ -202,9 +210,16 @@ function extractSalesContext(message: string, history: { direction: string; cont
       break;
     }
   }
+  if (!umrahType) {
+    const lastOutbound = [...history].reverse().find((item) => item.direction === "OUTBOUND")?.content.toLocaleLowerCase("tr-TR") || "";
+    if (/\bgrup umre(?:si|sinde|sine)?\b/.test(lastOutbound)) umrahType = "grup";
+    else if (/\bbireysel umre(?:si|de|ye)?\b/.test(lastOutbound)) umrahType = "bireysel";
+  }
   const context: SalesContext = {
     umrahType,
     people: peopleCount,
+    adults,
+    children,
     days: days ? Number(days[1]) : undefined,
     medinaDays: medinaDays ? Number(medinaDays[1] || medinaDays[2]) : undefined,
     roomOccupancy,
@@ -253,11 +268,15 @@ async function generateSafeFallback(message: string, config: WhatsAppAIConfig, h
   let handoffReason = handoff ? "Müşteri temsilci talep etti" : "";
   const campaignSetting = await prisma.setting.findUnique({ where: { key: EYLUL_CAMPAIGN_SETTING_KEY } });
   const campaign = parseEylulCampaign(campaignSetting?.value, DEFAULT_EYLUL_CAMPAIGN);
+  const lastOutbound = [...history].reverse().find((item) => item.direction === "OUTBOUND")?.content || "";
   let reply = "Size doğru bilgi verebilmem için grup umresi mi, bireysel umre mi düşündüğünüzü ve kaç kişi olacağınızı paylaşır mısınız?";
   let intent = "other";
   let leadType = "KARARSIZ";
 
   const discountRequest = /(indirim|iskonto|son fiyat|en son ne olur|daha uygun|uygun olmuyor|fiyatta yardımcı|fiyatta yardimci|pazarlık|pazarlik)/.test(normalized);
+  const groupDateQuestion = /(grup.*(?:ne zaman|hangi tarih|tarihleri)|(?:ne zaman|hangi tarih).*(?:grup|umre)|tarihleriniz belli)/.test(normalized);
+  const compositionUpdate = context.adults !== undefined && context.children !== undefined
+    && /yetişkin|çocuk/.test(normalized);
   const objection = /(pahalı|pahali|fiyat araştır|fiyat arastir|başka yerlere bak|baska yerlere bak|daha ucuz)/.test(normalized);
   const repeatedAnswerComplaint = /(neden|niye).*(sabit|aynı|ayni|tekrar)|sabit cevap|aynı cevap|ayni cevap/.test(normalized);
   const medinaHotelQuestion = /medine.*otel|otel.*medine/.test(normalized);
@@ -272,7 +291,9 @@ async function generateSafeFallback(message: string, config: WhatsAppAIConfig, h
     const alternatives = selectedPackage && context.roomOccupancy === 2
       ? ` Oda paylaşımı sizin için uygunsa ${selectedPackage.triple.replace("$", "")} USD'lik 3 kişilik veya ${selectedPackage.quad.replace("$", "")} USD'lik 4 kişilik oda seçenekleri daha uygun olabilir.`
       : "";
-    reply = `Sizi anlıyorum efendim. İndirim konusunda teyitsiz bir rakam söylemeyeyim; mevcut fiyat üzerinden özel fiyat talebinizi yetkili temsilcimize iletiyorum.${alternatives}`;
+    reply = /özel fiyat talebinizi.*(?:temsilci|yetkili)/i.test(lastOutbound)
+      ? "Satın almaya hazır olduğunuzu özellikle not aldım efendim. Size aynı metni tekrar etmeyeyim; özel fiyat onayı için talebinizi doğrudan yetkili temsilcimizin değerlendirmesine bırakıyorum."
+      : `Sizi anlıyorum efendim. İndirim konusunda teyitsiz bir rakam söylemeyeyim; mevcut fiyat üzerinden özel fiyat talebinizi yetkili temsilcimize iletiyorum.${alternatives}`;
     intent = "price";
     leadType = context.umrahType === "grup" ? "GRUP" : "KARARSIZ";
     handoff = true;
@@ -296,6 +317,14 @@ async function generateSafeFallback(message: string, config: WhatsAppAIConfig, h
   } else if (objection) {
     reply = "Araştırma yapmanız çok doğal efendim. Kıyaslama yaparken otelin Kâbe’ye gerçek mesafesine, rehberlik hizmetinin kapsamına ve paketin her şey dâhil olup olmadığına dikkat etmenizi tavsiye ederim. İncelediğiniz seçenek varsa birlikte karşılaştırabiliriz.";
     intent = "price";
+  } else if (groupDateQuestion) {
+    reply = `Tarihleri belli efendim: Grup umremizin çıkışları ${campaign.departureOne} ve ${campaign.departureTwo}. Program seçenekleri 10, 15 veya 20 gündür. Size hangi çıkış tarihi daha uygun olur?`;
+    intent = "group_umrah";
+    leadType = "GRUP";
+  } else if (compositionUpdate) {
+    reply = `${context.adults} yetişkin ve ${context.children} çocuk olmak üzere toplam ${context.people} kişi olarak not aldım. Çocuk ücretlerini doğru hesaplayabilmem için çocukların yaşlarını paylaşır mısınız efendim?`;
+    intent = "group_umrah";
+    leadType = context.umrahType === "bireysel" ? "BIREYSEL" : "GRUP";
   } else if (context.umrahType === "bireysel") {
     reply = individualSalesReply(context);
     intent = "individual_umrah";

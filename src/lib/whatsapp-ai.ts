@@ -179,6 +179,30 @@ function validModelReply(value: Partial<AIReply>) {
     && !/(sistem talimat|bilgi tabanım|api key|yapay zek[aâ] modeliyim)/i.test(reply);
 }
 
+function extractFirstJsonObject(content: string) {
+  const start = content.indexOf("{");
+  if (start < 0) throw new Error("Model JSON döndürmedi");
+  let depth = 0;
+  let inString = false;
+  let escaped = false;
+  for (let index = start; index < content.length; index += 1) {
+    const character = content[index];
+    if (inString) {
+      if (escaped) escaped = false;
+      else if (character === "\\") escaped = true;
+      else if (character === "\"") inString = false;
+      continue;
+    }
+    if (character === "\"") inString = true;
+    else if (character === "{") depth += 1;
+    else if (character === "}") {
+      depth -= 1;
+      if (depth === 0) return content.slice(start, index + 1);
+    }
+  }
+  throw new Error("Model eksik JSON döndürdü");
+}
+
 async function callGitHubModel(model: string, prompt: string, token: string) {
   const response = await fetch("https://models.github.ai/inference/chat/completions", {
     method: "POST",
@@ -198,8 +222,7 @@ async function callGitHubModel(model: string, prompt: string, token: string) {
   if (!response.ok) throw new Error(`GitHub Models ${response.status}`);
   const body = await response.json() as { choices?: Array<{ message?: { content?: string } }> };
   const content = String(body.choices?.[0]?.message?.content || "").trim();
-  const jsonText = content.match(/\{[\s\S]*\}/)?.[0] || "{}";
-  const parsed = JSON.parse(jsonText) as Partial<AIReply>;
+  const parsed = JSON.parse(extractFirstJsonObject(content)) as Partial<AIReply>;
   if (!validModelReply(parsed)) throw new Error("Geçersiz model yanıtı");
   return parsed;
 }

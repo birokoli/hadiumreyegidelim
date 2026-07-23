@@ -1,23 +1,25 @@
 # WhatsApp AI Kurulumu
 
-Sistem WhatsApp Business Cloud API üzerinden çalışır. Gizli değerler GitHub'a veya yönetim paneline yazılmaz; Vercel proje ortam değişkenlerinde tutulur.
+Sistem `whatsapp-web.js` ile WhatsApp Business uygulamasındaki **Bağlı Cihazlar** QR yöntemi üzerinden çalışır. Telefon uygulaması kullanılmaya devam eder.
 
 ## Gerekli ortam değişkenleri
 
 - `GEMINI_API_KEY`: Google AI Studio'dan üretilen yeni ve gizli anahtar
 - `GEMINI_WHATSAPP_MODEL`: İsteğe bağlı, varsayılan `gemini-2.0-flash`
-- `WHATSAPP_ACCESS_TOKEN`: Meta kalıcı sistem kullanıcısı erişim anahtarı
-- `WHATSAPP_PHONE_NUMBER_ID`: WhatsApp telefon numarası kimliği
-- `WHATSAPP_VERIFY_TOKEN`: Sizin belirleyeceğiniz uzun, rastgele webhook doğrulama değeri
-- `WHATSAPP_APP_SECRET`: Meta uygulama sırrı; webhook imzasını doğrular
+- `WHATSAPP_BOT_URL`: Sürekli çalışan QR bot servisinin HTTPS adresi
+- `WHATSAPP_BOT_TOKEN`: Site ve bot servisinde aynı olan uzun, rastgele servis anahtarı
 
-## Meta webhook
+## QR bot servisi
 
-- Callback URL: `https://www.hadiumreyegidelim.com/api/whatsapp/webhook`
-- Verify token: Vercel'deki `WHATSAPP_VERIFY_TOKEN` ile aynı olmalı
-- Abone olunacak alan: `messages`
+`services/whatsapp-bot` klasörü Docker destekli bir Railway/Render/VPS servisi olarak yayınlanır. Serviste şu değerler tanımlanır:
 
-Bağlantı tamamlanmadan yönetim panelindeki otomatik yanıt anahtarını açmayın. Önce “Yanıt Testi” sekmesinden satış asistanının cevaplarını doğrulayın.
+- `WEBSITE_URL=https://www.hadiumreyegidelim.com`
+- `WHATSAPP_BOT_TOKEN=...`
+- `WHATSAPP_SESSION_PATH=/data/.wwebjs_auth`
+
+`/data` yolu kalıcı diske bağlanmalıdır. Böylece servis yeniden başladığında QR oturumu kaybolmaz.
+
+Site tarafında aynı `WHATSAPP_BOT_TOKEN` ve servisin açık adresi `WHATSAPP_BOT_URL` olarak tanımlanır. Ardından admin panelindeki **QR Bağlantısı** sekmesinden kod okutulur.
 
 ## Güvenlik
 

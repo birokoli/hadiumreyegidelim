@@ -12,6 +12,36 @@ import {
 
 export const WHATSAPP_AI_SETTING_KEY = "WHATSAPP_AI_CONFIG";
 
+let tablesReady = false;
+export async function ensureWhatsAppAITables() {
+  if (tablesReady) return;
+  await prisma.$executeRawUnsafe(`CREATE TABLE IF NOT EXISTS "WhatsAppConversation" (
+    "id" TEXT PRIMARY KEY,
+    "phone" TEXT NOT NULL UNIQUE,
+    "name" TEXT,
+    "status" TEXT NOT NULL DEFAULT 'AI_ACTIVE',
+    "botEnabled" BOOLEAN NOT NULL DEFAULT true,
+    "leadType" TEXT,
+    "leadScore" INTEGER NOT NULL DEFAULT 0,
+    "handoffReason" TEXT,
+    "lastMessageAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP
+  )`);
+  await prisma.$executeRawUnsafe(`CREATE TABLE IF NOT EXISTS "WhatsAppMessage" (
+    "id" TEXT PRIMARY KEY,
+    "conversationId" TEXT NOT NULL,
+    "externalId" TEXT UNIQUE,
+    "direction" TEXT NOT NULL,
+    "source" TEXT NOT NULL DEFAULT 'customer',
+    "content" TEXT NOT NULL,
+    "intent" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP
+  )`);
+  await prisma.$executeRawUnsafe(`CREATE INDEX IF NOT EXISTS "WhatsAppMessage_conversationId_createdAt_idx" ON "WhatsAppMessage"("conversationId", "createdAt")`);
+  tablesReady = true;
+}
+
 export type WhatsAppAIConfig = {
   enabled: boolean;
   assistantName: string;
@@ -130,17 +160,4 @@ Sadece şu JSON biçiminde cevap ver:
     handoff: Boolean(parsed.handoff) || keywordHandoff,
     handoffReason: keywordHandoff ? "Müşteri temsilci talep etti" : String(parsed.handoffReason || ""),
   };
-}
-
-export async function sendWhatsAppText(to: string, body: string) {
-  const token = process.env.WHATSAPP_ACCESS_TOKEN;
-  const phoneNumberId = process.env.WHATSAPP_PHONE_NUMBER_ID;
-  if (!token || !phoneNumberId) throw new Error("WhatsApp Cloud API bilgileri eksik");
-  const response = await fetch(`https://graph.facebook.com/v22.0/${phoneNumberId}/messages`, {
-    method: "POST",
-    headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
-    body: JSON.stringify({ messaging_product: "whatsapp", recipient_type: "individual", to, type: "text", text: { preview_url: false, body } }),
-  });
-  if (!response.ok) throw new Error(`WhatsApp gönderimi başarısız: ${response.status}`);
-  return response.json();
 }

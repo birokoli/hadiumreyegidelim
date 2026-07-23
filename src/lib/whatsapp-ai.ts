@@ -356,6 +356,9 @@ function validateGroundedReply(params: {
   if (/(scope[_\s-]?known|budget[_\s-]?scope|salescontext|preferences\s*=|handoff\s*=|\bfalse\b|\btrue\b|desired|entrese)/i.test(reply)) {
     reasons.push("dahili sistem alanı veya bozuk yabancı ifade");
   }
+  if (/(?:^|\n)\s*(?:fayda|tersi|analiz|strateji|niyet|bilinen bilgiler|sonuç)\s*:/i.test(reply)) {
+    reasons.push("müşteriye strateji/analiz notu");
+  }
   if (/(hindistan|thailand|tayland|etiyopya|yedinci kalesi|umreturlari\.com)/i.test(reply)) {
     reasons.push("şirket dışı veya alakasız tur bilgisi");
   }
@@ -377,6 +380,14 @@ function validateGroundedReply(params: {
   }
 
   return { safe: reasons.length === 0, reasons };
+}
+
+function isTrivialOrTestMessage(message: string) {
+  const normalized = message.toLocaleLowerCase("tr-TR").trim();
+  if (/(?:^|\b)(?:canlı|canli|deneme|test)(?:\b|$)/i.test(normalized)) return true;
+  const hasSalesMeaning = /(umre|paket|tur|fiyat|ücret|otel|vize|uçuş|transfer|mekke|medine|kabe|grup|bireysel|hanım|ilk umrem|rezervasyon|bilgi)/i.test(normalized);
+  const meaningfulLetters = normalized.replace(/[^a-zçğıöşü]/gi, "");
+  return !hasSalesMeaning && meaningfulLetters.length < 8;
 }
 
 function extractFirstJsonObject(content: string) {
@@ -489,6 +500,20 @@ export async function generateWhatsAppReply(params: {
   const customerAddress = explicitTitle
     ? `${params.customerName?.trim().split(/\s+/)[0]} ${explicitTitle[0].toLocaleUpperCase("tr-TR")}${explicitTitle.slice(1).toLocaleLowerCase("tr-TR")}`
     : "efendim";
+  if (isTrivialOrTestMessage(params.message)) {
+    return {
+      reply: conversationStarted
+        ? "Mesajınız ulaştı efendim. Umre planlamanızla ilgili hangi konuda yardımcı olmamı istersiniz?"
+        : "Merhaba efendim. Mesajınız ulaştı. Bireysel veya grup umresiyle ilgili hangi konuda yardımcı olmamı istersiniz?",
+      intent: "other",
+      leadType: "KARARSIZ",
+      leadScore: 10,
+      handoff: false,
+      handoffReason: "",
+      provider: "Güvenli karşılama",
+      fallback: true,
+    };
+  }
   const prompt = `Sen ${config.assistantName} isimli Türkçe WhatsApp satış ve müşteri destek asistanısın.
 
 KİMLİK VE ÜSLUP:

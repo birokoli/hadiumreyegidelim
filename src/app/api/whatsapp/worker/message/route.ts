@@ -25,7 +25,7 @@ export async function POST(request: Request) {
   });
   if (!config.enabled || !conversation.botEnabled) return NextResponse.json({ reply: null, reason: "AI_DISABLED" });
   const history = await prisma.whatsAppMessage.findMany({
-    where: { conversationId: conversation.id },
+    where: { conversationId: conversation.id, externalId: { not: String(body.messageId) } },
     orderBy: { createdAt: "desc" },
     take: 10,
     select: { direction: true, content: true },

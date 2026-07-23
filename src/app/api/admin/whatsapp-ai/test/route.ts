@@ -9,7 +9,13 @@ export async function POST(request: Request) {
   }
   try {
     const body = await request.json();
-    const result = await generateWhatsAppReply({ message: String(body.message || ""), customerName: "Test Müşterisi" });
+    const history = Array.isArray(body.history)
+      ? body.history.slice(-10).map((item: { direction?: string; content?: string }) => ({
+          direction: item.direction === "OUTBOUND" ? "OUTBOUND" : "INBOUND",
+          content: String(item.content || "").slice(0, 3500),
+        }))
+      : [];
+    const result = await generateWhatsAppReply({ message: String(body.message || ""), customerName: "Test Müşterisi", history });
     return NextResponse.json(result);
   } catch (error) {
     return NextResponse.json({ error: error instanceof Error ? error.message : "Test başarısız" }, { status: 500 });

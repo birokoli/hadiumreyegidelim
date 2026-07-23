@@ -18,9 +18,9 @@ export default function WhatsAppAIPage() {
   const [config, setConfig] = useState(DEFAULT_WHATSAPP_AI_CONFIG);
   const [tab, setTab] = useState<"overview" | "connection" | "knowledge" | "test">("overview");
   const [testMessage, setTestMessage] = useState("Eşimle birlikte bireysel umreye gitmek istiyoruz, grup umresinden farkı nedir?");
-  const [testResult, setTestResult] = useState("");
   const [testWarning, setTestWarning] = useState("");
   const [testProvider, setTestProvider] = useState("");
+  const [testHistory, setTestHistory] = useState<Array<{ direction: "INBOUND" | "OUTBOUND"; content: string }>>([]);
   const [conversationFilter, setConversationFilter] = useState<"all" | "answered" | "unanswered" | "handoff">("all");
   const [openConversation, setOpenConversation] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
@@ -62,10 +62,11 @@ export default function WhatsAppAIPage() {
   };
 
   const test = async () => {
-    setBusy(true); setTestResult(""); setTestWarning(""); setTestProvider("");
-    const response = await fetch("/api/admin/whatsapp-ai/test", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ message: testMessage }) });
+    setBusy(true); setTestWarning(""); setTestProvider("");
+    const response = await fetch("/api/admin/whatsapp-ai/test", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ message: testMessage, history: testHistory }) });
     const json = await response.json();
-    setTestResult(response.ok ? json.reply : json.error || "Test başarısız");
+    if (response.ok) setTestHistory((current) => [...current, { direction: "INBOUND", content: testMessage }, { direction: "OUTBOUND", content: json.reply }].slice(-10));
+    else setTestWarning(json.error || "Test başarısız");
     if (response.ok && json.warning) setTestWarning(json.warning);
     if (response.ok && json.provider) setTestProvider(json.provider);
     setBusy(false);
@@ -137,8 +138,8 @@ export default function WhatsAppAIPage() {
     </div>}
 
     {tab === "test" && <section className="grid gap-5 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm lg:grid-cols-2">
-      <div><h2 className="font-bold text-slate-900">Müşteri Mesajını Deneyin</h2><p className="mb-4 text-sm text-slate-500">Gerçek WhatsApp mesajı göndermeden Gemini’nin nasıl yanıt vereceğini görün.</p><textarea rows={10} className={input} value={testMessage} onChange={(e) => setTestMessage(e.target.value)}/><button disabled={busy || !testMessage.trim()} onClick={test} className="mt-4 rounded-xl bg-[#25D366] px-7 py-3 text-sm font-bold text-white disabled:opacity-50">{busy ? "Yanıt hazırlanıyor..." : "Yanıtı Test Et"}</button></div>
-      <div className="rounded-2xl bg-[#efeae2] p-5"><div className="mb-3 flex items-center justify-between gap-3"><p className="text-xs font-bold uppercase tracking-widest text-slate-500">Asistan Yanıtı</p>{testProvider ? <span className="rounded-full bg-white px-3 py-1 text-[10px] font-bold text-[#003781] shadow-sm">{testProvider}</span> : null}</div>{testWarning ? <div className="mb-3 rounded-xl bg-amber-50 p-3 text-xs font-semibold text-amber-800">{testWarning}</div> : null}<div className="min-h-40 whitespace-pre-wrap rounded-2xl rounded-tl-sm bg-white p-4 text-sm leading-relaxed text-slate-700 shadow-sm">{testResult || "Test yanıtı burada görünecek."}</div></div>
+      <div><div className="flex items-center justify-between"><h2 className="font-bold text-slate-900">Müşteri Mesajını Deneyin</h2><button onClick={() => { setTestHistory([]); setTestWarning(""); setTestProvider(""); }} className="text-xs font-bold text-red-600">Sohbeti Sıfırla</button></div><p className="mb-4 text-sm text-slate-500">Gerçek WhatsApp mesajı göndermeden bağlı AI modellerinin yanıtını ve konuşma sürekliliğini deneyin.</p><textarea rows={10} className={input} value={testMessage} onChange={(e) => setTestMessage(e.target.value)}/><button disabled={busy || !testMessage.trim()} onClick={test} className="mt-4 rounded-xl bg-[#25D366] px-7 py-3 text-sm font-bold text-white disabled:opacity-50">{busy ? "Yanıt hazırlanıyor..." : "Yanıtı Test Et"}</button></div>
+      <div className="rounded-2xl bg-[#efeae2] p-5"><div className="mb-3 flex items-center justify-between gap-3"><p className="text-xs font-bold uppercase tracking-widest text-slate-500">Deneme Sohbeti</p>{testProvider ? <span className="rounded-full bg-white px-3 py-1 text-[10px] font-bold text-[#003781] shadow-sm">{testProvider}</span> : null}</div>{testWarning ? <div className="mb-3 rounded-xl bg-amber-50 p-3 text-xs font-semibold text-amber-800">{testWarning}</div> : null}<div className="max-h-96 space-y-2 overflow-y-auto">{testHistory.length ? testHistory.map((message, index) => <div key={`${index}-${message.direction}`} className={`flex ${message.direction === "INBOUND" ? "justify-end" : "justify-start"}`}><div className={`max-w-[90%] whitespace-pre-wrap rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-sm ${message.direction === "INBOUND" ? "rounded-tr-sm bg-[#d9fdd3]" : "rounded-tl-sm bg-white"}`}>{message.content}</div></div>) : <div className="min-h-40 rounded-2xl bg-white p-4 text-sm text-slate-400 shadow-sm">Test yanıtı burada görünecek.</div>}</div></div>
     </section>}
   </div>;
 }

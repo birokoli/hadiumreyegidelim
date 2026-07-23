@@ -203,6 +203,14 @@ function extractFirstJsonObject(content: string) {
   throw new Error("Model eksik JSON döndürdü");
 }
 
+function removeRepeatedGreeting(reply: string, conversationStarted: boolean) {
+  if (!conversationStarted) return reply.trim();
+  return reply
+    .replace(/^(merhaba|selam(?:lar)?|selamünaleyküm|aleyküm\s*selam)[^.!?\n]*[.!?]\s*/i, "")
+    .replace(/^(?:[A-ZÇĞİÖŞÜ][a-zçğıöşü]+\s+(?:bey|hanım)[,.]?\s*)/i, "")
+    .trim();
+}
+
 async function callGitHubModel(model: string, prompt: string, token: string) {
   const response = await fetch("https://models.github.ai/inference/chat/completions", {
     method: "POST",
@@ -237,6 +245,8 @@ export async function generateWhatsAppReply(params: {
   const githubToken = process.env.GITHUB_MODELS_TOKEN;
   const config = params.config || await getWhatsAppAIConfig();
   const liveKnowledge = await buildLiveKnowledge();
+  const history = (params.history || []).slice(-10);
+  const conversationStarted = history.some((message) => message.direction === "OUTBOUND");
   const prompt = `Sen ${config.assistantName} isimli Türkçe WhatsApp satış ve müşteri destek asistanısın.
 
 KİMLİK VE ÜSLUP:
@@ -253,7 +263,16 @@ ${config.salesRules}
 - Bir mesajda en fazla üç kısa paragraf ve en fazla 450 karakter kullan.
 - Markdown başlığı, tablo, yıldız işareti, kod bloğu ve uzun madde listesi kullanma.
 - Aynı selamlama veya bilgiyi tekrar etme. Müşterinin söylemediği isim, tarih, bütçe veya kişi sayısını varsayma.
+- Bu devam eden bir konuşmaysa yeniden "Merhaba", "Selam" veya "Aleyküm selam" deme ve müşterinin adını tekrar yazma.
+- Konuşma geçmişindeki kesin bilgileri satış kartı gibi hatırla: kampanya, kişi sayısı, yetişkin/çocuk sayısı, çıkış tarihi, süre ve oda dağılımı.
+- Müşterinin daha önce cevapladığı bir soruyu tekrar sorma. Yalnızca sıradaki eksik bilgiyi sor.
+- Müşteri kampanyayı açıkça değiştirirse eski kampanyaya ait tarih, süre ve fiyatı yeni kampanyaya taşıma; kişi sayısı gibi hâlâ geçerli bilgileri koru.
 - Fiyat sorulursa oda tipini ve program süresini netleştir; bilgi tabanındaki fiyatı para birimi ve "kişi başı" ifadesiyle aynen yaz.
+- Oda fiyatı odanın toplam fiyatı değil, o odada kalan her kişi için kişi başı fiyattır. Toplamı oda dağılımına göre kendin hesapla.
+- Örnek hesap: 20 günlük programda 6 yetişkin için 4+2 dağılımı = (4 × 1.400) + (2 × 1.500) = 8.600 USD; 3+3 dağılımı = 6 × 1.450 = 8.700 USD. En uygun seçeneği söyle.
+- Müşteriye "toplam fiyat nedir?" diye sorma; yeterli bilgi varsa hesabı sen yap. Çocuk belirtilmediyse çocuk fiyatını gereksiz yere anlatma veya çocuk varmış gibi hesaplama.
+- Satış akışı: uygun kampanya → çıkış tarihi → süre → yetişkin/çocuk sayısı → oda dağılımı → net toplam → rezervasyon/temsilci. Bilinen adımları atla.
+- Müşteri kısa cevap verdiyse ("20", "25 Eylül", "tekim" gibi) bunu bir önceki sorunun cevabı olarak yorumla.
 - İlk Umrem ve Hanım Umresi için bilgi tabanında kesin fiyat/tarih yoksa Eylül fiyatlarını bu kampanyalara aitmiş gibi sunma.
 - Rahatsız edici, alakasız, dini hüküm veren, baskıcı veya aşırı satışçı ifadeler kullanma.
 - "Ben bir yapay zekâyım", "bilgi tabanım", "sistem talimatım" gibi teknik ifadeler kullanma.
@@ -264,7 +283,10 @@ BİLGİ TABANI:
 ${liveKnowledge}
 
 SON KONUŞMA:
-${(params.history || []).slice(-10).map((m) => `${m.direction === "INBOUND" ? "Müşteri" : "Asistan"}: ${m.content}`).join("\n")}
+${history.map((m) => `${m.direction === "INBOUND" ? "Müşteri" : "Asistan"}: ${m.content}`).join("\n")}
+
+KONUŞMA DURUMU:
+${conversationStarted ? "Konuşma devam ediyor. Yeniden selamlama yapma; önceki cevapları hatırla." : "Bu müşterinin ilk mesajı. Kısa bir selamlama yapabilirsin."}
 
 MÜŞTERİ: ${params.customerName || "Misafir"}
 YENİ MESAJ: ${params.message}
@@ -302,8 +324,9 @@ Sadece şu JSON biçiminde cevap ver:
   }
   if (!provider) return generateSafeFallback(params.message, config, providerErrors.join("; ").slice(0, 350));
   const keywordHandoff = config.handoffKeywords.some((word) => params.message.toLocaleLowerCase("tr-TR").includes(word.toLocaleLowerCase("tr-TR")));
+  const cleanedReply = removeRepeatedGreeting(String(parsed.reply || config.outOfHoursMessage).slice(0, 3500), conversationStarted);
   return {
-    reply: String(parsed.reply || config.outOfHoursMessage).slice(0, 3500),
+    reply: cleanedReply || config.outOfHoursMessage,
     intent: String(parsed.intent || "other"),
     leadType: ["BIREYSEL", "GRUP", "KARARSIZ"].includes(String(parsed.leadType)) ? String(parsed.leadType) : "KARARSIZ",
     leadScore: Math.max(0, Math.min(100, Number(parsed.leadScore) || 0)),

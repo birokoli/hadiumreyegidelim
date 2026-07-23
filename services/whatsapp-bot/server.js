@@ -71,17 +71,19 @@ client.on("message", async (message) => {
   if (message.fromMe || message.isStatus || message.from === "status@broadcast" || message.from.endsWith("@g.us") || !message.body?.trim()) return;
   try {
     const contact = await message.getContact();
+    const externalId = message.id?._serialized || message.id?.id || `${message.from}-${message.timestamp}`;
+    const customerPhone = contact.number || message.from.replace(/@(c|lid)\.us$/, "");
     const response = await fetch(`${ADMIN_URL}/api/whatsapp/worker/message`, {
       method: "POST",
       headers: { Authorization: `Bearer ${BOT_TOKEN}`, "Content-Type": "application/json" },
       body: JSON.stringify({
-        messageId: message.id._serialized,
-        phone: message.from.replace("@c.us", ""),
+        messageId: externalId,
+        phone: customerPhone,
         name: contact.pushname || contact.name || null,
         text: message.body.trim(),
       }),
     });
-    if (!response.ok) throw new Error(`Site yanıtı ${response.status}`);
+    if (!response.ok) throw new Error(`Site yanıtı ${response.status}: ${(await response.text()).slice(0, 300)}`);
     const result = await response.json();
     if (result.reply) await message.reply(result.reply);
   } catch (error) {

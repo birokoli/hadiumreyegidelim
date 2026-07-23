@@ -8,7 +8,7 @@ type DashboardData = {
   config: WhatsAppAIConfig;
   stats: { conversations: number; totalMessages: number; aiMessages: number; handoffCount: number };
   connection: { gemini: boolean; whatsapp: boolean; model: string; bot: { status: string; qr: string | null; phone: string | null; error: string | null } };
-  conversations: Array<{ id: string; phone: string; name: string | null; status: string; leadType: string | null; leadScore: number; lastMessageAt: string; messages: Array<{ content: string }> }>;
+  conversations: Array<{ id: string; phone: string; name: string | null; status: string; leadType: string | null; leadScore: number; lastMessageAt: string; messages: Array<{ id: string; content: string; direction: string; source: string; createdAt: string }> }>;
 };
 
 const input = "w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none focus:border-[#003781] focus:ring-2 focus:ring-[#003781]/10";
@@ -20,6 +20,8 @@ export default function WhatsAppAIPage() {
   const [testMessage, setTestMessage] = useState("Eşimle birlikte bireysel umreye gitmek istiyoruz, grup umresinden farkı nedir?");
   const [testResult, setTestResult] = useState("");
   const [testWarning, setTestWarning] = useState("");
+  const [conversationFilter, setConversationFilter] = useState<"all" | "answered" | "unanswered" | "handoff">("all");
+  const [openConversation, setOpenConversation] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState("");
 
@@ -68,6 +70,15 @@ export default function WhatsAppAIPage() {
   };
 
   if (!data) return <div className="p-8 text-slate-500">WhatsApp AI merkezi yükleniyor...</div>;
+  const conversationState = (conversation: DashboardData["conversations"][number]) => {
+    if (conversation.status === "HUMAN_NEEDED") return "handoff";
+    return conversation.messages.at(-1)?.direction === "INBOUND" ? "unanswered" : "answered";
+  };
+  const filteredConversations = data.conversations.filter((conversation) => conversationFilter === "all" || conversationState(conversation) === conversationFilter);
+  const answerCounts = data.conversations.reduce((counts, conversation) => {
+    counts[conversationState(conversation)] += 1;
+    return counts;
+  }, { answered: 0, unanswered: 0, handoff: 0 });
 
   return <div className="mx-auto max-w-7xl space-y-6 p-5 md:p-8">
     <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
@@ -87,9 +98,20 @@ export default function WhatsAppAIPage() {
         {[["Konuşma",data.stats.conversations,"forum"],["Toplam Mesaj",data.stats.totalMessages,"chat"],["AI Yanıtı",data.stats.aiMessages,"smart_toy"],["Temsilci Bekleyen",data.stats.handoffCount,"support_agent"]].map(([label,value,icon]) => <div key={String(label)} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><span className="material-symbols-outlined text-[#003781]">{icon}</span><p className="mt-4 text-3xl font-bold text-slate-900">{value}</p><p className="text-sm text-slate-500">{label}</p></div>)}
       </div>
       <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-        <div className="border-b border-slate-100 px-6 py-5"><h2 className="font-bold text-slate-900">Son Konuşmalar</h2></div>
+        <div className="border-b border-slate-100 px-6 py-5"><h2 className="font-bold text-slate-900">Müşteri Mesajları ve AI Yanıtları</h2><p className="mt-1 text-sm text-slate-500">Gelen mesajları, AI cevaplarını ve temsilci bekleyen konuşmaları buradan takip edin.</p><div className="mt-4 flex flex-wrap gap-2">{[
+          ["all", `Tümü (${data.conversations.length})`],
+          ["answered", `AI Yanıtladı (${answerCounts.answered})`],
+          ["unanswered", `Yanıtlanmadı (${answerCounts.unanswered})`],
+          ["handoff", `Temsilci Bekliyor (${answerCounts.handoff})`],
+        ].map(([id, label]) => <button key={id} onClick={() => setConversationFilter(id as typeof conversationFilter)} className={`rounded-full px-3 py-2 text-xs font-bold ${conversationFilter === id ? "bg-[#003781] text-white" : "bg-slate-100 text-slate-600"}`}>{label}</button>)}</div></div>
         {data.conversations.length === 0 ? <div className="p-10 text-center text-sm text-slate-400">Henüz WhatsApp konuşması yok. QR bağlantısı tamamlandığında mesajlar burada görünecek.</div> :
-          <div className="divide-y divide-slate-100">{data.conversations.map((c) => <div key={c.id} className="grid gap-3 px-6 py-4 md:grid-cols-[1fr_2fr_auto] md:items-center"><div><p className="font-bold text-slate-800">{c.name || c.phone}</p><p className="text-xs text-slate-400">{c.phone}</p></div><p className="truncate text-sm text-slate-500">{c.messages[0]?.content}</p><div className="flex items-center gap-2"><span className={`rounded-full px-2.5 py-1 text-xs font-bold ${c.status === "HUMAN_NEEDED" ? "bg-amber-50 text-amber-700" : "bg-blue-50 text-blue-700"}`}>{c.status === "HUMAN_NEEDED" ? "Temsilci Gerekli" : "AI Aktif"}</span><span className="text-xs font-bold text-slate-400">{c.leadType || "KARARSIZ"} · %{c.leadScore}</span></div></div>)}</div>}
+          filteredConversations.length === 0 ? <div className="p-10 text-center text-sm text-slate-400">Bu durumda konuşma bulunmuyor.</div> :
+          <div className="divide-y divide-slate-100">{filteredConversations.map((c) => {
+            const state = conversationState(c);
+            const stateLabel = state === "answered" ? "AI Yanıtladı" : state === "unanswered" ? "Yanıtlanmadı" : "Temsilci Bekliyor";
+            const stateClass = state === "answered" ? "bg-emerald-50 text-emerald-700" : state === "unanswered" ? "bg-red-50 text-red-700" : "bg-amber-50 text-amber-700";
+            return <div key={c.id} className="px-6 py-4"><button onClick={() => setOpenConversation(openConversation === c.id ? null : c.id)} className="grid w-full gap-3 text-left md:grid-cols-[1fr_2fr_auto] md:items-center"><div><p className="font-bold text-slate-800">{c.name || c.phone}</p><p className="text-xs text-slate-400">+{c.phone}</p></div><p className="truncate text-sm text-slate-500">{c.messages.at(-1)?.content}</p><div className="flex items-center gap-2"><span className={`rounded-full px-2.5 py-1 text-xs font-bold ${stateClass}`}>{stateLabel}</span><span className="text-xs font-bold text-slate-400">{c.leadType || "KARARSIZ"} · %{c.leadScore}</span></div></button>{openConversation === c.id ? <div className="mt-4 space-y-2 rounded-2xl bg-[#efeae2] p-4">{c.messages.map((message) => <div key={message.id} className={`flex ${message.direction === "INBOUND" ? "justify-start" : "justify-end"}`}><div className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm shadow-sm ${message.direction === "INBOUND" ? "rounded-tl-sm bg-white text-slate-700" : "rounded-tr-sm bg-[#d9fdd3] text-slate-800"}`}><p className="mb-1 text-[10px] font-bold uppercase text-slate-400">{message.direction === "INBOUND" ? "Müşteri" : message.source === "ai" ? "AI Yanıtı" : "Temsilci"}</p><p className="whitespace-pre-wrap">{message.content}</p></div></div>)}</div> : null}</div>;
+          })}</div>}
       </section>
     </>}
 

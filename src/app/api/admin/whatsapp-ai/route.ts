@@ -13,7 +13,7 @@ export async function GET() {
   await ensureWhatsAppAITables();
   const [config, conversations, totalMessages, aiMessages, handoffCount, botStatusSetting] = await Promise.all([
     getWhatsAppAIConfig(),
-    prisma.whatsAppConversation.findMany({ orderBy: { lastMessageAt: "desc" }, take: 50, include: { messages: { orderBy: { createdAt: "desc" }, take: 1 } } }),
+    prisma.whatsAppConversation.findMany({ orderBy: { lastMessageAt: "desc" }, take: 50, include: { messages: { orderBy: { createdAt: "asc" }, take: 30 } } }),
     prisma.whatsAppMessage.count(),
     prisma.whatsAppMessage.count({ where: { source: "ai" } }),
     prisma.whatsAppConversation.count({ where: { status: "HUMAN_NEEDED" } }),

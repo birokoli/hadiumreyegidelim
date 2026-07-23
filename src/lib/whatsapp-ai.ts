@@ -195,8 +195,10 @@ function extractSalesContext(message: string, history: { direction: string; cont
     days: days ? Number(days[1]) : undefined,
     medinaDays: medinaDays ? Number(medinaDays[1] || medinaDays[2]) : undefined,
     roomOccupancy: roomOccupancy ? Number(roomOccupancy[1]) as 2 | 3 | 4 : undefined,
-    month: text.match(/\b(ocak|şubat|subat|mart|nisan|mayıs|mayis|haziran|temmuz|ağustos|agustos|eylül|eylul|ekim|kasım|kasim|aralık|aralik)\b/)?.[1],
-    departureDate: text.match(/\b(15|25)\s*(?:eylül|eylul)\b/)?.[0]?.replace(/eylul/i, "Eylül"),
+    month: text.match(/\b(ocak|şubat|subat|mart|nisan|mayıs|mayis|haziran|temmuz|ağustos|agustos|eylül|eylul|ekim|kasım|kasim|aralık|aralik)(?:'?(?:deki|daki))?\b/)?.[1],
+    departureDate: text.match(/\b(15|25)\s*(?:eylül|eylul)(?:'?(?:deki|daki))?\b/)?.[1]
+      ? `${text.match(/\b(15|25)\s*(?:eylül|eylul)(?:'?(?:deki|daki))?\b/)?.[1]} Eylül`
+      : undefined,
     budget: budget?.[1] ? `${budget[1]} TL` : undefined,
     budgetScopeKnown: /kişi başı|kisi basi|toplam bütçe|toplam butce|toplamda/.test(text),
     preferences: [],
@@ -592,6 +594,16 @@ export async function generateWhatsAppReply(params: {
       provider: "Güvenli karşılama",
       fallback: true,
     };
+  }
+  const greetingOnly = /(?:selam|merhaba|aleyküm|aleykum|nasılsın|nasilsin|iyi günler)/i.test(params.message)
+    && !/(umre|paket|tur|fiyat|otel|vize|uçuş|transfer|mekke|medine|kabe|grup|bireysel|rezervasyon)/i.test(params.message);
+  if (greetingOnly) {
+    const safe = await generateSafeFallback(params.message, config, history);
+    safe.reply = conversationStarted
+      ? "Teşekkür ederim efendim. Umre planlamanızla ilgili hangi konuda yardımcı olmamı istersiniz?"
+      : enforceAddressing(safe.reply, false, params.customerName, params.message);
+    safe.provider = "Hızlı karşılama";
+    return safe;
   }
   if (/(pahalı|pahali|fiyat araştır|fiyat arastir|başka yerlere bak|baska yerlere bak|daha ucuz)/i.test(params.message)) {
     const safe = await generateSafeFallback(params.message, config, history);

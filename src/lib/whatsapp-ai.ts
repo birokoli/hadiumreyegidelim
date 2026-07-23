@@ -114,7 +114,7 @@ async function buildLiveKnowledge() {
 
 export type AIReply = { reply: string; intent: string; leadType: string; leadScore: number; handoff: boolean; handoffReason: string; provider?: string; fallback?: boolean; warning?: string };
 
-async function generateSafeFallback(message: string, config: WhatsAppAIConfig): Promise<AIReply> {
+async function generateSafeFallback(message: string, config: WhatsAppAIConfig, diagnostic?: string): Promise<AIReply> {
   const normalized = message.toLocaleLowerCase("tr-TR");
   const handoff = config.handoffKeywords.some((word) => normalized.includes(word.toLocaleLowerCase("tr-TR")));
   const campaignSetting = await prisma.setting.findUnique({ where: { key: EYLUL_CAMPAIGN_SETTING_KEY } });
@@ -160,7 +160,9 @@ async function generateSafeFallback(message: string, config: WhatsAppAIConfig): 
     handoffReason: handoff ? "Müşteri temsilci talep etti" : "",
     provider: "Güvenli hazır yanıt",
     fallback: true,
-    warning: "Çevrimiçi model kotası kullanılamadığı için güvenli hazır yanıt üretildi.",
+    warning: diagnostic
+      ? `Çevrimiçi modeller kullanılamadı (${diagnostic}). Güvenli hazır yanıt üretildi.`
+      : "Çevrimiçi model kotası kullanılamadığı için güvenli hazır yanıt üretildi.",
   };
 }
 
@@ -248,13 +250,16 @@ Sadece şu JSON biçiminde cevap ver:
 {"reply":"Türkçe WhatsApp yanıtı","intent":"greeting|individual_umrah|group_umrah|price|booking|support|complaint|other","leadType":"BIREYSEL|GRUP|KARARSIZ","leadScore":0,"handoff":false,"handoffReason":""}`;
   let parsed: Partial<AIReply> = {};
   let provider = "";
+  const providerErrors: string[] = [];
   if (githubToken) {
     for (const modelName of GITHUB_MODELS) {
       try {
         parsed = await callGitHubModel(modelName, prompt, githubToken);
         provider = `GitHub Models · ${modelName}`;
         break;
-      } catch {}
+      } catch (error) {
+        providerErrors.push(`${modelName.split("/").at(-1)}: ${error instanceof Error ? error.message : "hata"}`);
+      }
     }
   }
   if (!provider && apiKey) {
@@ -268,9 +273,11 @@ Sadece şu JSON biçiminde cevap ver:
       parsed = JSON.parse(result.response.text().trim()) as Partial<AIReply>;
       if (!validModelReply(parsed)) throw new Error("Geçersiz Gemini yanıtı");
       provider = `Gemini · ${process.env.GEMINI_WHATSAPP_MODEL || "gemini-2.0-flash"}`;
-    } catch {}
+    } catch (error) {
+      providerErrors.push(`Gemini: ${error instanceof Error && error.message.includes("429") ? "kota dolu" : "hata"}`);
+    }
   }
-  if (!provider) return generateSafeFallback(params.message, config);
+  if (!provider) return generateSafeFallback(params.message, config, providerErrors.join("; ").slice(0, 350));
   const keywordHandoff = config.handoffKeywords.some((word) => params.message.toLocaleLowerCase("tr-TR").includes(word.toLocaleLowerCase("tr-TR")));
   return {
     reply: String(parsed.reply || config.outOfHoursMessage).slice(0, 3500),

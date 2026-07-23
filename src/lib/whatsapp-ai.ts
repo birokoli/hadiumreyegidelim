@@ -203,19 +203,36 @@ function extractFirstJsonObject(content: string) {
   throw new Error("Model eksik JSON döndürdü");
 }
 
-function enforceAddressing(reply: string, conversationStarted: boolean, customerName?: string | null) {
+function enforceAddressing(
+  reply: string,
+  conversationStarted: boolean,
+  customerName?: string | null,
+  incomingMessage?: string,
+) {
   let cleaned = reply.trim();
   const explicitTitle = customerName?.match(/\b(bey|hanım)\b/i)?.[1];
   const firstName = customerName?.trim().split(/\s+/)[0];
 
-  if (!explicitTitle && firstName) {
-    const escapedName = firstName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    cleaned = cleaned.replace(new RegExp(`\\b${escapedName}\\s+(?:bey|hanım)\\b`, "gi"), "efendim");
+  if (!explicitTitle && customerName) {
+    const escapedCustomerName = customerName.trim().replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    cleaned = cleaned.replace(new RegExp(`\\b${escapedCustomerName}(?:\\s+(?:bey|hanım))?\\b`, "gi"), "efendim");
+  } else if (!explicitTitle && firstName) {
+    const escapedFirstName = firstName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    cleaned = cleaned.replace(new RegExp(`\\b${escapedFirstName}\\s+(?:bey|hanım)\\b`, "gi"), "efendim");
   }
   if (conversationStarted) {
     cleaned = cleaned
       .replace(/^(merhaba|selam(?:lar)?|selamün?\s*aleyküm|aleyküm\s*selam)(?:\s+[^,.!?\n]+)?[,.:;!?]\s*/i, "")
       .replace(/^(?:[A-ZÇĞİÖŞÜ][a-zçğıöşü]+\s+(?:bey|hanım)[,.]?\s*)/i, "");
+  } else if (/^\s*(?:merhaba|selam(?:lar)?|selamün?\s*aleyküm|aleyküm\s*selam)\b/i.test(incomingMessage || "")) {
+    const canonicalGreeting = /selamün?\s*aleyküm|aleyküm\s*selam/i.test(incomingMessage || "")
+      ? `Ve aleyküm selam ${explicitTitle ? `${firstName} ${explicitTitle}` : "efendim"}.`
+      : `Merhaba ${explicitTitle ? `${firstName} ${explicitTitle}` : "efendim"}.`;
+    cleaned = cleaned.replace(
+      /^(?:(?:merhaba|selam(?:lar)?|selamün?\s*aleyküm|ve\s+aleyküm\s*selam|aleyküm\s*selam)[^.!?\n]*[.!?]\s*)+/i,
+      "",
+    );
+    cleaned = `${canonicalGreeting} ${cleaned}`.trim();
   }
   return cleaned.replace(/\befendim(?:\s+efendim)+\b/gi, "efendim").trim();
 }
@@ -343,7 +360,12 @@ Sadece şu JSON biçiminde cevap ver:
   }
   if (!provider) return generateSafeFallback(params.message, config, providerErrors.join("; ").slice(0, 350));
   const keywordHandoff = config.handoffKeywords.some((word) => params.message.toLocaleLowerCase("tr-TR").includes(word.toLocaleLowerCase("tr-TR")));
-  const cleanedReply = enforceAddressing(String(parsed.reply || config.outOfHoursMessage).slice(0, 3500), conversationStarted, params.customerName);
+  const cleanedReply = enforceAddressing(
+    String(parsed.reply || config.outOfHoursMessage).slice(0, 3500),
+    conversationStarted,
+    params.customerName,
+    params.message,
+  );
   return {
     reply: cleanedReply || config.outOfHoursMessage,
     intent: String(parsed.intent || "other"),

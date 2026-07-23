@@ -299,6 +299,31 @@ exports.Prisma.ContactRequestScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.WhatsAppConversationScalarFieldEnum = {
+  id: 'id',
+  phone: 'phone',
+  name: 'name',
+  status: 'status',
+  botEnabled: 'botEnabled',
+  leadType: 'leadType',
+  leadScore: 'leadScore',
+  handoffReason: 'handoffReason',
+  lastMessageAt: 'lastMessageAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.WhatsAppMessageScalarFieldEnum = {
+  id: 'id',
+  conversationId: 'conversationId',
+  externalId: 'externalId',
+  direction: 'direction',
+  source: 'source',
+  content: 'content',
+  intent: 'intent',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.PostVersionScalarFieldEnum = {
   id: 'id',
   postId: 'postId',
@@ -781,6 +806,8 @@ exports.Prisma.ModelName = {
   User: 'User',
   AdminUser: 'AdminUser',
   ContactRequest: 'ContactRequest',
+  WhatsAppConversation: 'WhatsAppConversation',
+  WhatsAppMessage: 'WhatsAppMessage',
   PostVersion: 'PostVersion',
   Influencer: 'Influencer',
   SupportChat: 'SupportChat',

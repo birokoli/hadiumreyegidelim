@@ -14,8 +14,8 @@ function requiredAdminPermission(pathname: string) {
   if (pathname.startsWith('/api/posts') || pathname.startsWith('/api/categories') || pathname.startsWith('/api/authors') || pathname.startsWith('/api/admin/media')) return 'content';
   if (pathname.startsWith('/admin/packages') || pathname.startsWith('/admin/services') || pathname.startsWith('/admin/guides')) return 'operations';
   if (pathname.startsWith('/api/packages') || pathname.startsWith('/api/services') || pathname.startsWith('/api/guides')) return 'operations';
-  if (pathname.startsWith('/admin/influencers') || pathname.startsWith('/admin/affiliate') || pathname.startsWith('/admin/campaigns') || pathname.startsWith('/admin/support')) return 'marketing';
-  if (pathname.startsWith('/api/admin/influencers') || pathname.startsWith('/api/admin/affiliate') || pathname.startsWith('/api/admin/campaigns') || pathname.startsWith('/api/admin/support') || pathname.startsWith('/api/admin/loyalty')) return 'marketing';
+  if (pathname.startsWith('/admin/influencers') || pathname.startsWith('/admin/affiliate') || pathname.startsWith('/admin/campaigns') || pathname.startsWith('/admin/support') || pathname.startsWith('/admin/whatsapp-ai')) return 'marketing';
+  if (pathname.startsWith('/api/admin/influencers') || pathname.startsWith('/api/admin/affiliate') || pathname.startsWith('/api/admin/campaigns') || pathname.startsWith('/api/admin/support') || pathname.startsWith('/api/admin/loyalty') || pathname.startsWith('/api/admin/whatsapp-ai')) return 'marketing';
   if (pathname.startsWith('/admin/analytics') || pathname.startsWith('/admin/ai-logs') || pathname === '/admin' || pathname.startsWith('/api/admin/notifications')) return 'dashboard';
   return null;
 }

@@ -6,6 +6,7 @@ const { Client, LocalAuth } = require("whatsapp-web.js");
 const PORT = Number(process.env.PORT || 3001);
 const BOT_TOKEN = process.env.WHATSAPP_BOT_TOKEN;
 const WEBSITE_URL = (process.env.WEBSITE_URL || "https://www.hadiumreyegidelim.com").replace(/\/$/, "");
+const ADMIN_URL = (process.env.ADMIN_URL || "https://admin.hadiumreyegidelim.com").replace(/\/$/, "");
 const SESSION_PATH = process.env.WHATSAPP_SESSION_PATH || "/data/.wwebjs_auth";
 
 if (!BOT_TOKEN) throw new Error("WHATSAPP_BOT_TOKEN tanımlı değil");
@@ -29,15 +30,16 @@ app.post("/reset", authorized, async (_req, res) => {
 });
 
 async function syncStatus() {
-  try {
-    await fetch(`${WEBSITE_URL}/api/whatsapp/worker/status`, {
+  await Promise.allSettled([...new Set([WEBSITE_URL, ADMIN_URL])].map(async (baseUrl) => {
+    const response = await fetch(`${baseUrl}/api/whatsapp/worker/status`, {
       method: "POST",
       headers: { Authorization: `Bearer ${BOT_TOKEN}`, "Content-Type": "application/json" },
       body: JSON.stringify(state),
     });
-  } catch (error) {
-    console.error("[status]", error);
-  }
+    if (!response.ok) throw new Error(`${baseUrl} durum yanıtı ${response.status}`);
+  })).then((results) => results.forEach((result) => {
+    if (result.status === "rejected") console.error("[status]", result.reason);
+  }));
 }
 
 const client = new Client({
@@ -59,7 +61,7 @@ client.on("message", async (message) => {
   if (message.fromMe || message.isStatus || message.from === "status@broadcast" || message.from.endsWith("@g.us") || !message.body?.trim()) return;
   try {
     const contact = await message.getContact();
-    const response = await fetch(`${WEBSITE_URL}/api/whatsapp/worker/message`, {
+    const response = await fetch(`${ADMIN_URL}/api/whatsapp/worker/message`, {
       method: "POST",
       headers: { Authorization: `Bearer ${BOT_TOKEN}`, "Content-Type": "application/json" },
       body: JSON.stringify({

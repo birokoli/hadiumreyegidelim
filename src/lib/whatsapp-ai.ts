@@ -183,7 +183,10 @@ function extractSalesContext(message: string, history: { direction: string; cont
       break;
     }
   }
-  if (!roomOccupancy && /^[234]$/.test(latest) && history.some((item) => item.direction === "OUTBOUND" && /2,\s*3\s*veya\s*4 kişilik oda/i.test(item.content))) {
+  if (!roomOccupancy && /^[234]$/.test(latest) && (
+    history.some((item) => item.direction === "OUTBOUND" && /2,\s*3\s*veya\s*4 kişilik oda/i.test(item.content))
+    || (/\bgrup\b/.test(text) && Boolean(days) && /\b(?:15|25)\s*(?:eylül|eylul)/.test(text))
+  )) {
     roomOccupancy = Number(latest) as 2 | 3 | 4;
   }
   const budget = text.match(/(\d[\d.]*)\s*(?:₺|tl)\s*(?:bütçe|butce)?/);
@@ -600,7 +603,9 @@ export async function generateWhatsAppReply(params: {
   const customerAddress = explicitTitle
     ? `${params.customerName?.trim().split(/\s+/)[0]} ${explicitTitle[0].toLocaleUpperCase("tr-TR")}${explicitTitle.slice(1).toLocaleLowerCase("tr-TR")}`
     : "efendim";
-  if (isTrivialOrTestMessage(params.message) && !isContextualShortAnswer(params.message, history)) {
+  if (isTrivialOrTestMessage(params.message)
+    && !isContextualShortAnswer(params.message, history)
+    && !salesContext.roomOccupancy) {
     return {
       reply: conversationStarted
         ? "Mesajınız ulaştı efendim. Umre planlamanızla ilgili hangi konuda yardımcı olmamı istersiniz?"

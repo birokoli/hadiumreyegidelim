@@ -257,6 +257,7 @@ async function generateSafeFallback(message: string, config: WhatsAppAIConfig, h
   let intent = "other";
   let leadType = "KARARSIZ";
 
+  const discountRequest = /(indirim|iskonto|son fiyat|en son ne olur|daha uygun|uygun olmuyor|fiyatta yardımcı|fiyatta yardimci|pazarlık|pazarlik)/.test(normalized);
   const objection = /(pahalı|pahali|fiyat araştır|fiyat arastir|başka yerlere bak|baska yerlere bak|daha ucuz)/.test(normalized);
   const repeatedAnswerComplaint = /(neden|niye).*(sabit|aynı|ayni|tekrar)|sabit cevap|aynı cevap|ayni cevap/.test(normalized);
   const medinaHotelQuestion = /medine.*otel|otel.*medine/.test(normalized);
@@ -264,6 +265,18 @@ async function generateSafeFallback(message: string, config: WhatsAppAIConfig, h
   if (handoff) {
     reply = "Elbette, talebinizi müşteri temsilcimize aktarıyorum. Uygun olduğunuz saat aralığını yazar mısınız?";
     intent = "support";
+  } else if (discountRequest) {
+    const selectedPackage = context.days
+      ? campaign.packages.find((item) => item.days.startsWith(String(context.days)))
+      : null;
+    const alternatives = selectedPackage && context.roomOccupancy === 2
+      ? ` Oda paylaşımı sizin için uygunsa ${selectedPackage.triple.replace("$", "")} USD'lik 3 kişilik veya ${selectedPackage.quad.replace("$", "")} USD'lik 4 kişilik oda seçenekleri daha uygun olabilir.`
+      : "";
+    reply = `Sizi anlıyorum efendim. İndirim konusunda teyitsiz bir rakam söylemeyeyim; mevcut fiyat üzerinden özel fiyat talebinizi yetkili temsilcimize iletiyorum.${alternatives}`;
+    intent = "price";
+    leadType = context.umrahType === "grup" ? "GRUP" : "KARARSIZ";
+    handoff = true;
+    handoffReason = "Müşteri indirim veya özel fiyat talep etti";
   } else if (repeatedAnswerComplaint) {
     reply = "Haklısınız efendim; sorunuzu yanlış yorumlayıp önceki paket bilgisini tekrarladım. Sorunuza doğrudan cevap vererek devam edeceğim.";
     intent = "complaint";
@@ -617,6 +630,7 @@ export async function generateWhatsAppReply(params: {
   const conversationStarted = history.some((message) => message.direction === "OUTBOUND");
   const salesContext = extractSalesContext(params.message, history);
   const greetingComplaint = conversationStarted && /(niye|neden).*(selam|merhaba)|sürekli.*(selam|merhaba)|tekrar.*(selam|merhaba)/i.test(params.message);
+  const discountRequest = /(indirim|iskonto|son fiyat|en son ne olur|daha uygun|uygun olmuyor|fiyatta yardımcı|fiyatta yardimci|pazarlık|pazarlik)/i.test(params.message);
   const unverifiedGroupMonth = salesContext.umrahType === "grup" && Boolean(salesContext.month) && !/eylül|eylul/.test(salesContext.month || "");
   const explicitTitle = params.customerName?.match(/\b(bey|hanım)\b/i)?.[1];
   const customerAddress = explicitTitle
@@ -648,10 +662,10 @@ export async function generateWhatsAppReply(params: {
     safe.provider = "Hızlı karşılama";
     return safe;
   }
-  if (/(pahalı|pahali|fiyat araştır|fiyat arastir|başka yerlere bak|baska yerlere bak|daha ucuz)/i.test(params.message)) {
+  if (discountRequest || /(pahalı|pahali|fiyat araştır|fiyat arastir|başka yerlere bak|baska yerlere bak|daha ucuz)/i.test(params.message)) {
     const safe = await generateSafeFallback(params.message, config, history);
     safe.reply = enforceAddressing(safe.reply, conversationStarted, params.customerName, params.message);
-    safe.provider = "Hızlı itiraz yönetimi";
+    safe.provider = discountRequest ? "Hızlı indirim talebi yönetimi" : "Hızlı itiraz yönetimi";
     return safe;
   }
   const prompt = `Sen ${config.assistantName} isimli Türkçe WhatsApp satış ve müşteri destek asistanısın.
@@ -766,6 +780,13 @@ Sadece şu JSON biçiminde cevap ver:
     );
     if (greetingComplaint) fallback.reply = `Haklısınız efendim, gereksiz selam tekrarı oldu; özür dilerim. ${unverifiedGroupMonth ? unverifiedGroupMonthReply(salesContext) : "Bundan sonra konuşmaya kaldığımız yerden devam edeceğim."}`;
     else if (unverifiedGroupMonth) fallback.reply = unverifiedGroupMonthReply(salesContext);
+    const recentOutbound = [...history].reverse().find((item) => item.direction === "OUTBOUND")?.content.trim();
+    if (recentOutbound && fallback.reply.trim() === recentOutbound) {
+      fallback.reply = "Önceki bilgiyi tekrarlamayayım efendim. Son sorunuzu net biçimde yanıtlayabilmemiz için talebinizi yetkili temsilcimize aktarıyorum.";
+      fallback.handoff = true;
+      fallback.handoffReason = "Model erişilemedi ve tekrarlı yanıt engellendi";
+      fallback.provider = "Tekrarlı yanıt koruması";
+    }
     return fallback;
   }
   const keywordHandoff = customerRequestsHandoff(params.message, config.handoffKeywords);
@@ -780,6 +801,12 @@ Sadece şu JSON biçiminde cevap ver:
   }
   if (greetingComplaint) cleanedReply = `Haklısınız efendim, gereksiz selam tekrarı oldu; özür dilerim. ${unverifiedGroupMonth ? unverifiedGroupMonthReply(salesContext) : "Bundan sonra konuşmaya kaldığımız yerden devam edeceğim."}`;
   else if (unverifiedGroupMonth) cleanedReply = unverifiedGroupMonthReply(salesContext);
+  const recentOutbound = [...history].reverse().find((item) => item.direction === "OUTBOUND")?.content.trim();
+  if (recentOutbound && cleanedReply.trim() === recentOutbound) {
+    cleanedReply = "Aynı bilgiyi tekrar etmeyeyim efendim. Son sorunuzu farklı biçimde değerlendirebilmemiz için talebinizi yetkili temsilcimize aktarıyorum.";
+    parsed.handoff = true;
+    parsed.handoffReason = "Tekrarlı model yanıtı engellendi";
+  }
   const groundedCheck = validateGroundedReply({
     reply: cleanedReply,
     message: params.message,

@@ -123,6 +123,7 @@ const client = new Client({
 
 const processStartedAt = new Date();
 let initializationCompleted = false;
+let consecutivePollFailures = 0;
 client.on("qr", async (qr) => { initializationCompleted = true; update({ status: "QR_BEKLİYOR", qr: await QRCode.toDataURL(qr), phone: null, error: null }); await syncStatus(); });
 client.on("authenticated", async () => { initializationCompleted = true; update({ status: "DOĞRULANDI", qr: null, error: null }); await syncStatus(); });
 client.on("ready", async () => { initializationCompleted = true; update({ status: "BAĞLI", qr: null, phone: client.info?.wid?.user || null, error: null }); await syncStatus(); });
@@ -247,8 +248,18 @@ async function pollRecentInboundMessages() {
       const message = await client.getMessageById(messageId);
       if (message) await handleIncomingMessage(message, "poll");
     }
+    consecutivePollFailures = 0;
   } catch (error) {
     console.error("[poll]", error);
+    consecutivePollFailures += 1;
+    const detachedFrame = /detached Frame|Target closed|Session closed|Execution context was destroyed/i.test(String(error));
+    if (detachedFrame && consecutivePollFailures >= 3) {
+      update({ status: "OTOMATİK_YENİDEN_BAŞLATILIYOR", error: "WhatsApp Web sayfası uyku sonrasında koptu." });
+      console.error("[watchdog] WhatsApp Web sayfası koptu; kayıtlı oturumla servis yeniden başlatılıyor");
+      await syncStatus();
+      try { await client.destroy(); } catch {}
+      process.exit(1);
+    }
   }
 }
 

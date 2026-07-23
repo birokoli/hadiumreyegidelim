@@ -203,12 +203,21 @@ function extractFirstJsonObject(content: string) {
   throw new Error("Model eksik JSON döndürdü");
 }
 
-function removeRepeatedGreeting(reply: string, conversationStarted: boolean) {
-  if (!conversationStarted) return reply.trim();
-  return reply
-    .replace(/^(merhaba|selam(?:lar)?|selamünaleyküm|aleyküm\s*selam)[^.!?\n]*[.!?]\s*/i, "")
-    .replace(/^(?:[A-ZÇĞİÖŞÜ][a-zçğıöşü]+\s+(?:bey|hanım)[,.]?\s*)/i, "")
-    .trim();
+function enforceAddressing(reply: string, conversationStarted: boolean, customerName?: string | null) {
+  let cleaned = reply.trim();
+  const explicitTitle = customerName?.match(/\b(bey|hanım)\b/i)?.[1];
+  const firstName = customerName?.trim().split(/\s+/)[0];
+
+  if (!explicitTitle && firstName) {
+    const escapedName = firstName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    cleaned = cleaned.replace(new RegExp(`\\b${escapedName}\\s+(?:bey|hanım)\\b`, "gi"), "efendim");
+  }
+  if (conversationStarted) {
+    cleaned = cleaned
+      .replace(/^(merhaba|selam(?:lar)?|selamün?\s*aleyküm|aleyküm\s*selam)(?:\s+[^,.!?\n]+)?[,.:;!?]\s*/i, "")
+      .replace(/^(?:[A-ZÇĞİÖŞÜ][a-zçğıöşü]+\s+(?:bey|hanım)[,.]?\s*)/i, "");
+  }
+  return cleaned.replace(/\befendim(?:\s+efendim)+\b/gi, "efendim").trim();
 }
 
 async function callGitHubModel(model: string, prompt: string, token: string) {
@@ -247,6 +256,10 @@ export async function generateWhatsAppReply(params: {
   const liveKnowledge = await buildLiveKnowledge();
   const history = (params.history || []).slice(-10);
   const conversationStarted = history.some((message) => message.direction === "OUTBOUND");
+  const explicitTitle = params.customerName?.match(/\b(bey|hanım)\b/i)?.[1];
+  const customerAddress = explicitTitle
+    ? `${params.customerName?.trim().split(/\s+/)[0]} ${explicitTitle[0].toLocaleUpperCase("tr-TR")}${explicitTitle.slice(1).toLocaleLowerCase("tr-TR")}`
+    : "efendim";
   const prompt = `Sen ${config.assistantName} isimli Türkçe WhatsApp satış ve müşteri destek asistanısın.
 
 KİMLİK VE ÜSLUP:
@@ -264,6 +277,10 @@ ${config.salesRules}
 - Markdown başlığı, tablo, yıldız işareti, kod bloğu ve uzun madde listesi kullanma.
 - Aynı selamlama veya bilgiyi tekrar etme. Müşterinin söylemediği isim, tarih, bütçe veya kişi sayısını varsayma.
 - Bu devam eden bir konuşmaysa yeniden "Merhaba", "Selam" veya "Aleyküm selam" deme ve müşterinin adını tekrar yazma.
+- Bu müşteriye hitap şeklin: "${customerAddress}". Cinsiyeti yalnızca isimden tahmin etme. İsim veya geçmiş açıkça Bey/Hanım içermiyorsa her zaman "efendim" kullan.
+- "Efendim" kelimesini bir mesajda en fazla bir kez kullan. Her cümlenin sonuna ekleme.
+- İlk mesajda müşteri selam verdiyse bir kez "Ve aleyküm selam ${customerAddress}" diyebilirsin. Müşteri doğrudan fiyat veya paket sorduysa "Nasılsınız?" diye sormadan doğrudan cevap ver.
+- Müşteri selam vermediyse yapay bir selamlama eklemek zorunda değilsin; "Elbette efendim" gibi doğal biçimde konuya gir.
 - Konuşma geçmişindeki kesin bilgileri satış kartı gibi hatırla: kampanya, kişi sayısı, yetişkin/çocuk sayısı, çıkış tarihi, süre ve oda dağılımı.
 - Müşterinin daha önce cevapladığı bir soruyu tekrar sorma. Yalnızca sıradaki eksik bilgiyi sor.
 - Müşteri kampanyayı açıkça değiştirirse eski kampanyaya ait tarih, süre ve fiyatı yeni kampanyaya taşıma; kişi sayısı gibi hâlâ geçerli bilgileri koru.
@@ -326,7 +343,7 @@ Sadece şu JSON biçiminde cevap ver:
   }
   if (!provider) return generateSafeFallback(params.message, config, providerErrors.join("; ").slice(0, 350));
   const keywordHandoff = config.handoffKeywords.some((word) => params.message.toLocaleLowerCase("tr-TR").includes(word.toLocaleLowerCase("tr-TR")));
-  const cleanedReply = removeRepeatedGreeting(String(parsed.reply || config.outOfHoursMessage).slice(0, 3500), conversationStarted);
+  const cleanedReply = enforceAddressing(String(parsed.reply || config.outOfHoursMessage).slice(0, 3500), conversationStarted, params.customerName);
   return {
     reply: cleanedReply || config.outOfHoursMessage,
     intent: String(parsed.intent || "other"),

@@ -114,8 +114,42 @@ async function buildLiveKnowledge() {
 
 export type AIReply = { reply: string; intent: string; leadType: string; leadScore: number; handoff: boolean; handoffReason: string; provider?: string; fallback?: boolean; warning?: string };
 
-async function generateSafeFallback(message: string, config: WhatsAppAIConfig, diagnostic?: string): Promise<AIReply> {
+type SalesContext = { umrahType?: "bireysel" | "grup"; people?: number; days?: number; budget?: string; budgetScopeKnown: boolean; preferences: string[] };
+
+function extractSalesContext(message: string, history: { direction: string; content: string }[] = []): SalesContext {
+  const text = [...history.filter((item) => item.direction === "INBOUND").map((item) => item.content), message].join(" ").toLocaleLowerCase("tr-TR");
+  const latest = message.toLocaleLowerCase("tr-TR").trim();
+  const people = text.match(/(\d+)\s*(?:kişi|kisiyiz|kişiyiz)/);
+  const days = text.match(/(\d+)\s*(?:gün|gun)/);
+  const budget = text.match(/(\d[\d.]*)\s*(?:₺|tl)\s*(?:bütçe|butce)?/);
+  const context: SalesContext = {
+    umrahType: /\bbireysel\b/.test(text) ? "bireysel" : /\bgrup\b/.test(text) ? "grup" : undefined,
+    people: people ? Number(people[1]) : undefined,
+    days: days ? Number(days[1]) : undefined,
+    budget: budget?.[1] ? `${budget[1]} TL` : undefined,
+    budgetScopeKnown: /kişi başı|kisi basi|toplam bütçe|toplam butce|toplamda/.test(text),
+    preferences: [],
+  };
+  if (!context.days && /^\d{1,2}$/.test(latest) && history.some((item) => /kaç gün|kac gun/i.test(item.content))) context.days = Number(latest);
+  if (/yürüme mesafe|yurume mesafe|kabe'ye yakın|kabeye yakın/.test(text)) context.preferences.push("Kâbe'ye yürüme mesafesinde otel");
+  if (/cidde.*iniş|cidde.*inis/.test(text)) context.preferences.push("Cidde varış");
+  if (/medine.*dönüş|medine.*donus/.test(text)) context.preferences.push("Medine dönüş");
+  if (/\bvize\b/.test(text)) context.preferences.push("vize");
+  if (/\btransfer\b/.test(text)) context.preferences.push("transfer");
+  return context;
+}
+
+function individualSalesReply(context: SalesContext) {
+  const known = [context.people ? `${context.people} kişi` : null, context.days ? `${context.days} gün` : null, context.preferences.length ? context.preferences.join(", ") : null].filter(Boolean).join("; ");
+  if (context.budget && !context.budgetScopeKnown) return `${known ? `${known} talebinizi not aldım. ` : ""}Belirttiğiniz ${context.budget} bütçe kişi başı mı, yoksa tüm yolcular için toplam bütçe mi efendim?`;
+  if (!context.people) return "Bireysel umre planlamanız için kaç kişi olacağınızı öğrenebilir miyim efendim?";
+  if (!context.days) return `${context.people} kişilik bireysel umre talebinizi not aldım. Kaç günlük bir program düşünüyorsunuz efendim?`;
+  return `${known} talebinizi not aldım. Bireysel umre fiyatı tarih, uçuş, otel ve anlık müsaitliğe göre hazırlanır; teyit edilmemiş rakam vermeyeyim. Düşündüğünüz gidiş tarihini paylaşır mısınız efendim?`;
+}
+
+async function generateSafeFallback(message: string, config: WhatsAppAIConfig, history: { direction: string; content: string }[] = [], diagnostic?: string): Promise<AIReply> {
   const normalized = message.toLocaleLowerCase("tr-TR");
+  const context = extractSalesContext(message, history);
   const handoff = config.handoffKeywords.some((word) => normalized.includes(word.toLocaleLowerCase("tr-TR")));
   const campaignSetting = await prisma.setting.findUnique({ where: { key: EYLUL_CAMPAIGN_SETTING_KEY } });
   const campaign = parseEylulCampaign(campaignSetting?.value, DEFAULT_EYLUL_CAMPAIGN);
@@ -126,6 +160,10 @@ async function generateSafeFallback(message: string, config: WhatsAppAIConfig, d
   if (handoff) {
     reply = "Elbette, talebinizi müşteri temsilcimize aktarıyorum. Uygun olduğunuz saat aralığını yazar mısınız?";
     intent = "support";
+  } else if (context.umrahType === "bireysel") {
+    reply = individualSalesReply(context);
+    intent = "individual_umrah";
+    leadType = "BIREYSEL";
   } else if (/(hanım|hanim)/.test(normalized)) {
     reply = "Hanım Umresi, hanım misafirlerimize özel grup düzeni ve rehberlikle planlanır. Güncel tarih ve fiyatı temsilcimiz teyit edecektir. Kaç kişi katılmayı düşünüyorsunuz?";
     intent = "group_umrah";
@@ -222,7 +260,7 @@ function enforceAddressing(
   }
   if (conversationStarted) {
     cleaned = cleaned
-      .replace(/^(merhaba|selam(?:lar)?|selamün?\s*aleyküm|aleyküm\s*selam)(?:\s+[^,.!?\n]+)?[,.:;!?]\s*/i, "")
+      .replace(/^(merhaba|selam(?:lar)?|selamün?\s*aleyküm|(?:ve\s+)?aleyküm\s*selam)(?:\s+[^,.!?\n]+)?[,.:;!?]\s*/i, "")
       .replace(/^(?:[A-ZÇĞİÖŞÜ][a-zçğıöşü]+\s+(?:bey|hanım)[,.]?\s*)/i, "");
   } else if (/^\s*(?:merhaba|selam(?:lar)?|selamün?\s*aleyküm|aleyküm\s*selam)\b/i.test(incomingMessage || "")) {
     const canonicalGreeting = /selamün?\s*aleyküm|aleyküm\s*selam/i.test(incomingMessage || "")
@@ -273,6 +311,7 @@ export async function generateWhatsAppReply(params: {
   const liveKnowledge = await buildLiveKnowledge();
   const history = (params.history || []).slice(-10);
   const conversationStarted = history.some((message) => message.direction === "OUTBOUND");
+  const salesContext = extractSalesContext(params.message, history);
   const explicitTitle = params.customerName?.match(/\b(bey|hanım)\b/i)?.[1];
   const customerAddress = explicitTitle
     ? `${params.customerName?.trim().split(/\s+/)[0]} ${explicitTitle[0].toLocaleUpperCase("tr-TR")}${explicitTitle.slice(1).toLocaleLowerCase("tr-TR")}`
@@ -321,6 +360,9 @@ ${liveKnowledge}
 SON KONUŞMA:
 ${history.map((m) => `${m.direction === "INBOUND" ? "Müşteri" : "Asistan"}: ${m.content}`).join("\n")}
 
+ÇIKARILAN MÜŞTERİ KARTI:
+${JSON.stringify(salesContext)}
+
 KONUŞMA DURUMU:
 ${conversationStarted ? "Konuşma devam ediyor. Yeniden selamlama yapma; önceki cevapları hatırla." : "Bu müşterinin ilk mesajı. Kısa bir selamlama yapabilirsin."}
 
@@ -359,7 +401,7 @@ Sadece şu JSON biçiminde cevap ver:
     }
   }
   if (!provider) {
-    const fallback = await generateSafeFallback(params.message, config, providerErrors.join("; ").slice(0, 350));
+    const fallback = await generateSafeFallback(params.message, config, history, providerErrors.join("; ").slice(0, 350));
     fallback.reply = enforceAddressing(
       fallback.reply,
       conversationStarted,
@@ -369,12 +411,15 @@ Sadece şu JSON biçiminde cevap ver:
     return fallback;
   }
   const keywordHandoff = config.handoffKeywords.some((word) => params.message.toLocaleLowerCase("tr-TR").includes(word.toLocaleLowerCase("tr-TR")));
-  const cleanedReply = enforceAddressing(
+  let cleanedReply = enforceAddressing(
     String(parsed.reply || config.outOfHoursMessage).slice(0, 3500),
     conversationStarted,
     params.customerName,
     params.message,
   );
+  if (salesContext.umrahType === "bireysel" && /(?:\d[\d.]*)\s*(?:₺|tl|usd|\$)/i.test(cleanedReply)) {
+    cleanedReply = individualSalesReply(salesContext);
+  }
   return {
     reply: cleanedReply || config.outOfHoursMessage,
     intent: String(parsed.intent || "other"),

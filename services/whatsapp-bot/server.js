@@ -40,6 +40,21 @@ app.get("/status", authorized, (_req, res) => res.json(state));
 app.get("/diagnostics", authorized, async (_req, res) => {
   try {
     const connectionState = await client.getState();
+    let pageState = null;
+    try {
+      pageState = await client.pupPage.evaluate(() => ({
+        title: document.title,
+        href: location.href,
+        webVersion: window.Debug?.VERSION || window.Store?.WebFeatures?.WEB_VERSION || null,
+        hasStore: Boolean(window.Store),
+        chatCollectionType: typeof window.Store?.Chat?.getModelsArray,
+        chatModelCount: Number(window.Store?.Chat?.models?.length || 0),
+        messageModelCount: Number(window.Store?.Msg?.models?.length || 0),
+        appState: window.Store?.AppState?.state || null,
+      }));
+    } catch (error) {
+      pageState = { error: String(error) };
+    }
     let recentChats = [];
     let chatError = null;
     try {
@@ -64,6 +79,7 @@ app.get("/diagnostics", authorized, async (_req, res) => {
       connectionState,
       status: state,
       account: client.info?.wid?.user || null,
+      pageState,
       eventListeners: {
         message: client.listenerCount("message"),
         messageCreate: client.listenerCount("message_create"),

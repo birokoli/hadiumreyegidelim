@@ -189,14 +189,15 @@ async function callGitHubModel(model: string, prompt: string, token: string) {
     body: JSON.stringify({
       model,
       messages: [{ role: "user", content: prompt }],
-      response_format: { type: "json_object" },
       max_tokens: 700,
     }),
     signal: AbortSignal.timeout(18_000),
   });
   if (!response.ok) throw new Error(`GitHub Models ${response.status}`);
   const body = await response.json() as { choices?: Array<{ message?: { content?: string } }> };
-  const parsed = JSON.parse(String(body.choices?.[0]?.message?.content || "{}")) as Partial<AIReply>;
+  const content = String(body.choices?.[0]?.message?.content || "").trim();
+  const jsonText = content.match(/\{[\s\S]*\}/)?.[0] || "{}";
+  const parsed = JSON.parse(jsonText) as Partial<AIReply>;
   if (!validModelReply(parsed)) throw new Error("Geçersiz model yanıtı");
   return parsed;
 }

@@ -56,11 +56,11 @@ export type WhatsAppAIConfig = {
 
 export const DEFAULT_WHATSAPP_AI_CONFIG: WhatsAppAIConfig = {
   enabled: false,
-  assistantName: "Hadi Umreye Asistanı",
-  welcomeMessage: "Selamünaleyküm, Hadi Umreye Gidelim'e hoş geldiniz. Size bireysel veya grup umresi konusunda yardımcı olabilirim. Nasıl bir program düşünüyorsunuz?",
-  tone: "Samimi, güven veren, kısa ve doğal Türkçe kullan. Müşteriye adıyla hitap et; robot gibi konuşma.",
+  assistantName: "Hadi Umreye Gidelim Hizmet Temsilcisi",
+  welcomeMessage: "Selamünaleyküm efendim. Hadi Umreye Gidelim'e hoş geldiniz. Bireysel veya grup umresi için kaç kişi ve hangi tarihlerde seyahat etmeyi düşünüyorsunuz?",
+  tone: "Profesyonel, ciddi, güven veren ve çözüm odaklı kusursuz İstanbul Türkçesi kullan. İlk karşılamada Selamünaleyküm de; devam eden konuşmada selamı tekrarlama. Efendim, Hanım veya Bey hitabını yerinde kullan.",
   companyKnowledge: "Hadi Umreye Gidelim; bireysel, aileye özel, VIP ve grup umresi programları sunar. İhtiyaca göre uçuş, vize, otel, transfer, rehberlik ve ziyaret programı planlanır.",
-  salesRules: "Önce kişi sayısı, düşünülen tarih, kalış süresi, oda tercihi ve bütçe aralığını öğren. Bireysel ve grup umresinin farkını tarafsızca açıkla. Kesin olmayan fiyat, uçuş, otel veya kontenjan uydurma. Satın almaya hazır müşteriyi temsilciye aktar.",
+  salesRules: "Önce kişi sayısı, düşünülen tarih, ilk umre olup olmadığı, kalış süresi, oda tercihi ve bütçe aralığını öğren. Kesin olmayan fiyat, uçuş, otel, mesafe, doluluk veya kontenjan uydurma. Fiyat verirken Dolar kuru endeksli olduğunu ve uçak biletinin dahil/hariç durumunu mutlaka belirt. Satın almaya hazır müşteriyi temsilciye aktar.",
   handoffKeywords: ["temsilci", "insan", "ara", "satın al", "ödeme", "şikayet", "acil"],
   outOfHoursMessage: "Mesajınızı aldık. Müşteri temsilcimiz en kısa sürede sizinle ilgilenecek.",
 };
@@ -222,9 +222,13 @@ async function generateSafeFallback(message: string, config: WhatsAppAIConfig, h
   let intent = "other";
   let leadType = "KARARSIZ";
 
+  const objection = /(pahalı|pahali|fiyat araştır|fiyat arastir|başka yerlere bak|baska yerlere bak|daha ucuz)/.test(normalized);
   if (handoff) {
     reply = "Elbette, talebinizi müşteri temsilcimize aktarıyorum. Uygun olduğunuz saat aralığını yazar mısınız?";
     intent = "support";
+  } else if (objection) {
+    reply = "Araştırma yapmanız çok doğal efendim. Kıyaslama yaparken otelin Kâbe’ye gerçek mesafesine, rehberlik hizmetinin kapsamına ve paketin her şey dâhil olup olmadığına dikkat etmenizi tavsiye ederim. İncelediğiniz seçenek varsa birlikte karşılaştırabiliriz.";
+    intent = "price";
   } else if (context.umrahType === "bireysel") {
     reply = individualSalesReply(context);
     intent = "individual_umrah";
@@ -244,7 +248,7 @@ async function generateSafeFallback(message: string, config: WhatsAppAIConfig, h
       if (selectedPrice && selectedPrice !== "Bilgi Al") {
         const price = `${selectedPrice.replace("$", "")} USD`;
         const inclusions = campaign.includedItems.map((item) => item.label.toLocaleLowerCase("tr-TR")).join(", ");
-        reply = `${context.departureDate} çıkışlı ${context.days} günlük grup umresinde ${context.roomOccupancy} kişilik oda kişi başı ${price}. Pakete ${inclusions} dahildir. Otel ${campaign.hotelDetail.toLocaleLowerCase("tr-TR")}; toplam kontenjan ${campaign.capacity} kişidir. Sizin için yer ayırtmamızı ister misiniz?`;
+        reply = `${context.departureDate} çıkışlı ${context.days} günlük grup umresinde ${context.roomOccupancy} kişilik oda kişi başı ${price}. Fiyat Dolar kuru endekslidir. Pakete ${inclusions} dahildir; uçak bileti dâhildir. Otel ${campaign.hotelDetail.toLocaleLowerCase("tr-TR")}; toplam kontenjan ${campaign.capacity} kişidir.`;
       } else {
         reply = "Bu programın güncel fiyatını temsilcimizden teyit edip size net bilgi verelim. Talebinizi aktarmamı ister misiniz?";
         handoff = true;
@@ -259,7 +263,9 @@ async function generateSafeFallback(message: string, config: WhatsAppAIConfig, h
       context.medinaDays ? `Medine'de ${context.medinaDays} gün` : null,
       context.preferences.includes("Medine dönüş") ? "Medine dönüş" : null,
     ].filter(Boolean).join(", ");
-    reply = `${known ? `${known} olarak not aldım. ` : ""}Grup umresi için düşündüğünüz çıkış ayı veya tarihi nedir efendim? Tarihe göre mevcut programları netleştireyim.`;
+    reply = !context.people
+      ? "Grup umresi talebiniz için kaç kişi olacağınızı öğrenebilir miyim efendim?"
+      : `${known ? `${known} olarak not aldım. ` : ""}Grup umresi için düşündüğünüz çıkış ayı veya tarihi nedir efendim? Tarihe göre mevcut programları netleştireyim.`;
     intent = "group_umrah";
     leadType = "GRUP";
   } else if (/(hanım|hanim)/.test(normalized)) {
@@ -271,7 +277,7 @@ async function generateSafeFallback(message: string, config: WhatsAppAIConfig, h
     intent = "individual_umrah";
     leadType = "BIREYSEL";
   } else if (/(fiyat|ücret|kaç para|ne kadar|dolar|usd)/.test(normalized)) {
-    reply = `${campaign.departureOne} veya ${campaign.departureTwo} çıkışlı Eylül grup umresi kişi başı ${campaign.startingPrice}'den başlıyor. Fiyat süre ve oda tipine göre değişiyor. 10, 15 veya 20 gün; 2, 3 ya da 4 kişilik odadan hangisini düşünüyorsunuz?`;
+    reply = "Size doğru fiyatı sunabilmem için kaç kişi olacağınızı, düşündüğünüz tarihi ve grup mu bireysel mi tercih ettiğinizi öğrenebilir miyim efendim?";
     intent = "price";
     leadType = "GRUP";
   } else if (/(bireysel|özel|ailece|aile)/.test(normalized)) {
@@ -323,6 +329,7 @@ async function callOllamaModel(
       model,
       messages,
       stream: false,
+      options: { temperature: 0.1 },
       ...(json ? { format: "json" } : {}),
     }),
     cache: "no-store",
@@ -336,20 +343,48 @@ async function callOllamaModel(
 }
 
 async function callOllamaWorkflow(prompt: string, customerMessage: string, salesContext: SalesContext) {
-  const llamaModel = process.env.OLLAMA_MODEL || "llama3.2";
-  const rawAnswer = await callOllamaModel(llamaModel, [
+  const analysisTask = callOllamaModel(process.env.OLLAMA_ANALYSIS_MODEL || "gemma2:2b", [
     {
       role: "system",
-      content: "Sen Hadi Umreye Gidelim şirketinin kıdemli WhatsApp satış uzmanısın. Aşağıdaki şirket talimatlarının tamamına uy ve yalnızca istenen JSON'u üret.",
+      content: "Müşteri mesajından yalnızca açıkça verilen kişi sayısı, bütçe, tarih, umre türü, niyet ve sıradaki eksik bilgiyi çıkar. Tahmin ve satış metni yazma. En fazla 6 kısa satır kullan.",
+    },
+    { role: "user", content: `${customerMessage}\n\nMevcut müşteri kartı:\n${salesContextForModel(salesContext)}` },
+  ], 12_000).catch(() => salesContextForModel(salesContext));
+  const matchingTask = callOllamaModel(process.env.OLLAMA_DATA_MODEL || "llama3.1", [
+    {
+      role: "system",
+      content: "Müşteri talebini verilen doğrulanmış şirket verileriyle eşleştir. Sadece kaynakta açıkça bulunan bilgileri kullan. Fiyat, otel, mesafe, uçuş, doluluk ve kontenjan uydurma. Müşteriye cevap yazma; kısa veri notu üret.",
+    },
+    { role: "user", content: `${prompt}\n\nMüşteri mesajı: ${customerMessage}` },
+  ], 18_000).catch(() => "Kesin bilgi yoksa temsilci teyidi istenmelidir.");
+  const [analysis, matching] = await Promise.all([analysisTask, matchingTask]);
+
+  const drafted = await callOllamaModel(process.env.OLLAMA_WRITER_MODEL || "qwen2.5:7b", [
+    {
+      role: "system",
+      content: "Sen Hadi Umreye Gidelim şirketinin profesyonel hizmet satış temsilcisisin. Kusursuz İstanbul Türkçesi kullan. İlk mesajda Selamünaleyküm de; devam eden konuşmada selamı tekrarlama. İslami ifadeleri yerinde ve abartmadan kullan. Yalnızca istenen JSON'u üret.",
     },
     {
       role: "user",
-      content: `${prompt}\n\nHIZLI SATIŞ PLANI:\nMüşterinin verdiği bilgileri tekrar sorma. Sorusuna doğrudan cevap ver, yalnızca sıradaki tek eksik bilgiyi sor. Bilgi ve fiyat uydurma.\nMüşteri mesajı: ${customerMessage}\nDoğrulanmış müşteri bilgileri:\n${salesContextForModel(salesContext)}`,
+      content: `${prompt}\n\nGEMMA İHTİYAÇ ANALİZİ:\n${analysis}\n\nLLAMA 3.1 VERİ EŞLEŞTİRMESİ:\n${matching}`,
     },
-  ], 35_000, true);
-  const rawParsed = JSON.parse(extractFirstJsonObject(rawAnswer)) as Partial<AIReply>;
-  if (!validModelReply(rawParsed)) throw new Error("Geçersiz Llama yanıtı");
-  return rawParsed;
+  ], 22_000, true);
+  const draftParsed = JSON.parse(extractFirstJsonObject(drafted)) as Partial<AIReply>;
+  if (!validModelReply(draftParsed)) throw new Error("Geçersiz Qwen yanıtı");
+
+  try {
+    const controlled = await callOllamaModel(process.env.OLLAMA_CONTROL_MODEL || "llama3.2", [
+      {
+        role: "system",
+        content: "Son kalite ve güvenlik kontrolüsün. JSON alanlarını koru. Reply metnindeki yazım hatalarını düzelt. Kaynakta olmayan fiyat, mesafe, uçuş, doluluk veya kontenjanı silip temsilci teyidine çevir. Otomatik telefon/CTA ekleme. Devam eden konuşmada selamı tekrarlama. Yalnızca JSON üret.",
+      },
+      { role: "user", content: drafted },
+    ], 12_000, true);
+    const checked = JSON.parse(extractFirstJsonObject(controlled)) as Partial<AIReply>;
+    return validModelReply(checked) ? checked : draftParsed;
+  } catch {
+    return draftParsed;
+  }
 }
 
 function validModelReply(value: Partial<AIReply>) {
@@ -458,7 +493,7 @@ function enforceAddressing(
   } else if (/^\s*(?:merhaba|selam(?:lar)?|selamün?\s*aleyküm|aleyküm\s*selam)\b/i.test(incomingMessage || "")) {
     const canonicalGreeting = /selamün?\s*aleyküm|aleyküm\s*selam/i.test(incomingMessage || "")
       ? `Ve aleyküm selam ${explicitTitle ? `${firstName} ${explicitTitle}` : "efendim"}.`
-      : `Merhaba ${explicitTitle ? `${firstName} ${explicitTitle}` : "efendim"}.`;
+      : `Selamünaleyküm ${explicitTitle ? `${firstName} ${explicitTitle}` : "efendim"}.`;
     cleaned = cleaned.replace(
       /^(?:(?:merhaba|selam(?:lar)?|selamün?\s*aleyküm|ve\s+aleyküm\s*selam|aleyküm\s*selam)[^.!?\n]*[.!?]\s*)+/i,
       "",
@@ -567,6 +602,11 @@ ${config.salesRules}
 - Müşterinin daha önce cevapladığı bir soruyu tekrar sorma. Yalnızca sıradaki eksik bilgiyi sor.
 - Müşteri kampanyayı açıkça değiştirirse eski kampanyaya ait tarih, süre ve fiyatı yeni kampanyaya taşıma; kişi sayısı gibi hâlâ geçerli bilgileri koru.
 - Fiyat sorulursa oda tipini ve program süresini netleştir; bilgi tabanındaki fiyatı para birimi ve "kişi başı" ifadesiyle aynen yaz.
+- Fiyat vermeden önce kişi sayısı, tarih, program süresi ve oda tipini netleştir. İlk defa gidip gitmediğini yalnızca planlamaya katkısı olacaksa sor.
+- Her fiyatın Dolar kuru endeksli olduğunu ve uçak biletinin pakete dahil mi hariç mi olduğunu aynı mesajda açıkça belirt.
+- Müşteri fiyat araştırdığını veya fiyatın pahalı olduğunu söylerse araştırmasının doğal olduğunu kabul et; Kâbe'ye gerçek mesafe, rehberlik kalitesi ve paketin kapsamıyla kıyaslama yapmasını öner.
+- Doluluk oranı, fiyat geçerlilik süresi veya aciliyet yalnızca bilgi tabanında güncel ve açık bir veri olarak bulunuyorsa kullanılabilir. Sahte kıtlık, baskı veya varsayılan yüzde üretme.
+- Otel mesafesini yalnızca doğrulanmış otel kaydında metre veya yürüme süresi mevcutsa aynen belirt; mesafeyi kendin hesaplama.
 - Oda fiyatı odanın toplam fiyatı değil, o odada kalan her kişi için kişi başı fiyattır. Toplamı oda dağılımına göre kendin hesapla.
 - Örnek hesap: 20 günlük programda 6 yetişkin için 4+2 dağılımı = (4 × 1.400) + (2 × 1.500) = 8.600 USD; 3+3 dağılımı = 6 × 1.450 = 8.700 USD. En uygun seçeneği söyle.
 - Müşteriye "toplam fiyat nedir?" diye sorma; yeterli bilgi varsa hesabı sen yap. Çocuk belirtilmediyse çocuk fiyatını gereksiz yere anlatma veya çocuk varmış gibi hesaplama.
@@ -606,7 +646,7 @@ Sadece şu JSON biçiminde cevap ver:
   const providerErrors: string[] = [];
   try {
     parsed = await callOllamaWorkflow(prompt, params.message, salesContext);
-    provider = "Ollama 3 Aşamalı · Gemma → Llama → Gemma";
+    provider = "Ollama uzman akışı · Gemma analiz + Llama 3.1 veri → Qwen yazım → Llama 3.2 kontrol";
   } catch (error) {
     providerErrors.push(`Ollama: ${error instanceof Error ? error.message : "bağlantı hatası"}`);
   }

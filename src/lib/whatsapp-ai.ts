@@ -112,7 +112,56 @@ async function buildLiveKnowledge() {
   ].join("\n\n");
 }
 
-export type AIReply = { reply: string; intent: string; leadType: string; leadScore: number; handoff: boolean; handoffReason: string };
+export type AIReply = { reply: string; intent: string; leadType: string; leadScore: number; handoff: boolean; handoffReason: string; fallback?: boolean; warning?: string };
+
+async function generateSafeFallback(message: string, config: WhatsAppAIConfig): Promise<AIReply> {
+  const normalized = message.toLocaleLowerCase("tr-TR");
+  const handoff = config.handoffKeywords.some((word) => normalized.includes(word.toLocaleLowerCase("tr-TR")));
+  const campaignSetting = await prisma.setting.findUnique({ where: { key: EYLUL_CAMPAIGN_SETTING_KEY } });
+  const campaign = parseEylulCampaign(campaignSetting?.value, DEFAULT_EYLUL_CAMPAIGN);
+  let reply = "Size doğru bilgi verebilmem için grup umresi mi, bireysel umre mi düşündüğünüzü ve kaç kişi olacağınızı paylaşır mısınız?";
+  let intent = "other";
+  let leadType = "KARARSIZ";
+
+  if (handoff) {
+    reply = "Elbette, talebinizi müşteri temsilcimize aktarıyorum. Uygun olduğunuz saat aralığını yazar mısınız?";
+    intent = "support";
+  } else if (/(selam|merhaba|aleyküm|aleykum|iyi günler)/.test(normalized)) {
+    reply = config.welcomeMessage;
+    intent = "greeting";
+  } else if (/(hanım|hanim)/.test(normalized)) {
+    reply = "Hanım Umresi, hanım misafirlerimize özel grup düzeni ve rehberlikle planlanır. Güncel tarih ve fiyatı temsilcimiz teyit edecektir. Kaç kişi katılmayı düşünüyorsunuz?";
+    intent = "group_umrah";
+    leadType = "GRUP";
+  } else if (/(ilk umre|ilk kez|ilk umrem)/.test(normalized)) {
+    reply = "İlk Umrem programında hazırlıktan ibadet sürecine kadar adım adım rehberlik sağlanır. Güncel tarih ve fiyatı temsilcimiz teyit edecektir. Kaç kişi gitmeyi düşünüyorsunuz?";
+    intent = "individual_umrah";
+    leadType = "BIREYSEL";
+  } else if (/(fiyat|ücret|kaç para|ne kadar|dolar|usd)/.test(normalized)) {
+    reply = `${campaign.departureOne} veya ${campaign.departureTwo} çıkışlı Eylül grup umresi kişi başı ${campaign.startingPrice}'den başlıyor. Fiyat süre ve oda tipine göre değişiyor. 10, 15 veya 20 gün; 2, 3 ya da 4 kişilik odadan hangisini düşünüyorsunuz?`;
+    intent = "price";
+    leadType = "GRUP";
+  } else if (/(bireysel|özel|ailece|aile)/.test(normalized)) {
+    reply = "Bireysel umrede tarih, otel ve program ihtiyacınıza göre planlanır; grup umresinde belirli tarih ve programla birlikte hareket edilir. Kaç kişi ve hangi tarihte gitmeyi düşünüyorsunuz?";
+    intent = "individual_umrah";
+    leadType = "BIREYSEL";
+  } else if (/(grup|eylül|eylul)/.test(normalized)) {
+    reply = `Eylül grup umremizin çıkışları ${campaign.departureOne} veya ${campaign.departureTwo}; program seçenekleri 10, 15 ve 20 gündür. Kaç kişi ve hangi oda tipini düşünüyorsunuz?`;
+    intent = "group_umrah";
+    leadType = "GRUP";
+  }
+
+  return {
+    reply,
+    intent,
+    leadType,
+    leadScore: handoff ? 80 : 35,
+    handoff,
+    handoffReason: handoff ? "Müşteri temsilci talep etti" : "",
+    fallback: true,
+    warning: "Gemini kotası kullanılamadığı için güvenli hazır yanıt üretildi.",
+  };
+}
 
 export async function generateWhatsAppReply(params: {
   message: string;
@@ -163,9 +212,13 @@ YENİ MESAJ: ${params.message}
 
 Sadece şu JSON biçiminde cevap ver:
 {"reply":"Türkçe WhatsApp yanıtı","intent":"greeting|individual_umrah|group_umrah|price|booking|support|complaint|other","leadType":"BIREYSEL|GRUP|KARARSIZ","leadScore":0,"handoff":false,"handoffReason":""}`;
-  const result = await model.generateContent(prompt);
-  const raw = result.response.text().trim();
-  const parsed = JSON.parse(raw) as Partial<AIReply>;
+  let parsed: Partial<AIReply>;
+  try {
+    const result = await model.generateContent(prompt);
+    parsed = JSON.parse(result.response.text().trim()) as Partial<AIReply>;
+  } catch {
+    return generateSafeFallback(params.message, config);
+  }
   const keywordHandoff = config.handoffKeywords.some((word) => params.message.toLocaleLowerCase("tr-TR").includes(word.toLocaleLowerCase("tr-TR")));
   return {
     reply: String(parsed.reply || config.outOfHoursMessage).slice(0, 3500),

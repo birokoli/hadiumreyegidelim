@@ -3,7 +3,7 @@ import { getAdminSession } from "@/lib/admin-auth";
 import { generateWhatsAppReply } from "@/lib/whatsapp-ai";
 
 export const runtime = "nodejs";
-export const maxDuration = 60;
+export const maxDuration = 180;
 
 export async function POST(request: Request) {
   const session = await getAdminSession();

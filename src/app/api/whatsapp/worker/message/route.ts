@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { ensureWhatsAppAITables, generateWhatsAppReply, getWhatsAppAIConfig } from "@/lib/whatsapp-ai";
 
 export const runtime = "nodejs";
+export const maxDuration = 180;
 
 export async function POST(request: Request) {
   const token = request.headers.get("authorization")?.replace(/^Bearer\s+/i, "");

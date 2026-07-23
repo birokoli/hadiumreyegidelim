@@ -126,9 +126,6 @@ async function generateSafeFallback(message: string, config: WhatsAppAIConfig, d
   if (handoff) {
     reply = "Elbette, talebinizi müşteri temsilcimize aktarıyorum. Uygun olduğunuz saat aralığını yazar mısınız?";
     intent = "support";
-  } else if (/(selam|merhaba|aleyküm|aleykum|iyi günler)/.test(normalized)) {
-    reply = config.welcomeMessage;
-    intent = "greeting";
   } else if (/(hanım|hanim)/.test(normalized)) {
     reply = "Hanım Umresi, hanım misafirlerimize özel grup düzeni ve rehberlikle planlanır. Güncel tarih ve fiyatı temsilcimiz teyit edecektir. Kaç kişi katılmayı düşünüyorsunuz?";
     intent = "group_umrah";
@@ -149,6 +146,9 @@ async function generateSafeFallback(message: string, config: WhatsAppAIConfig, d
     reply = `Eylül grup umremizin çıkışları ${campaign.departureOne} veya ${campaign.departureTwo}; program seçenekleri 10, 15 ve 20 gündür. Kaç kişi ve hangi oda tipini düşünüyorsunuz?`;
     intent = "group_umrah";
     leadType = "GRUP";
+  } else if (/(selam|merhaba|aleyküm|aleykum|iyi günler)/.test(normalized)) {
+    reply = config.welcomeMessage;
+    intent = "greeting";
   }
 
   return {
@@ -358,7 +358,16 @@ Sadece şu JSON biçiminde cevap ver:
       providerErrors.push(`Gemini: ${error instanceof Error && error.message.includes("429") ? "kota dolu" : "hata"}`);
     }
   }
-  if (!provider) return generateSafeFallback(params.message, config, providerErrors.join("; ").slice(0, 350));
+  if (!provider) {
+    const fallback = await generateSafeFallback(params.message, config, providerErrors.join("; ").slice(0, 350));
+    fallback.reply = enforceAddressing(
+      fallback.reply,
+      conversationStarted,
+      params.customerName,
+      params.message,
+    );
+    return fallback;
+  }
   const keywordHandoff = config.handoffKeywords.some((word) => params.message.toLocaleLowerCase("tr-TR").includes(word.toLocaleLowerCase("tr-TR")));
   const cleanedReply = enforceAddressing(
     String(parsed.reply || config.outOfHoursMessage).slice(0, 3500),

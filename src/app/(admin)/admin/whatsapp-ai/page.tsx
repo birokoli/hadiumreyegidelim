@@ -65,6 +65,17 @@ export default function WhatsAppAIPage() {
     setBusy(false); if (response.ok) load();
   };
 
+  const cleanupSyntheticTests = async () => {
+    setBusy(true); setNotice("");
+    const response = await fetch("/api/admin/whatsapp-ai", { method: "DELETE" });
+    const json = await response.json();
+    setNotice(response.ok
+      ? `${json.conversations} test konuşması ve ${json.messages} test mesajı temizlendi.`
+      : json.error || "Test kayıtları temizlenemedi.");
+    setBusy(false);
+    if (response.ok) load();
+  };
+
   const test = async () => {
     setBusy(true); setTestWarning(""); setTestProvider("");
     const response = await fetch("/api/admin/whatsapp-ai/test", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ message: testMessage, history: testHistory }) });
@@ -121,11 +132,12 @@ export default function WhatsAppAIPage() {
     </div>
 
     {tab === "overview" && <>
+      {notice ? <div className="rounded-xl bg-emerald-50 px-4 py-3 text-sm font-bold text-emerald-700">{notice}</div> : null}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {[["Konuşma",data.stats.conversations,"forum"],["Toplam Mesaj",data.stats.totalMessages,"chat"],["AI Yanıtı",data.stats.aiMessages,"smart_toy"],["Temsilci Bekleyen",data.stats.handoffCount,"support_agent"]].map(([label,value,icon]) => <div key={String(label)} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><span className="material-symbols-outlined text-[#003781]">{icon}</span><p className="mt-4 text-3xl font-bold text-slate-900">{value}</p><p className="text-sm text-slate-500">{label}</p></div>)}
       </div>
       <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-        <div className="border-b border-slate-100 px-6 py-5"><h2 className="font-bold text-slate-900">Müşteri Mesajları ve AI Yanıtları</h2><p className="mt-1 text-sm text-slate-500">Gelen mesajları, AI cevaplarını ve temsilci bekleyen konuşmaları buradan takip edin.</p><div className="mt-4 flex flex-wrap gap-2">{[
+        <div className="border-b border-slate-100 px-6 py-5"><div className="flex flex-wrap items-start justify-between gap-3"><div><h2 className="font-bold text-slate-900">Müşteri Mesajları ve AI Yanıtları</h2><p className="mt-1 text-sm text-slate-500">Gelen mesajları, AI cevaplarını ve temsilci bekleyen konuşmaları buradan takip edin.</p></div><button disabled={busy} onClick={cleanupSyntheticTests} className="rounded-xl border border-red-200 px-4 py-2 text-xs font-bold text-red-600 hover:bg-red-50 disabled:opacity-50">Test kayıtlarını temizle</button></div><div className="mt-4 flex flex-wrap gap-2">{[
           ["all", `Tümü (${data.conversations.length})`],
           ["answered", `AI Yanıtladı (${answerCounts.answered})`],
           ["unanswered", `Yanıtlanmadı (${answerCounts.unanswered})`],

@@ -8,7 +8,16 @@ const BOT_TOKEN = process.env.WHATSAPP_BOT_TOKEN;
 const WEBSITE_URL = (process.env.WEBSITE_URL || "https://www.hadiumreyegidelim.com").replace(/\/$/, "");
 const ADMIN_URL = (process.env.ADMIN_URL || "https://admin.hadiumreyegidelim.com").replace(/\/$/, "");
 const SESSION_PATH = process.env.WHATSAPP_SESSION_PATH || "/data/.wwebjs_auth";
-let managerPhone = String(process.env.WHATSAPP_MANAGER_PHONE || "").replace(/\D/g, "");
+
+function normalizeWhatsAppPhone(value) {
+  let digits = String(value || "").replace(/\D/g, "");
+  if (digits.startsWith("00")) digits = digits.slice(2);
+  if (digits.startsWith("0") && digits.length === 11) digits = `90${digits.slice(1)}`;
+  if (digits.startsWith("5") && digits.length === 10) digits = `90${digits}`;
+  return digits;
+}
+
+let managerPhone = normalizeWhatsAppPhone(process.env.WHATSAPP_MANAGER_PHONE);
 
 if (!BOT_TOKEN) throw new Error("WHATSAPP_BOT_TOKEN tanımlı değil");
 
@@ -145,6 +154,22 @@ async function reconcileConnection() {
   } catch {}
 }
 
+async function resolveManagerChatId(phone) {
+  const normalized = normalizeWhatsAppPhone(phone);
+  if (!/^90\d{10}$/.test(normalized)) {
+    throw new Error(`Yönetici numarası geçersiz: ${normalized || "boş"}. 905xxxxxxxxx biçiminde kaydedin.`);
+  }
+  const connectedPhone = normalizeWhatsAppPhone(client.info?.wid?.user);
+  if (connectedPhone && connectedPhone === normalized) {
+    throw new Error("Yönetici numarası botun bağlı olduğu WhatsApp hattıyla aynı olamaz. Farklı bir WhatsApp numarası kullanın.");
+  }
+  const numberId = await client.getNumberId(normalized);
+  if (!numberId) {
+    throw new Error(`Yönetici numarası WhatsApp'ta bulunamadı: +${normalized}`);
+  }
+  return numberId._serialized || `${normalized}@c.us`;
+}
+
 const chatQueues = new Map();
 
 async function processIncomingMessage(message, eventName) {
@@ -171,7 +196,7 @@ async function processIncomingMessage(message, eventName) {
   try {
     const contact = await message.getContact();
     const customerPhone = contact.number || message.from.replace(/@(c|lid)\.us$/, "");
-    const normalizedCustomerPhone = String(customerPhone).replace(/\D/g, "");
+    const normalizedCustomerPhone = normalizeWhatsAppPhone(customerPhone);
     const managerAnswer = message.body.trim().match(/^#YANIT\s+([A-Z0-9]{6})\s+([\s\S]+)$/i);
     if (managerPhone && normalizedCustomerPhone === managerPhone && managerAnswer) {
       const reference = managerAnswer[1].toUpperCase();
@@ -209,7 +234,7 @@ async function processIncomingMessage(message, eventName) {
     if (!response.ok) throw new Error(`Site yanıtı ${response.status}: ${(await response.text()).slice(0, 300)}`);
     const result = await response.json();
     if (result.askManager && result.managerPhone && result.managerQuestion) {
-      managerPhone = String(result.managerPhone).replace(/\D/g, "");
+      managerPhone = normalizeWhatsAppPhone(result.managerPhone);
       const reference = Math.random().toString(36).slice(2, 8).toUpperCase();
       pendingManagerQuestions.set(reference, {
         customerChatId: message.from,
@@ -220,8 +245,15 @@ async function processIncomingMessage(message, eventName) {
       for (const [code, pending] of pendingManagerQuestions) {
         if (Date.now() - pending.createdAt > 24 * 60 * 60_000) pendingManagerQuestions.delete(code);
       }
-      await client.sendMessage(`${managerPhone}@c.us`, `${result.managerQuestion}\n\nYanıtlamak için şu biçimde yazın:\n#YANIT ${reference} Müşteriye gönderilecek cevabınız`);
-      console.log(`[manager] ${reference} için yöneticiye soru gönderildi`);
+      try {
+        const managerChatId = await resolveManagerChatId(managerPhone);
+        await client.sendMessage(managerChatId, `${result.managerQuestion}\n\nYanıtlamak için şu biçimde yazın:\n#YANIT ${reference} Müşteriye gönderilecek cevabınız`);
+        console.log(`[manager] ${reference} için +${managerPhone} numaralı yöneticiye soru gönderildi`);
+      } catch (error) {
+        pendingManagerQuestions.delete(reference);
+        console.error(`[manager] ${reference} teslim edilemedi:`, error);
+        throw error;
+      }
     }
     if (result.reply) {
       await message.reply(result.reply);

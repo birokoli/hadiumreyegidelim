@@ -110,6 +110,19 @@ app.post("/reset", authorized, async (_req, res) => {
   try { await client.logout(); } catch {}
   res.json({ success: true });
 });
+app.post("/send-message", authorized, async (req, res) => {
+  const { phone, message } = req.body || {};
+  if (!phone || !message) return res.status(400).json({ error: "Eksik parametre" });
+  try {
+    const formattedPhone = phone.replace(/\D/g, "");
+    const chatId = formattedPhone.includes("@") ? formattedPhone : `${formattedPhone}@c.us`;
+    await client.sendMessage(chatId, message);
+    res.json({ success: true, phone: formattedPhone });
+  } catch (error) {
+    console.error("[send-message error]", error);
+    res.status(500).json({ error: String(error) });
+  }
+});
 
 async function syncStatus() {
   await Promise.allSettled([...new Set([WEBSITE_URL, ADMIN_URL])].map(async (baseUrl) => {

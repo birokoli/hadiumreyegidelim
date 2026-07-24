@@ -32,6 +32,7 @@ export default function WhatsAppAIPage() {
   const [trainingQuestion, setTrainingQuestion] = useState("");
   const [trainingReply, setTrainingReply] = useState("");
   const [trainingCategory, setTrainingCategory] = useState("Satış");
+  const [bulkTraining, setBulkTraining] = useState("");
 
   const load = async () => {
     const response = await fetch("/api/admin/whatsapp-ai", { cache: "no-store" });
@@ -140,6 +141,30 @@ export default function WhatsAppAIPage() {
     const json = await response.json();
     setNotice(response.ok ? "Eğitim örneği kaldırıldı." : json.error || "Örnek kaldırılamadı.");
     if (response.ok) await load();
+    setBusy(false);
+  };
+
+  const importBulkTraining = async () => {
+    const normalized = bulkTraining.replace(/\r/g, "").trim();
+    const matches = [...normalized.matchAll(/(?:^|\n)\s*(?:Müşteri|Musteri)\s*:\s*([\s\S]*?)\n\s*(?:Cevap|Yanıt|Yanit|Temsilci)\s*:\s*([\s\S]*?)(?=\n\s*(?:Müşteri|Musteri)\s*:|$)/gi)];
+    const examples = matches.map((match) => ({
+      customerMessage: match[1].trim(),
+      idealReply: match[2].trim(),
+      category: "Toplu eğitim",
+    })).filter((item) => item.customerMessage && item.idealReply);
+    if (!examples.length) {
+      setNotice("Metinde “Müşteri:” ve “Cevap:” biçiminde eşleşen konuşma bulunamadı.");
+      return;
+    }
+    setBusy(true); setNotice("");
+    const response = await fetch("/api/admin/whatsapp-ai/feedback", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ examples }),
+    });
+    const json = await response.json();
+    setNotice(response.ok ? `${json.added} konuşma örneği tek seferde öğretildi.` : json.error || "Toplu eğitim kaydedilemedi.");
+    if (response.ok) { setBulkTraining(""); await load(); }
     setBusy(false);
   };
 
@@ -254,6 +279,13 @@ export default function WhatsAppAIPage() {
           <label className="min-w-52"><span className="mb-1.5 block text-xs font-bold text-slate-500">KATEGORİ</span><select className={input} value={trainingCategory} onChange={(event) => setTrainingCategory(event.target.value)}><option>Satış</option><option>Fiyat</option><option>İndirim İtirazı</option><option>Grup Umresi</option><option>Bireysel Umre</option><option>Otel ve Konaklama</option><option>Çocuklu Aile</option><option>Temsilciye Aktarım</option></select></label>
           <button disabled={busy || !trainingQuestion.trim() || !trainingReply.trim()} onClick={addTrainingExample} className="rounded-xl bg-[#003781] px-6 py-3 text-sm font-bold text-white disabled:opacity-50">{busy ? "Kaydediliyor..." : "Doğru Cevap Olarak Öğret"}</button>
         </div>
+      </section>
+
+      <section className="rounded-2xl border border-blue-200 bg-blue-50/40 p-6 shadow-sm">
+        <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between"><div><p className="text-xs font-bold uppercase tracking-widest text-blue-600">Hızlı Aktarım</p><h2 className="mt-1 text-lg font-bold text-slate-900">Toplu Konuşma Öğret</h2><p className="mt-1 text-sm text-slate-500">Onlarca müşteri-cevap çiftini tek alana yapıştırın; sistem hepsini otomatik ayırır.</p></div><span className="rounded-lg bg-white px-3 py-2 text-xs font-semibold text-slate-500 shadow-sm">En fazla 100 örnek saklanır</span></div>
+        <div className="mt-4 rounded-xl border border-blue-100 bg-white p-3 text-xs leading-6 text-slate-500"><b>Kullanılacak biçim:</b><br />Müşteri: Biraz indirim yaparsanız kesin alacağım.<br />Cevap: Talebinizi anlıyorum efendim. Teyitsiz indirim sözü vermeden özel fiyat talebinizi yetkili temsilcimize iletiyorum.<br /><br />Müşteri: Grup umreleriniz ne zaman?<br />Cevap: Grup umremizin çıkışları 15 ve 25 Eylül’dür. Size hangi tarih daha uygun olur?</div>
+        <textarea rows={12} className={`${input} mt-4 font-mono`} value={bulkTraining} onChange={(event) => setBulkTraining(event.target.value)} placeholder={"Müşteri: ...\nCevap: ...\n\nMüşteri: ...\nCevap: ..."} />
+        <div className="mt-4 flex items-center justify-between gap-3"><p className="text-xs text-slate-500">Boş satır bırakmanız şart değildir; her “Müşteri:” yeni bir kayıt başlatır.</p><button disabled={busy || !bulkTraining.trim()} onClick={importBulkTraining} className="rounded-xl bg-blue-600 px-6 py-3 text-sm font-bold text-white disabled:opacity-50">{busy ? "İçe aktarılıyor..." : "Hepsini Tek Seferde Öğret"}</button></div>
       </section>
 
       <div className="grid gap-5 lg:grid-cols-2">

@@ -248,14 +248,17 @@ function preventRepeatedAutomaticReply<T extends AIReply>(
   response: T,
   history: { direction: string; content: string }[],
 ) {
-  const recentOutbound = [...history].reverse().find((item) => item.direction === "OUTBOUND")?.content.trim();
-  if (!recentOutbound || !repliesAreTooSimilar(response.reply, recentOutbound)) return response;
+  const recentOutbounds = [...history].filter((item) => item.direction === "OUTBOUND").slice(-3).map((item) => item.content.trim());
+  if (!recentOutbounds.length) return response;
+  const isTooSimilar = recentOutbounds.some((previous) => repliesAreTooSimilar(response.reply, previous));
+  if (!isTooSimilar) return response;
+
   return {
     ...response,
-    reply: "Sorunuzu önceki cevabı tekrarlamadan doğru yanıtlamak için yetkili temsilcimize aktarıyorum efendim.",
+    reply: "Sorunuzu önceki cevabı tekrarlamadan doğru ve eksiksiz yanıtlayabilmem için sizi yetkili temsilcimize aktarıyorum efendim.",
     handoff: true,
-    handoffReason: "Benzer veya tekrarlı otomatik yanıt engellendi",
-    provider: "Satış kaybı önleme koruması",
+    handoffReason: "Bot aynı veya benzer yanıtı tekrarladı (Döngü Koruma Sistemi)",
+    provider: "Satış kaybı ve döngü önleme koruması",
   };
 }
 
@@ -966,49 +969,6 @@ export async function generateWhatsAppReply(params: {
         fallback: false,
       }, history);
     }
-  }
-  if (isTrivialOrTestMessage(params.message)
-    && !isContextualShortAnswer(params.message, history)
-    && !salesContext.roomOccupancy) {
-    return preventRepeatedAutomaticReply({
-      reply: conversationStarted
-        ? "Mesajınız ulaştı efendim. Umre planlamanızla ilgili hangi konuda yardımcı olmamı istersiniz?"
-        : "Merhaba efendim. Mesajınız ulaştı. Bireysel veya grup umresiyle ilgili hangi konuda yardımcı olmamı istersiniz?",
-      intent: "other",
-      leadType: "KARARSIZ",
-      leadScore: 10,
-      handoff: false,
-      handoffReason: "",
-      provider: "Güvenli karşılama",
-      fallback: true,
-    }, history);
-  }
-  const greetingOnly = /(?:selam|merhaba|aleyküm|aleykum|nasılsın|nasilsin|iyi günler)/i.test(params.message)
-    && !/(umre|paket|tur|fiyat|otel|vize|uçuş|transfer|mekke|medine|kabe|grup|bireysel|rezervasyon)/i.test(params.message);
-  if (greetingOnly) {
-    const safe = await generateSafeFallback(params.message, config, history);
-    safe.reply = conversationStarted
-      ? "Teşekkür ederim efendim. Umre planlamanızla ilgili hangi konuda yardımcı olmamı istersiniz?"
-      : enforceAddressing(safe.reply, false, params.customerName, params.message);
-    safe.provider = "Hızlı karşılama";
-    safe.warning = undefined;
-    return preventRepeatedAutomaticReply(safe, history);
-  }
-  if (discountRequest || /(pahalı|pahali|fiyat araştır|fiyat arastir|başka yerlere bak|baska yerlere bak|daha ucuz)/i.test(params.message)) {
-    const safe = await generateSafeFallback(params.message, config, history);
-    safe.reply = enforceAddressing(safe.reply, conversationStarted, params.customerName, params.message);
-    safe.provider = discountRequest ? "Hızlı indirim talebi yönetimi" : "Hızlı itiraz yönetimi";
-    safe.warning = undefined;
-    return preventRepeatedAutomaticReply(safe, history);
-  }
-  const deterministicIntent = /(?:15|25)\s*(?:eylül|eylul).*(?:grup|kampanya).*(?:bilgi|detay)|(?:grup|kampanya).*(?:15|25)\s*(?:eylül|eylul).*(?:bilgi|detay)|\b12\s*yaş|\bgrup(?:\s+umresi)?\s+değil\b.*\bbireysel\b|(?:rehber|tarihi mekan|tarihî mekân|araç|arac|kirala|ulaşım|ulasim).*(?:nasıl|nasil|var mı|varmi|veriyor|sağlanıyor|saglaniyor|görmek|gezmek)|(?:en yakın|en yakin|hangi)\s+(?:grup\s+umre\s+)?tarih|(?:grup\s+umre|çıkış|cikis).*(?:ne zaman|hangi tarih)/i.test(params.message)
-    || (salesContext.umrahType === "grup" && /^(?:ne zaman|en yakın tarih ne zaman|en yakin tarih ne zaman|hangi tarih)$/i.test(params.message.trim()));
-  if (deterministicIntent) {
-    const safe = await generateSafeFallback(params.message, config, history);
-    safe.reply = enforceAddressing(safe.reply, conversationStarted, params.customerName, params.message);
-    safe.provider = "Doğrulanmış satış kuralı";
-    safe.warning = undefined;
-    return preventRepeatedAutomaticReply(safe, history);
   }
   const prompt = `Sen ${config.assistantName} isimli Türkçe WhatsApp satış ve müşteri destek asistanısın.
 

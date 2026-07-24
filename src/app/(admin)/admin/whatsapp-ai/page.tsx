@@ -16,7 +16,7 @@ const input = "w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text
 export default function WhatsAppAIPage() {
   const [data, setData] = useState<DashboardData | null>(null);
   const [config, setConfig] = useState(DEFAULT_WHATSAPP_AI_CONFIG);
-  const [tab, setTab] = useState<"overview" | "connection" | "knowledge" | "test" | "ollama">("overview");
+  const [tab, setTab] = useState<"overview" | "connection" | "knowledge" | "training" | "test" | "ollama">("overview");
   const [testMessage, setTestMessage] = useState("Eşimle birlikte bireysel umreye gitmek istiyoruz, grup umresinden farkı nedir?");
   const [testWarning, setTestWarning] = useState("");
   const [testProvider, setTestProvider] = useState("");
@@ -29,6 +29,9 @@ export default function WhatsAppAIPage() {
   const [openConversation, setOpenConversation] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [notice, setNotice] = useState("");
+  const [trainingQuestion, setTrainingQuestion] = useState("");
+  const [trainingReply, setTrainingReply] = useState("");
+  const [trainingCategory, setTrainingCategory] = useState("Satış");
 
   const load = async () => {
     const response = await fetch("/api/admin/whatsapp-ai", { cache: "no-store" });
@@ -98,11 +101,53 @@ export default function WhatsAppAIPage() {
     }
   };
 
+  const teachAnswer = async (customerMessage: string, currentReply: string) => {
+    const idealReply = window.prompt("Bu müşteriye verilmesi gereken doğru cevabı yazın:", currentReply)?.trim();
+    if (!idealReply) return;
+    setBusy(true); setNotice("");
+    const response = await fetch("/api/admin/whatsapp-ai/feedback", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ customerMessage, idealReply, category: "Konuşmadan öğretildi" }),
+    });
+    const json = await response.json();
+    setNotice(response.ok ? "Düzeltilen cevap eğitim havuzuna eklendi." : json.error || "Cevap öğretilemedi.");
+    setBusy(false);
+    if (response.ok) load();
+  };
+
+  const addTrainingExample = async () => {
+    if (!trainingQuestion.trim() || !trainingReply.trim()) return;
+    setBusy(true); setNotice("");
+    const response = await fetch("/api/admin/whatsapp-ai/feedback", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ customerMessage: trainingQuestion, idealReply: trainingReply, category: trainingCategory }),
+    });
+    const json = await response.json();
+    setNotice(response.ok ? "Yeni doğru cevap örneği kaydedildi." : json.error || "Örnek kaydedilemedi.");
+    if (response.ok) { setTrainingQuestion(""); setTrainingReply(""); await load(); }
+    setBusy(false);
+  };
+
+  const deleteTrainingExample = async (id: string) => {
+    setBusy(true); setNotice("");
+    const response = await fetch("/api/admin/whatsapp-ai/feedback", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id }),
+    });
+    const json = await response.json();
+    setNotice(response.ok ? "Eğitim örneği kaldırıldı." : json.error || "Örnek kaldırılamadı.");
+    if (response.ok) await load();
+    setBusy(false);
+  };
+
   const test = async () => {
     setBusy(true); setTestWarning(""); setTestProvider("");
     const response = await fetch("/api/admin/whatsapp-ai/test", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ message: testMessage, history: testHistory }) });
     const json = await response.json();
-    if (response.ok) setTestHistory((current) => [...current, { direction: "INBOUND", content: testMessage }, { direction: "OUTBOUND", content: json.reply }].slice(-10));
+    if (response.ok) setTestHistory((current) => [...current, { direction: "INBOUND" as const, content: testMessage }, { direction: "OUTBOUND" as const, content: String(json.reply) }].slice(-10));
     else setTestWarning(json.error || "Test başarısız");
     if (response.ok && json.warning) setTestWarning(json.warning);
     if (response.ok && json.provider) setTestProvider(json.provider);
@@ -121,7 +166,7 @@ export default function WhatsAppAIPage() {
     });
     const json = await response.json();
     if (response.ok) {
-      setOllamaHistory((current) => [...current, { role: "assistant", content: json.reply }].slice(-20));
+      setOllamaHistory((current) => [...current, { role: "assistant" as const, content: String(json.reply) }].slice(-20));
       setOllamaProvider(json.provider || "Güvenli hazır yanıt");
     }
     else setOllamaError(json.error || "Bağlantı hatası: Sunucu kapalı olabilir");
@@ -150,7 +195,7 @@ export default function WhatsAppAIPage() {
     </div>
 
     <div className="flex flex-wrap gap-2 rounded-2xl border border-slate-200 bg-white p-2">
-      {[["overview","Genel Bakış"],["connection","QR Bağlantısı"],["knowledge","Asistan & Bilgi Tabanı"],["test","Yanıt Testi"],["ollama","Ollama Sohbeti"]].map(([id,label]) => <button key={id} onClick={() => setTab(id as typeof tab)} className={`rounded-xl px-5 py-3 text-sm font-bold ${tab === id ? "bg-[#003781] text-white" : "text-slate-500 hover:bg-slate-50"}`}>{label}</button>)}
+      {[["overview","Genel Bakış"],["connection","QR Bağlantısı"],["knowledge","Asistan & Bilgi Tabanı"],["training","AI Eğitim Merkezi"],["test","Yanıt Testi"],["ollama","Ollama Sohbeti"]].map(([id,label]) => <button key={id} onClick={() => setTab(id as typeof tab)} className={`rounded-xl px-5 py-3 text-sm font-bold ${tab === id ? "bg-[#003781] text-white" : "text-slate-500 hover:bg-slate-50"}`}>{label}</button>)}
     </div>
 
     {tab === "overview" && <>
@@ -171,7 +216,7 @@ export default function WhatsAppAIPage() {
             const state = conversationState(c);
             const stateLabel = state === "answered" ? "AI Yanıtladı" : state === "unanswered" ? "Yanıtlanmadı" : "Temsilci Bekliyor";
             const stateClass = state === "answered" ? "bg-emerald-50 text-emerald-700" : state === "unanswered" ? "bg-red-50 text-red-700" : "bg-amber-50 text-amber-700";
-            return <div key={c.id} className="px-6 py-4"><div className="flex items-start gap-3"><button onClick={() => setOpenConversation(openConversation === c.id ? null : c.id)} className="grid min-w-0 flex-1 gap-3 text-left md:grid-cols-[1fr_2fr_auto] md:items-center"><div><p className="font-bold text-slate-800">{c.name || c.phone}</p><p className="text-xs text-slate-400">+{c.phone}</p></div><p className="truncate text-sm text-slate-500">{c.messages.at(-1)?.content}</p><div className="flex items-center gap-2"><span className={`rounded-full px-2.5 py-1 text-xs font-bold ${stateClass}`}>{stateLabel}</span><span className="text-xs font-bold text-slate-400">{c.leadType || "KARARSIZ"} · %{c.leadScore}</span></div></button><button disabled={busy} onClick={() => cleanupConversations(c.id)} title="Konuşmayı sil" className="rounded-lg p-2 text-slate-300 hover:bg-red-50 hover:text-red-600 disabled:opacity-50"><span className="material-symbols-outlined text-xl">delete</span></button></div>{openConversation === c.id ? <div className="mt-4 space-y-2 rounded-2xl bg-[#efeae2] p-4">{c.messages.map((message) => <div key={message.id} className={`flex ${message.direction === "INBOUND" ? "justify-start" : "justify-end"}`}><div className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm shadow-sm ${message.direction === "INBOUND" ? "rounded-tl-sm bg-white text-slate-700" : "rounded-tr-sm bg-[#d9fdd3] text-slate-800"}`}><p className="mb-1 text-[10px] font-bold uppercase text-slate-400">{message.direction === "INBOUND" ? "Müşteri" : message.source === "ai" ? "AI Yanıtı" : "Temsilci"}</p><p className="whitespace-pre-wrap">{message.content}</p></div></div>)}</div> : null}</div>;
+            return <div key={c.id} className="px-6 py-4"><div className="flex items-start gap-3"><button onClick={() => setOpenConversation(openConversation === c.id ? null : c.id)} className="grid min-w-0 flex-1 gap-3 text-left md:grid-cols-[1fr_2fr_auto] md:items-center"><div><p className="font-bold text-slate-800">{c.name || c.phone}</p><p className="text-xs text-slate-400">+{c.phone}</p></div><p className="truncate text-sm text-slate-500">{c.messages.at(-1)?.content}</p><div className="flex items-center gap-2"><span className={`rounded-full px-2.5 py-1 text-xs font-bold ${stateClass}`}>{stateLabel}</span><span className="text-xs font-bold text-slate-400">{c.leadType || "KARARSIZ"} · %{c.leadScore}</span></div></button><button disabled={busy} onClick={() => cleanupConversations(c.id)} title="Konuşmayı sil" className="rounded-lg p-2 text-slate-300 hover:bg-red-50 hover:text-red-600 disabled:opacity-50"><span className="material-symbols-outlined text-xl">delete</span></button></div>{openConversation === c.id ? <div className="mt-4 space-y-2 rounded-2xl bg-[#efeae2] p-4">{c.messages.map((message, index) => <div key={message.id} className={`flex ${message.direction === "INBOUND" ? "justify-start" : "justify-end"}`}><div className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm shadow-sm ${message.direction === "INBOUND" ? "rounded-tl-sm bg-white text-slate-700" : "rounded-tr-sm bg-[#d9fdd3] text-slate-800"}`}><p className="mb-1 text-[10px] font-bold uppercase text-slate-400">{message.direction === "INBOUND" ? "Müşteri" : message.source === "ai" ? "AI Yanıtı" : "Temsilci"}</p><p className="whitespace-pre-wrap">{message.content}</p>{message.source === "ai" ? <button disabled={busy} onClick={() => teachAnswer([...c.messages].slice(0, index).reverse().find((item) => item.direction === "INBOUND")?.content || "", message.content)} className="mt-2 rounded-lg border border-amber-300 bg-amber-50 px-3 py-1.5 text-[11px] font-bold text-amber-700 hover:bg-amber-100">Düzelt ve öğret</button> : null}</div></div>)}</div> : null}</div>;
           })}</div>}
       </section>
     </>}
@@ -192,6 +237,35 @@ export default function WhatsAppAIPage() {
       {[["Konuşma Üslubu","tone"],["Şirket ve Hizmet Bilgisi","companyKnowledge"],["Satış Kuralları","salesRules"]].map(([label,key]) => <section key={key} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"><h2 className="mb-1 font-bold text-slate-900">{label}</h2><p className="mb-4 text-sm text-slate-500">Asistan bu alanı bütün müşteri konuşmalarında talimat olarak kullanır.</p><textarea rows={7} className={input} value={config[key as keyof WhatsAppAIConfig] as string} onChange={(e) => setConfig({ ...config, [key]: e.target.value })}/></section>)}
       <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"><h2 className="font-bold text-slate-900">İnsan Temsilciye Aktarma Kelimeleri</h2><p className="mb-4 text-sm text-slate-500">Virgülle ayırın. Bu ifadelerden biri geçerse konuşma temsilci bekliyor durumuna alınır.</p><input className={input} value={config.handoffKeywords.join(", ")} onChange={(e) => setConfig({ ...config, handoffKeywords: e.target.value.split(",").map((x) => x.trim()).filter(Boolean) })}/></section>
       <div className="sticky bottom-4 flex items-center justify-between rounded-2xl border border-slate-200 bg-white/95 p-4 shadow-xl backdrop-blur"><p className="text-sm font-bold text-emerald-600">{notice}</p><button disabled={busy} onClick={save} className="rounded-xl bg-[#003781] px-7 py-3 text-sm font-bold text-white disabled:opacity-50">{busy ? "Kaydediliyor..." : "Ayarları Kaydet"}</button></div>
+    </div>}
+
+    {tab === "training" && <div className="space-y-5">
+      {notice ? <div className="rounded-xl bg-emerald-50 px-4 py-3 text-sm font-bold text-emerald-700">{notice}</div> : null}
+      <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+          <div><p className="text-xs font-bold uppercase tracking-widest text-emerald-600">Kontrollü Öğrenme</p><h2 className="mt-1 text-xl font-bold text-slate-900">AI Eğitim Merkezi</h2><p className="mt-1 text-sm text-slate-500">Doğru cevap örnekleri sonraki benzer müşteri mesajlarında asistana gösterilir.</p></div>
+          <span className="rounded-full bg-blue-50 px-4 py-2 text-xs font-bold text-blue-700">{config.trainingExamples.length} onaylı örnek</span>
+        </div>
+        <div className="mt-6 grid gap-4 md:grid-cols-2">
+          <label><span className="mb-1.5 block text-xs font-bold text-slate-500">MÜŞTERİ NE YAZAR?</span><textarea rows={5} className={input} value={trainingQuestion} onChange={(event) => setTrainingQuestion(event.target.value)} placeholder="Örn: Biraz indirim yaparsanız kesin alacağım." /></label>
+          <label><span className="mb-1.5 block text-xs font-bold text-slate-500">İDEAL CEVAP NE OLMALI?</span><textarea rows={5} className={input} value={trainingReply} onChange={(event) => setTrainingReply(event.target.value)} placeholder="Müşteriye gönderilmesi gereken doğru ve doğal cevabı yazın." /></label>
+        </div>
+        <div className="mt-4 flex flex-wrap items-end gap-3">
+          <label className="min-w-52"><span className="mb-1.5 block text-xs font-bold text-slate-500">KATEGORİ</span><select className={input} value={trainingCategory} onChange={(event) => setTrainingCategory(event.target.value)}><option>Satış</option><option>Fiyat</option><option>İndirim İtirazı</option><option>Grup Umresi</option><option>Bireysel Umre</option><option>Otel ve Konaklama</option><option>Çocuklu Aile</option><option>Temsilciye Aktarım</option></select></label>
+          <button disabled={busy || !trainingQuestion.trim() || !trainingReply.trim()} onClick={addTrainingExample} className="rounded-xl bg-[#003781] px-6 py-3 text-sm font-bold text-white disabled:opacity-50">{busy ? "Kaydediliyor..." : "Doğru Cevap Olarak Öğret"}</button>
+        </div>
+      </section>
+
+      <div className="grid gap-5 lg:grid-cols-2">
+        <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"><h2 className="font-bold text-slate-900">Gönderim Öncesi Kalite Kuralları</h2><p className="mb-4 text-sm text-slate-500">Asistan her cevapta bu kontrol listesini uygular.</p><textarea rows={9} className={input} value={config.qualityRules} onChange={(event) => setConfig({ ...config, qualityRules: event.target.value })} /></section>
+        <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"><h2 className="font-bold text-slate-900">Söylenmesi Yasak / Teyit Gerektiren Bilgiler</h2><p className="mb-4 text-sm text-slate-500">Her satıra bir yasak veya teyit şartı yazın.</p><textarea rows={9} className={input} value={config.prohibitedClaims.join("\n")} onChange={(event) => setConfig({ ...config, prohibitedClaims: event.target.value.split("\n").map((item) => item.trim()).filter(Boolean) })} /></section>
+      </div>
+      <div className="flex justify-end"><button disabled={busy} onClick={save} className="rounded-xl bg-emerald-600 px-7 py-3 text-sm font-bold text-white disabled:opacity-50">Kuralları Kaydet</button></div>
+
+      <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div className="border-b border-slate-100 px-6 py-5"><h2 className="font-bold text-slate-900">Onaylanmış Cevap Kütüphanesi</h2><p className="text-sm text-slate-500">Konuşma ekranındaki “Düzelt ve öğret” düğmesiyle eklenen cevaplar da burada görünür.</p></div>
+        {config.trainingExamples.length === 0 ? <div className="p-10 text-center text-sm text-slate-400">Henüz eğitim örneği eklenmedi.</div> : <div className="divide-y divide-slate-100">{[...config.trainingExamples].reverse().map((example) => <div key={example.id} className="grid gap-3 px-6 py-5 md:grid-cols-[1fr_1fr_auto]"><div><span className="rounded-full bg-slate-100 px-2 py-1 text-[10px] font-bold text-slate-500">{example.category}</span><p className="mt-2 text-sm font-semibold text-slate-800">{example.customerMessage}</p></div><div className="rounded-xl bg-emerald-50 p-3 text-sm text-emerald-900">{example.idealReply}</div><button disabled={busy} onClick={() => deleteTrainingExample(example.id)} className="self-start rounded-lg p-2 text-slate-300 hover:bg-red-50 hover:text-red-600"><span className="material-symbols-outlined">delete</span></button></div>)}</div>}
+      </section>
     </div>}
 
     {tab === "test" && <section className="grid gap-5 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm lg:grid-cols-2">

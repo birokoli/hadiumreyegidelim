@@ -13,6 +13,14 @@ import {
 export const WHATSAPP_AI_SETTING_KEY = "WHATSAPP_AI_CONFIG";
 export const WHATSAPP_BOT_STATUS_SETTING_KEY = "WHATSAPP_BOT_STATUS";
 
+export type WhatsAppTrainingExample = {
+  id: string;
+  customerMessage: string;
+  idealReply: string;
+  category: string;
+  createdAt: string;
+};
+
 let tablesReady = false;
 export async function ensureWhatsAppAITables() {
   if (tablesReady) return;
@@ -50,6 +58,9 @@ export type WhatsAppAIConfig = {
   tone: string;
   companyKnowledge: string;
   salesRules: string;
+  qualityRules: string;
+  prohibitedClaims: string[];
+  trainingExamples: WhatsAppTrainingExample[];
   handoffKeywords: string[];
   outOfHoursMessage: string;
 };
@@ -61,6 +72,9 @@ export const DEFAULT_WHATSAPP_AI_CONFIG: WhatsAppAIConfig = {
   tone: "Profesyonel, ciddi, güven veren ve çözüm odaklı kusursuz İstanbul Türkçesi kullan. İlk karşılamada Selamünaleyküm de; devam eden konuşmada selamı tekrarlama. Efendim, Hanım veya Bey hitabını yerinde kullan.",
   companyKnowledge: "Hadi Umreye Gidelim; bireysel, aileye özel, VIP ve grup umresi programları sunar. İhtiyaca göre uçuş, vize, otel, transfer, rehberlik ve ziyaret programı planlanır.",
   salesRules: "Önce kişi sayısı, düşünülen tarih, ilk umre olup olmadığı, kalış süresi, oda tercihi ve bütçe aralığını öğren. Kesin olmayan fiyat, uçuş, otel, mesafe, doluluk veya kontenjan uydurma. Fiyat verirken Dolar kuru endeksli olduğunu ve uçak biletinin dahil/hariç durumunu mutlaka belirt. Satın almaya hazır müşteriyi temsilciye aktar.",
+  qualityRules: "Son mesaja doğrudan cevap ver. Daha önce öğrenilen bilgiyi tekrar sorma. Aynı cevabı tekrarlama. Tek seferde yalnızca bir gerekli soru sor. Doğrulanmamış indirim, müsaitlik, otel, uçuş veya doluluk bilgisi verme.",
+  prohibitedClaims: ["Teyitsiz indirim oranı", "Teyitsiz otel müsaitliği", "Teyitsiz doluluk yüzdesi", "Teyitsiz uçuş saati", "Uydurma otel mesafesi"],
+  trainingExamples: [],
   handoffKeywords: ["temsilci", "insan", "ara", "satın al", "ödeme", "şikayet", "acil"],
   outOfHoursMessage: "Mesajınızı aldık. Müşteri temsilcimiz en kısa sürede sizinle ilgilenecek.",
 };
@@ -73,6 +87,10 @@ export function parseWhatsAppAIConfig(value?: string | null): WhatsAppAIConfig {
       ...DEFAULT_WHATSAPP_AI_CONFIG,
       ...parsed,
       handoffKeywords: Array.isArray(parsed.handoffKeywords) ? parsed.handoffKeywords.filter(Boolean) : DEFAULT_WHATSAPP_AI_CONFIG.handoffKeywords,
+      prohibitedClaims: Array.isArray(parsed.prohibitedClaims) ? parsed.prohibitedClaims.filter(Boolean) : DEFAULT_WHATSAPP_AI_CONFIG.prohibitedClaims,
+      trainingExamples: Array.isArray(parsed.trainingExamples)
+        ? parsed.trainingExamples.filter((item) => item && typeof item.customerMessage === "string" && typeof item.idealReply === "string").slice(-100)
+        : [],
     };
   } catch {
     return DEFAULT_WHATSAPP_AI_CONFIG;
@@ -84,7 +102,7 @@ export async function getWhatsAppAIConfig() {
   return parseWhatsAppAIConfig(setting?.value);
 }
 
-async function buildLiveKnowledge() {
+async function buildLiveKnowledge(config: WhatsAppAIConfig) {
   const [packages, campaignRows, services, hotels, posts] = await Promise.all([
     prisma.package.findMany({
       where: { published: true },
@@ -133,6 +151,9 @@ async function buildLiveKnowledge() {
 1. Doğrulanmış kampanya ve paket alanları kesin satış bilgisidir.
 2. Hizmet, otel ve blog metinleri yalnızca genel açıklamadır; fiyat, müsaitlik, uçuş, otel adı ve mesafe teklif öncesi teyit edilir.
 3. Kaynaklarda bulunmayan her ayrıntı için müşteriye tahmin sunma; "Bu ayrıntıyı temsilcimizden teyit edelim" de ve handoff=true yap.`,
+    `YÖNETİCİ TARAFINDAN ONAYLANMIŞ CEVAP ÖRNEKLERİ:
+${config.trainingExamples.slice(-30).map((item) => `- Müşteri: ${item.customerMessage}\n  İdeal cevap: ${item.idealReply}`).join("\n") || "- Henüz onaylanmış örnek yok."}`,
+    `YASAKLI VE TEYİTSİZ İDDİALAR:\n${config.prohibitedClaims.map((item) => `- ${item}`).join("\n") || "- Doğrulanmamış hiçbir satış iddiası kullanma."}`,
   ].join("\n\n");
 }
 
@@ -654,8 +675,8 @@ export async function generateWhatsAppReply(params: {
   const apiKey = process.env.GEMINI_API_KEY;
   const githubToken = process.env.GITHUB_MODELS_TOKEN;
   const config = params.config || await getWhatsAppAIConfig();
-  const liveKnowledge = await buildLiveKnowledge();
-  const history = (params.history || []).slice(-10);
+  const liveKnowledge = await buildLiveKnowledge(config);
+  const history = (params.history || []).slice(-30);
   const conversationStarted = history.some((message) => message.direction === "OUTBOUND");
   const salesContext = extractSalesContext(params.message, history);
   const greetingComplaint = conversationStarted && /(niye|neden).*(selam|merhaba)|sürekli.*(selam|merhaba)|tekrar.*(selam|merhaba)/i.test(params.message);
@@ -705,6 +726,8 @@ ${config.companyKnowledge}
 
 SATIŞ KURALLARI:
 ${config.salesRules}
+KALİTE KURALLARI:
+${config.qualityRules}
 - Yalnızca aşağıdaki bilgi tabanına dayan.
 - Bilmediğin fiyat, tarih, otel, uçuş, kontenjan veya mevzuatı uydurma.
 - Bilgi tabanında bulunmayan bir ayrıntı sorulursa açıkça "Bu ayrıntıyı teyit edip size net bilgi verelim" de ve temsilciye aktar.

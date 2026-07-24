@@ -28,7 +28,7 @@ export async function POST(request: Request) {
   const history = await prisma.whatsAppMessage.findMany({
     where: { conversationId: conversation.id, externalId: { not: String(body.messageId) } },
     orderBy: { createdAt: "desc" },
-    take: 10,
+    take: 30,
     select: { direction: true, content: true },
   });
   const ai = await generateWhatsAppReply({ message: String(body.text), customerName: body.name, history: history.reverse(), config });

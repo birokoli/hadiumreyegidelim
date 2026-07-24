@@ -326,7 +326,8 @@ async function generateSafeFallback(message: string, config: WhatsAppAIConfig, h
   let leadType = "KARARSIZ";
 
   const discountRequest = /(indirim|iskonto|son fiyat|en son ne olur|daha uygun|uygun olmuyor|fiyatta yardımcı|fiyatta yardimci|pazarlık|pazarlik)/.test(normalized);
-  const groupDateQuestion = /(grup.*(?:ne zaman|hangi tarih|tarihleri)|(?:ne zaman|hangi tarih).*(?:grup|umre)|tarihleriniz belli)/.test(normalized);
+  const groupDateQuestion = /(grup.*(?:ne zaman|hangi tarih|tarihleri)|(?:ne zaman|hangi tarih).*(?:grup|umre)|tarihleriniz belli|en yakın tarih|en yakin tarih|çıkış ne zaman|cikis ne zaman)/.test(normalized)
+    || (context.umrahType === "grup" && /(?:ne zaman|hangi tarih|en yakın|en yakin)/.test(normalized));
   const compositionUpdate = context.adults !== undefined && context.children !== undefined
     && /yetişkin|çocuk/.test(normalized);
   const objection = /(pahalı|pahali|fiyat araştır|fiyat arastir|başka yerlere bak|baska yerlere bak|daha ucuz)/.test(normalized);
@@ -789,7 +790,8 @@ export async function generateWhatsAppReply(params: {
     safe.provider = discountRequest ? "Hızlı indirim talebi yönetimi" : "Hızlı itiraz yönetimi";
     return safe;
   }
-  const deterministicIntent = /(?:15|25)\s*(?:eylül|eylul).*(?:grup|kampanya).*(?:bilgi|detay)|(?:grup|kampanya).*(?:15|25)\s*(?:eylül|eylul).*(?:bilgi|detay)|\b12\s*yaş|\bgrup(?:\s+umresi)?\s+değil\b.*\bbireysel\b|(?:rehber|tarihi mekan|tarihî mekân|araç|arac|kirala|ulaşım|ulasim).*(?:nasıl|nasil|var mı|varmi|veriyor|sağlanıyor|saglaniyor|görmek|gezmek)/i.test(params.message);
+  const deterministicIntent = /(?:15|25)\s*(?:eylül|eylul).*(?:grup|kampanya).*(?:bilgi|detay)|(?:grup|kampanya).*(?:15|25)\s*(?:eylül|eylul).*(?:bilgi|detay)|\b12\s*yaş|\bgrup(?:\s+umresi)?\s+değil\b.*\bbireysel\b|(?:rehber|tarihi mekan|tarihî mekân|araç|arac|kirala|ulaşım|ulasim).*(?:nasıl|nasil|var mı|varmi|veriyor|sağlanıyor|saglaniyor|görmek|gezmek)|(?:en yakın|en yakin|hangi)\s+(?:grup\s+umre\s+)?tarih|(?:grup\s+umre|çıkış|cikis).*(?:ne zaman|hangi tarih)/i.test(params.message)
+    || (salesContext.umrahType === "grup" && /^(?:ne zaman|en yakın tarih ne zaman|en yakin tarih ne zaman|hangi tarih)$/i.test(params.message.trim()));
   if (deterministicIntent) {
     const safe = await generateSafeFallback(params.message, config, history);
     safe.reply = enforceAddressing(safe.reply, conversationStarted, params.customerName, params.message);

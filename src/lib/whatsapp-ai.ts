@@ -62,6 +62,7 @@ export type WhatsAppAIConfig = {
   prohibitedClaims: string[];
   trainingExamples: WhatsAppTrainingExample[];
   managerEscalationEnabled: boolean;
+  managerApprovalMode: boolean;
   managerPhone: string;
   handoffKeywords: string[];
   outOfHoursMessage: string;
@@ -78,6 +79,7 @@ export const DEFAULT_WHATSAPP_AI_CONFIG: WhatsAppAIConfig = {
   prohibitedClaims: ["Teyitsiz indirim oranı", "Teyitsiz otel müsaitliği", "Teyitsiz doluluk yüzdesi", "Teyitsiz uçuş saati", "Uydurma otel mesafesi"],
   trainingExamples: [],
   managerEscalationEnabled: false,
+  managerApprovalMode: true,
   managerPhone: "",
   handoffKeywords: ["temsilci", "insan", "ara", "satın al", "ödeme", "şikayet", "acil"],
   outOfHoursMessage: "Mesajınızı aldık. Müşteri temsilcimiz en kısa sürede sizinle ilgilenecek.",
@@ -163,7 +165,7 @@ ${config.trainingExamples.slice(-30).map((item) => `- Müşteri: ${item.customer
 
 export type AIReply = { reply: string; intent: string; leadType: string; leadScore: number; handoff: boolean; handoffReason: string; provider?: string; fallback?: boolean; warning?: string };
 
-type SalesContext = { umrahType?: "bireysel" | "grup"; people?: number; adults?: number; children?: number; days?: number; medinaDays?: number; roomOccupancy?: 2 | 3 | 4; month?: string; departureDate?: string; budget?: string; budgetScopeKnown: boolean; preferences: string[] };
+type SalesContext = { umrahType?: "bireysel" | "grup"; people?: number; adults?: number; children?: number; days?: number; medinaDays?: number; roomOccupancy?: 2 | 3 | 4; month?: string; travelMonths: string[]; departureDate?: string; budget?: string; budgetScopeKnown: boolean; preferences: string[] };
 
 function salesContextForModel(context: SalesContext) {
   return [
@@ -174,7 +176,7 @@ function salesContextForModel(context: SalesContext) {
     context.days ? `Süre: ${context.days} gün` : null,
     context.medinaDays ? `Medine konaklaması: ${context.medinaDays} gün` : null,
     context.roomOccupancy ? `Oda tipi: ${context.roomOccupancy} kişilik oda` : null,
-    context.month ? `Ay: ${context.month}` : null,
+    context.travelMonths.length ? `Düşünülen aylar: ${context.travelMonths.join(" veya ")}` : context.month ? `Ay: ${context.month}` : null,
     context.departureDate ? `Çıkış: ${context.departureDate}` : null,
     context.budget ? `Bütçe: ${context.budget}${context.budgetScopeKnown ? " (kapsamı belli)" : " (kişi başı mı toplam mı teyit edilmeli)"}` : null,
     context.preferences.length ? `Tercihler: ${context.preferences.join(", ")}` : null,
@@ -240,6 +242,14 @@ function extractSalesContext(message: string, history: { direction: string; cont
     if (/\bgrup umre(?:si|sinde|sine)?\b/.test(lastOutbound)) umrahType = "grup";
     else if (/\bbireysel umre(?:si|de|ye)?\b/.test(lastOutbound)) umrahType = "bireysel";
   }
+  const monthAliases: Record<string, string> = {
+    ocak: "Ocak", şubat: "Şubat", subat: "Şubat", mart: "Mart", nisan: "Nisan",
+    mayıs: "Mayıs", mayis: "Mayıs", haziran: "Haziran", temmuz: "Temmuz",
+    ağustos: "Ağustos", agustos: "Ağustos", eylül: "Eylül", eylul: "Eylül",
+    ekim: "Ekim", kasım: "Kasım", kasim: "Kasım", aralık: "Aralık", aralik: "Aralık",
+  };
+  const monthMatches = [...text.matchAll(/\b(ocak|şubat|subat|mart|nisan|mayıs|mayis|haziran|temmuz|ağustos|agustos|eylül|eylul|ekim|kasım|kasim|aralık|aralik)(?:'?(?:deki|daki))?\b/g)];
+  const travelMonths = [...new Set(monthMatches.map((match) => monthAliases[match[1]]))];
   const context: SalesContext = {
     umrahType,
     people: peopleCount,
@@ -248,7 +258,8 @@ function extractSalesContext(message: string, history: { direction: string; cont
     days: days ? Number(days[1]) : undefined,
     medinaDays: medinaDays ? Number(medinaDays[1] || medinaDays[2]) : undefined,
     roomOccupancy,
-    month: text.match(/\b(ocak|şubat|subat|mart|nisan|mayıs|mayis|haziran|temmuz|ağustos|agustos|eylül|eylul|ekim|kasım|kasim|aralık|aralik)(?:'?(?:deki|daki))?\b/)?.[1],
+    month: monthMatches.at(-1)?.[1],
+    travelMonths,
     departureDate: text.match(/\b(15|25)\s*(?:eylül|eylul)(?:'?(?:deki|daki))?\b/)?.[1]
       ? `${text.match(/\b(15|25)\s*(?:eylül|eylul)(?:'?(?:deki|daki))?\b/)?.[1]} Eylül`
       : undefined,
@@ -266,11 +277,13 @@ function extractSalesContext(message: string, history: { direction: string; cont
 }
 
 function individualSalesReply(context: SalesContext) {
-  const known = [context.people ? `${context.people} kişi` : null, context.days ? `${context.days} gün` : null, context.preferences.length ? context.preferences.join(", ") : null].filter(Boolean).join("; ");
+  const period = context.travelMonths.length ? context.travelMonths.join(" veya ") : null;
+  const known = [context.people ? `${context.people} kişi` : null, context.days ? `${context.days} gün` : null, period, context.preferences.length ? context.preferences.join(", ") : null].filter(Boolean).join("; ");
   if (context.budget && !context.budgetScopeKnown) return `${known ? `${known} talebinizi not aldım. ` : ""}Belirttiğiniz ${context.budget} bütçe kişi başı mı, yoksa tüm yolcular için toplam bütçe mi efendim?`;
   if (!context.people) return "Bireysel umre planlamanız için kaç kişi olacağınızı öğrenebilir miyim efendim?";
   if (!context.days) return `${context.people} kişilik bireysel umre talebinizi not aldım. Kaç günlük bir program düşünüyorsunuz efendim?`;
-  return `${known} talebinizi not aldım. Bireysel umre fiyatı tarih, uçuş, otel ve anlık müsaitliğe göre hazırlanır; teyit edilmemiş rakam vermeyeyim. Düşündüğünüz gidiş tarihini paylaşır mısınız efendim?`;
+  if (period) return `${known} bireysel umre talebinizi not aldım. Program sabit bir tur grubuna bağlı olmadan, uçuş ve otel müsaitliğine göre kişiye özel hazırlanır. ${period} döneminde düşündüğünüz net gün aralığı belli mi; yoksa tarihler iş iznine göre esnek mi efendim?`;
+  return `${known} bireysel umre talebinizi not aldım. Bireysel umre fiyatı tarih, uçuş, otel ve anlık müsaitliğe göre hazırlanır; teyit edilmemiş rakam vermeyeyim. Düşündüğünüz gidiş tarihini paylaşır mısınız efendim?`;
 }
 
 function unverifiedGroupMonthReply(context: SalesContext) {
@@ -306,6 +319,8 @@ async function generateSafeFallback(message: string, config: WhatsAppAIConfig, h
   const repeatedAnswerComplaint = /(neden|niye).*(sabit|aynı|ayni|tekrar)|sabit cevap|aynı cevap|ayni cevap/.test(normalized);
   const medinaHotelQuestion = /medine.*otel|otel.*medine/.test(normalized);
   const availabilityQuestion = /(müsait|musait|yer var|kontenjan).*(mı|mi|mu|mü|var)|(?:müsaitlik|musaitlik|kontenjan)/.test(normalized);
+  const individualGroupDifferenceQuestion = /(?:bireysel.*(?:grup|gruba)|(?:grup|gruba).*bireysel|yine.*grup|gruba.*gid)/.test(normalized);
+  const giftForRelative = /(?:hediye|kız kardeş|kiz kardes|kardeşim|kardesim)/.test(normalized);
   if (handoff) {
     reply = "Elbette, talebinizi müşteri temsilcimize aktarıyorum. Uygun olduğunuz saat aralığını yazar mısınız?";
     intent = "support";
@@ -350,6 +365,15 @@ async function generateSafeFallback(message: string, config: WhatsAppAIConfig, h
     reply = `${context.adults} yetişkin ve ${context.children} çocuk olmak üzere toplam ${context.people} kişi olarak not aldım. Çocuk ücretlerini doğru hesaplayabilmem için çocukların yaşlarını paylaşır mısınız efendim?`;
     intent = "group_umrah";
     leadType = context.umrahType === "bireysel" ? "BIREYSEL" : "GRUP";
+  } else if (individualGroupDifferenceQuestion) {
+    reply = "Hayır efendim. Bireysel umrede sabit bir tur grubuna katılmak zorunda değilsiniz; tarih, uçuş, otel ve kalış süresi kişiye özel planlanır. Dilerseniz yalnız seyahat eder, ihtiyaç duyduğunuz hizmetlerde ekibimizden destek alırsınız.";
+    intent = "individual_umrah";
+    leadType = "BIREYSEL";
+  } else if (giftForRelative && context.umrahType === "bireysel") {
+    const period = context.travelMonths.length ? context.travelMonths.join(" veya ") : "düşündüğünüz dönem";
+    reply = `Ne güzel ve anlamlı bir hediye düşünmüşsünüz efendim; şimdiden hayırlı ve mübarek olsun. Kız kardeşinizin iş iznine göre ${period} içinde uygun tarih aralığını belirleyebiliriz. İznin yaklaşık başlangıç ve bitiş tarihleri belli olduğunda kişiye özel uçuş ve otel teklifini netleştirelim.`;
+    intent = "individual_umrah";
+    leadType = "BIREYSEL";
   } else if (context.umrahType === "bireysel") {
     reply = individualSalesReply(context);
     intent = "individual_umrah";

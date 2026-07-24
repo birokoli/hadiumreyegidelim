@@ -144,7 +144,9 @@ async function reconcileConnection() {
   } catch {}
 }
 
-async function handleIncomingMessage(message, eventName) {
+const chatQueues = new Map();
+
+async function processIncomingMessage(message, eventName) {
   if (message.fromMe || message.isStatus || message.from === "status@broadcast" || message.from.endsWith("@g.us") || !message.body?.trim()) return;
   const externalId = message.id?._serialized || message.id?.id || `${message.from}-${message.timestamp}`;
   if (handledMessages.has(externalId)) return;
@@ -219,6 +221,19 @@ async function handleIncomingMessage(message, eventName) {
     console.error("[message]", error);
     update({ error: String(error) });
   }
+}
+
+function handleIncomingMessage(message, eventName) {
+  const chatId = message.from || "unknown";
+  const previous = chatQueues.get(chatId) || Promise.resolve();
+  const current = previous
+    .catch(() => {})
+    .then(() => processIncomingMessage(message, eventName));
+  chatQueues.set(chatId, current);
+  current.finally(() => {
+    if (chatQueues.get(chatId) === current) chatQueues.delete(chatId);
+  });
+  return current;
 }
 
 // Bazı güncel WhatsApp Web sürümlerinde yalnızca message_create olayı

@@ -32,15 +32,24 @@ export async function POST(request: Request) {
     select: { direction: true, content: true },
   });
   const ai = await generateWhatsAppReply({ message: String(body.text), customerName: body.name, history: history.reverse(), config });
-  const askManager = Boolean(ai.handoff && config.managerEscalationEnabled && config.managerPhone);
-  const customerReply = askManager
+  const approvalRequired = Boolean(config.managerApprovalMode && config.managerEscalationEnabled && config.managerPhone);
+  const askManager = Boolean(config.managerEscalationEnabled && config.managerPhone && (approvalRequired || ai.handoff));
+  const customerReply = approvalRequired
+    ? null
+    : askManager
     ? "Sorunuzu doğru yanıtlayabilmek için uzman temsilcimize iletiyorum efendim. Kısa süre içinde net bilgi vereceğiz."
     : ai.reply;
   await prisma.$transaction([
-    prisma.whatsAppMessage.create({ data: { conversationId: conversation.id, direction: "OUTBOUND", source: "ai", content: customerReply, intent: ai.intent } }),
+    ...(customerReply ? [prisma.whatsAppMessage.create({ data: { conversationId: conversation.id, direction: "OUTBOUND", source: "ai", content: customerReply, intent: ai.intent } })] : []),
     prisma.whatsAppConversation.update({
       where: { id: conversation.id },
-      data: { leadType: ai.leadType, leadScore: ai.leadScore, status: ai.handoff ? "HUMAN_NEEDED" : "AI_ACTIVE", handoffReason: ai.handoffReason || null, lastMessageAt: new Date() },
+      data: {
+        leadType: ai.leadType,
+        leadScore: ai.leadScore,
+        status: askManager ? "HUMAN_NEEDED" : "AI_ACTIVE",
+        handoffReason: approvalRequired ? "Yönetici onayı bekleniyor" : ai.handoffReason || null,
+        lastMessageAt: new Date(),
+      },
     }),
   ]);
   return NextResponse.json({
@@ -49,7 +58,7 @@ export async function POST(request: Request) {
     askManager,
     managerPhone: askManager ? config.managerPhone : null,
     managerQuestion: askManager
-      ? `Müşteri +${body.phone} şunu sordu:\n“${String(body.text).trim()}”\n\nBu müşteriye ne cevap vereyim?`
+      ? `Müşteri +${body.phone} şunu sordu:\n“${String(body.text).trim()}”\n\nAI taslağı:\n“${ai.reply}”\n\nBu müşteriye ne cevap vereyim?`
       : null,
   });
 }

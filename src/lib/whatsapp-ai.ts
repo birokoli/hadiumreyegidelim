@@ -210,6 +210,7 @@ function extractSalesContext(message: string, history: { direction: string; cont
   const durationCandidates = [...text.matchAll(/(\d+)\s*(?:gün|gun)/g)]
     .filter((match) => !/medine/.test(text.slice(Math.max(0, (match.index || 0) - 12), (match.index || 0) + match[0].length + 12)));
   const days = durationCandidates.at(-1);
+  const weeks = [...text.matchAll(/(\d+)\s*hafta(?:lık|lik)?/g)].at(-1);
   let roomOccupancy: 2 | 3 | 4 | undefined;
   for (const inbound of [...inboundMessages].reverse()) {
     const explicitRoom = inbound.match(/\b([234])\s*kişilik(?:\s*oda(?:da|yı|yi|dan|dan)?)?\b/i);
@@ -227,20 +228,29 @@ function extractSalesContext(message: string, history: { direction: string; cont
   const budget = text.match(/(\d[\d.]*)\s*(?:₺|tl)\s*(?:bütçe|butce)?/);
   let umrahType: SalesContext["umrahType"];
   const explicitIndividualPlan = /\bbireysel umre\b|\bgruptan bağımsız\b|\bgruba bağlı olmadan\b|\bkişiye özel umre\b|\bözel umre plan/i.test(text);
+  const latestChoosesIndividual = /\bgrup(?:\s+umresi)?\s+değil\b.*\bbireysel\b|\bbireysel(?:\s+umre)?\s+(?:düşünüyorum|istiyorum|olacak|tercih ediyorum)\b/i.test(latest);
+  const latestChoosesGroup = !latestChoosesIndividual
+    && /\bgrup(?:\s+umresi)?\s+(?:düşünüyorum|istiyorum|olacak|tercih ediyorum)\b/i.test(latest);
   const soloGroupParticipant = !explicitIndividualPlan
     && /\bbireysel müşteri\b|\bbireysel(?:im)?\s+tek kişiyim\b|\btek kişiyim\b|\btek kişi(?: olarak)?(?:\s+katıl|\s+gidece)/i.test(text);
-  for (const inbound of [...inboundMessages].reverse()) {
-    const normalized = inbound.toLocaleLowerCase("tr-TR");
-    if (/\bgrup\b|\b(?:15|25)\s*(?:eylül|eylul)\b/.test(normalized)) {
-      umrahType = "grup";
-      break;
-    }
-    if (/\bbireysel umre\b|\bgruptan bağımsız\b|\bgruba bağlı olmadan\b|\bkişiye özel umre\b|\bözel umre plan/i.test(normalized)) {
-      umrahType = "bireysel";
-      break;
+  if (latestChoosesIndividual) {
+    umrahType = "bireysel";
+  } else if (latestChoosesGroup) {
+    umrahType = "grup";
+  } else {
+    for (const inbound of [...inboundMessages].reverse()) {
+      const normalized = inbound.toLocaleLowerCase("tr-TR");
+      if (/\bgrup\b|\b(?:15|25)\s*(?:eylül|eylul)\b/.test(normalized)) {
+        umrahType = "grup";
+        break;
+      }
+      if (/\bbireysel umre\b|\bgruptan bağımsız\b|\bgruba bağlı olmadan\b|\bkişiye özel umre\b|\bözel umre plan/i.test(normalized)) {
+        umrahType = "bireysel";
+        break;
+      }
     }
   }
-  if (soloGroupParticipant) umrahType = "grup";
+  if (soloGroupParticipant && !latestChoosesIndividual) umrahType = "grup";
   if (!umrahType) {
     const lastOutbound = [...history].reverse().find((item) => item.direction === "OUTBOUND")?.content.toLocaleLowerCase("tr-TR") || "";
     if (/\bgrup umre(?:si|sinde|sine)?\b/.test(lastOutbound)) umrahType = "grup";
@@ -259,7 +269,7 @@ function extractSalesContext(message: string, history: { direction: string; cont
     people: peopleCount,
     adults,
     children,
-    days: days ? Number(days[1]) : undefined,
+    days: days ? Number(days[1]) : weeks ? Number(weeks[1]) * 7 : undefined,
     medinaDays: medinaDays ? Number(medinaDays[1] || medinaDays[2]) : undefined,
     roomOccupancy,
     month: monthMatches.at(-1)?.[1],
@@ -325,6 +335,11 @@ async function generateSafeFallback(message: string, config: WhatsAppAIConfig, h
   const availabilityQuestion = /(müsait|musait|yer var|kontenjan).*(mı|mi|mu|mü|var)|(?:müsaitlik|musaitlik|kontenjan)/.test(normalized);
   const individualGroupDifferenceQuestion = /(?:bireysel.*(?:grup|gruba)|(?:grup|gruba).*bireysel|yine.*grup|gruba.*gid)/.test(normalized);
   const giftForRelative = /(?:hediye|kız kardeş|kiz kardes|kardeşim|kardesim)/.test(normalized);
+  const ageMatch = normalized.match(/\b(\d{1,2})\s*yaş/);
+  const childAge = ageMatch ? Number(ageMatch[1]) : undefined;
+  const campaignInfoRequest = /(?:15|25)\s*(?:eylül|eylul).*(?:grup|kampanya).*(?:bilgi|detay)|(?:grup|kampanya).*(?:15|25)\s*(?:eylül|eylul).*(?:bilgi|detay)/.test(normalized);
+  const serviceScopeQuestion = /(rehber|tarihi mekan|tarihî mekân|araç|arac|kirala|ulaşım|ulasim)/.test(normalized)
+    && /(nasıl|nasil|var mı|varmi|veriyor|sağlanıyor|saglaniyor|görmek|gezmek)/.test(normalized);
   if (handoff) {
     reply = "Elbette, talebinizi müşteri temsilcimize aktarıyorum. Uygun olduğunuz saat aralığını yazar mısınız?";
     intent = "support";
@@ -369,6 +384,22 @@ async function generateSafeFallback(message: string, config: WhatsAppAIConfig, h
     reply = `${context.adults} yetişkin ve ${context.children} çocuk olmak üzere toplam ${context.people} kişi olarak not aldım. Çocuk ücretlerini doğru hesaplayabilmem için çocukların yaşlarını paylaşır mısınız efendim?`;
     intent = "group_umrah";
     leadType = context.umrahType === "bireysel" ? "BIREYSEL" : "GRUP";
+  } else if (campaignInfoRequest) {
+    reply = `Eylül grup umremizin çıkışları ${campaign.departureOne} ve ${campaign.departureTwo}; program seçenekleri 10, 15 ve 20 gündür. Vize, gidiş–dönüş uçak bileti, otel ve paket kapsamındaki ziyaret turları dâhildir. Kaç kişi katılmayı düşünüyorsunuz efendim?`;
+    intent = "group_umrah";
+    leadType = "GRUP";
+  } else if (childAge !== undefined && childAge >= 12) {
+    reply = "12 yaşını dolduran misafirler yetişkin tarifesinden ücretlendirilir efendim. Net fiyat program süresi ve oda tipine göre belirlenir; kaç günlük program ve kaç kişilik oda düşünüyorsunuz?";
+    intent = "price";
+    leadType = context.umrahType === "bireysel" ? "BIREYSEL" : "GRUP";
+  } else if (serviceScopeQuestion) {
+    reply = context.umrahType === "bireysel"
+      ? "Bireysel umrede tarih, otel, transfer, rehberlik ve ziyaret programı ihtiyacınıza göre ayrı ayrı planlanır. Rehber ve özel araç dâhil net kapsam için talebinizi uzmanımıza teyit ettireyim."
+      : "Grup umresinde rehberlik ve paket kapsamındaki ziyaret turları bulunur. Ziyaretlerde kullanılacak araç ve özel ulaşım ayrıntısını yanlış yönlendirmemek için program ekibimizden teyit edelim.";
+    intent = context.umrahType === "bireysel" ? "individual_umrah" : "group_umrah";
+    leadType = context.umrahType === "bireysel" ? "BIREYSEL" : "GRUP";
+    handoff = true;
+    handoffReason = "Rehberlik ve araç kapsamı teyidi gerekli";
   } else if (individualGroupDifferenceQuestion) {
     if (context.umrahType === "grup" || !/\bbireysel umre\b/.test(normalized)) {
       reply = "Evet efendim. Tek kişi olarak kayıt yaptırsanız da grup umresi programına diğer misafirlerimizle birlikte katılırsınız. “Bireysel müşteri” burada yalnızca rezervasyonun tek kişi adına yapılmasıdır; paketiniz grup umresidir.";
@@ -391,8 +422,10 @@ async function generateSafeFallback(message: string, config: WhatsAppAIConfig, h
   } else if (context.umrahType === "grup" && /eylül|eylul/.test(context.month || "")) {
     if (/(bebek|0\s*[-–]\s*2)/.test(normalized)) {
       reply = `0–2 yaş bebek için kişi başı ${campaign.childZeroToTwo.replace("$", "")} USD'dir. Fiyat Dolar kuru endekslidir ve uçak bileti pakete dâhildir.`;
-    } else if (/(çocuk|cocuk|yaş|yas)/.test(normalized)) {
+    } else if (childAge !== undefined && childAge >= 2 && childAge <= 11) {
       reply = `2–11 yaş çocuk için kişi başı ${campaign.childTwoToEleven.replace("$", "")} USD'dir. Fiyat Dolar kuru endekslidir ve uçak bileti pakete dâhildir.`;
+    } else if (/(çocuk|cocuk|yaş|yas)/.test(normalized)) {
+      reply = "Çocuk ücretini doğru belirleyebilmem için çocuğun seyahat tarihindeki yaşını paylaşır mısınız efendim?";
     } else if (!context.departureDate) {
       reply = `${context.people ? `${context.people} kişi için ` : ""}Eylül grup umresi talebinizi not aldım. 15 Eylül mü, 25 Eylül mü çıkış yapmak istersiniz efendim?`;
     } else if (!context.days) {
@@ -754,6 +787,13 @@ export async function generateWhatsAppReply(params: {
     const safe = await generateSafeFallback(params.message, config, history);
     safe.reply = enforceAddressing(safe.reply, conversationStarted, params.customerName, params.message);
     safe.provider = discountRequest ? "Hızlı indirim talebi yönetimi" : "Hızlı itiraz yönetimi";
+    return safe;
+  }
+  const deterministicIntent = /(?:15|25)\s*(?:eylül|eylul).*(?:grup|kampanya).*(?:bilgi|detay)|(?:grup|kampanya).*(?:15|25)\s*(?:eylül|eylul).*(?:bilgi|detay)|\b12\s*yaş|\bgrup(?:\s+umresi)?\s+değil\b.*\bbireysel\b|(?:rehber|tarihi mekan|tarihî mekân|araç|arac|kirala|ulaşım|ulasim).*(?:nasıl|nasil|var mı|varmi|veriyor|sağlanıyor|saglaniyor|görmek|gezmek)/i.test(params.message);
+  if (deterministicIntent) {
+    const safe = await generateSafeFallback(params.message, config, history);
+    safe.reply = enforceAddressing(safe.reply, conversationStarted, params.customerName, params.message);
+    safe.provider = "Doğrulanmış satış kuralı";
     return safe;
   }
   const prompt = `Sen ${config.assistantName} isimli Türkçe WhatsApp satış ve müşteri destek asistanısın.

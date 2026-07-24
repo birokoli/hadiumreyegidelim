@@ -23,6 +23,7 @@ const state = {
 };
 const update = (patch) => Object.assign(state, patch, { lastEventAt: new Date().toISOString() });
 const handledMessages = new Map();
+const recentInboundFingerprints = new Map();
 const pendingManagerQuestions = new Map();
 const app = express();
 app.use(express.json());
@@ -150,9 +151,20 @@ async function processIncomingMessage(message, eventName) {
   if (message.fromMe || message.isStatus || message.from === "status@broadcast" || message.from.endsWith("@g.us") || !message.body?.trim()) return;
   const externalId = message.id?._serialized || message.id?.id || `${message.from}-${message.timestamp}`;
   if (handledMessages.has(externalId)) return;
+  const normalizedBody = message.body.trim().replace(/\s+/g, " ").toLocaleLowerCase("tr-TR");
+  const fingerprint = `${message.from}:${normalizedBody}`;
+  const previousFingerprintAt = recentInboundFingerprints.get(fingerprint);
+  if (previousFingerprintAt && Date.now() - previousFingerprintAt < 90_000) {
+    console.log(`[${eventName}] Tekrarlanan içerik atlandı: ${message.from}`);
+    return;
+  }
   handledMessages.set(externalId, Date.now());
+  recentInboundFingerprints.set(fingerprint, Date.now());
   for (const [id, handledAt] of handledMessages) {
     if (Date.now() - handledAt > 10 * 60_000) handledMessages.delete(id);
+  }
+  for (const [key, handledAt] of recentInboundFingerprints) {
+    if (Date.now() - handledAt > 10 * 60_000) recentInboundFingerprints.delete(key);
   }
   update({ lastInboundAt: new Date().toISOString(), lastInboundFrom: message.from, error: null });
   console.log(`[${eventName}] Gelen mesaj: ${message.from} (${externalId})`);

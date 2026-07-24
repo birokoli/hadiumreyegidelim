@@ -173,7 +173,19 @@ async function resolveManagerChatId(phone) {
 const chatQueues = new Map();
 
 async function processIncomingMessage(message, eventName) {
-  if (message.fromMe || message.isStatus || message.from === "status@broadcast" || message.from.endsWith("@g.us") || !message.body?.trim()) return;
+  if (message.fromMe) {
+    if (message.isStatus || message.from === "status@broadcast" || message.to?.endsWith("@g.us") || !message.body?.trim()) return;
+    const recipientPhone = message.to?.replace(/@(c|lid)\.us$/, "");
+    if (recipientPhone && !recipientPhone.includes("@")) {
+      fetch(`${ADMIN_URL}/api/whatsapp/worker/human-message`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${BOT_TOKEN}`, "Content-Type": "application/json" },
+        body: JSON.stringify({ phone: recipientPhone, text: message.body.trim() }),
+      }).catch((err) => console.error("[human-message] Otomatik öğrenme hatası:", err));
+    }
+    return;
+  }
+  if (message.isStatus || message.from === "status@broadcast" || message.from.endsWith("@g.us") || !message.body?.trim()) return;
   const externalId = message.id?._serialized || message.id?.id || `${message.from}-${message.timestamp}`;
   if (handledMessages.has(externalId)) return;
   const normalizedBody = message.body.trim().replace(/\s+/g, " ").toLocaleLowerCase("tr-TR");

@@ -47,6 +47,7 @@ export async function POST(request: Request) {
   const ai = await generateWhatsAppReply({ message: String(body.text), customerName: body.name, history: effectiveHistory, config });
   const contextJson = createConversationMemory(String(body.text), effectiveHistory);
   const approvalRequired = Boolean(config.managerApprovalMode && config.managerEscalationEnabled && config.managerPhone);
+  const needsHuman = Boolean(approvalRequired || ai.handoff);
   const askManager = Boolean(config.managerEscalationEnabled && config.managerPhone && (approvalRequired || ai.handoff));
   const customerReply = approvalRequired
     ? null
@@ -60,7 +61,7 @@ export async function POST(request: Request) {
       data: {
         leadType: ai.leadType,
         leadScore: ai.leadScore,
-        status: askManager ? "HUMAN_NEEDED" : "AI_ACTIVE",
+        status: needsHuman ? "HUMAN_NEEDED" : "AI_ACTIVE",
         handoffReason: approvalRequired ? "Yönetici onayı bekleniyor" : ai.handoffReason || null,
         lastMessageAt: new Date(),
       },

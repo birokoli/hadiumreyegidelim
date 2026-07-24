@@ -262,6 +262,25 @@ function preventRepeatedAutomaticReply<T extends AIReply>(
   };
 }
 
+export function calculateSalesPhase(context: SalesContext): string {
+  if (!context.umrahType) {
+    return "AŞAMA 1: UMRE TÜRÜ ÖĞRENME (Müşterinin Grup umresi mi, yoksa Bireysel umre mi tercih ettiğini öğren).";
+  }
+  if (!context.people) {
+    return `AŞAMA 2: KİŞİ SAYISI VE KADRO (Müşteri ${context.umrahType} umresi istiyor. Kaç yetişkin ve kaç çocuk olacağını öğren).`;
+  }
+  if (!context.departureDate && !context.month && !context.travelMonths.length) {
+    return `AŞAMA 3: ÇIKIŞ TARİHİ (${context.people} kişi için düşündüğü tarihi veya ayı sorma zamanı. Eylül turları çıkışları: 15 Eylül veya 25 Eylül).`;
+  }
+  if (!context.days) {
+    return `AŞAMA 4: PROGRAM SÜRESİ (${context.people} kişi için kaç günlük program düşündüğünü öğren. Seçenekler: 10, 15 veya 20 gün).`;
+  }
+  if (!context.roomOccupancy) {
+    return `AŞAMA 5: ODA TİPİ (${context.people} kişi için 2, 3 veya 4 kişilik oda tercihlerini öğren).`;
+  }
+  return `AŞAMA 6: FİYAT SUNUMU VE KAPANIŞ (${context.people} kişi, ${context.days} gün, ${context.roomOccupancy} kişilik oda için veritabanındaki kesin Dolar fiyatını sun. Dolar kuru endeksli ve uçak biletli olduğunu söyle, rezervasyon veya temsilciye aktar).`;
+}
+
 function salesContextForModel(context: SalesContext) {
   return [
     context.umrahType ? `Umre türü: ${context.umrahType}` : null,
@@ -275,6 +294,7 @@ function salesContextForModel(context: SalesContext) {
     context.departureDate ? `Çıkış: ${context.departureDate}` : null,
     context.budget ? `Bütçe: ${context.budget}${context.budgetScopeKnown ? " (kapsamı belli)" : " (kişi başı mı toplam mı teyit edilmeli)"}` : null,
     context.preferences.length ? `Tercihler: ${context.preferences.join(", ")}` : null,
+    `GÜNCEL SATIŞ ADIMI: ${calculateSalesPhase(context)}`,
   ].filter(Boolean).join("\n") || "Henüz doğrulanmış müşteri bilgisi yok.";
 }
 
@@ -663,13 +683,15 @@ async function callOllamaModel(
 }
 
 async function callOllamaWorkflow(prompt: string, customerMessage: string, salesContext: SalesContext) {
+  const currentSalesPhase = calculateSalesPhase(salesContext);
+
   // AŞAMA 1: Gemma 2:2b ile Müşteri İhtiyaç ve Niyet Analizi
   const analysisTask = callOllamaModel(
     process.env.OLLAMA_ANALYSIS_MODEL || "gemma2:2b",
     [
       {
         role: "system",
-        content: "Müşteri mesajından yalnızca açıkça verilen kişi sayısı, bütçe, tarih, umre türü (bireysel/grup), niyet ve sıradaki eksik bilgiyi çıkar. Tahmin ve satış metni yazma. En fazla 5 kısa satır not üret.",
+        content: `Müşteri mesajından yalnızca açıkça verilen kişi sayısı, bütçe, tarih, umre türü (bireysel/grup), niyet ve sıradaki eksik bilgiyi çıkar. Tahmin ve satış metni yazma. En fazla 5 kısa satır not üret.\n\nMÜŞTERİ SATIŞ ADIMI: ${currentSalesPhase}`,
       },
       { role: "user", content: `MÜŞTERİ MESAJI: ${customerMessage}\n\nMEVCUT MÜŞTERİ KARTI:\n${salesContextForModel(salesContext)}` },
     ],
@@ -685,7 +707,7 @@ async function callOllamaWorkflow(prompt: string, customerMessage: string, sales
     [
       {
         role: "system",
-        content: "Müşteri talebini verilen doğrulanmış şirket verileriyle eşleştir. Sadece kaynakta açıkça bulunan bilgileri doğrula. Fiyat, otel, mesafe, uçuş veya kontenjan uydurma. Kısa veri teyit notu üret.",
+        content: `Müşteri talebini verilen doğrulanmış şirket verileriyle eşleştir. Sadece kaynakta açıkça bulunan bilgileri doğrula. Fiyat, otel, mesafe, uçuş veya kontenjan uydurma. Kısa veri teyit notu üret.\n\nMÜŞTERİ SATIŞ ADIMI: ${currentSalesPhase}`,
       },
       { role: "user", content: `${prompt}\n\nMÜŞTERİ MESAJI: ${customerMessage}` },
     ],
@@ -708,6 +730,11 @@ async function callOllamaWorkflow(prompt: string, customerMessage: string, sales
           content: `Sen "Hadi Umreye Gidelim" firmasının samimi, güven veren, saygılı ve yetkin Türkçe umre satış temsilcisisin.
 İstanbul Türkçesi ile müşteriye güven ver, mütevazı ol. Müşterinin sorusuna önce samimiyetle cevap ver, ardından satışı ilerletecek 1 net soru sor.
 Gemma İhtiyaç Analizi ve Llama Veri Eşleştirmesi verilerini dikkate al.
+
+DİKKAT: ŞU ANDA SOHBETİN ŞU AŞAMASINDASIN:
+${currentSalesPhase}
+Önceki sorulan veya bilinen bilgileri tekrar sorma! Yalnızca sıradaki tek eksik bilgiyi sor veya fiyat sun.
+
 Yalnızca geçerli JSON formatında yanıt üret:
 {"reply":"Türkçe yanıtınız","intent":"greeting|individual_umrah|group_umrah|price|booking|support|complaint|other","leadType":"BIREYSEL|GRUP|KARARSIZ","leadScore":50,"handoff":false,"handoffReason":""}`,
         },
@@ -726,7 +753,7 @@ Yalnızca geçerli JSON formatında yanıt üret:
       [
         {
           role: "system",
-          content: `Sen "Hadi Umreye Gidelim" firmasının Türkçe umre satış temsilcisisin. Yalnızca geçerli JSON formatında yanıt üret:
+          content: `Sen "Hadi Umreye Gidelim" firmasının Türkçe umre satış temsilcisisin. MÜŞTERİ SATIŞ ADIMI: ${currentSalesPhase}.\nYalnızca geçerli JSON formatında yanıt üret:
 {"reply":"Türkçe yanıtınız","intent":"greeting|individual_umrah|group_umrah|price|booking|support|complaint|other","leadType":"BIREYSEL|GRUP|KARARSIZ","leadScore":50,"handoff":false,"handoffReason":""}`,
         },
         { role: "user", content: `${prompt}\n\nMÜŞTERİ MESAJI: ${customerMessage}` },

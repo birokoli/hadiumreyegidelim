@@ -226,21 +226,25 @@ function extractSalesContext(message: string, history: { direction: string; cont
   }
   const budget = text.match(/(\d[\d.]*)\s*(?:₺|tl)\s*(?:bütçe|butce)?/);
   let umrahType: SalesContext["umrahType"];
+  const explicitIndividualPlan = /\bbireysel umre\b|\bgruptan bağımsız\b|\bgruba bağlı olmadan\b|\bkişiye özel umre\b|\bözel umre plan/i.test(text);
+  const soloGroupParticipant = !explicitIndividualPlan
+    && /\bbireysel müşteri\b|\bbireysel(?:im)?\s+tek kişiyim\b|\btek kişiyim\b|\btek kişi(?: olarak)?(?:\s+katıl|\s+gidece)/i.test(text);
   for (const inbound of [...inboundMessages].reverse()) {
     const normalized = inbound.toLocaleLowerCase("tr-TR");
     if (/\bgrup\b|\b(?:15|25)\s*(?:eylül|eylul)\b/.test(normalized)) {
       umrahType = "grup";
       break;
     }
-    if (/\bbireysel\b/.test(normalized)) {
+    if (/\bbireysel umre\b|\bgruptan bağımsız\b|\bgruba bağlı olmadan\b|\bkişiye özel umre\b|\bözel umre plan/i.test(normalized)) {
       umrahType = "bireysel";
       break;
     }
   }
+  if (soloGroupParticipant) umrahType = "grup";
   if (!umrahType) {
     const lastOutbound = [...history].reverse().find((item) => item.direction === "OUTBOUND")?.content.toLocaleLowerCase("tr-TR") || "";
     if (/\bgrup umre(?:si|sinde|sine)?\b/.test(lastOutbound)) umrahType = "grup";
-    else if (/\bbireysel umre(?:si|de|ye)?\b/.test(lastOutbound)) umrahType = "bireysel";
+    else if (explicitIndividualPlan && /\bbireysel umre(?:si|de|ye)?\b/.test(lastOutbound)) umrahType = "bireysel";
   }
   const monthAliases: Record<string, string> = {
     ocak: "Ocak", şubat: "Şubat", subat: "Şubat", mart: "Mart", nisan: "Nisan",
@@ -366,9 +370,15 @@ async function generateSafeFallback(message: string, config: WhatsAppAIConfig, h
     intent = "group_umrah";
     leadType = context.umrahType === "bireysel" ? "BIREYSEL" : "GRUP";
   } else if (individualGroupDifferenceQuestion) {
-    reply = "Hayır efendim. Bireysel umrede sabit bir tur grubuna katılmak zorunda değilsiniz; tarih, uçuş, otel ve kalış süresi kişiye özel planlanır. Dilerseniz yalnız seyahat eder, ihtiyaç duyduğunuz hizmetlerde ekibimizden destek alırsınız.";
-    intent = "individual_umrah";
-    leadType = "BIREYSEL";
+    if (context.umrahType === "grup" || !/\bbireysel umre\b/.test(normalized)) {
+      reply = "Evet efendim. Tek kişi olarak kayıt yaptırsanız da grup umresi programına diğer misafirlerimizle birlikte katılırsınız. “Bireysel müşteri” burada yalnızca rezervasyonun tek kişi adına yapılmasıdır; paketiniz grup umresidir.";
+      intent = "group_umrah";
+      leadType = "GRUP";
+    } else {
+      reply = "Hayır efendim. Bireysel umre, sabit bir tur grubuna bağlı olmadan tarih, uçuş, otel ve kalış süresinin kişiye özel planlanmasıdır.";
+      intent = "individual_umrah";
+      leadType = "BIREYSEL";
+    }
   } else if (giftForRelative && context.umrahType === "bireysel") {
     const period = context.travelMonths.length ? context.travelMonths.join(" veya ") : "düşündüğünüz dönem";
     reply = `Ne güzel ve anlamlı bir hediye düşünmüşsünüz efendim; şimdiden hayırlı ve mübarek olsun. Kız kardeşinizin iş iznine göre ${period} içinde uygun tarih aralığını belirleyebiliriz. İznin yaklaşık başlangıç ve bitiş tarihleri belli olduğunda kişiye özel uçuş ve otel teklifini netleştirelim.`;
@@ -754,6 +764,9 @@ ${config.companyKnowledge}
 
 SATIŞ KURALLARI:
 ${config.salesRules}
+- “Bireysel müşteri”, “tek kişiyim” veya “tek kişi katılacağım” ifadelerini bireysel umre paketi sanma. Bunlar, aksi açıkça söylenmedikçe grup umresine tek kişi kayıt yaptıran yolcuyu anlatır.
+- Yalnızca müşteri açıkça “bireysel umre”, “gruptan bağımsız” veya “kişiye özel umre planı” istediğini söylerse umre türünü BIREYSEL kabul et.
+- Grup umresine tek kişi katılan müşteri diğer misafirlerle aynı grup programında seyahat eder; “bireysel” olan yalnızca rezervasyonundaki kişi sayısıdır.
 KALİTE KURALLARI:
 ${config.qualityRules}
 - Yalnızca aşağıdaki bilgi tabanına dayan.

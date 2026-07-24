@@ -2,13 +2,15 @@ import { MetadataRoute } from 'next';
 import { prisma } from '@/lib/prisma';
 import { turkeyCities } from '@/lib/turkey-cities';
 
+export const dynamic = 'force-dynamic';
+
 // 4. Otomatik Sitemap
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://hadiumreyegidelim.com';
 
   const posts = await prisma.post.findMany({
     orderBy: { updatedAt: 'desc' }
-  });
+  }).catch(() => []);
 
   const categories = await prisma.category.findMany({
     orderBy: { updatedAt: 'desc' },
@@ -17,12 +19,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         select: { posts: true }
       }
     }
-  });
+  }).catch(() => []);
 
   const packages = await prisma.package.findMany({
     where: { published: true },
     orderBy: { updatedAt: 'desc' }
-  });
+  }).catch(() => []);
 
   const blogUrls = posts.map((post) => ({
     url: `${baseUrl}/blog/${post.slug}`,

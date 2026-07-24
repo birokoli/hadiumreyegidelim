@@ -8,6 +8,7 @@ const BOT_TOKEN = process.env.WHATSAPP_BOT_TOKEN;
 const WEBSITE_URL = (process.env.WEBSITE_URL || "https://www.hadiumreyegidelim.com").replace(/\/$/, "");
 const ADMIN_URL = (process.env.ADMIN_URL || "https://admin.hadiumreyegidelim.com").replace(/\/$/, "");
 const SESSION_PATH = process.env.WHATSAPP_SESSION_PATH || "/data/.wwebjs_auth";
+let managerPhone = String(process.env.WHATSAPP_MANAGER_PHONE || "").replace(/\D/g, "");
 
 if (!BOT_TOKEN) throw new Error("WHATSAPP_BOT_TOKEN tanımlı değil");
 
@@ -22,6 +23,7 @@ const state = {
 };
 const update = (patch) => Object.assign(state, patch, { lastEventAt: new Date().toISOString() });
 const handledMessages = new Map();
+const pendingManagerQuestions = new Map();
 const app = express();
 app.use(express.json());
 
@@ -155,6 +157,31 @@ async function handleIncomingMessage(message, eventName) {
   try {
     const contact = await message.getContact();
     const customerPhone = contact.number || message.from.replace(/@(c|lid)\.us$/, "");
+    const normalizedCustomerPhone = String(customerPhone).replace(/\D/g, "");
+    const managerAnswer = message.body.trim().match(/^#YANIT\s+([A-Z0-9]{6})\s+([\s\S]+)$/i);
+    if (managerPhone && normalizedCustomerPhone === managerPhone && managerAnswer) {
+      const reference = managerAnswer[1].toUpperCase();
+      const answer = managerAnswer[2].trim();
+      const pending = pendingManagerQuestions.get(reference);
+      if (!pending) {
+        await message.reply(`Bu referans bulunamadı veya süresi doldu: ${reference}`);
+        return;
+      }
+      await client.sendMessage(pending.customerChatId, answer);
+      await fetch(`${ADMIN_URL}/api/whatsapp/worker/manager-answer`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${BOT_TOKEN}`, "Content-Type": "application/json" },
+        body: JSON.stringify({
+          phone: pending.customerPhone,
+          customerMessage: pending.customerMessage,
+          answer,
+        }),
+      });
+      pendingManagerQuestions.delete(reference);
+      await message.reply(`Yanıt müşteriye gönderildi ve AI eğitimine eklendi. Referans: ${reference}`);
+      console.log(`[manager] ${reference} yanıtı müşteriye gönderildi`);
+      return;
+    }
     const response = await fetch(`${ADMIN_URL}/api/whatsapp/worker/message`, {
       method: "POST",
       headers: { Authorization: `Bearer ${BOT_TOKEN}`, "Content-Type": "application/json" },
@@ -167,6 +194,21 @@ async function handleIncomingMessage(message, eventName) {
     });
     if (!response.ok) throw new Error(`Site yanıtı ${response.status}: ${(await response.text()).slice(0, 300)}`);
     const result = await response.json();
+    if (result.askManager && result.managerPhone && result.managerQuestion) {
+      managerPhone = String(result.managerPhone).replace(/\D/g, "");
+      const reference = Math.random().toString(36).slice(2, 8).toUpperCase();
+      pendingManagerQuestions.set(reference, {
+        customerChatId: message.from,
+        customerPhone: normalizedCustomerPhone,
+        customerMessage: message.body.trim(),
+        createdAt: Date.now(),
+      });
+      for (const [code, pending] of pendingManagerQuestions) {
+        if (Date.now() - pending.createdAt > 24 * 60 * 60_000) pendingManagerQuestions.delete(code);
+      }
+      await client.sendMessage(`${managerPhone}@c.us`, `${result.managerQuestion}\n\nYanıtlamak için şu biçimde yazın:\n#YANIT ${reference} Müşteriye gönderilecek cevabınız`);
+      console.log(`[manager] ${reference} için yöneticiye soru gönderildi`);
+    }
     if (result.reply) {
       await message.reply(result.reply);
       console.log(`[${eventName}] Yanıt gönderildi: ${customerPhone}`);

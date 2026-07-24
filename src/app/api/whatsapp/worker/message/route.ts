@@ -32,12 +32,24 @@ export async function POST(request: Request) {
     select: { direction: true, content: true },
   });
   const ai = await generateWhatsAppReply({ message: String(body.text), customerName: body.name, history: history.reverse(), config });
+  const askManager = Boolean(ai.handoff && config.managerEscalationEnabled && config.managerPhone);
+  const customerReply = askManager
+    ? "Sorunuzu doğru yanıtlayabilmek için uzman temsilcimize iletiyorum efendim. Kısa süre içinde net bilgi vereceğiz."
+    : ai.reply;
   await prisma.$transaction([
-    prisma.whatsAppMessage.create({ data: { conversationId: conversation.id, direction: "OUTBOUND", source: "ai", content: ai.reply, intent: ai.intent } }),
+    prisma.whatsAppMessage.create({ data: { conversationId: conversation.id, direction: "OUTBOUND", source: "ai", content: customerReply, intent: ai.intent } }),
     prisma.whatsAppConversation.update({
       where: { id: conversation.id },
       data: { leadType: ai.leadType, leadScore: ai.leadScore, status: ai.handoff ? "HUMAN_NEEDED" : "AI_ACTIVE", handoffReason: ai.handoffReason || null, lastMessageAt: new Date() },
     }),
   ]);
-  return NextResponse.json({ reply: ai.reply, handoff: ai.handoff });
+  return NextResponse.json({
+    reply: customerReply,
+    handoff: ai.handoff,
+    askManager,
+    managerPhone: askManager ? config.managerPhone : null,
+    managerQuestion: askManager
+      ? `Müşteri +${body.phone} şunu sordu:\n“${String(body.text).trim()}”\n\nBu müşteriye ne cevap vereyim?`
+      : null,
+  });
 }

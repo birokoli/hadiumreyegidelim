@@ -61,6 +61,8 @@ export type WhatsAppAIConfig = {
   qualityRules: string;
   prohibitedClaims: string[];
   trainingExamples: WhatsAppTrainingExample[];
+  managerEscalationEnabled: boolean;
+  managerPhone: string;
   handoffKeywords: string[];
   outOfHoursMessage: string;
 };
@@ -75,6 +77,8 @@ export const DEFAULT_WHATSAPP_AI_CONFIG: WhatsAppAIConfig = {
   qualityRules: "Son mesaja doğrudan cevap ver. Daha önce öğrenilen bilgiyi tekrar sorma. Aynı cevabı tekrarlama. Tek seferde yalnızca bir gerekli soru sor. Doğrulanmamış indirim, müsaitlik, otel, uçuş veya doluluk bilgisi verme.",
   prohibitedClaims: ["Teyitsiz indirim oranı", "Teyitsiz otel müsaitliği", "Teyitsiz doluluk yüzdesi", "Teyitsiz uçuş saati", "Uydurma otel mesafesi"],
   trainingExamples: [],
+  managerEscalationEnabled: false,
+  managerPhone: "",
   handoffKeywords: ["temsilci", "insan", "ara", "satın al", "ödeme", "şikayet", "acil"],
   outOfHoursMessage: "Mesajınızı aldık. Müşteri temsilcimiz en kısa sürede sizinle ilgilenecek.",
 };

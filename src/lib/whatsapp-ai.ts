@@ -282,6 +282,14 @@ export function calculateSalesPhase(context: SalesContext): string {
 }
 
 function salesContextForModel(context: SalesContext) {
+  let mathNote = "";
+  if (context.adults && context.children) {
+    const adultTotal = context.adults * 1300;
+    const childTotal = context.children * 1000;
+    const netTotal = adultTotal + childTotal;
+    mathNote = `\nKESİN HESAPLANMIŞ DİP TOPLAM FİYAT:\n- ${context.adults} Yetişkin x 1.300 USD = ${adultTotal} USD\n- ${context.children} Çocuk (2-11 yaş) x 1.000 USD = ${childTotal} USD\n- NET TOPLAM TUTAR = ${netTotal} USD.\n(DİKKAT: Müşteri 'toplam ne kadar' veya '3900 mü 3600 mü' sorduğunda DİREKT '${netTotal} USD' de! Çocuk indirimi düşüldüğü için kesin toplam ${netTotal} USD'dir. Sakın tekrar çocuk yaşı sorma!)`;
+  }
+
   return [
     context.umrahType ? `Umre türü: ${context.umrahType}` : null,
     context.people ? `Kişi sayısı: ${context.people}` : null,
@@ -294,6 +302,7 @@ function salesContextForModel(context: SalesContext) {
     context.departureDate ? `Çıkış: ${context.departureDate}` : null,
     context.budget ? `Bütçe: ${context.budget}${context.budgetScopeKnown ? " (kapsamı belli)" : " (kişi başı mı toplam mı teyit edilmeli)"}` : null,
     context.preferences.length ? `Tercihler: ${context.preferences.join(", ")}` : null,
+    mathNote,
     `GÜNCEL SATIŞ ADIMI: ${calculateSalesPhase(context)}`,
   ].filter(Boolean).join("\n") || "Henüz doğrulanmış müşteri bilgisi yok.";
 }
@@ -319,9 +328,15 @@ function extractSalesContext(message: string, history: { direction: string; cont
   const composition = [...inboundMessages].reverse().map((item) =>
     item.toLocaleLowerCase("tr-TR").match(/(\d+)\s*yetişkin(?:\s+ve)?\s*(\d+)\s*çocuk|(\d+)\s*çocuk(?:\s+ve)?\s*(\d+)\s*yetişkin/)
   ).find(Boolean);
-  const adults = composition ? Number(composition[1] || composition[4]) : undefined;
-  const children = composition ? Number(composition[2] || composition[3]) : undefined;
+  let adults = composition ? Number(composition[1] || composition[4]) : undefined;
+  let children = composition ? Number(composition[2] || composition[3]) : undefined;
+  
+  if (adults === undefined && children === undefined && /1\s*çocuk|1\s*cocuk|çocuk var|cocuk var/i.test(text)) {
+    children = 1;
+    if (peopleCount && peopleCount > 1) adults = peopleCount - 1;
+  }
   if (adults !== undefined && children !== undefined) peopleCount = adults + children;
+  
   const durationCandidates = [...text.matchAll(/(\d+)\s*(?:gün|gun)/g)]
     .filter((match) => !/medine/.test(text.slice(Math.max(0, (match.index || 0) - 12), (match.index || 0) + match[0].length + 12)));
   const days = durationCandidates.at(-1);
@@ -371,6 +386,17 @@ function extractSalesContext(message: string, history: { direction: string; cont
     if (/\bgrup umre(?:si|sinde|sine)?\b/.test(lastOutbound)) umrahType = "grup";
     else if (explicitIndividualPlan && /\bbireysel umre(?:si|de|ye)?\b/.test(lastOutbound)) umrahType = "bireysel";
   }
+
+  let departureDate: string | undefined;
+  const explicitDateMatch = text.match(/\b(15|25)\s*(?:eylül|eylul)(?:'?(?:deki|daki))?\b/);
+  if (explicitDateMatch) {
+    departureDate = `${explicitDateMatch[1]} Eylül`;
+  } else if (/\b15\b/.test(latest) || /\b15'i\b|\b15 i\b/.test(latest)) {
+    departureDate = "15 Eylül";
+  } else if (/\b25\b/.test(latest) || /\b25'i\b|\b25 i\b/.test(latest)) {
+    departureDate = "25 Eylül";
+  }
+
   const monthAliases: Record<string, string> = {
     ocak: "Ocak", şubat: "Şubat", subat: "Şubat", mart: "Mart", nisan: "Nisan",
     mayıs: "Mayıs", mayis: "Mayıs", haziran: "Haziran", temmuz: "Temmuz",
@@ -379,6 +405,7 @@ function extractSalesContext(message: string, history: { direction: string; cont
   };
   const monthMatches = [...text.matchAll(/\b(ocak|şubat|subat|mart|nisan|mayıs|mayis|haziran|temmuz|ağustos|agustos|eylül|eylul|ekim|kasım|kasim|aralık|aralik)(?:'?(?:deki|daki))?\b/g)];
   const travelMonths = [...new Set(monthMatches.map((match) => monthAliases[match[1]]))];
+
   const context: SalesContext = {
     umrahType,
     people: peopleCount,
@@ -389,9 +416,7 @@ function extractSalesContext(message: string, history: { direction: string; cont
     roomOccupancy,
     month: monthMatches.at(-1)?.[1],
     travelMonths,
-    departureDate: text.match(/\b(15|25)\s*(?:eylül|eylul)(?:'?(?:deki|daki))?\b/)?.[1]
-      ? `${text.match(/\b(15|25)\s*(?:eylül|eylul)(?:'?(?:deki|daki))?\b/)?.[1]} Eylül`
-      : undefined,
+    departureDate,
     budget: budget?.[1] ? `${budget[1]} TL` : undefined,
     budgetScopeKnown: /kişi başı|kisi basi|toplam bütçe|toplam butce|toplamda/.test(text),
     preferences: [],
@@ -682,7 +707,7 @@ async function callOllamaModel(
   return content;
 }
 
-async function callOllamaWorkflow(prompt: string, customerMessage: string, salesContext: SalesContext) {
+async function callOllamaWorkflow(prompt: string, customerMessage: string, salesContext: SalesContext, history: { direction: string; content: string }[] = []) {
   const currentSalesPhase = calculateSalesPhase(salesContext);
 
   // AŞAMA 1: Gemma 2:2b ile Müşteri İhtiyaç ve Niyet Analizi
@@ -765,6 +790,7 @@ Yalnızca geçerli JSON formatında yanıt üret:
 
   const draftParsed = JSON.parse(extractFirstJsonObject(drafted)) as Partial<AIReply>;
 
+  let finalReply: Partial<AIReply> = {};
   // AŞAMA 4: Llama 3.2 ile Kalite, Güvenlik ve Son Doğrulama Kontrolü
   try {
     const controlled = await callOllamaModel(
@@ -780,11 +806,13 @@ Yalnızca geçerli JSON formatında yanıt üret:
       true,
     );
     const checked = JSON.parse(extractFirstJsonObject(controlled)) as Partial<AIReply>;
-    return validModelReply(checked) ? checked : (validModelReply(draftParsed) ? draftParsed : { reply: "Selamünaleyküm efendim, mesajınızı aldım. Size daha doğru yardımcı olabilmem için kaç kişilik bir umre planladığınızı öğrenebilir miyim?", intent: "greeting", leadType: "KARARSIZ", leadScore: 30, handoff: false, handoffReason: "" });
+    finalReply = validModelReply(checked) ? checked : (validModelReply(draftParsed) ? draftParsed : { reply: "Selamünaleyküm efendim, mesajınızı aldım. Size daha doğru yardımcı olabilmem için kaç kişilik bir umre planladığınızı öğrenebilir miyim?", intent: "greeting", leadType: "KARARSIZ", leadScore: 30, handoff: false, handoffReason: "" });
   } catch (err) {
     console.warn("[Ollama Aşama 4 - Llama 3.2 Kontrol] Hata/Zaman Aşımı, 3. Aşama taslağı kullanılıyor:", err);
-    return validModelReply(draftParsed) ? draftParsed : { reply: "Selamünaleyküm efendim, mesajınızı aldım. Size daha doğru yardımcı olabilmem için kaç kişilik bir umre planladığınızı öğrenebilir miyim?", intent: "greeting", leadType: "KARARSIZ", leadScore: 30, handoff: false, handoffReason: "" };
+    finalReply = validModelReply(draftParsed) ? draftParsed : { reply: "Selamünaleyküm efendim, mesajınızı aldım. Size daha doğru yardımcı olabilmem için kaç kişilik bir umre planladığınızı öğrenebilir miyim?", intent: "greeting", leadType: "KARARSIZ", leadScore: 30, handoff: false, handoffReason: "" };
   }
+
+  return preventRepeatedAutomaticReply(finalReply as AIReply, history);
 }
 
 function validModelReply(value: Partial<AIReply>) {
@@ -1041,7 +1069,7 @@ Sadece şu JSON biçiminde cevap ver:
   let provider = "";
   const providerErrors: string[] = [];
   try {
-    parsed = await callOllamaWorkflow(prompt, params.message, salesContext);
+    parsed = await callOllamaWorkflow(prompt, params.message, salesContext, history);
     provider = "Ollama uzman akışı · Gemma analiz + Llama 3.1 veri → Qwen yazım → Llama 3.2 kontrol";
   } catch (error) {
     providerErrors.push(`Ollama: ${error instanceof Error ? error.message : "bağlantı hatası"}`);

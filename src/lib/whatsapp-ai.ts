@@ -695,28 +695,45 @@ async function callOllamaWorkflow(prompt: string, customerMessage: string, sales
   const [analysis, matching] = await Promise.all([analysisTask, matchingTask]);
 
   // AŞAMA 3: Qwen 2.5:7b ile Türkçe Satış İletişimi ve Yanıt Taslağı Üretimi
-  const drafted = await callOllamaModel(
-    process.env.OLLAMA_WRITER_MODEL || "qwen2.5:7b",
-    [
-      {
-        role: "system",
-        content: `Sen "Hadi Umreye Gidelim" firmasının samimi, güven veren, saygılı ve yetkin Türkçe umre satış temsilcisisin.
+  let drafted = "";
+  try {
+    drafted = await callOllamaModel(
+      process.env.OLLAMA_WRITER_MODEL || "qwen2.5:7b",
+      [
+        {
+          role: "system",
+          content: `Sen "Hadi Umreye Gidelim" firmasının samimi, güven veren, saygılı ve yetkin Türkçe umre satış temsilcisisin.
 İstanbul Türkçesi ile müşteriye güven ver, mütevazı ol. Müşterinin sorusuna önce samimiyetle cevap ver, ardından satışı ilerletecek 1 net soru sor.
 Gemma İhtiyaç Analizi ve Llama Veri Eşleştirmesi verilerini dikkate al.
 Yalnızca geçerli JSON formatında yanıt üret:
 {"reply":"Türkçe yanıtınız","intent":"greeting|individual_umrah|group_umrah|price|booking|support|complaint|other","leadType":"BIREYSEL|GRUP|KARARSIZ","leadScore":50,"handoff":false,"handoffReason":""}`,
-      },
-      {
-        role: "user",
-        content: `${prompt}\n\n[AŞAMA 1 - GEMMA İHTİYAÇ ANALİZİ]:\n${analysis}\n\n[AŞAMA 2 - LLAMA 3.1 VERİ EŞLEŞTİRMESİ]:\n${matching}\n\nMÜŞTERİ MESAJI: ${customerMessage}`,
-      },
-    ],
-    22_000,
-    true,
-  );
+        },
+        {
+          role: "user",
+          content: `${prompt}\n\n[AŞAMA 1 - GEMMA İHTİYAÇ ANALİZİ]:\n${analysis}\n\n[AŞAMA 2 - LLAMA 3.1 VERİ EŞLEŞTİRMESİ]:\n${matching}\n\nMÜŞTERİ MESAJI: ${customerMessage}`,
+        },
+      ],
+      22_000,
+      true,
+    );
+  } catch (err) {
+    console.warn("[Ollama Aşama 3 - Qwen Yazım] Hata/Zaman Aşımı, Llama 3.1 ile yedek taslak oluşturuluyor:", err);
+    drafted = await callOllamaModel(
+      process.env.OLLAMA_DATA_MODEL || "llama3.1:latest",
+      [
+        {
+          role: "system",
+          content: `Sen "Hadi Umreye Gidelim" firmasının Türkçe umre satış temsilcisisin. Yalnızca geçerli JSON formatında yanıt üret:
+{"reply":"Türkçe yanıtınız","intent":"greeting|individual_umrah|group_umrah|price|booking|support|complaint|other","leadType":"BIREYSEL|GRUP|KARARSIZ","leadScore":50,"handoff":false,"handoffReason":""}`,
+        },
+        { role: "user", content: `${prompt}\n\nMÜŞTERİ MESAJI: ${customerMessage}` },
+      ],
+      22_000,
+      true,
+    );
+  }
 
   const draftParsed = JSON.parse(extractFirstJsonObject(drafted)) as Partial<AIReply>;
-  if (!validModelReply(draftParsed)) throw new Error("Aşama 3 (Qwen) geçersiz yanıt üretti");
 
   // AŞAMA 4: Llama 3.2 ile Kalite, Güvenlik ve Son Doğrulama Kontrolü
   try {
@@ -733,10 +750,10 @@ Yalnızca geçerli JSON formatında yanıt üret:
       true,
     );
     const checked = JSON.parse(extractFirstJsonObject(controlled)) as Partial<AIReply>;
-    return validModelReply(checked) ? checked : draftParsed;
+    return validModelReply(checked) ? checked : (validModelReply(draftParsed) ? draftParsed : { reply: "Selamünaleyküm efendim, mesajınızı aldım. Size daha doğru yardımcı olabilmem için kaç kişilik bir umre planladığınızı öğrenebilir miyim?", intent: "greeting", leadType: "KARARSIZ", leadScore: 30, handoff: false, handoffReason: "" });
   } catch (err) {
-    console.warn("[Ollama Aşama 4 - Llama 3.2 Kontrol] Hata/Zaman Aşımı, Qwen taslağı kullanılıyor:", err);
-    return draftParsed;
+    console.warn("[Ollama Aşama 4 - Llama 3.2 Kontrol] Hata/Zaman Aşımı, 3. Aşama taslağı kullanılıyor:", err);
+    return validModelReply(draftParsed) ? draftParsed : { reply: "Selamünaleyküm efendim, mesajınızı aldım. Size daha doğru yardımcı olabilmem için kaç kişilik bir umre planladığınızı öğrenebilir miyim?", intent: "greeting", leadType: "KARARSIZ", leadScore: 30, handoff: false, handoffReason: "" };
   }
 }
 
@@ -808,13 +825,14 @@ function isContextualShortAnswer(message: string, history: { direction: string; 
 }
 
 function extractFirstJsonObject(content: string) {
-  const start = content.indexOf("{");
+  const cleaned = content.replace(/```json\s*/gi, "").replace(/```\s*/g, "").trim();
+  const start = cleaned.indexOf("{");
   if (start < 0) throw new Error("Model JSON döndürmedi");
   let depth = 0;
   let inString = false;
   let escaped = false;
-  for (let index = start; index < content.length; index += 1) {
-    const character = content[index];
+  for (let index = start; index < cleaned.length; index += 1) {
+    const character = cleaned[index];
     if (inString) {
       if (escaped) escaped = false;
       else if (character === "\\") escaped = true;
@@ -825,7 +843,7 @@ function extractFirstJsonObject(content: string) {
     else if (character === "{") depth += 1;
     else if (character === "}") {
       depth -= 1;
-      if (depth === 0) return content.slice(start, index + 1);
+      if (depth === 0) return cleaned.slice(start, index + 1);
     }
   }
   throw new Error("Model eksik JSON döndürdü");

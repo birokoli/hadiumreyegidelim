@@ -48,6 +48,7 @@ export async function ensureWhatsAppAITables() {
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP
   )`);
   await prisma.$executeRawUnsafe(`CREATE INDEX IF NOT EXISTS "WhatsAppMessage_conversationId_createdAt_idx" ON "WhatsAppMessage"("conversationId", "createdAt")`);
+  await prisma.$executeRawUnsafe(`ALTER TABLE "WhatsAppConversation" ADD COLUMN IF NOT EXISTS "contextJson" TEXT`);
   tablesReady = true;
 }
 
@@ -157,8 +158,6 @@ async function buildLiveKnowledge(config: WhatsAppAIConfig) {
 1. Doğrulanmış kampanya ve paket alanları kesin satış bilgisidir.
 2. Hizmet, otel ve blog metinleri yalnızca genel açıklamadır; fiyat, müsaitlik, uçuş, otel adı ve mesafe teklif öncesi teyit edilir.
 3. Kaynaklarda bulunmayan her ayrıntı için müşteriye tahmin sunma; "Bu ayrıntıyı temsilcimizden teyit edelim" de ve handoff=true yap.`,
-    `YÖNETİCİ TARAFINDAN ONAYLANMIŞ CEVAP ÖRNEKLERİ:
-${config.trainingExamples.slice(-30).map((item) => `- Müşteri: ${item.customerMessage}\n  İdeal cevap: ${item.idealReply}`).join("\n") || "- Henüz onaylanmış örnek yok."}`,
     `YASAKLI VE TEYİTSİZ İDDİALAR:\n${config.prohibitedClaims.map((item) => `- ${item}`).join("\n") || "- Doğrulanmamış hiçbir satış iddiası kullanma."}`,
   ].join("\n\n");
 }
@@ -166,6 +165,99 @@ ${config.trainingExamples.slice(-30).map((item) => `- Müşteri: ${item.customer
 export type AIReply = { reply: string; intent: string; leadType: string; leadScore: number; handoff: boolean; handoffReason: string; provider?: string; fallback?: boolean; warning?: string };
 
 type SalesContext = { umrahType?: "bireysel" | "grup"; people?: number; adults?: number; children?: number; days?: number; medinaDays?: number; roomOccupancy?: 2 | 3 | 4; month?: string; travelMonths: string[]; departureDate?: string; budget?: string; budgetScopeKnown: boolean; preferences: string[] };
+
+const TRAINING_STOP_WORDS = new Set([
+  "acaba", "ama", "bana", "ben", "bir", "bize", "bu", "da", "de", "diye", "efendim",
+  "gibi", "icin", "için", "ile", "mi", "mı", "mu", "mü", "ne", "peki", "şey", "sey",
+  "siz", "size", "ve", "veya", "ya", "yani",
+]);
+
+function normalizeTrainingText(value: string) {
+  return value
+    .toLocaleLowerCase("tr-TR")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9\s]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function trainingTokens(value: string) {
+  return new Set(
+    normalizeTrainingText(value)
+      .split(" ")
+      .filter((token) => token.length > 2 && !TRAINING_STOP_WORDS.has(token)),
+  );
+}
+
+function trainingIntentTags(value: string) {
+  const normalized = normalizeTrainingText(value);
+  return [
+    /indirim|iskonto|pahali|uygun|son fiyat/.test(normalized) ? "discount" : "",
+    /cocuk|bebek|yas/.test(normalized) ? "child" : "",
+    /otel|kabe|mesafe|medine/.test(normalized) ? "hotel" : "",
+    /musait|kontenjan|yer var/.test(normalized) ? "availability" : "",
+    /bireysel/.test(normalized) ? "individual" : "",
+    /grup|eylul|15|25/.test(normalized) ? "group" : "",
+    /fiyat|ucret|dolar|usd|kac para|ne kadar/.test(normalized) ? "price" : "",
+    /hediye|kardes|anne|esim/.test(normalized) ? "relationship" : "",
+    /sikayet|yanlis|neden|niye|ayni cevap|sabit cevap/.test(normalized) ? "complaint" : "",
+  ].filter(Boolean);
+}
+
+export function selectRelevantTrainingExamples(
+  examples: WhatsAppTrainingExample[],
+  message: string,
+  history: { direction: string; content: string }[] = [],
+  limit = 4,
+) {
+  const latestCustomerContext = [
+    ...history.filter((item) => item.direction === "INBOUND").slice(-2).map((item) => item.content),
+    message,
+  ].join(" ");
+  const queryTokens = trainingTokens(latestCustomerContext);
+  const latestTokens = trainingTokens(message);
+  const queryTags = new Set(trainingIntentTags(latestCustomerContext));
+
+  return examples
+    .map((example) => {
+      const exampleTokens = trainingTokens(example.customerMessage);
+      const overlap = [...latestTokens].filter((token) => exampleTokens.has(token)).length;
+      const contextOverlap = [...queryTokens].filter((token) => exampleTokens.has(token)).length;
+      const union = new Set([...latestTokens, ...exampleTokens]).size || 1;
+      const tagOverlap = trainingIntentTags(`${example.category} ${example.customerMessage}`)
+        .filter((tag) => queryTags.has(tag)).length;
+      const exact = normalizeTrainingText(example.customerMessage) === normalizeTrainingText(message);
+      const score = exact ? 10 : (overlap / union) * 5 + contextOverlap * 0.25 + tagOverlap * 0.8;
+      return { example, score, exact };
+    })
+    .filter((item) => item.exact || item.score >= 1.15)
+    .sort((a, b) => b.score - a.score || b.example.createdAt.localeCompare(a.example.createdAt))
+    .slice(0, limit);
+}
+
+function repliesAreTooSimilar(left: string, right: string) {
+  const leftTokens = trainingTokens(left);
+  const rightTokens = trainingTokens(right);
+  if (!leftTokens.size || !rightTokens.size) return normalizeTrainingText(left) === normalizeTrainingText(right);
+  const overlap = [...leftTokens].filter((token) => rightTokens.has(token)).length;
+  return overlap / Math.min(leftTokens.size, rightTokens.size) >= 0.78;
+}
+
+function preventRepeatedAutomaticReply<T extends AIReply>(
+  response: T,
+  history: { direction: string; content: string }[],
+) {
+  const recentOutbound = [...history].reverse().find((item) => item.direction === "OUTBOUND")?.content.trim();
+  if (!recentOutbound || !repliesAreTooSimilar(response.reply, recentOutbound)) return response;
+  return {
+    ...response,
+    reply: "Sorunuzu önceki cevabı tekrarlamadan doğru yanıtlamak için yetkili temsilcimize aktarıyorum efendim.",
+    handoff: true,
+    handoffReason: "Benzer veya tekrarlı otomatik yanıt engellendi",
+    provider: "Satış kaybı önleme koruması",
+  };
+}
 
 function salesContextForModel(context: SalesContext) {
   return [
@@ -288,6 +380,36 @@ function extractSalesContext(message: string, history: { direction: string; cont
   if (/\bvize\b/.test(text)) context.preferences.push("vize");
   if (/\btransfer\b/.test(text)) context.preferences.push("transfer");
   return context;
+}
+
+export function createConversationMemory(
+  message: string,
+  history: { direction: string; content: string }[] = [],
+) {
+  const context = extractSalesContext(message, history);
+  return JSON.stringify(context);
+}
+
+export function conversationMemoryAsHistory(contextJson?: string | null) {
+  if (!contextJson) return [];
+  try {
+    const context = JSON.parse(contextJson) as SalesContext;
+    const facts = [
+      context.umrahType ? `${context.umrahType} umresi` : null,
+      context.people ? `${context.people} kişi` : null,
+      context.adults !== undefined ? `${context.adults} yetişkin` : null,
+      context.children !== undefined ? `${context.children} çocuk` : null,
+      context.departureDate || (context.travelMonths || []).join(" veya "),
+      context.days ? `${context.days} gün` : null,
+      context.medinaDays ? `${context.medinaDays} gün Medine` : null,
+      context.roomOccupancy ? `${context.roomOccupancy} kişilik oda` : null,
+      context.budget,
+      ...(context.preferences || []),
+    ].filter(Boolean);
+    return facts.length ? [{ direction: "INBOUND", content: facts.join(", ") }] : [];
+  } catch {
+    return [];
+  }
 }
 
 function individualSalesReply(context: SalesContext) {
@@ -751,6 +873,10 @@ export async function generateWhatsAppReply(params: {
   const history = (params.history || []).slice(-30);
   const conversationStarted = history.some((message) => message.direction === "OUTBOUND");
   const salesContext = extractSalesContext(params.message, history);
+  const relevantTraining = selectRelevantTrainingExamples(config.trainingExamples, params.message, history);
+  const trainingGuidance = relevantTraining.length
+    ? relevantTraining.map(({ example }) => `- Benzer müşteri: ${example.customerMessage}\n  Yönetici onaylı yaklaşım: ${example.idealReply}`).join("\n")
+    : "- Bu mesaj için yeterince benzer yönetici onaylı örnek bulunamadı.";
   const greetingComplaint = conversationStarted && /(niye|neden).*(selam|merhaba)|sürekli.*(selam|merhaba)|tekrar.*(selam|merhaba)/i.test(params.message);
   const discountRequest = /(indirim|iskonto|son fiyat|en son ne olur|daha uygun|uygun olmuyor|fiyatta yardımcı|fiyatta yardimci|pazarlık|pazarlik)/i.test(params.message);
   const unverifiedGroupMonth = salesContext.umrahType === "grup" && Boolean(salesContext.month) && !/eylül|eylul/.test(salesContext.month || "");
@@ -758,10 +884,37 @@ export async function generateWhatsAppReply(params: {
   const customerAddress = explicitTitle
     ? `${params.customerName?.trim().split(/\s+/)[0]} ${explicitTitle[0].toLocaleUpperCase("tr-TR")}${explicitTitle.slice(1).toLocaleLowerCase("tr-TR")}`
     : "efendim";
+  const exactTraining = relevantTraining.find((item) => item.exact);
+  if (exactTraining && !isTrivialOrTestMessage(params.message)) {
+    const trainedReply = enforceAddressing(
+      exactTraining.example.idealReply,
+      conversationStarted,
+      params.customerName,
+      params.message,
+    );
+    const trainedCheck = validateGroundedReply({
+      reply: trainedReply,
+      message: params.message,
+      history,
+      knowledge: liveKnowledge,
+    });
+    if (trainedCheck.safe) {
+      return preventRepeatedAutomaticReply({
+        reply: trainedReply,
+        intent: "other",
+        leadType: salesContext.umrahType === "grup" ? "GRUP" : salesContext.umrahType === "bireysel" ? "BIREYSEL" : "KARARSIZ",
+        leadScore: 55,
+        handoff: false,
+        handoffReason: "",
+        provider: "Yönetici onaylı birebir eğitim örneği",
+        fallback: false,
+      }, history);
+    }
+  }
   if (isTrivialOrTestMessage(params.message)
     && !isContextualShortAnswer(params.message, history)
     && !salesContext.roomOccupancy) {
-    return {
+    return preventRepeatedAutomaticReply({
       reply: conversationStarted
         ? "Mesajınız ulaştı efendim. Umre planlamanızla ilgili hangi konuda yardımcı olmamı istersiniz?"
         : "Merhaba efendim. Mesajınız ulaştı. Bireysel veya grup umresiyle ilgili hangi konuda yardımcı olmamı istersiniz?",
@@ -772,7 +925,7 @@ export async function generateWhatsAppReply(params: {
       handoffReason: "",
       provider: "Güvenli karşılama",
       fallback: true,
-    };
+    }, history);
   }
   const greetingOnly = /(?:selam|merhaba|aleyküm|aleykum|nasılsın|nasilsin|iyi günler)/i.test(params.message)
     && !/(umre|paket|tur|fiyat|otel|vize|uçuş|transfer|mekke|medine|kabe|grup|bireysel|rezervasyon)/i.test(params.message);
@@ -782,13 +935,13 @@ export async function generateWhatsAppReply(params: {
       ? "Teşekkür ederim efendim. Umre planlamanızla ilgili hangi konuda yardımcı olmamı istersiniz?"
       : enforceAddressing(safe.reply, false, params.customerName, params.message);
     safe.provider = "Hızlı karşılama";
-    return safe;
+    return preventRepeatedAutomaticReply(safe, history);
   }
   if (discountRequest || /(pahalı|pahali|fiyat araştır|fiyat arastir|başka yerlere bak|baska yerlere bak|daha ucuz)/i.test(params.message)) {
     const safe = await generateSafeFallback(params.message, config, history);
     safe.reply = enforceAddressing(safe.reply, conversationStarted, params.customerName, params.message);
     safe.provider = discountRequest ? "Hızlı indirim talebi yönetimi" : "Hızlı itiraz yönetimi";
-    return safe;
+    return preventRepeatedAutomaticReply(safe, history);
   }
   const deterministicIntent = /(?:15|25)\s*(?:eylül|eylul).*(?:grup|kampanya).*(?:bilgi|detay)|(?:grup|kampanya).*(?:15|25)\s*(?:eylül|eylul).*(?:bilgi|detay)|\b12\s*yaş|\bgrup(?:\s+umresi)?\s+değil\b.*\bbireysel\b|(?:rehber|tarihi mekan|tarihî mekân|araç|arac|kirala|ulaşım|ulasim).*(?:nasıl|nasil|var mı|varmi|veriyor|sağlanıyor|saglaniyor|görmek|gezmek)|(?:en yakın|en yakin|hangi)\s+(?:grup\s+umre\s+)?tarih|(?:grup\s+umre|çıkış|cikis).*(?:ne zaman|hangi tarih)/i.test(params.message)
     || (salesContext.umrahType === "grup" && /^(?:ne zaman|en yakın tarih ne zaman|en yakin tarih ne zaman|hangi tarih)$/i.test(params.message.trim()));
@@ -796,7 +949,7 @@ export async function generateWhatsAppReply(params: {
     const safe = await generateSafeFallback(params.message, config, history);
     safe.reply = enforceAddressing(safe.reply, conversationStarted, params.customerName, params.message);
     safe.provider = "Doğrulanmış satış kuralı";
-    return safe;
+    return preventRepeatedAutomaticReply(safe, history);
   }
   const prompt = `Sen ${config.assistantName} isimli Türkçe WhatsApp satış ve müşteri destek asistanısın.
 
@@ -855,6 +1008,11 @@ ${config.qualityRules}
 
 BİLGİ TABANI:
 ${liveKnowledge}
+
+BU MESAJLA İLGİLİ YÖNETİCİ ONAYLI ÖRNEKLER:
+${trainingGuidance}
+- Örnekleri kelimesi kelimesine tekrarlama. Müşterinin son mesajına ve müşteri kartına uyarlayarak doğal cevap ver.
+- Örnekteki fiyat, tarih, otel veya müsaitlik güncel bilgi tabanıyla çelişirse bilgi tabanı geçerlidir.
 
 SON KONUŞMA:
 ${history.map((m) => `${m.direction === "INBOUND" ? "Müşteri" : "Asistan"}: ${m.content}`).join("\n")}
@@ -916,11 +1074,11 @@ Sadece şu JSON biçiminde cevap ver:
     if (greetingComplaint) fallback.reply = `Haklısınız efendim, gereksiz selam tekrarı oldu; özür dilerim. ${unverifiedGroupMonth ? unverifiedGroupMonthReply(salesContext) : "Bundan sonra konuşmaya kaldığımız yerden devam edeceğim."}`;
     else if (unverifiedGroupMonth) fallback.reply = unverifiedGroupMonthReply(salesContext);
     const recentOutbound = [...history].reverse().find((item) => item.direction === "OUTBOUND")?.content.trim();
-    if (recentOutbound && fallback.reply.trim() === recentOutbound) {
-      fallback.reply = "Önceki bilgiyi tekrarlamayayım efendim. Son sorunuzu net biçimde yanıtlayabilmemiz için talebinizi yetkili temsilcimize aktarıyorum.";
+    if (recentOutbound && repliesAreTooSimilar(fallback.reply, recentOutbound)) {
+      fallback.reply = "Sorunuzu önceki cevabı tekrarlamadan doğru yanıtlamak için yetkili temsilcimize aktarıyorum efendim.";
       fallback.handoff = true;
-      fallback.handoffReason = "Model erişilemedi ve tekrarlı yanıt engellendi";
-      fallback.provider = "Tekrarlı yanıt koruması";
+      fallback.handoffReason = "Model erişilemedi; benzer veya tekrarlı otomatik yanıt engellendi";
+      fallback.provider = "Satış kaybı önleme koruması";
     }
     return fallback;
   }
@@ -937,10 +1095,10 @@ Sadece şu JSON biçiminde cevap ver:
   if (greetingComplaint) cleanedReply = `Haklısınız efendim, gereksiz selam tekrarı oldu; özür dilerim. ${unverifiedGroupMonth ? unverifiedGroupMonthReply(salesContext) : "Bundan sonra konuşmaya kaldığımız yerden devam edeceğim."}`;
   else if (unverifiedGroupMonth) cleanedReply = unverifiedGroupMonthReply(salesContext);
   const recentOutbound = [...history].reverse().find((item) => item.direction === "OUTBOUND")?.content.trim();
-  if (recentOutbound && cleanedReply.trim() === recentOutbound) {
-    cleanedReply = "Aynı bilgiyi tekrar etmeyeyim efendim. Son sorunuzu farklı biçimde değerlendirebilmemiz için talebinizi yetkili temsilcimize aktarıyorum.";
+  if (recentOutbound && repliesAreTooSimilar(cleanedReply, recentOutbound)) {
+    cleanedReply = "Sorunuzu önceki cevabı tekrarlamadan doğru yanıtlamak için yetkili temsilcimize aktarıyorum efendim.";
     parsed.handoff = true;
-    parsed.handoffReason = "Tekrarlı model yanıtı engellendi";
+    parsed.handoffReason = "Benzer veya tekrarlı model yanıtı engellendi";
   }
   const groundedCheck = validateGroundedReply({
     reply: cleanedReply,

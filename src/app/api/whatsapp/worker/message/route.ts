@@ -1,6 +1,12 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { ensureWhatsAppAITables, generateWhatsAppReply, getWhatsAppAIConfig } from "@/lib/whatsapp-ai";
+import {
+  conversationMemoryAsHistory,
+  createConversationMemory,
+  ensureWhatsAppAITables,
+  generateWhatsAppReply,
+  getWhatsAppAIConfig,
+} from "@/lib/whatsapp-ai";
 
 export const runtime = "nodejs";
 export const maxDuration = 180;
@@ -31,7 +37,15 @@ export async function POST(request: Request) {
     take: 30,
     select: { direction: true, content: true },
   });
-  const ai = await generateWhatsAppReply({ message: String(body.text), customerName: body.name, history: history.reverse(), config });
+  const storedContext = await prisma.$queryRawUnsafe<Array<{ contextJson: string | null }>>(
+    `SELECT "contextJson" FROM "WhatsAppConversation" WHERE "id" = $1 LIMIT 1`,
+    conversation.id,
+  );
+  const chronologicalHistory = history.reverse();
+  const memoryHistory = conversationMemoryAsHistory(storedContext[0]?.contextJson);
+  const effectiveHistory = [...memoryHistory, ...chronologicalHistory];
+  const ai = await generateWhatsAppReply({ message: String(body.text), customerName: body.name, history: effectiveHistory, config });
+  const contextJson = createConversationMemory(String(body.text), effectiveHistory);
   const approvalRequired = Boolean(config.managerApprovalMode && config.managerEscalationEnabled && config.managerPhone);
   const askManager = Boolean(config.managerEscalationEnabled && config.managerPhone && (approvalRequired || ai.handoff));
   const customerReply = approvalRequired
@@ -52,6 +66,11 @@ export async function POST(request: Request) {
       },
     }),
   ]);
+  await prisma.$executeRawUnsafe(
+    `UPDATE "WhatsAppConversation" SET "contextJson" = $1 WHERE "id" = $2`,
+    contextJson,
+    conversation.id,
+  );
   return NextResponse.json({
     reply: customerReply,
     handoff: ai.handoff,

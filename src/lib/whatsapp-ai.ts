@@ -500,7 +500,9 @@ async function generateSafeFallback(message: string, config: WhatsAppAIConfig, h
     reply = "Araştırma yapmanız çok doğal efendim. Kıyaslama yaparken otelin Kâbe’ye gerçek mesafesine, rehberlik hizmetinin kapsamına ve paketin her şey dâhil olup olmadığına dikkat etmenizi tavsiye ederim. İncelediğiniz seçenek varsa birlikte karşılaştırabiliriz.";
     intent = "price";
   } else if (groupDateQuestion) {
-    reply = `Tarihleri belli efendim: Grup umremizin çıkışları ${campaign.departureOne} ve ${campaign.departureTwo}. Program seçenekleri 10, 15 veya 20 gündür. Size hangi çıkış tarihi daha uygun olur?`;
+    reply = /en yakın|en yakin/.test(normalized)
+      ? `En yakın grup umresi çıkışımız ${campaign.departureOne}; sonraki çıkışımız ${campaign.departureTwo}. Program seçenekleri 10, 15 veya 20 gündür. ${campaign.departureOne} sizin için uygun olur mu efendim?`
+      : `Grup umremizin çıkışları ${campaign.departureOne} ve ${campaign.departureTwo}. Program seçenekleri 10, 15 veya 20 gündür. Size hangi çıkış tarihi daha uygun olur efendim?`;
     intent = "group_umrah";
     leadType = "GRUP";
   } else if (compositionUpdate) {
@@ -935,12 +937,14 @@ export async function generateWhatsAppReply(params: {
       ? "Teşekkür ederim efendim. Umre planlamanızla ilgili hangi konuda yardımcı olmamı istersiniz?"
       : enforceAddressing(safe.reply, false, params.customerName, params.message);
     safe.provider = "Hızlı karşılama";
+    safe.warning = undefined;
     return preventRepeatedAutomaticReply(safe, history);
   }
   if (discountRequest || /(pahalı|pahali|fiyat araştır|fiyat arastir|başka yerlere bak|baska yerlere bak|daha ucuz)/i.test(params.message)) {
     const safe = await generateSafeFallback(params.message, config, history);
     safe.reply = enforceAddressing(safe.reply, conversationStarted, params.customerName, params.message);
     safe.provider = discountRequest ? "Hızlı indirim talebi yönetimi" : "Hızlı itiraz yönetimi";
+    safe.warning = undefined;
     return preventRepeatedAutomaticReply(safe, history);
   }
   const deterministicIntent = /(?:15|25)\s*(?:eylül|eylul).*(?:grup|kampanya).*(?:bilgi|detay)|(?:grup|kampanya).*(?:15|25)\s*(?:eylül|eylul).*(?:bilgi|detay)|\b12\s*yaş|\bgrup(?:\s+umresi)?\s+değil\b.*\bbireysel\b|(?:rehber|tarihi mekan|tarihî mekân|araç|arac|kirala|ulaşım|ulasim).*(?:nasıl|nasil|var mı|varmi|veriyor|sağlanıyor|saglaniyor|görmek|gezmek)|(?:en yakın|en yakin|hangi)\s+(?:grup\s+umre\s+)?tarih|(?:grup\s+umre|çıkış|cikis).*(?:ne zaman|hangi tarih)/i.test(params.message)
@@ -949,6 +953,7 @@ export async function generateWhatsAppReply(params: {
     const safe = await generateSafeFallback(params.message, config, history);
     safe.reply = enforceAddressing(safe.reply, conversationStarted, params.customerName, params.message);
     safe.provider = "Doğrulanmış satış kuralı";
+    safe.warning = undefined;
     return preventRepeatedAutomaticReply(safe, history);
   }
   const prompt = `Sen ${config.assistantName} isimli Türkçe WhatsApp satış ve müşteri destek asistanısın.

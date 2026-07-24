@@ -18,7 +18,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
   if (action === 'approve') {
     await prisma.share.update({
       where: { id: shareId },
-      data: { status: 'approved', approvedAt: new Date(), approvedBy: session.id, rejectReason: null },
+      data: { status: 'approved', approvedAt: new Date(), approvedBy: 'admin', rejectReason: null },
     });
   } else if (action === 'reject') {
     await prisma.share.update({

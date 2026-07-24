@@ -70,20 +70,20 @@ export type WhatsAppAIConfig = {
 };
 
 export const DEFAULT_WHATSAPP_AI_CONFIG: WhatsAppAIConfig = {
-  enabled: false,
-  assistantName: "Hadi Umreye Gidelim Hizmet Temsilcisi",
+  enabled: true,
+  assistantName: "Hadi Umreye Gidelim Danışmanı",
   welcomeMessage: "Selamünaleyküm efendim. Hadi Umreye Gidelim'e hoş geldiniz. Bireysel veya grup umresi için kaç kişi ve hangi tarihlerde seyahat etmeyi düşünüyorsunuz?",
-  tone: "Profesyonel, ciddi, güven veren ve çözüm odaklı kusursuz İstanbul Türkçesi kullan. İlk karşılamada Selamünaleyküm de; devam eden konuşmada selamı tekrarlama. Efendim, Hanım veya Bey hitabını yerinde kullan.",
+  tone: "Son derece samimi, mütevazı, güven inşa eden ve çözüm odaklı kusursuz İstanbul Türkçesi kullan. Müşteriyi dinle, empati yap, saygı ve hürmetle yanıt ver. Efendim hitabını yerinde kullan.",
   companyKnowledge: "Hadi Umreye Gidelim; bireysel, aileye özel, VIP ve grup umresi programları sunar. İhtiyaca göre uçuş, vize, otel, transfer, rehberlik ve ziyaret programı planlanır.",
-  salesRules: "Önce kişi sayısı, düşünülen tarih, ilk umre olup olmadığı, kalış süresi, oda tercihi ve bütçe aralığını öğren. Kesin olmayan fiyat, uçuş, otel, mesafe, doluluk veya kontenjan uydurma. Fiyat verirken Dolar kuru endeksli olduğunu ve uçak biletinin dahil/hariç durumunu mutlaka belirt. Satın almaya hazır müşteriyi temsilciye aktar.",
-  qualityRules: "Son mesaja doğrudan cevap ver. Daha önce öğrenilen bilgiyi tekrar sorma. Aynı cevabı tekrarlama. Tek seferde yalnızca bir gerekli soru sor. Doğrulanmamış indirim, müsaitlik, otel, uçuş veya doluluk bilgisi verme.",
+  salesRules: "Müşteri ile güven bağı kur. Önce grup mu bireysel mi istediğini ve kişi sayısını öğren. Ardından düşündüğü çıkış tarihini, program süresini ve oda tipini netleştir. Şirket veritabanındaki kesin fiyatları sun (fiyat verirken Dolar kuru endeksli olduğunu ve uçak biletli olduğunu belirt). İndirim veya teyitsiz detay sorulursa güven ver ve teyit için temsilciye aktar.",
+  qualityRules: "Son mesaja samimiyetle cevap ver. Öğrenilen bilgileri tekrar sorma. Aynı cevabı tekrarlama. Tek seferde yalnızca 1 soru sor.",
   prohibitedClaims: ["Teyitsiz indirim oranı", "Teyitsiz otel müsaitliği", "Teyitsiz doluluk yüzdesi", "Teyitsiz uçuş saati", "Uydurma otel mesafesi"],
   trainingExamples: [],
-  managerEscalationEnabled: false,
-  managerApprovalMode: true,
+  managerEscalationEnabled: true,
+  managerApprovalMode: false,
   managerPhone: "",
-  handoffKeywords: ["temsilci", "insan", "ara", "satın al", "ödeme", "şikayet", "acil"],
-  outOfHoursMessage: "Mesajınızı aldık. Müşteri temsilcimiz en kısa sürede sizinle ilgilenecek.",
+  handoffKeywords: ["temsilci", "insan", "ara", "satın al", "ödeme", "şikayet", "acil", "yetkili", "telefon"],
+  outOfHoursMessage: "Mesajınızı aldık. Uzman temsilcimiz en kısa sürede sizinle ilgilenecek.",
 };
 
 export function parseWhatsAppAIConfig(value?: string | null): WhatsAppAIConfig {
@@ -660,48 +660,49 @@ async function callOllamaModel(
 }
 
 async function callOllamaWorkflow(prompt: string, customerMessage: string, salesContext: SalesContext) {
-  const analysisTask = callOllamaModel(process.env.OLLAMA_ANALYSIS_MODEL || "gemma2:2b", [
-    {
-      role: "system",
-      content: "Müşteri mesajından yalnızca açıkça verilen kişi sayısı, bütçe, tarih, umre türü, niyet ve sıradaki eksik bilgiyi çıkar. Tahmin ve satış metni yazma. En fazla 6 kısa satır kullan.",
-    },
-    { role: "user", content: `${customerMessage}\n\nMevcut müşteri kartı:\n${salesContextForModel(salesContext)}` },
-  ], 12_000).catch(() => salesContextForModel(salesContext));
-  const matchingTask = callOllamaModel(process.env.OLLAMA_DATA_MODEL || "llama3.1", [
-    {
-      role: "system",
-      content: "Müşteri talebini verilen doğrulanmış şirket verileriyle eşleştir. Sadece kaynakta açıkça bulunan bilgileri kullan. Fiyat, otel, mesafe, uçuş, doluluk ve kontenjan uydurma. Müşteriye cevap yazma; kısa veri notu üret.",
-    },
-    { role: "user", content: `${prompt}\n\nMüşteri mesajı: ${customerMessage}` },
-  ], 18_000).catch(() => "Kesin bilgi yoksa temsilci teyidi istenmelidir.");
-  const [analysis, matching] = await Promise.all([analysisTask, matchingTask]);
+  const primaryModel = process.env.OLLAMA_WRITER_MODEL || "qwen2.5:7b";
+  const fallbackModel = process.env.OLLAMA_DATA_MODEL || "llama3.1:latest";
+  
+  const systemInstruction = `Sen "Hadi Umreye Gidelim" firmasının profesyonel, samimi, son derece güven verici ve yetkin Türkçe umre satış temsilcisisin.
 
-  const drafted = await callOllamaModel(process.env.OLLAMA_WRITER_MODEL || "qwen2.5:7b", [
-    {
-      role: "system",
-      content: "Sen Hadi Umreye Gidelim şirketinin profesyonel hizmet satış temsilcisisin. Kusursuz İstanbul Türkçesi kullan. İlk mesajda Selamünaleyküm de; devam eden konuşmada selamı tekrarlama. İslami ifadeleri yerinde ve abartmadan kullan. Yalnızca istenen JSON'u üret.",
-    },
-    {
-      role: "user",
-      content: `${prompt}\n\nGEMMA İHTİYAÇ ANALİZİ:\n${analysis}\n\nLLAMA 3.1 VERİ EŞLEŞTİRMESİ:\n${matching}`,
-    },
-  ], 22_000, true);
-  const draftParsed = JSON.parse(extractFirstJsonObject(drafted)) as Partial<AIReply>;
-  if (!validModelReply(draftParsed)) throw new Error("Geçersiz Qwen yanıtı");
+GÖREVİN VE ÜSLUBUN:
+- Karşıdaki müşteriye güven ver, mütevazı ve samimi bir İstanbul Türkçesi kullan.
+- Müşterinin talebini (bireysel mi grup umresi mi, kaç kişi, hangi tarihler, kaç gün, oda tercihi) sohbet tadında adım adım öğren.
+- Şirket bilgi tabanındaki doğrulanmış paket ve fiyat bilgilerini kullan. Fiyat sunarken Dolar kuru endeksli ve uçak biletli olduğunu açıkça belirt.
+- Müşteri çekinirse veya fiyat sorarsa güven inşa et, Kâbe mesafesi ve kaliteli hizmetin detaylarını anlat.
+- Teyitsiz bilgi verme, bilmediğin detay veya özel istek olursa yetkiliye danışacağını söyle ve handoff=true yap.
+
+Yalnızca aşağıdaki JSON formatında geçerli bir yanıt üret:
+{"reply":"Müşteriye yanıtınız","intent":"greeting|individual_umrah|group_umrah|price|booking|support|complaint|other","leadType":"BIREYSEL|GRUP|KARARSIZ","leadScore":50,"handoff":false,"handoffReason":""}`;
 
   try {
-    const controlled = await callOllamaModel(process.env.OLLAMA_CONTROL_MODEL || "llama3.2", [
-      {
-        role: "system",
-        content: "Son kalite ve güvenlik kontrolüsün. JSON alanlarını koru. Reply metnindeki yazım hatalarını düzelt. Kaynakta olmayan fiyat, mesafe, uçuş, doluluk veya kontenjanı silip temsilci teyidine çevir. Otomatik telefon/CTA ekleme. Devam eden konuşmada selamı tekrarlama. Yalnızca JSON üret.",
-      },
-      { role: "user", content: drafted },
-    ], 12_000, true);
-    const checked = JSON.parse(extractFirstJsonObject(controlled)) as Partial<AIReply>;
-    return validModelReply(checked) ? checked : draftParsed;
-  } catch {
-    return draftParsed;
+    const raw = await callOllamaModel(
+      primaryModel,
+      [
+        { role: "system", content: systemInstruction },
+        { role: "user", content: `${prompt}\n\nMÜŞTERİ MESAJI: ${customerMessage}\nMÜŞTERİ BİLGİ KARTI:\n${salesContextForModel(salesContext)}` },
+      ],
+      25_000,
+      true,
+    );
+    const parsed = JSON.parse(extractFirstJsonObject(raw)) as Partial<AIReply>;
+    if (validModelReply(parsed)) return parsed;
+  } catch (error) {
+    console.warn(`[Ollama] ${primaryModel} çağrısı başarısız, yedek model (${fallbackModel}) deneniyor:`, error);
   }
+
+  const rawFallback = await callOllamaModel(
+    fallbackModel,
+    [
+      { role: "system", content: systemInstruction },
+      { role: "user", content: `${prompt}\n\nMÜŞTERİ MESAJI: ${customerMessage}` },
+    ],
+    25_000,
+    true,
+  );
+  const parsedFallback = JSON.parse(extractFirstJsonObject(rawFallback)) as Partial<AIReply>;
+  if (validModelReply(parsedFallback)) return parsedFallback;
+  throw new Error("Yerel Ollama modellerinden geçerli yanıt üretilemedi.");
 }
 
 function validModelReply(value: Partial<AIReply>) {

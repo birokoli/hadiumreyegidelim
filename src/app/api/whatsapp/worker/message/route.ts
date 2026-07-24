@@ -46,13 +46,14 @@ export async function POST(request: Request) {
   const effectiveHistory = [...memoryHistory, ...chronologicalHistory];
   const ai = await generateWhatsAppReply({ message: String(body.text), customerName: body.name, history: effectiveHistory, config });
   const contextJson = createConversationMemory(String(body.text), effectiveHistory);
-  const approvalRequired = Boolean(config.managerApprovalMode && config.managerEscalationEnabled && config.managerPhone);
+  const managerPhone = config.managerPhone || process.env.WHATSAPP_MANAGER_PHONE || "";
+  const approvalRequired = Boolean(config.managerApprovalMode && config.managerEscalationEnabled && managerPhone);
   const needsHuman = Boolean(approvalRequired || ai.handoff);
-  const askManager = Boolean(config.managerEscalationEnabled && config.managerPhone && (approvalRequired || ai.handoff));
+  const askManager = Boolean(managerPhone && needsHuman);
   const customerReply = approvalRequired
     ? null
     : askManager
-    ? "Sorunuzu doğru yanıtlayabilmek için uzman temsilcimize iletiyorum efendim. Kısa süre içinde net bilgi vereceğiz."
+    ? "Sorunuzu doğru ve eksiksiz yanıtlayabilmek için uzman temsilcimize iletiyorum efendim. Kısa süre içinde dönüş yapacağız."
     : ai.reply;
   await prisma.$transaction([
     ...(customerReply ? [prisma.whatsAppMessage.create({ data: { conversationId: conversation.id, direction: "OUTBOUND", source: "ai", content: customerReply, intent: ai.intent } })] : []),
@@ -76,9 +77,9 @@ export async function POST(request: Request) {
     reply: customerReply,
     handoff: ai.handoff,
     askManager,
-    managerPhone: askManager ? config.managerPhone : null,
+    managerPhone: askManager ? managerPhone : null,
     managerQuestion: askManager
-      ? `Müşteri +${body.phone} şunu sordu:\n“${String(body.text).trim()}”\n\nAI taslağı:\n“${ai.reply}”\n\nBu müşteriye ne cevap vereyim?`
+      ? `🚨 *KONTROLÜ ELE ALIN - AI TIKANDI / DEVRİLDİ*\n\n👤 *Müşteri:* +${body.phone} (${body.name || "İsimsiz"})\n💬 *Son Mesaj:* “${String(body.text).trim()}”\n⚠️ *Neden:* ${ai.handoffReason || "Temsilci teyidi veya özel istek"}\n\n🤖 *AI Taslağı:* “${ai.reply}”`
       : null,
   });
 }

@@ -660,49 +660,84 @@ async function callOllamaModel(
 }
 
 async function callOllamaWorkflow(prompt: string, customerMessage: string, salesContext: SalesContext) {
-  const primaryModel = process.env.OLLAMA_WRITER_MODEL || "qwen2.5:7b";
-  const fallbackModel = process.env.OLLAMA_DATA_MODEL || "llama3.1:latest";
-  
-  const systemInstruction = `Sen "Hadi Umreye Gidelim" firmasının profesyonel, samimi, son derece güven verici ve yetkin Türkçe umre satış temsilcisisin.
-
-GÖREVİN VE ÜSLUBUN:
-- Karşıdaki müşteriye güven ver, mütevazı ve samimi bir İstanbul Türkçesi kullan.
-- Müşterinin talebini (bireysel mi grup umresi mi, kaç kişi, hangi tarihler, kaç gün, oda tercihi) sohbet tadında adım adım öğren.
-- Şirket bilgi tabanındaki doğrulanmış paket ve fiyat bilgilerini kullan. Fiyat sunarken Dolar kuru endeksli ve uçak biletli olduğunu açıkça belirt.
-- Müşteri çekinirse veya fiyat sorarsa güven inşa et, Kâbe mesafesi ve kaliteli hizmetin detaylarını anlat.
-- Teyitsiz bilgi verme, bilmediğin detay veya özel istek olursa yetkiliye danışacağını söyle ve handoff=true yap.
-
-Yalnızca aşağıdaki JSON formatında geçerli bir yanıt üret:
-{"reply":"Müşteriye yanıtınız","intent":"greeting|individual_umrah|group_umrah|price|booking|support|complaint|other","leadType":"BIREYSEL|GRUP|KARARSIZ","leadScore":50,"handoff":false,"handoffReason":""}`;
-
-  try {
-    const raw = await callOllamaModel(
-      primaryModel,
-      [
-        { role: "system", content: systemInstruction },
-        { role: "user", content: `${prompt}\n\nMÜŞTERİ MESAJI: ${customerMessage}\nMÜŞTERİ BİLGİ KARTI:\n${salesContextForModel(salesContext)}` },
-      ],
-      25_000,
-      true,
-    );
-    const parsed = JSON.parse(extractFirstJsonObject(raw)) as Partial<AIReply>;
-    if (validModelReply(parsed)) return parsed;
-  } catch (error) {
-    console.warn(`[Ollama] ${primaryModel} çağrısı başarısız, yedek model (${fallbackModel}) deneniyor:`, error);
-  }
-
-  const rawFallback = await callOllamaModel(
-    fallbackModel,
+  // AŞAMA 1: Gemma 2:2b ile Müşteri İhtiyaç ve Niyet Analizi
+  const analysisTask = callOllamaModel(
+    process.env.OLLAMA_ANALYSIS_MODEL || "gemma2:2b",
     [
-      { role: "system", content: systemInstruction },
+      {
+        role: "system",
+        content: "Müşteri mesajından yalnızca açıkça verilen kişi sayısı, bütçe, tarih, umre türü (bireysel/grup), niyet ve sıradaki eksik bilgiyi çıkar. Tahmin ve satış metni yazma. En fazla 5 kısa satır not üret.",
+      },
+      { role: "user", content: `MÜŞTERİ MESAJI: ${customerMessage}\n\nMEVCUT MÜŞTERİ KARTI:\n${salesContextForModel(salesContext)}` },
+    ],
+    12_000,
+  ).catch((err) => {
+    console.warn("[Ollama Aşama 1 - Gemma Analiz] Hata/Zaman Aşımı:", err);
+    return salesContextForModel(salesContext);
+  });
+
+  // AŞAMA 2: Llama 3.1 ile Veri ve İçerik Eşleştirme Kontrolü
+  const matchingTask = callOllamaModel(
+    process.env.OLLAMA_DATA_MODEL || "llama3.1:latest",
+    [
+      {
+        role: "system",
+        content: "Müşteri talebini verilen doğrulanmış şirket verileriyle eşleştir. Sadece kaynakta açıkça bulunan bilgileri doğrula. Fiyat, otel, mesafe, uçuş veya kontenjan uydurma. Kısa veri teyit notu üret.",
+      },
       { role: "user", content: `${prompt}\n\nMÜŞTERİ MESAJI: ${customerMessage}` },
     ],
-    25_000,
+    15_000,
+  ).catch((err) => {
+    console.warn("[Ollama Aşama 2 - Llama 3.1 Eşleştirme] Hata/Zaman Aşımı:", err);
+    return "Doğrulanmış veriler temel alınmalı; teyitsiz bilgi için temsilciye devredilmeli.";
+  });
+
+  const [analysis, matching] = await Promise.all([analysisTask, matchingTask]);
+
+  // AŞAMA 3: Qwen 2.5:7b ile Türkçe Satış İletişimi ve Yanıt Taslağı Üretimi
+  const drafted = await callOllamaModel(
+    process.env.OLLAMA_WRITER_MODEL || "qwen2.5:7b",
+    [
+      {
+        role: "system",
+        content: `Sen "Hadi Umreye Gidelim" firmasının samimi, güven veren, saygılı ve yetkin Türkçe umre satış temsilcisisin.
+İstanbul Türkçesi ile müşteriye güven ver, mütevazı ol. Müşterinin sorusuna önce samimiyetle cevap ver, ardından satışı ilerletecek 1 net soru sor.
+Gemma İhtiyaç Analizi ve Llama Veri Eşleştirmesi verilerini dikkate al.
+Yalnızca geçerli JSON formatında yanıt üret:
+{"reply":"Türkçe yanıtınız","intent":"greeting|individual_umrah|group_umrah|price|booking|support|complaint|other","leadType":"BIREYSEL|GRUP|KARARSIZ","leadScore":50,"handoff":false,"handoffReason":""}`,
+      },
+      {
+        role: "user",
+        content: `${prompt}\n\n[AŞAMA 1 - GEMMA İHTİYAÇ ANALİZİ]:\n${analysis}\n\n[AŞAMA 2 - LLAMA 3.1 VERİ EŞLEŞTİRMESİ]:\n${matching}\n\nMÜŞTERİ MESAJI: ${customerMessage}`,
+      },
+    ],
+    22_000,
     true,
   );
-  const parsedFallback = JSON.parse(extractFirstJsonObject(rawFallback)) as Partial<AIReply>;
-  if (validModelReply(parsedFallback)) return parsedFallback;
-  throw new Error("Yerel Ollama modellerinden geçerli yanıt üretilemedi.");
+
+  const draftParsed = JSON.parse(extractFirstJsonObject(drafted)) as Partial<AIReply>;
+  if (!validModelReply(draftParsed)) throw new Error("Aşama 3 (Qwen) geçersiz yanıt üretti");
+
+  // AŞAMA 4: Llama 3.2 ile Kalite, Güvenlik ve Son Doğrulama Kontrolü
+  try {
+    const controlled = await callOllamaModel(
+      process.env.OLLAMA_CONTROL_MODEL || "llama3.2:latest",
+      [
+        {
+          role: "system",
+          content: "Sen son kalite ve güvenlik kontrolüsün. Taslaktaki yazım hatalarını düzelt. JSON formatını koru. Kaynakta olmayan fiyat/mesafe/otel iddiasını teyit aşamasına çevir. Devam eden sohbetlerde selam tekrarını temizle. Yalnızca JSON üret.",
+        },
+        { role: "user", content: drafted },
+      ],
+      12_000,
+      true,
+    );
+    const checked = JSON.parse(extractFirstJsonObject(controlled)) as Partial<AIReply>;
+    return validModelReply(checked) ? checked : draftParsed;
+  } catch (err) {
+    console.warn("[Ollama Aşama 4 - Llama 3.2 Kontrol] Hata/Zaman Aşımı, Qwen taslağı kullanılıyor:", err);
+    return draftParsed;
+  }
 }
 
 function validModelReply(value: Partial<AIReply>) {

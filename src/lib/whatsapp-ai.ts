@@ -307,7 +307,7 @@ function salesContextForModel(context: SalesContext) {
   ].filter(Boolean).join("\n") || "Henüz doğrulanmış müşteri bilgisi yok.";
 }
 
-function extractSalesContext(message: string, history: { direction: string; content: string }[] = []): SalesContext {
+function extractSalesContext(message: string, history: { direction: string; content: string }[] = [], existingContext?: SalesContext | null): SalesContext {
   const inboundMessages = [...history.filter((item) => item.direction === "INBOUND").map((item) => item.content), message];
   const text = inboundMessages.join(" ").toLocaleLowerCase("tr-TR");
   const latest = message.toLocaleLowerCase("tr-TR").trim();
@@ -406,28 +406,29 @@ function extractSalesContext(message: string, history: { direction: string; cont
   const monthMatches = [...text.matchAll(/\b(ocak|şubat|subat|mart|nisan|mayıs|mayis|haziran|temmuz|ağustos|agustos|eylül|eylul|ekim|kasım|kasim|aralık|aralik)(?:'?(?:deki|daki))?\b/g)];
   const travelMonths = [...new Set(monthMatches.map((match) => monthAliases[match[1]]))];
 
-  const context: SalesContext = {
-    umrahType,
-    people: peopleCount,
-    adults,
-    children,
-    days: days ? Number(days[1]) : weeks ? Number(weeks[1]) * 7 : undefined,
-    medinaDays: medinaDays ? Number(medinaDays[1] || medinaDays[2]) : undefined,
-    roomOccupancy,
-    month: monthMatches.at(-1)?.[1],
-    travelMonths,
-    departureDate,
-    budget: budget?.[1] ? `${budget[1]} TL` : undefined,
-    budgetScopeKnown: /kişi başı|kisi basi|toplam bütçe|toplam butce|toplamda/.test(text),
-    preferences: [],
+  const extractedDays = days ? Number(days[1]) : weeks ? Number(weeks[1]) * 7 : undefined;
+  const preferences: string[] = [];
+  if (/yürüme mesafe|yurume mesafe|kabe'ye yakın|kabeye yakın/.test(text)) preferences.push("Kâbe'ye yürüme mesafesinde otel");
+  if (/cidde.*iniş|cidde.*inis/.test(text)) preferences.push("Cidde varış");
+  if (/medine.*dönüş|medine.*donus/.test(text)) preferences.push("Medine dönüş");
+  if (/\bvize\b/.test(text)) preferences.push("vize");
+  if (/\btransfer\b/.test(text)) preferences.push("transfer");
+
+  // MERGE CUMULATIVE STATE WITH EXISTING PERSISTENT DB MEMORY
+  return {
+    umrahType: umrahType || existingContext?.umrahType,
+    people: peopleCount || existingContext?.people,
+    adults: adults !== undefined ? adults : existingContext?.adults,
+    children: children !== undefined ? children : existingContext?.children,
+    days: extractedDays || existingContext?.days,
+    medinaDays: medinaDays ? Number(medinaDays[1] || medinaDays[2]) : existingContext?.medinaDays,
+    roomOccupancy: roomOccupancy || existingContext?.roomOccupancy,
+    month: monthMatches.at(-1)?.[1] || existingContext?.month,
+    travelMonths: [...new Set([...travelMonths, ...(existingContext?.travelMonths || [])])],
+    departureDate: departureDate || existingContext?.departureDate,
+    budget: budget?.[1] ? `${budget[1]} TL` : existingContext?.budget,
+    budgetScopeKnown: /kişi başı|kisi basi|toplam bütçe|toplam butce|toplamda/.test(text) || Boolean(existingContext?.budgetScopeKnown),
   };
-  if (!context.days && /^\d{1,2}$/.test(latest) && history.some((item) => /kaç gün|kac gun/i.test(item.content))) context.days = Number(latest);
-  if (/yürüme mesafe|yurume mesafe|kabe'ye yakın|kabeye yakın/.test(text)) context.preferences.push("Kâbe'ye yürüme mesafesinde otel");
-  if (/cidde.*iniş|cidde.*inis/.test(text)) context.preferences.push("Cidde varış");
-  if (/medine.*dönüş|medine.*donus/.test(text)) context.preferences.push("Medine dönüş");
-  if (/\bvize\b/.test(text)) context.preferences.push("vize");
-  if (/\btransfer\b/.test(text)) context.preferences.push("transfer");
-  return context;
 }
 
 export function createConversationMemory(

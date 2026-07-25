@@ -254,7 +254,7 @@ export default function WhatsAppAIPage() {
     </div>
 
     <div className="flex flex-wrap gap-2 rounded-2xl border border-slate-200 bg-white p-2">
-      {[["overview","Genel Bakış & Canlı Loglar"],["connection","QR Bağlantısı"],["knowledge","Asistan & Bilgi Tabanı"],["training","AI Eğitim Merkezi"],["test","Yanıt Testi"],["ollama","Ollama Sohbeti"]].map(([id,label]) => <button key={id} onClick={() => setTab(id as typeof tab)} className={`rounded-xl px-5 py-3 text-sm font-bold ${tab === id ? "bg-[#003781] text-white" : "text-slate-500 hover:bg-slate-50"}`}>{label}</button>)}
+      {[["overview","Genel Bakış & Canlı Loglar"],["connection","QR Bağlantısı"],["knowledge","Asistan & Bilgi Tabanı"],["training","AI Eğitim Merkezi"],["modelfactory","🏭 Ollama Model Fabrikası"],["test","Yanıt Testi"],["ollama","Ollama Sohbeti"]].map(([id,label]) => <button key={id} onClick={() => setTab(id as typeof tab)} className={`rounded-xl px-5 py-3 text-sm font-bold ${tab === id ? "bg-[#003781] text-white" : "text-slate-500 hover:bg-slate-50"}`}>{label}</button>)}
     </div>
 
     {tab === "overview" && <>
@@ -402,6 +402,72 @@ export default function WhatsAppAIPage() {
     {tab === "test" && <section className="grid gap-5 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm lg:grid-cols-2">
       <div><div className="flex items-center justify-between"><h2 className="font-bold text-slate-900">Müşteri Mesajını Deneyin</h2><button onClick={() => { setTestHistory([]); setTestWarning(""); setTestProvider(""); }} className="text-xs font-bold text-red-600">Sohbeti Sıfırla</button></div><p className="mb-4 text-sm text-slate-500">Gerçek WhatsApp mesajı göndermeden bağlı AI modellerinin yanıtını ve konuşma sürekliliğini deneyin.</p><textarea rows={10} className={input} value={testMessage} onChange={(e) => setTestMessage(e.target.value)}/><button disabled={busy || !testMessage.trim()} onClick={test} className="mt-4 rounded-xl bg-[#25D366] px-7 py-3 text-sm font-bold text-white disabled:opacity-50">{busy ? "Yanıt hazırlanıyor..." : "Yanıtı Test Et"}</button></div>
       <div className="rounded-2xl bg-[#efeae2] p-5"><div className="mb-3 flex items-center justify-between gap-3"><p className="text-xs font-bold uppercase tracking-widest text-slate-500">Deneme Sohbeti</p>{testProvider ? <span className="rounded-full bg-white px-3 py-1 text-[10px] font-bold text-[#003781] shadow-sm">{testProvider}</span> : null}</div>{testWarning ? <div className="mb-3 rounded-xl bg-amber-50 p-3 text-xs font-semibold text-amber-800">{testWarning}</div> : null}<div className="max-h-96 space-y-2 overflow-y-auto">{testHistory.length ? testHistory.map((message, index) => <div key={`${index}-${message.direction}`} className={`flex ${message.direction === "INBOUND" ? "justify-end" : "justify-start"}`}><div className={`max-w-[90%] whitespace-pre-wrap rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-sm ${message.direction === "INBOUND" ? "rounded-tr-sm bg-[#d9fdd3]" : "rounded-tl-sm bg-white"}`}>{message.content}</div></div>) : <div className="min-h-40 rounded-2xl bg-white p-4 text-sm text-slate-400 shadow-sm">Test yanıtı burada görünecek.</div>}</div></div>
+    </section>}
+
+    {tab === "modelfactory" && <section className="space-y-6">
+      <div className="rounded-2xl border border-blue-200 bg-white p-6 shadow-sm">
+        <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between border-b border-slate-100 pb-4">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-widest text-blue-600">Yerel Ollama Model Stüdyosu</p>
+            <h2 className="mt-1 text-2xl font-bold text-slate-900">🏭 Ollama Model Fabrikası & Çoklu Marka Kurulumu</h2>
+            <p className="mt-1 text-sm text-slate-500">Windows bilgisayarınızdaki ekran kartı (GPU) üzerinde 7/24 çalışacak özel şirket modellerinizi oluşturun ve eğitin.</p>
+          </div>
+          <a href="/api/admin/whatsapp-ai/export-dataset" download className="flex items-center gap-2 rounded-xl bg-emerald-600 px-5 py-3 text-sm font-bold text-white hover:bg-emerald-700 shadow-sm">
+            <span className="material-symbols-outlined text-lg">download</span>
+            Ollama Eğitim Veri Setini İndir (.json)
+          </a>
+        </div>
+
+        <div className="mt-6 grid gap-6 md:grid-cols-3">
+          <div className="rounded-xl border border-blue-200 bg-blue-50/50 p-5">
+            <span className="text-2xl">🌙</span>
+            <h3 className="mt-2 font-bold text-slate-900">Hadi Umreye Gidelim</h3>
+            <p className="mt-1 text-xs text-slate-500">Umre & Hac Satış ve Müşteri İlişkileri Özel Modeli</p>
+            <span className="mt-3 block font-mono text-[11px] text-blue-700 font-bold">Model: umre-sales-ai</span>
+          </div>
+
+          <div className="rounded-xl border border-amber-200 bg-amber-50/50 p-5">
+            <span className="text-2xl">💎</span>
+            <h3 className="mt-2 font-bold text-slate-900">Elmas & Pırlanta Markamız</h3>
+            <p className="mt-1 text-xs text-slate-500">Lüks Mücevherat, Karat & Satış Danışmanı Özel Modeli</p>
+            <span className="mt-3 block font-mono text-[11px] text-amber-800 font-bold">Model: pirlanta-jewel-ai</span>
+          </div>
+
+          <div className="rounded-xl border border-purple-200 bg-purple-50/50 p-5">
+            <span className="text-2xl">🏖️</span>
+            <h3 className="mt-2 font-bold text-slate-900">VIP Turizm & Seyahat</h3>
+            <p className="mt-1 text-xs text-slate-500">Lüks Otel, VIP Transfer & Tur Operasyon Modeli</p>
+            <span className="mt-3 block font-mono text-[11px] text-purple-800 font-bold">Model: turizm-vip-ai</span>
+          </div>
+        </div>
+
+        <div className="mt-6 rounded-xl bg-slate-900 p-5 text-white">
+          <h4 className="font-bold text-emerald-400 flex items-center gap-2 text-sm">
+            <span className="material-symbols-outlined text-base">terminal</span> Windows Bilgisayarınızda 1-Tıkla Özel Ollama Modeli Oluşturma Rehberi
+          </h4>
+          <p className="mt-2 text-xs text-slate-300">Windows bilgisayarınızdaki PowerShell veya CMD ekranını açıp aşağıdaki komutları sırasıyla kopyalayıp yapıştırın:</p>
+
+          <pre className="mt-3 overflow-x-auto rounded-lg bg-black/60 p-4 font-mono text-xs text-emerald-300 leading-relaxed">
+{`# 1. Modelfile Klasörü Oluşturun
+mkdir C:\\OllamaModels\\umre-sales
+cd C:\\OllamaModels\\umre-sales
+
+# 2. Özel Modelfile Oluşturun (Komutu Yapıştırın)
+Set-Content -Path Modelfile -Value @"
+FROM qwen2.5:7b
+SYSTEM """Sen Hadi Umreye Gidelim firmasının yüksek EQ sahibi samimi Türkçe umre satış uzmanısın. İstanbul Türkçesi kullanırsın. Tek seferde 1 net soru sorarsın."""
+PARAMETER temperature 0.2
+PARAMETER top_p 0.9
+"@
+
+# 3. Özel Modeli Windows Üzerinde İnşa Edin
+ollama create umre-sales-ai -f Modelfile
+
+# 4. Modelinizi Test Edin
+ollama run umre-sales-ai "Selamünaleyküm, 3 kişilik grup umresi ne kadar?"`}
+          </pre>
+        </div>
+      </div>
     </section>}
 
     {tab === "ollama" && <section className="relative overflow-hidden rounded-[28px] bg-[#07101f] p-4 text-white shadow-2xl md:p-7">

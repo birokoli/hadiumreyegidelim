@@ -209,7 +209,7 @@ export function selectRelevantTrainingExamples(
   examples: WhatsAppTrainingExample[],
   message: string,
   history: { direction: string; content: string }[] = [],
-  limit = 4,
+  limit = 5,
 ) {
   const latestCustomerContext = [
     ...history.filter((item) => item.direction === "INBOUND").slice(-2).map((item) => item.content),
@@ -228,10 +228,10 @@ export function selectRelevantTrainingExamples(
       const tagOverlap = trainingIntentTags(`${example.category} ${example.customerMessage}`)
         .filter((tag) => queryTags.has(tag)).length;
       const exact = normalizeTrainingText(example.customerMessage) === normalizeTrainingText(message);
-      const score = exact ? 10 : (overlap / union) * 5 + contextOverlap * 0.25 + tagOverlap * 0.8;
+      const score = exact ? 10 : (overlap / union) * 5 + contextOverlap * 0.3 + tagOverlap * 1.0;
       return { example, score, exact };
     })
-    .filter((item) => item.exact || item.score >= 1.15)
+    .filter((item) => item.exact || item.score >= 0.4)
     .sort((a, b) => b.score - a.score || b.example.createdAt.localeCompare(a.example.createdAt))
     .slice(0, limit);
 }

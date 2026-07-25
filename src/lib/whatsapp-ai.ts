@@ -323,6 +323,14 @@ function extractSalesContext(message: string, history: { direction: string; cont
       peopleCount = 1;
       break;
     }
+    // Ben, eşim ve kardeşim (3 kişi) / Ben ve eşim (2 kişi)
+    if (/\bben(?:\s*,|\s+ve)?\s+eşim(?:\s*,|\s+ve)?\s+kardeşim\b|\bben(?:\s*,|\s+ve)?\s+kardeşim(?:\s*,|\s+ve)?\s+eşim\b/i.test(normalized)) {
+      peopleCount = 3;
+      break;
+    } else if (/\bben(?:\s*,|\s+ve)?\s+eşim\b|\beşim(?:\s*,|\s+ve)?\s+ben\b/i.test(normalized)) {
+      peopleCount = 2;
+      break;
+    }
   }
   const medinaDays = text.match(/(\d+)\s*(?:gün|gun|gece)\s*medine|medine(?:'de|de)?\s*(\d+)\s*(?:gün|gun|gece)/);
   const composition = [...inboundMessages].reverse().map((item) =>
@@ -334,6 +342,9 @@ function extractSalesContext(message: string, history: { direction: string; cont
   if (adults === undefined && children === undefined && /1\s*çocuk|1\s*cocuk|çocuk var|cocuk var/i.test(text)) {
     children = 1;
     if (peopleCount && peopleCount > 1) adults = peopleCount - 1;
+  }
+  if (adults === undefined && peopleCount) {
+    adults = children ? Math.max(1, peopleCount - children) : peopleCount;
   }
   if (adults !== undefined && children !== undefined) peopleCount = adults + children;
   
@@ -996,6 +1007,27 @@ export async function generateWhatsAppReply(params: {
   const history = (params.history || []).slice(-30);
   const conversationStarted = history.some((message) => message.direction === "OUTBOUND");
   const salesContext = extractSalesContext(params.message, history);
+
+  // AFİRMATİV Temsilci Devir Kabul Kontrolü ("İsterim", "Olur", "Evet", "Temsilci baksın")
+  const lastOutboundMsg = [...history].reverse().find((m) => m.direction === "OUTBOUND")?.content.toLocaleLowerCase("tr-TR") || "";
+  const isAffirmativeHandoffResponse = /\b(?:isterim|olur|evet|lütfen|lutfen|aktarın|aktarin|temsilci|kontrol etsin)\b/i.test(params.message)
+    && /\b(?:temsilci|müsaitlik|kontrol etmesini|ister misiniz|devredilmesini)\b/i.test(lastOutboundMsg);
+
+  if (isAffirmativeHandoffResponse) {
+    const title = params.customerName?.match(/\b(bey|hanım)\b/i)?.[1];
+    const customerAddress = title
+      ? `${params.customerName?.trim().split(/\s+/)[0]} ${title[0].toLocaleUpperCase("tr-TR")}${title.slice(1).toLocaleLowerCase("tr-TR")}`
+      : "efendim";
+    return preventRepeatedAutomaticReply({
+      reply: `Harika ${customerAddress}! Müşteri temsilcimize hemen bilgi aktardım. Müsaitlik ve detaylı teklif için en kısa sürede WhatsApp üzerinden sizinle iletişime geçeceklerdir. Hayırlı günler dileriz!`,
+      intent: "booking",
+      leadType: salesContext.umrahType === "grup" ? "GRUP" : "KARARSIZ",
+      leadScore: 85,
+      handoff: true,
+      handoffReason: "Müşteri temsilci teyidini kabul etti (İsterim yanıtı verildi)",
+      provider: "Temsilci devir kuralı",
+    }, history);
+  }
   const relevantTraining = selectRelevantTrainingExamples(config.trainingExamples, params.message, history);
   const trainingGuidance = relevantTraining.length
     ? relevantTraining.map(({ example }) => `- Benzer müşteri: ${example.customerMessage}\n  Yönetici onaylı yaklaşım: ${example.idealReply}`).join("\n")

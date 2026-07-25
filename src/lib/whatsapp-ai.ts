@@ -307,7 +307,7 @@ function salesContextForModel(context: SalesContext) {
   ].filter(Boolean).join("\n") || "Henüz doğrulanmış müşteri bilgisi yok.";
 }
 
-function extractSalesContext(message: string, history: { direction: string; content: string }[] = [], existingContext?: SalesContext | null): SalesContext {
+function extractSalesContext(message: string, history: { direction: string; content: string }[] = []): SalesContext {
   const inboundMessages = [...history.filter((item) => item.direction === "INBOUND").map((item) => item.content), message];
   const text = inboundMessages.join(" ").toLocaleLowerCase("tr-TR");
   const latest = message.toLocaleLowerCase("tr-TR").trim();
@@ -406,29 +406,28 @@ function extractSalesContext(message: string, history: { direction: string; cont
   const monthMatches = [...text.matchAll(/\b(ocak|şubat|subat|mart|nisan|mayıs|mayis|haziran|temmuz|ağustos|agustos|eylül|eylul|ekim|kasım|kasim|aralık|aralik)(?:'?(?:deki|daki))?\b/g)];
   const travelMonths = [...new Set(monthMatches.map((match) => monthAliases[match[1]]))];
 
-  const extractedDays = days ? Number(days[1]) : weeks ? Number(weeks[1]) * 7 : undefined;
-  const preferences: string[] = [];
-  if (/yürüme mesafe|yurume mesafe|kabe'ye yakın|kabeye yakın/.test(text)) preferences.push("Kâbe'ye yürüme mesafesinde otel");
-  if (/cidde.*iniş|cidde.*inis/.test(text)) preferences.push("Cidde varış");
-  if (/medine.*dönüş|medine.*donus/.test(text)) preferences.push("Medine dönüş");
-  if (/\bvize\b/.test(text)) preferences.push("vize");
-  if (/\btransfer\b/.test(text)) preferences.push("transfer");
-
-  // MERGE CUMULATIVE STATE WITH EXISTING PERSISTENT DB MEMORY
-  return {
-    umrahType: umrahType || existingContext?.umrahType,
-    people: peopleCount || existingContext?.people,
-    adults: adults !== undefined ? adults : existingContext?.adults,
-    children: children !== undefined ? children : existingContext?.children,
-    days: extractedDays || existingContext?.days,
-    medinaDays: medinaDays ? Number(medinaDays[1] || medinaDays[2]) : existingContext?.medinaDays,
-    roomOccupancy: roomOccupancy || existingContext?.roomOccupancy,
-    month: monthMatches.at(-1)?.[1] || existingContext?.month,
-    travelMonths: [...new Set([...travelMonths, ...(existingContext?.travelMonths || [])])],
-    departureDate: departureDate || existingContext?.departureDate,
-    budget: budget?.[1] ? `${budget[1]} TL` : existingContext?.budget,
-    budgetScopeKnown: /kişi başı|kisi basi|toplam bütçe|toplam butce|toplamda/.test(text) || Boolean(existingContext?.budgetScopeKnown),
+  const context: SalesContext = {
+    umrahType,
+    people: peopleCount,
+    adults,
+    children,
+    days: days ? Number(days[1]) : weeks ? Number(weeks[1]) * 7 : undefined,
+    medinaDays: medinaDays ? Number(medinaDays[1] || medinaDays[2]) : undefined,
+    roomOccupancy,
+    month: monthMatches.at(-1)?.[1],
+    travelMonths,
+    departureDate,
+    budget: budget?.[1] ? `${budget[1]} TL` : undefined,
+    budgetScopeKnown: /kişi başı|kisi basi|toplam bütçe|toplam butce|toplamda/.test(text),
+    preferences: [],
   };
+  if (!context.days && /^\d{1,2}$/.test(latest) && history.some((item) => /kaç gün|kac gun/i.test(item.content))) context.days = Number(latest);
+  if (/yürüme mesafe|yurume mesafe|kabe'ye yakın|kabeye yakın/.test(text)) context.preferences.push("Kâbe'ye yürüme mesafesinde otel");
+  if (/cidde.*iniş|cidde.*inis/.test(text)) context.preferences.push("Cidde varış");
+  if (/medine.*dönüş|medine.*donus/.test(text)) context.preferences.push("Medine dönüş");
+  if (/\bvize\b/.test(text)) context.preferences.push("vize");
+  if (/\btransfer\b/.test(text)) context.preferences.push("transfer");
+  return context;
 }
 
 export function createConversationMemory(
@@ -711,41 +710,41 @@ async function callOllamaModel(
 async function callOllamaWorkflow(prompt: string, customerMessage: string, salesContext: SalesContext, history: { direction: string; content: string }[] = []) {
   const currentSalesPhase = calculateSalesPhase(salesContext);
 
-  // AŞAMA 1: Gemma 2:2b ile Müşteri İhtiyaç ve Niyet Analizi
+  // BEYİN PARÇASI 1: Gemma 2:2b (Analiz ve İhtiyaç Algılama Lobu)
   const analysisTask = callOllamaModel(
     process.env.OLLAMA_ANALYSIS_MODEL || "gemma2:2b",
     [
       {
         role: "system",
-        content: `Müşteri mesajından yalnızca açıkça verilen kişi sayısı, bütçe, tarih, umre türü (bireysel/grup), niyet ve sıradaki eksik bilgiyi çıkar. Tahmin ve satış metni yazma. En fazla 5 kısa satır not üret.\n\nMÜŞTERİ SATIŞ ADIMI: ${currentSalesPhase}`,
+        content: `Sen tek bir satış beyninin ANALİZ VE İHTİYAÇ ALGILAMA LOBU'sun (Beyin Parçası 1). Müşteri mesajından sadece açıkça verilen kişi sayısı, çocuk yaşları, bütçe, tarih, umre türü ve eksik bilgileri çıkar. Tahmin ve satış metni yazma. 5 kısa satır teknik not üret.\n\nMÜŞTERİ SATIŞ ADIMI: ${currentSalesPhase}`,
       },
-      { role: "user", content: `MÜŞTERİ MESAJI: ${customerMessage}\n\nMEVCUT MÜŞTERİ KARTI:\n${salesContextForModel(salesContext)}` },
+      { role: "user", content: `MÜŞTERİ MESAJI: ${customerMessage}\n\nDİNAMİK MÜŞTERİ HAFIZA KARTI:\n${salesContextForModel(salesContext)}` },
     ],
     12_000,
   ).catch((err) => {
-    console.warn("[Ollama Aşama 1 - Gemma Analiz] Hata/Zaman Aşımı:", err);
+    console.warn("[Ollama Beyin Parçası 1 - Gemma Analiz] Hata/Zaman Aşımı:", err);
     return salesContextForModel(salesContext);
   });
 
-  // AŞAMA 2: Llama 3.1 ile Veri ve İçerik Eşleştirme Kontrolü
+  // BEYİN PARÇASI 2: Llama 3.1:latest (Veri, Fiyat ve Matematik Teyit Lobu)
   const matchingTask = callOllamaModel(
     process.env.OLLAMA_DATA_MODEL || "llama3.1:latest",
     [
       {
         role: "system",
-        content: `Müşteri talebini verilen doğrulanmış şirket verileriyle eşleştir. Sadece kaynakta açıkça bulunan bilgileri doğrula. Fiyat, otel, mesafe, uçuş veya kontenjan uydurma. Kısa veri teyit notu üret.\n\nMÜŞTERİ SATIŞ ADIMI: ${currentSalesPhase}`,
+        content: `Sen tek bir satış beyninin VERİ, FİYAT VE MATEMATİK TEYİT LOBU'sun (Beyin Parçası 2). Müşteri talebini veritabanındaki kesin fiyatlar ve dip toplam hesabı ile doğrula. Otel mesafesi veya fiyat uydurma. Kısa teknik veri teyit notu üret.\n\nMÜŞTERİ SATIŞ ADIMI: ${currentSalesPhase}`,
       },
       { role: "user", content: `${prompt}\n\nMÜŞTERİ MESAJI: ${customerMessage}` },
     ],
     15_000,
   ).catch((err) => {
-    console.warn("[Ollama Aşama 2 - Llama 3.1 Eşleştirme] Hata/Zaman Aşımı:", err);
+    console.warn("[Ollama Beyin Parçası 2 - Llama 3.1 Teyit] Hata/Zaman Aşımı:", err);
     return "Doğrulanmış veriler temel alınmalı; teyitsiz bilgi için temsilciye devredilmeli.";
   });
 
   const [analysis, matching] = await Promise.all([analysisTask, matchingTask]);
 
-  // AŞAMA 3: Qwen 2.5:7b ile Türkçe Satış İletişimi ve Yanıt Taslağı Üretimi
+  // BEYİN PARÇASI 3: Qwen 2.5:7b (Samimi Türkçe Satış ve İletişim Lobu)
   let drafted = "";
   try {
     drafted = await callOllamaModel(
@@ -753,9 +752,10 @@ async function callOllamaWorkflow(prompt: string, customerMessage: string, sales
       [
         {
           role: "system",
-          content: `Sen "Hadi Umreye Gidelim" firmasının samimi, güven veren, saygılı ve yetkin Türkçe umre satış temsilcisisin.
-İstanbul Türkçesi ile müşteriye güven ver, mütevazı ol. Müşterinin sorusuna önce samimiyetle cevap ver, ardından satışı ilerletecek 1 net soru sor.
-Gemma İhtiyaç Analizi ve Llama Veri Eşleştirmesi verilerini dikkate al.
+          content: `Sen tek bir satış beyninin SAMİMİ TÜRKÇE SATIŞ VE İLETİŞİM LOBU'sun (Beyin Parçası 3).
+"Hadi Umreye Gidelim" firmasının güven veren, mütevazı ve yetkin Türkçe umre satış temsilcisisin.
+Beyin Parçası 1'in çıkardığı İhtiyaç Analizi ve Beyin Parçası 2'nin hesapladığı Matematik/Veri Teyidi notlarını kullan.
+Müşterinin sorusuna önce samimiyetle cevap ver, ardından satışı ilerletecek 1 net soru sor veya fiyat sun.
 
 DİKKAT: ŞU ANDA SOHBETİN ŞU AŞAMASINDASIN:
 ${currentSalesPhase}
@@ -766,14 +766,14 @@ Yalnızca geçerli JSON formatında yanıt üret:
         },
         {
           role: "user",
-          content: `${prompt}\n\n[AŞAMA 1 - GEMMA İHTİYAÇ ANALİZİ]:\n${analysis}\n\n[AŞAMA 2 - LLAMA 3.1 VERİ EŞLEŞTİRMESİ]:\n${matching}\n\nMÜŞTERİ MESAJI: ${customerMessage}`,
+          content: `${prompt}\n\n[BEYİN PARÇASI 1 - ANALİZ LOBU]:\n${analysis}\n\n[BEYİN PARÇASI 2 - MATEMATİK & VERİ LOBU]:\n${matching}\n\nMÜŞTERİ MESAJI: ${customerMessage}`,
         },
       ],
       22_000,
       true,
     );
   } catch (err) {
-    console.warn("[Ollama Aşama 3 - Qwen Yazım] Hata/Zaman Aşımı, Llama 3.1 ile yedek taslak oluşturuluyor:", err);
+    console.warn("[Ollama Beyin Parçası 3 - Qwen Yazım] Hata/Zaman Aşımı, Llama 3.1 ile yedek taslak oluşturuluyor:", err);
     drafted = await callOllamaModel(
       process.env.OLLAMA_DATA_MODEL || "llama3.1:latest",
       [
@@ -792,14 +792,14 @@ Yalnızca geçerli JSON formatında yanıt üret:
   const draftParsed = JSON.parse(extractFirstJsonObject(drafted)) as Partial<AIReply>;
 
   let finalReply: Partial<AIReply> = {};
-  // AŞAMA 4: Llama 3.2 ile Kalite, Güvenlik ve Son Doğrulama Kontrolü
+  // BEYİN PARÇASI 4: Llama 3.2:3b (Kalite, Güvenlik ve Son Denetim Lobu)
   try {
     const controlled = await callOllamaModel(
       process.env.OLLAMA_CONTROL_MODEL || "llama3.2:latest",
       [
         {
           role: "system",
-          content: "Sen son kalite ve güvenlik kontrolüsün. Taslaktaki yazım hatalarını düzelt. JSON formatını koru. Kaynakta olmayan fiyat/mesafe/otel iddiasını teyit aşamasına çevir. Devam eden sohbetlerde selam tekrarını temizle. Yalnızca JSON üret.",
+          content: "Sen tek bir satış beyninin KALİTE VE GÜVENLİK DENETİM LOBU'sun (Beyin Parçası 4). Taslaktaki yazım hatalarını düzelt. JSON formatını koru. Kaynakta olmayan fiyat/mesafe/otel iddiasını teyit aşamasına çevir. Devam eden sohbetlerde selam tekrarını temizle. Yalnızca JSON üret.",
         },
         { role: "user", content: drafted },
       ],
@@ -809,7 +809,7 @@ Yalnızca geçerli JSON formatında yanıt üret:
     const checked = JSON.parse(extractFirstJsonObject(controlled)) as Partial<AIReply>;
     finalReply = validModelReply(checked) ? checked : (validModelReply(draftParsed) ? draftParsed : { reply: "Selamünaleyküm efendim, mesajınızı aldım. Size daha doğru yardımcı olabilmem için kaç kişilik bir umre planladığınızı öğrenebilir miyim?", intent: "greeting", leadType: "KARARSIZ", leadScore: 30, handoff: false, handoffReason: "" });
   } catch (err) {
-    console.warn("[Ollama Aşama 4 - Llama 3.2 Kontrol] Hata/Zaman Aşımı, 3. Aşama taslağı kullanılıyor:", err);
+    console.warn("[Ollama Beyin Parçası 4 - Llama 3.2 Denetim] Hata/Zaman Aşımı, 3. Aşama taslağı kullanılıyor:", err);
     finalReply = validModelReply(draftParsed) ? draftParsed : { reply: "Selamünaleyküm efendim, mesajınızı aldım. Size daha doğru yardımcı olabilmem için kaç kişilik bir umre planladığınızı öğrenebilir miyim?", intent: "greeting", leadType: "KARARSIZ", leadScore: 30, handoff: false, handoffReason: "" };
   }
 

@@ -995,34 +995,6 @@ export async function generateWhatsAppReply(params: {
   const customerAddress = explicitTitle
     ? `${params.customerName?.trim().split(/\s+/)[0]} ${explicitTitle[0].toLocaleUpperCase("tr-TR")}${explicitTitle.slice(1).toLocaleLowerCase("tr-TR")}`
     : "efendim";
-  const exactTraining = relevantTraining.find((item) => item.exact);
-  if (exactTraining && !isTrivialOrTestMessage(params.message)) {
-    const trainedReply = enforceAddressing(
-      exactTraining.example.idealReply,
-      conversationStarted,
-      params.customerName,
-      params.message,
-    );
-    const trainedCheck = validateGroundedReply({
-      reply: trainedReply,
-      message: params.message,
-      history,
-      knowledge: liveKnowledge,
-    });
-    if (trainedCheck.safe) {
-      return preventRepeatedAutomaticReply({
-        reply: trainedReply,
-        intent: "other",
-        leadType: salesContext.umrahType === "grup" ? "GRUP" : salesContext.umrahType === "bireysel" ? "BIREYSEL" : "KARARSIZ",
-        leadScore: 55,
-        handoff: false,
-        handoffReason: "",
-        provider: "Yönetici onaylı birebir eğitim örneği",
-        fallback: false,
-      }, history);
-    }
-  }
-
   const prompt = `Sen ${config.assistantName} isimli Türkçe WhatsApp satış ve müşteri destek asistanısın.
 
 KİMLİK VE ÜSLUP:

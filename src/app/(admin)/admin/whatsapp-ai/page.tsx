@@ -283,29 +283,49 @@ export default function WhatsAppAIPage() {
                 </button>
               </div>
 
-              {/* AI TEŞHİS VE VERİ AKIŞ KARTI (KÖR UÇUŞU BİTİRME EKRANI) */}
-              <div className="rounded-xl border border-blue-200 bg-white p-3 text-xs shadow-sm">
-                <div className="flex items-center justify-between font-bold text-blue-900 border-b border-slate-100 pb-2">
-                  <span className="flex items-center gap-1.5"><span className="material-symbols-outlined text-sm text-blue-600">troubleshoot</span> AI Teşhis & Canlı Veri Akış Kartı</span>
-                  <span className="rounded bg-blue-50 px-2 py-0.5 text-[10px] text-blue-700 font-mono">Ollama 4'lü Zincir Aktif</span>
-                </div>
-                <div className="mt-2.5 grid gap-2 sm:grid-cols-2 lg:grid-cols-3 text-slate-700">
-                  <div className="rounded-lg bg-slate-50 p-2 border border-slate-100">
-                    <b className="block text-[10px] uppercase text-slate-400">Algılanan Müşteri Kartı</b>
-                    <p className="mt-1 font-semibold">{c.messages.filter(m => m.direction === 'INBOUND').slice(-1)[0]?.content || "Eksiz bilgi"}</p>
-                    <span className="mt-1 block text-[11px] text-emerald-700 font-bold">Skor: %{c.leadScore} · {c.leadType || "KARARSIZ"}</span>
+              {/* AI TEŞHİS VE EKSİK TESPİT KARTI */}
+              {(() => {
+                const lastInbound = c.messages.filter(m => m.direction === 'INBOUND').slice(-1)[0];
+                const matchedExample = lastInbound ? config.trainingExamples.find(ex => ex.customerMessage.toLowerCase().includes(lastInbound.content.toLowerCase().slice(0, 15))) : null;
+                return (
+                  <div className="rounded-xl border border-blue-200 bg-white p-3.5 text-xs shadow-sm space-y-2">
+                    <div className="flex items-center justify-between font-bold text-blue-900 border-b border-slate-100 pb-2">
+                      <span className="flex items-center gap-1.5"><span className="material-symbols-outlined text-sm text-blue-600">analytics</span> Gelen Soru & Eğitim Entegrasyon Analizi</span>
+                      <span className="rounded bg-blue-50 px-2 py-0.5 text-[10px] text-blue-700 font-mono">Ollama 4'lü Zincir Aktif</span>
+                    </div>
+                    
+                    <div className="grid gap-2 sm:grid-cols-2 text-slate-700">
+                      <div className="rounded-lg bg-slate-50 p-2.5 border border-slate-100">
+                        <b className="block text-[10px] uppercase text-slate-400">Müşterinin Son Gelen Sorusu</b>
+                        <p className="mt-1 font-semibold text-slate-800">{lastInbound?.content || "Henüz gelen soru yok"}</p>
+                      </div>
+                      <div className="rounded-lg bg-slate-50 p-2.5 border border-slate-100">
+                        <b className="block text-[10px] uppercase text-slate-400">Veritabanı Eğitim Durumu</b>
+                        {matchedExample ? (
+                          <div className="mt-1 text-emerald-700 font-bold flex items-center gap-1">
+                            <span className="material-symbols-outlined text-sm">check_circle</span>
+                            <span>Eşleşen Eğitim Var: "{matchedExample.category}"</span>
+                          </div>
+                        ) : (
+                          <div className="mt-1 text-amber-700 font-bold flex items-center gap-1">
+                            <span className="material-symbols-outlined text-sm">warning</span>
+                            <span>Özel Örnek Yok (Genel Kurallarla Yanıtlandı)</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="rounded-lg bg-blue-50/60 p-2 text-[11px] text-blue-900 flex items-center justify-between">
+                      <span>💡 <b>Eksik Giderme Önerisi:</b> {matchedExample ? "Bu soru türü veritabanınızda eğitilmiş durumda." : "Bu soruyu ve ideal yanıtını tek tıkla Eğitim Havuzuna ekleyebilirsiniz."}</span>
+                      {lastInbound && (
+                        <button disabled={busy} onClick={() => teachAnswer(lastInbound.content, c.messages.filter(m => m.direction === 'OUTBOUND').slice(-1)[0]?.content || "")} className="shrink-0 rounded bg-[#003781] px-2.5 py-1 font-bold text-white hover:bg-blue-900">
+                          ➕ Bu Soruyu Eğitime Ekle
+                        </button>
+                      )}
+                    </div>
                   </div>
-                  <div className="rounded-lg bg-slate-50 p-2 border border-slate-100">
-                    <b className="block text-[10px] uppercase text-slate-400">Canlı Eğitilen Örnek Sayısı</b>
-                    <p className="mt-1 font-bold text-slate-800">{config.trainingExamples.length} Onaylı Örnek Veritabanında</p>
-                    <span className="mt-1 block text-[11px] text-blue-600 font-semibold">En Yakın 5 Örnek Ollama'ya Besleniyor</span>
-                  </div>
-                  <div className="rounded-lg bg-slate-50 p-2 border border-slate-100 sm:col-span-2 lg:col-span-1">
-                    <b className="block text-[10px] uppercase text-slate-400">Arka Plan LLM Akışı</b>
-                    <p className="mt-1 text-[11px] font-medium text-slate-600">Gemma2 (Analiz) ➔ Llama3.1 (Veri) ➔ Qwen2.5 (Yazım) ➔ Llama3.2 (Kontrol)</p>
-                  </div>
-                </div>
-              </div>
+                );
+              })()}
 
               {c.messages.map((message, index) => <div key={message.id} className={`flex ${message.direction === "INBOUND" ? "justify-start" : "justify-end"}`}><div className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm shadow-sm ${message.direction === "INBOUND" ? "rounded-tl-sm bg-white text-slate-700" : "rounded-tr-sm bg-[#d9fdd3] text-slate-800"}`}><p className="mb-1 text-[10px] font-bold uppercase text-slate-400">{message.direction === "INBOUND" ? "👤 Müşteri" : message.source === "ai" ? "🤖 AI Yanıtı (4'lü Zincir)" : "👨‍💼 Yönetici (İnsan)"}</p><p className="whitespace-pre-wrap">{message.content}</p>{message.source === "ai" ? <button disabled={busy} onClick={() => teachAnswer([...c.messages].slice(0, index).reverse().find((item) => item.direction === "INBOUND")?.content || "", message.content)} className="mt-2 rounded-lg border border-amber-300 bg-amber-50 px-3 py-1.5 text-[11px] font-bold text-amber-700 hover:bg-amber-100">Düzelt ve öğret</button> : null}</div></div>)}
               <div className="mt-3 flex gap-2 rounded-xl bg-white p-2 shadow-sm">

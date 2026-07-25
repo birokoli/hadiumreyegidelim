@@ -720,8 +720,10 @@ async function callOllamaModel(
 
 async function callOllamaWorkflow(prompt: string, customerMessage: string, salesContext: SalesContext, history: { direction: string; content: string }[] = []) {
   const currentSalesPhase = calculateSalesPhase(salesContext);
+  const workflowLogs: Array<{ step: number; name: string; model: string; output: string; durationMs: number }> = [];
 
   // BEYİN PARÇASI 1: Gemma 2:2b (Analiz, Duygu Tespiti ve Bir Sonraki Soru Tahmin Lobu)
+  const t1 = Date.now();
   const analysisTask = callOllamaModel(
     process.env.OLLAMA_ANALYSIS_MODEL || "gemma2:2b",
     [
@@ -737,12 +739,18 @@ Müşteri mesajından şunları çıkar:
       { role: "user", content: `MÜŞTERİ MESAJI: ${customerMessage}\n\nDİNAMİK MÜŞTERİ HAFIZA KARTI:\n${salesContextForModel(salesContext)}` },
     ],
     12_000,
-  ).catch((err) => {
+  ).then(out => {
+    workflowLogs.push({ step: 1, name: "Analiz & Duygu Tespiti", model: process.env.OLLAMA_ANALYSIS_MODEL || "gemma2:2b", output: out, durationMs: Date.now() - t1 });
+    return out;
+  }).catch((err) => {
     console.warn("[Ollama Beyin Parçası 1 - Gemma Analiz] Hata/Zaman Aşımı:", err);
-    return salesContextForModel(salesContext);
+    const fallbackOut = salesContextForModel(salesContext);
+    workflowLogs.push({ step: 1, name: "Analiz & Duygu Tespiti (Yedek)", model: "gemma2:2b", output: fallbackOut, durationMs: Date.now() - t1 });
+    return fallbackOut;
   });
 
   // BEYİN PARÇASI 2: Llama 3.1:latest (Veri, Fiyat ve Matematik Teyit Lobu)
+  const t2 = Date.now();
   const matchingTask = callOllamaModel(
     process.env.OLLAMA_DATA_MODEL || "llama3.1:latest",
     [
@@ -753,15 +761,21 @@ Müşteri mesajından şunları çıkar:
       { role: "user", content: `${prompt}\n\nMÜŞTERİ MESAJI: ${customerMessage}` },
     ],
     15_000,
-  ).catch((err) => {
+  ).then(out => {
+    workflowLogs.push({ step: 2, name: "Veri & Matematik Teyidi", model: process.env.OLLAMA_DATA_MODEL || "llama3.1:latest", output: out, durationMs: Date.now() - t2 });
+    return out;
+  }).catch((err) => {
     console.warn("[Ollama Beyin Parçası 2 - Llama 3.1 Teyit] Hata/Zaman Aşımı:", err);
-    return "Doğrulanmış veriler temel alınmalı; teyitsiz bilgi için temsilciye devredilmeli.";
+    const fallbackOut = "Doğrulanmış veriler temel alınmalı; teyitsiz bilgi için temsilciye devredilmeli.";
+    workflowLogs.push({ step: 2, name: "Veri & Matematik Teyidi (Yedek)", model: "llama3.1:latest", output: fallbackOut, durationMs: Date.now() - t2 });
+    return fallbackOut;
   });
 
   const [analysis, matching] = await Promise.all([analysisTask, matchingTask]);
 
   // BEYİN PARÇASI 3: Qwen 2.5:7b (Duygusal Zekalı Samimi Türkçe Satış Lobu)
   let drafted = "";
+  const t3 = Date.now();
   try {
     drafted = await callOllamaModel(
       process.env.OLLAMA_WRITER_MODEL || "qwen2.5:7b",
@@ -791,6 +805,7 @@ Yalnızca geçerli JSON formatında yanıt üret:
       22_000,
       true,
     );
+    workflowLogs.push({ step: 3, name: "Samimi Türkçe Satış Taslağı", model: process.env.OLLAMA_WRITER_MODEL || "qwen2.5:7b", output: drafted, durationMs: Date.now() - t3 });
   } catch (err) {
     console.warn("[Ollama Beyin Parçası 3 - Qwen Yazım] Hata/Zaman Aşımı, Llama 3.1 ile yedek taslak oluşturuluyor:", err);
     drafted = await callOllamaModel(
@@ -806,12 +821,14 @@ Yalnızca geçerli JSON formatında yanıt üret:
       22_000,
       true,
     );
+    workflowLogs.push({ step: 3, name: "Samimi Türkçe Satış Taslağı (Yedek)", model: "llama3.1:latest", output: drafted, durationMs: Date.now() - t3 });
   }
 
   const draftParsed = JSON.parse(extractFirstJsonObject(drafted)) as Partial<AIReply>;
 
   let finalReply: Partial<AIReply> = {};
   // BEYİN PARÇASI 4: Llama 3.2:3b (Kalite, Güvenlik ve Son Denetim Lobu)
+  const t4 = Date.now();
   try {
     const controlled = await callOllamaModel(
       process.env.OLLAMA_CONTROL_MODEL || "llama3.2:latest",
@@ -825,14 +842,18 @@ Yalnızca geçerli JSON formatında yanıt üret:
       12_000,
       true,
     );
+    workflowLogs.push({ step: 4, name: "Kalite & Güvenlik Denetimi", model: process.env.OLLAMA_CONTROL_MODEL || "llama3.2:latest", output: controlled, durationMs: Date.now() - t4 });
     const checked = JSON.parse(extractFirstJsonObject(controlled)) as Partial<AIReply>;
     finalReply = validModelReply(checked) ? checked : (validModelReply(draftParsed) ? draftParsed : { reply: "Selamünaleyküm efendim, mesajınızı aldım. Size daha doğru yardımcı olabilmem için kaç kişilik bir umre planladığınızı öğrenebilir miyim?", intent: "greeting", leadType: "KARARSIZ", leadScore: 30, handoff: false, handoffReason: "" });
   } catch (err) {
     console.warn("[Ollama Beyin Parçası 4 - Llama 3.2 Denetim] Hata/Zaman Aşımı, 3. Aşama taslağı kullanılıyor:", err);
+    workflowLogs.push({ step: 4, name: "Kalite & Güvenlik Denetimi (Yedek)", model: "qwen2.5:7b", output: drafted, durationMs: Date.now() - t4 });
     finalReply = validModelReply(draftParsed) ? draftParsed : { reply: "Selamünaleyküm efendim, mesajınızı aldım. Size daha doğru yardımcı olabilmem için kaç kişilik bir umre planladığınızı öğrenebilir miyim?", intent: "greeting", leadType: "KARARSIZ", leadScore: 30, handoff: false, handoffReason: "" };
   }
 
-  return preventRepeatedAutomaticReply(finalReply as AIReply, history);
+  const result = preventRepeatedAutomaticReply(finalReply as AIReply, history);
+  result.workflowLogs = workflowLogs;
+  return result;
 }
 
 function validModelReply(value: Partial<AIReply>) {

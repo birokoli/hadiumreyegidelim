@@ -710,13 +710,18 @@ async function callOllamaModel(
 async function callOllamaWorkflow(prompt: string, customerMessage: string, salesContext: SalesContext, history: { direction: string; content: string }[] = []) {
   const currentSalesPhase = calculateSalesPhase(salesContext);
 
-  // BEYİN PARÇASI 1: Gemma 2:2b (Analiz ve İhtiyaç Algılama Lobu)
+  // BEYİN PARÇASI 1: Gemma 2:2b (Analiz, Duygu Tespiti ve Bir Sonraki Soru Tahmin Lobu)
   const analysisTask = callOllamaModel(
     process.env.OLLAMA_ANALYSIS_MODEL || "gemma2:2b",
     [
       {
         role: "system",
-        content: `Sen tek bir satış beyninin ANALİZ VE İHTİYAÇ ALGILAMA LOBU'sun (Beyin Parçası 1). Müşteri mesajından sadece açıkça verilen kişi sayısı, çocuk yaşları, bütçe, tarih, umre türü ve eksik bilgileri çıkar. Tahmin ve satış metni yazma. 5 kısa satır teknik not üret.\n\nMÜŞTERİ SATIŞ ADIMI: ${currentSalesPhase}`,
+        content: `Sen tek bir satış beyninin ANALİZ, DUYGU TESPİTİ VE ÖNGÖRÜ LOBU'sun (Beyin Parçası 1).
+Müşteri mesajından şunları çıkar:
+1. Verilen açık veriler (Kişi sayısı, çocuk yaşları, tarih, bütçe).
+2. DUYGU TİPİ: "HEDİYE_MANEVİ" (Anne/Baba/Kardeş/Doğum günü), "İLK_UMRE_ENDİŞELİ" (Yalnız seyahat, kaybolma korkusu), "BÜTÇE_ODAKLI" (İndirim, fiyat kaygısı), "GENEL".
+3. MÜŞTERİNİN ZİHNİNDEKİ GİZLİ BİR SONRAKİ SORUSU (Tahmin et: Otel mesafesi mi, rehber güvenliği mi, bütçe taksiti mi?).
+5 kısa satır teknik not üret.\n\nMÜŞTERİ SATIŞ ADIMI: ${currentSalesPhase}`,
       },
       { role: "user", content: `MÜŞTERİ MESAJI: ${customerMessage}\n\nDİNAMİK MÜŞTERİ HAFIZA KARTI:\n${salesContextForModel(salesContext)}` },
     ],
@@ -744,7 +749,7 @@ async function callOllamaWorkflow(prompt: string, customerMessage: string, sales
 
   const [analysis, matching] = await Promise.all([analysisTask, matchingTask]);
 
-  // BEYİN PARÇASI 3: Qwen 2.5:7b (Samimi Türkçe Satış ve İletişim Lobu)
+  // BEYİN PARÇASI 3: Qwen 2.5:7b (Duygusal Zekalı Samimi Türkçe Satış Lobu)
   let drafted = "";
   try {
     drafted = await callOllamaModel(
@@ -752,21 +757,24 @@ async function callOllamaWorkflow(prompt: string, customerMessage: string, sales
       [
         {
           role: "system",
-          content: `Sen tek bir satış beyninin SAMİMİ TÜRKÇE SATIŞ VE İLETİŞİM LOBU'sun (Beyin Parçası 3).
-"Hadi Umreye Gidelim" firmasının güven veren, mütevazı ve yetkin Türkçe umre satış temsilcisisin.
-Beyin Parçası 1'in çıkardığı İhtiyaç Analizi ve Beyin Parçası 2'nin hesapladığı Matematik/Veri Teyidi notlarını kullan.
-Müşterinin sorusuna önce samimiyetle cevap ver, ardından satışı ilerletecek 1 net soru sor veya fiyat sun.
+          content: `Sen tek bir satış beyninin DUYGUSAL ZEKALI SAMİMİ TÜRKÇE SATIŞ LOBU'sun (Beyin Parçası 3).
+"Hadi Umreye Gidelim" firmasının yüksek duygusal zekaya (EQ) sahip, samimi, mütevazı ve ikna edici Türkçe umre satış temsilcisisin.
+
+EMPATİ VE DUYGU İLKELERİ:
+1. HEDİYE/MANEVİ (Anne/Baba/Kardeş/Doğum günü): Asla kuru bürokratik bilgi verme! Bu ince düşünceyi samimiyetle tebrik et, dua et ve güven ver.
+2. ENDİŞELİ/YALNIZ SEYAHAT: Müşterinin yalnız olmadığını, havalimanından itibaren rehberlerimiz ve grubumuzla aile sıcaklığında ağırlanacağını vurgulayarak içini rahatlat.
+3. ÖNGÖRÜLÜ SATIŞ (Anticipatory Selling): Müşterinin şu anki sorusuna cevap verirken, zihninde sormaya çekindiği bir sonraki gizli sorusunu (otel yakınlığı, rehber desteği vb.) önceden tahmin edip nazikçe cevapla!
 
 DİKKAT: ŞU ANDA SOHBETİN ŞU AŞAMASINDASIN:
 ${currentSalesPhase}
-Önceki sorulan veya bilinen bilgileri tekrar sorma! Yalnızca sıradaki tek eksik bilgiyi sor veya fiyat sun.
+Önceki sorulan veya bilinen bilgileri tekrar sorma! Müşteriyi duygusal olarak rahatlat ve satışı ilerletecek 1 net soru sor veya fiyat sun.
 
 Yalnızca geçerli JSON formatında yanıt üret:
 {"reply":"Türkçe yanıtınız","intent":"greeting|individual_umrah|group_umrah|price|booking|support|complaint|other","leadType":"BIREYSEL|GRUP|KARARSIZ","leadScore":50,"handoff":false,"handoffReason":""}`,
         },
         {
           role: "user",
-          content: `${prompt}\n\n[BEYİN PARÇASI 1 - ANALİZ LOBU]:\n${analysis}\n\n[BEYİN PARÇASI 2 - MATEMATİK & VERİ LOBU]:\n${matching}\n\nMÜŞTERİ MESAJI: ${customerMessage}`,
+          content: `${prompt}\n\n[BEYİN PARÇASI 1 - DUYGU & ÖNGÖRÜ ANALİZİ]:\n${analysis}\n\n[BEYİN PARÇASI 2 - MATEMATİK & VERİ LOBU]:\n${matching}\n\nMÜŞTERİ MESAJI: ${customerMessage}`,
         },
       ],
       22_000,

@@ -10,13 +10,27 @@ interface PricingRow {
   note: string;
   costUsd: number;
   costTry: number;
-  marginPercent: number; // e.g. 10 for 1.10 multiplier
+  marginPercent: number;
   saleTry: number;
   saleUsd: number;
   profitTry: number;
 }
 
+interface GroupPricingRow {
+  id: string;
+  category: string; // Yetişkin, Çocuk, Bebek
+  duration: string; // 10 Gün, 15 Gün, 20 Gün, "-"
+  roomType: string; // 2 Kişilik, 3 Kişilik, 4 Kişilik, "-"
+  supplier: string; // Acenta
+  costUsd: number;
+  saleUsd: number;
+  profitUsd: number;
+}
+
 export default function ExcelPricingCalculator({ initialCustomerName, initialPhone }: { initialCustomerName?: string; initialPhone?: string }) {
+  // Main Tab State
+  const [activeTab, setActiveTab] = useState<"GRUP" | "UYGUN" | "ORTA" | "PAHALI">("GRUP");
+
   // Exchange Rates
   const [usdRate, setUsdRate] = useState<number>(48.233);
   const [eurRate, setEurRate] = useState<number>(54.972);
@@ -32,20 +46,88 @@ export default function ExcelPricingCalculator({ initialCustomerName, initialPho
   const [ibanSurchargePercent, setIbanSurchargePercent] = useState<number>(20); // +20%
   const [cardSurchargePercent, setCardSurchargePercent] = useState<number>(26); // +26%
 
-  // Items State pre-populated from Google Sheet defaults
-  const [items, setItems] = useState<PricingRow[]>([
-    { id: "1", name: "Uçak Bileti", category: "flight", note: "Alış * 1.10", costUsd: 0, costTry: 0, marginPercent: 10, saleTry: 0, saleUsd: 0, profitTry: 0 },
-    { id: "2", name: "Transfer (VIP)", category: "transfer", note: "GMC / Vito Karşılama", costUsd: 360.81, costTry: 16748.59, marginPercent: 10, saleTry: 18423.45, saleUsd: 381.97, profitTry: 1674.86 },
-    { id: "3", name: "Tren Bileti (Haramain)", category: "transfer", note: "Mekke - Medine Hızlı Tren", costUsd: 396.74, costTry: 18416.62, marginPercent: 10, saleTry: 20258.28, saleUsd: 420.01, profitTry: 1841.66 },
-    { id: "4", name: "Mekke Otel Konaklama", category: "hotel", note: "Manazel Ajyad", costUsd: 1524.09, costTry: 70809.44, marginPercent: 10, saleTry: 77890.38, saleUsd: 1614.88, profitTry: 7080.94 },
-    { id: "5", name: "Medine Otel Konaklama", category: "hotel", note: "Odst Al Madinah", costUsd: 322.71, costTry: 14993.05, marginPercent: 10, saleTry: 16492.36, saleUsd: 341.93, profitTry: 1499.31 },
-    { id: "6", name: "Manevi Rehber / Hoca", category: "guide", note: "Birebir Özel İlahiyatçı", costUsd: 1036.63, costTry: 50000, marginPercent: 0, saleTry: 50000, saleUsd: 1036.63, profitTry: 0 },
-    { id: "7", name: "Suudi Vize & Sigorta", category: "visa", note: "1 Yıllık E-Vize", costUsd: 896.61, costTry: 41656.64, marginPercent: 10, saleTry: 45822.30, saleUsd: 950.02, profitTry: 4165.66 },
+  // -------------------------------------------------------------
+  // GRUP UMRE TAB DATA (From Google Sheet "Grup" tab)
+  // -------------------------------------------------------------
+  const [groupRows, setGroupRows] = useState<GroupPricingRow[]>([
+    { id: "g1", category: "Yetişkin", duration: "10 Gün", roomType: "2 Kişilik", supplier: "Acenta", costUsd: 1150, saleUsd: 1350, profitUsd: 200 },
+    { id: "g2", category: "Yetişkin", duration: "10 Gün", roomType: "3 Kişilik", supplier: "Acenta", costUsd: 1100, saleUsd: 1300, profitUsd: 200 },
+    { id: "g3", category: "Yetişkin", duration: "10 Gün", roomType: "4 Kişilik", supplier: "Acenta", costUsd: 1050, saleUsd: 1250, profitUsd: 200 },
+    
+    { id: "g4", category: "Yetişkin", duration: "15 Gün", roomType: "2 Kişilik", supplier: "Acenta", costUsd: 1200, saleUsd: 1400, profitUsd: 200 },
+    { id: "g5", category: "Yetişkin", duration: "15 Gün", roomType: "3 Kişilik", supplier: "Acenta", costUsd: 1150, saleUsd: 1350, profitUsd: 200 },
+    { id: "g6", category: "Yetişkin", duration: "15 Gün", roomType: "4 Kişilik", supplier: "Acenta", costUsd: 1100, saleUsd: 1300, profitUsd: 200 },
+
+    { id: "g7", category: "Yetişkin", duration: "20 Gün", roomType: "2 Kişilik", supplier: "Acenta", costUsd: 1300, saleUsd: 1500, profitUsd: 200 },
+    { id: "g8", category: "Yetişkin", duration: "20 Gün", roomType: "3 Kişilik", supplier: "Acenta", costUsd: 1250, saleUsd: 1450, profitUsd: 200 },
+    { id: "g9", category: "Yetişkin", duration: "20 Gün", roomType: "4 Kişilik", supplier: "Acenta", costUsd: 1200, saleUsd: 1400, profitUsd: 200 },
+
+    { id: "g10", category: "Çocuk (2-11)", duration: "-", roomType: "-", supplier: "Acenta", costUsd: 800, saleUsd: 1000, profitUsd: 200 },
+    { id: "g11", category: "Bebek (0-2)", duration: "-", roomType: "-", supplier: "Acenta", costUsd: 500, saleUsd: 750, profitUsd: 250 },
   ]);
 
-  // Recalculate row values when USD cost, TRY cost, margin or USD rate changes
+  const updateGroupRowCost = (id: string, newCostUsd: number) => {
+    setGroupRows((prev) =>
+      prev.map((row) => {
+        if (row.id !== id) return row;
+        const profitUsd = row.saleUsd - newCostUsd;
+        return { ...row, costUsd: newCostUsd, profitUsd };
+      })
+    );
+  };
+
+  const updateGroupRowSale = (id: string, newSaleUsd: number) => {
+    setGroupRows((prev) =>
+      prev.map((row) => {
+        if (row.id !== id) return row;
+        const profitUsd = newSaleUsd - row.costUsd;
+        return { ...row, saleUsd: newSaleUsd, profitUsd };
+      })
+    );
+  };
+
+  // Group Totals
+  const totalGroupCostUsd = groupRows.reduce((sum, r) => sum + r.costUsd, 0);
+  const totalGroupSaleUsd = groupRows.reduce((sum, r) => sum + r.saleUsd, 0);
+  const totalGroupProfitUsd = groupRows.reduce((sum, r) => sum + r.saleUsd - r.costUsd, 0);
+
+  // -------------------------------------------------------------
+  // INDIVIDUAL TABS DATA (UYGUN, ORTA, PAHALI)
+  // -------------------------------------------------------------
+  const [itemsUygun, setItemsUygun] = useState<PricingRow[]>([
+    { id: "u1", name: "Uçak Bileti", category: "flight", note: "Alış * 1.10", costUsd: 0, costTry: 0, marginPercent: 10, saleTry: 0, saleUsd: 0, profitTry: 0 },
+    { id: "u2", name: "Transfer (VIP)", category: "transfer", note: "GMC / Vito Karşılama", costUsd: 360.81, costTry: 16748.59, marginPercent: 10, saleTry: 18423.45, saleUsd: 381.97, profitTry: 1674.86 },
+    { id: "u3", name: "Tren Bileti (Haramain)", category: "transfer", note: "Mekke - Medine Hızlı Tren", costUsd: 396.74, costTry: 18416.62, marginPercent: 10, saleTry: 20258.28, saleUsd: 420.01, profitTry: 1841.66 },
+    { id: "u4", name: "Mekke Otel Konaklama", category: "hotel", note: "Manazel Ajyad", costUsd: 1524.09, costTry: 70809.44, marginPercent: 10, saleTry: 77890.38, saleUsd: 1614.88, profitTry: 7080.94 },
+    { id: "u5", name: "Medine Otel Konaklama", category: "hotel", note: "Odst Al Madinah", costUsd: 322.71, costTry: 14993.05, marginPercent: 10, saleTry: 16492.36, saleUsd: 341.93, profitTry: 1499.31 },
+    { id: "u6", name: "Manevi Rehber / Hoca", category: "guide", note: "Birebir Özel İlahiyatçı", costUsd: 1036.63, costTry: 50000, marginPercent: 0, saleTry: 50000, saleUsd: 1036.63, profitTry: 0 },
+    { id: "u7", name: "Suudi Vize & Sigorta", category: "visa", note: "1 Yıllık E-Vize", costUsd: 896.61, costTry: 41656.64, marginPercent: 10, saleTry: 45822.30, saleUsd: 950.02, profitTry: 4165.66 },
+  ]);
+
+  const [itemsOrta, setItemsOrta] = useState<PricingRow[]>([
+    { id: "o1", name: "Uçak Bileti", category: "flight", note: "THY / Saudia Tarifeli", costUsd: 1749.59, costTry: 84388, marginPercent: 10, saleTry: 92826.80, saleUsd: 1924.55, profitTry: 8438.80 },
+    { id: "o2", name: "Transfer (VIP)", category: "transfer", note: "GMC / Vito Karşılama", costUsd: 360.81, costTry: 16748.59, marginPercent: 10, saleTry: 18423.45, saleUsd: 381.97, profitTry: 1674.86 },
+    { id: "o3", name: "Tren Bileti (Haramain)", category: "transfer", note: "Mekke - Medine Hızlı Tren", costUsd: 396.74, costTry: 18416.62, marginPercent: 10, saleTry: 20258.28, saleUsd: 420.01, profitTry: 1841.66 },
+    { id: "o4", name: "Mekke Otel Konaklama", category: "hotel", note: "Standart 4 Yıldız", costUsd: 1524.09, costTry: 70809.44, marginPercent: 10, saleTry: 77890.38, saleUsd: 1614.88, profitTry: 7080.94 },
+    { id: "o5", name: "Medine Otel Konaklama", category: "hotel", note: "Standart 4 Yıldız", costUsd: 322.71, costTry: 14993.05, marginPercent: 10, saleTry: 16492.36, saleUsd: 341.93, profitTry: 1499.31 },
+    { id: "o6", name: "Manevi Rehber / Hoca", category: "guide", note: "Birebir Özel İlahiyatçı", costUsd: 1036.63, costTry: 50000, marginPercent: 0, saleTry: 50000, saleUsd: 1036.63, profitTry: 0 },
+    { id: "o7", name: "Suudi Vize & Sigorta", category: "visa", note: "1 Yıllık E-Vize", costUsd: 896.61, costTry: 41656.64, marginPercent: 10, saleTry: 45822.30, saleUsd: 950.02, profitTry: 4165.66 },
+  ]);
+
+  const [itemsPahali, setItemsPahali] = useState<PricingRow[]>([
+    { id: "p1", name: "Transfer (VIP Private)", category: "transfer", note: "GMC Yukon Özel Ulaşım", costUsd: 109.11, costTry: 5065.11, marginPercent: 10, saleTry: 5571.63, saleUsd: 119.92, profitTry: 506.51 },
+    { id: "p2", name: "Tren Bileti (Haramain Business)", category: "transfer", note: "VIP Business Vagon", costUsd: 231.18, costTry: 10731.53, marginPercent: 10, saleTry: 11804.69, saleUsd: 254.08, profitTry: 1073.15 },
+    { id: "p3", name: "Mekke Otel (Fairmont / Clock Tower)", category: "hotel", note: "Kâbe Manzaralı 5 Yıldız Lüks", costUsd: 446.66, costTry: 20751.89, marginPercent: 10, saleTry: 22827.08, saleUsd: 491.33, profitTry: 2075.19 },
+    { id: "p4", name: "Medine Otel (Oberoi / Dar Al Taqwa)", category: "hotel", note: "Mescid Manzaralı 5 Yıldız Lüks", costUsd: 270.22, costTry: 12554.19, marginPercent: 10, saleTry: 13809.61, saleUsd: 297.24, profitTry: 1255.42 },
+    { id: "p5", name: "Suudi Vize & VIP Karşılama", category: "visa", note: "VIP Havalimanı Karşılama dahil", costUsd: 529.34, costTry: 24593.10, marginPercent: 10, saleTry: 26701.08, saleUsd: 574.71, profitTry: 2107.98 },
+  ]);
+
+  const currentItems = activeTab === "UYGUN" ? itemsUygun : activeTab === "ORTA" ? itemsOrta : itemsPahali;
+  const setCurrentItems = activeTab === "UYGUN" ? setItemsUygun : activeTab === "ORTA" ? setItemsOrta : setItemsPahali;
+
+  // Recalculators
   const updateRowCostUsd = (id: string, newCostUsd: number) => {
-    setItems((prev) =>
+    setCurrentItems((prev) =>
       prev.map((row) => {
         if (row.id !== id) return row;
         const costTry = newCostUsd * usdRate;
@@ -58,7 +140,7 @@ export default function ExcelPricingCalculator({ initialCustomerName, initialPho
   };
 
   const updateRowCostTry = (id: string, newCostTry: number) => {
-    setItems((prev) =>
+    setCurrentItems((prev) =>
       prev.map((row) => {
         if (row.id !== id) return row;
         const costUsd = usdRate > 0 ? newCostTry / usdRate : 0;
@@ -71,7 +153,7 @@ export default function ExcelPricingCalculator({ initialCustomerName, initialPho
   };
 
   const updateRowMargin = (id: string, newMarginPercent: number) => {
-    setItems((prev) =>
+    setCurrentItems((prev) =>
       prev.map((row) => {
         if (row.id !== id) return row;
         const saleTry = row.costTry * (1 + newMarginPercent / 100);
@@ -83,7 +165,7 @@ export default function ExcelPricingCalculator({ initialCustomerName, initialPho
   };
 
   const updateRowSaleTry = (id: string, newSaleTry: number) => {
-    setItems((prev) =>
+    setCurrentItems((prev) =>
       prev.map((row) => {
         if (row.id !== id) return row;
         const saleUsd = usdRate > 0 ? newSaleTry / usdRate : 0;
@@ -95,12 +177,12 @@ export default function ExcelPricingCalculator({ initialCustomerName, initialPho
   };
 
   // Global Totals
-  const totalCostTry = items.reduce((sum, r) => sum + r.costTry, 0);
-  const totalCostUsd = items.reduce((sum, r) => sum + r.costUsd, 0);
-  const totalSaleTryNakit = items.reduce((sum, r) => sum + r.saleTry, 0);
+  const totalCostTry = currentItems.reduce((sum, r) => sum + r.costTry, 0);
+  const totalCostUsd = currentItems.reduce((sum, r) => sum + r.costUsd, 0);
+  const totalSaleTryNakit = currentItems.reduce((sum, r) => sum + r.saleTry, 0);
   const totalSaleUsdNakit = usdRate > 0 ? totalSaleTryNakit / usdRate : 0;
   const totalSaleEurNakit = eurRate > 0 ? totalSaleTryNakit / eurRate : 0;
-  const totalProfitTry = items.reduce((sum, r) => sum + r.profitTry, 0);
+  const totalProfitTry = currentItems.reduce((sum, r) => sum + r.profitTry, 0);
 
   // Surcharged Totals
   const totalSaleTryIban = totalSaleTryNakit * (1 + ibanSurchargePercent / 100);
@@ -112,13 +194,13 @@ export default function ExcelPricingCalculator({ initialCustomerName, initialPho
 
   // Generate WhatsApp Message text
   const generateWhatsAppMessage = () => {
-    let msg = `*HADİ UMRE'YE GİDELİM - ÖZEL BİREYSEL UMRE TEKLİFİ*\n\n`;
+    let msg = `*HADİ UMRE'YE GİDELİM - ${activeTab} UMRE PAKET TEKLİFİ*\n\n`;
     if (customerName) msg += `Sayın *${customerName}*,\n\n`;
     msg += `📍 *Mekke Oteli:* ${mekkeHotelName}\n`;
     msg += `📍 *Medine Oteli:* ${medineHotelName}\n`;
     msg += `👥 *Kişi Sayısı:* ${paxCount} Kişi\n\n`;
     msg += `*HİZMET DETAYLARI VE SATIŞ FİYATLARI:*\n`;
-    items.forEach((item) => {
+    currentItems.forEach((item) => {
       if (item.saleTry > 0) {
         msg += `• ${item.name}: ₺${item.saleTry.toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}\n`;
       }
@@ -143,7 +225,7 @@ export default function ExcelPricingCalculator({ initialCustomerName, initialPho
           </div>
           <h2 className="text-2xl md:text-3xl font-extrabold font-headline">Google Excel Canlı Fiyatlandırma Suite</h2>
           <p className="text-white/80 text-sm mt-1">
-            Alış maliyetlerini girin, %10 kar marjını, İban ve Kredi kartı KDV komisyonlarını otomatik hesaplayın.
+            Grup ve Bireysel Umre maliyetlerini girin, %10 kar marjını, İban ve Kredi kartı KDV komisyonlarını otomatik hesaplayın.
           </p>
         </div>
 
@@ -172,271 +254,428 @@ export default function ExcelPricingCalculator({ initialCustomerName, initialPho
         </div>
       </div>
 
-      {/* Customer & Hotel Info Inputs */}
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 p-6 rounded-3xl shadow-sm grid grid-cols-1 md:grid-cols-5 gap-4 text-sm">
-        <div>
-          <label className="block text-xs font-bold text-slate-500 dark:text-slate-300 uppercase mb-1">Müşteri Ad Soyad</label>
-          <input
-            type="text"
-            placeholder="Ahmet Yılmaz"
-            value={customerName}
-            onChange={(e) => setCustomerName(e.target.value)}
-            className="w-full bg-slate-50 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white rounded-xl px-3.5 py-2 font-bold outline-none focus:border-primary"
-          />
-        </div>
+      {/* Main Tab Switcher (GRUP / UYGUN / ORTA / PAHALI) */}
+      <div className="flex items-center gap-3 border-b border-slate-200 dark:border-slate-800 pb-4 overflow-x-auto">
+        <button
+          onClick={() => setActiveTab("GRUP")}
+          className={`px-6 py-3 rounded-2xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 ${
+            activeTab === "GRUP"
+              ? "bg-emerald-600 text-white shadow-lg shadow-emerald-600/30 ring-2 ring-emerald-500/50"
+              : "bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800"
+          }`}
+        >
+          <span className="material-symbols-outlined text-[20px]">groups</span>
+          📊 GRUP UMRE FİYATLANDIRMA
+        </button>
 
-        <div>
-          <label className="block text-xs font-bold text-slate-500 dark:text-slate-300 uppercase mb-1">Müşteri Telefon</label>
-          <input
-            type="text"
-            placeholder="+905051234567"
-            value={customerPhone}
-            onChange={(e) => setCustomerPhone(e.target.value)}
-            className="w-full bg-slate-50 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white rounded-xl px-3.5 py-2 font-mono font-bold outline-none focus:border-primary"
-          />
-        </div>
+        <button
+          onClick={() => setActiveTab("UYGUN")}
+          className={`px-6 py-3 rounded-2xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 ${
+            activeTab === "UYGUN"
+              ? "bg-primary text-white shadow-lg shadow-primary/30 ring-2 ring-primary/50"
+              : "bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800"
+          }`}
+        >
+          <span className="material-symbols-outlined text-[20px]">savings</span>
+          💚 EKONOMİK PAKET (UYGUN)
+        </button>
 
-        <div>
-          <label className="block text-xs font-bold text-slate-500 dark:text-slate-300 uppercase mb-1">Mekke Oteli</label>
-          <input
-            type="text"
-            value={mekkeHotelName}
-            onChange={(e) => setMekkeHotelName(e.target.value)}
-            className="w-full bg-slate-50 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white rounded-xl px-3.5 py-2 font-bold outline-none focus:border-primary"
-          />
-        </div>
+        <button
+          onClick={() => setActiveTab("ORTA")}
+          className={`px-6 py-3 rounded-2xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 ${
+            activeTab === "ORTA"
+              ? "bg-amber-600 text-white shadow-lg shadow-amber-600/30 ring-2 ring-amber-500/50"
+              : "bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800"
+          }`}
+        >
+          <span className="material-symbols-outlined text-[20px]">stars</span>
+          💙 STANDART PAKET (ORTA)
+        </button>
 
-        <div>
-          <label className="block text-xs font-bold text-slate-500 dark:text-slate-300 uppercase mb-1">Medine Oteli</label>
-          <input
-            type="text"
-            value={medineHotelName}
-            onChange={(e) => setMedineHotelName(e.target.value)}
-            className="w-full bg-slate-50 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white rounded-xl px-3.5 py-2 font-bold outline-none focus:border-primary"
-          />
-        </div>
-
-        <div>
-          <label className="block text-xs font-bold text-slate-500 dark:text-slate-300 uppercase mb-1">Kişi Sayısı (Pax)</label>
-          <input
-            type="number"
-            min={1}
-            value={paxCount}
-            onChange={(e) => setPaxCount(parseInt(e.target.value) || 1)}
-            className="w-full bg-slate-50 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white rounded-xl px-3.5 py-2 font-extrabold outline-none focus:border-primary"
-          />
-        </div>
+        <button
+          onClick={() => setActiveTab("PAHALI")}
+          className={`px-6 py-3 rounded-2xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 ${
+            activeTab === "PAHALI"
+              ? "bg-purple-600 text-white shadow-lg shadow-purple-600/30 ring-2 ring-purple-500/50"
+              : "bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800"
+          }`}
+        >
+          <span className="material-symbols-outlined text-[20px]">workspace_premium</span>
+          👑 VIP LÜKS PAKET (PAHALI)
+        </button>
       </div>
 
-      {/* Main Excel Line-Item Table */}
-      <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
-        <div className="px-6 py-4 bg-slate-100 dark:bg-slate-800/80 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center">
-          <h3 className="font-bold text-sm text-slate-800 dark:text-slate-100 uppercase tracking-wider flex items-center gap-2">
-            <span className="material-symbols-outlined text-primary dark:text-sky-400">table_chart</span> HİZMET MALIYET VE KAR HESAPLAMA MATRİSİ
-          </h3>
-          <span className="text-xs font-mono text-slate-400">Formül: Alış + %Marj = Satış Fiyatı</span>
-        </div>
-
-        <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
-            <thead>
-              <tr className="bg-slate-50 dark:bg-slate-800/60 text-[11px] font-bold text-slate-400 uppercase tracking-wider border-b border-slate-200 dark:border-slate-800">
-                <th className="p-4">Hizmet Adı</th>
-                <th className="p-4">Dolar Alış ($)</th>
-                <th className="p-4">Alış Fiyatı (₺)</th>
-                <th className="p-4">Kar Marjı (%)</th>
-                <th className="p-4">Satış Fiyatı (₺)</th>
-                <th className="p-4">Dolar Satış ($)</th>
-                <th className="p-4 text-emerald-600 dark:text-emerald-400">Kar Miktarı (₺)</th>
-                <th className="p-4">Not / Formül</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100 dark:divide-slate-800 text-xs font-medium">
-              {items.map((row) => (
-                <tr key={row.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
-                  <td className="p-4 font-bold text-slate-900 dark:text-white">{row.name}</td>
-                  
-                  {/* USD Cost Input */}
-                  <td className="p-4">
-                    <input
-                      type="number"
-                      step="0.01"
-                      value={row.costUsd || ""}
-                      onChange={(e) => updateRowCostUsd(row.id, parseFloat(e.target.value) || 0)}
-                      className="w-28 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white rounded-lg px-2.5 py-1.5 font-mono font-extrabold outline-none focus:ring-2 focus:ring-sky-400"
-                    />
-                  </td>
-
-                  {/* TRY Cost Input */}
-                  <td className="p-4">
-                    <input
-                      type="number"
-                      step="0.01"
-                      value={row.costTry || ""}
-                      onChange={(e) => updateRowCostTry(row.id, parseFloat(e.target.value) || 0)}
-                      className="w-32 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white rounded-lg px-2.5 py-1.5 font-mono font-extrabold outline-none focus:ring-2 focus:ring-sky-400"
-                    />
-                  </td>
-
-                  {/* Margin % Input */}
-                  <td className="p-4">
-                    <div className="flex items-center gap-1 text-slate-800 dark:text-white">
-                      <input
-                        type="number"
-                        value={row.marginPercent}
-                        onChange={(e) => updateRowMargin(row.id, parseFloat(e.target.value) || 0)}
-                        className="w-16 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white rounded-lg px-2 py-1.5 font-extrabold text-center outline-none focus:ring-2 focus:ring-sky-400"
-                      />
-                      <span className="font-bold">%</span>
-                    </div>
-                  </td>
-
-                  {/* TRY Sale Input (Calculated / Editable) */}
-                  <td className="p-4">
-                    <input
-                      type="number"
-                      step="0.01"
-                      value={row.saleTry ? row.saleTry.toFixed(2) : ""}
-                      onChange={(e) => updateRowSaleTry(row.id, parseFloat(e.target.value) || 0)}
-                      className="w-32 bg-emerald-50 dark:bg-emerald-950/80 border border-emerald-400 dark:border-emerald-700 text-emerald-900 dark:text-emerald-300 font-mono font-black rounded-lg px-2.5 py-1.5 outline-none focus:ring-2 focus:ring-emerald-400"
-                    />
-                  </td>
-
-                  {/* USD Sale (Calculated) */}
-                  <td className="p-4 font-mono font-bold text-slate-800 dark:text-slate-200">
-                    ${row.saleUsd.toFixed(2)}
-                  </td>
-
-                  {/* Profit TRY */}
-                  <td className="p-4 font-mono font-extrabold text-emerald-600 dark:text-emerald-400">
-                    +₺{row.profitTry.toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                  </td>
-
-                  {/* Note */}
-                  <td className="p-4 text-slate-400 italic text-[11px]">{row.note}</td>
-                </tr>
-              ))}
-
-              {/* Table Totals Row */}
-              <tr className="bg-slate-100 dark:bg-slate-800/90 font-black text-sm border-t-2 border-slate-300 dark:border-slate-700">
-                <td className="p-4 text-slate-900 dark:text-white uppercase">TOPLAM ALIŞ & SATIŞ</td>
-                <td className="p-4 font-mono text-slate-900 dark:text-white">${totalCostUsd.toFixed(2)}</td>
-                <td className="p-4 font-mono text-slate-900 dark:text-white">₺{totalCostTry.toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                <td className="p-4 text-slate-400">-</td>
-                <td className="p-4 font-mono text-emerald-600 dark:text-emerald-400">₺{totalSaleTryNakit.toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                <td className="p-4 font-mono text-emerald-600 dark:text-emerald-400">${totalSaleUsdNakit.toFixed(2)}</td>
-                <td className="p-4 font-mono text-emerald-600 dark:text-emerald-400">+₺{totalProfitTry.toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                <td className="p-4 text-xs font-normal text-slate-400">Net Kar Hacmi</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      {/* Summary Cards & Payment Options (Nakit / İban / Kredi Kartı) */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* Payment Methods Breakdown */}
-        <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 space-y-4 shadow-sm">
-          <h4 className="font-bold text-sm text-slate-900 dark:text-white uppercase tracking-wider flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
-            <span className="material-symbols-outlined text-emerald-600 dark:text-emerald-400">payments</span> ÖDEME SEÇENEKLERİ TABLOSU
-          </h4>
-
-          <div className="space-y-3 text-xs">
-            <div className="p-3.5 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900 flex justify-between items-center">
-              <div>
-                <p className="font-bold text-emerald-900 dark:text-emerald-200">Nakit / Peşin Ödeme</p>
-                <p className="text-[10px] text-emerald-600 dark:text-emerald-400">Standart Satış Fiyatı</p>
+      {/* ============================================================= */}
+      {/* TAB 1: GRUP UMRE FİYATLANDIRMA VIEW                           */}
+      {/* ============================================================= */}
+      {activeTab === "GRUP" && (
+        <div className="space-y-6">
+          {/* Top KPI Cards for Group */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-3xl shadow-sm flex items-center gap-4">
+              <div className="w-14 h-14 rounded-2xl bg-emerald-100 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
+                <span className="material-symbols-outlined text-3xl">attach_money</span>
               </div>
-              <p className="font-mono font-black text-emerald-700 dark:text-emerald-300 text-sm">
-                ₺{totalSaleTryNakit.toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-              </p>
-            </div>
-
-            <div className="p-3.5 rounded-2xl bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900 flex justify-between items-center">
               <div>
-                <p className="font-bold text-blue-900 dark:text-blue-200">İBAN / Havale ile Ödeme (+%{ibanSurchargePercent})</p>
-                <p className="text-[10px] text-blue-600 dark:text-blue-400">Fatura & KDV Dahil</p>
+                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Toplam Grup Satışı ($)</p>
+                <p className="text-3xl font-black text-slate-900 dark:text-white mt-0.5">${totalGroupSaleUsd.toLocaleString()}</p>
               </div>
-              <p className="font-mono font-black text-blue-700 dark:text-blue-300 text-sm">
-                ₺{totalSaleTryIban.toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-              </p>
             </div>
 
-            <div className="p-3.5 rounded-2xl bg-purple-50 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-900 flex justify-between items-center">
+            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-3xl shadow-sm flex items-center gap-4">
+              <div className="w-14 h-14 rounded-2xl bg-blue-100 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
+                <span className="material-symbols-outlined text-3xl">shopping_bag</span>
+              </div>
               <div>
-                <p className="font-bold text-purple-900 dark:text-purple-200">Kredi Kartı ile Ödeme (+%{cardSurchargePercent})</p>
-                <p className="text-[10px] text-purple-600 dark:text-purple-400">Banka Kart Komisyonu Dahil</p>
+                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Toplam Grup Maliyeti ($)</p>
+                <p className="text-3xl font-black text-slate-900 dark:text-white mt-0.5">${totalGroupCostUsd.toLocaleString()}</p>
               </div>
-              <p className="font-mono font-black text-purple-700 dark:text-purple-300 text-sm">
-                ₺{totalSaleTryCard.toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-              </p>
+            </div>
+
+            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-3xl shadow-sm flex items-center gap-4">
+              <div className="w-14 h-14 rounded-2xl bg-purple-100 dark:bg-purple-950/40 text-purple-600 dark:text-purple-400 flex items-center justify-center shrink-0">
+                <span className="material-symbols-outlined text-3xl">account_balance_wallet</span>
+              </div>
+              <div>
+                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Toplam Tahmini Kâr ($)</p>
+                <p className="text-3xl font-black text-emerald-600 dark:text-emerald-400 mt-0.5">+${totalGroupProfitUsd.toLocaleString()}</p>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-3xl shadow-sm flex items-center gap-4">
+              <div className="w-14 h-14 rounded-2xl bg-amber-100 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
+                <span className="material-symbols-outlined text-3xl">groups</span>
+              </div>
+              <div>
+                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Kişi Başı Ortalama ($)</p>
+                <p className="text-3xl font-black text-slate-900 dark:text-white mt-0.5">
+                  ${groupRows.length > 0 ? (totalGroupSaleUsd / groupRows.length).toFixed(2) : "0"}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Group Pricing Table */}
+          <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+            <div className="px-6 py-4 bg-slate-100 dark:bg-slate-800/80 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center">
+              <h3 className="font-bold text-sm text-slate-800 dark:text-slate-100 uppercase tracking-wider flex items-center gap-2">
+                <span className="material-symbols-outlined text-emerald-500">groups</span> GRUP UMRE FİYATLANDIRMA VE MÜŞTERİ TAKİP MATRİSİ
+              </h3>
+              <span className="text-xs font-mono text-slate-400">10 Gün / 15 Gün / 20 Gün Paket Fiyatlaması</span>
+            </div>
+
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="bg-slate-50 dark:bg-slate-800/60 text-[11px] font-bold text-slate-400 uppercase tracking-wider border-b border-slate-200 dark:border-slate-800">
+                    <th className="p-4">Yaş / Kategori</th>
+                    <th className="p-4">Paket Süresi</th>
+                    <th className="p-4">Oda Tipi</th>
+                    <th className="p-4">Tedarikçi</th>
+                    <th className="p-4">Maliyet ($)</th>
+                    <th className="p-4">Satış Fiyatı ($)</th>
+                    <th className="p-4 text-emerald-600 dark:text-emerald-400">Kâr ($)</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100 dark:divide-slate-800 text-xs font-medium">
+                  {groupRows.map((row) => (
+                    <tr key={row.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
+                      <td className="p-4 font-bold text-slate-900 dark:text-white">{row.category}</td>
+                      <td className="p-4 font-semibold text-slate-700 dark:text-slate-300">{row.duration}</td>
+                      <td className="p-4 text-slate-600 dark:text-slate-400">{row.roomType}</td>
+                      <td className="p-4 text-slate-500">{row.supplier}</td>
+
+                      <td className="p-4">
+                        <input
+                          type="number"
+                          value={row.costUsd}
+                          onChange={(e) => updateGroupRowCost(row.id, parseFloat(e.target.value) || 0)}
+                          className="w-28 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white rounded-lg px-2.5 py-1.5 font-mono font-extrabold outline-none focus:ring-2 focus:ring-sky-400"
+                        />
+                      </td>
+
+                      <td className="p-4">
+                        <input
+                          type="number"
+                          value={row.saleUsd}
+                          onChange={(e) => updateGroupRowSale(row.id, parseFloat(e.target.value) || 0)}
+                          className="w-28 bg-emerald-50 dark:bg-emerald-950/80 border border-emerald-400 dark:border-emerald-700 text-emerald-900 dark:text-emerald-300 font-mono font-black rounded-lg px-2.5 py-1.5 outline-none focus:ring-2 focus:ring-emerald-400"
+                        />
+                      </td>
+
+                      <td className="p-4 font-mono font-extrabold text-emerald-600 dark:text-emerald-400">
+                        +${row.profitUsd.toFixed(2)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
+      )}
 
-        {/* Currency & Pax Breakdown */}
-        <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 space-y-4 shadow-sm">
-          <h4 className="font-bold text-sm text-slate-900 dark:text-white uppercase tracking-wider flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
-            <span className="material-symbols-outlined text-primary dark:text-sky-400">currency_exchange</span> DÖVİZ VE KİŞİ BAŞI TUTARLAR
-          </h4>
-
-          <div className="space-y-3 text-xs">
-            <div className="flex justify-between items-center p-3 rounded-xl bg-slate-50 dark:bg-slate-800">
-              <span className="text-slate-500 dark:text-slate-400 font-bold">Kişi Başı Nakit Tutarı (USD)</span>
-              <span className="font-mono font-black text-primary dark:text-sky-400 text-sm">${perPaxNakitUsd.toFixed(2)} USD</span>
+      {/* ============================================================= */}
+      {/* TABS 2, 3, 4: UYGUN / ORTA / PAHALI (BİREYSEL INDIVIDUAL VIEW)  */}
+      {/* ============================================================= */}
+      {activeTab !== "GRUP" && (
+        <div className="space-y-8">
+          {/* Customer & Hotel Info Inputs */}
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 p-6 rounded-3xl shadow-sm grid grid-cols-1 md:grid-cols-5 gap-4 text-sm">
+            <div>
+              <label className="block text-xs font-bold text-slate-500 dark:text-slate-300 uppercase mb-1">Müşteri Ad Soyad</label>
+              <input
+                type="text"
+                placeholder="Ahmet Yılmaz"
+                value={customerName}
+                onChange={(e) => setCustomerName(e.target.value)}
+                className="w-full bg-slate-50 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white rounded-xl px-3.5 py-2 font-bold outline-none focus:border-primary"
+              />
             </div>
 
-            <div className="flex justify-between items-center p-3 rounded-xl bg-slate-50 dark:bg-slate-800">
-              <span className="text-slate-500 dark:text-slate-400 font-bold">Kişi Başı Nakit Tutarı (TRY)</span>
-              <span className="font-mono font-black text-slate-800 dark:text-slate-100 text-sm">
-                ₺{perPaxNakitTry.toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-              </span>
+            <div>
+              <label className="block text-xs font-bold text-slate-500 dark:text-slate-300 uppercase mb-1">Müşteri Telefon</label>
+              <input
+                type="text"
+                placeholder="+905051234567"
+                value={customerPhone}
+                onChange={(e) => setCustomerPhone(e.target.value)}
+                className="w-full bg-slate-50 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white rounded-xl px-3.5 py-2 font-mono font-bold outline-none focus:border-primary"
+              />
             </div>
 
-            <div className="flex justify-between items-center p-3 rounded-xl bg-slate-50 dark:bg-slate-800">
-              <span className="text-slate-500 dark:text-slate-400 font-bold">Toplam Nakit Karşılığı (USD)</span>
-              <span className="font-mono font-black text-emerald-600 dark:text-emerald-400 text-sm">${totalSaleUsdNakit.toFixed(2)}</span>
+            <div>
+              <label className="block text-xs font-bold text-slate-500 dark:text-slate-300 uppercase mb-1">Mekke Oteli</label>
+              <input
+                type="text"
+                value={mekkeHotelName}
+                onChange={(e) => setMekkeHotelName(e.target.value)}
+                className="w-full bg-slate-50 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white rounded-xl px-3.5 py-2 font-bold outline-none focus:border-primary"
+              />
             </div>
 
-            <div className="flex justify-between items-center p-3 rounded-xl bg-slate-50 dark:bg-slate-800">
-              <span className="text-slate-500 dark:text-slate-400 font-bold">Toplam Nakit Karşılığı (EUR)</span>
-              <span className="font-mono font-black text-indigo-600 dark:text-indigo-400 text-sm">€{totalSaleEurNakit.toFixed(2)}</span>
+            <div>
+              <label className="block text-xs font-bold text-slate-500 dark:text-slate-300 uppercase mb-1">Medine Oteli</label>
+              <input
+                type="text"
+                value={medineHotelName}
+                onChange={(e) => setMedineHotelName(e.target.value)}
+                className="w-full bg-slate-50 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white rounded-xl px-3.5 py-2 font-bold outline-none focus:border-primary"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold text-slate-500 dark:text-slate-300 uppercase mb-1">Kişi Sayısı (Pax)</label>
+              <input
+                type="number"
+                min={1}
+                value={paxCount}
+                onChange={(e) => setPaxCount(parseInt(e.target.value) || 1)}
+                className="w-full bg-slate-50 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white rounded-xl px-3.5 py-2 font-extrabold outline-none focus:border-primary"
+              />
+            </div>
+          </div>
+
+          {/* Main Line-Item Table */}
+          <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
+            <div className="px-6 py-4 bg-slate-100 dark:bg-slate-800/80 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center">
+              <h3 className="font-bold text-sm text-slate-800 dark:text-slate-100 uppercase tracking-wider flex items-center gap-2">
+                <span className="material-symbols-outlined text-primary dark:text-sky-400">table_chart</span> {activeTab} PAKET HİZMET MALİYET VE KAR MATRİSİ
+              </h3>
+              <span className="text-xs font-mono text-slate-400">Formül: Alış + %Marj = Satış Fiyatı</span>
+            </div>
+
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="bg-slate-50 dark:bg-slate-800/60 text-[11px] font-bold text-slate-400 uppercase tracking-wider border-b border-slate-200 dark:border-slate-800">
+                    <th className="p-4">Hizmet Adı</th>
+                    <th className="p-4">Dolar Alış ($)</th>
+                    <th className="p-4">Alış Fiyatı (₺)</th>
+                    <th className="p-4">Kar Marjı (%)</th>
+                    <th className="p-4">Satış Fiyatı (₺)</th>
+                    <th className="p-4">Dolar Satış ($)</th>
+                    <th className="p-4 text-emerald-600 dark:text-emerald-400">Kar Miktarı (₺)</th>
+                    <th className="p-4">Not / Formül</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100 dark:divide-slate-800 text-xs font-medium">
+                  {currentItems.map((row) => (
+                    <tr key={row.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
+                      <td className="p-4 font-bold text-slate-900 dark:text-white">{row.name}</td>
+
+                      <td className="p-4">
+                        <input
+                          type="number"
+                          step="0.01"
+                          value={row.costUsd || ""}
+                          onChange={(e) => updateRowCostUsd(row.id, parseFloat(e.target.value) || 0)}
+                          className="w-28 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white rounded-lg px-2.5 py-1.5 font-mono font-extrabold outline-none focus:ring-2 focus:ring-sky-400"
+                        />
+                      </td>
+
+                      <td className="p-4">
+                        <input
+                          type="number"
+                          step="0.01"
+                          value={row.costTry || ""}
+                          onChange={(e) => updateRowCostTry(row.id, parseFloat(e.target.value) || 0)}
+                          className="w-32 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white rounded-lg px-2.5 py-1.5 font-mono font-extrabold outline-none focus:ring-2 focus:ring-sky-400"
+                        />
+                      </td>
+
+                      <td className="p-4">
+                        <div className="flex items-center gap-1 text-slate-800 dark:text-white">
+                          <input
+                            type="number"
+                            value={row.marginPercent}
+                            onChange={(e) => updateRowMargin(row.id, parseFloat(e.target.value) || 0)}
+                            className="w-16 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white rounded-lg px-2 py-1.5 font-extrabold text-center outline-none focus:ring-2 focus:ring-sky-400"
+                          />
+                          <span className="font-bold">%</span>
+                        </div>
+                      </td>
+
+                      <td className="p-4">
+                        <input
+                          type="number"
+                          step="0.01"
+                          value={row.saleTry ? row.saleTry.toFixed(2) : ""}
+                          onChange={(e) => updateRowSaleTry(row.id, parseFloat(e.target.value) || 0)}
+                          className="w-32 bg-emerald-50 dark:bg-emerald-950/80 border border-emerald-400 dark:border-emerald-700 text-emerald-900 dark:text-emerald-300 font-mono font-black rounded-lg px-2.5 py-1.5 outline-none focus:ring-2 focus:ring-emerald-400"
+                        />
+                      </td>
+
+                      <td className="p-4 font-mono font-bold text-slate-800 dark:text-slate-200">
+                        ${row.saleUsd.toFixed(2)}
+                      </td>
+
+                      <td className="p-4 font-mono font-extrabold text-emerald-600 dark:text-emerald-400">
+                        +₺{row.profitTry.toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                      </td>
+
+                      <td className="p-4 text-slate-400 italic text-[11px]">{row.note}</td>
+                    </tr>
+                  ))}
+
+                  <tr className="bg-slate-100 dark:bg-slate-800/90 font-black text-sm border-t-2 border-slate-300 dark:border-slate-700">
+                    <td className="p-4 text-slate-900 dark:text-white uppercase">TOPLAM ALIŞ & SATIŞ</td>
+                    <td className="p-4 font-mono text-slate-900 dark:text-white">${totalCostUsd.toFixed(2)}</td>
+                    <td className="p-4 font-mono text-slate-900 dark:text-white">₺{totalCostTry.toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td className="p-4 text-slate-400">-</td>
+                    <td className="p-4 font-mono text-emerald-600 dark:text-emerald-400">₺{totalSaleTryNakit.toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td className="p-4 font-mono text-emerald-600 dark:text-emerald-400">${totalSaleUsdNakit.toFixed(2)}</td>
+                    <td className="p-4 font-mono text-emerald-600 dark:text-emerald-400">+₺{totalProfitTry.toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td className="p-4 text-xs font-normal text-slate-400">Net Kar Hacmi</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* Summary Cards & Payment Options */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 space-y-4 shadow-sm">
+              <h4 className="font-bold text-sm text-slate-900 dark:text-white uppercase tracking-wider flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
+                <span className="material-symbols-outlined text-emerald-600 dark:text-emerald-400">payments</span> ÖDEME SEÇENEKLERİ TABLOSU
+              </h4>
+
+              <div className="space-y-3 text-xs">
+                <div className="p-3.5 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900 flex justify-between items-center">
+                  <div>
+                    <p className="font-bold text-emerald-900 dark:text-emerald-200">Nakit / Peşin Ödeme</p>
+                    <p className="text-[10px] text-emerald-600 dark:text-emerald-400">Standart Satış Fiyatı</p>
+                  </div>
+                  <p className="font-mono font-black text-emerald-700 dark:text-emerald-300 text-sm">
+                    ₺{totalSaleTryNakit.toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                  </p>
+                </div>
+
+                <div className="p-3.5 rounded-2xl bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900 flex justify-between items-center">
+                  <div>
+                    <p className="font-bold text-blue-900 dark:text-blue-200">İBAN / Havale ile Ödeme (+%{ibanSurchargePercent})</p>
+                    <p className="text-[10px] text-blue-600 dark:text-blue-400">Fatura & KDV Dahil</p>
+                  </div>
+                  <p className="font-mono font-black text-blue-700 dark:text-blue-300 text-sm">
+                    ₺{totalSaleTryIban.toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                  </p>
+                </div>
+
+                <div className="p-3.5 rounded-2xl bg-purple-50 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-900 flex justify-between items-center">
+                  <div>
+                    <p className="font-bold text-purple-900 dark:text-purple-200">Kredi Kartı ile Ödeme (+%{cardSurchargePercent})</p>
+                    <p className="text-[10px] text-purple-600 dark:text-purple-400">Banka Kart Komisyonu Dahil</p>
+                  </div>
+                  <p className="font-mono font-black text-purple-700 dark:text-purple-300 text-sm">
+                    ₺{totalSaleTryCard.toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 space-y-4 shadow-sm">
+              <h4 className="font-bold text-sm text-slate-900 dark:text-white uppercase tracking-wider flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
+                <span className="material-symbols-outlined text-primary dark:text-sky-400">currency_exchange</span> DÖVİZ VE KİŞİ BAŞI TUTARLAR
+              </h4>
+
+              <div className="space-y-3 text-xs">
+                <div className="flex justify-between items-center p-3 rounded-xl bg-slate-50 dark:bg-slate-800">
+                  <span className="text-slate-500 dark:text-slate-400 font-bold">Kişi Başı Nakit Tutarı (USD)</span>
+                  <span className="font-mono font-black text-primary dark:text-sky-400 text-sm">${perPaxNakitUsd.toFixed(2)} USD</span>
+                </div>
+
+                <div className="flex justify-between items-center p-3 rounded-xl bg-slate-50 dark:bg-slate-800">
+                  <span className="text-slate-500 dark:text-slate-400 font-bold">Kişi Başı Nakit Tutarı (TRY)</span>
+                  <span className="font-mono font-black text-slate-800 dark:text-slate-100 text-sm">
+                    ₺{perPaxNakitTry.toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                  </span>
+                </div>
+
+                <div className="flex justify-between items-center p-3 rounded-xl bg-slate-50 dark:bg-slate-800">
+                  <span className="text-slate-500 dark:text-slate-400 font-bold">Toplam Nakit Karşılığı (USD)</span>
+                  <span className="font-mono font-black text-emerald-600 dark:text-emerald-400 text-sm">${totalSaleUsdNakit.toFixed(2)}</span>
+                </div>
+
+                <div className="flex justify-between items-center p-3 rounded-xl bg-slate-50 dark:bg-slate-800">
+                  <span className="text-slate-500 dark:text-slate-400 font-bold">Toplam Nakit Karşılığı (EUR)</span>
+                  <span className="font-mono font-black text-indigo-600 dark:text-indigo-400 text-sm">€{totalSaleEurNakit.toFixed(2)}</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 space-y-4 shadow-sm flex flex-col justify-between">
+              <div>
+                <h4 className="font-bold text-sm text-slate-900 dark:text-white uppercase tracking-wider flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
+                  <span className="material-symbols-outlined text-emerald-500">send</span> TEKLİF & TEK TIKLA MÜŞTERİYE GÖNDER
+                </h4>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-2 leading-relaxed">
+                  Excel hesaplama motorundan çıkan tüm detayları doğrudan WhatsApp mesajına dönüştürebilir veya CRM teklif kaydına çevirebilirsiniz.
+                </p>
+              </div>
+
+              <div className="space-y-3 pt-4">
+                <a
+                  href={`https://wa.me/${customerPhone.replace(/[^0-9]/g, "")}?text=${generateWhatsAppMessage()}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full bg-[#25D366] hover:bg-[#128C7E] text-white font-bold py-3.5 px-4 rounded-2xl flex items-center justify-center gap-2 text-xs shadow-lg transition-all active:scale-95"
+                >
+                  <span className="material-symbols-outlined text-[18px]">chat</span>
+                  1-Tıkla WhatsApp Teklifi Gönder
+                </a>
+
+                <Link
+                  href={`/admin/fiyat-teklifleri/yeni?name=${encodeURIComponent(customerName)}&phone=${encodeURIComponent(customerPhone)}`}
+                  className="w-full bg-primary hover:bg-[#002f6c] text-white font-bold py-3.5 px-4 rounded-2xl flex items-center justify-center gap-2 text-xs shadow-lg transition-all active:scale-95"
+                >
+                  <span className="material-symbols-outlined text-[18px]">description</span>
+                  Fiyat Teklifi / Proforma PDF Oluştur
+                </Link>
+              </div>
             </div>
           </div>
         </div>
-
-        {/* Export & Actions */}
-        <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 space-y-4 shadow-sm flex flex-col justify-between">
-          <div>
-            <h4 className="font-bold text-sm text-slate-900 dark:text-white uppercase tracking-wider flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
-              <span className="material-symbols-outlined text-emerald-500">send</span> TEKLİF & TEK TIKLA MÜŞTERİYE GÖNDER
-            </h4>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-2 leading-relaxed">
-              Excel hesaplama motorundan çıkan tüm detayları doğrudan WhatsApp mesajına dönüştürebilir veya CRM teklif kaydına çevirebilirsiniz.
-            </p>
-          </div>
-
-          <div className="space-y-3 pt-4">
-            <a
-              href={`https://wa.me/${customerPhone.replace(/[^0-9]/g, "")}?text=${generateWhatsAppMessage()}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full bg-[#25D366] hover:bg-[#128C7E] text-white font-bold py-3.5 px-4 rounded-2xl flex items-center justify-center gap-2 text-xs shadow-lg transition-all active:scale-95"
-            >
-              <span className="material-symbols-outlined text-[18px]">chat</span>
-              1-Tıkla WhatsApp Teklifi Gönder
-            </a>
-
-            <Link
-              href={`/admin/fiyat-teklifleri/yeni?name=${encodeURIComponent(customerName)}&phone=${encodeURIComponent(customerPhone)}`}
-              className="w-full bg-primary hover:bg-[#002f6c] text-white font-bold py-3.5 px-4 rounded-2xl flex items-center justify-center gap-2 text-xs shadow-lg transition-all active:scale-95"
-            >
-              <span className="material-symbols-outlined text-[18px]">description</span>
-              Fiyat Teklifi / Proforma PDF Oluştur
-            </Link>
-          </div>
-        </div>
-      </div>
+      )}
     </div>
   );
 }

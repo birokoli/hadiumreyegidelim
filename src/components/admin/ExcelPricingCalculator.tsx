@@ -27,6 +27,18 @@ interface GroupPricingRow {
   profitUsd: number;
 }
 
+interface GroupTraveler {
+  id: string;
+  siraNo: number;
+  name: string;
+  gender: "Erkek" | "Kadın";
+  category: "Yetişkin" | "Çocuk (2-11)" | "Bebek (0-2)";
+  duration: "10 Gün" | "15 Gün" | "20 Gün" | "-";
+  roomType: "2 Kişilik" | "3 Kişilik" | "4 Kişilik" | "-";
+  costUsd: number;
+  saleUsd: number;
+}
+
 export default function ExcelPricingCalculator({ initialCustomerName, initialPhone }: { initialCustomerName?: string; initialPhone?: string }) {
   // Main Tab State
   const [activeTab, setActiveTab] = useState<"GRUP" | "UYGUN" | "ORTA" | "PAHALI">("GRUP");
@@ -66,6 +78,58 @@ export default function ExcelPricingCalculator({ initialCustomerName, initialPho
     { id: "g11", category: "Bebek (0-2)", duration: "-", roomType: "-", supplier: "Acenta", costUsd: 500, saleUsd: 750, profitUsd: 250 },
   ]);
 
+  // -------------------------------------------------------------
+  // MÜŞTERİ KAYIT LİSTESİ (Group Travelers Registration List)
+  // -------------------------------------------------------------
+  const [groupTravelers, setGroupTravelers] = useState<GroupTraveler[]>([
+    { id: "t1", siraNo: 1, name: "Ahmet Yılmaz", gender: "Erkek", category: "Yetişkin", duration: "15 Gün", roomType: "2 Kişilik", costUsd: 1200, saleUsd: 1400 },
+    { id: "t2", siraNo: 2, name: "Ayşe Yılmaz", gender: "Kadın", category: "Yetişkin", duration: "15 Gün", roomType: "2 Kişilik", costUsd: 1200, saleUsd: 1400 },
+    { id: "t3", siraNo: 3, name: "Mehmet Yılmaz", gender: "Erkek", category: "Çocuk (2-11)", duration: "-", roomType: "-", costUsd: 800, saleUsd: 1000 },
+  ]);
+
+  const addGroupTraveler = () => {
+    const nextNo = groupTravelers.length + 1;
+    const newTraveler: GroupTraveler = {
+      id: `t_${Date.now()}`,
+      siraNo: nextNo,
+      name: `Müşteri ${nextNo}`,
+      gender: "Erkek",
+      category: "Yetişkin",
+      duration: "15 Gün",
+      roomType: "2 Kişilik",
+      costUsd: 1200,
+      saleUsd: 1400,
+    };
+    setGroupTravelers([...groupTravelers, newTraveler]);
+  };
+
+  const removeGroupTraveler = (id: string) => {
+    setGroupTravelers(groupTravelers.filter((t) => t.id !== id).map((t, idx) => ({ ...t, siraNo: idx + 1 })));
+  };
+
+  const updateTravelerField = (id: string, field: keyof GroupTraveler, value: any) => {
+    setGroupTravelers((prev) =>
+      prev.map((t) => {
+        if (t.id !== id) return t;
+        const updated = { ...t, [field]: value };
+        
+        // Auto match cost & sale price from Group matrix if category/duration/roomType changed
+        if (field === "category" || field === "duration" || field === "roomType") {
+          const match = groupRows.find(
+            (r) =>
+              r.category === updated.category &&
+              (updated.category !== "Yetişkin" || (r.duration === updated.duration && r.roomType === updated.roomType))
+          );
+          if (match) {
+            updated.costUsd = match.costUsd;
+            updated.saleUsd = match.saleUsd;
+          }
+        }
+        return updated;
+      })
+    );
+  };
+
   const updateGroupRowCost = (id: string, newCostUsd: number) => {
     setGroupRows((prev) =>
       prev.map((row) => {
@@ -86,10 +150,12 @@ export default function ExcelPricingCalculator({ initialCustomerName, initialPho
     );
   };
 
-  // Group Totals
-  const totalGroupCostUsd = groupRows.reduce((sum, r) => sum + r.costUsd, 0);
-  const totalGroupSaleUsd = groupRows.reduce((sum, r) => sum + r.saleUsd, 0);
-  const totalGroupProfitUsd = groupRows.reduce((sum, r) => sum + r.saleUsd - r.costUsd, 0);
+  // Group Totals calculated from actual registered travelers
+  const registeredPaxCount = groupTravelers.length;
+  const totalRegisteredSaleUsd = groupTravelers.reduce((sum, t) => sum + t.saleUsd, 0);
+  const totalRegisteredCostUsd = groupTravelers.reduce((sum, t) => sum + t.costUsd, 0);
+  const totalRegisteredProfitUsd = totalRegisteredSaleUsd - totalRegisteredCostUsd;
+  const avgPaxSaleUsd = registeredPaxCount > 0 ? totalRegisteredSaleUsd / registeredPaxCount : 0;
 
   // -------------------------------------------------------------
   // INDIVIDUAL TABS DATA (UYGUN, ORTA, PAHALI)
@@ -126,7 +192,7 @@ export default function ExcelPricingCalculator({ initialCustomerName, initialPho
   const setCurrentItems = activeTab === "UYGUN" ? setItemsUygun : activeTab === "ORTA" ? setItemsOrta : setItemsPahali;
 
   // Recalculators
-  const updateRowCostUsd = (id: string, newCostUsd: number) => {
+  const updateRowCostUsdIndividual = (id: string, newCostUsd: number) => {
     setCurrentItems((prev) =>
       prev.map((row) => {
         if (row.id !== id) return row;
@@ -309,48 +375,56 @@ export default function ExcelPricingCalculator({ initialCustomerName, initialPho
       {/* TAB 1: GRUP UMRE FİYATLANDIRMA VIEW                           */}
       {/* ============================================================= */}
       {activeTab === "GRUP" && (
-        <div className="space-y-6">
-          {/* Top KPI Cards for Group */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <div className="space-y-8">
+          {/* Top KPI Cards for Group (Auto-Calculated from Registered Travelers) */}
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
             <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-3xl shadow-sm flex items-center gap-4">
-              <div className="w-14 h-14 rounded-2xl bg-emerald-100 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
-                <span className="material-symbols-outlined text-3xl">attach_money</span>
+              <div className="w-12 h-12 rounded-2xl bg-amber-100 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
+                <span className="material-symbols-outlined text-2xl">groups</span>
               </div>
               <div>
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Toplam Grup Satışı ($)</p>
-                <p className="text-3xl font-black text-slate-900 dark:text-white mt-0.5">${totalGroupSaleUsd.toLocaleString()}</p>
+                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Toplam Müşteri</p>
+                <p className="text-2xl font-black text-slate-900 dark:text-white mt-0.5">{registeredPaxCount} Kişi</p>
               </div>
             </div>
 
             <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-3xl shadow-sm flex items-center gap-4">
-              <div className="w-14 h-14 rounded-2xl bg-blue-100 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
-                <span className="material-symbols-outlined text-3xl">shopping_bag</span>
+              <div className="w-12 h-12 rounded-2xl bg-emerald-100 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
+                <span className="material-symbols-outlined text-2xl">attach_money</span>
               </div>
               <div>
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Toplam Grup Maliyeti ($)</p>
-                <p className="text-3xl font-black text-slate-900 dark:text-white mt-0.5">${totalGroupCostUsd.toLocaleString()}</p>
+                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Toplam Satış ($)</p>
+                <p className="text-2xl font-black text-slate-900 dark:text-white mt-0.5">${totalRegisteredSaleUsd.toLocaleString()}</p>
               </div>
             </div>
 
             <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-3xl shadow-sm flex items-center gap-4">
-              <div className="w-14 h-14 rounded-2xl bg-purple-100 dark:bg-purple-950/40 text-purple-600 dark:text-purple-400 flex items-center justify-center shrink-0">
-                <span className="material-symbols-outlined text-3xl">account_balance_wallet</span>
+              <div className="w-12 h-12 rounded-2xl bg-blue-100 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
+                <span className="material-symbols-outlined text-2xl">shopping_bag</span>
               </div>
               <div>
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Toplam Tahmini Kâr ($)</p>
-                <p className="text-3xl font-black text-emerald-600 dark:text-emerald-400 mt-0.5">+${totalGroupProfitUsd.toLocaleString()}</p>
+                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Toplam Maliyet ($)</p>
+                <p className="text-2xl font-black text-slate-900 dark:text-white mt-0.5">${totalRegisteredCostUsd.toLocaleString()}</p>
               </div>
             </div>
 
             <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-3xl shadow-sm flex items-center gap-4">
-              <div className="w-14 h-14 rounded-2xl bg-amber-100 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
-                <span className="material-symbols-outlined text-3xl">groups</span>
+              <div className="w-12 h-12 rounded-2xl bg-purple-100 dark:bg-purple-950/40 text-purple-600 dark:text-purple-400 flex items-center justify-center shrink-0">
+                <span className="material-symbols-outlined text-2xl">account_balance_wallet</span>
               </div>
               <div>
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Kişi Başı Ortalama ($)</p>
-                <p className="text-3xl font-black text-slate-900 dark:text-white mt-0.5">
-                  ${groupRows.length > 0 ? (totalGroupSaleUsd / groupRows.length).toFixed(2) : "0"}
-                </p>
+                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Toplam Kâr ($)</p>
+                <p className="text-2xl font-black text-emerald-600 dark:text-emerald-400 mt-0.5">+${totalRegisteredProfitUsd.toLocaleString()}</p>
+              </div>
+            </div>
+
+            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-3xl shadow-sm flex items-center gap-4">
+              <div className="w-12 h-12 rounded-2xl bg-indigo-100 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shrink-0">
+                <span className="material-symbols-outlined text-2xl">person_pin</span>
+              </div>
+              <div>
+                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Kişi Başı Ort. Fiyat ($)</p>
+                <p className="text-2xl font-black text-slate-900 dark:text-white mt-0.5">${avgPaxSaleUsd.toFixed(2)}</p>
               </div>
             </div>
           </div>
@@ -359,7 +433,7 @@ export default function ExcelPricingCalculator({ initialCustomerName, initialPho
           <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
             <div className="px-6 py-4 bg-slate-100 dark:bg-slate-800/80 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center">
               <h3 className="font-bold text-sm text-slate-800 dark:text-slate-100 uppercase tracking-wider flex items-center gap-2">
-                <span className="material-symbols-outlined text-emerald-500">groups</span> GRUP UMRE FİYATLANDIRMA VE MÜŞTERİ TAKİP MATRİSİ
+                <span className="material-symbols-outlined text-emerald-500">groups</span> GRUP UMRE FİYATLANDIRMA TARİFE MATRİSİ
               </h3>
               <span className="text-xs font-mono text-slate-400">10 Gün / 15 Gün / 20 Gün Paket Fiyatlaması</span>
             </div>
@@ -405,6 +479,133 @@ export default function ExcelPricingCalculator({ initialCustomerName, initialPho
 
                       <td className="p-4 font-mono font-extrabold text-emerald-600 dark:text-emerald-400">
                         +${row.profitUsd.toFixed(2)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* ============================================================= */}
+          {/* MÜŞTERİ KAYIT LİSTESİ (Group Travelers Registration List)    */}
+          {/* ============================================================= */}
+          <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden space-y-4 p-6">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 dark:border-slate-800 pb-4">
+              <div>
+                <h3 className="font-bold text-base text-slate-900 dark:text-white uppercase tracking-wider flex items-center gap-2">
+                  <span className="material-symbols-outlined text-primary dark:text-sky-400">person_add</span> MÜŞTERİ KAYIT LİSTESİ (GRUP YOLCU LİSTESİ)
+                </h3>
+                <p className="text-xs text-slate-500 mt-1">
+                  Gruba katılan yolcuları ekleyin. Oda ve süreye göre paket fiyatı tarifeden otomatik hesaplanır.
+                </p>
+              </div>
+
+              <button
+                onClick={addGroupTraveler}
+                className="bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-5 py-2.5 rounded-2xl text-xs flex items-center gap-2 shadow-md transition-all active:scale-95 shrink-0"
+              >
+                <span className="material-symbols-outlined text-[18px]">add</span>
+                Yeni Müşteri / Yolcu Ekle
+              </button>
+            </div>
+
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="bg-slate-50 dark:bg-slate-800/60 text-[11px] font-bold text-slate-400 uppercase tracking-wider border-b border-slate-200 dark:border-slate-800">
+                    <th className="p-3 w-14">Sıra</th>
+                    <th className="p-3">Müşteri Ad Soyad</th>
+                    <th className="p-3">Cinsiyet</th>
+                    <th className="p-3">Yaş / Kategori</th>
+                    <th className="p-3">Paket Süresi</th>
+                    <th className="p-3">Oda Tipi</th>
+                    <th className="p-3">Maliyet ($)</th>
+                    <th className="p-3">Satış Fiyatı ($)</th>
+                    <th className="p-3 text-right">İşlem</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100 dark:divide-slate-800 text-xs font-medium">
+                  {groupTravelers.map((t) => (
+                    <tr key={t.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
+                      <td className="p-3 font-mono font-bold text-slate-400">#{t.siraNo}</td>
+                      
+                      <td className="p-3">
+                        <input
+                          type="text"
+                          value={t.name}
+                          onChange={(e) => updateTravelerField(t.id, "name", e.target.value)}
+                          className="bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white rounded-lg px-3 py-1 font-bold outline-none focus:ring-2 focus:ring-sky-400 w-44"
+                        />
+                      </td>
+
+                      <td className="p-3">
+                        <select
+                          value={t.gender}
+                          onChange={(e) => updateTravelerField(t.id, "gender", e.target.value)}
+                          className="bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white rounded-lg px-2 py-1 font-semibold outline-none"
+                        >
+                          <option value="Erkek">Erkek</option>
+                          <option value="Kadın">Kadın</option>
+                        </select>
+                      </td>
+
+                      <td className="p-3">
+                        <select
+                          value={t.category}
+                          onChange={(e) => updateTravelerField(t.id, "category", e.target.value)}
+                          className="bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white rounded-lg px-2 py-1 font-semibold outline-none"
+                        >
+                          <option value="Yetişkin">Yetişkin</option>
+                          <option value="Çocuk (2-11)">Çocuk (2-11)</option>
+                          <option value="Bebek (0-2)">Bebek (0-2)</option>
+                        </select>
+                      </td>
+
+                      <td className="p-3">
+                        <select
+                          value={t.duration}
+                          disabled={t.category !== "Yetişkin"}
+                          onChange={(e) => updateTravelerField(t.id, "duration", e.target.value)}
+                          className="bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white rounded-lg px-2 py-1 font-semibold outline-none disabled:opacity-40"
+                        >
+                          <option value="10 Gün">10 Gün</option>
+                          <option value="15 Gün">15 Gün</option>
+                          <option value="20 Gün">20 Gün</option>
+                          <option value="-">-</option>
+                        </select>
+                      </td>
+
+                      <td className="p-3">
+                        <select
+                          value={t.roomType}
+                          disabled={t.category !== "Yetişkin"}
+                          onChange={(e) => updateTravelerField(t.id, "roomType", e.target.value)}
+                          className="bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white rounded-lg px-2 py-1 font-semibold outline-none disabled:opacity-40"
+                        >
+                          <option value="2 Kişilik">2 Kişilik</option>
+                          <option value="3 Kişilik">3 Kişilik</option>
+                          <option value="4 Kişilik">4 Kişilik</option>
+                          <option value="-">-</option>
+                        </select>
+                      </td>
+
+                      <td className="p-3 font-mono font-bold text-slate-700 dark:text-slate-300">
+                        ${t.costUsd.toFixed(2)}
+                      </td>
+
+                      <td className="p-3 font-mono font-extrabold text-emerald-600 dark:text-emerald-400">
+                        ${t.saleUsd.toFixed(2)} (₺{(t.saleUsd * usdRate).toLocaleString("tr-TR", { maximumFractionDigits: 0 })})
+                      </td>
+
+                      <td className="p-3 text-right">
+                        <button
+                          onClick={() => removeGroupTraveler(t.id)}
+                          className="p-1.5 rounded-lg bg-red-50 dark:bg-red-950/40 text-red-500 hover:bg-red-500 hover:text-white transition-all"
+                          title="Sil"
+                        >
+                          <span className="material-symbols-outlined text-[18px]">delete</span>
+                        </button>
                       </td>
                     </tr>
                   ))}
@@ -509,7 +710,7 @@ export default function ExcelPricingCalculator({ initialCustomerName, initialPho
                           type="number"
                           step="0.01"
                           value={row.costUsd || ""}
-                          onChange={(e) => updateRowCostUsd(row.id, parseFloat(e.target.value) || 0)}
+                          onChange={(e) => updateRowCostUsdIndividual(row.id, parseFloat(e.target.value) || 0)}
                           className="w-28 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white rounded-lg px-2.5 py-1.5 font-mono font-extrabold outline-none focus:ring-2 focus:ring-sky-400"
                         />
                       </td>

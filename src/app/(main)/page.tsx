@@ -66,7 +66,9 @@ export default async function Home() {
             src={home_banner_image}
             fill
             priority
-            sizes="100vw"
+            fetchPriority="high"
+            sizes="(max-width: 768px) 100vw, 100vw"
+            quality={80}
           />
           {/* Universal contrast overlay for user-uploaded images */}
           <div className="absolute inset-0 bg-black/40"></div>

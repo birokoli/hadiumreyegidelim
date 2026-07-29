@@ -78,8 +78,8 @@ export const HANIM_UMRESI_CAMPAIGN_SETTING_KEY = "HANIM_UMRESI_CAMPAIGN_CONFIG";
 export const DEFAULT_EYLUL_CAMPAIGN: EylulCampaignConfig = {
   seoTitle: "Eylül Grup Umresi — 10, 15 ve 20 Günlük Programlar | HadiUmreyeGidelim",
   seoDescription: "15 veya 25 Eylül çıkışlı grup umresi. Kişi başı 1.250 USD'den başlayan fiyatlarla vize, uçak bileti, Kâbe'ye yürüme mesafesinde otel ve mübarek yerler turu dahil.",
-  heroImage: "https://images.unsplash.com/photo-1564769625905-50e93615e769?q=80&w=2600&auto=format&fit=crop",
-  footerImage: "https://images.unsplash.com/photo-1591604466107-ec97de577aff?q=80&w=2600&auto=format&fit=crop",
+  heroImage: "https://images.unsplash.com/photo-1564769625905-50e93615e769?q=80&w=1200&auto=format&fit=crop",
+  footerImage: "https://images.unsplash.com/photo-1591604466107-ec97de577aff?q=80&w=1080&auto=format&fit=crop",
   badgeText: "SINIRLI KONTENJAN — 15 VEYA 25 EYLÜL ÇIKIŞLI",
   title: "Eylül",
   highlightedTitle: "Grup Umresi",
@@ -147,14 +147,14 @@ export const DEFAULT_EYLUL_CAMPAIGN: EylulCampaignConfig = {
   readyCtaDescription: "İlk kez umreye gidecek misafirlerimiz için hazırlık aşamasından ibadetlerin tamamlanmasına kadar rehberli ve güvenli bir program.",
   readyCtaNote: "İlk kez umreye gideceklere özel rehberlik",
   readyCtaButton: "İlk Umrem İçin Bilgi Al",
-  readyCtaImage: "https://images.unsplash.com/photo-1591604466107-ec97de577aff?q=80&w=1600&auto=format&fit=crop",
+  readyCtaImage: "https://images.unsplash.com/photo-1591604466107-ec97de577aff?q=80&w=1080&auto=format&fit=crop",
   readyCtaWhatsappMessage: "Merhaba, İlk Umrem Kampanyası hakkında bilgi almak istiyorum.",
   finalAdsBadge: "HANIMLARA ÖZEL MANEVİ YOLCULUK",
   finalAdsTitle: "Hanım Umresi Kampanyası",
   finalAdsDescription: "Hanım misafirlerimize özel, huzurlu ve güvenli grup düzeniyle manevi yolculuğunuzu birlikte planlayalım.",
   finalAdsNote: "Program detayları ve müsait tarihler için bize ulaşın",
   finalAdsButton: "Hanım Umresi İçin Bilgi Al",
-  finalAdsImage: "https://images.unsplash.com/photo-1565552645632-d725f8bfc19a?q=80&w=2600&auto=format&fit=crop",
+  finalAdsImage: "https://images.unsplash.com/photo-1565552645632-d725f8bfc19a?q=80&w=1080&auto=format&fit=crop",
   finalAdsWhatsappMessage: "Merhaba, Hanım Umresi Kampanyası hakkında bilgi almak istiyorum.",
 };
 

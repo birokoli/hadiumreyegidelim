@@ -344,108 +344,98 @@ export default function ExcelPricingCalculator({ initialCustomerName, initialPho
       {/* ============================================================= */}
       {activeTab === "GRUP" && (
         <div className="space-y-8">
-          {/* Top KPI Cards for Group (Auto-Calculated from Registered Travelers) */}
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
-            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-3xl shadow-sm flex items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-amber-100 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
-                <span className="material-symbols-outlined text-2xl">groups</span>
-              </div>
+          {/* Top KPI Cards for Group */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
+            <div className="p-4 rounded border border-zinc-200 bg-zinc-50/50 flex flex-col justify-between">
+              <span className="text-[10px] font-bold tracking-widest text-zinc-400 uppercase">MÜŞTERİ</span>
               <div>
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Toplam Müşteri</p>
-                <p className="text-2xl font-black text-slate-900 dark:text-white mt-0.5">{registeredPaxCount} Kişi</p>
+                <p className="text-xs text-zinc-500 font-medium">Toplam Yolcu</p>
+                <p className="text-xl font-light text-zinc-900 mt-0.5">{registeredPaxCount} Kişi</p>
               </div>
             </div>
 
-            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-3xl shadow-sm flex items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-emerald-100 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
-                <span className="material-symbols-outlined text-2xl">attach_money</span>
-              </div>
+            <div className="p-4 rounded border border-zinc-200 bg-zinc-50/50 flex flex-col justify-between">
+              <span className="text-[10px] font-bold tracking-widest text-zinc-400 uppercase">SATIŞ</span>
               <div>
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Toplam Satış ($)</p>
-                <p className="text-2xl font-black text-slate-900 dark:text-white mt-0.5">${totalRegisteredSaleUsd.toLocaleString()}</p>
+                <p className="text-xs text-zinc-500 font-medium">Toplam Satış ($)</p>
+                <p className="text-xl font-light text-zinc-900 mt-0.5">${totalRegisteredSaleUsd.toLocaleString()}</p>
               </div>
             </div>
 
-            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-3xl shadow-sm flex items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-blue-100 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
-                <span className="material-symbols-outlined text-2xl">shopping_bag</span>
-              </div>
+            <div className="p-4 rounded border border-zinc-200 bg-zinc-50/50 flex flex-col justify-between">
+              <span className="text-[10px] font-bold tracking-widest text-zinc-400 uppercase">MALİYET</span>
               <div>
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Toplam Maliyet ($)</p>
-                <p className="text-2xl font-black text-slate-900 dark:text-white mt-0.5">${totalRegisteredCostUsd.toLocaleString()}</p>
+                <p className="text-xs text-zinc-500 font-medium">Toplam Maliyet ($)</p>
+                <p className="text-xl font-light text-zinc-900 mt-0.5">${totalRegisteredCostUsd.toLocaleString()}</p>
               </div>
             </div>
 
-            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-3xl shadow-sm flex items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-purple-100 dark:bg-purple-950/40 text-purple-600 dark:text-purple-400 flex items-center justify-center shrink-0">
-                <span className="material-symbols-outlined text-2xl">account_balance_wallet</span>
-              </div>
+            <div className="p-4 rounded border border-zinc-200 bg-zinc-50/50 flex flex-col justify-between">
+              <span className="text-[10px] font-bold tracking-widest text-zinc-400 uppercase">KÂR</span>
               <div>
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Toplam Kâr ($)</p>
-                <p className="text-2xl font-black text-emerald-600 dark:text-emerald-400 mt-0.5">+${totalRegisteredProfitUsd.toLocaleString()}</p>
+                <p className="text-xs text-zinc-500 font-medium">Toplam Kâr ($)</p>
+                <p className="text-xl font-light text-zinc-900 mt-0.5">+${totalRegisteredProfitUsd.toLocaleString()}</p>
               </div>
             </div>
 
-            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-3xl shadow-sm flex items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-indigo-100 dark:bg-indigo-950/40 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shrink-0">
-                <span className="material-symbols-outlined text-2xl">person_pin</span>
-              </div>
+            <div className="p-4 rounded border border-zinc-200 bg-zinc-50/50 flex flex-col justify-between">
+              <span className="text-[10px] font-bold tracking-widest text-zinc-400 uppercase">ORTALAMA</span>
               <div>
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Kişi Başı Ort. Fiyat ($)</p>
-                <p className="text-2xl font-black text-slate-900 dark:text-white mt-0.5">${avgPaxSaleUsd.toFixed(2)}</p>
+                <p className="text-xs text-zinc-500 font-medium">Kişi Başı Ortalama</p>
+                <p className="text-xl font-light text-zinc-900 mt-0.5">${avgPaxSaleUsd.toFixed(2)}</p>
               </div>
             </div>
           </div>
 
           {/* Group Pricing Table */}
-          <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
-            <div className="px-6 py-4 bg-slate-100 dark:bg-slate-800/80 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center">
-              <h3 className="font-bold text-sm text-slate-800 dark:text-slate-100 uppercase tracking-wider flex items-center gap-2">
-                <span className="material-symbols-outlined text-emerald-500">groups</span> GRUP UMRE FİYATLANDIRMA TARİFE MATRİSİ
+          <div className="border border-zinc-200 rounded overflow-hidden">
+            <div className="px-6 py-4 bg-zinc-50 border-b border-zinc-200 flex justify-between items-center">
+              <h3 className="font-semibold text-xs text-zinc-900 uppercase tracking-wider">
+                GRUP UMRE FİYATLANDIRMA TARİFE MATRİSİ
               </h3>
-              <span className="text-xs font-mono text-slate-400">10 Gün / 15 Gün / 20 Gün Paket Fiyatlaması</span>
+              <span className="text-[11px] font-mono text-zinc-400">10 Gün / 15 Gün / 20 Gün Paket Fiyatlaması</span>
             </div>
 
             <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse">
-                <thead>
-                  <tr className="bg-slate-50 dark:bg-slate-800/60 text-[11px] font-bold text-slate-400 uppercase tracking-wider border-b border-slate-200 dark:border-slate-800">
-                    <th className="p-4">Yaş / Kategori</th>
-                    <th className="p-4">Paket Süresi</th>
-                    <th className="p-4">Oda Tipi</th>
-                    <th className="p-4">Tedarikçi</th>
-                    <th className="p-4">Maliyet ($)</th>
-                    <th className="p-4">Satış Fiyatı ($)</th>
-                    <th className="p-4 text-emerald-600 dark:text-emerald-400">Kâr ($)</th>
+              <table className="w-full text-left text-xs">
+                <thead className="bg-zinc-50 border-b border-zinc-200 text-[10px] font-bold text-zinc-400 uppercase tracking-wider">
+                  <tr>
+                    <th className="p-3">Yaş / Kategori</th>
+                    <th className="p-3">Paket Süresi</th>
+                    <th className="p-3">Oda Tipi</th>
+                    <th className="p-3">Tedarikçi</th>
+                    <th className="p-3">Maliyet ($)</th>
+                    <th className="p-3">Satış Fiyatı ($)</th>
+                    <th className="p-3">Kâr ($)</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100 dark:divide-slate-800 text-xs font-medium">
+                <tbody className="divide-y divide-zinc-100">
                   {groupRows.map((row) => (
-                    <tr key={row.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
-                      <td className="p-4 font-bold text-slate-900 dark:text-white">{row.category}</td>
-                      <td className="p-4 font-semibold text-slate-700 dark:text-slate-300">{row.duration}</td>
-                      <td className="p-4 text-slate-600 dark:text-slate-400">{row.roomType}</td>
-                      <td className="p-4 text-slate-500">{row.supplier}</td>
+                    <tr key={row.id} className="hover:bg-zinc-50 transition-colors">
+                      <td className="p-3 font-semibold text-zinc-900">{row.category}</td>
+                      <td className="p-3 text-zinc-700">{row.duration}</td>
+                      <td className="p-3 text-zinc-500">{row.roomType}</td>
+                      <td className="p-3 text-zinc-400">{row.supplier}</td>
 
-                      <td className="p-4">
+                      <td className="p-3">
                         <input
                           type="number"
                           value={row.costUsd}
                           onChange={(e) => updateGroupRowCost(row.id, parseFloat(e.target.value) || 0)}
-                          className="w-28 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white rounded-lg px-2.5 py-1.5 font-mono font-extrabold outline-none focus:ring-2 focus:ring-sky-400"
+                          className="w-24 bg-white border border-zinc-200 text-zinc-900 rounded px-2 py-1 font-mono font-bold outline-none"
                         />
                       </td>
 
-                      <td className="p-4">
+                      <td className="p-3">
                         <input
                           type="number"
                           value={row.saleUsd}
                           onChange={(e) => updateGroupRowSale(row.id, parseFloat(e.target.value) || 0)}
-                          className="w-28 bg-emerald-50 dark:bg-emerald-950/80 border border-emerald-400 dark:border-emerald-700 text-emerald-900 dark:text-emerald-300 font-mono font-black rounded-lg px-2.5 py-1.5 outline-none focus:ring-2 focus:ring-emerald-400"
+                          className="w-24 bg-white border border-zinc-200 text-zinc-900 font-mono font-bold rounded px-2 py-1 outline-none"
                         />
                       </td>
 
-                      <td className="p-4 font-mono font-extrabold text-emerald-600 dark:text-emerald-400">
+                      <td className="p-3 font-mono font-bold text-zinc-900">
                         +${row.profitUsd.toFixed(2)}
                       </td>
                     </tr>

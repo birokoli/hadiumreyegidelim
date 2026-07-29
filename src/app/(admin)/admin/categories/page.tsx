@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 export default function CategoriesPage() {
   const [categories, setCategories] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  
+
   const [showAdd, setShowAdd] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [newCategory, setNewCategory] = useState({
@@ -43,7 +43,6 @@ export default function CategoriesPage() {
       description: cat.description || "",
     });
     setShowAdd(true);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleCreate = async (e: React.FormEvent) => {
@@ -51,7 +50,7 @@ export default function CategoriesPage() {
     try {
       const slugToUse = newCategory.slug || newCategory.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
       const payload = { ...newCategory, slug: slugToUse };
-      
+
       const url = editingId ? `/api/categories?id=${editingId}` : "/api/categories";
       const method = editingId ? "PUT" : "POST";
 
@@ -60,124 +59,126 @@ export default function CategoriesPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
+
       if (res.ok) {
-        alert(editingId ? "Kategori başarıyla güncellendi!" : "Kategori başarıyla eklendi!");
         handleCancel();
         fetchCategories();
-      } else {
-        alert("Kaydedilirken hata oluştu.");
       }
-    } catch (e) {
-      alert("Sunucu hatası.");
-    }
+    } catch (e) {}
   };
 
   const handleDelete = async (id: string) => {
-    if (!window.confirm("Bu kategoriyi silmek istediğinize emin misiniz? (Bağlı blog yazılarından kategori silinir)")) return;
+    if (!window.confirm("Bu kategoriyi silmek istediğinize emin misiniz?")) return;
     try {
       const res = await fetch(`/api/categories?id=${id}`, { method: "DELETE" });
-      if (res.ok) {
-        fetchCategories();
-      } else {
-        alert("Silinirken hata oluştu (Sunucu Hatası)");
-      }
-    } catch (e) {
-      alert("Silinirken hata oluştu (Ağ Hatası)");
-    }
+      if (res.ok) fetchCategories();
+    } catch (e) {}
   };
 
-  if (loading) return <div className="pt-24 px-12 pb-20 max-w-7xl mx-auto flex justify-center"><div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full"></div></div>;
+  if (loading) return <div className="p-8 max-w-7xl mx-auto min-h-screen bg-white text-zinc-500 text-xs">Kategoriler yükleniyor...</div>;
 
   return (
-    <div className="pt-24 px-12 pb-20 max-w-7xl mx-auto">
-      <header className="mb-12 flex justify-between items-end">
+    <div className="p-6 lg:p-8 max-w-7xl mx-auto space-y-8 min-h-screen bg-white text-zinc-900">
+      {/* Header Bar */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-zinc-200">
         <div>
-          <span className="text-tertiary font-label text-[10px] tracking-[0.3em] uppercase block mb-2">Manevi Yönetim</span>
-          <h2 className="font-headline text-4xl font-light text-primary tracking-tight">Kategori Yönetimi</h2>
-          <p className="text-sm text-on-surface-variant mt-2 font-light">Blog içeriklerinizi gruplamak için kategoriler oluşturun ve yönetin.</p>
+          <span className="text-[10px] font-bold tracking-widest text-zinc-400 uppercase">ICERIK STUDYOSU</span>
+          <h1 className="text-2xl font-light tracking-tight text-zinc-900 mt-1">Kategori Yönetimi</h1>
+          <p className="text-xs text-zinc-500 mt-0.5">Blog makaleleri ve içerikler için kategorileri düzenleyin.</p>
         </div>
-        <button 
-          onClick={() => showAdd ? handleCancel() : setShowAdd(true)}
-          className="bg-primary text-on-primary px-6 py-3 rounded-xl font-bold tracking-widest text-xs uppercase hover:bg-primary-container hover:text-primary transition-all shadow-lg flex items-center gap-2"
-        >
-          {showAdd ? <><span className="material-symbols-outlined text-[18px]">close</span> İptal Et</> : <><span className="material-symbols-outlined text-[18px]">add</span> Yeni Kategori Ekle</>}
-        </button>
-      </header>
+
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => showAdd ? handleCancel() : setShowAdd(true)}
+            className="inline-flex items-center gap-1.5 bg-zinc-900 hover:bg-zinc-800 text-white font-medium px-4 py-2 rounded text-xs transition-colors"
+          >
+            <span className="material-symbols-outlined text-[16px]">{showAdd ? "close" : "add"}</span>
+            <span>{showAdd ? "İptal Et" : "Yeni Kategori Ekle"}</span>
+          </button>
+        </div>
+      </div>
 
       {showAdd && (
-        <section className="bg-surface-container p-12 rounded-2xl relative overflow-hidden mb-12 shadow-sm border border-outline-variant/10">
-          <form onSubmit={handleCreate} className="relative z-10 w-full space-y-8 max-w-3xl">
-            <h3 className="font-headline text-3xl text-primary border-b border-outline-variant/20 pb-4 mb-8">
-              {editingId ? 'Kategori Düzenle' : 'Kategori Detayları'}
-            </h3>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Kategori Adı</label>
-                <input required className="w-full bg-white border border-outline-variant/30 rounded-xl p-4 text-secondary focus:ring-primary focus:border-primary outline-none font-bold" 
-                  value={newCategory.name} onChange={e => setNewCategory({...newCategory, name: e.target.value})} placeholder="Örn: Medine Ziyaretleri" />
+        <section className="bg-zinc-50 border border-zinc-200 p-6 rounded space-y-4 text-xs">
+          <h3 className="text-sm font-bold text-zinc-900 border-b border-zinc-200 pb-3">
+            {editingId ? 'Kategoriyi Düzenle' : 'Yeni Kategori Ekle'}
+          </h3>
+
+          <form onSubmit={handleCreate} className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-zinc-600 font-medium mb-1">Kategori Adı</label>
+                <input
+                  required
+                  type="text"
+                  value={newCategory.name}
+                  onChange={e => setNewCategory({ ...newCategory, name: e.target.value })}
+                  placeholder="Örn: Rehberler"
+                  className="w-full bg-white border border-zinc-200 rounded p-2 focus:outline-none"
+                />
               </div>
-              <div className="space-y-2">
-                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">URL Slug</label>
-                <input className="w-full bg-white border border-outline-variant/30 rounded-xl p-4 text-secondary focus:ring-primary focus:border-primary outline-none" 
-                  value={newCategory.slug} onChange={e => setNewCategory({...newCategory, slug: e.target.value})} placeholder="medine-ziyaretleri" />
+
+              <div>
+                <label className="block text-zinc-600 font-medium mb-1">Slug</label>
+                <input
+                  type="text"
+                  value={newCategory.slug}
+                  onChange={e => setNewCategory({ ...newCategory, slug: e.target.value })}
+                  placeholder="rehberler"
+                  className="w-full bg-white border border-zinc-200 rounded p-2 focus:outline-none"
+                />
               </div>
             </div>
 
-            <div className="space-y-2">
-              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Açıklama</label>
-              <textarea className="w-full bg-white border border-outline-variant/30 rounded-xl p-4 text-sm text-on-surface-variant min-h-[100px] focus:ring-primary focus:border-primary outline-none" 
-                value={newCategory.description} onChange={e => setNewCategory({...newCategory, description: e.target.value})} placeholder="Kategori için kısa bir açıklama..." />
+            <div>
+              <label className="block text-zinc-600 font-medium mb-1">Açıklama</label>
+              <textarea
+                rows={2}
+                value={newCategory.description}
+                onChange={e => setNewCategory({ ...newCategory, description: e.target.value })}
+                className="w-full bg-white border border-zinc-200 rounded p-2 focus:outline-none"
+              />
             </div>
 
-            <div className="pt-6 flex justify-end gap-4">
-               <button type="submit" className="bg-primary hover:bg-[#002f6c] text-white px-8 py-3 rounded-xl font-bold tracking-widest uppercase shadow-lg transition-all flex items-center gap-2">
-                 <span className="material-symbols-outlined text-lg block">save</span> 
-                 {editingId ? 'GÜNCELLE' : 'KAYDET'}
-               </button>
+            <div className="pt-2 flex justify-end">
+              <button
+                type="submit"
+                className="px-6 py-2 bg-zinc-900 text-white rounded text-xs font-medium hover:bg-zinc-800 transition-colors"
+              >
+                {editingId ? 'GÜNCELLE' : 'KAYDET'}
+              </button>
             </div>
           </form>
         </section>
       )}
 
-      <div className="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-[0px_32px_64px_-12px_rgba(0,55,129,0.06)] border border-outline-variant/10">
-        <table className="w-full text-left border-collapse">
-          <thead>
-            <tr className="bg-surface-container-low border-none">
-              <th className="px-8 py-5 text-[10px] font-bold tracking-widest text-outline uppercase">Kategori Adı</th>
-              <th className="px-8 py-5 text-[10px] font-bold tracking-widest text-outline uppercase">Açıklama</th>
-              <th className="px-8 py-5 text-[10px] font-bold tracking-widest text-outline uppercase">Yazı Sayısı</th>
-              <th className="px-8 py-5 text-[10px] font-bold tracking-widest text-outline uppercase text-right">İşlem</th>
+      {/* Table */}
+      <div className="border border-zinc-200 rounded overflow-hidden">
+        <table className="w-full text-left text-xs">
+          <thead className="bg-zinc-50 border-b border-zinc-200 text-zinc-500 uppercase tracking-wider font-semibold text-[10px]">
+            <tr>
+              <th className="px-4 py-3">Kategori Adı</th>
+              <th className="px-4 py-3">Slug</th>
+              <th className="px-4 py-3">İçerik Sayısı</th>
+              <th className="px-4 py-3 text-right">İşlem</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-surface-container">
+          <tbody className="divide-y divide-zinc-100">
             {categories.map(cat => (
-              <tr key={cat.id} className="group hover:bg-surface-container-low/50 transition-colors">
-                <td className="px-8 py-6">
-                  <p className="font-bold text-primary font-headline text-lg mb-1">{cat.name}</p>
-                  <p className="text-xs text-outline">{cat.slug}</p>
-                </td>
-                <td className="px-8 py-6 text-sm text-on-surface-variant max-w-sm">
-                  {cat.description || '-'}
-                </td>
-                <td className="px-8 py-6 text-sm font-bold text-primary">
-                  {cat._count?.posts || 0}
-                </td>
-                <td className="px-8 py-6 text-right flex items-center justify-end gap-2 h-full">
-                  <button onClick={() => handleEdit(cat)} className="p-2 bg-primary/10 text-primary hover:bg-primary hover:text-white rounded-lg transition-all">
-                    <span className="material-symbols-outlined text-lg block">edit</span>
+              <tr key={cat.id} className="hover:bg-zinc-50 transition-colors">
+                <td className="px-4 py-3 font-semibold text-zinc-900">{cat.name}</td>
+                <td className="px-4 py-3 font-mono text-zinc-500">{cat.slug}</td>
+                <td className="px-4 py-3 text-zinc-600">{cat._count?.posts || 0} Yazı</td>
+                <td className="px-4 py-3 text-right space-x-2">
+                  <button onClick={() => handleEdit(cat)} className="p-1 text-zinc-400 hover:text-zinc-900">
+                    <span className="material-symbols-outlined text-[16px]">edit</span>
                   </button>
-                  <button onClick={() => handleDelete(cat.id)} className="p-2 bg-error/10 text-error hover:bg-error hover:text-white rounded-lg transition-all">
-                    <span className="material-symbols-outlined text-lg block">delete</span>
+                  <button onClick={() => handleDelete(cat.id)} className="p-1 text-zinc-400 hover:text-red-600">
+                    <span className="material-symbols-outlined text-[16px]">delete</span>
                   </button>
                 </td>
               </tr>
             ))}
-            {categories.length === 0 && (
-              <tr><td colSpan={4} className="text-center py-16 text-outline font-medium">
-                Henüz kategori eklemediniz.
-              </td></tr>
-            )}
           </tbody>
         </table>
       </div>

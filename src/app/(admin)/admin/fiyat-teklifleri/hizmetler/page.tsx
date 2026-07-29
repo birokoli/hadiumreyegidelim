@@ -17,19 +17,19 @@ interface ServiceItem {
 }
 
 const CATEGORIES = [
-  { value: 'vize',     label: 'Vize İşlemleri',    icon: 'badge' },
-  { value: 'hotel',    label: 'Konaklama',          icon: 'hotel' },
-  { value: 'transfer', label: 'Transfer ve Ulaşım', icon: 'directions_car' },
-  { value: 'tur',      label: 'Gezi ve Ziyaretler', icon: 'tour' },
-  { value: 'flight',   label: 'Uçuş',               icon: 'flight' },
-  { value: 'extra',    label: 'Ekstra Hizmetler',   icon: 'add_circle' },
+  { value: 'vize', label: 'Vize İşlemleri' },
+  { value: 'hotel', label: 'Konaklama' },
+  { value: 'transfer', label: 'Transfer ve Ulaşım' },
+  { value: 'tur', label: 'Gezi ve Ziyaretler' },
+  { value: 'flight', label: 'Uçuş' },
+  { value: 'extra', label: 'Ekstra Hizmetler' },
 ];
 
 const PRICING_TYPES = [
-  { value: 'per_person',  label: 'Kişi başı' },
+  { value: 'per_person', label: 'Kişi başı' },
   { value: 'per_vehicle', label: 'Araç bazlı' },
-  { value: 'per_room',    label: 'Oda + ek yatak' },
-  { value: 'flat',        label: 'Sabit / adet' },
+  { value: 'per_room', label: 'Oda + ek yatak' },
+  { value: 'flat', label: 'Sabit / adet' },
 ];
 
 const BLANK = {
@@ -43,17 +43,14 @@ const BLANK = {
   defaultExtraBedPrice: 0,
 };
 
-const inputCls = 'w-full border border-slate-200 rounded-xl px-3 py-2 text-[13px] text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#003781]/20 bg-white';
-
 export default function ServiceLibraryPage() {
-  const [services,  setServices]  = useState<ServiceItem[]>([]);
-  const [loading,   setLoading]   = useState(true);
+  const [services, setServices] = useState<ServiceItem[]>([]);
+  const [loading, setLoading] = useState(true);
   const [catFilter, setCatFilter] = useState('all');
   const [modalOpen, setModalOpen] = useState(false);
-  const [editId,    setEditId]    = useState<string | null>(null);
-  const [form,      setForm]      = useState({ ...BLANK });
-  const [saving,    setSaving]    = useState(false);
-  const [deleting,  setDeleting]  = useState<string | null>(null);
+  const [editId, setEditId] = useState<string | null>(null);
+  const [form, setForm] = useState({ ...BLANK });
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => { load(); }, []);
 
@@ -72,12 +69,12 @@ export default function ServiceLibraryPage() {
   function openEdit(svc: ServiceItem) {
     setEditId(svc.id);
     setForm({
-      category:            svc.category,
-      name:                svc.name,
-      description:         svc.description || '',
-      defaultPricingType:  svc.defaultPricingType,
-      defaultCostUsd:      svc.defaultCostUsd,
-      defaultVehicleType:  svc.defaultVehicleType || 'sedan',
+      category: svc.category,
+      name: svc.name,
+      description: svc.description || '',
+      defaultPricingType: svc.defaultPricingType,
+      defaultCostUsd: svc.defaultCostUsd,
+      defaultVehicleType: svc.defaultVehicleType || 'sedan',
       defaultChildPercent: svc.defaultChildPercent || 0,
       defaultExtraBedPrice: svc.defaultExtraBedPrice || 0,
     });
@@ -87,7 +84,7 @@ export default function ServiceLibraryPage() {
   async function save() {
     if (!form.name.trim()) return alert('Hizmet adı zorunlu.');
     setSaving(true);
-    const url    = editId ? `/api/admin/service-library/${editId}` : '/api/admin/service-library';
+    const url = editId ? `/api/admin/service-library/${editId}` : '/api/admin/service-library';
     const method = editId ? 'PUT' : 'POST';
     const res = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(form) });
     if (res.ok) { await load(); setModalOpen(false); }
@@ -96,102 +93,96 @@ export default function ServiceLibraryPage() {
 
   async function del(id: string, name: string) {
     if (!confirm(`"${name}" silinsin mi?`)) return;
-    setDeleting(id);
     await fetch(`/api/admin/service-library/${id}`, { method: 'DELETE' });
     setServices(prev => prev.filter(s => s.id !== id));
-    setDeleting(null);
   }
 
   const filtered = services.filter(s => catFilter === 'all' || s.category === catFilter);
 
+  if (loading) return <div className="p-8 max-w-7xl mx-auto min-h-screen bg-white text-zinc-500 text-xs">Hizmet kütüphanesi yükleniyor...</div>;
+
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between gap-4 flex-wrap">
+    <div className="p-6 lg:p-8 max-w-7xl mx-auto space-y-8 min-h-screen bg-white text-zinc-900">
+      {/* Header Bar */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-zinc-200">
         <div>
-          <h1 className="text-[22px] font-bold text-gray-900">Hizmet Kütüphanesi</h1>
-          <p className="text-[13px] text-gray-400 mt-0.5">{services.length} hizmet şablonu</p>
+          <span className="text-[10px] font-bold tracking-widest text-zinc-400 uppercase">TEKLIF VE SERVISLER</span>
+          <h1 className="text-2xl font-light tracking-tight text-zinc-900 mt-1">Hizmet Kütüphanesi</h1>
+          <p className="text-xs text-zinc-500 mt-0.5">{services.length} hizmet şablonu aktif.</p>
         </div>
-        <button onClick={openNew}
-          className="flex items-center gap-2 bg-[#003781] hover:bg-[#002d6a] text-white text-[13px] font-semibold px-4 py-2.5 rounded-xl shadow-sm transition-all">
-          <span className="material-symbols-outlined text-[18px]">add</span>
-          Yeni Hizmet
-        </button>
+
+        <div className="flex items-center gap-3">
+          <button
+            onClick={openNew}
+            className="inline-flex items-center gap-1.5 bg-zinc-900 hover:bg-zinc-800 text-white font-medium px-4 py-2 rounded text-xs transition-colors"
+          >
+            <span className="material-symbols-outlined text-[16px]">add</span>
+            <span>Yeni Hizmet</span>
+          </button>
+        </div>
       </div>
 
-      {/* Kategori filtresi */}
-      <div className="flex gap-2 flex-wrap">
-        <button onClick={() => setCatFilter('all')}
-          className={`px-3 py-1.5 rounded-lg text-[12px] font-medium transition-colors ${catFilter === 'all' ? 'bg-[#003781] text-white' : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'}`}>
+      {/* Filter Tabs */}
+      <div className="flex items-center gap-2 border-b border-zinc-200 pb-3 overflow-x-auto">
+        <button
+          onClick={() => setCatFilter('all')}
+          className={`px-3 py-1.5 rounded text-xs font-medium border transition-colors ${
+            catFilter === 'all'
+              ? 'bg-zinc-900 text-white border-zinc-900 font-semibold'
+              : 'bg-white text-zinc-600 border-zinc-200 hover:border-zinc-900'
+          }`}
+        >
           Tümü
         </button>
-        {CATEGORIES.map(c => (
-          <button key={c.value} onClick={() => setCatFilter(c.value)}
-            className={`px-3 py-1.5 rounded-lg text-[12px] font-medium transition-colors ${catFilter === c.value ? 'bg-[#003781] text-white' : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'}`}>
+        {CATEGORIES.map((c) => (
+          <button
+            key={c.value}
+            onClick={() => setCatFilter(c.value)}
+            className={`px-3 py-1.5 rounded text-xs font-medium border transition-colors ${
+              catFilter === c.value
+                ? 'bg-zinc-900 text-white border-zinc-900 font-semibold'
+                : 'bg-white text-zinc-600 border-zinc-200 hover:border-zinc-900'
+            }`}
+          >
             {c.label}
           </button>
         ))}
       </div>
 
-      {/* Liste */}
-      <div className="bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm">
-        {loading ? (
-          <div className="flex items-center justify-center py-16 text-gray-400">
-            <span className="material-symbols-outlined animate-spin text-[24px] mr-2">progress_activity</span>
-            Yükleniyor...
-          </div>
-        ) : filtered.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-16 gap-3">
-            <span className="material-symbols-outlined text-5xl text-gray-200" style={{ fontVariationSettings: "'FILL' 1" }}>library_books</span>
-            <p className="text-[14px] text-gray-400">Henüz hizmet eklenmedi</p>
-            <button onClick={openNew} className="text-[13px] font-semibold text-[#003781] hover:underline">İlk hizmeti ekle</button>
+      {/* Table */}
+      <div className="border border-zinc-200 rounded overflow-hidden">
+        {filtered.length === 0 ? (
+          <div className="py-16 text-center text-zinc-400 text-xs font-medium">
+            Henüz hizmet eklenmemiş.
           </div>
         ) : (
-          <table className="w-full">
-            <thead>
-              <tr className="border-b border-gray-100 bg-gray-50/50">
-                <th className="text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wider px-5 py-3">Hizmet Adı</th>
-                <th className="text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wider px-4 py-3 hidden md:table-cell">Kategori</th>
-                <th className="text-left text-[11px] font-semibold text-gray-500 uppercase tracking-wider px-4 py-3 hidden sm:table-cell">Fiyatlandırma</th>
-                <th className="text-right text-[11px] font-semibold text-gray-500 uppercase tracking-wider px-4 py-3">Alış (USD)</th>
-                <th className="px-4 py-3 w-20"></th>
+          <table className="w-full text-left text-xs">
+            <thead className="bg-zinc-50 border-b border-zinc-200 text-zinc-500 uppercase tracking-wider font-semibold text-[10px]">
+              <tr>
+                <th className="px-4 py-3">Hizmet Adı</th>
+                <th className="px-4 py-3">Kategori</th>
+                <th className="px-4 py-3">Fiyatlandırma Tipi</th>
+                <th className="px-4 py-3 text-right">Alış Fiyatı ($)</th>
+                <th className="px-4 py-3 text-right">İşlem</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-50">
-              {filtered.map(svc => {
+            <tbody className="divide-y divide-zinc-100">
+              {filtered.map((svc) => {
                 const cat = CATEGORIES.find(c => c.value === svc.category);
-                const pt  = PRICING_TYPES.find(p => p.value === svc.defaultPricingType);
-                const vt  = VEHICLE_TYPES.find(v => v.value === svc.defaultVehicleType);
+                const pt = PRICING_TYPES.find(p => p.value === svc.defaultPricingType);
                 return (
-                  <tr key={svc.id} className="hover:bg-gray-50/50 transition-colors">
-                    <td className="px-5 py-3.5">
-                      <p className="text-[13px] font-semibold text-gray-900">{svc.name}</p>
-                      {svc.description && <p className="text-[11px] text-gray-400">{svc.description}</p>}
-                    </td>
-                    <td className="px-4 py-3.5 hidden md:table-cell">
-                      <span className="text-[12px] text-gray-600">{cat?.label || svc.category}</span>
-                    </td>
-                    <td className="px-4 py-3.5 hidden sm:table-cell">
-                      <p className="text-[12px] text-gray-600">{pt?.label || svc.defaultPricingType}</p>
-                      {svc.defaultPricingType === 'per_vehicle' && vt &&
-                        <p className="text-[11px] text-gray-400">{vt.label} ({vt.capacity} kişi)</p>}
-                      {svc.defaultPricingType === 'per_person' && (svc.defaultChildPercent ?? 0) > 0 &&
-                        <p className="text-[11px] text-gray-400">Çocuk: %{svc.defaultChildPercent}</p>}
-                    </td>
-                    <td className="px-4 py-3.5 text-right">
-                      <p className="text-[14px] font-bold text-gray-900">${svc.defaultCostUsd.toFixed(2)}</p>
-                    </td>
-                    <td className="px-4 py-3.5">
-                      <div className="flex gap-1 justify-end">
-                        <button onClick={() => openEdit(svc)}
-                          className="p-1.5 rounded-lg hover:bg-gray-100 text-gray-400 hover:text-[#003781] transition-colors">
-                          <span className="material-symbols-outlined text-[18px]">edit</span>
-                        </button>
-                        <button onClick={() => del(svc.id, svc.name)} disabled={deleting === svc.id}
-                          className="p-1.5 rounded-lg hover:bg-red-50 text-gray-400 hover:text-red-500 transition-colors">
-                          <span className="material-symbols-outlined text-[18px]">{deleting === svc.id ? 'progress_activity' : 'delete'}</span>
-                        </button>
-                      </div>
+                  <tr key={svc.id} className="hover:bg-zinc-50 transition-colors">
+                    <td className="px-4 py-3 font-semibold text-zinc-900">{svc.name}</td>
+                    <td className="px-4 py-3 text-zinc-500">{cat?.label || svc.category}</td>
+                    <td className="px-4 py-3 text-zinc-500">{pt?.label || svc.defaultPricingType}</td>
+                    <td className="px-4 py-3 font-mono font-bold text-zinc-900 text-right">${svc.defaultCostUsd || 0}</td>
+                    <td className="px-4 py-3 text-right space-x-2">
+                      <button onClick={() => openEdit(svc)} className="p-1 text-zinc-400 hover:text-zinc-900">
+                        <span className="material-symbols-outlined text-[16px]">edit</span>
+                      </button>
+                      <button onClick={() => del(svc.id, svc.name)} className="p-1 text-zinc-400 hover:text-red-600">
+                        <span className="material-symbols-outlined text-[16px]">delete</span>
+                      </button>
                     </td>
                   </tr>
                 );
@@ -203,96 +194,57 @@ export default function ServiceLibraryPage() {
 
       {/* Modal */}
       {modalOpen && (
-        <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4" onClick={() => setModalOpen(false)}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
-            <div className="p-5 border-b border-slate-100 flex items-center justify-between">
-              <h3 className="font-semibold text-slate-800">{editId ? 'Hizmeti Düzenle' : 'Yeni Hizmet'}</h3>
-              <button onClick={() => setModalOpen(false)} className="p-1 hover:bg-slate-100 rounded-lg">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-xs">
+          <div className="bg-white border border-zinc-200 rounded max-w-md w-full p-6 space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-zinc-200 pb-3">
+              <h3 className="text-sm font-bold text-zinc-900">{editId ? 'Hizmet Düzenle' : 'Yeni Hizmet Ekle'}</h3>
+              <button onClick={() => setModalOpen(false)} className="text-zinc-400 hover:text-zinc-900">
                 <span className="material-symbols-outlined text-[20px]">close</span>
               </button>
             </div>
 
-            <div className="p-5 space-y-4">
-              {/* Temel bilgiler */}
-              <div className="grid grid-cols-2 gap-3">
-                <div className="flex flex-col gap-1">
-                  <label className="text-[11px] font-medium text-slate-500 uppercase tracking-wide">Kategori</label>
-                  <select value={form.category} onChange={e => setForm(f => ({ ...f, category: e.target.value }))}
-                    className={inputCls}>
-                    {CATEGORIES.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
-                  </select>
-                </div>
-                <div className="flex flex-col gap-1">
-                  <label className="text-[11px] font-medium text-slate-500 uppercase tracking-wide">Fiyatlandırma Tipi</label>
-                  <select value={form.defaultPricingType} onChange={e => setForm(f => ({ ...f, defaultPricingType: e.target.value }))}
-                    className={inputCls}>
-                    {PRICING_TYPES.map(p => <option key={p.value} value={p.value}>{p.label}</option>)}
-                  </select>
-                </div>
+            <div className="space-y-3 text-xs">
+              <div>
+                <label className="block font-medium text-zinc-700 mb-1">Hizmet Adı</label>
+                <input
+                  type="text"
+                  value={form.name}
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  className="w-full bg-white border border-zinc-200 rounded p-2 focus:outline-none"
+                />
               </div>
 
-              <div className="flex flex-col gap-1">
-                <label className="text-[11px] font-medium text-slate-500 uppercase tracking-wide">Hizmet Adı *</label>
-                <input value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
-                  placeholder="Al Ebaa Hotel - Mekke" className={inputCls} />
+              <div>
+                <label className="block font-medium text-zinc-700 mb-1">Kategori</label>
+                <select
+                  value={form.category}
+                  onChange={(e) => setForm({ ...form, category: e.target.value })}
+                  className="w-full bg-white border border-zinc-200 rounded p-2 focus:outline-none"
+                >
+                  {CATEGORIES.map((c) => (
+                    <option key={c.value} value={c.value}>{c.label}</option>
+                  ))}
+                </select>
               </div>
 
-              <div className="flex flex-col gap-1">
-                <label className="text-[11px] font-medium text-slate-500 uppercase tracking-wide">Açıklama</label>
-                <input value={form.description} onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
-                  placeholder="Opsiyonel not..." className={inputCls} />
+              <div>
+                <label className="block font-medium text-zinc-700 mb-1">Varsayılan Maliyet ($)</label>
+                <input
+                  type="number"
+                  value={form.defaultCostUsd}
+                  onChange={(e) => setForm({ ...form, defaultCostUsd: parseFloat(e.target.value) || 0 })}
+                  className="w-full bg-white border border-zinc-200 rounded p-2 focus:outline-none"
+                />
               </div>
-
-              <div className="flex flex-col gap-1">
-                <label className="text-[11px] font-medium text-slate-500 uppercase tracking-wide">
-                  {form.defaultPricingType === 'per_room' ? 'Oda Alış Fiyatı (USD)' : 'Birim Alış Fiyatı (USD)'}
-                </label>
-                <input type="number" min={0} step={0.01} value={form.defaultCostUsd}
-                  onChange={e => setForm(f => ({ ...f, defaultCostUsd: Number(e.target.value) }))}
-                  className={inputCls} />
-              </div>
-
-              {/* per_person: çocuk % */}
-              {form.defaultPricingType === 'per_person' && (
-                <div className="flex flex-col gap-1">
-                  <label className="text-[11px] font-medium text-slate-500 uppercase tracking-wide">Çocuk Oranı (%)</label>
-                  <input type="number" min={0} max={100} step={5} value={form.defaultChildPercent}
-                    onChange={e => setForm(f => ({ ...f, defaultChildPercent: Number(e.target.value) }))}
-                    placeholder="0 = çocuk dahil değil, 50 = %50 indirim..." className={inputCls} />
-                </div>
-              )}
-
-              {/* per_vehicle: araç tipi */}
-              {form.defaultPricingType === 'per_vehicle' && (
-                <div className="flex flex-col gap-1">
-                  <label className="text-[11px] font-medium text-slate-500 uppercase tracking-wide">Araç Tipi</label>
-                  <select value={form.defaultVehicleType} onChange={e => setForm(f => ({ ...f, defaultVehicleType: e.target.value }))}
-                    className={inputCls}>
-                    {VEHICLE_TYPES.map(v => <option key={v.value} value={v.value}>{v.label} ({v.capacity} kişilik)</option>)}
-                  </select>
-                </div>
-              )}
-
-              {/* per_room: ek yatak fiyatı */}
-              {form.defaultPricingType === 'per_room' && (
-                <div className="flex flex-col gap-1">
-                  <label className="text-[11px] font-medium text-slate-500 uppercase tracking-wide">Ek Yatak Alış Fiyatı (USD)</label>
-                  <input type="number" min={0} step={0.01} value={form.defaultExtraBedPrice}
-                    onChange={e => setForm(f => ({ ...f, defaultExtraBedPrice: Number(e.target.value) }))}
-                    className={inputCls} />
-                </div>
-              )}
             </div>
 
-            <div className="p-5 border-t border-slate-100 flex justify-end gap-2">
-              <button onClick={() => setModalOpen(false)}
-                className="px-4 py-2 text-[13px] text-slate-600 hover:bg-slate-100 rounded-xl transition-colors">
-                İptal
-              </button>
-              <button onClick={save} disabled={saving}
-                className="flex items-center gap-1.5 bg-[#003781] hover:bg-[#002d6a] disabled:opacity-50 text-white text-[13px] font-semibold px-4 py-2 rounded-xl transition-all">
-                <span className="material-symbols-outlined text-[16px]">{saving ? 'progress_activity' : 'save'}</span>
-                {saving ? 'Kaydediliyor...' : 'Kaydet'}
+            <div className="pt-2">
+              <button
+                onClick={save}
+                disabled={saving}
+                className="w-full py-2 bg-zinc-900 text-white rounded text-xs font-medium hover:bg-zinc-800 transition-colors"
+              >
+                Kaydet
               </button>
             </div>
           </div>

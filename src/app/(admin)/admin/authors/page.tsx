@@ -1,11 +1,9 @@
 "use client";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 
 export default function AuthorsPage() {
   const [authors, setAuthors] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [uploadingPhoto, setUploadingPhoto] = useState(false);
-  const photoInputRef = useRef<HTMLInputElement>(null);
 
   const [showAdd, setShowAdd] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -17,29 +15,6 @@ export default function AuthorsPage() {
     linkedin: "",
     twitter: "",
   });
-
-  const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    setUploadingPhoto(true);
-    try {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("headingSlug", `yazar-${newAuthor.name || "profil"}`);
-      const res = await fetch("/api/upload", { method: "POST", body: formData });
-      const data = await res.json();
-      if (data.success) {
-        setNewAuthor(prev => ({ ...prev, image: data.url }));
-      } else {
-        alert("Yükleme başarısız: " + data.error);
-      }
-    } catch (err: any) {
-      alert("Ağ hatası: " + (err?.message || String(err)));
-    } finally {
-      setUploadingPhoto(false);
-      if (photoInputRef.current) photoInputRef.current.value = "";
-    }
-  };
 
   const fetchAuthors = async () => {
     try {
@@ -63,18 +38,17 @@ export default function AuthorsPage() {
     setNewAuthor({ name: "", bio: "", image: "", expertise: "", linkedin: "", twitter: "" });
   };
 
-  const handleEdit = (author: any) => {
-    setEditingId(author.id);
+  const handleEdit = (aut: any) => {
+    setEditingId(aut.id);
     setNewAuthor({
-      name: author.name || "",
-      bio: author.bio || "",
-      image: author.image || "",
-      expertise: author.expertise || "",
-      linkedin: author.linkedin || "",
-      twitter: author.twitter || "",
+      name: aut.name || "",
+      bio: aut.bio || "",
+      image: aut.image || "",
+      expertise: aut.expertise || "",
+      linkedin: aut.linkedin || "",
+      twitter: aut.twitter || "",
     });
     setShowAdd(true);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleCreate = async (e: React.FormEvent) => {
@@ -88,194 +62,126 @@ export default function AuthorsPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newAuthor),
       });
+
       if (res.ok) {
-        alert(editingId ? "Yazar başarıyla güncellendi!" : "Yazar başarıyla eklendi!");
         handleCancel();
         fetchAuthors();
-      } else {
-        alert("Kaydedilirken hata oluştu.");
       }
-    } catch (e) {
-      alert("Sunucu hatası.");
-    }
+    } catch (e) {}
   };
 
   const handleDelete = async (id: string) => {
-    if (!window.confirm("Bu yazarı silmek istediğinize emin misiniz? (Yazar silindiğinde bağlandığı blog yazılarının yazar bilgisi boş kalacaktır)")) return;
+    if (!window.confirm("Bu yazarı silmek istediğinize emin misiniz?")) return;
     try {
       const res = await fetch(`/api/authors?id=${id}`, { method: "DELETE" });
-      if (res.ok) {
-        fetchAuthors();
-      } else {
-        alert("Silinirken hata oluştu (Sunucu Hatası)");
-      }
-    } catch (e) {
-      alert("Silinirken hata oluştu (Ağ Hatası)");
-    }
+      if (res.ok) fetchAuthors();
+    } catch (e) {}
   };
 
-  if (loading) return <div className="pt-24 px-12 pb-20 max-w-7xl mx-auto flex justify-center"><div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full"></div></div>;
+  if (loading) return <div className="p-8 max-w-7xl mx-auto min-h-screen bg-white text-zinc-500 text-xs">Yazarlar yükleniyor...</div>;
 
   return (
-    <div className="pt-24 px-12 pb-20 max-w-7xl mx-auto">
-      <header className="mb-12 flex justify-between items-end">
+    <div className="p-6 lg:p-8 max-w-7xl mx-auto space-y-8 min-h-screen bg-white text-zinc-900">
+      {/* Header Bar */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-zinc-200">
         <div>
-          <span className="text-tertiary font-label text-[10px] tracking-[0.3em] uppercase block mb-2">Google E-E-A-T SEO</span>
-          <h2 className="font-headline text-4xl font-light text-primary tracking-tight">Yazar Yönetimi</h2>
-          <p className="text-sm text-on-surface-variant mt-2 font-light">Site içerisindeki içerik üreticilerinin uzmanlık (Expertise) ve profillerini yönetin.</p>
+          <span className="text-[10px] font-bold tracking-widest text-zinc-400 uppercase">ICERIK STUDYOSU</span>
+          <h1 className="text-2xl font-light tracking-tight text-zinc-900 mt-1">Yazar Yönetimi (E-E-A-T)</h1>
+          <p className="text-xs text-zinc-500 mt-0.5">Uzman yazarları ve profil biyografilerini yönetin.</p>
         </div>
-        <button 
-          onClick={() => showAdd ? handleCancel() : setShowAdd(true)}
-          className="bg-primary text-on-primary px-6 py-3 rounded-xl font-bold tracking-widest text-xs uppercase hover:bg-primary-container hover:text-primary transition-all shadow-lg flex items-center gap-2"
-        >
-          {showAdd ? <><span className="material-symbols-outlined text-[18px]">close</span> İptal Et</> : <><span className="material-symbols-outlined text-[18px]">add</span> Yeni Yazar Ekle</>}
-        </button>
-      </header>
+
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => showAdd ? handleCancel() : setShowAdd(true)}
+            className="inline-flex items-center gap-1.5 bg-zinc-900 hover:bg-zinc-800 text-white font-medium px-4 py-2 rounded text-xs transition-colors"
+          >
+            <span className="material-symbols-outlined text-[16px]">{showAdd ? "close" : "add"}</span>
+            <span>{showAdd ? "İptal Et" : "Yeni Yazar Ekle"}</span>
+          </button>
+        </div>
+      </div>
 
       {showAdd && (
-        <section className="bg-surface-container p-12 rounded-2xl relative overflow-hidden mb-12 shadow-sm border border-outline-variant/10">
-          <form onSubmit={handleCreate} className="relative z-10 w-full space-y-8 max-w-4xl">
-            <h3 className="font-headline text-3xl text-primary border-b border-outline-variant/20 pb-4 mb-8 flex items-center gap-3">
-              <span className="material-symbols-outlined text-secondary">badge</span>
-              {editingId ? 'Yazar Düzenle' : 'Yazar Detayları'}
-            </h3>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Ad Soyad (Yazar Adı) <span className="text-error font-normal">*</span></label>
-                <input required className="w-full bg-white border border-outline-variant/30 rounded-xl p-4 text-secondary focus:ring-primary focus:border-primary outline-none font-bold" 
-                  value={newAuthor.name} onChange={e => setNewAuthor({...newAuthor, name: e.target.value})} placeholder="Örn: Dr. Ahmet Yılmaz" />
-              </div>
-              <div className="space-y-2">
-                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Uzmanlık Alanı (Expertise)</label>
-                <input className="w-full bg-white border border-outline-variant/30 rounded-xl p-4 text-secondary focus:ring-primary focus:border-primary outline-none" 
-                  value={newAuthor.expertise} onChange={e => setNewAuthor({...newAuthor, expertise: e.target.value})} placeholder="Örn: İlahiyatçı, Hac & Umre Rehberi" />
-              </div>
-            </div>
+        <section className="bg-zinc-50 border border-zinc-200 p-6 rounded space-y-4 text-xs">
+          <h3 className="text-sm font-bold text-zinc-900 border-b border-zinc-200 pb-3">
+            {editingId ? 'Yazarı Düzenle' : 'Yeni Yazar Ekle'}
+          </h3>
 
-            {/* Profil Fotoğrafı Yükleme */}
-            <div className="space-y-3">
-              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center justify-between">
-                <span>Profil Fotoğrafı</span>
-                <span className="text-[10px] font-normal italic lowercase text-outline">WebP · JPEG · PNG — kare önerilir</span>
-              </label>
-              <div className="flex items-center gap-6">
-                {/* Önizleme */}
-                <div className="w-20 h-20 rounded-full bg-primary/10 border-2 border-primary/20 overflow-hidden flex items-center justify-center shrink-0 shadow-sm">
-                  {newAuthor.image ? (
-                    <img src={newAuthor.image} alt="Profil" className="w-full h-full object-cover" />
-                  ) : (
-                    <span className="material-symbols-outlined text-primary/40 text-3xl">person</span>
-                  )}
-                </div>
-                {/* Yükleme Butonu */}
-                <div className="flex flex-col gap-2 flex-1">
-                  <button
-                    type="button"
-                    onClick={() => photoInputRef.current?.click()}
-                    disabled={uploadingPhoto}
-                    className="flex items-center gap-2 px-5 py-3 bg-primary/5 hover:bg-primary/10 border border-primary/20 hover:border-primary/40 text-primary rounded-xl font-bold text-xs uppercase tracking-widest transition-all disabled:opacity-60 w-fit"
-                  >
-                    {uploadingPhoto ? (
-                      <span className="material-symbols-outlined animate-spin text-[18px]">sync</span>
-                    ) : (
-                      <span className="material-symbols-outlined text-[18px]">upload</span>
-                    )}
-                    {uploadingPhoto ? "Yükleniyor..." : "Fotoğraf Yükle"}
-                  </button>
-                  {newAuthor.image && (
-                    <button
-                      type="button"
-                      onClick={() => setNewAuthor(prev => ({ ...prev, image: "" }))}
-                      className="text-[10px] text-error/70 hover:text-error font-bold uppercase tracking-widest transition-colors w-fit"
-                    >
-                      Fotoğrafı Kaldır
-                    </button>
-                  )}
-                </div>
+          <form onSubmit={handleCreate} className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-zinc-600 font-medium mb-1">Ad Soyad</label>
                 <input
-                  ref={photoInputRef}
-                  type="file"
-                  accept="image/webp,image/jpeg,image/png"
-                  className="hidden"
-                  onChange={handlePhotoUpload}
+                  required
+                  type="text"
+                  value={newAuthor.name}
+                  onChange={e => setNewAuthor({ ...newAuthor, name: e.target.value })}
+                  placeholder="Yasin Toktaş"
+                  className="w-full bg-white border border-zinc-200 rounded p-2 focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-zinc-600 font-medium mb-1">Uzmanlık Alanı</label>
+                <input
+                  type="text"
+                  value={newAuthor.expertise}
+                  onChange={e => setNewAuthor({ ...newAuthor, expertise: e.target.value })}
+                  placeholder="Umre Operasyon Direktörü"
+                  className="w-full bg-white border border-zinc-200 rounded p-2 focus:outline-none"
                 />
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">LinkedIn Profil Linki</label>
-                <input className="w-full bg-white border border-outline-variant/30 rounded-xl p-4 text-sm text-secondary focus:ring-primary focus:border-primary outline-none" 
-                  value={newAuthor.linkedin} onChange={e => setNewAuthor({...newAuthor, linkedin: e.target.value})} placeholder="https://linkedin.com/in/..." />
-              </div>
-              <div className="space-y-2">
-                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Twitter (X) Profil Linki</label>
-                <input className="w-full bg-white border border-outline-variant/30 rounded-xl p-4 text-sm text-secondary focus:ring-primary focus:border-primary outline-none" 
-                  value={newAuthor.twitter} onChange={e => setNewAuthor({...newAuthor, twitter: e.target.value})} placeholder="https://twitter.com/..." />
-              </div>
+            <div>
+              <label className="block text-zinc-600 font-medium mb-1">Biyografi</label>
+              <textarea
+                rows={2}
+                value={newAuthor.bio}
+                onChange={e => setNewAuthor({ ...newAuthor, bio: e.target.value })}
+                className="w-full bg-white border border-zinc-200 rounded p-2 focus:outline-none"
+              />
             </div>
 
-            <div className="space-y-2">
-              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Biyografi (Hakkında)</label>
-              <textarea className="w-full bg-white border border-outline-variant/30 rounded-xl p-4 text-sm text-on-surface-variant min-h-[120px] focus:ring-primary focus:border-primary outline-none" 
-                value={newAuthor.bio} onChange={e => setNewAuthor({...newAuthor, bio: e.target.value})} placeholder="Yazarın sektörel deneyimini ve özgeçmişini kısaca özetleyin..." />
-            </div>
-
-            <div className="pt-6 flex justify-end gap-4">
-               <button type="submit" className="bg-primary hover:bg-[#002f6c] text-white px-8 py-3 rounded-xl font-bold tracking-widest uppercase shadow-lg transition-all flex items-center gap-2">
-                 <span className="material-symbols-outlined text-lg block">save</span> 
-                 {editingId ? 'GÜNCELLE' : 'KAYDET'}
-               </button>
+            <div className="pt-2 flex justify-end">
+              <button
+                type="submit"
+                className="px-6 py-2 bg-zinc-900 text-white rounded text-xs font-medium hover:bg-zinc-800 transition-colors"
+              >
+                {editingId ? 'GÜNCELLE' : 'KAYDET'}
+              </button>
             </div>
           </form>
         </section>
       )}
 
-      <div className="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-[0px_32px_64px_-12px_rgba(0,55,129,0.06)] border border-outline-variant/10">
-        <table className="w-full text-left border-collapse">
-          <thead>
-            <tr className="bg-surface-container-low border-none">
-              <th className="px-8 py-5 text-[10px] font-bold tracking-widest text-outline uppercase w-16">Profil</th>
-              <th className="px-8 py-5 text-[10px] font-bold tracking-widest text-outline uppercase">Yazar Bilgileri</th>
-              <th className="px-8 py-5 text-[10px] font-bold tracking-widest text-outline uppercase">Uzmanlık</th>
-              <th className="px-8 py-5 text-[10px] font-bold tracking-widest text-outline uppercase">Yazı Sayısı</th>
-              <th className="px-8 py-5 text-[10px] font-bold tracking-widest text-outline uppercase text-right">İşlem</th>
+      {/* Table */}
+      <div className="border border-zinc-200 rounded overflow-hidden">
+        <table className="w-full text-left text-xs">
+          <thead className="bg-zinc-50 border-b border-zinc-200 text-zinc-500 uppercase tracking-wider font-semibold text-[10px]">
+            <tr>
+              <th className="px-4 py-3">Yazar Adı</th>
+              <th className="px-4 py-3">Uzmanlık</th>
+              <th className="px-4 py-3">Yayınlanan Yazı</th>
+              <th className="px-4 py-3 text-right">İşlem</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-surface-container">
-            {authors.map(author => (
-              <tr key={author.id} className="group hover:bg-surface-container-low/50 transition-colors">
-                <td className="px-8 py-6">
-                   <div className="w-12 h-12 rounded-full overflow-hidden bg-primary/10 flex items-center justify-center text-primary font-bold text-xl border border-primary/20">
-                     {author.image ? <img src={author.image} className="w-full h-full object-cover" alt={author.name} /> : author.name.charAt(0)}
-                   </div>
-                </td>
-                <td className="px-8 py-6">
-                  <p className="font-bold text-primary font-headline text-lg mb-1">{author.name}</p>
-                  <p className="text-xs text-outline line-clamp-1 max-w-sm">{author.bio}</p>
-                </td>
-                <td className="px-8 py-6 text-sm text-on-surface-variant">
-                  <span className="bg-secondary/10 text-secondary px-3 py-1 rounded-full text-xs font-bold tracking-widest">{author.expertise || "Belirtilmedi"}</span>
-                </td>
-                <td className="px-8 py-6 text-sm font-bold text-primary">
-                  {author._count?.posts || 0}
-                </td>
-                <td className="px-8 py-6 text-right flex items-center justify-end gap-2 h-full py-auto mt-4">
-                  <button onClick={() => handleEdit(author)} className="p-2 bg-primary/10 text-primary hover:bg-primary hover:text-white rounded-lg transition-all" title="Düzenle">
-                    <span className="material-symbols-outlined text-lg block">edit</span>
+          <tbody className="divide-y divide-zinc-100">
+            {authors.map(aut => (
+              <tr key={aut.id} className="hover:bg-zinc-50 transition-colors">
+                <td className="px-4 py-3 font-semibold text-zinc-900">{aut.name}</td>
+                <td className="px-4 py-3 text-zinc-500">{aut.expertise || "-"}</td>
+                <td className="px-4 py-3 text-zinc-600">{aut._count?.posts || 0} Yazı</td>
+                <td className="px-4 py-3 text-right space-x-2">
+                  <button onClick={() => handleEdit(aut)} className="p-1 text-zinc-400 hover:text-zinc-900">
+                    <span className="material-symbols-outlined text-[16px]">edit</span>
                   </button>
-                  <button onClick={() => handleDelete(author.id)} className="p-2 bg-error/10 text-error hover:bg-error hover:text-white rounded-lg transition-all" title="Sil">
-                    <span className="material-symbols-outlined text-lg block">delete</span>
+                  <button onClick={() => handleDelete(aut.id)} className="p-1 text-zinc-400 hover:text-red-600">
+                    <span className="material-symbols-outlined text-[16px]">delete</span>
                   </button>
                 </td>
               </tr>
             ))}
-            {authors.length === 0 && (
-              <tr><td colSpan={5} className="text-center py-16 text-outline font-medium">
-                Henüz yazar yazar eklemediniz. "Yeni Yazar Ekle" butonuna tıklayarak ilk yazarınızı ekleyin.
-              </td></tr>
-            )}
           </tbody>
         </table>
       </div>

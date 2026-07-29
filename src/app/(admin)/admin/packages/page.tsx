@@ -9,7 +9,6 @@ export default function PackagesPage() {
 
   const [showAdd, setShowAdd] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
-  const [uploadingField, setUploadingField] = useState<string | null>(null);
 
   const [newPackage, setNewPackage] = useState({
     title: "",
@@ -51,11 +50,11 @@ export default function PackagesPage() {
     setEditingId(pkg.id);
     let includesStr = "";
     if (pkg.includes) {
-        try { const arr = JSON.parse(pkg.includes); if(Array.isArray(arr)) includesStr = arr.join(", "); } catch(e){}
+      try { const arr = JSON.parse(pkg.includes); if (Array.isArray(arr)) includesStr = arr.join(", "); } catch (e) {}
     }
     let galleryArr: string[] = [];
     if (pkg.gallery) {
-        try { const arr = JSON.parse(pkg.gallery); if(Array.isArray(arr)) galleryArr = arr; } catch(e){}
+      try { const arr = JSON.parse(pkg.gallery); if (Array.isArray(arr)) galleryArr = arr; } catch (e) {}
     }
     setNewPackage({
       title: pkg.title || "",
@@ -74,66 +73,24 @@ export default function PackagesPage() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>, field: 'imageUrl' | 'gallery', index?: number) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    setUploadingField(field === 'gallery' ? `gallery-${index}` : field);
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("headingSlug", newPackage.slug || "paket");
-
-    try {
-      const res = await fetch("/api/upload", {
-        method: "POST",
-        body: formData,
-      });
-      const data = await res.json();
-      if (data.success) {
-        if (field === 'imageUrl') {
-          setNewPackage(prev => ({...prev, imageUrl: data.url}));
-        } else if (field === 'gallery' && index !== undefined) {
-          const newGallery = [...newPackage.gallery];
-          newGallery[index] = data.url;
-          setNewPackage(prev => ({...prev, gallery: newGallery}));
-        }
-      } else {
-        alert("Yükleme başarısız: " + data.error);
-      }
-    } catch (err) {
-      alert("Bir hata oluştu.");
-    } finally {
-      setUploadingField(null);
-    }
-  };
-
-  const removeGalleryImage = (index: number) => {
-    const newGallery = [...newPackage.gallery];
-    newGallery.splice(index, 1);
-    setNewPackage(prev => ({ ...prev, gallery: newGallery }));
-  };
-
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
+    const payload = {
+      ...newPackage,
+      price: parseFloat(newPackage.price) || 0,
+      includes: JSON.stringify(newPackage.includes.split(",").map(s => s.trim()).filter(Boolean)),
+      gallery: JSON.stringify(newPackage.gallery),
+    };
+
     try {
-      const trMap: Record<string, string> = { 'ç': 'c', 'ğ': 'g', 'ı': 'i', 'ö': 'o', 'ş': 's', 'ü': 'u', 'Ç': 'c', 'Ğ': 'g', 'İ': 'i', 'Ö': 'o', 'Ş': 's', 'Ü': 'u' };
-      const cleanTitle = newPackage.title.replace(/[çğıöşüÇĞİÖŞÜ]/g, m => trMap[m as keyof typeof trMap] || m);
-      const slugToUse = newPackage.slug || cleanTitle.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
-      const includesArray = newPackage.includes.split(",").map(s => s.trim()).filter(Boolean);
-      // Clean up empty gallery slots before sending
-      const cleanGallery = newPackage.gallery.filter(Boolean);
-      const payload = { ...newPackage, slug: slugToUse, includes: includesArray, gallery: cleanGallery };
-      
       const url = editingId ? `/api/packages?id=${editingId}` : "/api/packages";
       const method = editingId ? "PUT" : "POST";
-
       const res = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
       if (res.ok) {
-        alert(editingId ? "Paket başarıyla güncellendi!" : "Paket başarıyla eklendi!");
         handleCancel();
         fetchPackages();
       } else {
@@ -150,280 +107,207 @@ export default function PackagesPage() {
       const res = await fetch(`/api/packages?id=${id}`, { method: "DELETE" });
       if (res.ok) {
         fetchPackages();
-      } else {
-        alert("Silinirken hata oluştu (Sunucu Hatası)");
       }
-    } catch (e) {
-      alert("Silinirken hata oluştu (Ağ Hatası)");
-    }
+    } catch (e) {}
   };
 
-  if (loading) return <div className="pt-24 px-12 pb-20 max-w-7xl mx-auto flex justify-center"><div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full"></div></div>;
+  if (loading) return <div className="p-8 max-w-7xl mx-auto min-h-screen bg-white text-zinc-500 text-xs">Paketler yükleniyor...</div>;
 
   return (
-    <div className="pt-24 px-12 pb-20 max-w-7xl mx-auto">
-      <header className="mb-12 flex justify-between items-end">
+    <div className="p-6 lg:p-8 max-w-7xl mx-auto space-y-8 min-h-screen bg-white text-zinc-900">
+      {/* Header Bar */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-zinc-200">
         <div>
-          <span className="text-tertiary font-label text-[10px] tracking-[0.3em] uppercase block mb-2">Tur Paketleri</span>
-          <h2 className="font-headline text-4xl font-light text-primary tracking-tight">Paket Yönetimi</h2>
-          <p className="text-sm text-on-surface-variant mt-2 font-light">Ön yüzde görüntülenecek butik ve standart umre paketlerini, fiyatlarını ve özelliklerini yönetin.</p>
+          <span className="text-[10px] font-bold tracking-widest text-zinc-400 uppercase">OPERASYON</span>
+          <h1 className="text-2xl font-light tracking-tight text-zinc-900 mt-1">Paket Yönetimi</h1>
+          <p className="text-xs text-zinc-500 mt-0.5">Sitede gösterilecek Umre paketlerini, fiyatlarını ve içeriklerini yönetin.</p>
         </div>
-        <button 
-          onClick={() => showAdd ? handleCancel() : setShowAdd(true)}
-          className="bg-primary text-on-primary px-6 py-3 rounded-xl font-bold tracking-widest text-xs uppercase hover:bg-primary-container hover:text-primary transition-all shadow-lg flex items-center gap-2"
-        >
-          {showAdd ? <><span className="material-symbols-outlined text-[18px]">close</span> İptal Et</> : <><span className="material-symbols-outlined text-[18px]">add</span> Yeni Paket Ekle</>}
-        </button>
-      </header>
+
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => showAdd ? handleCancel() : setShowAdd(true)}
+            className="inline-flex items-center gap-1.5 bg-zinc-900 hover:bg-zinc-800 text-white font-medium px-4 py-2 rounded text-xs transition-colors"
+          >
+            <span className="material-symbols-outlined text-[16px]">{showAdd ? "close" : "add"}</span>
+            <span>{showAdd ? "İptal Et" : "Yeni Paket Ekle"}</span>
+          </button>
+        </div>
+      </div>
 
       {showAdd && (
-        <section className="bg-surface-container p-12 rounded-2xl relative overflow-hidden mb-12 shadow-sm border border-outline-variant/10">
-          <form onSubmit={handleCreate} className="relative z-10 w-full space-y-8 max-w-4xl">
-            <h3 className="font-headline text-3xl text-primary border-b border-outline-variant/20 pb-4 mb-8">
-              {editingId ? 'Paketi Düzenle' : 'Yeni Paket Ekle'}
-            </h3>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Paket Adı</label>
-                <input required className="w-full bg-white border border-outline-variant/30 rounded-xl p-4 text-secondary focus:ring-primary focus:border-primary outline-none font-bold" 
-                  value={newPackage.title} onChange={e => setNewPackage({...newPackage, title: e.target.value})} placeholder="Örn: Butik Aile Umresi" />
+        <section className="bg-zinc-50 border border-zinc-200 p-6 rounded space-y-6">
+          <h3 className="text-sm font-bold text-zinc-900 border-b border-zinc-200 pb-3">
+            {editingId ? 'Paketi Düzenle' : 'Yeni Paket Ekle'}
+          </h3>
+
+          <form onSubmit={handleCreate} className="space-y-4 text-xs">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-zinc-600 font-medium mb-1">Paket Adı</label>
+                <input
+                  required
+                  type="text"
+                  value={newPackage.title}
+                  onChange={e => setNewPackage({ ...newPackage, title: e.target.value })}
+                  placeholder="Örn: Lüks İnziwa Umresi"
+                  className="w-full bg-white border border-zinc-200 rounded p-2 focus:outline-none"
+                />
               </div>
-              <div className="space-y-2">
-                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">URL Slug</label>
-                <input className="w-full bg-white border border-outline-variant/30 rounded-xl p-4 text-secondary focus:ring-primary focus:border-primary outline-none" 
-                  value={newPackage.slug} onChange={e => setNewPackage({...newPackage, slug: e.target.value})} placeholder="butik-aile-umresi" />
+
+              <div>
+                <label className="block text-zinc-600 font-medium mb-1">URL Slug</label>
+                <input
+                  type="text"
+                  value={newPackage.slug}
+                  onChange={e => setNewPackage({ ...newPackage, slug: e.target.value })}
+                  placeholder="luks-inziva-umresi"
+                  className="w-full bg-white border border-zinc-200 rounded p-2 focus:outline-none"
+                />
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="space-y-2">
-                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Başlangıç Fiyatı</label>
-                <input required type="number" step="0.01" className="w-full bg-white border border-outline-variant/30 rounded-xl p-4 text-secondary focus:ring-primary focus:border-primary outline-none" 
-                  value={newPackage.price} onChange={e => setNewPackage({...newPackage, price: e.target.value})} placeholder="1250" />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label className="block text-zinc-600 font-medium mb-1">Başlangıç Fiyatı</label>
+                <input
+                  required
+                  type="number"
+                  step="0.01"
+                  value={newPackage.price}
+                  onChange={e => setNewPackage({ ...newPackage, price: e.target.value })}
+                  placeholder="1250"
+                  className="w-full bg-white border border-zinc-200 rounded p-2 focus:outline-none"
+                />
               </div>
-              <div className="space-y-2">
-                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Para Birimi</label>
-                <select className="w-full bg-white border border-outline-variant/30 rounded-xl p-4 text-secondary focus:ring-primary focus:border-primary outline-none" 
-                  value={newPackage.currency} onChange={e => setNewPackage({...newPackage, currency: e.target.value})}>
+
+              <div>
+                <label className="block text-zinc-600 font-medium mb-1">Para Birimi</label>
+                <select
+                  value={newPackage.currency}
+                  onChange={e => setNewPackage({ ...newPackage, currency: e.target.value })}
+                  className="w-full bg-white border border-zinc-200 rounded p-2 focus:outline-none"
+                >
                   <option value="USD">USD ($)</option>
                   <option value="SAR">SAR (ر.س)</option>
                   <option value="TRY">TRY (₺)</option>
                 </select>
               </div>
-              <div className="space-y-2">
-                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Süre / Gün</label>
-                <input required className="w-full bg-white border border-outline-variant/30 rounded-xl p-4 text-secondary focus:ring-primary focus:border-primary outline-none" 
-                  value={newPackage.duration} onChange={e => setNewPackage({...newPackage, duration: e.target.value})} placeholder="Örn: 7 Gece 8 Gün" />
-              </div>
-            </div>
 
-            <div className="space-y-2">
-              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Pakete Dahil Olanlar (Virgülle Ayırın)</label>
-              <input className="w-full bg-white border border-outline-variant/30 rounded-xl p-4 text-secondary focus:ring-primary focus:border-primary outline-none" 
-                value={newPackage.includes} onChange={e => setNewPackage({...newPackage, includes: e.target.value})} placeholder="Gidiş-Dönüş Uçak, 5 Yıldızlı Konaklama, Lüks Transfer, Vize, Rehberlik" />
-            </div>
-
-            <div className="space-y-2">
-              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Açıklama (Kısa Özeti)</label>
-              <textarea required className="w-full bg-white border border-outline-variant/30 rounded-xl p-4 text-sm text-on-surface-variant min-h-[100px] focus:ring-primary focus:border-primary outline-none" 
-                value={newPackage.description} onChange={e => setNewPackage({...newPackage, description: e.target.value})} placeholder="Bu paketin ayrıcalıklarından kısaca bahsedin..." />
-            </div>
-
-            {/* Kapak Görseli Upload (Auto-Crop Aspect Render) */}
-            <div className="space-y-4 pb-4 border-b border-outline-variant/20">
               <div>
-                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Kapak Görseli (Ana Fotoğraf)</label>
-                <p className="text-xs text-outline mb-4">Mükemmel 4:3 oranında otomatik kırpılacaktır. Kaliteli bir JPEG veya PNG seçin.</p>
-              </div>
-              
-              <div className="flex flex-col sm:flex-row gap-6">
-                {/* Upload Zone */}
-                <div className="relative flex-1 bg-white border-2 border-dashed border-outline-variant/40 rounded-2xl p-8 flex flex-col items-center justify-center text-center hover:bg-surface-container-low hover:border-primary/50 transition-colors group">
-                  <span className="material-symbols-outlined text-4xl text-outline group-hover:text-primary transition-colors mb-2">cloud_upload</span>
-                  <span className="text-sm font-bold text-secondary">Bilgisayardan Dosya Seç</span>
-                  <span className="text-xs text-outline mt-1">Sürükle bırak veya tıkla (Max 5MB)</span>
-                  <input 
-                    type="file" 
-                    accept="image/png, image/jpeg, image/webp" 
-                    className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
-                    onChange={(e) => handleUpload(e, 'imageUrl')}
-                    disabled={uploadingField === 'imageUrl'}
-                  />
-                  {uploadingField === 'imageUrl' && (
-                    <div className="absolute inset-0 bg-white/80 backdrop-blur rounded-2xl flex items-center justify-center">
-                      <div className="animate-spin w-6 h-6 border-4 border-primary border-t-transparent rounded-full"></div>
-                    </div>
-                  )}
-                </div>
-
-                {/* Preview Zone (Auto-Cropped Visual constraint) */}
-                <div className="w-full sm:w-64 flex-shrink-0 flex flex-col items-center">
-                  <span className="text-[10px] uppercase tracking-widest text-outline font-bold mb-2">Sitede Görüneceği Hali (4:3)</span>
-                  <div className="w-full aspect-[4/3] rounded-2xl overflow-hidden bg-surface-container-low border border-outline-variant/20 relative shadow-inner">
-                    {newPackage.imageUrl ? (
-                      <img src={newPackage.imageUrl} alt="Kapak Önizleme" className="w-full h-full object-cover" />
-                    ) : (
-                      <div className="w-full h-full flex flex-col items-center justify-center text-outline/50">
-                        <span className="material-symbols-outlined text-3xl">image_not_supported</span>
-                        <span className="text-xs mt-2">Görsel Yok</span>
-                      </div>
-                    )}
-                  </div>
-                </div>
+                <label className="block text-zinc-600 font-medium mb-1">Süre / Gün</label>
+                <input
+                  required
+                  type="text"
+                  value={newPackage.duration}
+                  onChange={e => setNewPackage({ ...newPackage, duration: e.target.value })}
+                  placeholder="7 Gece 8 Gün"
+                  className="w-full bg-white border border-zinc-200 rounded p-2 focus:outline-none"
+                />
               </div>
             </div>
 
-            {/* Detay Görseller Galerisi */}
-            <div className="space-y-4 pb-6 border-b border-outline-variant/20">
-              <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Detay Görseller Galerisi (Maksimum 5 Adet)</label>
-              <div className="flex flex-wrap gap-4">
-                {[0, 1, 2, 3, 4].map((index) => {
-                  const currentImage = newPackage.gallery[index];
-                  const isUploadingThis = uploadingField === `gallery-${index}`;
-
-                  return (
-                    <div key={index} className="w-32 h-32 relative rounded-xl overflow-hidden border-2 border-dashed border-outline-variant/40 bg-white hover:border-primary/50 transition-colors group flex-shrink-0">
-                      {currentImage ? (
-                        <>
-                          {/* Image Rendered */}
-                          <img src={currentImage} className="w-full h-full object-cover" alt={`Gallery ${index}`} />
-                          {/* Remove Button Hover State */}
-                          <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                            <button type="button" onClick={() => removeGalleryImage(index)} className="p-2 bg-error text-white rounded-full hover:bg-red-600 shadow-xl" title="Görseli Kaldır">
-                              <span className="material-symbols-outlined text-sm block">delete</span>
-                            </button>
-                          </div>
-                        </>
-                      ) : (
-                        <>
-                          {/* Empty Upload Zone */}
-                          <div className="flex flex-col items-center justify-center w-full h-full text-outline group-hover:text-primary transition-colors cursor-pointer relative">
-                            <span className="material-symbols-outlined text-2xl">add_photo_alternate</span>
-                            <span className="text-[10px] mt-1 font-bold">Ekle</span>
-                            <input 
-                              type="file" 
-                              accept="image/png, image/jpeg, image/webp" 
-                              className="absolute inset-0 opacity-0 cursor-pointer"
-                              onChange={(e) => handleUpload(e, 'gallery', index)}
-                              disabled={isUploadingThis}
-                            />
-                          </div>
-                          {isUploadingThis && (
-                            <div className="absolute inset-0 bg-white/80 backdrop-blur flex items-center justify-center">
-                              <div className="animate-spin w-5 h-5 border-2 border-primary border-t-transparent rounded-full"></div>
-                            </div>
-                          )}
-                        </>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
+            <div>
+              <label className="block text-zinc-600 font-medium mb-1">Açıklama</label>
+              <textarea
+                rows={3}
+                value={newPackage.description}
+                onChange={e => setNewPackage({ ...newPackage, description: e.target.value })}
+                className="w-full bg-white border border-zinc-200 rounded p-2 focus:outline-none"
+              />
             </div>
 
-            <div className="flex gap-8 items-center pt-2">
+            <div className="flex items-center gap-4 pt-2">
               <label className="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" className="w-5 h-5 rounded border-outline-variant/50 text-primary focus:ring-primary cursor-pointer" 
-                  checked={newPackage.isPopular} onChange={e => setNewPackage({...newPackage, isPopular: e.target.checked})} />
-                <span className="text-sm font-bold text-secondary">Popüler Paket Olarak İşaretle (Öne Çıkar)</span>
+                <input
+                  type="checkbox"
+                  checked={newPackage.isPopular}
+                  onChange={e => setNewPackage({ ...newPackage, isPopular: e.target.checked })}
+                  className="rounded border-zinc-300 text-zinc-900 focus:ring-zinc-900"
+                />
+                <span className="text-xs font-medium text-zinc-700">Popüler Paket</span>
               </label>
-              
+
               <label className="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" className="w-5 h-5 rounded border-outline-variant/50 text-secondary focus:ring-secondary cursor-pointer" 
-                  checked={newPackage.published} onChange={e => setNewPackage({...newPackage, published: e.target.checked})} />
-                <span className="text-sm font-bold text-secondary">Yayında</span>
+                <input
+                  type="checkbox"
+                  checked={newPackage.published}
+                  onChange={e => setNewPackage({ ...newPackage, published: e.target.checked })}
+                  className="rounded border-zinc-300 text-zinc-900 focus:ring-zinc-900"
+                />
+                <span className="text-xs font-medium text-zinc-700">Yayında</span>
               </label>
             </div>
 
-            <div className="pt-6 flex justify-end gap-4">
-               <button type="submit" className="bg-primary hover:bg-[#002f6c] text-white px-8 py-3 rounded-xl font-bold tracking-widest uppercase shadow-lg transition-all flex items-center gap-2">
-                 <span className="material-symbols-outlined text-lg block">save</span> 
-                 {editingId ? 'GÜNCELLE' : 'KAYDET'}
-               </button>
+            <div className="pt-2 flex justify-end">
+              <button
+                type="submit"
+                className="px-6 py-2 bg-zinc-900 text-white rounded text-xs font-medium hover:bg-zinc-800 transition-colors"
+              >
+                {editingId ? 'GÜNCELLE' : 'KAYDET'}
+              </button>
             </div>
           </form>
         </section>
       )}
 
-      {/* Search + Bulk ops */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-4">
-        <div className="relative flex-1 max-w-sm">
-          <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[18px]">search</span>
-          <input type="text" placeholder="Paket adı ile ara..." value={pkgSearch} onChange={e => setPkgSearch(e.target.value)}
-            className="w-full pl-9 pr-3 py-2.5 bg-white border border-outline-variant/20 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20" />
+      {/* Search Bar */}
+      <div className="flex items-center justify-between gap-4 border-b border-zinc-200 pb-4">
+        <div className="relative w-full sm:w-72">
+          <span className="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-zinc-400 text-[16px]">
+            search
+          </span>
+          <input
+            type="text"
+            placeholder="Paket adı ile ara..."
+            value={pkgSearch}
+            onChange={e => setPkgSearch(e.target.value)}
+            className="w-full bg-white text-xs text-zinc-900 rounded pl-8 pr-3 py-1.5 border border-zinc-200 focus:outline-none focus:border-zinc-900"
+          />
         </div>
-        {selectedPkgs.size > 0 && (
-          <button onClick={async () => {
-            if (!confirm(`${selectedPkgs.size} paket silinsin mi?`)) return;
-            for (const id of selectedPkgs) { await fetch(`/api/packages?id=${id}`, { method: 'DELETE' }); }
-            setSelectedPkgs(new Set()); fetchPackages();
-          }} className="flex items-center gap-1.5 px-4 py-2.5 bg-red-100 text-red-600 rounded-xl font-bold text-sm hover:bg-red-200 transition-colors">
-            <span className="material-symbols-outlined text-[18px]">delete_sweep</span>{selectedPkgs.size} Sil
-          </button>
-        )}
       </div>
 
-      <div className="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-[0px_32px_64px_-12px_rgba(0,55,129,0.06)] border border-outline-variant/10">
-        <table className="w-full text-left border-collapse">
-          <thead>
-            <tr className="bg-surface-container-low border-none">
-              <th className="px-4 py-5 w-10"><input type="checkbox" onChange={e => setSelectedPkgs(e.target.checked ? new Set(packages.map(p => p.id)) : new Set())} /></th>
-              <th className="px-8 py-5 text-[10px] font-bold tracking-widest text-outline uppercase">Görsel / Paket</th>
-              <th className="px-8 py-5 text-[10px] font-bold tracking-widest text-outline uppercase">Süre / Fiyat</th>
-              <th className="px-8 py-5 text-[10px] font-bold tracking-widest text-outline uppercase">Durum</th>
-              <th className="px-8 py-5 text-[10px] font-bold tracking-widest text-outline uppercase text-right">İşlem</th>
+      {/* Table */}
+      <div className="border border-zinc-200 rounded overflow-hidden">
+        <table className="w-full text-left text-xs">
+          <thead className="bg-zinc-50 border-b border-zinc-200 text-zinc-500 uppercase tracking-wider font-semibold text-[10px]">
+            <tr>
+              <th className="px-4 py-3">Paket Adı</th>
+              <th className="px-4 py-3">Süre</th>
+              <th className="px-4 py-3">Fiyat</th>
+              <th className="px-4 py-3">Durum</th>
+              <th className="px-4 py-3 text-right">İşlem</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-surface-container">
+          <tbody className="divide-y divide-zinc-100">
             {packages.filter(pkg => !pkgSearch || pkg.title?.toLowerCase().includes(pkgSearch.toLowerCase())).map(pkg => (
-              <tr key={pkg.id} className={`group hover:bg-surface-container-low/50 transition-colors ${selectedPkgs.has(pkg.id) ? 'bg-primary/3' : ''}`}>
-                <td className="px-4 py-6"><input type="checkbox" checked={selectedPkgs.has(pkg.id)} onChange={() => setSelectedPkgs(prev => { const n = new Set(prev); n.has(pkg.id) ? n.delete(pkg.id) : n.add(pkg.id); return n; })} /></td>
-                <td className="px-8 py-6">
-                  <div className="flex items-center gap-4">
-                    {pkg.imageUrl ? (
-                      <div className="w-16 h-16 rounded-xl overflow-hidden bg-surface-container border border-outline-variant/10 flex-shrink-0">
-                        <img src={pkg.imageUrl} alt={pkg.title} className="w-full h-full object-cover" />
-                      </div>
-                    ) : (
-                      <div className="w-16 h-16 rounded-xl bg-surface-container border border-outline-variant/10 flex items-center justify-center text-outline flex-shrink-0">
-                        <span className="material-symbols-outlined">image</span>
-                      </div>
+              <tr key={pkg.id} className="hover:bg-zinc-50 transition-colors">
+                <td className="px-4 py-3">
+                  <div className="flex items-center gap-2">
+                    <p className="font-semibold text-zinc-900">{pkg.title}</p>
+                    {pkg.isPopular && (
+                      <span className="bg-zinc-900 text-white text-[9px] font-bold px-1.5 py-0.2 rounded">POPÜLER</span>
                     )}
-                    <div>
-                      <div className="flex items-center gap-2 mb-1">
-                        <p className="font-bold text-primary font-headline text-lg">{pkg.title}</p>
-                        {pkg.isPopular && <span className="bg-tertiary/10 text-tertiary px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider">Popüler</span>}
-                      </div>
-                      <p className="text-xs text-outline line-clamp-1 max-w-sm">{pkg.description}</p>
-                    </div>
                   </div>
                 </td>
-                <td className="px-8 py-6">
-                  <p className="text-sm font-bold text-primary">{pkg.duration}</p>
-                  <p className="text-sm font-medium text-secondary">{pkg.price} {pkg.currency}</p>
+                <td className="px-4 py-3 text-zinc-500">{pkg.duration}</td>
+                <td className="px-4 py-3 font-mono font-bold text-zinc-900">{pkg.price} {pkg.currency}</td>
+                <td className="px-4 py-3">
+                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded border ${
+                    pkg.published ? 'bg-zinc-100 text-zinc-700 border-zinc-200' : 'bg-zinc-50 text-zinc-400 border-zinc-200'
+                  }`}>
+                    {pkg.published ? 'YAYINDA' : 'TASLAK'}
+                  </span>
                 </td>
-                <td className="px-8 py-6">
-                  {pkg.published ? 
-                    <span className="text-xs font-bold text-green-600 bg-green-50 px-3 py-1 rounded-full border border-green-200">Yayında</span> : 
-                    <span className="text-xs font-bold text-amber-600 bg-amber-50 px-3 py-1 rounded-full border border-amber-200">Taslak</span>
-                  }
-                </td>
-                <td className="px-8 py-6 text-right flex items-center justify-end gap-2 h-full min-h-[5rem]">
-                  <button onClick={() => handleEdit(pkg)} className="p-2 bg-primary/10 text-primary hover:bg-primary hover:text-white rounded-lg transition-all">
-                    <span className="material-symbols-outlined text-lg block">edit</span>
+                <td className="px-4 py-3 text-right space-x-2">
+                  <button onClick={() => handleEdit(pkg)} className="p-1 text-zinc-400 hover:text-zinc-900">
+                    <span className="material-symbols-outlined text-[16px]">edit</span>
                   </button>
-                  <button onClick={() => handleDelete(pkg.id)} className="p-2 bg-error/10 text-error hover:bg-error hover:text-white rounded-lg transition-all">
-                    <span className="material-symbols-outlined text-lg block">delete</span>
+                  <button onClick={() => handleDelete(pkg.id)} className="p-1 text-zinc-400 hover:text-red-600">
+                    <span className="material-symbols-outlined text-[16px]">delete</span>
                   </button>
                 </td>
               </tr>
             ))}
-            {packages.filter(pkg => !pkgSearch || pkg.title?.toLowerCase().includes(pkgSearch.toLowerCase())).length === 0 && (
-              <tr><td colSpan={5} className="text-center py-16 text-outline font-medium">
-                {pkgSearch ? 'Arama sonucu bulunamadı.' : 'Sistemde hiç paket bulunmuyor.'}
-              </td></tr>
-            )}
           </tbody>
         </table>
       </div>

@@ -668,20 +668,25 @@ export default function ContentPage() {
   if (loading) return <div className="pt-24 px-12 pb-20 max-w-7xl mx-auto flex justify-center"><div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full"></div></div>;
 
   return (
-    <div className="pt-24 px-12 pb-20 max-w-7xl mx-auto">
-      <header className="mb-12 flex justify-between items-end">
+    <div className="p-6 lg:p-8 max-w-7xl mx-auto space-y-8 min-h-screen bg-white text-zinc-900">
+      {/* Header Bar */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-zinc-200">
         <div>
-          <span className="text-tertiary font-label text-[10px] tracking-[0.3em] uppercase block mb-2">Manevi Yönetim</span>
-          <h2 className="font-headline text-4xl font-light text-primary tracking-tight">Görünüm ve İçerik Yönetimi</h2>
-          <p className="text-sm text-on-surface-variant mt-2 font-light">Claude AI entegrasyonu ve zengin metin editörü ile blog içerikleri yönetin.</p>
+          <span className="text-[10px] font-bold tracking-widest text-zinc-400 uppercase">ICERIK STUDYOSU</span>
+          <h1 className="text-2xl font-light tracking-tight text-zinc-900 mt-1">Görünüm ve İçerik Yönetimi</h1>
+          <p className="text-xs text-zinc-500 mt-0.5">Claude AI entegrasyonu ve metin editörü ile blog içeriklerini yönetin.</p>
         </div>
-        <button 
-          onClick={() => showAdd ? handleCancel() : setShowAdd(true)}
-          className="bg-primary text-on-primary px-6 py-3 rounded-xl font-bold tracking-widest text-xs uppercase hover:bg-primary-container hover:text-primary transition-all shadow-lg flex items-center gap-2"
-        >
-          {showAdd ? <><span className="material-symbols-outlined text-[18px]">close</span> İptal Et</> : <><span className="material-symbols-outlined text-[18px]">add</span> Yeni Blog Ekle</>}
-        </button>
-      </header>
+
+        <div className="flex items-center gap-3">
+          <button 
+            onClick={() => showAdd ? handleCancel() : setShowAdd(true)}
+            className="inline-flex items-center gap-1.5 bg-zinc-900 hover:bg-zinc-800 text-white font-medium px-4 py-2 rounded text-xs transition-colors"
+          >
+            <span className="material-symbols-outlined text-[16px]">{showAdd ? "close" : "add"}</span>
+            <span>{showAdd ? "İptal Et" : "Yeni Blog Ekle"}</span>
+          </button>
+        </div>
+      </div>
 
       {showAdd && (
         <section className="bg-surface-container p-12 rounded-2xl relative overflow-hidden mb-12 shadow-sm border border-outline-variant/10">

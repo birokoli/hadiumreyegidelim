@@ -196,10 +196,10 @@ export default function BireyselUmreClient({
                    <div className="mt-0.5">
                      <span className="material-symbols-outlined text-[#11A851] text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>tips_and_updates</span>
                    </div>
-                   <p className="text-xs text-on-surface-variant leading-relaxed">
-                     <strong className="text-[#11A851] block mb-1">Düşük Fiyat Sezonu (Offseason) Başladı</strong>
-                     Kurban sonrası oluşan boşluklar sebebiyle maliyetler dibe çekilmiştir. Takvimi açtığınızda <strong>yeşil</strong> ile işaretlenmiş aylar (Eylül-Ekim) bütçeniz için en kârlı dönemlerdir.
-                   </p>
+                    <p className="text-xs text-on-surface-variant leading-relaxed">
+                      <strong className="text-[#11A851] block mb-1">Düşük Fiyat Sezonu (Offseason Fırsatları) Başladı</strong>
+                      Kurban sonrası oluşan boşluklar sebebiyle paket maliyetleri dibe çekilmiştir. Takvimi açtığınızda <strong>yeşil</strong> ile işaretlenmiş tarihler (Eylül-Ekim) bütçeniz için en kârlı dönemlerdir (Kişi başı <strong>$1.250 USD / ₺45.000 TRY</strong>'den başlayan fiyatlar).
+                    </p>
                  </div>
                  <div className="flex flex-col sm:flex-row gap-6">
                     <TurkishDatePicker 

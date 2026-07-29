@@ -35,11 +35,11 @@ export default function ConfiguratorSidebar({ activeStep }: { activeStep: number
               </div>
               <div className="flex flex-col">
                 <span className={`text-[10px] font-bold uppercase tracking-widest transition-colors duration-300 ${isActive ? "text-primary" : "text-on-surface-variant group-hover:text-primary/70"}`}>
-                  ADIM 0{step.id}
+                  ADIM 0{step.id} — Umre {step.name}
                 </span>
-                <span className={`font-headline text-lg transition-colors duration-300 ${isActive ? "font-bold text-primary" : "font-medium text-on-surface group-hover:text-primary"}`}>
+                <h3 className={`font-headline text-lg transition-colors duration-300 ${isActive ? "font-bold text-primary" : "font-medium text-on-surface group-hover:text-primary"}`}>
                   {step.name}
-                </span>
+                </h3>
               </div>
             </div>
           </Link>

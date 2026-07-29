@@ -137,102 +137,102 @@ export default function ExcelPricingCalculator({ initialCustomerName, initialPho
       {/* Top Header Card */}
       <div className="bg-gradient-to-r from-slate-900 via-[#003781] to-slate-900 text-white p-8 rounded-3xl shadow-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-6 border border-slate-800">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-mono font-bold tracking-widest uppercase mb-2">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-mono font-bold tracking-widest uppercase mb-2">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
             EXCEL DİNAMİK FİYAT HESAPLAMA MOTORU
           </div>
           <h2 className="text-2xl md:text-3xl font-extrabold font-headline">Google Excel Canlı Fiyatlandırma Suite</h2>
-          <p className="text-white/70 text-sm mt-1">
+          <p className="text-white/80 text-sm mt-1">
             Alış maliyetlerini girin, %10 kar marjını, İban ve Kredi kartı KDV komisyonlarını otomatik hesaplayın.
           </p>
         </div>
 
         {/* Currency Rates Bar */}
-        <div className="flex flex-wrap items-center gap-4 bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/10 shrink-0">
+        <div className="flex flex-wrap items-center gap-4 bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/20 shrink-0">
           <div>
-            <label className="block text-[10px] uppercase font-bold text-slate-300">USD / TRY Kuru ($)</label>
+            <label className="block text-[10px] uppercase font-bold text-slate-200 mb-1">USD / TRY Kuru ($)</label>
             <input
               type="number"
               step="0.001"
               value={usdRate}
               onChange={(e) => setUsdRate(parseFloat(e.target.value) || 0)}
-              className="bg-white/20 text-white font-mono font-extrabold px-3 py-1.5 rounded-xl text-sm w-28 outline-none border border-white/20"
+              className="bg-slate-900/80 text-white font-mono font-black px-3.5 py-1.5 rounded-xl text-sm w-32 outline-none border border-emerald-400/50 shadow-inner"
             />
           </div>
           <div>
-            <label className="block text-[10px] uppercase font-bold text-slate-300">EUR / TRY Kuru (€)</label>
+            <label className="block text-[10px] uppercase font-bold text-slate-200 mb-1">EUR / TRY Kuru (€)</label>
             <input
               type="number"
               step="0.001"
               value={eurRate}
               onChange={(e) => setEurRate(parseFloat(e.target.value) || 0)}
-              className="bg-white/20 text-white font-mono font-extrabold px-3 py-1.5 rounded-xl text-sm w-28 outline-none border border-white/20"
+              className="bg-slate-900/80 text-white font-mono font-black px-3.5 py-1.5 rounded-xl text-sm w-32 outline-none border border-emerald-400/50 shadow-inner"
             />
           </div>
         </div>
       </div>
 
       {/* Customer & Hotel Info Inputs */}
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-3xl shadow-sm grid grid-cols-1 md:grid-cols-5 gap-4 text-sm">
+      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 p-6 rounded-3xl shadow-sm grid grid-cols-1 md:grid-cols-5 gap-4 text-sm">
         <div>
-          <label className="block text-xs font-bold text-slate-400 uppercase mb-1">Müşteri Ad Soyad</label>
+          <label className="block text-xs font-bold text-slate-500 dark:text-slate-300 uppercase mb-1">Müşteri Ad Soyad</label>
           <input
             type="text"
             placeholder="Ahmet Yılmaz"
             value={customerName}
             onChange={(e) => setCustomerName(e.target.value)}
-            className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3.5 py-2 font-bold outline-none focus:border-primary"
+            className="w-full bg-slate-50 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white rounded-xl px-3.5 py-2 font-bold outline-none focus:border-primary"
           />
         </div>
 
         <div>
-          <label className="block text-xs font-bold text-slate-400 uppercase mb-1">Müşteri Telefon</label>
+          <label className="block text-xs font-bold text-slate-500 dark:text-slate-300 uppercase mb-1">Müşteri Telefon</label>
           <input
             type="text"
             placeholder="+905051234567"
             value={customerPhone}
             onChange={(e) => setCustomerPhone(e.target.value)}
-            className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3.5 py-2 font-mono font-bold outline-none focus:border-primary"
+            className="w-full bg-slate-50 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white rounded-xl px-3.5 py-2 font-mono font-bold outline-none focus:border-primary"
           />
         </div>
 
         <div>
-          <label className="block text-xs font-bold text-slate-400 uppercase mb-1">Mekke Oteli</label>
+          <label className="block text-xs font-bold text-slate-500 dark:text-slate-300 uppercase mb-1">Mekke Oteli</label>
           <input
             type="text"
             value={mekkeHotelName}
             onChange={(e) => setMekkeHotelName(e.target.value)}
-            className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3.5 py-2 font-bold outline-none focus:border-primary"
+            className="w-full bg-slate-50 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white rounded-xl px-3.5 py-2 font-bold outline-none focus:border-primary"
           />
         </div>
 
         <div>
-          <label className="block text-xs font-bold text-slate-400 uppercase mb-1">Medine Oteli</label>
+          <label className="block text-xs font-bold text-slate-500 dark:text-slate-300 uppercase mb-1">Medine Oteli</label>
           <input
             type="text"
             value={medineHotelName}
             onChange={(e) => setMedineHotelName(e.target.value)}
-            className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3.5 py-2 font-bold outline-none focus:border-primary"
+            className="w-full bg-slate-50 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white rounded-xl px-3.5 py-2 font-bold outline-none focus:border-primary"
           />
         </div>
 
         <div>
-          <label className="block text-xs font-bold text-slate-400 uppercase mb-1">Kişi Sayısı (Pax)</label>
+          <label className="block text-xs font-bold text-slate-500 dark:text-slate-300 uppercase mb-1">Kişi Sayısı (Pax)</label>
           <input
             type="number"
             min={1}
             value={paxCount}
             onChange={(e) => setPaxCount(parseInt(e.target.value) || 1)}
-            className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3.5 py-2 font-extrabold outline-none focus:border-primary"
+            className="w-full bg-slate-50 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white rounded-xl px-3.5 py-2 font-extrabold outline-none focus:border-primary"
           />
         </div>
       </div>
 
       {/* Main Excel Line-Item Table */}
       <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
-        <div className="px-6 py-4 bg-slate-100 dark:bg-slate-800/60 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center">
-          <h3 className="font-bold text-sm text-slate-800 dark:text-slate-200 uppercase tracking-wider flex items-center gap-2">
-            <span className="material-symbols-outlined text-primary">table_chart</span> HİZMET MALIYET VE KAR HESAPLAMA MATRİSİ
+        <div className="px-6 py-4 bg-slate-100 dark:bg-slate-800/80 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center">
+          <h3 className="font-bold text-sm text-slate-800 dark:text-slate-100 uppercase tracking-wider flex items-center gap-2">
+            <span className="material-symbols-outlined text-primary dark:text-sky-400">table_chart</span> HİZMET MALIYET VE KAR HESAPLAMA MATRİSİ
           </h3>
           <span className="text-xs font-mono text-slate-400">Formül: Alış + %Marj = Satış Fiyatı</span>
         </div>
@@ -240,14 +240,14 @@ export default function ExcelPricingCalculator({ initialCustomerName, initialPho
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-slate-50 dark:bg-slate-800/40 text-[11px] font-bold text-slate-400 uppercase tracking-wider border-b border-slate-200 dark:border-slate-800">
+              <tr className="bg-slate-50 dark:bg-slate-800/60 text-[11px] font-bold text-slate-400 uppercase tracking-wider border-b border-slate-200 dark:border-slate-800">
                 <th className="p-4">Hizmet Adı</th>
                 <th className="p-4">Dolar Alış ($)</th>
                 <th className="p-4">Alış Fiyatı (₺)</th>
                 <th className="p-4">Kar Marjı (%)</th>
                 <th className="p-4">Satış Fiyatı (₺)</th>
                 <th className="p-4">Dolar Satış ($)</th>
-                <th className="p-4 text-emerald-600">Kar Miktarı (₺)</th>
+                <th className="p-4 text-emerald-600 dark:text-emerald-400">Kar Miktarı (₺)</th>
                 <th className="p-4">Not / Formül</th>
               </tr>
             </thead>
@@ -263,7 +263,7 @@ export default function ExcelPricingCalculator({ initialCustomerName, initialPho
                       step="0.01"
                       value={row.costUsd || ""}
                       onChange={(e) => updateRowCostUsd(row.id, parseFloat(e.target.value) || 0)}
-                      className="w-28 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-2.5 py-1 font-mono font-bold outline-none focus:border-primary"
+                      className="w-28 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white rounded-lg px-2.5 py-1.5 font-mono font-extrabold outline-none focus:ring-2 focus:ring-sky-400"
                     />
                   </td>
 
@@ -274,20 +274,20 @@ export default function ExcelPricingCalculator({ initialCustomerName, initialPho
                       step="0.01"
                       value={row.costTry || ""}
                       onChange={(e) => updateRowCostTry(row.id, parseFloat(e.target.value) || 0)}
-                      className="w-32 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-2.5 py-1 font-mono font-bold outline-none focus:border-primary"
+                      className="w-32 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white rounded-lg px-2.5 py-1.5 font-mono font-extrabold outline-none focus:ring-2 focus:ring-sky-400"
                     />
                   </td>
 
                   {/* Margin % Input */}
                   <td className="p-4">
-                    <div className="flex items-center gap-1">
+                    <div className="flex items-center gap-1 text-slate-800 dark:text-white">
                       <input
                         type="number"
                         value={row.marginPercent}
                         onChange={(e) => updateRowMargin(row.id, parseFloat(e.target.value) || 0)}
-                        className="w-16 bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg px-2 py-1 font-extrabold text-center outline-none focus:border-primary"
+                        className="w-16 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white rounded-lg px-2 py-1.5 font-extrabold text-center outline-none focus:ring-2 focus:ring-sky-400"
                       />
-                      <span>%</span>
+                      <span className="font-bold">%</span>
                     </div>
                   </td>
 
@@ -298,12 +298,12 @@ export default function ExcelPricingCalculator({ initialCustomerName, initialPho
                       step="0.01"
                       value={row.saleTry ? row.saleTry.toFixed(2) : ""}
                       onChange={(e) => updateRowSaleTry(row.id, parseFloat(e.target.value) || 0)}
-                      className="w-32 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-800 text-emerald-700 dark:text-emerald-300 font-mono font-black rounded-lg px-2.5 py-1 outline-none"
+                      className="w-32 bg-emerald-50 dark:bg-emerald-950/80 border border-emerald-400 dark:border-emerald-700 text-emerald-900 dark:text-emerald-300 font-mono font-black rounded-lg px-2.5 py-1.5 outline-none focus:ring-2 focus:ring-emerald-400"
                     />
                   </td>
 
                   {/* USD Sale (Calculated) */}
-                  <td className="p-4 font-mono font-bold text-slate-700 dark:text-slate-300">
+                  <td className="p-4 font-mono font-bold text-slate-800 dark:text-slate-200">
                     ${row.saleUsd.toFixed(2)}
                   </td>
 
@@ -318,10 +318,10 @@ export default function ExcelPricingCalculator({ initialCustomerName, initialPho
               ))}
 
               {/* Table Totals Row */}
-              <tr className="bg-slate-100 dark:bg-slate-800/80 font-black text-sm border-t-2 border-slate-300 dark:border-slate-700">
+              <tr className="bg-slate-100 dark:bg-slate-800/90 font-black text-sm border-t-2 border-slate-300 dark:border-slate-700">
                 <td className="p-4 text-slate-900 dark:text-white uppercase">TOPLAM ALIŞ & SATIŞ</td>
-                <td className="p-4 font-mono">${totalCostUsd.toFixed(2)}</td>
-                <td className="p-4 font-mono">₺{totalCostTry.toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                <td className="p-4 font-mono text-slate-900 dark:text-white">${totalCostUsd.toFixed(2)}</td>
+                <td className="p-4 font-mono text-slate-900 dark:text-white">₺{totalCostTry.toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                 <td className="p-4 text-slate-400">-</td>
                 <td className="p-4 font-mono text-emerald-600 dark:text-emerald-400">₺{totalSaleTryNakit.toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
                 <td className="p-4 font-mono text-emerald-600 dark:text-emerald-400">${totalSaleUsdNakit.toFixed(2)}</td>
@@ -338,14 +338,14 @@ export default function ExcelPricingCalculator({ initialCustomerName, initialPho
         {/* Payment Methods Breakdown */}
         <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 space-y-4 shadow-sm">
           <h4 className="font-bold text-sm text-slate-900 dark:text-white uppercase tracking-wider flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
-            <span className="material-symbols-outlined text-emerald-600">payments</span> ÖDEME SEÇENEKLERİ TABLOSU
+            <span className="material-symbols-outlined text-emerald-600 dark:text-emerald-400">payments</span> ÖDEME SEÇENEKLERİ TABLOSU
           </h4>
 
           <div className="space-y-3 text-xs">
             <div className="p-3.5 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900 flex justify-between items-center">
               <div>
                 <p className="font-bold text-emerald-900 dark:text-emerald-200">Nakit / Peşin Ödeme</p>
-                <p className="text-[10px] text-emerald-600">Standart Satış Fiyatı</p>
+                <p className="text-[10px] text-emerald-600 dark:text-emerald-400">Standart Satış Fiyatı</p>
               </div>
               <p className="font-mono font-black text-emerald-700 dark:text-emerald-300 text-sm">
                 ₺{totalSaleTryNakit.toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
@@ -355,7 +355,7 @@ export default function ExcelPricingCalculator({ initialCustomerName, initialPho
             <div className="p-3.5 rounded-2xl bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900 flex justify-between items-center">
               <div>
                 <p className="font-bold text-blue-900 dark:text-blue-200">İBAN / Havale ile Ödeme (+%{ibanSurchargePercent})</p>
-                <p className="text-[10px] text-blue-600">Fatura & KDV Dahil</p>
+                <p className="text-[10px] text-blue-600 dark:text-blue-400">Fatura & KDV Dahil</p>
               </div>
               <p className="font-mono font-black text-blue-700 dark:text-blue-300 text-sm">
                 ₺{totalSaleTryIban.toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
@@ -365,7 +365,7 @@ export default function ExcelPricingCalculator({ initialCustomerName, initialPho
             <div className="p-3.5 rounded-2xl bg-purple-50 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-900 flex justify-between items-center">
               <div>
                 <p className="font-bold text-purple-900 dark:text-purple-200">Kredi Kartı ile Ödeme (+%{cardSurchargePercent})</p>
-                <p className="text-[10px] text-purple-600">Banka Kart Komisyonu Dahil</p>
+                <p className="text-[10px] text-purple-600 dark:text-purple-400">Banka Kart Komisyonu Dahil</p>
               </div>
               <p className="font-mono font-black text-purple-700 dark:text-purple-300 text-sm">
                 ₺{totalSaleTryCard.toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
@@ -377,30 +377,30 @@ export default function ExcelPricingCalculator({ initialCustomerName, initialPho
         {/* Currency & Pax Breakdown */}
         <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 space-y-4 shadow-sm">
           <h4 className="font-bold text-sm text-slate-900 dark:text-white uppercase tracking-wider flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
-            <span className="material-symbols-outlined text-primary">currency_exchange</span> DÖVİZ VE KİŞİ BAŞI TUTARLAR
+            <span className="material-symbols-outlined text-primary dark:text-sky-400">currency_exchange</span> DÖVİZ VE KİŞİ BAŞI TUTARLAR
           </h4>
 
           <div className="space-y-3 text-xs">
             <div className="flex justify-between items-center p-3 rounded-xl bg-slate-50 dark:bg-slate-800">
-              <span className="text-slate-500 font-bold">Kişi Başı Nakit Tutarı (USD)</span>
-              <span className="font-mono font-black text-primary text-sm">${perPaxNakitUsd.toFixed(2)} USD</span>
+              <span className="text-slate-500 dark:text-slate-400 font-bold">Kişi Başı Nakit Tutarı (USD)</span>
+              <span className="font-mono font-black text-primary dark:text-sky-400 text-sm">${perPaxNakitUsd.toFixed(2)} USD</span>
             </div>
 
             <div className="flex justify-between items-center p-3 rounded-xl bg-slate-50 dark:bg-slate-800">
-              <span className="text-slate-500 font-bold">Kişi Başı Nakit Tutarı (TRY)</span>
+              <span className="text-slate-500 dark:text-slate-400 font-bold">Kişi Başı Nakit Tutarı (TRY)</span>
               <span className="font-mono font-black text-slate-800 dark:text-slate-100 text-sm">
                 ₺{perPaxNakitTry.toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </span>
             </div>
 
             <div className="flex justify-between items-center p-3 rounded-xl bg-slate-50 dark:bg-slate-800">
-              <span className="text-slate-500 font-bold">Toplam Nakit Karşılığı (USD)</span>
-              <span className="font-mono font-black text-emerald-600 text-sm">${totalSaleUsdNakit.toFixed(2)}</span>
+              <span className="text-slate-500 dark:text-slate-400 font-bold">Toplam Nakit Karşılığı (USD)</span>
+              <span className="font-mono font-black text-emerald-600 dark:text-emerald-400 text-sm">${totalSaleUsdNakit.toFixed(2)}</span>
             </div>
 
             <div className="flex justify-between items-center p-3 rounded-xl bg-slate-50 dark:bg-slate-800">
-              <span className="text-slate-500 font-bold">Toplam Nakit Karşılığı (EUR)</span>
-              <span className="font-mono font-black text-indigo-600 text-sm">€{totalSaleEurNakit.toFixed(2)}</span>
+              <span className="text-slate-500 dark:text-slate-400 font-bold">Toplam Nakit Karşılığı (EUR)</span>
+              <span className="font-mono font-black text-indigo-600 dark:text-indigo-400 text-sm">€{totalSaleEurNakit.toFixed(2)}</span>
             </div>
           </div>
         </div>
@@ -411,7 +411,7 @@ export default function ExcelPricingCalculator({ initialCustomerName, initialPho
             <h4 className="font-bold text-sm text-slate-900 dark:text-white uppercase tracking-wider flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
               <span className="material-symbols-outlined text-emerald-500">send</span> TEKLİF & TEK TIKLA MÜŞTERİYE GÖNDER
             </h4>
-            <p className="text-xs text-slate-500 mt-2 leading-relaxed">
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-2 leading-relaxed">
               Excel hesaplama motorundan çıkan tüm detayları doğrudan WhatsApp mesajına dönüştürebilir veya CRM teklif kaydına çevirebilirsiniz.
             </p>
           </div>

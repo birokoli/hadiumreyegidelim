@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -8,7 +8,7 @@ import { useAdminContext } from "./AdminContext";
 
 type AdminPermission = "dashboard" | "orders" | "content" | "operations" | "marketing" | "settings" | "users";
 
-const menuGroups: { title: string; links: { href: string; icon: string; label: string; exact?: boolean; permission?: AdminPermission }[] }[] = [
+const menuGroups: { title: string; links: { href: string; icon: string; label: string; exact?: boolean; permission?: AdminPermission; badgeKey?: string }[] }[] = [
   {
     title: "Genel Bakış",
     links: [
@@ -21,7 +21,7 @@ const menuGroups: { title: string; links: { href: string; icon: string; label: s
       { href: "/admin/crm",                       icon: "view_kanban",    label: "CRM Komuta Merkezi", permission: "orders"   },
       { href: "/admin/fiyat-teklifleri/hesaplayici", icon: "calculate",     label: "Excel Fiyat Motoru", permission: "orders"   },
       { href: "/admin/orders",                    icon: "receipt_long",   label: "Talepler / Siparişler", permission: "orders" },
-      { href: "/admin/contact",                   icon: "call",           label: "WhatsApp & İletişim", permission: "orders"  },
+      { href: "/admin/contact",                   icon: "call",           label: "WhatsApp & İletişim", permission: "orders", badgeKey: "unreadLeads" },
       { href: "/admin/fiyat-teklifleri",           icon: "request_quote",  label: "Fiyat Teklifleri", permission: "orders"     },
       { href: "/admin/fiyat-teklifleri/hizmetler", icon: "library_books",  label: "Hizmet Kütüphanesi", permission: "orders"   },
     ],
@@ -29,7 +29,7 @@ const menuGroups: { title: string; links: { href: string; icon: string; label: s
   {
     title: "Operasyon Merkezi",
     links: [
-      { href: "/admin/packages", icon: "inventory_2", label: "Lüks Paketler", permission: "operations"  },
+      { href: "/admin/packages", icon: "inventory_2", label: "Lüks Paketler", permission: "operations", badgeKey: "totalPackages" },
       { href: "/admin/services", icon: "mosque",      label: "Ek Hizmetler", permission: "operations"   },
       { href: "/admin/guides",   icon: "person_pin",  label: "Yerel Rehberler", permission: "operations" },
     ],
@@ -37,7 +37,7 @@ const menuGroups: { title: string; links: { href: string; icon: string; label: s
   {
     title: "İçerik Stüdyosu",
     links: [
-      { href: "/admin/content",    icon: "article",  label: "Blog İçerikleri", permission: "content" },
+      { href: "/admin/content",    icon: "article",  label: "Blog İçerikleri", permission: "content", badgeKey: "totalPosts" },
       { href: "/admin/categories", icon: "category", label: "Kategoriler", permission: "content"     },
       { href: "/admin/authors",    icon: "badge",    label: "Yazarlar", permission: "content"        },
     ],
@@ -69,8 +69,10 @@ const menuGroups: { title: string; links: { href: string; icon: string; label: s
 export default function AdminSidebar({ logoUrl }: { logoUrl?: string }) {
   const pathname = usePathname();
   const { sidebarOpen, setSidebarOpen } = useAdminContext();
-  const [allowedPermissions, setAllowedPermissions] = React.useState<AdminPermission[] | null>(null);
-  const [isSuperAdmin, setIsSuperAdmin] = React.useState(true);
+  const [allowedPermissions, setAllowedPermissions] = useState<AdminPermission[] | null>(null);
+  const [isSuperAdmin, setIsSuperAdmin] = useState(true);
+  const [counts, setCounts] = useState<{ unreadLeads?: number; totalPackages?: number; totalPosts?: number }>({});
+  const [filterQuery, setFilterQuery] = useState("");
 
   useEffect(() => {
     fetch("/api/admin/me")
@@ -84,6 +86,14 @@ export default function AdminSidebar({ logoUrl }: { logoUrl?: string }) {
         setIsSuperAdmin(true);
         setAllowedPermissions(null);
       });
+
+    // Fetch live counts for sidebar badges
+    fetch("/api/admin/counts")
+      .then(res => res.json())
+      .then(data => {
+        if (data.counts) setCounts(data.counts);
+      })
+      .catch(() => {});
   }, []);
 
   const canSee = (permission?: AdminPermission) => {
@@ -91,12 +101,10 @@ export default function AdminSidebar({ logoUrl }: { logoUrl?: string }) {
     return allowedPermissions.includes(permission);
   };
 
-  // Close sidebar on route change (mobile)
   useEffect(() => {
     setSidebarOpen(false);
   }, [pathname, setSidebarOpen]);
 
-  // Lock body scroll when mobile sidebar is open
   useEffect(() => {
     if (sidebarOpen) document.body.style.overflow = "hidden";
     else document.body.style.overflow = "";
@@ -123,7 +131,7 @@ export default function AdminSidebar({ logoUrl }: { logoUrl?: string }) {
         `}
       >
         {/* Logo + close button */}
-        <div className="px-6 pt-7 pb-6 flex items-start justify-between shrink-0">
+        <div className="px-6 pt-7 pb-4 flex items-start justify-between shrink-0">
           <div className="flex flex-col gap-2">
             <Link href="/" className="hover:opacity-80 transition-opacity">
               <Image
@@ -139,7 +147,7 @@ export default function AdminSidebar({ logoUrl }: { logoUrl?: string }) {
               Kurumsal Yönetim
             </p>
           </div>
-          {/* Close button — mobile only */}
+
           <button
             onClick={() => setSidebarOpen(false)}
             className="lg:hidden p-2 rounded-xl text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-200 transition-colors mt-1"
@@ -149,44 +157,81 @@ export default function AdminSidebar({ logoUrl }: { logoUrl?: string }) {
           </button>
         </div>
 
+        {/* Sidebar Menu Search Filter */}
+        <div className="px-4 mb-4">
+          <div className="relative">
+            <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[16px]">
+              filter_list
+            </span>
+            <input
+              type="text"
+              placeholder="Menü filtrele..."
+              value={filterQuery}
+              onChange={(e) => setFilterQuery(e.target.value)}
+              className="w-full bg-slate-100 dark:bg-slate-800 text-xs text-slate-800 dark:text-slate-200 rounded-xl pl-8 pr-3 py-2 border-none outline-none focus:ring-1 focus:ring-[#003781]"
+            />
+          </div>
+        </div>
+
         {/* Nav */}
         <nav className="flex-1 flex flex-col space-y-5 px-4">
           {menuGroups.map((group, idx) => {
-            const links = group.links.filter(link => canSee(link.permission));
-            if (links.length === 0) return null;
+            const filteredLinks = group.links
+              .filter(link => canSee(link.permission))
+              .filter(link => link.label.toLowerCase().includes(filterQuery.toLowerCase()));
+
+            if (filteredLinks.length === 0) return null;
 
             return (
-            <div key={idx}>
-              <h4 className="text-[10px] uppercase tracking-widest text-slate-400 dark:text-slate-500 font-bold px-4 mb-1.5">
-                {group.title}
-              </h4>
-              <div className="space-y-0.5">
-                {links.map(link => {
-                  const isActive = link.exact
-                    ? pathname === link.href
-                    : pathname.startsWith(link.href);
-                  return (
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      className={`flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all duration-200 ${
-                        isActive
-                          ? "text-[#003781] dark:text-sky-400 font-bold bg-[#003781]/8 dark:bg-sky-500/15 shadow-sm ring-1 ring-[#003781]/10 dark:ring-sky-500/30"
-                          : "text-slate-500 dark:text-slate-400 hover:text-[#003781] dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/60 font-medium"
-                      }`}
-                    >
-                      <span
-                        className={`material-symbols-outlined text-[20px] ${isActive ? "text-tertiary-fixed-dim" : ""}`}
-                        style={{ fontVariationSettings: isActive ? "'FILL' 1" : "'FILL' 0" }}
+              <div key={idx}>
+                <h4 className="text-[10px] uppercase tracking-widest text-slate-400 dark:text-slate-500 font-bold px-4 mb-1.5">
+                  {group.title}
+                </h4>
+                <div className="space-y-0.5">
+                  {filteredLinks.map(link => {
+                    const isActive = link.exact
+                      ? pathname === link.href
+                      : pathname.startsWith(link.href);
+
+                    const badgeValue = link.badgeKey ? (counts as any)[link.badgeKey] : undefined;
+
+                    return (
+                      <Link
+                        key={link.href}
+                        href={link.href}
+                        className={`flex items-center justify-between px-4 py-2.5 rounded-xl transition-all duration-200 ${
+                          isActive
+                            ? "text-[#003781] dark:text-sky-400 font-bold bg-[#003781]/8 dark:bg-sky-500/15 shadow-sm ring-1 ring-[#003781]/10 dark:ring-sky-500/30"
+                            : "text-slate-500 dark:text-slate-400 hover:text-[#003781] dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/60 font-medium"
+                        }`}
                       >
-                        {link.icon}
-                      </span>
-                      <span className="text-sm">{link.label}</span>
-                    </Link>
-                  );
-                })}
+                        <div className="flex items-center gap-3">
+                          <span
+                            className={`material-symbols-outlined text-[20px] ${isActive ? "text-tertiary-fixed-dim" : ""}`}
+                            style={{ fontVariationSettings: isActive ? "'FILL' 1" : "'FILL' 0" }}
+                          >
+                            {link.icon}
+                          </span>
+                          <span className="text-sm">{link.label}</span>
+                        </div>
+
+                        {/* Live Unread Badge */}
+                        {badgeValue !== undefined && badgeValue > 0 && (
+                          <span
+                            className={`text-[10px] font-extrabold px-2 py-0.5 rounded-full ${
+                              link.badgeKey === "unreadLeads"
+                                ? "bg-red-500 text-white animate-pulse"
+                                : "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300"
+                            }`}
+                          >
+                            {badgeValue}
+                          </span>
+                        )}
+                      </Link>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
             );
           })}
         </nav>
@@ -194,7 +239,7 @@ export default function AdminSidebar({ logoUrl }: { logoUrl?: string }) {
         {/* Bottom CTA */}
         <div className="px-5 py-5 mt-4 shrink-0">
           <Link href="/" target="_blank">
-            <button className="w-full py-3.5 flex items-center justify-center gap-2 bg-primary text-white rounded-xl font-bold text-sm hover:bg-[#002f6c] transition-all shadow-md active:scale-[0.98]">
+            <button className="w-full py-3.5 flex items-center justify-center gap-2 bg-[#003781] text-white rounded-xl font-bold text-sm hover:bg-[#002f6c] transition-all shadow-md active:scale-[0.98]">
               Siteye Git
               <span className="material-symbols-outlined text-[18px]">open_in_new</span>
             </button>

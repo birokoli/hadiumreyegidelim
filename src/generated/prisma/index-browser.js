@@ -776,6 +776,47 @@ exports.Prisma.ReferralQualificationScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.AiVisibilityAuditScalarFieldEnum = {
+  id: 'id',
+  url: 'url',
+  geoScore: 'geoScore',
+  schemaScore: 'schemaScore',
+  readabilityScore: 'readabilityScore',
+  citationRate: 'citationRate',
+  schemaStatus: 'schemaStatus',
+  markdownContent: 'markdownContent',
+  llmAnalysis: 'llmAnalysis',
+  citationDetails: 'citationDetails',
+  recommendations: 'recommendations',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.CrmLeadScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  phone: 'phone',
+  email: 'email',
+  stage: 'stage',
+  valueUSD: 'valueUSD',
+  source: 'source',
+  preferredPackage: 'preferredPackage',
+  notes: 'notes',
+  assignedTo: 'assignedTo',
+  lostReason: 'lostReason',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.CrmActivityScalarFieldEnum = {
+  id: 'id',
+  leadId: 'leadId',
+  type: 'type',
+  content: 'content',
+  createdBy: 'createdBy',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -838,7 +879,10 @@ exports.Prisma.ModelName = {
   PerformanceScore: 'PerformanceScore',
   PerformanceEvent: 'PerformanceEvent',
   Referral: 'Referral',
-  ReferralQualification: 'ReferralQualification'
+  ReferralQualification: 'ReferralQualification',
+  AiVisibilityAudit: 'AiVisibilityAudit',
+  CrmLead: 'CrmLead',
+  CrmActivity: 'CrmActivity'
 };
 
 /**

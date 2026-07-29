@@ -243,6 +243,21 @@ export type Referral = $Result.DefaultSelection<Prisma.$ReferralPayload>
  * 
  */
 export type ReferralQualification = $Result.DefaultSelection<Prisma.$ReferralQualificationPayload>
+/**
+ * Model AiVisibilityAudit
+ * 
+ */
+export type AiVisibilityAudit = $Result.DefaultSelection<Prisma.$AiVisibilityAuditPayload>
+/**
+ * Model CrmLead
+ * 
+ */
+export type CrmLead = $Result.DefaultSelection<Prisma.$CrmLeadPayload>
+/**
+ * Model CrmActivity
+ * 
+ */
+export type CrmActivity = $Result.DefaultSelection<Prisma.$CrmActivityPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -821,6 +836,36 @@ export class PrismaClient<
     * ```
     */
   get referralQualification(): Prisma.ReferralQualificationDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.aiVisibilityAudit`: Exposes CRUD operations for the **AiVisibilityAudit** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AiVisibilityAudits
+    * const aiVisibilityAudits = await prisma.aiVisibilityAudit.findMany()
+    * ```
+    */
+  get aiVisibilityAudit(): Prisma.AiVisibilityAuditDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.crmLead`: Exposes CRUD operations for the **CrmLead** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more CrmLeads
+    * const crmLeads = await prisma.crmLead.findMany()
+    * ```
+    */
+  get crmLead(): Prisma.CrmLeadDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.crmActivity`: Exposes CRUD operations for the **CrmActivity** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more CrmActivities
+    * const crmActivities = await prisma.crmActivity.findMany()
+    * ```
+    */
+  get crmActivity(): Prisma.CrmActivityDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1307,7 +1352,10 @@ export namespace Prisma {
     PerformanceScore: 'PerformanceScore',
     PerformanceEvent: 'PerformanceEvent',
     Referral: 'Referral',
-    ReferralQualification: 'ReferralQualification'
+    ReferralQualification: 'ReferralQualification',
+    AiVisibilityAudit: 'AiVisibilityAudit',
+    CrmLead: 'CrmLead',
+    CrmActivity: 'CrmActivity'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1326,7 +1374,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "order" | "setting" | "service" | "guide" | "category" | "author" | "post" | "package" | "hotel" | "aILog" | "user" | "adminUser" | "contactRequest" | "whatsAppConversation" | "whatsAppMessage" | "postVersion" | "influencer" | "supportChat" | "supportMessage" | "share" | "customer" | "sale" | "payment" | "paymentSale" | "loyaltyAccount" | "loyaltyTransaction" | "loyaltyRedemption" | "loyaltyCatalogItem" | "loyaltyMonthlyHistory" | "loyaltyMonthlyTierRule" | "loyaltyHonorTierRule" | "linkClick" | "attributionOverride" | "campaign" | "campaignParticipant" | "campaignCodeUsage" | "companySettings" | "quotation" | "quotationItem" | "serviceLibrary" | "programConfig" | "starLedger" | "performanceScore" | "performanceEvent" | "referral" | "referralQualification"
+      modelProps: "order" | "setting" | "service" | "guide" | "category" | "author" | "post" | "package" | "hotel" | "aILog" | "user" | "adminUser" | "contactRequest" | "whatsAppConversation" | "whatsAppMessage" | "postVersion" | "influencer" | "supportChat" | "supportMessage" | "share" | "customer" | "sale" | "payment" | "paymentSale" | "loyaltyAccount" | "loyaltyTransaction" | "loyaltyRedemption" | "loyaltyCatalogItem" | "loyaltyMonthlyHistory" | "loyaltyMonthlyTierRule" | "loyaltyHonorTierRule" | "linkClick" | "attributionOverride" | "campaign" | "campaignParticipant" | "campaignCodeUsage" | "companySettings" | "quotation" | "quotationItem" | "serviceLibrary" | "programConfig" | "starLedger" | "performanceScore" | "performanceEvent" | "referral" | "referralQualification" | "aiVisibilityAudit" | "crmLead" | "crmActivity"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -4734,6 +4782,228 @@ export namespace Prisma {
           }
         }
       }
+      AiVisibilityAudit: {
+        payload: Prisma.$AiVisibilityAuditPayload<ExtArgs>
+        fields: Prisma.AiVisibilityAuditFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AiVisibilityAuditFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiVisibilityAuditPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AiVisibilityAuditFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiVisibilityAuditPayload>
+          }
+          findFirst: {
+            args: Prisma.AiVisibilityAuditFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiVisibilityAuditPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AiVisibilityAuditFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiVisibilityAuditPayload>
+          }
+          findMany: {
+            args: Prisma.AiVisibilityAuditFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiVisibilityAuditPayload>[]
+          }
+          create: {
+            args: Prisma.AiVisibilityAuditCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiVisibilityAuditPayload>
+          }
+          createMany: {
+            args: Prisma.AiVisibilityAuditCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AiVisibilityAuditCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiVisibilityAuditPayload>[]
+          }
+          delete: {
+            args: Prisma.AiVisibilityAuditDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiVisibilityAuditPayload>
+          }
+          update: {
+            args: Prisma.AiVisibilityAuditUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiVisibilityAuditPayload>
+          }
+          deleteMany: {
+            args: Prisma.AiVisibilityAuditDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AiVisibilityAuditUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AiVisibilityAuditUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiVisibilityAuditPayload>[]
+          }
+          upsert: {
+            args: Prisma.AiVisibilityAuditUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AiVisibilityAuditPayload>
+          }
+          aggregate: {
+            args: Prisma.AiVisibilityAuditAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAiVisibilityAudit>
+          }
+          groupBy: {
+            args: Prisma.AiVisibilityAuditGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AiVisibilityAuditGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AiVisibilityAuditCountArgs<ExtArgs>
+            result: $Utils.Optional<AiVisibilityAuditCountAggregateOutputType> | number
+          }
+        }
+      }
+      CrmLead: {
+        payload: Prisma.$CrmLeadPayload<ExtArgs>
+        fields: Prisma.CrmLeadFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CrmLeadFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CrmLeadPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CrmLeadFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CrmLeadPayload>
+          }
+          findFirst: {
+            args: Prisma.CrmLeadFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CrmLeadPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CrmLeadFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CrmLeadPayload>
+          }
+          findMany: {
+            args: Prisma.CrmLeadFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CrmLeadPayload>[]
+          }
+          create: {
+            args: Prisma.CrmLeadCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CrmLeadPayload>
+          }
+          createMany: {
+            args: Prisma.CrmLeadCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.CrmLeadCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CrmLeadPayload>[]
+          }
+          delete: {
+            args: Prisma.CrmLeadDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CrmLeadPayload>
+          }
+          update: {
+            args: Prisma.CrmLeadUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CrmLeadPayload>
+          }
+          deleteMany: {
+            args: Prisma.CrmLeadDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CrmLeadUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.CrmLeadUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CrmLeadPayload>[]
+          }
+          upsert: {
+            args: Prisma.CrmLeadUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CrmLeadPayload>
+          }
+          aggregate: {
+            args: Prisma.CrmLeadAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCrmLead>
+          }
+          groupBy: {
+            args: Prisma.CrmLeadGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CrmLeadGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CrmLeadCountArgs<ExtArgs>
+            result: $Utils.Optional<CrmLeadCountAggregateOutputType> | number
+          }
+        }
+      }
+      CrmActivity: {
+        payload: Prisma.$CrmActivityPayload<ExtArgs>
+        fields: Prisma.CrmActivityFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.CrmActivityFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CrmActivityPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.CrmActivityFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CrmActivityPayload>
+          }
+          findFirst: {
+            args: Prisma.CrmActivityFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CrmActivityPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.CrmActivityFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CrmActivityPayload>
+          }
+          findMany: {
+            args: Prisma.CrmActivityFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CrmActivityPayload>[]
+          }
+          create: {
+            args: Prisma.CrmActivityCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CrmActivityPayload>
+          }
+          createMany: {
+            args: Prisma.CrmActivityCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.CrmActivityCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CrmActivityPayload>[]
+          }
+          delete: {
+            args: Prisma.CrmActivityDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CrmActivityPayload>
+          }
+          update: {
+            args: Prisma.CrmActivityUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CrmActivityPayload>
+          }
+          deleteMany: {
+            args: Prisma.CrmActivityDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.CrmActivityUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.CrmActivityUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CrmActivityPayload>[]
+          }
+          upsert: {
+            args: Prisma.CrmActivityUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$CrmActivityPayload>
+          }
+          aggregate: {
+            args: Prisma.CrmActivityAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateCrmActivity>
+          }
+          groupBy: {
+            args: Prisma.CrmActivityGroupByArgs<ExtArgs>
+            result: $Utils.Optional<CrmActivityGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.CrmActivityCountArgs<ExtArgs>
+            result: $Utils.Optional<CrmActivityCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -4876,6 +5146,9 @@ export namespace Prisma {
     performanceEvent?: PerformanceEventOmit
     referral?: ReferralOmit
     referralQualification?: ReferralQualificationOmit
+    aiVisibilityAudit?: AiVisibilityAuditOmit
+    crmLead?: CrmLeadOmit
+    crmActivity?: CrmActivityOmit
   }
 
   /* Types for Logging */
@@ -5592,6 +5865,37 @@ export namespace Prisma {
    */
   export type ReferralCountOutputTypeCountQualificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ReferralQualificationWhereInput
+  }
+
+
+  /**
+   * Count Type CrmLeadCountOutputType
+   */
+
+  export type CrmLeadCountOutputType = {
+    activities: number
+  }
+
+  export type CrmLeadCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    activities?: boolean | CrmLeadCountOutputTypeCountActivitiesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * CrmLeadCountOutputType without action
+   */
+  export type CrmLeadCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CrmLeadCountOutputType
+     */
+    select?: CrmLeadCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * CrmLeadCountOutputType without action
+   */
+  export type CrmLeadCountOutputTypeCountActivitiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CrmActivityWhereInput
   }
 
 
@@ -59492,6 +59796,3430 @@ export namespace Prisma {
 
 
   /**
+   * Model AiVisibilityAudit
+   */
+
+  export type AggregateAiVisibilityAudit = {
+    _count: AiVisibilityAuditCountAggregateOutputType | null
+    _avg: AiVisibilityAuditAvgAggregateOutputType | null
+    _sum: AiVisibilityAuditSumAggregateOutputType | null
+    _min: AiVisibilityAuditMinAggregateOutputType | null
+    _max: AiVisibilityAuditMaxAggregateOutputType | null
+  }
+
+  export type AiVisibilityAuditAvgAggregateOutputType = {
+    geoScore: number | null
+    schemaScore: number | null
+    readabilityScore: number | null
+    citationRate: number | null
+  }
+
+  export type AiVisibilityAuditSumAggregateOutputType = {
+    geoScore: number | null
+    schemaScore: number | null
+    readabilityScore: number | null
+    citationRate: number | null
+  }
+
+  export type AiVisibilityAuditMinAggregateOutputType = {
+    id: string | null
+    url: string | null
+    geoScore: number | null
+    schemaScore: number | null
+    readabilityScore: number | null
+    citationRate: number | null
+    schemaStatus: string | null
+    markdownContent: string | null
+    llmAnalysis: string | null
+    citationDetails: string | null
+    recommendations: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AiVisibilityAuditMaxAggregateOutputType = {
+    id: string | null
+    url: string | null
+    geoScore: number | null
+    schemaScore: number | null
+    readabilityScore: number | null
+    citationRate: number | null
+    schemaStatus: string | null
+    markdownContent: string | null
+    llmAnalysis: string | null
+    citationDetails: string | null
+    recommendations: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AiVisibilityAuditCountAggregateOutputType = {
+    id: number
+    url: number
+    geoScore: number
+    schemaScore: number
+    readabilityScore: number
+    citationRate: number
+    schemaStatus: number
+    markdownContent: number
+    llmAnalysis: number
+    citationDetails: number
+    recommendations: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type AiVisibilityAuditAvgAggregateInputType = {
+    geoScore?: true
+    schemaScore?: true
+    readabilityScore?: true
+    citationRate?: true
+  }
+
+  export type AiVisibilityAuditSumAggregateInputType = {
+    geoScore?: true
+    schemaScore?: true
+    readabilityScore?: true
+    citationRate?: true
+  }
+
+  export type AiVisibilityAuditMinAggregateInputType = {
+    id?: true
+    url?: true
+    geoScore?: true
+    schemaScore?: true
+    readabilityScore?: true
+    citationRate?: true
+    schemaStatus?: true
+    markdownContent?: true
+    llmAnalysis?: true
+    citationDetails?: true
+    recommendations?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AiVisibilityAuditMaxAggregateInputType = {
+    id?: true
+    url?: true
+    geoScore?: true
+    schemaScore?: true
+    readabilityScore?: true
+    citationRate?: true
+    schemaStatus?: true
+    markdownContent?: true
+    llmAnalysis?: true
+    citationDetails?: true
+    recommendations?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AiVisibilityAuditCountAggregateInputType = {
+    id?: true
+    url?: true
+    geoScore?: true
+    schemaScore?: true
+    readabilityScore?: true
+    citationRate?: true
+    schemaStatus?: true
+    markdownContent?: true
+    llmAnalysis?: true
+    citationDetails?: true
+    recommendations?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type AiVisibilityAuditAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AiVisibilityAudit to aggregate.
+     */
+    where?: AiVisibilityAuditWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiVisibilityAudits to fetch.
+     */
+    orderBy?: AiVisibilityAuditOrderByWithRelationInput | AiVisibilityAuditOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AiVisibilityAuditWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiVisibilityAudits from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiVisibilityAudits.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AiVisibilityAudits
+    **/
+    _count?: true | AiVisibilityAuditCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: AiVisibilityAuditAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AiVisibilityAuditSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AiVisibilityAuditMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AiVisibilityAuditMaxAggregateInputType
+  }
+
+  export type GetAiVisibilityAuditAggregateType<T extends AiVisibilityAuditAggregateArgs> = {
+        [P in keyof T & keyof AggregateAiVisibilityAudit]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAiVisibilityAudit[P]>
+      : GetScalarType<T[P], AggregateAiVisibilityAudit[P]>
+  }
+
+
+
+
+  export type AiVisibilityAuditGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AiVisibilityAuditWhereInput
+    orderBy?: AiVisibilityAuditOrderByWithAggregationInput | AiVisibilityAuditOrderByWithAggregationInput[]
+    by: AiVisibilityAuditScalarFieldEnum[] | AiVisibilityAuditScalarFieldEnum
+    having?: AiVisibilityAuditScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AiVisibilityAuditCountAggregateInputType | true
+    _avg?: AiVisibilityAuditAvgAggregateInputType
+    _sum?: AiVisibilityAuditSumAggregateInputType
+    _min?: AiVisibilityAuditMinAggregateInputType
+    _max?: AiVisibilityAuditMaxAggregateInputType
+  }
+
+  export type AiVisibilityAuditGroupByOutputType = {
+    id: string
+    url: string
+    geoScore: number
+    schemaScore: number
+    readabilityScore: number
+    citationRate: number
+    schemaStatus: string | null
+    markdownContent: string | null
+    llmAnalysis: string | null
+    citationDetails: string | null
+    recommendations: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: AiVisibilityAuditCountAggregateOutputType | null
+    _avg: AiVisibilityAuditAvgAggregateOutputType | null
+    _sum: AiVisibilityAuditSumAggregateOutputType | null
+    _min: AiVisibilityAuditMinAggregateOutputType | null
+    _max: AiVisibilityAuditMaxAggregateOutputType | null
+  }
+
+  type GetAiVisibilityAuditGroupByPayload<T extends AiVisibilityAuditGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AiVisibilityAuditGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AiVisibilityAuditGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AiVisibilityAuditGroupByOutputType[P]>
+            : GetScalarType<T[P], AiVisibilityAuditGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AiVisibilityAuditSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    url?: boolean
+    geoScore?: boolean
+    schemaScore?: boolean
+    readabilityScore?: boolean
+    citationRate?: boolean
+    schemaStatus?: boolean
+    markdownContent?: boolean
+    llmAnalysis?: boolean
+    citationDetails?: boolean
+    recommendations?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["aiVisibilityAudit"]>
+
+  export type AiVisibilityAuditSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    url?: boolean
+    geoScore?: boolean
+    schemaScore?: boolean
+    readabilityScore?: boolean
+    citationRate?: boolean
+    schemaStatus?: boolean
+    markdownContent?: boolean
+    llmAnalysis?: boolean
+    citationDetails?: boolean
+    recommendations?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["aiVisibilityAudit"]>
+
+  export type AiVisibilityAuditSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    url?: boolean
+    geoScore?: boolean
+    schemaScore?: boolean
+    readabilityScore?: boolean
+    citationRate?: boolean
+    schemaStatus?: boolean
+    markdownContent?: boolean
+    llmAnalysis?: boolean
+    citationDetails?: boolean
+    recommendations?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["aiVisibilityAudit"]>
+
+  export type AiVisibilityAuditSelectScalar = {
+    id?: boolean
+    url?: boolean
+    geoScore?: boolean
+    schemaScore?: boolean
+    readabilityScore?: boolean
+    citationRate?: boolean
+    schemaStatus?: boolean
+    markdownContent?: boolean
+    llmAnalysis?: boolean
+    citationDetails?: boolean
+    recommendations?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type AiVisibilityAuditOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "url" | "geoScore" | "schemaScore" | "readabilityScore" | "citationRate" | "schemaStatus" | "markdownContent" | "llmAnalysis" | "citationDetails" | "recommendations" | "createdAt" | "updatedAt", ExtArgs["result"]["aiVisibilityAudit"]>
+
+  export type $AiVisibilityAuditPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AiVisibilityAudit"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      url: string
+      geoScore: number
+      schemaScore: number
+      readabilityScore: number
+      citationRate: number
+      schemaStatus: string | null
+      markdownContent: string | null
+      llmAnalysis: string | null
+      citationDetails: string | null
+      recommendations: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["aiVisibilityAudit"]>
+    composites: {}
+  }
+
+  type AiVisibilityAuditGetPayload<S extends boolean | null | undefined | AiVisibilityAuditDefaultArgs> = $Result.GetResult<Prisma.$AiVisibilityAuditPayload, S>
+
+  type AiVisibilityAuditCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AiVisibilityAuditFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AiVisibilityAuditCountAggregateInputType | true
+    }
+
+  export interface AiVisibilityAuditDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AiVisibilityAudit'], meta: { name: 'AiVisibilityAudit' } }
+    /**
+     * Find zero or one AiVisibilityAudit that matches the filter.
+     * @param {AiVisibilityAuditFindUniqueArgs} args - Arguments to find a AiVisibilityAudit
+     * @example
+     * // Get one AiVisibilityAudit
+     * const aiVisibilityAudit = await prisma.aiVisibilityAudit.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AiVisibilityAuditFindUniqueArgs>(args: SelectSubset<T, AiVisibilityAuditFindUniqueArgs<ExtArgs>>): Prisma__AiVisibilityAuditClient<$Result.GetResult<Prisma.$AiVisibilityAuditPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AiVisibilityAudit that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AiVisibilityAuditFindUniqueOrThrowArgs} args - Arguments to find a AiVisibilityAudit
+     * @example
+     * // Get one AiVisibilityAudit
+     * const aiVisibilityAudit = await prisma.aiVisibilityAudit.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AiVisibilityAuditFindUniqueOrThrowArgs>(args: SelectSubset<T, AiVisibilityAuditFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AiVisibilityAuditClient<$Result.GetResult<Prisma.$AiVisibilityAuditPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AiVisibilityAudit that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiVisibilityAuditFindFirstArgs} args - Arguments to find a AiVisibilityAudit
+     * @example
+     * // Get one AiVisibilityAudit
+     * const aiVisibilityAudit = await prisma.aiVisibilityAudit.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AiVisibilityAuditFindFirstArgs>(args?: SelectSubset<T, AiVisibilityAuditFindFirstArgs<ExtArgs>>): Prisma__AiVisibilityAuditClient<$Result.GetResult<Prisma.$AiVisibilityAuditPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AiVisibilityAudit that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiVisibilityAuditFindFirstOrThrowArgs} args - Arguments to find a AiVisibilityAudit
+     * @example
+     * // Get one AiVisibilityAudit
+     * const aiVisibilityAudit = await prisma.aiVisibilityAudit.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AiVisibilityAuditFindFirstOrThrowArgs>(args?: SelectSubset<T, AiVisibilityAuditFindFirstOrThrowArgs<ExtArgs>>): Prisma__AiVisibilityAuditClient<$Result.GetResult<Prisma.$AiVisibilityAuditPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AiVisibilityAudits that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiVisibilityAuditFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AiVisibilityAudits
+     * const aiVisibilityAudits = await prisma.aiVisibilityAudit.findMany()
+     * 
+     * // Get first 10 AiVisibilityAudits
+     * const aiVisibilityAudits = await prisma.aiVisibilityAudit.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const aiVisibilityAuditWithIdOnly = await prisma.aiVisibilityAudit.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AiVisibilityAuditFindManyArgs>(args?: SelectSubset<T, AiVisibilityAuditFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiVisibilityAuditPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AiVisibilityAudit.
+     * @param {AiVisibilityAuditCreateArgs} args - Arguments to create a AiVisibilityAudit.
+     * @example
+     * // Create one AiVisibilityAudit
+     * const AiVisibilityAudit = await prisma.aiVisibilityAudit.create({
+     *   data: {
+     *     // ... data to create a AiVisibilityAudit
+     *   }
+     * })
+     * 
+     */
+    create<T extends AiVisibilityAuditCreateArgs>(args: SelectSubset<T, AiVisibilityAuditCreateArgs<ExtArgs>>): Prisma__AiVisibilityAuditClient<$Result.GetResult<Prisma.$AiVisibilityAuditPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AiVisibilityAudits.
+     * @param {AiVisibilityAuditCreateManyArgs} args - Arguments to create many AiVisibilityAudits.
+     * @example
+     * // Create many AiVisibilityAudits
+     * const aiVisibilityAudit = await prisma.aiVisibilityAudit.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AiVisibilityAuditCreateManyArgs>(args?: SelectSubset<T, AiVisibilityAuditCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AiVisibilityAudits and returns the data saved in the database.
+     * @param {AiVisibilityAuditCreateManyAndReturnArgs} args - Arguments to create many AiVisibilityAudits.
+     * @example
+     * // Create many AiVisibilityAudits
+     * const aiVisibilityAudit = await prisma.aiVisibilityAudit.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AiVisibilityAudits and only return the `id`
+     * const aiVisibilityAuditWithIdOnly = await prisma.aiVisibilityAudit.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AiVisibilityAuditCreateManyAndReturnArgs>(args?: SelectSubset<T, AiVisibilityAuditCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiVisibilityAuditPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AiVisibilityAudit.
+     * @param {AiVisibilityAuditDeleteArgs} args - Arguments to delete one AiVisibilityAudit.
+     * @example
+     * // Delete one AiVisibilityAudit
+     * const AiVisibilityAudit = await prisma.aiVisibilityAudit.delete({
+     *   where: {
+     *     // ... filter to delete one AiVisibilityAudit
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AiVisibilityAuditDeleteArgs>(args: SelectSubset<T, AiVisibilityAuditDeleteArgs<ExtArgs>>): Prisma__AiVisibilityAuditClient<$Result.GetResult<Prisma.$AiVisibilityAuditPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AiVisibilityAudit.
+     * @param {AiVisibilityAuditUpdateArgs} args - Arguments to update one AiVisibilityAudit.
+     * @example
+     * // Update one AiVisibilityAudit
+     * const aiVisibilityAudit = await prisma.aiVisibilityAudit.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AiVisibilityAuditUpdateArgs>(args: SelectSubset<T, AiVisibilityAuditUpdateArgs<ExtArgs>>): Prisma__AiVisibilityAuditClient<$Result.GetResult<Prisma.$AiVisibilityAuditPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AiVisibilityAudits.
+     * @param {AiVisibilityAuditDeleteManyArgs} args - Arguments to filter AiVisibilityAudits to delete.
+     * @example
+     * // Delete a few AiVisibilityAudits
+     * const { count } = await prisma.aiVisibilityAudit.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AiVisibilityAuditDeleteManyArgs>(args?: SelectSubset<T, AiVisibilityAuditDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AiVisibilityAudits.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiVisibilityAuditUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AiVisibilityAudits
+     * const aiVisibilityAudit = await prisma.aiVisibilityAudit.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AiVisibilityAuditUpdateManyArgs>(args: SelectSubset<T, AiVisibilityAuditUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AiVisibilityAudits and returns the data updated in the database.
+     * @param {AiVisibilityAuditUpdateManyAndReturnArgs} args - Arguments to update many AiVisibilityAudits.
+     * @example
+     * // Update many AiVisibilityAudits
+     * const aiVisibilityAudit = await prisma.aiVisibilityAudit.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AiVisibilityAudits and only return the `id`
+     * const aiVisibilityAuditWithIdOnly = await prisma.aiVisibilityAudit.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AiVisibilityAuditUpdateManyAndReturnArgs>(args: SelectSubset<T, AiVisibilityAuditUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AiVisibilityAuditPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AiVisibilityAudit.
+     * @param {AiVisibilityAuditUpsertArgs} args - Arguments to update or create a AiVisibilityAudit.
+     * @example
+     * // Update or create a AiVisibilityAudit
+     * const aiVisibilityAudit = await prisma.aiVisibilityAudit.upsert({
+     *   create: {
+     *     // ... data to create a AiVisibilityAudit
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AiVisibilityAudit we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AiVisibilityAuditUpsertArgs>(args: SelectSubset<T, AiVisibilityAuditUpsertArgs<ExtArgs>>): Prisma__AiVisibilityAuditClient<$Result.GetResult<Prisma.$AiVisibilityAuditPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AiVisibilityAudits.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiVisibilityAuditCountArgs} args - Arguments to filter AiVisibilityAudits to count.
+     * @example
+     * // Count the number of AiVisibilityAudits
+     * const count = await prisma.aiVisibilityAudit.count({
+     *   where: {
+     *     // ... the filter for the AiVisibilityAudits we want to count
+     *   }
+     * })
+    **/
+    count<T extends AiVisibilityAuditCountArgs>(
+      args?: Subset<T, AiVisibilityAuditCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AiVisibilityAuditCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AiVisibilityAudit.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiVisibilityAuditAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AiVisibilityAuditAggregateArgs>(args: Subset<T, AiVisibilityAuditAggregateArgs>): Prisma.PrismaPromise<GetAiVisibilityAuditAggregateType<T>>
+
+    /**
+     * Group by AiVisibilityAudit.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AiVisibilityAuditGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AiVisibilityAuditGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AiVisibilityAuditGroupByArgs['orderBy'] }
+        : { orderBy?: AiVisibilityAuditGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AiVisibilityAuditGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAiVisibilityAuditGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AiVisibilityAudit model
+   */
+  readonly fields: AiVisibilityAuditFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AiVisibilityAudit.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AiVisibilityAuditClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AiVisibilityAudit model
+   */
+  interface AiVisibilityAuditFieldRefs {
+    readonly id: FieldRef<"AiVisibilityAudit", 'String'>
+    readonly url: FieldRef<"AiVisibilityAudit", 'String'>
+    readonly geoScore: FieldRef<"AiVisibilityAudit", 'Int'>
+    readonly schemaScore: FieldRef<"AiVisibilityAudit", 'Int'>
+    readonly readabilityScore: FieldRef<"AiVisibilityAudit", 'Int'>
+    readonly citationRate: FieldRef<"AiVisibilityAudit", 'Int'>
+    readonly schemaStatus: FieldRef<"AiVisibilityAudit", 'String'>
+    readonly markdownContent: FieldRef<"AiVisibilityAudit", 'String'>
+    readonly llmAnalysis: FieldRef<"AiVisibilityAudit", 'String'>
+    readonly citationDetails: FieldRef<"AiVisibilityAudit", 'String'>
+    readonly recommendations: FieldRef<"AiVisibilityAudit", 'String'>
+    readonly createdAt: FieldRef<"AiVisibilityAudit", 'DateTime'>
+    readonly updatedAt: FieldRef<"AiVisibilityAudit", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AiVisibilityAudit findUnique
+   */
+  export type AiVisibilityAuditFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiVisibilityAudit
+     */
+    select?: AiVisibilityAuditSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiVisibilityAudit
+     */
+    omit?: AiVisibilityAuditOmit<ExtArgs> | null
+    /**
+     * Filter, which AiVisibilityAudit to fetch.
+     */
+    where: AiVisibilityAuditWhereUniqueInput
+  }
+
+  /**
+   * AiVisibilityAudit findUniqueOrThrow
+   */
+  export type AiVisibilityAuditFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiVisibilityAudit
+     */
+    select?: AiVisibilityAuditSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiVisibilityAudit
+     */
+    omit?: AiVisibilityAuditOmit<ExtArgs> | null
+    /**
+     * Filter, which AiVisibilityAudit to fetch.
+     */
+    where: AiVisibilityAuditWhereUniqueInput
+  }
+
+  /**
+   * AiVisibilityAudit findFirst
+   */
+  export type AiVisibilityAuditFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiVisibilityAudit
+     */
+    select?: AiVisibilityAuditSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiVisibilityAudit
+     */
+    omit?: AiVisibilityAuditOmit<ExtArgs> | null
+    /**
+     * Filter, which AiVisibilityAudit to fetch.
+     */
+    where?: AiVisibilityAuditWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiVisibilityAudits to fetch.
+     */
+    orderBy?: AiVisibilityAuditOrderByWithRelationInput | AiVisibilityAuditOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AiVisibilityAudits.
+     */
+    cursor?: AiVisibilityAuditWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiVisibilityAudits from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiVisibilityAudits.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AiVisibilityAudits.
+     */
+    distinct?: AiVisibilityAuditScalarFieldEnum | AiVisibilityAuditScalarFieldEnum[]
+  }
+
+  /**
+   * AiVisibilityAudit findFirstOrThrow
+   */
+  export type AiVisibilityAuditFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiVisibilityAudit
+     */
+    select?: AiVisibilityAuditSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiVisibilityAudit
+     */
+    omit?: AiVisibilityAuditOmit<ExtArgs> | null
+    /**
+     * Filter, which AiVisibilityAudit to fetch.
+     */
+    where?: AiVisibilityAuditWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiVisibilityAudits to fetch.
+     */
+    orderBy?: AiVisibilityAuditOrderByWithRelationInput | AiVisibilityAuditOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AiVisibilityAudits.
+     */
+    cursor?: AiVisibilityAuditWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiVisibilityAudits from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiVisibilityAudits.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AiVisibilityAudits.
+     */
+    distinct?: AiVisibilityAuditScalarFieldEnum | AiVisibilityAuditScalarFieldEnum[]
+  }
+
+  /**
+   * AiVisibilityAudit findMany
+   */
+  export type AiVisibilityAuditFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiVisibilityAudit
+     */
+    select?: AiVisibilityAuditSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiVisibilityAudit
+     */
+    omit?: AiVisibilityAuditOmit<ExtArgs> | null
+    /**
+     * Filter, which AiVisibilityAudits to fetch.
+     */
+    where?: AiVisibilityAuditWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AiVisibilityAudits to fetch.
+     */
+    orderBy?: AiVisibilityAuditOrderByWithRelationInput | AiVisibilityAuditOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AiVisibilityAudits.
+     */
+    cursor?: AiVisibilityAuditWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AiVisibilityAudits from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AiVisibilityAudits.
+     */
+    skip?: number
+    distinct?: AiVisibilityAuditScalarFieldEnum | AiVisibilityAuditScalarFieldEnum[]
+  }
+
+  /**
+   * AiVisibilityAudit create
+   */
+  export type AiVisibilityAuditCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiVisibilityAudit
+     */
+    select?: AiVisibilityAuditSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiVisibilityAudit
+     */
+    omit?: AiVisibilityAuditOmit<ExtArgs> | null
+    /**
+     * The data needed to create a AiVisibilityAudit.
+     */
+    data: XOR<AiVisibilityAuditCreateInput, AiVisibilityAuditUncheckedCreateInput>
+  }
+
+  /**
+   * AiVisibilityAudit createMany
+   */
+  export type AiVisibilityAuditCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AiVisibilityAudits.
+     */
+    data: AiVisibilityAuditCreateManyInput | AiVisibilityAuditCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AiVisibilityAudit createManyAndReturn
+   */
+  export type AiVisibilityAuditCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiVisibilityAudit
+     */
+    select?: AiVisibilityAuditSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiVisibilityAudit
+     */
+    omit?: AiVisibilityAuditOmit<ExtArgs> | null
+    /**
+     * The data used to create many AiVisibilityAudits.
+     */
+    data: AiVisibilityAuditCreateManyInput | AiVisibilityAuditCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AiVisibilityAudit update
+   */
+  export type AiVisibilityAuditUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiVisibilityAudit
+     */
+    select?: AiVisibilityAuditSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiVisibilityAudit
+     */
+    omit?: AiVisibilityAuditOmit<ExtArgs> | null
+    /**
+     * The data needed to update a AiVisibilityAudit.
+     */
+    data: XOR<AiVisibilityAuditUpdateInput, AiVisibilityAuditUncheckedUpdateInput>
+    /**
+     * Choose, which AiVisibilityAudit to update.
+     */
+    where: AiVisibilityAuditWhereUniqueInput
+  }
+
+  /**
+   * AiVisibilityAudit updateMany
+   */
+  export type AiVisibilityAuditUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AiVisibilityAudits.
+     */
+    data: XOR<AiVisibilityAuditUpdateManyMutationInput, AiVisibilityAuditUncheckedUpdateManyInput>
+    /**
+     * Filter which AiVisibilityAudits to update
+     */
+    where?: AiVisibilityAuditWhereInput
+    /**
+     * Limit how many AiVisibilityAudits to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AiVisibilityAudit updateManyAndReturn
+   */
+  export type AiVisibilityAuditUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiVisibilityAudit
+     */
+    select?: AiVisibilityAuditSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiVisibilityAudit
+     */
+    omit?: AiVisibilityAuditOmit<ExtArgs> | null
+    /**
+     * The data used to update AiVisibilityAudits.
+     */
+    data: XOR<AiVisibilityAuditUpdateManyMutationInput, AiVisibilityAuditUncheckedUpdateManyInput>
+    /**
+     * Filter which AiVisibilityAudits to update
+     */
+    where?: AiVisibilityAuditWhereInput
+    /**
+     * Limit how many AiVisibilityAudits to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AiVisibilityAudit upsert
+   */
+  export type AiVisibilityAuditUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiVisibilityAudit
+     */
+    select?: AiVisibilityAuditSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiVisibilityAudit
+     */
+    omit?: AiVisibilityAuditOmit<ExtArgs> | null
+    /**
+     * The filter to search for the AiVisibilityAudit to update in case it exists.
+     */
+    where: AiVisibilityAuditWhereUniqueInput
+    /**
+     * In case the AiVisibilityAudit found by the `where` argument doesn't exist, create a new AiVisibilityAudit with this data.
+     */
+    create: XOR<AiVisibilityAuditCreateInput, AiVisibilityAuditUncheckedCreateInput>
+    /**
+     * In case the AiVisibilityAudit was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AiVisibilityAuditUpdateInput, AiVisibilityAuditUncheckedUpdateInput>
+  }
+
+  /**
+   * AiVisibilityAudit delete
+   */
+  export type AiVisibilityAuditDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiVisibilityAudit
+     */
+    select?: AiVisibilityAuditSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiVisibilityAudit
+     */
+    omit?: AiVisibilityAuditOmit<ExtArgs> | null
+    /**
+     * Filter which AiVisibilityAudit to delete.
+     */
+    where: AiVisibilityAuditWhereUniqueInput
+  }
+
+  /**
+   * AiVisibilityAudit deleteMany
+   */
+  export type AiVisibilityAuditDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AiVisibilityAudits to delete
+     */
+    where?: AiVisibilityAuditWhereInput
+    /**
+     * Limit how many AiVisibilityAudits to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AiVisibilityAudit without action
+   */
+  export type AiVisibilityAuditDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AiVisibilityAudit
+     */
+    select?: AiVisibilityAuditSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AiVisibilityAudit
+     */
+    omit?: AiVisibilityAuditOmit<ExtArgs> | null
+  }
+
+
+  /**
+   * Model CrmLead
+   */
+
+  export type AggregateCrmLead = {
+    _count: CrmLeadCountAggregateOutputType | null
+    _avg: CrmLeadAvgAggregateOutputType | null
+    _sum: CrmLeadSumAggregateOutputType | null
+    _min: CrmLeadMinAggregateOutputType | null
+    _max: CrmLeadMaxAggregateOutputType | null
+  }
+
+  export type CrmLeadAvgAggregateOutputType = {
+    valueUSD: number | null
+  }
+
+  export type CrmLeadSumAggregateOutputType = {
+    valueUSD: number | null
+  }
+
+  export type CrmLeadMinAggregateOutputType = {
+    id: string | null
+    name: string | null
+    phone: string | null
+    email: string | null
+    stage: string | null
+    valueUSD: number | null
+    source: string | null
+    preferredPackage: string | null
+    notes: string | null
+    assignedTo: string | null
+    lostReason: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CrmLeadMaxAggregateOutputType = {
+    id: string | null
+    name: string | null
+    phone: string | null
+    email: string | null
+    stage: string | null
+    valueUSD: number | null
+    source: string | null
+    preferredPackage: string | null
+    notes: string | null
+    assignedTo: string | null
+    lostReason: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type CrmLeadCountAggregateOutputType = {
+    id: number
+    name: number
+    phone: number
+    email: number
+    stage: number
+    valueUSD: number
+    source: number
+    preferredPackage: number
+    notes: number
+    assignedTo: number
+    lostReason: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type CrmLeadAvgAggregateInputType = {
+    valueUSD?: true
+  }
+
+  export type CrmLeadSumAggregateInputType = {
+    valueUSD?: true
+  }
+
+  export type CrmLeadMinAggregateInputType = {
+    id?: true
+    name?: true
+    phone?: true
+    email?: true
+    stage?: true
+    valueUSD?: true
+    source?: true
+    preferredPackage?: true
+    notes?: true
+    assignedTo?: true
+    lostReason?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CrmLeadMaxAggregateInputType = {
+    id?: true
+    name?: true
+    phone?: true
+    email?: true
+    stage?: true
+    valueUSD?: true
+    source?: true
+    preferredPackage?: true
+    notes?: true
+    assignedTo?: true
+    lostReason?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type CrmLeadCountAggregateInputType = {
+    id?: true
+    name?: true
+    phone?: true
+    email?: true
+    stage?: true
+    valueUSD?: true
+    source?: true
+    preferredPackage?: true
+    notes?: true
+    assignedTo?: true
+    lostReason?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type CrmLeadAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CrmLead to aggregate.
+     */
+    where?: CrmLeadWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CrmLeads to fetch.
+     */
+    orderBy?: CrmLeadOrderByWithRelationInput | CrmLeadOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CrmLeadWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CrmLeads from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CrmLeads.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned CrmLeads
+    **/
+    _count?: true | CrmLeadCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: CrmLeadAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: CrmLeadSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CrmLeadMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CrmLeadMaxAggregateInputType
+  }
+
+  export type GetCrmLeadAggregateType<T extends CrmLeadAggregateArgs> = {
+        [P in keyof T & keyof AggregateCrmLead]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCrmLead[P]>
+      : GetScalarType<T[P], AggregateCrmLead[P]>
+  }
+
+
+
+
+  export type CrmLeadGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CrmLeadWhereInput
+    orderBy?: CrmLeadOrderByWithAggregationInput | CrmLeadOrderByWithAggregationInput[]
+    by: CrmLeadScalarFieldEnum[] | CrmLeadScalarFieldEnum
+    having?: CrmLeadScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CrmLeadCountAggregateInputType | true
+    _avg?: CrmLeadAvgAggregateInputType
+    _sum?: CrmLeadSumAggregateInputType
+    _min?: CrmLeadMinAggregateInputType
+    _max?: CrmLeadMaxAggregateInputType
+  }
+
+  export type CrmLeadGroupByOutputType = {
+    id: string
+    name: string
+    phone: string
+    email: string | null
+    stage: string
+    valueUSD: number
+    source: string
+    preferredPackage: string | null
+    notes: string | null
+    assignedTo: string | null
+    lostReason: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: CrmLeadCountAggregateOutputType | null
+    _avg: CrmLeadAvgAggregateOutputType | null
+    _sum: CrmLeadSumAggregateOutputType | null
+    _min: CrmLeadMinAggregateOutputType | null
+    _max: CrmLeadMaxAggregateOutputType | null
+  }
+
+  type GetCrmLeadGroupByPayload<T extends CrmLeadGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CrmLeadGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CrmLeadGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CrmLeadGroupByOutputType[P]>
+            : GetScalarType<T[P], CrmLeadGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CrmLeadSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    phone?: boolean
+    email?: boolean
+    stage?: boolean
+    valueUSD?: boolean
+    source?: boolean
+    preferredPackage?: boolean
+    notes?: boolean
+    assignedTo?: boolean
+    lostReason?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    activities?: boolean | CrmLead$activitiesArgs<ExtArgs>
+    _count?: boolean | CrmLeadCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["crmLead"]>
+
+  export type CrmLeadSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    phone?: boolean
+    email?: boolean
+    stage?: boolean
+    valueUSD?: boolean
+    source?: boolean
+    preferredPackage?: boolean
+    notes?: boolean
+    assignedTo?: boolean
+    lostReason?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["crmLead"]>
+
+  export type CrmLeadSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    name?: boolean
+    phone?: boolean
+    email?: boolean
+    stage?: boolean
+    valueUSD?: boolean
+    source?: boolean
+    preferredPackage?: boolean
+    notes?: boolean
+    assignedTo?: boolean
+    lostReason?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["crmLead"]>
+
+  export type CrmLeadSelectScalar = {
+    id?: boolean
+    name?: boolean
+    phone?: boolean
+    email?: boolean
+    stage?: boolean
+    valueUSD?: boolean
+    source?: boolean
+    preferredPackage?: boolean
+    notes?: boolean
+    assignedTo?: boolean
+    lostReason?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type CrmLeadOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "phone" | "email" | "stage" | "valueUSD" | "source" | "preferredPackage" | "notes" | "assignedTo" | "lostReason" | "createdAt" | "updatedAt", ExtArgs["result"]["crmLead"]>
+  export type CrmLeadInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    activities?: boolean | CrmLead$activitiesArgs<ExtArgs>
+    _count?: boolean | CrmLeadCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type CrmLeadIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type CrmLeadIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+
+  export type $CrmLeadPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "CrmLead"
+    objects: {
+      activities: Prisma.$CrmActivityPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      name: string
+      phone: string
+      email: string | null
+      stage: string
+      valueUSD: number
+      source: string
+      preferredPackage: string | null
+      notes: string | null
+      assignedTo: string | null
+      lostReason: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["crmLead"]>
+    composites: {}
+  }
+
+  type CrmLeadGetPayload<S extends boolean | null | undefined | CrmLeadDefaultArgs> = $Result.GetResult<Prisma.$CrmLeadPayload, S>
+
+  type CrmLeadCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CrmLeadFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CrmLeadCountAggregateInputType | true
+    }
+
+  export interface CrmLeadDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CrmLead'], meta: { name: 'CrmLead' } }
+    /**
+     * Find zero or one CrmLead that matches the filter.
+     * @param {CrmLeadFindUniqueArgs} args - Arguments to find a CrmLead
+     * @example
+     * // Get one CrmLead
+     * const crmLead = await prisma.crmLead.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CrmLeadFindUniqueArgs>(args: SelectSubset<T, CrmLeadFindUniqueArgs<ExtArgs>>): Prisma__CrmLeadClient<$Result.GetResult<Prisma.$CrmLeadPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one CrmLead that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CrmLeadFindUniqueOrThrowArgs} args - Arguments to find a CrmLead
+     * @example
+     * // Get one CrmLead
+     * const crmLead = await prisma.crmLead.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CrmLeadFindUniqueOrThrowArgs>(args: SelectSubset<T, CrmLeadFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CrmLeadClient<$Result.GetResult<Prisma.$CrmLeadPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CrmLead that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CrmLeadFindFirstArgs} args - Arguments to find a CrmLead
+     * @example
+     * // Get one CrmLead
+     * const crmLead = await prisma.crmLead.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CrmLeadFindFirstArgs>(args?: SelectSubset<T, CrmLeadFindFirstArgs<ExtArgs>>): Prisma__CrmLeadClient<$Result.GetResult<Prisma.$CrmLeadPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CrmLead that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CrmLeadFindFirstOrThrowArgs} args - Arguments to find a CrmLead
+     * @example
+     * // Get one CrmLead
+     * const crmLead = await prisma.crmLead.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CrmLeadFindFirstOrThrowArgs>(args?: SelectSubset<T, CrmLeadFindFirstOrThrowArgs<ExtArgs>>): Prisma__CrmLeadClient<$Result.GetResult<Prisma.$CrmLeadPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more CrmLeads that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CrmLeadFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all CrmLeads
+     * const crmLeads = await prisma.crmLead.findMany()
+     * 
+     * // Get first 10 CrmLeads
+     * const crmLeads = await prisma.crmLead.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const crmLeadWithIdOnly = await prisma.crmLead.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends CrmLeadFindManyArgs>(args?: SelectSubset<T, CrmLeadFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CrmLeadPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a CrmLead.
+     * @param {CrmLeadCreateArgs} args - Arguments to create a CrmLead.
+     * @example
+     * // Create one CrmLead
+     * const CrmLead = await prisma.crmLead.create({
+     *   data: {
+     *     // ... data to create a CrmLead
+     *   }
+     * })
+     * 
+     */
+    create<T extends CrmLeadCreateArgs>(args: SelectSubset<T, CrmLeadCreateArgs<ExtArgs>>): Prisma__CrmLeadClient<$Result.GetResult<Prisma.$CrmLeadPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many CrmLeads.
+     * @param {CrmLeadCreateManyArgs} args - Arguments to create many CrmLeads.
+     * @example
+     * // Create many CrmLeads
+     * const crmLead = await prisma.crmLead.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CrmLeadCreateManyArgs>(args?: SelectSubset<T, CrmLeadCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many CrmLeads and returns the data saved in the database.
+     * @param {CrmLeadCreateManyAndReturnArgs} args - Arguments to create many CrmLeads.
+     * @example
+     * // Create many CrmLeads
+     * const crmLead = await prisma.crmLead.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many CrmLeads and only return the `id`
+     * const crmLeadWithIdOnly = await prisma.crmLead.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends CrmLeadCreateManyAndReturnArgs>(args?: SelectSubset<T, CrmLeadCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CrmLeadPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a CrmLead.
+     * @param {CrmLeadDeleteArgs} args - Arguments to delete one CrmLead.
+     * @example
+     * // Delete one CrmLead
+     * const CrmLead = await prisma.crmLead.delete({
+     *   where: {
+     *     // ... filter to delete one CrmLead
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CrmLeadDeleteArgs>(args: SelectSubset<T, CrmLeadDeleteArgs<ExtArgs>>): Prisma__CrmLeadClient<$Result.GetResult<Prisma.$CrmLeadPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one CrmLead.
+     * @param {CrmLeadUpdateArgs} args - Arguments to update one CrmLead.
+     * @example
+     * // Update one CrmLead
+     * const crmLead = await prisma.crmLead.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CrmLeadUpdateArgs>(args: SelectSubset<T, CrmLeadUpdateArgs<ExtArgs>>): Prisma__CrmLeadClient<$Result.GetResult<Prisma.$CrmLeadPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more CrmLeads.
+     * @param {CrmLeadDeleteManyArgs} args - Arguments to filter CrmLeads to delete.
+     * @example
+     * // Delete a few CrmLeads
+     * const { count } = await prisma.crmLead.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CrmLeadDeleteManyArgs>(args?: SelectSubset<T, CrmLeadDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CrmLeads.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CrmLeadUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many CrmLeads
+     * const crmLead = await prisma.crmLead.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CrmLeadUpdateManyArgs>(args: SelectSubset<T, CrmLeadUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CrmLeads and returns the data updated in the database.
+     * @param {CrmLeadUpdateManyAndReturnArgs} args - Arguments to update many CrmLeads.
+     * @example
+     * // Update many CrmLeads
+     * const crmLead = await prisma.crmLead.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more CrmLeads and only return the `id`
+     * const crmLeadWithIdOnly = await prisma.crmLead.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends CrmLeadUpdateManyAndReturnArgs>(args: SelectSubset<T, CrmLeadUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CrmLeadPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one CrmLead.
+     * @param {CrmLeadUpsertArgs} args - Arguments to update or create a CrmLead.
+     * @example
+     * // Update or create a CrmLead
+     * const crmLead = await prisma.crmLead.upsert({
+     *   create: {
+     *     // ... data to create a CrmLead
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the CrmLead we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CrmLeadUpsertArgs>(args: SelectSubset<T, CrmLeadUpsertArgs<ExtArgs>>): Prisma__CrmLeadClient<$Result.GetResult<Prisma.$CrmLeadPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of CrmLeads.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CrmLeadCountArgs} args - Arguments to filter CrmLeads to count.
+     * @example
+     * // Count the number of CrmLeads
+     * const count = await prisma.crmLead.count({
+     *   where: {
+     *     // ... the filter for the CrmLeads we want to count
+     *   }
+     * })
+    **/
+    count<T extends CrmLeadCountArgs>(
+      args?: Subset<T, CrmLeadCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CrmLeadCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a CrmLead.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CrmLeadAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CrmLeadAggregateArgs>(args: Subset<T, CrmLeadAggregateArgs>): Prisma.PrismaPromise<GetCrmLeadAggregateType<T>>
+
+    /**
+     * Group by CrmLead.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CrmLeadGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CrmLeadGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CrmLeadGroupByArgs['orderBy'] }
+        : { orderBy?: CrmLeadGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CrmLeadGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCrmLeadGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the CrmLead model
+   */
+  readonly fields: CrmLeadFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for CrmLead.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CrmLeadClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    activities<T extends CrmLead$activitiesArgs<ExtArgs> = {}>(args?: Subset<T, CrmLead$activitiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CrmActivityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the CrmLead model
+   */
+  interface CrmLeadFieldRefs {
+    readonly id: FieldRef<"CrmLead", 'String'>
+    readonly name: FieldRef<"CrmLead", 'String'>
+    readonly phone: FieldRef<"CrmLead", 'String'>
+    readonly email: FieldRef<"CrmLead", 'String'>
+    readonly stage: FieldRef<"CrmLead", 'String'>
+    readonly valueUSD: FieldRef<"CrmLead", 'Float'>
+    readonly source: FieldRef<"CrmLead", 'String'>
+    readonly preferredPackage: FieldRef<"CrmLead", 'String'>
+    readonly notes: FieldRef<"CrmLead", 'String'>
+    readonly assignedTo: FieldRef<"CrmLead", 'String'>
+    readonly lostReason: FieldRef<"CrmLead", 'String'>
+    readonly createdAt: FieldRef<"CrmLead", 'DateTime'>
+    readonly updatedAt: FieldRef<"CrmLead", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * CrmLead findUnique
+   */
+  export type CrmLeadFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CrmLead
+     */
+    select?: CrmLeadSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CrmLead
+     */
+    omit?: CrmLeadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CrmLeadInclude<ExtArgs> | null
+    /**
+     * Filter, which CrmLead to fetch.
+     */
+    where: CrmLeadWhereUniqueInput
+  }
+
+  /**
+   * CrmLead findUniqueOrThrow
+   */
+  export type CrmLeadFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CrmLead
+     */
+    select?: CrmLeadSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CrmLead
+     */
+    omit?: CrmLeadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CrmLeadInclude<ExtArgs> | null
+    /**
+     * Filter, which CrmLead to fetch.
+     */
+    where: CrmLeadWhereUniqueInput
+  }
+
+  /**
+   * CrmLead findFirst
+   */
+  export type CrmLeadFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CrmLead
+     */
+    select?: CrmLeadSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CrmLead
+     */
+    omit?: CrmLeadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CrmLeadInclude<ExtArgs> | null
+    /**
+     * Filter, which CrmLead to fetch.
+     */
+    where?: CrmLeadWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CrmLeads to fetch.
+     */
+    orderBy?: CrmLeadOrderByWithRelationInput | CrmLeadOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CrmLeads.
+     */
+    cursor?: CrmLeadWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CrmLeads from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CrmLeads.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CrmLeads.
+     */
+    distinct?: CrmLeadScalarFieldEnum | CrmLeadScalarFieldEnum[]
+  }
+
+  /**
+   * CrmLead findFirstOrThrow
+   */
+  export type CrmLeadFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CrmLead
+     */
+    select?: CrmLeadSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CrmLead
+     */
+    omit?: CrmLeadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CrmLeadInclude<ExtArgs> | null
+    /**
+     * Filter, which CrmLead to fetch.
+     */
+    where?: CrmLeadWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CrmLeads to fetch.
+     */
+    orderBy?: CrmLeadOrderByWithRelationInput | CrmLeadOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CrmLeads.
+     */
+    cursor?: CrmLeadWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CrmLeads from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CrmLeads.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CrmLeads.
+     */
+    distinct?: CrmLeadScalarFieldEnum | CrmLeadScalarFieldEnum[]
+  }
+
+  /**
+   * CrmLead findMany
+   */
+  export type CrmLeadFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CrmLead
+     */
+    select?: CrmLeadSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CrmLead
+     */
+    omit?: CrmLeadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CrmLeadInclude<ExtArgs> | null
+    /**
+     * Filter, which CrmLeads to fetch.
+     */
+    where?: CrmLeadWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CrmLeads to fetch.
+     */
+    orderBy?: CrmLeadOrderByWithRelationInput | CrmLeadOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing CrmLeads.
+     */
+    cursor?: CrmLeadWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CrmLeads from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CrmLeads.
+     */
+    skip?: number
+    distinct?: CrmLeadScalarFieldEnum | CrmLeadScalarFieldEnum[]
+  }
+
+  /**
+   * CrmLead create
+   */
+  export type CrmLeadCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CrmLead
+     */
+    select?: CrmLeadSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CrmLead
+     */
+    omit?: CrmLeadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CrmLeadInclude<ExtArgs> | null
+    /**
+     * The data needed to create a CrmLead.
+     */
+    data: XOR<CrmLeadCreateInput, CrmLeadUncheckedCreateInput>
+  }
+
+  /**
+   * CrmLead createMany
+   */
+  export type CrmLeadCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many CrmLeads.
+     */
+    data: CrmLeadCreateManyInput | CrmLeadCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * CrmLead createManyAndReturn
+   */
+  export type CrmLeadCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CrmLead
+     */
+    select?: CrmLeadSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CrmLead
+     */
+    omit?: CrmLeadOmit<ExtArgs> | null
+    /**
+     * The data used to create many CrmLeads.
+     */
+    data: CrmLeadCreateManyInput | CrmLeadCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * CrmLead update
+   */
+  export type CrmLeadUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CrmLead
+     */
+    select?: CrmLeadSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CrmLead
+     */
+    omit?: CrmLeadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CrmLeadInclude<ExtArgs> | null
+    /**
+     * The data needed to update a CrmLead.
+     */
+    data: XOR<CrmLeadUpdateInput, CrmLeadUncheckedUpdateInput>
+    /**
+     * Choose, which CrmLead to update.
+     */
+    where: CrmLeadWhereUniqueInput
+  }
+
+  /**
+   * CrmLead updateMany
+   */
+  export type CrmLeadUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update CrmLeads.
+     */
+    data: XOR<CrmLeadUpdateManyMutationInput, CrmLeadUncheckedUpdateManyInput>
+    /**
+     * Filter which CrmLeads to update
+     */
+    where?: CrmLeadWhereInput
+    /**
+     * Limit how many CrmLeads to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * CrmLead updateManyAndReturn
+   */
+  export type CrmLeadUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CrmLead
+     */
+    select?: CrmLeadSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CrmLead
+     */
+    omit?: CrmLeadOmit<ExtArgs> | null
+    /**
+     * The data used to update CrmLeads.
+     */
+    data: XOR<CrmLeadUpdateManyMutationInput, CrmLeadUncheckedUpdateManyInput>
+    /**
+     * Filter which CrmLeads to update
+     */
+    where?: CrmLeadWhereInput
+    /**
+     * Limit how many CrmLeads to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * CrmLead upsert
+   */
+  export type CrmLeadUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CrmLead
+     */
+    select?: CrmLeadSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CrmLead
+     */
+    omit?: CrmLeadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CrmLeadInclude<ExtArgs> | null
+    /**
+     * The filter to search for the CrmLead to update in case it exists.
+     */
+    where: CrmLeadWhereUniqueInput
+    /**
+     * In case the CrmLead found by the `where` argument doesn't exist, create a new CrmLead with this data.
+     */
+    create: XOR<CrmLeadCreateInput, CrmLeadUncheckedCreateInput>
+    /**
+     * In case the CrmLead was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CrmLeadUpdateInput, CrmLeadUncheckedUpdateInput>
+  }
+
+  /**
+   * CrmLead delete
+   */
+  export type CrmLeadDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CrmLead
+     */
+    select?: CrmLeadSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CrmLead
+     */
+    omit?: CrmLeadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CrmLeadInclude<ExtArgs> | null
+    /**
+     * Filter which CrmLead to delete.
+     */
+    where: CrmLeadWhereUniqueInput
+  }
+
+  /**
+   * CrmLead deleteMany
+   */
+  export type CrmLeadDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CrmLeads to delete
+     */
+    where?: CrmLeadWhereInput
+    /**
+     * Limit how many CrmLeads to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * CrmLead.activities
+   */
+  export type CrmLead$activitiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CrmActivity
+     */
+    select?: CrmActivitySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CrmActivity
+     */
+    omit?: CrmActivityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CrmActivityInclude<ExtArgs> | null
+    where?: CrmActivityWhereInput
+    orderBy?: CrmActivityOrderByWithRelationInput | CrmActivityOrderByWithRelationInput[]
+    cursor?: CrmActivityWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: CrmActivityScalarFieldEnum | CrmActivityScalarFieldEnum[]
+  }
+
+  /**
+   * CrmLead without action
+   */
+  export type CrmLeadDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CrmLead
+     */
+    select?: CrmLeadSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CrmLead
+     */
+    omit?: CrmLeadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CrmLeadInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model CrmActivity
+   */
+
+  export type AggregateCrmActivity = {
+    _count: CrmActivityCountAggregateOutputType | null
+    _min: CrmActivityMinAggregateOutputType | null
+    _max: CrmActivityMaxAggregateOutputType | null
+  }
+
+  export type CrmActivityMinAggregateOutputType = {
+    id: string | null
+    leadId: string | null
+    type: string | null
+    content: string | null
+    createdBy: string | null
+    createdAt: Date | null
+  }
+
+  export type CrmActivityMaxAggregateOutputType = {
+    id: string | null
+    leadId: string | null
+    type: string | null
+    content: string | null
+    createdBy: string | null
+    createdAt: Date | null
+  }
+
+  export type CrmActivityCountAggregateOutputType = {
+    id: number
+    leadId: number
+    type: number
+    content: number
+    createdBy: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type CrmActivityMinAggregateInputType = {
+    id?: true
+    leadId?: true
+    type?: true
+    content?: true
+    createdBy?: true
+    createdAt?: true
+  }
+
+  export type CrmActivityMaxAggregateInputType = {
+    id?: true
+    leadId?: true
+    type?: true
+    content?: true
+    createdBy?: true
+    createdAt?: true
+  }
+
+  export type CrmActivityCountAggregateInputType = {
+    id?: true
+    leadId?: true
+    type?: true
+    content?: true
+    createdBy?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type CrmActivityAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CrmActivity to aggregate.
+     */
+    where?: CrmActivityWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CrmActivities to fetch.
+     */
+    orderBy?: CrmActivityOrderByWithRelationInput | CrmActivityOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: CrmActivityWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CrmActivities from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CrmActivities.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned CrmActivities
+    **/
+    _count?: true | CrmActivityCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: CrmActivityMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: CrmActivityMaxAggregateInputType
+  }
+
+  export type GetCrmActivityAggregateType<T extends CrmActivityAggregateArgs> = {
+        [P in keyof T & keyof AggregateCrmActivity]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateCrmActivity[P]>
+      : GetScalarType<T[P], AggregateCrmActivity[P]>
+  }
+
+
+
+
+  export type CrmActivityGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: CrmActivityWhereInput
+    orderBy?: CrmActivityOrderByWithAggregationInput | CrmActivityOrderByWithAggregationInput[]
+    by: CrmActivityScalarFieldEnum[] | CrmActivityScalarFieldEnum
+    having?: CrmActivityScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: CrmActivityCountAggregateInputType | true
+    _min?: CrmActivityMinAggregateInputType
+    _max?: CrmActivityMaxAggregateInputType
+  }
+
+  export type CrmActivityGroupByOutputType = {
+    id: string
+    leadId: string
+    type: string
+    content: string
+    createdBy: string
+    createdAt: Date
+    _count: CrmActivityCountAggregateOutputType | null
+    _min: CrmActivityMinAggregateOutputType | null
+    _max: CrmActivityMaxAggregateOutputType | null
+  }
+
+  type GetCrmActivityGroupByPayload<T extends CrmActivityGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<CrmActivityGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof CrmActivityGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], CrmActivityGroupByOutputType[P]>
+            : GetScalarType<T[P], CrmActivityGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type CrmActivitySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    leadId?: boolean
+    type?: boolean
+    content?: boolean
+    createdBy?: boolean
+    createdAt?: boolean
+    lead?: boolean | CrmLeadDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["crmActivity"]>
+
+  export type CrmActivitySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    leadId?: boolean
+    type?: boolean
+    content?: boolean
+    createdBy?: boolean
+    createdAt?: boolean
+    lead?: boolean | CrmLeadDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["crmActivity"]>
+
+  export type CrmActivitySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    leadId?: boolean
+    type?: boolean
+    content?: boolean
+    createdBy?: boolean
+    createdAt?: boolean
+    lead?: boolean | CrmLeadDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["crmActivity"]>
+
+  export type CrmActivitySelectScalar = {
+    id?: boolean
+    leadId?: boolean
+    type?: boolean
+    content?: boolean
+    createdBy?: boolean
+    createdAt?: boolean
+  }
+
+  export type CrmActivityOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "leadId" | "type" | "content" | "createdBy" | "createdAt", ExtArgs["result"]["crmActivity"]>
+  export type CrmActivityInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lead?: boolean | CrmLeadDefaultArgs<ExtArgs>
+  }
+  export type CrmActivityIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lead?: boolean | CrmLeadDefaultArgs<ExtArgs>
+  }
+  export type CrmActivityIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    lead?: boolean | CrmLeadDefaultArgs<ExtArgs>
+  }
+
+  export type $CrmActivityPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "CrmActivity"
+    objects: {
+      lead: Prisma.$CrmLeadPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      leadId: string
+      type: string
+      content: string
+      createdBy: string
+      createdAt: Date
+    }, ExtArgs["result"]["crmActivity"]>
+    composites: {}
+  }
+
+  type CrmActivityGetPayload<S extends boolean | null | undefined | CrmActivityDefaultArgs> = $Result.GetResult<Prisma.$CrmActivityPayload, S>
+
+  type CrmActivityCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<CrmActivityFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: CrmActivityCountAggregateInputType | true
+    }
+
+  export interface CrmActivityDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['CrmActivity'], meta: { name: 'CrmActivity' } }
+    /**
+     * Find zero or one CrmActivity that matches the filter.
+     * @param {CrmActivityFindUniqueArgs} args - Arguments to find a CrmActivity
+     * @example
+     * // Get one CrmActivity
+     * const crmActivity = await prisma.crmActivity.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends CrmActivityFindUniqueArgs>(args: SelectSubset<T, CrmActivityFindUniqueArgs<ExtArgs>>): Prisma__CrmActivityClient<$Result.GetResult<Prisma.$CrmActivityPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one CrmActivity that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {CrmActivityFindUniqueOrThrowArgs} args - Arguments to find a CrmActivity
+     * @example
+     * // Get one CrmActivity
+     * const crmActivity = await prisma.crmActivity.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends CrmActivityFindUniqueOrThrowArgs>(args: SelectSubset<T, CrmActivityFindUniqueOrThrowArgs<ExtArgs>>): Prisma__CrmActivityClient<$Result.GetResult<Prisma.$CrmActivityPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CrmActivity that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CrmActivityFindFirstArgs} args - Arguments to find a CrmActivity
+     * @example
+     * // Get one CrmActivity
+     * const crmActivity = await prisma.crmActivity.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends CrmActivityFindFirstArgs>(args?: SelectSubset<T, CrmActivityFindFirstArgs<ExtArgs>>): Prisma__CrmActivityClient<$Result.GetResult<Prisma.$CrmActivityPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first CrmActivity that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CrmActivityFindFirstOrThrowArgs} args - Arguments to find a CrmActivity
+     * @example
+     * // Get one CrmActivity
+     * const crmActivity = await prisma.crmActivity.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends CrmActivityFindFirstOrThrowArgs>(args?: SelectSubset<T, CrmActivityFindFirstOrThrowArgs<ExtArgs>>): Prisma__CrmActivityClient<$Result.GetResult<Prisma.$CrmActivityPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more CrmActivities that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CrmActivityFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all CrmActivities
+     * const crmActivities = await prisma.crmActivity.findMany()
+     * 
+     * // Get first 10 CrmActivities
+     * const crmActivities = await prisma.crmActivity.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const crmActivityWithIdOnly = await prisma.crmActivity.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends CrmActivityFindManyArgs>(args?: SelectSubset<T, CrmActivityFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CrmActivityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a CrmActivity.
+     * @param {CrmActivityCreateArgs} args - Arguments to create a CrmActivity.
+     * @example
+     * // Create one CrmActivity
+     * const CrmActivity = await prisma.crmActivity.create({
+     *   data: {
+     *     // ... data to create a CrmActivity
+     *   }
+     * })
+     * 
+     */
+    create<T extends CrmActivityCreateArgs>(args: SelectSubset<T, CrmActivityCreateArgs<ExtArgs>>): Prisma__CrmActivityClient<$Result.GetResult<Prisma.$CrmActivityPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many CrmActivities.
+     * @param {CrmActivityCreateManyArgs} args - Arguments to create many CrmActivities.
+     * @example
+     * // Create many CrmActivities
+     * const crmActivity = await prisma.crmActivity.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends CrmActivityCreateManyArgs>(args?: SelectSubset<T, CrmActivityCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many CrmActivities and returns the data saved in the database.
+     * @param {CrmActivityCreateManyAndReturnArgs} args - Arguments to create many CrmActivities.
+     * @example
+     * // Create many CrmActivities
+     * const crmActivity = await prisma.crmActivity.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many CrmActivities and only return the `id`
+     * const crmActivityWithIdOnly = await prisma.crmActivity.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends CrmActivityCreateManyAndReturnArgs>(args?: SelectSubset<T, CrmActivityCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CrmActivityPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a CrmActivity.
+     * @param {CrmActivityDeleteArgs} args - Arguments to delete one CrmActivity.
+     * @example
+     * // Delete one CrmActivity
+     * const CrmActivity = await prisma.crmActivity.delete({
+     *   where: {
+     *     // ... filter to delete one CrmActivity
+     *   }
+     * })
+     * 
+     */
+    delete<T extends CrmActivityDeleteArgs>(args: SelectSubset<T, CrmActivityDeleteArgs<ExtArgs>>): Prisma__CrmActivityClient<$Result.GetResult<Prisma.$CrmActivityPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one CrmActivity.
+     * @param {CrmActivityUpdateArgs} args - Arguments to update one CrmActivity.
+     * @example
+     * // Update one CrmActivity
+     * const crmActivity = await prisma.crmActivity.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends CrmActivityUpdateArgs>(args: SelectSubset<T, CrmActivityUpdateArgs<ExtArgs>>): Prisma__CrmActivityClient<$Result.GetResult<Prisma.$CrmActivityPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more CrmActivities.
+     * @param {CrmActivityDeleteManyArgs} args - Arguments to filter CrmActivities to delete.
+     * @example
+     * // Delete a few CrmActivities
+     * const { count } = await prisma.crmActivity.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends CrmActivityDeleteManyArgs>(args?: SelectSubset<T, CrmActivityDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CrmActivities.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CrmActivityUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many CrmActivities
+     * const crmActivity = await prisma.crmActivity.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends CrmActivityUpdateManyArgs>(args: SelectSubset<T, CrmActivityUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more CrmActivities and returns the data updated in the database.
+     * @param {CrmActivityUpdateManyAndReturnArgs} args - Arguments to update many CrmActivities.
+     * @example
+     * // Update many CrmActivities
+     * const crmActivity = await prisma.crmActivity.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more CrmActivities and only return the `id`
+     * const crmActivityWithIdOnly = await prisma.crmActivity.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends CrmActivityUpdateManyAndReturnArgs>(args: SelectSubset<T, CrmActivityUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CrmActivityPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one CrmActivity.
+     * @param {CrmActivityUpsertArgs} args - Arguments to update or create a CrmActivity.
+     * @example
+     * // Update or create a CrmActivity
+     * const crmActivity = await prisma.crmActivity.upsert({
+     *   create: {
+     *     // ... data to create a CrmActivity
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the CrmActivity we want to update
+     *   }
+     * })
+     */
+    upsert<T extends CrmActivityUpsertArgs>(args: SelectSubset<T, CrmActivityUpsertArgs<ExtArgs>>): Prisma__CrmActivityClient<$Result.GetResult<Prisma.$CrmActivityPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of CrmActivities.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CrmActivityCountArgs} args - Arguments to filter CrmActivities to count.
+     * @example
+     * // Count the number of CrmActivities
+     * const count = await prisma.crmActivity.count({
+     *   where: {
+     *     // ... the filter for the CrmActivities we want to count
+     *   }
+     * })
+    **/
+    count<T extends CrmActivityCountArgs>(
+      args?: Subset<T, CrmActivityCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], CrmActivityCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a CrmActivity.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CrmActivityAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends CrmActivityAggregateArgs>(args: Subset<T, CrmActivityAggregateArgs>): Prisma.PrismaPromise<GetCrmActivityAggregateType<T>>
+
+    /**
+     * Group by CrmActivity.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {CrmActivityGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends CrmActivityGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: CrmActivityGroupByArgs['orderBy'] }
+        : { orderBy?: CrmActivityGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, CrmActivityGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetCrmActivityGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the CrmActivity model
+   */
+  readonly fields: CrmActivityFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for CrmActivity.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__CrmActivityClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    lead<T extends CrmLeadDefaultArgs<ExtArgs> = {}>(args?: Subset<T, CrmLeadDefaultArgs<ExtArgs>>): Prisma__CrmLeadClient<$Result.GetResult<Prisma.$CrmLeadPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the CrmActivity model
+   */
+  interface CrmActivityFieldRefs {
+    readonly id: FieldRef<"CrmActivity", 'String'>
+    readonly leadId: FieldRef<"CrmActivity", 'String'>
+    readonly type: FieldRef<"CrmActivity", 'String'>
+    readonly content: FieldRef<"CrmActivity", 'String'>
+    readonly createdBy: FieldRef<"CrmActivity", 'String'>
+    readonly createdAt: FieldRef<"CrmActivity", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * CrmActivity findUnique
+   */
+  export type CrmActivityFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CrmActivity
+     */
+    select?: CrmActivitySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CrmActivity
+     */
+    omit?: CrmActivityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CrmActivityInclude<ExtArgs> | null
+    /**
+     * Filter, which CrmActivity to fetch.
+     */
+    where: CrmActivityWhereUniqueInput
+  }
+
+  /**
+   * CrmActivity findUniqueOrThrow
+   */
+  export type CrmActivityFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CrmActivity
+     */
+    select?: CrmActivitySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CrmActivity
+     */
+    omit?: CrmActivityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CrmActivityInclude<ExtArgs> | null
+    /**
+     * Filter, which CrmActivity to fetch.
+     */
+    where: CrmActivityWhereUniqueInput
+  }
+
+  /**
+   * CrmActivity findFirst
+   */
+  export type CrmActivityFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CrmActivity
+     */
+    select?: CrmActivitySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CrmActivity
+     */
+    omit?: CrmActivityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CrmActivityInclude<ExtArgs> | null
+    /**
+     * Filter, which CrmActivity to fetch.
+     */
+    where?: CrmActivityWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CrmActivities to fetch.
+     */
+    orderBy?: CrmActivityOrderByWithRelationInput | CrmActivityOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CrmActivities.
+     */
+    cursor?: CrmActivityWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CrmActivities from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CrmActivities.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CrmActivities.
+     */
+    distinct?: CrmActivityScalarFieldEnum | CrmActivityScalarFieldEnum[]
+  }
+
+  /**
+   * CrmActivity findFirstOrThrow
+   */
+  export type CrmActivityFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CrmActivity
+     */
+    select?: CrmActivitySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CrmActivity
+     */
+    omit?: CrmActivityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CrmActivityInclude<ExtArgs> | null
+    /**
+     * Filter, which CrmActivity to fetch.
+     */
+    where?: CrmActivityWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CrmActivities to fetch.
+     */
+    orderBy?: CrmActivityOrderByWithRelationInput | CrmActivityOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for CrmActivities.
+     */
+    cursor?: CrmActivityWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CrmActivities from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CrmActivities.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of CrmActivities.
+     */
+    distinct?: CrmActivityScalarFieldEnum | CrmActivityScalarFieldEnum[]
+  }
+
+  /**
+   * CrmActivity findMany
+   */
+  export type CrmActivityFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CrmActivity
+     */
+    select?: CrmActivitySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CrmActivity
+     */
+    omit?: CrmActivityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CrmActivityInclude<ExtArgs> | null
+    /**
+     * Filter, which CrmActivities to fetch.
+     */
+    where?: CrmActivityWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of CrmActivities to fetch.
+     */
+    orderBy?: CrmActivityOrderByWithRelationInput | CrmActivityOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing CrmActivities.
+     */
+    cursor?: CrmActivityWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` CrmActivities from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` CrmActivities.
+     */
+    skip?: number
+    distinct?: CrmActivityScalarFieldEnum | CrmActivityScalarFieldEnum[]
+  }
+
+  /**
+   * CrmActivity create
+   */
+  export type CrmActivityCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CrmActivity
+     */
+    select?: CrmActivitySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CrmActivity
+     */
+    omit?: CrmActivityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CrmActivityInclude<ExtArgs> | null
+    /**
+     * The data needed to create a CrmActivity.
+     */
+    data: XOR<CrmActivityCreateInput, CrmActivityUncheckedCreateInput>
+  }
+
+  /**
+   * CrmActivity createMany
+   */
+  export type CrmActivityCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many CrmActivities.
+     */
+    data: CrmActivityCreateManyInput | CrmActivityCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * CrmActivity createManyAndReturn
+   */
+  export type CrmActivityCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CrmActivity
+     */
+    select?: CrmActivitySelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CrmActivity
+     */
+    omit?: CrmActivityOmit<ExtArgs> | null
+    /**
+     * The data used to create many CrmActivities.
+     */
+    data: CrmActivityCreateManyInput | CrmActivityCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CrmActivityIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CrmActivity update
+   */
+  export type CrmActivityUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CrmActivity
+     */
+    select?: CrmActivitySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CrmActivity
+     */
+    omit?: CrmActivityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CrmActivityInclude<ExtArgs> | null
+    /**
+     * The data needed to update a CrmActivity.
+     */
+    data: XOR<CrmActivityUpdateInput, CrmActivityUncheckedUpdateInput>
+    /**
+     * Choose, which CrmActivity to update.
+     */
+    where: CrmActivityWhereUniqueInput
+  }
+
+  /**
+   * CrmActivity updateMany
+   */
+  export type CrmActivityUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update CrmActivities.
+     */
+    data: XOR<CrmActivityUpdateManyMutationInput, CrmActivityUncheckedUpdateManyInput>
+    /**
+     * Filter which CrmActivities to update
+     */
+    where?: CrmActivityWhereInput
+    /**
+     * Limit how many CrmActivities to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * CrmActivity updateManyAndReturn
+   */
+  export type CrmActivityUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CrmActivity
+     */
+    select?: CrmActivitySelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the CrmActivity
+     */
+    omit?: CrmActivityOmit<ExtArgs> | null
+    /**
+     * The data used to update CrmActivities.
+     */
+    data: XOR<CrmActivityUpdateManyMutationInput, CrmActivityUncheckedUpdateManyInput>
+    /**
+     * Filter which CrmActivities to update
+     */
+    where?: CrmActivityWhereInput
+    /**
+     * Limit how many CrmActivities to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CrmActivityIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * CrmActivity upsert
+   */
+  export type CrmActivityUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CrmActivity
+     */
+    select?: CrmActivitySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CrmActivity
+     */
+    omit?: CrmActivityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CrmActivityInclude<ExtArgs> | null
+    /**
+     * The filter to search for the CrmActivity to update in case it exists.
+     */
+    where: CrmActivityWhereUniqueInput
+    /**
+     * In case the CrmActivity found by the `where` argument doesn't exist, create a new CrmActivity with this data.
+     */
+    create: XOR<CrmActivityCreateInput, CrmActivityUncheckedCreateInput>
+    /**
+     * In case the CrmActivity was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<CrmActivityUpdateInput, CrmActivityUncheckedUpdateInput>
+  }
+
+  /**
+   * CrmActivity delete
+   */
+  export type CrmActivityDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CrmActivity
+     */
+    select?: CrmActivitySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CrmActivity
+     */
+    omit?: CrmActivityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CrmActivityInclude<ExtArgs> | null
+    /**
+     * Filter which CrmActivity to delete.
+     */
+    where: CrmActivityWhereUniqueInput
+  }
+
+  /**
+   * CrmActivity deleteMany
+   */
+  export type CrmActivityDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which CrmActivities to delete
+     */
+    where?: CrmActivityWhereInput
+    /**
+     * Limit how many CrmActivities to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * CrmActivity without action
+   */
+  export type CrmActivityDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the CrmActivity
+     */
+    select?: CrmActivitySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the CrmActivity
+     */
+    omit?: CrmActivityOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: CrmActivityInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -60296,6 +64024,56 @@ export namespace Prisma {
   };
 
   export type ReferralQualificationScalarFieldEnum = (typeof ReferralQualificationScalarFieldEnum)[keyof typeof ReferralQualificationScalarFieldEnum]
+
+
+  export const AiVisibilityAuditScalarFieldEnum: {
+    id: 'id',
+    url: 'url',
+    geoScore: 'geoScore',
+    schemaScore: 'schemaScore',
+    readabilityScore: 'readabilityScore',
+    citationRate: 'citationRate',
+    schemaStatus: 'schemaStatus',
+    markdownContent: 'markdownContent',
+    llmAnalysis: 'llmAnalysis',
+    citationDetails: 'citationDetails',
+    recommendations: 'recommendations',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type AiVisibilityAuditScalarFieldEnum = (typeof AiVisibilityAuditScalarFieldEnum)[keyof typeof AiVisibilityAuditScalarFieldEnum]
+
+
+  export const CrmLeadScalarFieldEnum: {
+    id: 'id',
+    name: 'name',
+    phone: 'phone',
+    email: 'email',
+    stage: 'stage',
+    valueUSD: 'valueUSD',
+    source: 'source',
+    preferredPackage: 'preferredPackage',
+    notes: 'notes',
+    assignedTo: 'assignedTo',
+    lostReason: 'lostReason',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type CrmLeadScalarFieldEnum = (typeof CrmLeadScalarFieldEnum)[keyof typeof CrmLeadScalarFieldEnum]
+
+
+  export const CrmActivityScalarFieldEnum: {
+    id: 'id',
+    leadId: 'leadId',
+    type: 'type',
+    content: 'content',
+    createdBy: 'createdBy',
+    createdAt: 'createdAt'
+  };
+
+  export type CrmActivityScalarFieldEnum = (typeof CrmActivityScalarFieldEnum)[keyof typeof CrmActivityScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -64486,6 +68264,257 @@ export namespace Prisma {
     period?: StringWithAggregatesFilter<"ReferralQualification"> | string
     reduction?: IntWithAggregatesFilter<"ReferralQualification"> | number
     createdAt?: DateTimeWithAggregatesFilter<"ReferralQualification"> | Date | string
+  }
+
+  export type AiVisibilityAuditWhereInput = {
+    AND?: AiVisibilityAuditWhereInput | AiVisibilityAuditWhereInput[]
+    OR?: AiVisibilityAuditWhereInput[]
+    NOT?: AiVisibilityAuditWhereInput | AiVisibilityAuditWhereInput[]
+    id?: StringFilter<"AiVisibilityAudit"> | string
+    url?: StringFilter<"AiVisibilityAudit"> | string
+    geoScore?: IntFilter<"AiVisibilityAudit"> | number
+    schemaScore?: IntFilter<"AiVisibilityAudit"> | number
+    readabilityScore?: IntFilter<"AiVisibilityAudit"> | number
+    citationRate?: IntFilter<"AiVisibilityAudit"> | number
+    schemaStatus?: StringNullableFilter<"AiVisibilityAudit"> | string | null
+    markdownContent?: StringNullableFilter<"AiVisibilityAudit"> | string | null
+    llmAnalysis?: StringNullableFilter<"AiVisibilityAudit"> | string | null
+    citationDetails?: StringNullableFilter<"AiVisibilityAudit"> | string | null
+    recommendations?: StringNullableFilter<"AiVisibilityAudit"> | string | null
+    createdAt?: DateTimeFilter<"AiVisibilityAudit"> | Date | string
+    updatedAt?: DateTimeFilter<"AiVisibilityAudit"> | Date | string
+  }
+
+  export type AiVisibilityAuditOrderByWithRelationInput = {
+    id?: SortOrder
+    url?: SortOrder
+    geoScore?: SortOrder
+    schemaScore?: SortOrder
+    readabilityScore?: SortOrder
+    citationRate?: SortOrder
+    schemaStatus?: SortOrderInput | SortOrder
+    markdownContent?: SortOrderInput | SortOrder
+    llmAnalysis?: SortOrderInput | SortOrder
+    citationDetails?: SortOrderInput | SortOrder
+    recommendations?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AiVisibilityAuditWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: AiVisibilityAuditWhereInput | AiVisibilityAuditWhereInput[]
+    OR?: AiVisibilityAuditWhereInput[]
+    NOT?: AiVisibilityAuditWhereInput | AiVisibilityAuditWhereInput[]
+    url?: StringFilter<"AiVisibilityAudit"> | string
+    geoScore?: IntFilter<"AiVisibilityAudit"> | number
+    schemaScore?: IntFilter<"AiVisibilityAudit"> | number
+    readabilityScore?: IntFilter<"AiVisibilityAudit"> | number
+    citationRate?: IntFilter<"AiVisibilityAudit"> | number
+    schemaStatus?: StringNullableFilter<"AiVisibilityAudit"> | string | null
+    markdownContent?: StringNullableFilter<"AiVisibilityAudit"> | string | null
+    llmAnalysis?: StringNullableFilter<"AiVisibilityAudit"> | string | null
+    citationDetails?: StringNullableFilter<"AiVisibilityAudit"> | string | null
+    recommendations?: StringNullableFilter<"AiVisibilityAudit"> | string | null
+    createdAt?: DateTimeFilter<"AiVisibilityAudit"> | Date | string
+    updatedAt?: DateTimeFilter<"AiVisibilityAudit"> | Date | string
+  }, "id">
+
+  export type AiVisibilityAuditOrderByWithAggregationInput = {
+    id?: SortOrder
+    url?: SortOrder
+    geoScore?: SortOrder
+    schemaScore?: SortOrder
+    readabilityScore?: SortOrder
+    citationRate?: SortOrder
+    schemaStatus?: SortOrderInput | SortOrder
+    markdownContent?: SortOrderInput | SortOrder
+    llmAnalysis?: SortOrderInput | SortOrder
+    citationDetails?: SortOrderInput | SortOrder
+    recommendations?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: AiVisibilityAuditCountOrderByAggregateInput
+    _avg?: AiVisibilityAuditAvgOrderByAggregateInput
+    _max?: AiVisibilityAuditMaxOrderByAggregateInput
+    _min?: AiVisibilityAuditMinOrderByAggregateInput
+    _sum?: AiVisibilityAuditSumOrderByAggregateInput
+  }
+
+  export type AiVisibilityAuditScalarWhereWithAggregatesInput = {
+    AND?: AiVisibilityAuditScalarWhereWithAggregatesInput | AiVisibilityAuditScalarWhereWithAggregatesInput[]
+    OR?: AiVisibilityAuditScalarWhereWithAggregatesInput[]
+    NOT?: AiVisibilityAuditScalarWhereWithAggregatesInput | AiVisibilityAuditScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AiVisibilityAudit"> | string
+    url?: StringWithAggregatesFilter<"AiVisibilityAudit"> | string
+    geoScore?: IntWithAggregatesFilter<"AiVisibilityAudit"> | number
+    schemaScore?: IntWithAggregatesFilter<"AiVisibilityAudit"> | number
+    readabilityScore?: IntWithAggregatesFilter<"AiVisibilityAudit"> | number
+    citationRate?: IntWithAggregatesFilter<"AiVisibilityAudit"> | number
+    schemaStatus?: StringNullableWithAggregatesFilter<"AiVisibilityAudit"> | string | null
+    markdownContent?: StringNullableWithAggregatesFilter<"AiVisibilityAudit"> | string | null
+    llmAnalysis?: StringNullableWithAggregatesFilter<"AiVisibilityAudit"> | string | null
+    citationDetails?: StringNullableWithAggregatesFilter<"AiVisibilityAudit"> | string | null
+    recommendations?: StringNullableWithAggregatesFilter<"AiVisibilityAudit"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"AiVisibilityAudit"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"AiVisibilityAudit"> | Date | string
+  }
+
+  export type CrmLeadWhereInput = {
+    AND?: CrmLeadWhereInput | CrmLeadWhereInput[]
+    OR?: CrmLeadWhereInput[]
+    NOT?: CrmLeadWhereInput | CrmLeadWhereInput[]
+    id?: StringFilter<"CrmLead"> | string
+    name?: StringFilter<"CrmLead"> | string
+    phone?: StringFilter<"CrmLead"> | string
+    email?: StringNullableFilter<"CrmLead"> | string | null
+    stage?: StringFilter<"CrmLead"> | string
+    valueUSD?: FloatFilter<"CrmLead"> | number
+    source?: StringFilter<"CrmLead"> | string
+    preferredPackage?: StringNullableFilter<"CrmLead"> | string | null
+    notes?: StringNullableFilter<"CrmLead"> | string | null
+    assignedTo?: StringNullableFilter<"CrmLead"> | string | null
+    lostReason?: StringNullableFilter<"CrmLead"> | string | null
+    createdAt?: DateTimeFilter<"CrmLead"> | Date | string
+    updatedAt?: DateTimeFilter<"CrmLead"> | Date | string
+    activities?: CrmActivityListRelationFilter
+  }
+
+  export type CrmLeadOrderByWithRelationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    phone?: SortOrder
+    email?: SortOrderInput | SortOrder
+    stage?: SortOrder
+    valueUSD?: SortOrder
+    source?: SortOrder
+    preferredPackage?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    assignedTo?: SortOrderInput | SortOrder
+    lostReason?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    activities?: CrmActivityOrderByRelationAggregateInput
+  }
+
+  export type CrmLeadWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: CrmLeadWhereInput | CrmLeadWhereInput[]
+    OR?: CrmLeadWhereInput[]
+    NOT?: CrmLeadWhereInput | CrmLeadWhereInput[]
+    name?: StringFilter<"CrmLead"> | string
+    phone?: StringFilter<"CrmLead"> | string
+    email?: StringNullableFilter<"CrmLead"> | string | null
+    stage?: StringFilter<"CrmLead"> | string
+    valueUSD?: FloatFilter<"CrmLead"> | number
+    source?: StringFilter<"CrmLead"> | string
+    preferredPackage?: StringNullableFilter<"CrmLead"> | string | null
+    notes?: StringNullableFilter<"CrmLead"> | string | null
+    assignedTo?: StringNullableFilter<"CrmLead"> | string | null
+    lostReason?: StringNullableFilter<"CrmLead"> | string | null
+    createdAt?: DateTimeFilter<"CrmLead"> | Date | string
+    updatedAt?: DateTimeFilter<"CrmLead"> | Date | string
+    activities?: CrmActivityListRelationFilter
+  }, "id">
+
+  export type CrmLeadOrderByWithAggregationInput = {
+    id?: SortOrder
+    name?: SortOrder
+    phone?: SortOrder
+    email?: SortOrderInput | SortOrder
+    stage?: SortOrder
+    valueUSD?: SortOrder
+    source?: SortOrder
+    preferredPackage?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    assignedTo?: SortOrderInput | SortOrder
+    lostReason?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: CrmLeadCountOrderByAggregateInput
+    _avg?: CrmLeadAvgOrderByAggregateInput
+    _max?: CrmLeadMaxOrderByAggregateInput
+    _min?: CrmLeadMinOrderByAggregateInput
+    _sum?: CrmLeadSumOrderByAggregateInput
+  }
+
+  export type CrmLeadScalarWhereWithAggregatesInput = {
+    AND?: CrmLeadScalarWhereWithAggregatesInput | CrmLeadScalarWhereWithAggregatesInput[]
+    OR?: CrmLeadScalarWhereWithAggregatesInput[]
+    NOT?: CrmLeadScalarWhereWithAggregatesInput | CrmLeadScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"CrmLead"> | string
+    name?: StringWithAggregatesFilter<"CrmLead"> | string
+    phone?: StringWithAggregatesFilter<"CrmLead"> | string
+    email?: StringNullableWithAggregatesFilter<"CrmLead"> | string | null
+    stage?: StringWithAggregatesFilter<"CrmLead"> | string
+    valueUSD?: FloatWithAggregatesFilter<"CrmLead"> | number
+    source?: StringWithAggregatesFilter<"CrmLead"> | string
+    preferredPackage?: StringNullableWithAggregatesFilter<"CrmLead"> | string | null
+    notes?: StringNullableWithAggregatesFilter<"CrmLead"> | string | null
+    assignedTo?: StringNullableWithAggregatesFilter<"CrmLead"> | string | null
+    lostReason?: StringNullableWithAggregatesFilter<"CrmLead"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"CrmLead"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"CrmLead"> | Date | string
+  }
+
+  export type CrmActivityWhereInput = {
+    AND?: CrmActivityWhereInput | CrmActivityWhereInput[]
+    OR?: CrmActivityWhereInput[]
+    NOT?: CrmActivityWhereInput | CrmActivityWhereInput[]
+    id?: StringFilter<"CrmActivity"> | string
+    leadId?: StringFilter<"CrmActivity"> | string
+    type?: StringFilter<"CrmActivity"> | string
+    content?: StringFilter<"CrmActivity"> | string
+    createdBy?: StringFilter<"CrmActivity"> | string
+    createdAt?: DateTimeFilter<"CrmActivity"> | Date | string
+    lead?: XOR<CrmLeadScalarRelationFilter, CrmLeadWhereInput>
+  }
+
+  export type CrmActivityOrderByWithRelationInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    type?: SortOrder
+    content?: SortOrder
+    createdBy?: SortOrder
+    createdAt?: SortOrder
+    lead?: CrmLeadOrderByWithRelationInput
+  }
+
+  export type CrmActivityWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: CrmActivityWhereInput | CrmActivityWhereInput[]
+    OR?: CrmActivityWhereInput[]
+    NOT?: CrmActivityWhereInput | CrmActivityWhereInput[]
+    leadId?: StringFilter<"CrmActivity"> | string
+    type?: StringFilter<"CrmActivity"> | string
+    content?: StringFilter<"CrmActivity"> | string
+    createdBy?: StringFilter<"CrmActivity"> | string
+    createdAt?: DateTimeFilter<"CrmActivity"> | Date | string
+    lead?: XOR<CrmLeadScalarRelationFilter, CrmLeadWhereInput>
+  }, "id">
+
+  export type CrmActivityOrderByWithAggregationInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    type?: SortOrder
+    content?: SortOrder
+    createdBy?: SortOrder
+    createdAt?: SortOrder
+    _count?: CrmActivityCountOrderByAggregateInput
+    _max?: CrmActivityMaxOrderByAggregateInput
+    _min?: CrmActivityMinOrderByAggregateInput
+  }
+
+  export type CrmActivityScalarWhereWithAggregatesInput = {
+    AND?: CrmActivityScalarWhereWithAggregatesInput | CrmActivityScalarWhereWithAggregatesInput[]
+    OR?: CrmActivityScalarWhereWithAggregatesInput[]
+    NOT?: CrmActivityScalarWhereWithAggregatesInput | CrmActivityScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"CrmActivity"> | string
+    leadId?: StringWithAggregatesFilter<"CrmActivity"> | string
+    type?: StringWithAggregatesFilter<"CrmActivity"> | string
+    content?: StringWithAggregatesFilter<"CrmActivity"> | string
+    createdBy?: StringWithAggregatesFilter<"CrmActivity"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"CrmActivity"> | Date | string
   }
 
   export type OrderCreateInput = {
@@ -69173,6 +73202,296 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type AiVisibilityAuditCreateInput = {
+    id?: string
+    url: string
+    geoScore?: number
+    schemaScore?: number
+    readabilityScore?: number
+    citationRate?: number
+    schemaStatus?: string | null
+    markdownContent?: string | null
+    llmAnalysis?: string | null
+    citationDetails?: string | null
+    recommendations?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AiVisibilityAuditUncheckedCreateInput = {
+    id?: string
+    url: string
+    geoScore?: number
+    schemaScore?: number
+    readabilityScore?: number
+    citationRate?: number
+    schemaStatus?: string | null
+    markdownContent?: string | null
+    llmAnalysis?: string | null
+    citationDetails?: string | null
+    recommendations?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AiVisibilityAuditUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    geoScore?: IntFieldUpdateOperationsInput | number
+    schemaScore?: IntFieldUpdateOperationsInput | number
+    readabilityScore?: IntFieldUpdateOperationsInput | number
+    citationRate?: IntFieldUpdateOperationsInput | number
+    schemaStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    markdownContent?: NullableStringFieldUpdateOperationsInput | string | null
+    llmAnalysis?: NullableStringFieldUpdateOperationsInput | string | null
+    citationDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    recommendations?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiVisibilityAuditUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    geoScore?: IntFieldUpdateOperationsInput | number
+    schemaScore?: IntFieldUpdateOperationsInput | number
+    readabilityScore?: IntFieldUpdateOperationsInput | number
+    citationRate?: IntFieldUpdateOperationsInput | number
+    schemaStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    markdownContent?: NullableStringFieldUpdateOperationsInput | string | null
+    llmAnalysis?: NullableStringFieldUpdateOperationsInput | string | null
+    citationDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    recommendations?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiVisibilityAuditCreateManyInput = {
+    id?: string
+    url: string
+    geoScore?: number
+    schemaScore?: number
+    readabilityScore?: number
+    citationRate?: number
+    schemaStatus?: string | null
+    markdownContent?: string | null
+    llmAnalysis?: string | null
+    citationDetails?: string | null
+    recommendations?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AiVisibilityAuditUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    geoScore?: IntFieldUpdateOperationsInput | number
+    schemaScore?: IntFieldUpdateOperationsInput | number
+    readabilityScore?: IntFieldUpdateOperationsInput | number
+    citationRate?: IntFieldUpdateOperationsInput | number
+    schemaStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    markdownContent?: NullableStringFieldUpdateOperationsInput | string | null
+    llmAnalysis?: NullableStringFieldUpdateOperationsInput | string | null
+    citationDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    recommendations?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AiVisibilityAuditUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    geoScore?: IntFieldUpdateOperationsInput | number
+    schemaScore?: IntFieldUpdateOperationsInput | number
+    readabilityScore?: IntFieldUpdateOperationsInput | number
+    citationRate?: IntFieldUpdateOperationsInput | number
+    schemaStatus?: NullableStringFieldUpdateOperationsInput | string | null
+    markdownContent?: NullableStringFieldUpdateOperationsInput | string | null
+    llmAnalysis?: NullableStringFieldUpdateOperationsInput | string | null
+    citationDetails?: NullableStringFieldUpdateOperationsInput | string | null
+    recommendations?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CrmLeadCreateInput = {
+    id?: string
+    name: string
+    phone: string
+    email?: string | null
+    stage?: string
+    valueUSD?: number
+    source?: string
+    preferredPackage?: string | null
+    notes?: string | null
+    assignedTo?: string | null
+    lostReason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    activities?: CrmActivityCreateNestedManyWithoutLeadInput
+  }
+
+  export type CrmLeadUncheckedCreateInput = {
+    id?: string
+    name: string
+    phone: string
+    email?: string | null
+    stage?: string
+    valueUSD?: number
+    source?: string
+    preferredPackage?: string | null
+    notes?: string | null
+    assignedTo?: string | null
+    lostReason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    activities?: CrmActivityUncheckedCreateNestedManyWithoutLeadInput
+  }
+
+  export type CrmLeadUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    stage?: StringFieldUpdateOperationsInput | string
+    valueUSD?: FloatFieldUpdateOperationsInput | number
+    source?: StringFieldUpdateOperationsInput | string
+    preferredPackage?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    assignedTo?: NullableStringFieldUpdateOperationsInput | string | null
+    lostReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    activities?: CrmActivityUpdateManyWithoutLeadNestedInput
+  }
+
+  export type CrmLeadUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    stage?: StringFieldUpdateOperationsInput | string
+    valueUSD?: FloatFieldUpdateOperationsInput | number
+    source?: StringFieldUpdateOperationsInput | string
+    preferredPackage?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    assignedTo?: NullableStringFieldUpdateOperationsInput | string | null
+    lostReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    activities?: CrmActivityUncheckedUpdateManyWithoutLeadNestedInput
+  }
+
+  export type CrmLeadCreateManyInput = {
+    id?: string
+    name: string
+    phone: string
+    email?: string | null
+    stage?: string
+    valueUSD?: number
+    source?: string
+    preferredPackage?: string | null
+    notes?: string | null
+    assignedTo?: string | null
+    lostReason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CrmLeadUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    stage?: StringFieldUpdateOperationsInput | string
+    valueUSD?: FloatFieldUpdateOperationsInput | number
+    source?: StringFieldUpdateOperationsInput | string
+    preferredPackage?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    assignedTo?: NullableStringFieldUpdateOperationsInput | string | null
+    lostReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CrmLeadUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    stage?: StringFieldUpdateOperationsInput | string
+    valueUSD?: FloatFieldUpdateOperationsInput | number
+    source?: StringFieldUpdateOperationsInput | string
+    preferredPackage?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    assignedTo?: NullableStringFieldUpdateOperationsInput | string | null
+    lostReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CrmActivityCreateInput = {
+    id?: string
+    type: string
+    content: string
+    createdBy?: string
+    createdAt?: Date | string
+    lead: CrmLeadCreateNestedOneWithoutActivitiesInput
+  }
+
+  export type CrmActivityUncheckedCreateInput = {
+    id?: string
+    leadId: string
+    type: string
+    content: string
+    createdBy?: string
+    createdAt?: Date | string
+  }
+
+  export type CrmActivityUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdBy?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lead?: CrmLeadUpdateOneRequiredWithoutActivitiesNestedInput
+  }
+
+  export type CrmActivityUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdBy?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CrmActivityCreateManyInput = {
+    id?: string
+    leadId: string
+    type: string
+    content: string
+    createdBy?: string
+    createdAt?: Date | string
+  }
+
+  export type CrmActivityUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdBy?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CrmActivityUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    leadId?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdBy?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -72137,6 +76456,166 @@ export namespace Prisma {
     reduction?: SortOrder
   }
 
+  export type AiVisibilityAuditCountOrderByAggregateInput = {
+    id?: SortOrder
+    url?: SortOrder
+    geoScore?: SortOrder
+    schemaScore?: SortOrder
+    readabilityScore?: SortOrder
+    citationRate?: SortOrder
+    schemaStatus?: SortOrder
+    markdownContent?: SortOrder
+    llmAnalysis?: SortOrder
+    citationDetails?: SortOrder
+    recommendations?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AiVisibilityAuditAvgOrderByAggregateInput = {
+    geoScore?: SortOrder
+    schemaScore?: SortOrder
+    readabilityScore?: SortOrder
+    citationRate?: SortOrder
+  }
+
+  export type AiVisibilityAuditMaxOrderByAggregateInput = {
+    id?: SortOrder
+    url?: SortOrder
+    geoScore?: SortOrder
+    schemaScore?: SortOrder
+    readabilityScore?: SortOrder
+    citationRate?: SortOrder
+    schemaStatus?: SortOrder
+    markdownContent?: SortOrder
+    llmAnalysis?: SortOrder
+    citationDetails?: SortOrder
+    recommendations?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AiVisibilityAuditMinOrderByAggregateInput = {
+    id?: SortOrder
+    url?: SortOrder
+    geoScore?: SortOrder
+    schemaScore?: SortOrder
+    readabilityScore?: SortOrder
+    citationRate?: SortOrder
+    schemaStatus?: SortOrder
+    markdownContent?: SortOrder
+    llmAnalysis?: SortOrder
+    citationDetails?: SortOrder
+    recommendations?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AiVisibilityAuditSumOrderByAggregateInput = {
+    geoScore?: SortOrder
+    schemaScore?: SortOrder
+    readabilityScore?: SortOrder
+    citationRate?: SortOrder
+  }
+
+  export type CrmActivityListRelationFilter = {
+    every?: CrmActivityWhereInput
+    some?: CrmActivityWhereInput
+    none?: CrmActivityWhereInput
+  }
+
+  export type CrmActivityOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type CrmLeadCountOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    phone?: SortOrder
+    email?: SortOrder
+    stage?: SortOrder
+    valueUSD?: SortOrder
+    source?: SortOrder
+    preferredPackage?: SortOrder
+    notes?: SortOrder
+    assignedTo?: SortOrder
+    lostReason?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CrmLeadAvgOrderByAggregateInput = {
+    valueUSD?: SortOrder
+  }
+
+  export type CrmLeadMaxOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    phone?: SortOrder
+    email?: SortOrder
+    stage?: SortOrder
+    valueUSD?: SortOrder
+    source?: SortOrder
+    preferredPackage?: SortOrder
+    notes?: SortOrder
+    assignedTo?: SortOrder
+    lostReason?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CrmLeadMinOrderByAggregateInput = {
+    id?: SortOrder
+    name?: SortOrder
+    phone?: SortOrder
+    email?: SortOrder
+    stage?: SortOrder
+    valueUSD?: SortOrder
+    source?: SortOrder
+    preferredPackage?: SortOrder
+    notes?: SortOrder
+    assignedTo?: SortOrder
+    lostReason?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type CrmLeadSumOrderByAggregateInput = {
+    valueUSD?: SortOrder
+  }
+
+  export type CrmLeadScalarRelationFilter = {
+    is?: CrmLeadWhereInput
+    isNot?: CrmLeadWhereInput
+  }
+
+  export type CrmActivityCountOrderByAggregateInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    type?: SortOrder
+    content?: SortOrder
+    createdBy?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type CrmActivityMaxOrderByAggregateInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    type?: SortOrder
+    content?: SortOrder
+    createdBy?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type CrmActivityMinOrderByAggregateInput = {
+    id?: SortOrder
+    leadId?: SortOrder
+    type?: SortOrder
+    content?: SortOrder
+    createdBy?: SortOrder
+    createdAt?: SortOrder
+  }
+
   export type UserCreateNestedOneWithoutOrdersInput = {
     create?: XOR<UserCreateWithoutOrdersInput, UserUncheckedCreateWithoutOrdersInput>
     connectOrCreate?: UserCreateOrConnectWithoutOrdersInput
@@ -74023,6 +78502,62 @@ export namespace Prisma {
     upsert?: ReferralUpsertWithoutQualificationsInput
     connect?: ReferralWhereUniqueInput
     update?: XOR<XOR<ReferralUpdateToOneWithWhereWithoutQualificationsInput, ReferralUpdateWithoutQualificationsInput>, ReferralUncheckedUpdateWithoutQualificationsInput>
+  }
+
+  export type CrmActivityCreateNestedManyWithoutLeadInput = {
+    create?: XOR<CrmActivityCreateWithoutLeadInput, CrmActivityUncheckedCreateWithoutLeadInput> | CrmActivityCreateWithoutLeadInput[] | CrmActivityUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: CrmActivityCreateOrConnectWithoutLeadInput | CrmActivityCreateOrConnectWithoutLeadInput[]
+    createMany?: CrmActivityCreateManyLeadInputEnvelope
+    connect?: CrmActivityWhereUniqueInput | CrmActivityWhereUniqueInput[]
+  }
+
+  export type CrmActivityUncheckedCreateNestedManyWithoutLeadInput = {
+    create?: XOR<CrmActivityCreateWithoutLeadInput, CrmActivityUncheckedCreateWithoutLeadInput> | CrmActivityCreateWithoutLeadInput[] | CrmActivityUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: CrmActivityCreateOrConnectWithoutLeadInput | CrmActivityCreateOrConnectWithoutLeadInput[]
+    createMany?: CrmActivityCreateManyLeadInputEnvelope
+    connect?: CrmActivityWhereUniqueInput | CrmActivityWhereUniqueInput[]
+  }
+
+  export type CrmActivityUpdateManyWithoutLeadNestedInput = {
+    create?: XOR<CrmActivityCreateWithoutLeadInput, CrmActivityUncheckedCreateWithoutLeadInput> | CrmActivityCreateWithoutLeadInput[] | CrmActivityUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: CrmActivityCreateOrConnectWithoutLeadInput | CrmActivityCreateOrConnectWithoutLeadInput[]
+    upsert?: CrmActivityUpsertWithWhereUniqueWithoutLeadInput | CrmActivityUpsertWithWhereUniqueWithoutLeadInput[]
+    createMany?: CrmActivityCreateManyLeadInputEnvelope
+    set?: CrmActivityWhereUniqueInput | CrmActivityWhereUniqueInput[]
+    disconnect?: CrmActivityWhereUniqueInput | CrmActivityWhereUniqueInput[]
+    delete?: CrmActivityWhereUniqueInput | CrmActivityWhereUniqueInput[]
+    connect?: CrmActivityWhereUniqueInput | CrmActivityWhereUniqueInput[]
+    update?: CrmActivityUpdateWithWhereUniqueWithoutLeadInput | CrmActivityUpdateWithWhereUniqueWithoutLeadInput[]
+    updateMany?: CrmActivityUpdateManyWithWhereWithoutLeadInput | CrmActivityUpdateManyWithWhereWithoutLeadInput[]
+    deleteMany?: CrmActivityScalarWhereInput | CrmActivityScalarWhereInput[]
+  }
+
+  export type CrmActivityUncheckedUpdateManyWithoutLeadNestedInput = {
+    create?: XOR<CrmActivityCreateWithoutLeadInput, CrmActivityUncheckedCreateWithoutLeadInput> | CrmActivityCreateWithoutLeadInput[] | CrmActivityUncheckedCreateWithoutLeadInput[]
+    connectOrCreate?: CrmActivityCreateOrConnectWithoutLeadInput | CrmActivityCreateOrConnectWithoutLeadInput[]
+    upsert?: CrmActivityUpsertWithWhereUniqueWithoutLeadInput | CrmActivityUpsertWithWhereUniqueWithoutLeadInput[]
+    createMany?: CrmActivityCreateManyLeadInputEnvelope
+    set?: CrmActivityWhereUniqueInput | CrmActivityWhereUniqueInput[]
+    disconnect?: CrmActivityWhereUniqueInput | CrmActivityWhereUniqueInput[]
+    delete?: CrmActivityWhereUniqueInput | CrmActivityWhereUniqueInput[]
+    connect?: CrmActivityWhereUniqueInput | CrmActivityWhereUniqueInput[]
+    update?: CrmActivityUpdateWithWhereUniqueWithoutLeadInput | CrmActivityUpdateWithWhereUniqueWithoutLeadInput[]
+    updateMany?: CrmActivityUpdateManyWithWhereWithoutLeadInput | CrmActivityUpdateManyWithWhereWithoutLeadInput[]
+    deleteMany?: CrmActivityScalarWhereInput | CrmActivityScalarWhereInput[]
+  }
+
+  export type CrmLeadCreateNestedOneWithoutActivitiesInput = {
+    create?: XOR<CrmLeadCreateWithoutActivitiesInput, CrmLeadUncheckedCreateWithoutActivitiesInput>
+    connectOrCreate?: CrmLeadCreateOrConnectWithoutActivitiesInput
+    connect?: CrmLeadWhereUniqueInput
+  }
+
+  export type CrmLeadUpdateOneRequiredWithoutActivitiesNestedInput = {
+    create?: XOR<CrmLeadCreateWithoutActivitiesInput, CrmLeadUncheckedCreateWithoutActivitiesInput>
+    connectOrCreate?: CrmLeadCreateOrConnectWithoutActivitiesInput
+    upsert?: CrmLeadUpsertWithoutActivitiesInput
+    connect?: CrmLeadWhereUniqueInput
+    update?: XOR<XOR<CrmLeadUpdateToOneWithWhereWithoutActivitiesInput, CrmLeadUpdateWithoutActivitiesInput>, CrmLeadUncheckedUpdateWithoutActivitiesInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -80763,6 +85298,140 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type CrmActivityCreateWithoutLeadInput = {
+    id?: string
+    type: string
+    content: string
+    createdBy?: string
+    createdAt?: Date | string
+  }
+
+  export type CrmActivityUncheckedCreateWithoutLeadInput = {
+    id?: string
+    type: string
+    content: string
+    createdBy?: string
+    createdAt?: Date | string
+  }
+
+  export type CrmActivityCreateOrConnectWithoutLeadInput = {
+    where: CrmActivityWhereUniqueInput
+    create: XOR<CrmActivityCreateWithoutLeadInput, CrmActivityUncheckedCreateWithoutLeadInput>
+  }
+
+  export type CrmActivityCreateManyLeadInputEnvelope = {
+    data: CrmActivityCreateManyLeadInput | CrmActivityCreateManyLeadInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type CrmActivityUpsertWithWhereUniqueWithoutLeadInput = {
+    where: CrmActivityWhereUniqueInput
+    update: XOR<CrmActivityUpdateWithoutLeadInput, CrmActivityUncheckedUpdateWithoutLeadInput>
+    create: XOR<CrmActivityCreateWithoutLeadInput, CrmActivityUncheckedCreateWithoutLeadInput>
+  }
+
+  export type CrmActivityUpdateWithWhereUniqueWithoutLeadInput = {
+    where: CrmActivityWhereUniqueInput
+    data: XOR<CrmActivityUpdateWithoutLeadInput, CrmActivityUncheckedUpdateWithoutLeadInput>
+  }
+
+  export type CrmActivityUpdateManyWithWhereWithoutLeadInput = {
+    where: CrmActivityScalarWhereInput
+    data: XOR<CrmActivityUpdateManyMutationInput, CrmActivityUncheckedUpdateManyWithoutLeadInput>
+  }
+
+  export type CrmActivityScalarWhereInput = {
+    AND?: CrmActivityScalarWhereInput | CrmActivityScalarWhereInput[]
+    OR?: CrmActivityScalarWhereInput[]
+    NOT?: CrmActivityScalarWhereInput | CrmActivityScalarWhereInput[]
+    id?: StringFilter<"CrmActivity"> | string
+    leadId?: StringFilter<"CrmActivity"> | string
+    type?: StringFilter<"CrmActivity"> | string
+    content?: StringFilter<"CrmActivity"> | string
+    createdBy?: StringFilter<"CrmActivity"> | string
+    createdAt?: DateTimeFilter<"CrmActivity"> | Date | string
+  }
+
+  export type CrmLeadCreateWithoutActivitiesInput = {
+    id?: string
+    name: string
+    phone: string
+    email?: string | null
+    stage?: string
+    valueUSD?: number
+    source?: string
+    preferredPackage?: string | null
+    notes?: string | null
+    assignedTo?: string | null
+    lostReason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CrmLeadUncheckedCreateWithoutActivitiesInput = {
+    id?: string
+    name: string
+    phone: string
+    email?: string | null
+    stage?: string
+    valueUSD?: number
+    source?: string
+    preferredPackage?: string | null
+    notes?: string | null
+    assignedTo?: string | null
+    lostReason?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type CrmLeadCreateOrConnectWithoutActivitiesInput = {
+    where: CrmLeadWhereUniqueInput
+    create: XOR<CrmLeadCreateWithoutActivitiesInput, CrmLeadUncheckedCreateWithoutActivitiesInput>
+  }
+
+  export type CrmLeadUpsertWithoutActivitiesInput = {
+    update: XOR<CrmLeadUpdateWithoutActivitiesInput, CrmLeadUncheckedUpdateWithoutActivitiesInput>
+    create: XOR<CrmLeadCreateWithoutActivitiesInput, CrmLeadUncheckedCreateWithoutActivitiesInput>
+    where?: CrmLeadWhereInput
+  }
+
+  export type CrmLeadUpdateToOneWithWhereWithoutActivitiesInput = {
+    where?: CrmLeadWhereInput
+    data: XOR<CrmLeadUpdateWithoutActivitiesInput, CrmLeadUncheckedUpdateWithoutActivitiesInput>
+  }
+
+  export type CrmLeadUpdateWithoutActivitiesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    stage?: StringFieldUpdateOperationsInput | string
+    valueUSD?: FloatFieldUpdateOperationsInput | number
+    source?: StringFieldUpdateOperationsInput | string
+    preferredPackage?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    assignedTo?: NullableStringFieldUpdateOperationsInput | string | null
+    lostReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CrmLeadUncheckedUpdateWithoutActivitiesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    phone?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    stage?: StringFieldUpdateOperationsInput | string
+    valueUSD?: FloatFieldUpdateOperationsInput | number
+    source?: StringFieldUpdateOperationsInput | string
+    preferredPackage?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    assignedTo?: NullableStringFieldUpdateOperationsInput | string | null
+    lostReason?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type PostCreateManyCategoryInput = {
     id?: string
     slug: string
@@ -82496,6 +87165,38 @@ export namespace Prisma {
     referrerId?: StringFieldUpdateOperationsInput | string
     period?: StringFieldUpdateOperationsInput | string
     reduction?: IntFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CrmActivityCreateManyLeadInput = {
+    id?: string
+    type: string
+    content: string
+    createdBy?: string
+    createdAt?: Date | string
+  }
+
+  export type CrmActivityUpdateWithoutLeadInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdBy?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CrmActivityUncheckedUpdateWithoutLeadInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdBy?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type CrmActivityUncheckedUpdateManyWithoutLeadInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdBy?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 

@@ -559,10 +559,10 @@ export default function ExcelPricingCalculator({ initialCustomerName, initialPho
                       <td className="p-3 text-right">
                         <button
                           onClick={() => removeGroupTraveler(t.id)}
-                          className="p-1.5 rounded-lg bg-red-50 dark:bg-red-950/40 text-red-500 hover:bg-red-500 hover:text-white transition-all"
+                          className="p-1 rounded bg-red-50 text-red-500 hover:bg-red-500 hover:text-white transition-all"
                           title="Sil"
                         >
-                          <span className="material-symbols-outlined text-[18px]">delete</span>
+                          <span className="material-symbols-outlined text-[16px]">delete</span>
                         </button>
                       </td>
                     </tr>
@@ -578,154 +578,154 @@ export default function ExcelPricingCalculator({ initialCustomerName, initialPho
       {/* TABS 2, 3, 4: UYGUN / ORTA / PAHALI (BİREYSEL INDIVIDUAL VIEW)  */}
       {/* ============================================================= */}
       {activeTab !== "GRUP" && (
-        <div className="space-y-8">
+        <div className="space-y-8 text-xs">
           {/* Customer & Hotel Info Inputs */}
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 p-6 rounded-3xl shadow-sm grid grid-cols-1 md:grid-cols-5 gap-4 text-sm">
+          <div className="bg-zinc-50 border border-zinc-200 p-4 rounded grid grid-cols-1 md:grid-cols-5 gap-3">
             <div>
-              <label className="block text-xs font-bold text-slate-500 dark:text-slate-300 uppercase mb-1">Müşteri Ad Soyad</label>
+              <label className="block text-[10px] font-bold text-zinc-400 uppercase mb-1">Müşteri Ad Soyad</label>
               <input
                 type="text"
                 placeholder="Ahmet Yılmaz"
                 value={customerName}
                 onChange={(e) => setCustomerName(e.target.value)}
-                className="w-full bg-slate-50 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white rounded-xl px-3.5 py-2 font-bold outline-none focus:border-primary"
+                className="w-full bg-white border border-zinc-200 text-zinc-900 rounded px-2.5 py-1.5 font-semibold outline-none"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-500 dark:text-slate-300 uppercase mb-1">Müşteri Telefon</label>
+              <label className="block text-[10px] font-bold text-zinc-400 uppercase mb-1">Müşteri Telefon</label>
               <input
                 type="text"
                 placeholder="+905051234567"
                 value={customerPhone}
                 onChange={(e) => setCustomerPhone(e.target.value)}
-                className="w-full bg-slate-50 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white rounded-xl px-3.5 py-2 font-mono font-bold outline-none focus:border-primary"
+                className="w-full bg-white border border-zinc-200 text-zinc-900 rounded px-2.5 py-1.5 font-mono font-semibold outline-none"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-500 dark:text-slate-300 uppercase mb-1">Mekke Oteli</label>
+              <label className="block text-[10px] font-bold text-zinc-400 uppercase mb-1">Mekke Oteli</label>
               <input
                 type="text"
                 value={mekkeHotelName}
                 onChange={(e) => setMekkeHotelName(e.target.value)}
-                className="w-full bg-slate-50 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white rounded-xl px-3.5 py-2 font-bold outline-none focus:border-primary"
+                className="w-full bg-white border border-zinc-200 text-zinc-900 rounded px-2.5 py-1.5 font-semibold outline-none"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-500 dark:text-slate-300 uppercase mb-1">Medine Oteli</label>
+              <label className="block text-[10px] font-bold text-zinc-400 uppercase mb-1">Medine Oteli</label>
               <input
                 type="text"
                 value={medineHotelName}
                 onChange={(e) => setMedineHotelName(e.target.value)}
-                className="w-full bg-slate-50 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white rounded-xl px-3.5 py-2 font-bold outline-none focus:border-primary"
+                className="w-full bg-white border border-zinc-200 text-zinc-900 rounded px-2.5 py-1.5 font-semibold outline-none"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-500 dark:text-slate-300 uppercase mb-1">Kişi Sayısı (Pax)</label>
+              <label className="block text-[10px] font-bold text-zinc-400 uppercase mb-1">Kişi Sayısı (Pax)</label>
               <input
                 type="number"
                 min={1}
                 value={paxCount}
                 onChange={(e) => setPaxCount(parseInt(e.target.value) || 1)}
-                className="w-full bg-slate-50 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white rounded-xl px-3.5 py-2 font-extrabold outline-none focus:border-primary"
+                className="w-full bg-white border border-zinc-200 text-zinc-900 rounded px-2.5 py-1.5 font-semibold outline-none"
               />
             </div>
           </div>
 
           {/* Main Line-Item Table */}
-          <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
-            <div className="px-6 py-4 bg-slate-100 dark:bg-slate-800/80 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center">
-              <h3 className="font-bold text-sm text-slate-800 dark:text-slate-100 uppercase tracking-wider flex items-center gap-2">
-                <span className="material-symbols-outlined text-primary dark:text-sky-400">table_chart</span> {activeTab} PAKET HİZMET MALİYET VE KAR MATRİSİ
+          <div className="border border-zinc-200 rounded overflow-hidden">
+            <div className="px-6 py-4 bg-zinc-50 border-b border-zinc-200 flex justify-between items-center">
+              <h3 className="font-semibold text-xs text-zinc-900 uppercase tracking-wider">
+                {activeTab} PAKET HİZMET MALİYET VE KAR MATRİSİ
               </h3>
-              <span className="text-xs font-mono text-slate-400">Formül: Alış + %Marj = Satış Fiyatı</span>
+              <span className="text-[11px] font-mono text-zinc-400">Formül: Alış + %Marj = Satış Fiyatı</span>
             </div>
 
             <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse">
-                <thead>
-                  <tr className="bg-slate-50 dark:bg-slate-800/60 text-[11px] font-bold text-slate-400 uppercase tracking-wider border-b border-slate-200 dark:border-slate-800">
-                    <th className="p-4">Hizmet Adı</th>
-                    <th className="p-4">Dolar Alış ($)</th>
-                    <th className="p-4">Alış Fiyatı (₺)</th>
-                    <th className="p-4">Kar Marjı (%)</th>
-                    <th className="p-4">Satış Fiyatı (₺)</th>
-                    <th className="p-4">Dolar Satış ($)</th>
-                    <th className="p-4 text-emerald-600 dark:text-emerald-400">Kar Miktarı (₺)</th>
-                    <th className="p-4">Not / Formül</th>
+              <table className="w-full text-left text-xs">
+                <thead className="bg-zinc-50 border-b border-zinc-200 text-[10px] font-bold text-zinc-400 uppercase tracking-wider">
+                  <tr>
+                    <th className="p-3">Hizmet Adı</th>
+                    <th className="p-3">Dolar Alış ($)</th>
+                    <th className="p-3">Alış Fiyatı (₺)</th>
+                    <th className="p-3">Kar Marjı (%)</th>
+                    <th className="p-3">Satış Fiyatı (₺)</th>
+                    <th className="p-3">Dolar Satış ($)</th>
+                    <th className="p-3">Kar Miktarı (₺)</th>
+                    <th className="p-3">Not</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100 dark:divide-slate-800 text-xs font-medium">
+                <tbody className="divide-y divide-zinc-100">
                   {currentItems.map((row) => (
-                    <tr key={row.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
-                      <td className="p-4 font-bold text-slate-900 dark:text-white">{row.name}</td>
+                    <tr key={row.id} className="hover:bg-zinc-50 transition-colors">
+                      <td className="p-3 font-semibold text-zinc-900">{row.name}</td>
 
-                      <td className="p-4">
+                      <td className="p-3">
                         <input
                           type="number"
                           step="0.01"
                           value={row.costUsd || ""}
                           onChange={(e) => updateRowCostUsdIndividual(row.id, parseFloat(e.target.value) || 0)}
-                          className="w-28 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white rounded-lg px-2.5 py-1.5 font-mono font-extrabold outline-none focus:ring-2 focus:ring-sky-400"
+                          className="w-24 bg-white border border-zinc-200 text-zinc-900 rounded px-2 py-1 font-mono font-bold outline-none"
                         />
                       </td>
 
-                      <td className="p-4">
+                      <td className="p-3">
                         <input
                           type="number"
                           step="0.01"
                           value={row.costTry || ""}
                           onChange={(e) => updateRowCostTry(row.id, parseFloat(e.target.value) || 0)}
-                          className="w-32 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white rounded-lg px-2.5 py-1.5 font-mono font-extrabold outline-none focus:ring-2 focus:ring-sky-400"
+                          className="w-24 bg-white border border-zinc-200 text-zinc-900 rounded px-2 py-1 font-mono font-bold outline-none"
                         />
                       </td>
 
-                      <td className="p-4">
-                        <div className="flex items-center gap-1 text-slate-800 dark:text-white">
+                      <td className="p-3">
+                        <div className="flex items-center gap-1 text-zinc-900">
                           <input
                             type="number"
                             value={row.marginPercent}
                             onChange={(e) => updateRowMargin(row.id, parseFloat(e.target.value) || 0)}
-                            className="w-16 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white rounded-lg px-2 py-1.5 font-extrabold text-center outline-none focus:ring-2 focus:ring-sky-400"
+                            className="w-14 bg-white border border-zinc-200 text-zinc-900 rounded px-1.5 py-1 font-bold text-center outline-none"
                           />
                           <span className="font-bold">%</span>
                         </div>
                       </td>
 
-                      <td className="p-4">
+                      <td className="p-3">
                         <input
                           type="number"
                           step="0.01"
                           value={row.saleTry ? row.saleTry.toFixed(2) : ""}
                           onChange={(e) => updateRowSaleTry(row.id, parseFloat(e.target.value) || 0)}
-                          className="w-32 bg-emerald-50 dark:bg-emerald-950/80 border border-emerald-400 dark:border-emerald-700 text-emerald-900 dark:text-emerald-300 font-mono font-black rounded-lg px-2.5 py-1.5 outline-none focus:ring-2 focus:ring-emerald-400"
+                          className="w-28 bg-white border border-zinc-200 text-zinc-900 font-mono font-bold rounded px-2 py-1 outline-none"
                         />
                       </td>
 
-                      <td className="p-4 font-mono font-bold text-slate-800 dark:text-slate-200">
+                      <td className="p-3 font-mono font-bold text-zinc-900">
                         ${row.saleUsd.toFixed(2)}
                       </td>
 
-                      <td className="p-4 font-mono font-extrabold text-emerald-600 dark:text-emerald-400">
+                      <td className="p-3 font-mono font-bold text-zinc-900">
                         +₺{row.profitTry.toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                       </td>
 
-                      <td className="p-4 text-slate-400 italic text-[11px]">{row.note}</td>
+                      <td className="p-3 text-zinc-400 italic text-[11px]">{row.note}</td>
                     </tr>
                   ))}
 
-                  <tr className="bg-slate-100 dark:bg-slate-800/90 font-black text-sm border-t-2 border-slate-300 dark:border-slate-700">
-                    <td className="p-4 text-slate-900 dark:text-white uppercase">TOPLAM ALIŞ & SATIŞ</td>
-                    <td className="p-4 font-mono text-slate-900 dark:text-white">${totalCostUsd.toFixed(2)}</td>
-                    <td className="p-4 font-mono text-slate-900 dark:text-white">₺{totalCostTry.toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                    <td className="p-4 text-slate-400">-</td>
-                    <td className="p-4 font-mono text-emerald-600 dark:text-emerald-400">₺{totalSaleTryNakit.toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                    <td className="p-4 font-mono text-emerald-600 dark:text-emerald-400">${totalSaleUsdNakit.toFixed(2)}</td>
-                    <td className="p-4 font-mono text-emerald-600 dark:text-emerald-400">+₺{totalProfitTry.toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
-                    <td className="p-4 text-xs font-normal text-slate-400">Net Kar Hacmi</td>
+                  <tr className="bg-zinc-50 font-bold text-xs border-t border-zinc-200">
+                    <td className="p-3 text-zinc-900 uppercase">TOPLAM ALIŞ & SATIŞ</td>
+                    <td className="p-3 font-mono text-zinc-900">${totalCostUsd.toFixed(2)}</td>
+                    <td className="p-3 font-mono text-zinc-900">₺{totalCostTry.toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td className="p-3 text-zinc-400">-</td>
+                    <td className="p-3 font-mono text-zinc-900">₺{totalSaleTryNakit.toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td className="p-3 font-mono text-zinc-900">${totalSaleUsdNakit.toFixed(2)}</td>
+                    <td className="p-3 font-mono text-zinc-900">+₺{totalProfitTry.toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</td>
+                    <td className="p-3 text-[11px] font-normal text-zinc-400">Net Kar Hacmi</td>
                   </tr>
                 </tbody>
               </table>
@@ -733,103 +733,107 @@ export default function ExcelPricingCalculator({ initialCustomerName, initialPho
           </div>
 
           {/* Summary Cards & Payment Options */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 space-y-4 shadow-sm">
-              <h4 className="font-bold text-sm text-slate-900 dark:text-white uppercase tracking-wider flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
-                <span className="material-symbols-outlined text-emerald-600 dark:text-emerald-400">payments</span> ÖDEME SEÇENEKLERİ TABLOSU
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="bg-white p-4 rounded border border-zinc-200 space-y-3">
+              <h4 className="font-semibold text-xs text-zinc-900 uppercase tracking-wider border-b border-zinc-200 pb-2">
+                ÖDEME SEÇENEKLERİ TABLOSU
               </h4>
 
-              <div className="space-y-3 text-xs">
-                <div className="p-3.5 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-900 flex justify-between items-center">
+              <div className="space-y-2 text-xs">
+                <div className="p-2.5 rounded bg-zinc-50 border border-zinc-200 flex justify-between items-center">
                   <div>
-                    <p className="font-bold text-emerald-900 dark:text-emerald-200">Nakit / Peşin Ödeme</p>
-                    <p className="text-[10px] text-emerald-600 dark:text-emerald-400">Standart Satış Fiyatı</p>
+                    <p className="font-bold text-zinc-900">Nakit / Peşin Ödeme</p>
+                    <p className="text-[10px] text-zinc-500">Standart Satış Fiyatı</p>
                   </div>
-                  <p className="font-mono font-black text-emerald-700 dark:text-emerald-300 text-sm">
+                  <p className="font-mono font-bold text-zinc-900 text-xs">
                     ₺{totalSaleTryNakit.toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                   </p>
                 </div>
 
-                <div className="p-3.5 rounded-2xl bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900 flex justify-between items-center">
+                <div className="p-2.5 rounded bg-zinc-50 border border-zinc-200 flex justify-between items-center">
                   <div>
-                    <p className="font-bold text-blue-900 dark:text-blue-200">İBAN / Havale ile Ödeme (+%{ibanSurchargePercent})</p>
-                    <p className="text-[10px] text-blue-600 dark:text-blue-400">Fatura & KDV Dahil</p>
+                    <p className="font-bold text-zinc-900">İBAN / Havale (+%{ibanSurchargePercent})</p>
+                    <p className="text-[10px] text-zinc-500">Fatura & KDV Dahil</p>
                   </div>
-                  <p className="font-mono font-black text-blue-700 dark:text-blue-300 text-sm">
+                  <p className="font-mono font-bold text-zinc-900 text-xs">
                     ₺{totalSaleTryIban.toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                   </p>
                 </div>
 
-                <div className="p-3.5 rounded-2xl bg-purple-50 dark:bg-purple-950/40 border border-purple-200 dark:border-purple-900 flex justify-between items-center">
+                <div className="p-2.5 rounded bg-zinc-50 border border-zinc-200 flex justify-between items-center">
                   <div>
-                    <p className="font-bold text-purple-900 dark:text-purple-200">Kredi Kartı ile Ödeme (+%{cardSurchargePercent})</p>
-                    <p className="text-[10px] text-purple-600 dark:text-purple-400">Banka Kart Komisyonu Dahil</p>
+                    <p className="font-bold text-zinc-900">Kredi Kartı (+%{cardSurchargePercent})</p>
+                    <p className="text-[10px] text-zinc-500">Banka Kart Komisyonu Dahil</p>
                   </div>
-                  <p className="font-mono font-black text-purple-700 dark:text-purple-300 text-sm">
+                  <p className="font-mono font-bold text-zinc-900 text-xs">
                     ₺{totalSaleTryCard.toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 space-y-4 shadow-sm">
-              <h4 className="font-bold text-sm text-slate-900 dark:text-white uppercase tracking-wider flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
-                <span className="material-symbols-outlined text-primary dark:text-sky-400">currency_exchange</span> DÖVİZ VE KİŞİ BAŞI TUTARLAR
+            <div className="bg-white p-4 rounded border border-zinc-200 space-y-3">
+              <h4 className="font-semibold text-xs text-zinc-900 uppercase tracking-wider border-b border-zinc-200 pb-2">
+                DÖVİZ VE KİŞİ BAŞI TUTARLAR
               </h4>
 
-              <div className="space-y-3 text-xs">
-                <div className="flex justify-between items-center p-3 rounded-xl bg-slate-50 dark:bg-slate-800">
-                  <span className="text-slate-500 dark:text-slate-400 font-bold">Kişi Başı Nakit Tutarı (USD)</span>
-                  <span className="font-mono font-black text-primary dark:text-sky-400 text-sm">${perPaxNakitUsd.toFixed(2)} USD</span>
+              <div className="space-y-2 text-xs">
+                <div className="flex justify-between items-center p-2 rounded bg-zinc-50">
+                  <span className="text-zinc-500 font-medium">Kişi Başı Nakit (USD)</span>
+                  <span className="font-mono font-bold text-zinc-900">${perPaxNakitUsd.toFixed(2)}</span>
                 </div>
 
-                <div className="flex justify-between items-center p-3 rounded-xl bg-slate-50 dark:bg-slate-800">
-                  <span className="text-slate-500 dark:text-slate-400 font-bold">Kişi Başı Nakit Tutarı (TRY)</span>
-                  <span className="font-mono font-black text-slate-800 dark:text-slate-100 text-sm">
+                <div className="flex justify-between items-center p-2 rounded bg-zinc-50">
+                  <span className="text-zinc-500 font-medium">Kişi Başı Nakit (TRY)</span>
+                  <span className="font-mono font-bold text-zinc-900">
                     ₺{perPaxNakitTry.toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                   </span>
                 </div>
 
-                <div className="flex justify-between items-center p-3 rounded-xl bg-slate-50 dark:bg-slate-800">
-                  <span className="text-slate-500 dark:text-slate-400 font-bold">Toplam Nakit Karşılığı (USD)</span>
-                  <span className="font-mono font-black text-emerald-600 dark:text-emerald-400 text-sm">${totalSaleUsdNakit.toFixed(2)}</span>
+                <div className="flex justify-between items-center p-2 rounded bg-zinc-50">
+                  <span className="text-zinc-500 font-medium">Toplam Nakit (USD)</span>
+                  <span className="font-mono font-bold text-zinc-900">${totalSaleUsdNakit.toFixed(2)}</span>
                 </div>
 
-                <div className="flex justify-between items-center p-3 rounded-xl bg-slate-50 dark:bg-slate-800">
-                  <span className="text-slate-500 dark:text-slate-400 font-bold">Toplam Nakit Karşılığı (EUR)</span>
-                  <span className="font-mono font-black text-indigo-600 dark:text-indigo-400 text-sm">€{totalSaleEurNakit.toFixed(2)}</span>
+                <div className="flex justify-between items-center p-2 rounded bg-zinc-50">
+                  <span className="text-zinc-500 font-medium">Toplam Nakit (EUR)</span>
+                  <span className="font-mono font-bold text-zinc-900">€{totalSaleEurNakit.toFixed(2)}</span>
                 </div>
               </div>
             </div>
 
-            <div className="bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-200 dark:border-slate-800 space-y-4 shadow-sm flex flex-col justify-between">
-              <div>
-                <h4 className="font-bold text-sm text-slate-900 dark:text-white uppercase tracking-wider flex items-center gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
-                  <span className="material-symbols-outlined text-emerald-500">send</span> TEKLİF & TEK TIKLA MÜŞTERİYE GÖNDER
-                </h4>
-                <p className="text-xs text-slate-500 dark:text-slate-400 mt-2 leading-relaxed">
-                  Excel hesaplama motorundan çıkan tüm detayları doğrudan WhatsApp mesajına dönüştürebilir veya CRM teklif kaydına çevirebilirsiniz.
-                </p>
-              </div>
+            <div className="bg-white p-4 rounded border border-zinc-200 space-y-3">
+              <h4 className="font-semibold text-xs text-zinc-900 uppercase tracking-wider border-b border-zinc-200 pb-2">
+                TEKLİF AKSİYONLARI
+              </h4>
 
-              <div className="space-y-3 pt-4">
-                <a
-                  href={`https://wa.me/${customerPhone.replace(/[^0-9]/g, "")}?text=${generateWhatsAppMessage()}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full bg-[#25D366] hover:bg-[#128C7E] text-white font-bold py-3.5 px-4 rounded-2xl flex items-center justify-center gap-2 text-xs shadow-lg transition-all active:scale-95"
+              <div className="space-y-2 text-xs">
+                <button
+                  onClick={handleCopyToClipboard}
+                  className="w-full py-2 bg-zinc-900 text-white rounded font-medium hover:bg-zinc-800 transition-colors flex items-center justify-center gap-2"
                 >
-                  <span className="material-symbols-outlined text-[18px]">chat</span>
-                  1-Tıkla WhatsApp Teklifi Gönder
-                </a>
+                  <span className="material-symbols-outlined text-[16px]">content_copy</span>
+                  <span>WhatsApp İzin Metni Kopyala</span>
+                </button>
 
-                <Link
-                  href={`/admin/fiyat-teklifleri/yeni?name=${encodeURIComponent(customerName)}&phone=${encodeURIComponent(customerPhone)}`}
-                  className="w-full bg-primary hover:bg-[#002f6c] text-white font-bold py-3.5 px-4 rounded-2xl flex items-center justify-center gap-2 text-xs shadow-lg transition-all active:scale-95"
+                <button
+                  onClick={handleCreateQuotationDatabase}
+                  className="w-full py-2 bg-white border border-zinc-200 text-zinc-900 rounded font-medium hover:border-zinc-900 transition-colors flex items-center justify-center gap-2"
                 >
-                  <span className="material-symbols-outlined text-[18px]">description</span>
-                  Fiyat Teklifi / Proforma PDF Oluştur
-                </Link>
+                  <span className="material-symbols-outlined text-[16px]">save</span>
+                  <span>Teklifi Veritabanına Kaydet</span>
+                </button>
+
+                {pdfCreatedId && (
+                  <a
+                    href={`/api/admin/quotations/${pdfCreatedId}/pdf`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="w-full py-2 bg-zinc-100 text-zinc-900 rounded font-medium text-center block hover:bg-zinc-200"
+                  >
+                    PDF İndir / Görüntüle
+                  </a>
+                )}
               </div>
             </div>
           </div>

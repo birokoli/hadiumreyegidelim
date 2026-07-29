@@ -281,94 +281,62 @@ export default function ExcelPricingCalculator({ initialCustomerName, initialPho
   };
 
   return (
-    <div className="space-y-8 max-w-screen-2xl mx-auto">
-      {/* Top Header Card */}
-      <div className="bg-gradient-to-r from-slate-900 via-[#003781] to-slate-900 text-white p-8 rounded-3xl shadow-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-6 border border-slate-800">
+    <div className="space-y-6 max-w-7xl mx-auto bg-white text-zinc-900">
+      {/* Top Header Card - Swiss Style */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 pb-6 border-b border-zinc-200">
         <div>
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-mono font-bold tracking-widest uppercase mb-2">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            EXCEL DİNAMİK FİYAT HESAPLAMA MOTORU
-          </div>
-          <h2 className="text-2xl md:text-3xl font-extrabold font-headline">Google Excel Canlı Fiyatlandırma Suite</h2>
-          <p className="text-white/80 text-sm mt-1">
-            Grup ve Bireysel Umre maliyetlerini girin, %10 kar marjını, İban ve Kredi kartı KDV komisyonlarını otomatik hesaplayın.
+          <span className="text-[10px] font-bold tracking-widest text-zinc-400 uppercase">SATIS & CRM MOTORU</span>
+          <h2 className="text-2xl font-light tracking-tight text-zinc-900 mt-1">Excel Canlı Fiyatlandırma Motoru</h2>
+          <p className="text-xs text-zinc-500 mt-0.5">
+            Grup ve Bireysel Umre maliyetlerini girin, %10 kar marjını ve banka komisyonlarını otomatik hesaplayın.
           </p>
         </div>
 
         {/* Currency Rates Bar */}
-        <div className="flex flex-wrap items-center gap-4 bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/20 shrink-0">
+        <div className="flex items-center gap-4 bg-zinc-50 p-3 rounded border border-zinc-200 shrink-0">
           <div>
-            <label className="block text-[10px] uppercase font-bold text-slate-200 mb-1">USD / TRY Kuru ($)</label>
+            <label className="block text-[9px] uppercase font-bold text-zinc-400 mb-1">USD / TRY ($)</label>
             <input
               type="number"
               step="0.001"
               value={usdRate}
               onChange={(e) => setUsdRate(parseFloat(e.target.value) || 0)}
-              className="bg-slate-900/80 text-white font-mono font-black px-3.5 py-1.5 rounded-xl text-sm w-32 outline-none border border-emerald-400/50 shadow-inner"
+              className="bg-white text-zinc-900 font-mono font-bold px-2.5 py-1 rounded text-xs w-24 outline-none border border-zinc-300"
             />
           </div>
           <div>
-            <label className="block text-[10px] uppercase font-bold text-slate-200 mb-1">EUR / TRY Kuru (€)</label>
+            <label className="block text-[9px] uppercase font-bold text-zinc-400 mb-1">EUR / TRY (€)</label>
             <input
               type="number"
               step="0.001"
               value={eurRate}
               onChange={(e) => setEurRate(parseFloat(e.target.value) || 0)}
-              className="bg-slate-900/80 text-white font-mono font-black px-3.5 py-1.5 rounded-xl text-sm w-32 outline-none border border-emerald-400/50 shadow-inner"
+              className="bg-white text-zinc-900 font-mono font-bold px-2.5 py-1 rounded text-xs w-24 outline-none border border-zinc-300"
             />
           </div>
         </div>
       </div>
 
-      {/* Main Tab Switcher (GRUP / UYGUN / ORTA / PAHALI) */}
-      <div className="flex items-center gap-3 border-b border-slate-200 dark:border-slate-800 pb-4 overflow-x-auto">
-        <button
-          onClick={() => setActiveTab("GRUP")}
-          className={`px-6 py-3 rounded-2xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 ${
-            activeTab === "GRUP"
-              ? "bg-emerald-600 text-white shadow-lg shadow-emerald-600/30 ring-2 ring-emerald-500/50"
-              : "bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800"
-          }`}
-        >
-          <span className="material-symbols-outlined text-[20px]">groups</span>
-          📊 GRUP UMRE FİYATLANDIRMA
-        </button>
-
-        <button
-          onClick={() => setActiveTab("UYGUN")}
-          className={`px-6 py-3 rounded-2xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 ${
-            activeTab === "UYGUN"
-              ? "bg-primary text-white shadow-lg shadow-primary/30 ring-2 ring-primary/50"
-              : "bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800"
-          }`}
-        >
-          <span className="material-symbols-outlined text-[20px]">savings</span>
-          💚 EKONOMİK PAKET (UYGUN)
-        </button>
-
-        <button
-          onClick={() => setActiveTab("ORTA")}
-          className={`px-6 py-3 rounded-2xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 ${
-            activeTab === "ORTA"
-              ? "bg-amber-600 text-white shadow-lg shadow-amber-600/30 ring-2 ring-amber-500/50"
-              : "bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800"
-          }`}
-        >
-          <span className="material-symbols-outlined text-[20px]">stars</span>
-          💙 STANDART PAKET (ORTA)
-        </button>
-
-        <button
-          onClick={() => setActiveTab("PAHALI")}
-          className={`px-6 py-3 rounded-2xl text-xs font-bold transition-all flex items-center gap-2 shrink-0 ${
-            activeTab === "PAHALI"
-              ? "bg-purple-600 text-white shadow-lg shadow-purple-600/30 ring-2 ring-purple-500/50"
-              : "bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800"
-          }`}
-        >
-          <span className="material-symbols-outlined text-[20px]">workspace_premium</span>
-          👑 VIP LÜKS PAKET (PAHALI)
-        </button>
+      {/* Main Tab Switcher */}
+      <div className="flex items-center gap-2 border-b border-zinc-200 pb-3 overflow-x-auto">
+        {[
+          { key: "GRUP", label: "GRUP UMRE" },
+          { key: "UYGUN", label: "EKONOMİK (UYGUN)" },
+          { key: "ORTA", label: "STANDART (ORTA)" },
+          { key: "PAHALI", label: "VIP LÜKS (PAHALI)" },
+        ].map((tab) => (
+          <button
+            key={tab.key}
+            onClick={() => setActiveTab(tab.key as any)}
+            className={`px-4 py-2 rounded text-xs font-medium border transition-colors ${
+              activeTab === tab.key
+                ? "bg-zinc-900 text-white border-zinc-900 font-semibold"
+                : "bg-white text-zinc-600 border-zinc-200 hover:border-zinc-900"
+            }`}
+          >
+            {tab.label}
+          </button>
+        ))}
       </div>
 
       {/* ============================================================= */}

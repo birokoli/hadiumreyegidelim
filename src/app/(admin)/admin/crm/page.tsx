@@ -6,11 +6,11 @@ import Link from "next/link";
 type LeadStage = "NEW" | "IN_DISCUSSION" | "QUOTATION_SENT" | "WON" | "LOST";
 
 const STAGES: { key: LeadStage; label: string; color: string; bg: string; border: string; icon: string }[] = [
-  { key: "NEW", label: "Yeni Talep / Lead", color: "text-blue-600 dark:text-blue-400", bg: "bg-blue-50/80 dark:bg-slate-900", border: "border-blue-200 dark:border-blue-900/50", icon: "inbox" },
-  { key: "IN_DISCUSSION", label: "Görüşmede", color: "text-amber-600 dark:text-amber-400", bg: "bg-amber-50/80 dark:bg-slate-900", border: "border-amber-200 dark:border-amber-900/50", icon: "call" },
-  { key: "QUOTATION_SENT", label: "Teklif Gönderildi", color: "text-purple-600 dark:text-purple-400", bg: "bg-purple-50/80 dark:bg-slate-900", border: "border-purple-200 dark:border-purple-900/50", icon: "request_quote" },
-  { key: "WON", label: "Satış Kazanıldı (WON)", color: "text-emerald-600 dark:text-emerald-400", bg: "bg-emerald-50/80 dark:bg-slate-900", border: "border-emerald-200 dark:border-emerald-900/50", icon: "task_alt" },
-  { key: "LOST", label: "Kaybedildi (LOST)", color: "text-red-600 dark:text-red-400", bg: "bg-red-50/80 dark:bg-slate-900", border: "border-red-200 dark:border-red-900/50", icon: "cancel" },
+  { key: "NEW", label: "Yeni Talep / Lead", color: "text-zinc-900", bg: "bg-zinc-50", border: "border-zinc-200", icon: "inbox" },
+  { key: "IN_DISCUSSION", label: "Görüşmede", color: "text-zinc-900", bg: "bg-zinc-50", border: "border-zinc-200", icon: "call" },
+  { key: "QUOTATION_SENT", label: "Teklif Gönderildi", color: "text-zinc-900", bg: "bg-zinc-50", border: "border-zinc-200", icon: "request_quote" },
+  { key: "WON", label: "Satış Kazanıldı (WON)", color: "text-zinc-900", bg: "bg-zinc-50", border: "border-zinc-200", icon: "task_alt" },
+  { key: "LOST", label: "Kaybedildi (LOST)", color: "text-zinc-400", bg: "bg-zinc-50", border: "border-zinc-200", icon: "cancel" },
 ];
 
 export default function CrmPage() {
@@ -98,24 +98,22 @@ export default function CrmPage() {
       const res = await fetch("/api/admin/crm/activities", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          leadId: selectedLead.id,
-          type: "NOTE",
-          content: newNote,
-          createdBy: "Yönetici",
-        }),
+        body: JSON.stringify({ contactRequestId: selectedLead.id, note: newNote }),
       });
-      const data = await res.json();
-      if (data.success && data.activity) {
-        const updatedActivities = [data.activity, ...(selectedLead.activities || [])];
-        setSelectedLead({ ...selectedLead, activities: updatedActivities });
+      if (res.ok) {
+        const data = await res.json();
+        const act = data.activity;
+        setSelectedLead((prev: any) => ({
+          ...prev,
+          activities: [act, ...(prev.activities || [])],
+        }));
         setLeads((prev) =>
-          prev.map((l) => (l.id === selectedLead.id ? { ...l, activities: updatedActivities } : l))
+          prev.map((l) => (l.id === selectedLead.id ? { ...l, activities: [act, ...(l.activities || [])] } : l))
         );
         setNewNote("");
       }
     } catch (e) {
-      console.error("Activity note error:", e);
+      console.error("Add note error:", e);
     } finally {
       setSavingNote(false);
     }
@@ -123,19 +121,13 @@ export default function CrmPage() {
 
   const handleCreateLead = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newLeadForm.name || !newLeadForm.phone) {
-      alert("Lütfen isim ve telefon bilgilerini girin.");
-      return;
-    }
     try {
       const res = await fetch("/api/admin/crm", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newLeadForm),
       });
-      const data = await res.json();
-      if (data.success && data.lead) {
-        setLeads([data.lead, ...leads]);
+      if (res.ok) {
         setShowAddModal(false);
         setNewLeadForm({
           name: "",
@@ -146,6 +138,7 @@ export default function CrmPage() {
           source: "MANUAL",
           stage: "NEW",
         });
+        fetchLeads();
       }
     } catch (e) {
       console.error("Create lead error:", e);
@@ -158,215 +151,172 @@ export default function CrmPage() {
   const winRate = leads.length > 0 ? Math.round((wonLeads.length / leads.length) * 100) : 0;
   const activeLeadsCount = leads.filter((l) => l.stage !== "LOST" && l.stage !== "WON").length;
 
-  if (loading) return <div className="p-12 pt-28 min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-200">CRM Komuta Merkezi Yükleniyor...</div>;
+  if (loading) return <div className="p-8 max-w-7xl mx-auto min-h-screen bg-white text-zinc-500 text-xs">CRM Komuta Merkezi yükleniyor...</div>;
 
   return (
-    <div className="p-6 md:p-8 pt-24 space-y-8 max-w-[1700px] mx-auto min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100">
-      {/* Top Banner & Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-gradient-to-r from-slate-900 via-primary to-slate-900 text-white p-8 rounded-3xl shadow-xl border border-slate-800">
-        <div className="space-y-2">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/10 backdrop-blur-md text-xs font-mono font-bold tracking-widest text-emerald-300 border border-white/10 uppercase">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            All-in-One CRM Command Center (Odoo & Twenty Powered)
-          </div>
-          <h1 className="text-3xl font-extrabold tracking-tight">Müşteri İlişkileri & Satış Komuta Merkezi</h1>
-          <p className="text-white/80 text-sm max-w-2xl">
-            Tüm umre taleplerini, WhatsApp müşteri görüşmelerini ve fiyat tekliflerini tek bir interaktif Kanban panosunda yönetin.
-          </p>
+    <div className="p-6 lg:p-8 space-y-8 max-w-7xl mx-auto min-h-screen bg-white text-zinc-900">
+      {/* Top Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-zinc-200">
+        <div>
+          <span className="text-[10px] font-bold tracking-widest text-zinc-400 uppercase">SATIS & CRM</span>
+          <h1 className="text-2xl font-light tracking-tight text-zinc-900 mt-1">CRM Komuta Merkezi</h1>
+          <p className="text-xs text-zinc-500 mt-0.5">Tüm müşteri adaylarını ve satış fırsatlarını Kanban panosunda yönetin.</p>
         </div>
 
         <div className="flex items-center gap-3 shrink-0">
           <button
             onClick={() => setShowAddModal(true)}
-            className="bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-5 py-3 rounded-2xl transition-all shadow-lg active:scale-95 flex items-center gap-2 text-sm"
+            className="inline-flex items-center gap-1.5 bg-zinc-900 hover:bg-zinc-800 text-white font-medium px-4 py-2 rounded text-xs transition-colors"
           >
-            <span className="material-symbols-outlined text-[20px]">person_add</span>
-            Yeni Müşteri / Fırsat Ekle
+            <span className="material-symbols-outlined text-[16px]">add</span>
+            Yeni Fırsat Ekle
           </button>
         </div>
       </div>
 
-      {/* Top KPI Metrics Bar */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 p-6 rounded-3xl shadow-sm flex items-center gap-4">
-          <div className="w-14 h-14 rounded-2xl bg-primary/10 text-primary dark:text-sky-400 flex items-center justify-center shrink-0">
-            <span className="material-symbols-outlined text-3xl">attach_money</span>
+      {/* Top KPI Metrics Bar - Swiss Minimalist */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {[
+          { label: "Toplam Fırsat Hacmi", value: `$${totalPipelineValue.toLocaleString()}`, badge: "PIPELINE" },
+          { label: "Kazanım Oranı (Win Rate)", value: `%${winRate}`, badge: "DONUSUM" },
+          { label: "Aktif Görüşmedeki Fırsatlar", value: `${activeLeadsCount} Müşteri`, badge: "IN PROGRESS" },
+          { label: "Toplam CRM Müşterisi", value: `${leads.length} Kayıt`, badge: "TOPLAM" },
+        ].map((kpi) => (
+          <div key={kpi.label} className="p-5 rounded border border-zinc-200 bg-zinc-50/50 flex flex-col justify-between">
+            <span className="text-[10px] font-bold tracking-widest text-zinc-400 uppercase mb-3">{kpi.badge}</span>
+            <div>
+              <p className="text-xs text-zinc-500 font-medium">{kpi.label}</p>
+              <p className="text-2xl font-light text-zinc-900 tracking-tight mt-1">{kpi.value}</p>
+            </div>
           </div>
-          <div>
-            <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Toplam Fırsat Hacmi</p>
-            <p className="text-3xl font-black text-slate-900 dark:text-white mt-0.5">${totalPipelineValue.toLocaleString()}</p>
-          </div>
-        </div>
-
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 p-6 rounded-3xl shadow-sm flex items-center gap-4">
-          <div className="w-14 h-14 rounded-2xl bg-emerald-100 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
-            <span className="material-symbols-outlined text-3xl">trending_up</span>
-          </div>
-          <div>
-            <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Satış Kazanım Oranı (Win Rate)</p>
-            <p className="text-3xl font-black text-slate-900 dark:text-white mt-0.5">%{winRate}</p>
-          </div>
-        </div>
-
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 p-6 rounded-3xl shadow-sm flex items-center gap-4">
-          <div className="w-14 h-14 rounded-2xl bg-amber-100 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
-            <span className="material-symbols-outlined text-3xl">forum</span>
-          </div>
-          <div>
-            <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Aktif Görüşmedeki Fırsatlar</p>
-            <p className="text-3xl font-black text-slate-900 dark:text-white mt-0.5">{activeLeadsCount} Müşteri</p>
-          </div>
-        </div>
-
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 p-6 rounded-3xl shadow-sm flex items-center gap-4">
-          <div className="w-14 h-14 rounded-2xl bg-purple-100 dark:bg-purple-950/40 text-purple-600 dark:text-purple-400 flex items-center justify-center shrink-0">
-            <span className="material-symbols-outlined text-3xl">groups</span>
-          </div>
-          <div>
-            <p className="text-xs font-bold text-slate-400 uppercase tracking-wider">Toplam CRM Müşterisi</p>
-            <p className="text-3xl font-black text-slate-900 dark:text-white mt-0.5">{leads.length} Kayıt</p>
-          </div>
-        </div>
+        ))}
       </div>
 
       {/* Controls & View Switcher */}
-      <div className="flex justify-between items-center border-b border-slate-200 dark:border-slate-800 pb-4">
+      <div className="flex justify-between items-center border-b border-zinc-200 pb-3">
         <div className="flex items-center gap-2">
           <button
             onClick={() => setViewMode("kanban")}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
-              viewMode === "kanban" ? "bg-primary text-white shadow-md" : "bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+            className={`px-3 py-1.5 rounded text-xs font-medium transition-colors border ${
+              viewMode === "kanban"
+                ? "bg-zinc-900 text-white border-zinc-900"
+                : "bg-white text-zinc-600 border-zinc-200 hover:border-zinc-900"
             }`}
           >
-            <span className="material-symbols-outlined text-[18px]">view_kanban</span>
-            Kanban Boru Hattı (Pipeline)
+            Kanban Görünümü
           </button>
           <button
             onClick={() => setViewMode("table")}
-            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 ${
-              viewMode === "table" ? "bg-primary text-white shadow-md" : "bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800"
+            className={`px-3 py-1.5 rounded text-xs font-medium transition-colors border ${
+              viewMode === "table"
+                ? "bg-zinc-900 text-white border-zinc-900"
+                : "bg-white text-zinc-600 border-zinc-200 hover:border-zinc-900"
             }`}
           >
-            <span className="material-symbols-outlined text-[18px]">table_rows</span>
-            Tablo / Liste Görünümü
+            Tablo Görünümü
           </button>
         </div>
-        <span className="text-xs font-mono text-slate-400">Son Güncelleme: Anlık Canlı Senkronizasyon</span>
+
+        <span className="text-[11px] text-zinc-400 font-mono">Son Güncelleme: Canlı Senkronize</span>
       </div>
 
-      {/* Kanban Board View */}
-      {viewMode === "kanban" && (
-        <div className="flex gap-5 overflow-x-auto pb-6 min-h-[600px] items-start">
-          {STAGES.map((st) => {
-            const stageLeads = leads.filter((l) => l.stage === st.key);
-            const stageTotalVal = stageLeads.reduce((sum, l) => sum + (l.valueUSD || 0), 0);
+      {/* View Content */}
+      {viewMode === "kanban" ? (
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-4 overflow-x-auto pb-6">
+          {STAGES.map((stg) => {
+            const stageLeads = leads.filter((l) => (l.stage || "NEW") === stg.key);
+            const stageTotal = stageLeads.reduce((s, l) => s + (l.valueUSD || 0), 0);
 
             return (
-              <div key={st.key} className="flex-1 min-w-[280px] max-w-[340px] shrink-0 space-y-4">
-                {/* Stage Header */}
-                <div className={`p-4 rounded-2xl border ${st.bg} ${st.border} flex justify-between items-center shadow-sm`}>
-                  <div className="flex items-center gap-2 min-w-0">
-                    <span className={`material-symbols-outlined text-[20px] shrink-0 ${st.color}`}>{st.icon}</span>
-                    <span className={`text-xs font-bold uppercase tracking-wider truncate ${st.color}`}>{st.label}</span>
+              <div
+                key={stg.key}
+                className="bg-zinc-50 border border-zinc-200 rounded p-4 flex flex-col min-h-[500px]"
+              >
+                <div className="flex items-center justify-between pb-3 border-b border-zinc-200 mb-3">
+                  <div>
+                    <h3 className="text-xs font-semibold text-zinc-900">{stg.label}</h3>
+                    <p className="text-[10px] text-zinc-400 font-mono mt-0.5">${stageTotal.toLocaleString()}</p>
                   </div>
-                  <span className="text-xs font-extrabold px-2 py-0.5 bg-white dark:bg-slate-800 rounded-full text-slate-700 dark:text-slate-200 shrink-0">
+                  <span className="text-xs font-bold bg-white text-zinc-700 px-2 py-0.5 rounded border border-zinc-200">
                     {stageLeads.length}
                   </span>
                 </div>
 
-                <div className="text-right text-[11px] font-mono font-bold text-slate-400 px-1">
-                  Toplam: ${stageTotalVal.toLocaleString()}
-                </div>
-
-                {/* Cards Container */}
-                <div className="space-y-3 min-h-[400px]">
-                  {stageLeads.map((lead) => (
-                    <div
-                      key={lead.id}
-                      onClick={() => setSelectedLead(lead)}
-                      className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-primary/50 dark:hover:border-sky-500/50 p-5 rounded-2xl shadow-sm hover:shadow-md cursor-pointer transition-all space-y-3 group"
-                    >
-                      <div className="flex justify-between items-start gap-2">
-                        <h4 className="font-bold text-sm text-slate-900 dark:text-white group-hover:text-primary dark:group-hover:text-sky-400 transition-colors truncate">
-                          {lead.name}
-                        </h4>
-                        <span className="text-xs font-extrabold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/50 px-2 py-0.5 rounded-md shrink-0">
-                          ${lead.valueUSD}
-                        </span>
-                      </div>
-
-                      <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-1">{lead.preferredPackage || "Umre Talebi"}</p>
-
-                      <div className="flex justify-between items-center pt-2 border-t border-slate-100 dark:border-slate-800 text-[11px]">
-                        <span className="text-slate-400 flex items-center gap-1">
-                          <span className="material-symbols-outlined text-[14px]">call</span>
-                          {lead.phone}
-                        </span>
-                        <a
-                          href={`https://wa.me/${lead.phone.replace(/[^0-9]/g, "")}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onClick={(e) => e.stopPropagation()}
-                          className="text-[#25D366] hover:underline font-bold flex items-center gap-1"
-                        >
-                          <span className="material-symbols-outlined text-[14px]">chat</span>
-                          WhatsApp
-                        </a>
-                      </div>
-                    </div>
-                  ))}
-
-                  {stageLeads.length === 0 && (
-                    <div className="border-2 border-dashed border-slate-200 dark:border-slate-800/80 rounded-2xl h-32 flex items-center justify-center text-xs text-slate-400 font-medium">
+                <div className="space-y-3 flex-1 overflow-y-auto">
+                  {stageLeads.length === 0 ? (
+                    <div className="py-12 text-center text-[11px] text-zinc-400 italic">
                       Bu aşamada müşteri yok.
                     </div>
+                  ) : (
+                    stageLeads.map((lead) => (
+                      <div
+                        key={lead.id}
+                        onClick={() => setSelectedLead(lead)}
+                        className="p-3.5 bg-white border border-zinc-200 hover:border-zinc-900 rounded shadow-2xs cursor-pointer transition-all space-y-2"
+                      >
+                        <div className="flex items-start justify-between">
+                          <p className="text-xs font-semibold text-zinc-900">{lead.name}</p>
+                          <span className="text-xs font-mono font-bold text-zinc-900">${lead.valueUSD || 0}</span>
+                        </div>
+
+                        <p className="text-[11px] text-zinc-500 font-mono">{lead.phone}</p>
+
+                        <div className="flex items-center justify-between pt-2 border-t border-zinc-100 text-[10px] text-zinc-400">
+                          <span>{lead.preferredPackage || "Umre Talebi"}</span>
+                          {lead.activities?.length > 0 && (
+                            <span className="flex items-center gap-0.5">
+                              <span className="material-symbols-outlined text-[12px]">chat</span>
+                              {lead.activities.length}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    ))
                   )}
                 </div>
               </div>
             );
           })}
         </div>
-      )}
-
-      {/* Table View */}
-      {viewMode === "table" && (
-        <div className="bg-white dark:bg-slate-900 rounded-2xl overflow-hidden shadow-sm border border-slate-200 dark:border-slate-800">
-          <table className="w-full text-left border-collapse">
-            <thead>
-              <tr className="bg-slate-50 dark:bg-slate-800/60 border-b border-slate-200 dark:border-slate-800">
-                <th className="p-4 text-[10px] font-bold tracking-widest text-slate-400 uppercase">Müşteri Adı</th>
-                <th className="p-4 text-[10px] font-bold tracking-widest text-slate-400 uppercase">Telefon</th>
-                <th className="p-4 text-[10px] font-bold tracking-widest text-slate-400 uppercase">Talep Edilen Paket</th>
-                <th className="p-4 text-[10px] font-bold tracking-widest text-slate-400 uppercase">Aşama</th>
-                <th className="p-4 text-[10px] font-bold tracking-widest text-slate-400 uppercase">Değer (USD)</th>
-                <th className="p-4 text-[10px] font-bold tracking-widest text-slate-400 uppercase text-right">Aksiyon</th>
+      ) : (
+        <div className="border border-zinc-200 rounded overflow-hidden">
+          <table className="w-full text-left text-xs">
+            <thead className="bg-zinc-50 border-b border-zinc-200 text-zinc-500 uppercase tracking-wider font-semibold text-[10px]">
+              <tr>
+                <th className="px-4 py-3">Müşteri</th>
+                <th className="px-4 py-3">Telefon</th>
+                <th className="px-4 py-3">Paket</th>
+                <th className="px-4 py-3">Tutar</th>
+                <th className="px-4 py-3">Aşama</th>
+                <th className="px-4 py-3 text-right">İşlem</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 dark:divide-slate-800 text-sm">
-              {leads.map((lead) => (
-                <tr
-                  key={lead.id}
-                  onClick={() => setSelectedLead(lead)}
-                  className="hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer transition-colors"
-                >
-                  <td className="p-4 font-bold text-slate-900 dark:text-white">{lead.name}</td>
-                  <td className="p-4 text-slate-600 dark:text-slate-300 font-mono text-xs">{lead.phone}</td>
-                  <td className="p-4 text-slate-600 dark:text-slate-300 text-xs">{lead.preferredPackage || "Genel Umre"}</td>
-                  <td className="p-4">
-                    <span className="px-3 py-1 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
-                      {lead.stage}
-                    </span>
-                  </td>
-                  <td className="p-4 font-extrabold text-emerald-600 dark:text-emerald-400">${lead.valueUSD}</td>
-                  <td className="p-4 text-right">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setSelectedLead(lead);
-                      }}
-                      className="bg-primary/10 text-primary dark:text-sky-400 px-3 py-1.5 rounded-xl text-xs font-bold hover:bg-primary hover:text-white transition-all"
+            <tbody className="divide-y divide-zinc-100">
+              {leads.map((l) => (
+                <tr key={l.id} className="hover:bg-zinc-50 transition-colors">
+                  <td className="px-4 py-3 font-semibold text-zinc-900">{l.name}</td>
+                  <td className="px-4 py-3 text-zinc-500 font-mono">{l.phone}</td>
+                  <td className="px-4 py-3 text-zinc-600">{l.preferredPackage || "-"}</td>
+                  <td className="px-4 py-3 font-mono font-bold text-zinc-900">${l.valueUSD || 0}</td>
+                  <td className="px-4 py-3">
+                    <select
+                      value={l.stage || "NEW"}
+                      onChange={(e) => handleStageChange(l.id, e.target.value as LeadStage)}
+                      className="bg-white border border-zinc-200 text-xs text-zinc-800 rounded px-2 py-1 focus:outline-none"
                     >
-                      Customer 360
+                      {STAGES.map((s) => (
+                        <option key={s.key} value={s.key}>
+                          {s.label}
+                        </option>
+                      ))}
+                    </select>
+                  </td>
+                  <td className="px-4 py-3 text-right">
+                    <button
+                      onClick={() => setSelectedLead(l)}
+                      className="px-2.5 py-1 bg-zinc-900 text-white text-[11px] font-medium rounded hover:bg-zinc-800 transition-colors"
+                    >
+                      Detay
                     </button>
                   </td>
                 </tr>
@@ -376,239 +326,119 @@ export default function CrmPage() {
         </div>
       )}
 
-      {/* Customer 360 Command Modal / Drawer (EspoCRM & SuiteCRM) */}
+      {/* Selected Lead Modal */}
       {selectedLead && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 overflow-y-auto">
-          <div className="bg-white dark:bg-slate-900 w-full max-w-4xl rounded-3xl shadow-2xl overflow-hidden border border-slate-200 dark:border-slate-800 my-8">
-            {/* Modal Header */}
-            <div className="bg-gradient-to-r from-slate-900 via-primary to-slate-900 text-white px-8 py-6 flex justify-between items-center border-b border-slate-800">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-xs">
+          <div className="bg-white border border-zinc-200 rounded max-w-lg w-full p-6 space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-zinc-200 pb-3">
               <div>
-                <span className="text-xs uppercase tracking-widest text-emerald-300 font-mono font-bold">
-                  CUSTOMER 360 COMMAND CENTER
-                </span>
-                <h3 className="text-2xl font-bold font-headline mt-1">{selectedLead.name}</h3>
+                <h3 className="text-sm font-bold text-zinc-900">{selectedLead.name}</h3>
+                <p className="text-xs text-zinc-500 font-mono">{selectedLead.phone}</p>
               </div>
-              <button
-                onClick={() => setSelectedLead(null)}
-                className="p-2 rounded-full hover:bg-white/20 text-white transition-colors"
-              >
-                <span className="material-symbols-outlined text-2xl">close</span>
+              <button onClick={() => setSelectedLead(null)} className="text-zinc-400 hover:text-zinc-900">
+                <span className="material-symbols-outlined text-[20px]">close</span>
               </button>
             </div>
 
-            <div className="p-8 space-y-6 max-h-[75vh] overflow-y-auto text-slate-900 dark:text-slate-100">
-              {/* Customer Contact & Quick Actions */}
-              <div className="bg-slate-50 dark:bg-slate-800/50 p-6 rounded-2xl border border-slate-200 dark:border-slate-700/80 space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-                  <div>
-                    <p className="text-xs text-slate-400 font-bold">Telefon</p>
-                    <p className="font-bold text-slate-800 dark:text-white mt-0.5 font-mono">{selectedLead.phone}</p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-slate-400 font-bold">E-Posta</p>
-                    <p className="font-bold text-slate-800 dark:text-white mt-0.5">{selectedLead.email || "Belirtilmedi"}</p>
-                  </div>
-                  <div>
-                    <p className="text-xs text-slate-400 font-bold">Kaynak</p>
-                    <p className="font-bold text-slate-800 dark:text-white mt-0.5">{selectedLead.source}</p>
-                  </div>
-                </div>
-
-                <div className="flex flex-wrap gap-3 pt-2">
-                  <a
-                    href={`https://wa.me/${selectedLead.phone.replace(/[^0-9]/g, "")}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 bg-[#25D366] hover:bg-[#128C7E] text-white px-5 py-2.5 rounded-xl text-xs font-bold shadow-md transition-all"
-                  >
-                    <span className="material-symbols-outlined text-[18px]">chat</span>
-                    WhatsApp 1-Tıkla Mesaj At
-                  </a>
-                  <Link
-                    href={`/admin/fiyat-teklifleri/yeni?name=${encodeURIComponent(selectedLead.name)}&phone=${encodeURIComponent(selectedLead.phone)}`}
-                    className="inline-flex items-center gap-2 bg-primary hover:bg-[#002f6c] text-white px-5 py-2.5 rounded-xl text-xs font-bold shadow-md transition-all"
-                  >
-                    <span className="material-symbols-outlined text-[18px]">request_quote</span>
-                    Fiyat Teklifi (Proforma) Hazırla
-                  </Link>
-                </div>
-              </div>
-
-              {/* Stage & Opportunity Value Manager */}
-              <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 space-y-4">
-                <h4 className="font-bold text-slate-900 dark:text-white text-sm uppercase tracking-wider">
-                  Fırsat Aşaması ve Değeri
-                </h4>
-                <div className="flex flex-wrap gap-2">
-                  {STAGES.map((st) => (
-                    <button
-                      key={st.key}
-                      onClick={() => handleStageChange(selectedLead.id, st.key)}
-                      className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
-                        selectedLead.stage === st.key
-                          ? "bg-primary text-white shadow-md ring-2 ring-primary/30"
-                          : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700"
-                      }`}
-                    >
-                      {st.label}
-                    </button>
+            <div className="space-y-3 text-xs text-zinc-700">
+              <div>
+                <label className="block text-[10px] font-bold uppercase text-zinc-400 mb-1">Aşama</label>
+                <select
+                  value={selectedLead.stage || "NEW"}
+                  onChange={(e) => handleStageChange(selectedLead.id, e.target.value as LeadStage)}
+                  className="w-full bg-white border border-zinc-200 text-xs text-zinc-800 rounded p-2 focus:outline-none"
+                >
+                  {STAGES.map((s) => (
+                    <option key={s.key} value={s.key}>
+                      {s.label}
+                    </option>
                   ))}
-                </div>
-
-                <div className="flex items-center gap-4 pt-2">
-                  <span className="text-xs font-bold text-slate-500 uppercase">Tahmini Fırsat Değeri ($ USD):</span>
-                  <input
-                    type="number"
-                    value={selectedLead.valueUSD || 0}
-                    onChange={(e) => handleUpdateValue(selectedLead.id, e.target.value)}
-                    className="bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white px-3 py-1.5 rounded-xl text-sm font-extrabold w-36 outline-none focus:ring-2 focus:ring-primary/20"
-                  />
-                </div>
+                </select>
               </div>
 
-              {/* Activity Log & Quick Notes (Odoo & SuiteCRM style) */}
-              <div className="space-y-4">
-                <h4 className="font-bold text-slate-900 dark:text-white text-sm uppercase tracking-wider flex items-center gap-2">
-                  <span className="material-symbols-outlined text-primary dark:text-sky-400">history</span> Aktivite Geçmişi & Çağrı Notları
-                </h4>
-
-                {/* Add note input */}
-                <div className="flex gap-3">
-                  <input
-                    type="text"
-                    placeholder="Müşteriyle yapılan görüşme veya arama notu ekleyin..."
-                    value={newNote}
-                    onChange={(e) => setNewNote(e.target.value)}
-                    className="flex-1 bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white px-4 py-3 rounded-2xl text-sm outline-none focus:ring-2 focus:ring-primary/20"
-                  />
-                  <button
-                    onClick={handleAddActivityNote}
-                    disabled={savingNote}
-                    className="bg-primary hover:bg-[#002f6c] text-white font-bold px-6 py-3 rounded-2xl text-xs transition-all shadow-md active:scale-95 shrink-0"
-                  >
-                    Notu Kaydet
-                  </button>
-                </div>
-
-                {/* Activity Feed */}
-                <div className="space-y-3">
-                  {selectedLead.activities?.map((act: any) => (
-                    <div key={act.id} className="bg-slate-50 dark:bg-slate-800/40 p-4 rounded-2xl border border-slate-200 dark:border-slate-700/80 flex justify-between items-start text-xs">
-                      <div>
-                        <p className="font-bold text-slate-800 dark:text-slate-100">{act.content}</p>
-                        <p className="text-slate-400 mt-1">Ekleyen: {act.createdBy}</p>
-                      </div>
-                      <span className="font-mono text-slate-400 shrink-0">
-                        {new Date(act.createdAt).toLocaleString("tr-TR")}
-                      </span>
-                    </div>
-                  ))}
-                  {(!selectedLead.activities || selectedLead.activities.length === 0) && (
-                    <p className="text-xs text-slate-400 italic">Henüz özel aktivite notu girilmemiş.</p>
-                  )}
-                </div>
+              <div>
+                <label className="block text-[10px] font-bold uppercase text-zinc-400 mb-1">Fırsat Değeri ($)</label>
+                <input
+                  type="number"
+                  defaultValue={selectedLead.valueUSD || 0}
+                  onBlur={(e) => handleUpdateValue(selectedLead.id, e.target.value)}
+                  className="w-full bg-white border border-zinc-200 text-xs text-zinc-800 rounded p-2 focus:outline-none"
+                />
               </div>
-            </div>
 
-            {/* Modal Footer */}
-            <div className="bg-slate-100 dark:bg-slate-800/80 px-8 py-4 flex justify-end">
-              <button
-                onClick={() => setSelectedLead(null)}
-                className="bg-slate-900 dark:bg-slate-700 hover:bg-black text-white px-6 py-2.5 rounded-xl font-bold text-sm transition-all"
-              >
-                Kapat
-              </button>
+              <div>
+                <label className="block text-[10px] font-bold uppercase text-zinc-400 mb-1">Not Ekle</label>
+                <textarea
+                  rows={2}
+                  value={newNote}
+                  onChange={(e) => setNewNote(e.target.value)}
+                  placeholder="Görüşme notu yazın..."
+                  className="w-full bg-white border border-zinc-200 text-xs text-zinc-800 rounded p-2 focus:outline-none"
+                />
+                <button
+                  onClick={handleAddActivityNote}
+                  disabled={savingNote}
+                  className="mt-2 w-full py-1.5 bg-zinc-900 text-white rounded text-xs font-medium hover:bg-zinc-800 transition-colors"
+                >
+                  Notu Kaydet
+                </button>
+              </div>
             </div>
           </div>
         </div>
       )}
 
-      {/* New Lead Modal */}
+      {/* Add Lead Modal */}
       {showAddModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-          <div className="bg-white dark:bg-slate-900 w-full max-w-lg rounded-3xl shadow-2xl p-8 border border-slate-200 dark:border-slate-800 space-y-6 text-slate-900 dark:text-slate-100">
-            <div className="flex justify-between items-center">
-              <h3 className="text-xl font-bold text-slate-900 dark:text-white">Yeni Müşteri / Fırsat Ekle</h3>
-              <button onClick={() => setShowAddModal(false)} className="text-slate-400 hover:text-slate-600">
-                <span className="material-symbols-outlined">close</span>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-xs">
+          <form onSubmit={handleCreateLead} className="bg-white border border-zinc-200 rounded max-w-md w-full p-6 space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-zinc-200 pb-3">
+              <h3 className="text-sm font-bold text-zinc-900">Yeni Fırsat / Müşteri Adayı</h3>
+              <button type="button" onClick={() => setShowAddModal(false)} className="text-zinc-400 hover:text-zinc-900">
+                <span className="material-symbols-outlined text-[20px]">close</span>
               </button>
             </div>
 
-            <form onSubmit={handleCreateLead} className="space-y-4">
+            <div className="space-y-3 text-xs">
               <div>
-                <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Müşteri Ad Soyad</label>
+                <label className="block text-zinc-600 font-medium mb-1">Ad Soyad</label>
                 <input
                   type="text"
                   required
-                  placeholder="Ahmet Yılmaz"
                   value={newLeadForm.name}
                   onChange={(e) => setNewLeadForm({ ...newLeadForm, name: e.target.value })}
-                  className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-primary"
+                  className="w-full bg-white border border-zinc-200 rounded p-2 focus:outline-none"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Telefon Numarası</label>
+                <label className="block text-zinc-600 font-medium mb-1">Telefon</label>
                 <input
                   type="text"
                   required
-                  placeholder="+905051234567"
                   value={newLeadForm.phone}
                   onChange={(e) => setNewLeadForm({ ...newLeadForm, phone: e.target.value })}
-                  className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-primary font-mono"
+                  className="w-full bg-white border border-zinc-200 rounded p-2 focus:outline-none"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-500 uppercase mb-1">E-Posta (İsteğe Bağlı)</label>
-                <input
-                  type="email"
-                  placeholder="ahmet@example.com"
-                  value={newLeadForm.email}
-                  onChange={(e) => setNewLeadForm({ ...newLeadForm, email: e.target.value })}
-                  className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-primary"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-slate-500 uppercase mb-1">İstenen Paket / Detay</label>
-                <input
-                  type="text"
-                  placeholder="VIP Eylül Umresi (2 Kişilik)"
-                  value={newLeadForm.preferredPackage}
-                  onChange={(e) => setNewLeadForm({ ...newLeadForm, preferredPackage: e.target.value })}
-                  className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-primary"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-slate-500 uppercase mb-1">Tahmini Fırsat Değeri ($ USD)</label>
+                <label className="block text-zinc-600 font-medium mb-1">Fiyat ($)</label>
                 <input
                   type="number"
-                  placeholder="1250"
                   value={newLeadForm.valueUSD}
                   onChange={(e) => setNewLeadForm({ ...newLeadForm, valueUSD: e.target.value })}
-                  className="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2.5 text-sm outline-none focus:border-primary font-bold"
+                  className="w-full bg-white border border-zinc-200 rounded p-2 focus:outline-none"
                 />
               </div>
+            </div>
 
-              <div className="pt-4 flex justify-end gap-3">
-                <button
-                  type="button"
-                  onClick={() => setShowAddModal(false)}
-                  className="px-5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 text-xs font-bold text-slate-600 dark:text-slate-300"
-                >
-                  İptal
-                </button>
-                <button
-                  type="submit"
-                  className="px-6 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white text-xs font-bold shadow-md"
-                >
-                  Fırsatı Oluştur
-                </button>
-              </div>
-            </form>
-          </div>
+            <div className="pt-2">
+              <button type="submit" className="w-full py-2 bg-zinc-900 text-white rounded text-xs font-medium hover:bg-zinc-800 transition-colors">
+                Fırsatı Oluştur
+              </button>
+            </div>
+          </form>
         </div>
       )}
     </div>

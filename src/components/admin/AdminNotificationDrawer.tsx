@@ -22,38 +22,35 @@ export default function AdminNotificationDrawer({ isOpen, onClose, unreadLeads }
 
   return (
     <div className="fixed inset-0 z-50 overflow-hidden">
-      {/* Backdrop */}
-      <div className="fixed inset-0 bg-black/40 backdrop-blur-sm transition-opacity" onClick={onClose} />
+      <div className="fixed inset-0 bg-black/30 backdrop-blur-xs transition-opacity" onClick={onClose} />
 
       <div className="fixed inset-y-0 right-0 max-w-full flex pl-10">
-        <div className="w-screen max-w-md bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 shadow-2xl flex flex-col">
+        <div className="w-screen max-w-md bg-white border-l border-zinc-200 shadow-2xl flex flex-col">
           
-          {/* Header */}
-          <div className="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+          <div className="p-5 border-b border-zinc-200 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-amber-500 text-[24px]">notifications</span>
-              <h2 className="font-bold text-lg text-slate-900 dark:text-white">Bildirimler & Talepler</h2>
+              <span className="material-symbols-outlined text-zinc-900 text-[20px]">notifications</span>
+              <h2 className="font-semibold text-sm text-zinc-900">Bildirimler & Talepler</h2>
               {unreadLeads.length > 0 && (
-                <span className="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
-                  {unreadLeads.length} Yeni
+                <span className="bg-zinc-900 text-white text-[10px] font-bold px-2 py-0.5 rounded">
+                  {unreadLeads.length} YENİ
                 </span>
               )}
             </div>
             <button
               onClick={onClose}
-              className="p-2 rounded-xl text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+              className="p-1 rounded text-zinc-400 hover:text-zinc-900 hover:bg-zinc-100"
             >
-              <span className="material-symbols-outlined text-[20px]">close</span>
+              <span className="material-symbols-outlined text-[18px]">close</span>
             </button>
           </div>
 
-          {/* List */}
           <div className="flex-1 overflow-y-auto p-4 space-y-3">
             {unreadLeads.length === 0 ? (
-              <div className="py-20 flex flex-col items-center justify-center text-center text-slate-400">
-                <span className="material-symbols-outlined text-5xl mb-2 opacity-30">check_circle</span>
-                <p className="text-sm font-semibold">Tüm talepler okundu!</p>
-                <p className="text-xs text-slate-400 mt-1">Bekleyen yeni iletişim talebi bulunmuyor.</p>
+              <div className="py-20 flex flex-col items-center justify-center text-center text-zinc-400">
+                <span className="material-symbols-outlined text-4xl mb-2 opacity-30">check_circle</span>
+                <p className="text-xs font-semibold text-zinc-700">Tüm talepler okundu!</p>
+                <p className="text-[11px] text-zinc-400 mt-1">Bekleyen yeni iletişim talebi bulunmuyor.</p>
               </div>
             ) : (
               unreadLeads.map((lead) => {
@@ -71,41 +68,41 @@ export default function AdminNotificationDrawer({ isOpen, onClose, unreadLeads }
                 return (
                   <div
                     key={lead.id}
-                    className="p-4 bg-slate-50 dark:bg-slate-800/60 border border-slate-200/60 dark:border-slate-700/50 rounded-xl space-y-2 hover:border-[#003781] transition-colors"
+                    className="p-4 bg-zinc-50 border border-zinc-200 rounded space-y-2 hover:border-zinc-900 transition-colors"
                   >
                     <div className="flex items-center justify-between">
-                      <span className="text-xs font-bold text-[#003781] dark:text-sky-400">Yeni Müşteri Talebi</span>
-                      <span className="text-[11px] text-slate-400">{timeAgo}</span>
+                      <span className="text-[10px] font-bold tracking-wider text-zinc-400 uppercase">YENİ TALEP</span>
+                      <span className="text-[10px] text-zinc-400 font-mono">{timeAgo}</span>
                     </div>
 
                     <div>
-                      <p className="font-bold text-slate-900 dark:text-white text-sm">{lead.name}</p>
-                      <p className="text-xs text-slate-500 font-mono mt-0.5">{lead.phone}</p>
+                      <p className="font-semibold text-zinc-900 text-xs">{lead.name}</p>
+                      <p className="text-[11px] text-zinc-500 font-mono mt-0.5">{lead.phone}</p>
                     </div>
 
                     {lead.package && (
-                      <div className="inline-block text-[11px] font-medium bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 px-2.5 py-1 rounded-md">
+                      <div className="inline-block text-[10px] font-medium bg-zinc-100 text-zinc-700 px-2 py-0.5 rounded">
                         {lead.package}
                       </div>
                     )}
 
-                    <div className="pt-2 flex items-center justify-between border-t border-slate-200/40 dark:border-slate-700/40">
+                    <div className="pt-2 flex items-center justify-between border-t border-zinc-200/60">
                       <Link
                         href="/admin/contact"
                         onClick={onClose}
-                        className="text-xs font-bold text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
+                        className="text-xs font-semibold text-zinc-600 hover:text-zinc-900"
                       >
-                        Detayları Gör
+                        Detaylar
                       </Link>
 
                       <a
                         href={waUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-1 bg-[#25D366] text-white hover:bg-[#1faf55] px-3 py-1 rounded-lg text-xs font-bold transition-colors"
+                        className="inline-flex items-center gap-1 bg-zinc-900 text-white hover:bg-zinc-800 px-2.5 py-1 rounded text-xs font-medium transition-colors"
                       >
                         <span className="material-symbols-outlined text-[14px]">chat</span>
-                        WhatsApp
+                        <span>WhatsApp</span>
                       </a>
                     </div>
                   </div>
@@ -114,14 +111,13 @@ export default function AdminNotificationDrawer({ isOpen, onClose, unreadLeads }
             )}
           </div>
 
-          {/* Footer */}
-          <div className="p-4 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-950">
+          <div className="p-4 border-t border-zinc-200 bg-zinc-50">
             <Link
               href="/admin/contact"
               onClick={onClose}
-              className="w-full py-2.5 block text-center bg-[#003781] hover:bg-[#002f6c] text-white font-bold text-xs rounded-xl transition-colors"
+              className="w-full py-2 block text-center bg-zinc-900 hover:bg-zinc-800 text-white font-medium text-xs rounded transition-colors"
             >
-              Tüm Talepleri İncele (CRM)
+              Tüm Talepleri Yönet (CRM)
             </Link>
           </div>
 

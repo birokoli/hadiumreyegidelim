@@ -34,122 +34,114 @@ export default function AdminNavbar() {
 
   return (
     <>
-      <header className="fixed top-0 right-0 left-0 lg:left-72 z-40 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl flex items-center justify-between px-5 lg:px-8 h-16 border-b border-slate-200/80 dark:border-slate-800/80 shadow-[0_2px_16px_rgba(0,0,0,0.04)]">
-        {/* Left: Hamburger (mobile) + Cmd+K Search trigger */}
+      <header className="fixed top-0 right-0 left-0 lg:left-72 z-40 bg-white flex items-center justify-between px-6 h-14 border-b border-zinc-200">
+        {/* Left: Mobile Toggle & Cmd+K Search Bar */}
         <div className="flex items-center gap-4">
           <button
             onClick={() => setSidebarOpen(true)}
-            className="lg:hidden p-2 rounded-xl text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-primary transition-colors active:scale-95"
+            className="lg:hidden p-1.5 rounded text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100"
             aria-label="Menüyü aç"
           >
-            <span className="material-symbols-outlined text-[22px]">menu</span>
+            <span className="material-symbols-outlined text-[20px]">menu</span>
           </button>
 
-          {/* Cmd+K Search trigger button */}
+          {/* Search Trigger (Apple/Swiss style) */}
           <button
             onClick={() => setShowCommandPalette(true)}
-            className="hidden md:flex items-center justify-between gap-6 w-64 bg-slate-100 dark:bg-slate-800/80 hover:bg-slate-200/70 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 rounded-full px-4 py-2 text-sm transition-all border border-slate-200/50 dark:border-slate-700/50 group"
+            className="hidden md:flex items-center justify-between gap-8 w-72 bg-zinc-50 hover:bg-zinc-100 text-zinc-500 rounded border border-zinc-200 px-3 py-1.5 text-xs transition-colors"
           >
             <div className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-[18px] text-slate-400 group-hover:text-[#003781] dark:group-hover:text-sky-400">
-                search
-              </span>
-              <span>Arama yapın...</span>
+              <span className="material-symbols-outlined text-[16px] text-zinc-400">search</span>
+              <span>Hızlı komut veya sayfa ara...</span>
             </div>
-            <kbd className="px-2 py-0.5 text-[10px] font-mono font-bold bg-white dark:bg-slate-900 text-slate-500 dark:text-slate-400 rounded-md border border-slate-200 dark:border-slate-700 shadow-2xs">
+            <kbd className="px-1.5 py-0.5 text-[10px] font-mono font-medium bg-white text-zinc-500 rounded border border-zinc-200">
               ⌘K
             </kbd>
           </button>
         </div>
 
-        {/* Right: Actions + Profile */}
+        {/* Right: Actions */}
         <div className="flex items-center gap-2">
-          {/* Cmd+K Mobile Button */}
+          {/* Mobile Search */}
           <button
             onClick={() => setShowCommandPalette(true)}
-            className="md:hidden p-2.5 rounded-xl text-slate-500 hover:bg-slate-100 transition-colors"
+            className="md:hidden p-1.5 rounded text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100"
             title="Komut Arama (Cmd+K)"
           >
-            <span className="material-symbols-outlined text-[22px]">search</span>
+            <span className="material-symbols-outlined text-[20px]">search</span>
           </button>
 
-          {/* Notifications Drawer Toggle */}
+          {/* Notification Drawer Button */}
           <button
             onClick={() => setShowNotificationDrawer(true)}
-            className="relative p-2.5 rounded-xl text-slate-500 hover:bg-slate-100 hover:text-primary transition-colors"
+            className="relative p-1.5 rounded text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 transition-colors"
             title="Bildirimler"
           >
-            <span className="material-symbols-outlined text-[22px]">notifications</span>
+            <span className="material-symbols-outlined text-[20px]">notifications</span>
             {totalNotifs > 0 && (
-              <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-red-500 rounded-full ring-2 ring-white animate-pulse" />
+              <span className="absolute top-1 right-1 w-2 h-2 bg-zinc-900 rounded-full ring-2 ring-white" />
             )}
           </button>
 
-          {/* Quick Actions "+ Yeni Ekle" */}
+          {/* Quick Action "+ Hızlı Ekle" */}
           <div className="relative" ref={quickRef}>
             <button
               onClick={() => setShowQuickActions((v) => !v)}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-bold text-xs transition-colors ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded border text-xs font-medium transition-colors ${
                 showQuickActions
-                  ? "bg-[#003781] text-white"
-                  : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-700"
+                  ? "bg-zinc-900 text-white border-zinc-900"
+                  : "bg-white text-zinc-900 border-zinc-200 hover:border-zinc-900"
               }`}
-              title="Hızlı Ekle"
             >
-              <span className="material-symbols-outlined text-[18px]">add</span>
+              <span className="material-symbols-outlined text-[16px]">add</span>
               <span className="hidden sm:inline">Hızlı Ekle</span>
             </button>
 
             {showQuickActions && (
-              <div className="absolute top-12 right-0 w-56 bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-100 dark:border-slate-800 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2 duration-150">
-                <div className="px-4 py-3 bg-slate-50 dark:bg-slate-800/60 border-b border-slate-100 dark:border-slate-800">
-                  <h3 className="text-xs font-bold text-[#003781] dark:text-sky-400">Hızlı Aksiyonlar</h3>
+              <div className="absolute top-10 right-0 w-52 bg-white rounded border border-zinc-200 shadow-lg overflow-hidden z-50 py-1">
+                <div className="px-3 py-2 border-b border-zinc-100">
+                  <h3 className="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider">Hızlı Aksiyonlar</h3>
                 </div>
-                <div className="p-2 flex flex-col gap-0.5">
-                  {[
-                    { href: "/admin/packages", icon: "inventory_2", label: "Yeni Paket Ekle", color: "text-blue-600 dark:text-blue-400" },
-                    { href: "/admin/content", icon: "edit_document", label: "Yeni Blog Ekle", color: "text-indigo-600 dark:text-indigo-400" },
-                    { href: "/admin/fiyat-teklifleri/hesaplayici", icon: "request_quote", label: "Fiyat Hesapla", color: "text-emerald-600 dark:text-emerald-400" },
-                    { href: "/admin/media", icon: "add_photo_alternate", label: "Medya Yükle", color: "text-purple-600 dark:text-purple-400" },
-                  ].map((item) => (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      onClick={() => setShowQuickActions(false)}
-                      className="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-50 dark:hover:bg-slate-800/60 rounded-xl text-sm font-medium text-slate-700 dark:text-slate-200 transition-colors"
-                    >
-                      <span className={`material-symbols-outlined text-[20px] ${item.color}`}>{item.icon}</span>
-                      {item.label}
-                    </Link>
-                  ))}
-                </div>
+                {[
+                  { href: "/admin/packages", icon: "inventory_2", label: "Yeni Paket Ekle" },
+                  { href: "/admin/content", icon: "edit_document", label: "Yeni Blog Yazısı" },
+                  { href: "/admin/fiyat-teklifleri/hesaplayici", icon: "request_quote", label: "Fiyat Teklifi Al" },
+                  { href: "/admin/media", icon: "add_photo_alternate", label: "Medya Yükle" },
+                ].map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setShowQuickActions(false)}
+                    className="flex items-center gap-2.5 px-3 py-2 hover:bg-zinc-50 text-xs text-zinc-700 hover:text-zinc-900 transition-colors"
+                  >
+                    <span className="material-symbols-outlined text-[16px] text-zinc-400">{item.icon}</span>
+                    {item.label}
+                  </Link>
+                ))}
               </div>
             )}
           </div>
 
-          {/* Divider */}
-          <div className="h-8 w-px bg-slate-200 dark:bg-slate-800 mx-1" />
+          <div className="h-5 w-px bg-zinc-200 mx-1" />
 
-          {/* Profile */}
-          <div className="flex items-center gap-3">
+          {/* Profile User Badge */}
+          <div className="flex items-center gap-2.5 pl-1">
             <div className="text-right hidden sm:block">
-              <p className="text-xs font-bold text-primary dark:text-sky-400 leading-none mb-0.5">Yönetici</p>
-              <p className="text-[10px] text-slate-400 uppercase tracking-wider">Sistem Yöneticisi</p>
+              <p className="text-xs font-semibold text-zinc-900 leading-none">Yönetici</p>
+              <p className="text-[10px] text-zinc-400">Yönetim Ofisi</p>
             </div>
-            <div className="w-9 h-9 rounded-full bg-[#003781] text-white font-bold text-sm shadow-md flex items-center justify-center select-none">
+            <div className="w-7 h-7 rounded bg-zinc-900 text-white font-bold text-xs flex items-center justify-center">
               Y
             </div>
           </div>
         </div>
       </header>
 
-      {/* Command Palette Modal */}
       <AdminCommandPalette
         isOpen={showCommandPalette}
         onClose={() => setShowCommandPalette(false)}
       />
 
-      {/* Notification Drawer */}
       <AdminNotificationDrawer
         isOpen={showNotificationDrawer}
         onClose={() => setShowNotificationDrawer(false)}

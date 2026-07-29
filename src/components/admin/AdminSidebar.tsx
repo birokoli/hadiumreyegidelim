@@ -12,7 +12,7 @@ const menuGroups: { title: string; links: { href: string; icon: string; label: s
   {
     title: "Genel Bakış",
     links: [
-      { href: "/admin", icon: "dashboard", label: "Dashboard", exact: true, permission: "dashboard" },
+      { href: "/admin", icon: "grid_view", label: "Dashboard", exact: true, permission: "dashboard" },
     ],
   },
   {
@@ -21,13 +21,13 @@ const menuGroups: { title: string; links: { href: string; icon: string; label: s
       { href: "/admin/crm",                       icon: "view_kanban",    label: "CRM Komuta Merkezi", permission: "orders"   },
       { href: "/admin/fiyat-teklifleri/hesaplayici", icon: "calculate",     label: "Excel Fiyat Motoru", permission: "orders"   },
       { href: "/admin/orders",                    icon: "receipt_long",   label: "Talepler / Siparişler", permission: "orders" },
-      { href: "/admin/contact",                   icon: "call",           label: "WhatsApp & İletişim", permission: "orders", badgeKey: "unreadLeads" },
+      { href: "/admin/contact",                   icon: "chat",           label: "WhatsApp & İletişim", permission: "orders", badgeKey: "unreadLeads" },
       { href: "/admin/fiyat-teklifleri",           icon: "request_quote",  label: "Fiyat Teklifleri", permission: "orders"     },
       { href: "/admin/fiyat-teklifleri/hizmetler", icon: "library_books",  label: "Hizmet Kütüphanesi", permission: "orders"   },
     ],
   },
   {
-    title: "Operasyon Merkezi",
+    title: "Operasyon",
     links: [
       { href: "/admin/packages", icon: "inventory_2", label: "Lüks Paketler", permission: "operations", badgeKey: "totalPackages" },
       { href: "/admin/services", icon: "mosque",      label: "Ek Hizmetler", permission: "operations"   },
@@ -43,7 +43,7 @@ const menuGroups: { title: string; links: { href: string; icon: string; label: s
     ],
   },
   {
-    title: "Marketing & Influencer",
+    title: "Pazarlama & Büyüme",
     links: [
       { href: "/admin/influencers", icon: "person_celebrate", label: "Influencer Yönetimi", permission: "marketing" },
       { href: "/admin/affiliate",   icon: "star",             label: "Affiliate Program", permission: "marketing" },
@@ -54,14 +54,14 @@ const menuGroups: { title: string; links: { href: string; icon: string; label: s
     ],
   },
   {
-    title: "Sistem & Ayarlar",
+    title: "Sistem",
     links: [
       { href: "/admin/analytics", icon: "analytics",     label: "Analytics", permission: "dashboard"       },
       { href: "/admin/media",     icon: "photo_library", label: "Medya Galerisi", permission: "content"  },
       { href: "/admin/ai-logs",       icon: "memory",        label: "Yapay Zeka (AI)", permission: "dashboard" },
-      { href: "/admin/ai-visibility", icon: "search_hands_free", label: "AI Görünürlük (GEO)", permission: "dashboard" },
-      { href: "/admin/users",     icon: "manage_accounts", label: "Kullanıcı Yönetimi", permission: "users" },
-      { href: "/admin/settings",  icon: "settings",      label: "Sistem Ayarları", permission: "settings" },
+      { href: "/admin/ai-visibility", icon: "search_hands_free", label: "AI Görünürlük", permission: "dashboard" },
+      { href: "/admin/users",     icon: "manage_accounts", label: "Kullanıcılar", permission: "users" },
+      { href: "/admin/settings",  icon: "settings",      label: "Ayarlar", permission: "settings" },
     ],
   },
 ];
@@ -87,7 +87,6 @@ export default function AdminSidebar({ logoUrl }: { logoUrl?: string }) {
         setAllowedPermissions(null);
       });
 
-    // Fetch live counts for sidebar badges
     fetch("/api/admin/counts")
       .then(res => res.json())
       .then(data => {
@@ -105,76 +104,65 @@ export default function AdminSidebar({ logoUrl }: { logoUrl?: string }) {
     setSidebarOpen(false);
   }, [pathname, setSidebarOpen]);
 
-  useEffect(() => {
-    if (sidebarOpen) document.body.style.overflow = "hidden";
-    else document.body.style.overflow = "";
-    return () => { document.body.style.overflow = ""; };
-  }, [sidebarOpen]);
-
   return (
     <>
-      {/* Mobile backdrop */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm lg:hidden"
+          className="fixed inset-0 z-40 bg-black/30 backdrop-blur-xs lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
-      {/* Sidebar */}
       <aside
         className={`
           fixed left-0 top-0 h-full w-72 z-50 flex flex-col
-          bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800/80 shadow-xl
-          overflow-y-auto transition-transform duration-300 ease-in-out
+          bg-white text-zinc-900 border-r border-zinc-200 shadow-none
+          overflow-y-auto transition-transform duration-200 ease-in-out
           ${sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
         `}
       >
-        {/* Logo + close button */}
-        <div className="px-6 pt-7 pb-4 flex items-start justify-between shrink-0">
-          <div className="flex flex-col gap-2">
-            <Link href="/" className="hover:opacity-80 transition-opacity">
-              <Image
-                src={logoUrl || "/logo.png"}
-                alt="Hadi Umreye"
-                width={160}
-                height={56}
-                className="w-auto h-11 object-contain dark:brightness-110"
-                priority
-              />
-            </Link>
-            <p className="text-[10px] uppercase tracking-[0.25em] text-tertiary-fixed-dim font-bold border-l-2 border-tertiary-fixed-dim pl-2">
-              Kurumsal Yönetim
-            </p>
-          </div>
+        {/* Brand Header */}
+        <div className="px-6 pt-7 pb-5 flex items-center justify-between shrink-0 border-b border-zinc-100">
+          <Link href="/admin" className="flex items-center gap-3">
+            {logoUrl ? (
+              <Image src={logoUrl} alt="Logo" width={130} height={40} className="w-auto h-8 object-contain" priority />
+            ) : (
+              <div className="flex items-center gap-2">
+                <div className="w-7 h-7 bg-zinc-900 text-white rounded flex items-center justify-center font-bold text-xs">HU</div>
+                <span className="font-semibold text-sm tracking-tight text-zinc-900">HADI UMREYE</span>
+              </div>
+            )}
+            <span className="text-[10px] font-bold tracking-wider uppercase px-2 py-0.5 bg-zinc-100 text-zinc-600 rounded">
+              ADMIN
+            </span>
+          </Link>
 
           <button
             onClick={() => setSidebarOpen(false)}
-            className="lg:hidden p-2 rounded-xl text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-200 transition-colors mt-1"
-            aria-label="Menüyü kapat"
+            className="lg:hidden p-1.5 rounded text-zinc-400 hover:text-zinc-900 hover:bg-zinc-100"
           >
-            <span className="material-symbols-outlined text-[22px]">close</span>
+            <span className="material-symbols-outlined text-[20px]">close</span>
           </button>
         </div>
 
-        {/* Sidebar Menu Search Filter */}
-        <div className="px-4 mb-4">
+        {/* Sidebar Quick Filter Input */}
+        <div className="px-4 py-3 border-b border-zinc-100">
           <div className="relative">
-            <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[16px]">
-              filter_list
+            <span className="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-zinc-400 text-[15px]">
+              search
             </span>
             <input
               type="text"
-              placeholder="Menü filtrele..."
+              placeholder="Menüde ara..."
               value={filterQuery}
               onChange={(e) => setFilterQuery(e.target.value)}
-              className="w-full bg-slate-100 dark:bg-slate-800 text-xs text-slate-800 dark:text-slate-200 rounded-xl pl-8 pr-3 py-2 border-none outline-none focus:ring-1 focus:ring-[#003781]"
+              className="w-full bg-zinc-50 text-xs text-zinc-900 placeholder:text-zinc-400 rounded px-2.5 py-1.5 pl-8 border border-zinc-200 focus:outline-none focus:border-zinc-900"
             />
           </div>
         </div>
 
-        {/* Nav */}
-        <nav className="flex-1 flex flex-col space-y-5 px-4">
+        {/* Navigation List */}
+        <nav className="flex-1 px-3 py-4 space-y-6">
           {menuGroups.map((group, idx) => {
             const filteredLinks = group.links
               .filter(link => canSee(link.permission))
@@ -184,7 +172,7 @@ export default function AdminSidebar({ logoUrl }: { logoUrl?: string }) {
 
             return (
               <div key={idx}>
-                <h4 className="text-[10px] uppercase tracking-widest text-slate-400 dark:text-slate-500 font-bold px-4 mb-1.5">
+                <h4 className="text-[11px] font-semibold tracking-wider text-zinc-400 uppercase px-3 mb-2">
                   {group.title}
                 </h4>
                 <div className="space-y-0.5">
@@ -199,29 +187,27 @@ export default function AdminSidebar({ logoUrl }: { logoUrl?: string }) {
                       <Link
                         key={link.href}
                         href={link.href}
-                        className={`flex items-center justify-between px-4 py-2.5 rounded-xl transition-all duration-200 ${
+                        className={`flex items-center justify-between px-3 py-2 rounded text-xs font-medium transition-colors ${
                           isActive
-                            ? "text-[#003781] dark:text-sky-400 font-bold bg-[#003781]/8 dark:bg-sky-500/15 shadow-sm ring-1 ring-[#003781]/10 dark:ring-sky-500/30"
-                            : "text-slate-500 dark:text-slate-400 hover:text-[#003781] dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/60 font-medium"
+                            ? "bg-zinc-900 text-white font-semibold shadow-xs"
+                            : "text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100"
                         }`}
                       >
-                        <div className="flex items-center gap-3">
-                          <span
-                            className={`material-symbols-outlined text-[20px] ${isActive ? "text-tertiary-fixed-dim" : ""}`}
-                            style={{ fontVariationSettings: isActive ? "'FILL' 1" : "'FILL' 0" }}
-                          >
+                        <div className="flex items-center gap-2.5">
+                          <span className={`material-symbols-outlined text-[18px] ${isActive ? "text-white" : "text-zinc-400"}`}>
                             {link.icon}
                           </span>
-                          <span className="text-sm">{link.label}</span>
+                          <span>{link.label}</span>
                         </div>
 
-                        {/* Live Unread Badge */}
                         {badgeValue !== undefined && badgeValue > 0 && (
                           <span
-                            className={`text-[10px] font-extrabold px-2 py-0.5 rounded-full ${
-                              link.badgeKey === "unreadLeads"
-                                ? "bg-red-500 text-white animate-pulse"
-                                : "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300"
+                            className={`text-[10px] font-bold px-1.5 py-0.2 rounded ${
+                              isActive
+                                ? "bg-white text-zinc-900"
+                                : link.badgeKey === "unreadLeads"
+                                ? "bg-zinc-900 text-white"
+                                : "bg-zinc-100 text-zinc-600"
                             }`}
                           >
                             {badgeValue}
@@ -236,13 +222,15 @@ export default function AdminSidebar({ logoUrl }: { logoUrl?: string }) {
           })}
         </nav>
 
-        {/* Bottom CTA */}
-        <div className="px-5 py-5 mt-4 shrink-0">
-          <Link href="/" target="_blank">
-            <button className="w-full py-3.5 flex items-center justify-center gap-2 bg-[#003781] text-white rounded-xl font-bold text-sm hover:bg-[#002f6c] transition-all shadow-md active:scale-[0.98]">
-              Siteye Git
-              <span className="material-symbols-outlined text-[18px]">open_in_new</span>
-            </button>
+        {/* Footer Link */}
+        <div className="p-4 border-t border-zinc-100 shrink-0">
+          <Link
+            href="/"
+            target="_blank"
+            className="w-full py-2 flex items-center justify-center gap-1.5 bg-zinc-900 text-white rounded text-xs font-medium hover:bg-zinc-800 transition-colors"
+          >
+            <span>Canlı Siteyi Gör</span>
+            <span className="material-symbols-outlined text-[14px]">open_in_new</span>
           </Link>
         </div>
       </aside>

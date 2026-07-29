@@ -9,11 +9,11 @@
   --color-tertiary-fixed: #ffdea5;
   --color-on-primary-fixed: #001944;
   --color-on-tertiary-container: #e7bf75;
-  --color-on-background: #1a1c1c;
+  --color-on-background: #09090b;
   --color-surface-container-highest: #e2e2e2;
-  --color-primary-container: #174ea6;
+  --color-primary-container: #18181b;
   --color-secondary: #236b40;
-  --color-outline-variant: #c3c6d4;
+  --color-outline-variant: #e4e4e7;
   --color-on-secondary-fixed: #00210e;
   --color-on-error-container: #93000a;
   --color-secondary-fixed-dim: #8ed7a1;
@@ -24,7 +24,7 @@
   --color-on-primary-fixed-variant: #004299;
   --color-tertiary-container: #694d0c;
   --color-tertiary-fixed-dim: #e9c176;
-  --color-primary: #003781;
+  --color-primary: #09090b;
   --color-on-tertiary-fixed: #261900;
   --color-on-primary-container: #adc5ff;
   --color-inverse-surface: #2f3131;

@@ -2,6 +2,34 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { cookies } from 'next/headers';
 
+export async function PATCH(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  try {
+    const { id } = await params;
+    const cookieStore = await cookies();
+    const sessionCookie = cookieStore.get('admin_session');
+    
+    if (!sessionCookie || sessionCookie.value !== 'true') {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const body = await request.json();
+    const updatedOrder = await prisma.order.update({
+      where: { id },
+      data: {
+        status: body.status,
+      },
+    });
+
+    return NextResponse.json({ success: true, order: updatedOrder });
+  } catch (error: any) {
+    console.error('Update Order Error:', error);
+    return NextResponse.json(
+      { error: 'Sipariş güncellenemedi.' },
+      { status: 500 }
+    );
+  }
+}
+
 export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params;

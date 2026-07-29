@@ -802,3 +802,19 @@ model ReferralQualification {
   @@unique([referralId, period])
   @@index([referrerId, period])
 }
+
+model AiVisibilityAudit {
+  id               String   @id @default(cuid())
+  url              String
+  geoScore         Int      @default(0)
+  schemaScore      Int      @default(0)
+  readabilityScore Int      @default(0)
+  citationRate     Int      @default(0)
+  schemaStatus     String?
+  markdownContent  String?
+  llmAnalysis      String?
+  citationDetails  String?
+  recommendations  String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}

@@ -31,13 +31,13 @@ export default function AdminNavbar() {
   const totalNotifs = (data.unreadLeads?.length ?? 0) + (data.pendingOrders?.length ?? 0);
 
   return (
-    <header className="fixed top-0 right-0 left-0 lg:left-72 z-40 bg-white/90 dark:bg-slate-950/90 backdrop-blur-xl flex items-center justify-between px-5 lg:px-8 h-16 border-b border-outline-variant/10 shadow-[0_2px_16px_rgba(0,0,0,0.04)]">
+    <header className="fixed top-0 right-0 left-0 lg:left-72 z-40 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl flex items-center justify-between px-5 lg:px-8 h-16 border-b border-slate-200/80 dark:border-slate-800/80 shadow-[0_2px_16px_rgba(0,0,0,0.04)]">
 
       {/* Left: Hamburger (mobile) + Page breadcrumb */}
       <div className="flex items-center gap-4">
         <button
           onClick={() => setSidebarOpen(true)}
-          className="lg:hidden p-2 rounded-xl text-slate-500 hover:bg-slate-100 hover:text-primary transition-colors active:scale-95"
+          className="lg:hidden p-2 rounded-xl text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-primary transition-colors active:scale-95"
           aria-label="Menüyü aç"
         >
           <span className="material-symbols-outlined text-[22px]">menu</span>
@@ -51,7 +51,7 @@ export default function AdminNavbar() {
           <input
             type="text"
             placeholder="Panelde ara..."
-            className="w-64 bg-slate-100 border-none rounded-full pl-10 pr-4 py-2 text-sm outline-none focus:ring-2 focus:ring-primary/20 focus:bg-white transition-all"
+            className="w-64 bg-slate-100 dark:bg-slate-800/80 text-slate-800 dark:text-slate-100 border-none rounded-full pl-10 pr-4 py-2 text-sm outline-none focus:ring-2 focus:ring-primary/20 dark:focus:bg-slate-800 transition-all"
             readOnly
             title="Yakında aktif olacak"
           />
@@ -74,17 +74,17 @@ export default function AdminNavbar() {
           </button>
 
           {showDropdown && (
-            <div className="absolute top-14 right-0 w-80 bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden z-50">
-              <div className="px-5 py-4 bg-slate-50 border-b border-slate-100 flex items-center justify-between">
+            <div className="absolute top-14 right-0 w-80 bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-100 dark:border-slate-800 overflow-hidden z-50">
+              <div className="px-5 py-4 bg-slate-50 dark:bg-slate-800/60 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
                 <div>
-                  <h3 className="text-sm font-bold text-primary">Bildirimler</h3>
-                  <p className="text-[11px] text-slate-500 mt-0.5">
+                  <h3 className="text-sm font-bold text-primary dark:text-sky-400">Bildirimler</h3>
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
                     {totalNotifs > 0 ? `${totalNotifs} yeni işlem var` : "Tümü okundu"}
                   </p>
                 </div>
                 <span className={`w-2 h-2 rounded-full ${totalNotifs > 0 ? "bg-red-500 animate-pulse" : "bg-emerald-400"}`} />
               </div>
-              <div className="max-h-72 overflow-y-auto divide-y divide-slate-50">
+              <div className="max-h-72 overflow-y-auto divide-y divide-slate-50 dark:divide-slate-800">
                 {totalNotifs === 0 ? (
                   <div className="py-8 flex flex-col items-center text-slate-400">
                     <span className="material-symbols-outlined text-4xl mb-2 opacity-40">notifications_paused</span>
@@ -94,25 +94,25 @@ export default function AdminNavbar() {
                   <>
                     {data.unreadLeads.map((l: any) => (
                       <Link key={l.id} href="/admin/contact" onClick={() => setShowDropdown(false)}
-                        className="flex gap-3 px-4 py-3.5 hover:bg-slate-50 transition-colors">
-                        <div className="w-9 h-9 rounded-full bg-red-50 text-red-500 flex items-center justify-center shrink-0">
+                        className="flex gap-3 px-4 py-3.5 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors">
+                        <div className="w-9 h-9 rounded-full bg-red-50 dark:bg-red-950/40 text-red-500 flex items-center justify-center shrink-0">
                           <span className="material-symbols-outlined text-[18px]">person</span>
                         </div>
                         <div className="min-w-0">
-                          <p className="text-sm font-semibold text-primary truncate">{l.name}</p>
-                          <p className="text-[11px] text-slate-500">Yeni iletişim talebi</p>
+                          <p className="text-sm font-semibold text-primary dark:text-sky-400 truncate">{l.name}</p>
+                          <p className="text-[11px] text-slate-500 dark:text-slate-400">Yeni iletişim talebi</p>
                         </div>
                       </Link>
                     ))}
                     {data.pendingOrders.map((o: any) => (
                       <Link key={o.id} href="/admin/orders" onClick={() => setShowDropdown(false)}
-                        className="flex gap-3 px-4 py-3.5 hover:bg-slate-50 transition-colors">
-                        <div className="w-9 h-9 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
+                        className="flex gap-3 px-4 py-3.5 hover:bg-slate-50 dark:hover:bg-slate-800/60 transition-colors">
+                        <div className="w-9 h-9 rounded-full bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
                           <span className="material-symbols-outlined text-[18px]">shopping_bag</span>
                         </div>
                         <div>
-                          <p className="text-sm font-semibold text-primary">Yeni Sipariş</p>
-                          <p className="text-[11px] text-slate-500">${o.totalUSD} · {o.pax} Kişi</p>
+                          <p className="text-sm font-semibold text-primary dark:text-sky-400">Yeni Sipariş</p>
+                          <p className="text-[11px] text-slate-500 dark:text-slate-400">${o.totalUSD} · {o.pax} Kişi</p>
                         </div>
                       </Link>
                     ))}
@@ -127,33 +127,33 @@ export default function AdminNavbar() {
         <div className="relative" ref={quickRef}>
           <button
             onClick={() => setShowQuickActions(v => !v)}
-            className={`p-2.5 rounded-xl transition-colors ${showQuickActions ? "bg-primary/10 text-primary" : "text-slate-500 hover:bg-slate-100 hover:text-primary"}`}
+            className={`p-2.5 rounded-xl transition-colors ${showQuickActions ? "bg-primary/10 text-primary dark:text-sky-400" : "text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-primary dark:hover:text-white"}`}
             title="Hızlı Aksiyonlar"
           >
             <span className="material-symbols-outlined text-[22px]">add_circle</span>
           </button>
 
           {showQuickActions && (
-            <div className="absolute top-14 right-0 w-52 bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden z-50">
-              <div className="px-4 py-3 bg-slate-50 border-b border-slate-100">
-                <h3 className="text-xs font-bold text-primary">Hızlı Kısayollar</h3>
+            <div className="absolute top-14 right-0 w-52 bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-100 dark:border-slate-800 overflow-hidden z-50">
+              <div className="px-4 py-3 bg-slate-50 dark:bg-slate-800/60 border-b border-slate-100 dark:border-slate-800">
+                <h3 className="text-xs font-bold text-primary dark:text-sky-400">Hızlı Kısayollar</h3>
               </div>
               <div className="p-2 flex flex-col gap-0.5">
                 {[
-                  { href: "/admin/content",  icon: "edit_document",       label: "Yeni Blog Yaz",      color: "text-indigo-600" },
-                  { href: "/admin/packages", icon: "inventory_2",          label: "Yeni Paket",         color: "text-blue-600"   },
-                  { href: "/admin/media",    icon: "add_photo_alternate",  label: "Fotoğraf Yükle",     color: "text-emerald-600"},
-                  { href: "/admin/ai-logs",  icon: "memory",               label: "AI İzleme",          color: "text-purple-600" },
+                  { href: "/admin/content",  icon: "edit_document",       label: "Yeni Blog Yaz",      color: "text-indigo-600 dark:text-indigo-400" },
+                  { href: "/admin/packages", icon: "inventory_2",          label: "Yeni Paket",         color: "text-blue-600 dark:text-blue-400"   },
+                  { href: "/admin/media",    icon: "add_photo_alternate",  label: "Fotoğraf Yükle",     color: "text-emerald-600 dark:text-emerald-400"},
+                  { href: "/admin/ai-logs",  icon: "memory",               label: "AI İzleme",          color: "text-purple-600 dark:text-purple-400" },
                 ].map(item => (
                   <Link key={item.href} href={item.href} onClick={() => setShowQuickActions(false)}
-                    className="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-50 rounded-xl text-sm font-medium text-slate-700 transition-colors">
+                    className="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-50 dark:hover:bg-slate-800/60 rounded-xl text-sm font-medium text-slate-700 dark:text-slate-200 transition-colors">
                     <span className={`material-symbols-outlined text-[20px] ${item.color}`}>{item.icon}</span>
                     {item.label}
                   </Link>
                 ))}
-                <div className="h-px bg-slate-100 my-1" />
+                <div className="h-px bg-slate-100 dark:bg-slate-800 my-1" />
                 <Link href="/" target="_blank" onClick={() => setShowQuickActions(false)}
-                  className="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-50 rounded-xl text-sm font-medium text-slate-700 transition-colors">
+                  className="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-50 dark:hover:bg-slate-800/60 rounded-xl text-sm font-medium text-slate-700 dark:text-slate-200 transition-colors">
                   <span className="material-symbols-outlined text-[20px] text-slate-500">visibility</span>
                   Siteyi Önizle
                 </Link>
@@ -163,16 +163,16 @@ export default function AdminNavbar() {
         </div>
 
         {/* Divider */}
-        <div className="h-8 w-px bg-slate-200 mx-1" />
+        <div className="h-8 w-px bg-slate-200 dark:bg-slate-800 mx-1" />
 
         {/* Profile */}
         <div className="flex items-center gap-3">
           <div className="text-right hidden sm:block">
-            <p className="text-xs font-bold text-primary leading-none mb-0.5">Yönetici</p>
+            <p className="text-xs font-bold text-primary dark:text-sky-400 leading-none mb-0.5">Yönetici</p>
             <p className="text-[10px] text-slate-400 uppercase tracking-wider">Sistem Yöneticisi</p>
           </div>
           {/* Initials avatar — no external dependency */}
-          <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-white font-bold text-sm shadow-md select-none">
+          <div className="w-9 h-9 rounded-full bg-primary text-white font-bold text-sm shadow-md flex items-center justify-center select-none">
             Y
           </div>
         </div>

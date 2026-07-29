@@ -115,7 +115,7 @@ export default function AdminSidebar({ logoUrl }: { logoUrl?: string }) {
       <aside
         className={`
           fixed left-0 top-0 h-full w-72 z-50 flex flex-col
-          bg-white dark:bg-slate-950 border-r border-outline-variant/20 shadow-xl
+          bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800/80 shadow-xl
           overflow-y-auto transition-transform duration-300 ease-in-out
           ${sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
         `}
@@ -129,7 +129,7 @@ export default function AdminSidebar({ logoUrl }: { logoUrl?: string }) {
                 alt="Hadi Umreye"
                 width={160}
                 height={56}
-                className="w-auto h-11 object-contain"
+                className="w-auto h-11 object-contain dark:brightness-110"
                 priority
               />
             </Link>
@@ -140,7 +140,7 @@ export default function AdminSidebar({ logoUrl }: { logoUrl?: string }) {
           {/* Close button — mobile only */}
           <button
             onClick={() => setSidebarOpen(false)}
-            className="lg:hidden p-2 rounded-xl text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition-colors mt-1"
+            className="lg:hidden p-2 rounded-xl text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-700 dark:hover:text-slate-200 transition-colors mt-1"
             aria-label="Menüyü kapat"
           >
             <span className="material-symbols-outlined text-[22px]">close</span>
@@ -155,7 +155,7 @@ export default function AdminSidebar({ logoUrl }: { logoUrl?: string }) {
 
             return (
             <div key={idx}>
-              <h4 className="text-[10px] uppercase tracking-widest text-slate-400 font-bold px-4 mb-1.5">
+              <h4 className="text-[10px] uppercase tracking-widest text-slate-400 dark:text-slate-500 font-bold px-4 mb-1.5">
                 {group.title}
               </h4>
               <div className="space-y-0.5">
@@ -169,8 +169,8 @@ export default function AdminSidebar({ logoUrl }: { logoUrl?: string }) {
                       href={link.href}
                       className={`flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all duration-200 ${
                         isActive
-                          ? "text-[#003781] font-bold bg-[#003781]/8 shadow-sm ring-1 ring-[#003781]/10"
-                          : "text-slate-500 hover:text-[#003781] hover:bg-slate-50 font-medium"
+                          ? "text-[#003781] dark:text-sky-400 font-bold bg-[#003781]/8 dark:bg-sky-500/15 shadow-sm ring-1 ring-[#003781]/10 dark:ring-sky-500/30"
+                          : "text-slate-500 dark:text-slate-400 hover:text-[#003781] dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/60 font-medium"
                       }`}
                     >
                       <span

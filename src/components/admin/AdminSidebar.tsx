@@ -18,8 +18,9 @@ const menuGroups: { title: string; links: { href: string; icon: string; label: s
   {
     title: "Satış & CRM",
     links: [
-      { href: "/admin/orders",            icon: "receipt_long",  label: "Talepler / Siparişler", permission: "orders" },
-      { href: "/admin/contact",           icon: "call",           label: "WhatsApp & İletişim", permission: "orders"  },
+      { href: "/admin/crm",                       icon: "view_kanban",    label: "CRM Komuta Merkezi", permission: "orders"   },
+      { href: "/admin/orders",                    icon: "receipt_long",   label: "Talepler / Siparişler", permission: "orders" },
+      { href: "/admin/contact",                   icon: "call",           label: "WhatsApp & İletişim", permission: "orders"  },
       { href: "/admin/fiyat-teklifleri",           icon: "request_quote",  label: "Fiyat Teklifleri", permission: "orders"     },
       { href: "/admin/fiyat-teklifleri/hizmetler", icon: "library_books",  label: "Hizmet Kütüphanesi", permission: "orders"   },
     ],

@@ -818,3 +818,30 @@ model AiVisibilityAudit {
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 }
+
+model CrmLead {
+  id               String   @id @default(cuid())
+  name             String
+  phone            String
+  email            String?
+  stage            String   @default("NEW") // NEW | IN_DISCUSSION | QUOTATION_SENT | WON | LOST
+  valueUSD         Float    @default(0)
+  source           String   @default("WEB_FORM") // WEB_FORM | CONFIGURATOR | WHATSAPP | QUOTATION | MANUAL
+  preferredPackage String?
+  notes            String?
+  assignedTo       String?  @default("Yönetici")
+  lostReason       String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  activities       CrmActivity[]
+}
+
+model CrmActivity {
+  id          String   @id @default(cuid())
+  lead        CrmLead  @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  leadId      String
+  type        String   // NOTE | CALL | WHATSAPP | EMAIL | STAGE_CHANGE
+  content     String
+  createdBy   String   @default("Yönetici")
+  createdAt   DateTime @default(now())
+}

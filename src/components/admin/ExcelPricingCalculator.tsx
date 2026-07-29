@@ -445,33 +445,31 @@ export default function ExcelPricingCalculator({ initialCustomerName, initialPho
             </div>
           </div>
 
-          {/* ============================================================= */}
-          {/* MÜŞTERİ KAYIT LİSTESİ (Group Travelers Registration List)    */}
-          {/* ============================================================= */}
-          <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden space-y-4 p-6">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 dark:border-slate-800 pb-4">
+          {/* MÜŞTERİ KAYIT LİSTESİ (Group Travelers Registration List) */}
+          <div className="bg-white rounded border border-zinc-200 overflow-hidden space-y-4 p-6">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-zinc-200 pb-4">
               <div>
-                <h3 className="font-bold text-base text-slate-900 dark:text-white uppercase tracking-wider flex items-center gap-2">
-                  <span className="material-symbols-outlined text-primary dark:text-sky-400">person_add</span> MÜŞTERİ KAYIT LİSTESİ (GRUP YOLCU LİSTESİ)
+                <h3 className="font-semibold text-xs text-zinc-900 uppercase tracking-wider">
+                  MÜŞTERİ KAYIT LİSTESİ (GRUP YOLCU LİSTESİ)
                 </h3>
-                <p className="text-xs text-slate-500 mt-1">
-                  Gruba katılan yolcuları ekleyin. Oda ve süreye göre paket fiyatı tarifeden otomatik hesaplanır.
+                <p className="text-[11px] text-zinc-500 mt-1">
+                  Gruba katılan yolcuları ekleyin. Paket fiyatı tarifeden otomatik hesaplanır.
                 </p>
               </div>
 
               <button
                 onClick={addGroupTraveler}
-                className="bg-emerald-500 hover:bg-emerald-600 text-white font-bold px-5 py-2.5 rounded-2xl text-xs flex items-center gap-2 shadow-md transition-all active:scale-95 shrink-0"
+                className="bg-zinc-900 hover:bg-zinc-800 text-white font-medium px-4 py-2 rounded text-xs inline-flex items-center gap-1.5 transition-colors shrink-0"
               >
-                <span className="material-symbols-outlined text-[18px]">add</span>
-                Yeni Müşteri / Yolcu Ekle
+                <span className="material-symbols-outlined text-[16px]">add</span>
+                <span>Yeni Müşteri / Yolcu Ekle</span>
               </button>
             </div>
 
             <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse">
-                <thead>
-                  <tr className="bg-slate-50 dark:bg-slate-800/60 text-[11px] font-bold text-slate-400 uppercase tracking-wider border-b border-slate-200 dark:border-slate-800">
+              <table className="w-full text-left text-xs">
+                <thead className="bg-zinc-50 border-b border-zinc-200 text-[10px] font-bold text-zinc-400 uppercase tracking-wider">
+                  <tr>
                     <th className="p-3 w-14">Sıra</th>
                     <th className="p-3">Müşteri Ad Soyad</th>
                     <th className="p-3">Cinsiyet</th>
@@ -483,17 +481,17 @@ export default function ExcelPricingCalculator({ initialCustomerName, initialPho
                     <th className="p-3 text-right">İşlem</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-100 dark:divide-slate-800 text-xs font-medium">
+                <tbody className="divide-y divide-zinc-100 font-medium">
                   {groupTravelers.map((t) => (
-                    <tr key={t.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
-                      <td className="p-3 font-mono font-bold text-slate-400">#{t.siraNo}</td>
+                    <tr key={t.id} className="hover:bg-zinc-50 transition-colors">
+                      <td className="p-3 font-mono font-bold text-zinc-400">#{t.siraNo}</td>
                       
                       <td className="p-3">
                         <input
                           type="text"
                           value={t.name}
                           onChange={(e) => updateTravelerField(t.id, "name", e.target.value)}
-                          className="bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white rounded-lg px-3 py-1 font-bold outline-none focus:ring-2 focus:ring-sky-400 w-44"
+                          className="bg-white border border-zinc-200 text-zinc-900 rounded px-2.5 py-1 font-bold outline-none w-44"
                         />
                       </td>
 
@@ -501,7 +499,7 @@ export default function ExcelPricingCalculator({ initialCustomerName, initialPho
                         <select
                           value={t.gender}
                           onChange={(e) => updateTravelerField(t.id, "gender", e.target.value)}
-                          className="bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white rounded-lg px-2 py-1 font-semibold outline-none"
+                          className="bg-white border border-zinc-200 text-zinc-900 rounded px-2 py-1 font-medium outline-none"
                         >
                           <option value="Erkek">Erkek</option>
                           <option value="Kadın">Kadın</option>
@@ -512,7 +510,7 @@ export default function ExcelPricingCalculator({ initialCustomerName, initialPho
                         <select
                           value={t.category}
                           onChange={(e) => updateTravelerField(t.id, "category", e.target.value)}
-                          className="bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white rounded-lg px-2 py-1 font-semibold outline-none"
+                          className="bg-white border border-zinc-200 text-zinc-900 rounded px-2 py-1 font-medium outline-none"
                         >
                           <option value="Yetişkin">Yetişkin</option>
                           <option value="Çocuk (2-11)">Çocuk (2-11)</option>
@@ -525,7 +523,7 @@ export default function ExcelPricingCalculator({ initialCustomerName, initialPho
                           value={t.duration}
                           disabled={t.category !== "Yetişkin"}
                           onChange={(e) => updateTravelerField(t.id, "duration", e.target.value)}
-                          className="bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white rounded-lg px-2 py-1 font-semibold outline-none disabled:opacity-40"
+                          className="bg-white border border-zinc-200 text-zinc-900 rounded px-2 py-1 font-medium outline-none disabled:opacity-40"
                         >
                           <option value="10 Gün">10 Gün</option>
                           <option value="15 Gün">15 Gün</option>
@@ -539,7 +537,7 @@ export default function ExcelPricingCalculator({ initialCustomerName, initialPho
                           value={t.roomType}
                           disabled={t.category !== "Yetişkin"}
                           onChange={(e) => updateTravelerField(t.id, "roomType", e.target.value)}
-                          className="bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-600 text-slate-900 dark:text-white rounded-lg px-2 py-1 font-semibold outline-none disabled:opacity-40"
+                          className="bg-white border border-zinc-200 text-zinc-900 rounded px-2 py-1 font-medium outline-none disabled:opacity-40"
                         >
                           <option value="2 Kişilik">2 Kişilik</option>
                           <option value="3 Kişilik">3 Kişilik</option>
@@ -548,18 +546,18 @@ export default function ExcelPricingCalculator({ initialCustomerName, initialPho
                         </select>
                       </td>
 
-                      <td className="p-3 font-mono font-bold text-slate-700 dark:text-slate-300">
+                      <td className="p-3 font-mono font-bold text-zinc-900">
                         ${t.costUsd.toFixed(2)}
                       </td>
 
-                      <td className="p-3 font-mono font-extrabold text-emerald-600 dark:text-emerald-400">
+                      <td className="p-3 font-mono font-bold text-zinc-900">
                         ${t.saleUsd.toFixed(2)} (₺{(t.saleUsd * usdRate).toLocaleString("tr-TR", { maximumFractionDigits: 0 })})
                       </td>
 
                       <td className="p-3 text-right">
                         <button
                           onClick={() => removeGroupTraveler(t.id)}
-                          className="p-1 rounded bg-red-50 text-red-500 hover:bg-red-500 hover:text-white transition-all"
+                          className="p-1 rounded text-zinc-400 hover:text-red-600 transition-all"
                           title="Sil"
                         >
                           <span className="material-symbols-outlined text-[16px]">delete</span>

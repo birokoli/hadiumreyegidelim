@@ -132,13 +132,13 @@ export default function AdminAffiliatePage() {
   return (
     <div className="p-6 lg:p-8 max-w-5xl mx-auto space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-slate-900">Affiliate Program Yönetimi</h1>
-        <p className="text-sm text-slate-500 mt-0.5">Program konfigürasyonu, skor hesaplama ve yıldız düzeltmeleri</p>
+        <h1 className="font-headline text-2xl font-bold text-primary">Affiliate Program Yönetimi</h1>
+        <p className="text-sm text-on-surface-variant mt-0.5">Program konfigürasyonu, skor hesaplama ve yıldız düzeltmeleri</p>
       </div>
 
       {/* ─── Program Config ─── */}
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
-        <h2 className="text-[16px] font-bold text-slate-900 mb-4 flex items-center gap-2">
+      <div className="bg-white rounded-2xl border border-outline-variant/15 shadow-sm p-6">
+        <h2 className="text-[16px] font-bold text-on-surface mb-4 flex items-center gap-2">
           <span className="material-symbols-outlined text-[20px] text-[#003781]">settings</span>
           Program Konfigürasyonu
         </h2>
@@ -159,13 +159,13 @@ export default function AdminAffiliatePage() {
               ['attributionWindowDays', 'Attribution Süresi (gün)', 'number'],
             ] as [keyof ProgramConfig, string, string][]).map(([key, label]) => (
               <div key={key}>
-                <label className="block text-[12px] font-medium text-slate-500 mb-1">{label}</label>
+                <label className="block text-[12px] font-medium text-on-surface-variant mb-1">{label}</label>
                 <input
                   type="number"
                   step="any"
                   value={configForm[key] ?? ''}
                   onChange={e => setF(key, e.target.value)}
-                  className="w-full border border-gray-200 rounded-xl px-3 py-2 text-[14px] focus:outline-none focus:ring-2 focus:ring-[#003781]/20"
+                  className="w-full border border-outline-variant/25 rounded-xl px-3 py-2 text-[14px] focus:outline-none focus:ring-2 focus:ring-[#003781]/20"
                 />
               </div>
             ))}
@@ -179,7 +179,7 @@ export default function AdminAffiliatePage() {
                 {configSaving ? 'Kaydediliyor...' : 'Kaydet'}
               </button>
               {configMsg && (
-                <span className={`text-[13px] font-medium ${configMsg === 'Kaydedildi.' ? 'text-emerald-600' : 'text-red-500'}`}>
+                <span className={`text-[13px] font-medium ${configMsg === 'Kaydedildi.' ? 'text-secondary' : 'text-error'}`}>
                   {configMsg}
                 </span>
               )}
@@ -189,14 +189,14 @@ export default function AdminAffiliatePage() {
       </div>
 
       {/* ─── Compute Period ─── */}
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
-        <h2 className="text-[16px] font-bold text-slate-900 mb-4 flex items-center gap-2">
+      <div className="bg-white rounded-2xl border border-outline-variant/15 shadow-sm p-6">
+        <h2 className="text-[16px] font-bold text-on-surface mb-4 flex items-center gap-2">
           <span className="material-symbols-outlined text-[20px] text-[#003781]">calculate</span>
           Dönem Skoru Hesapla
         </h2>
         <form onSubmit={handleCompute} className="flex items-end gap-3">
           <div>
-            <label className="block text-[12px] font-medium text-slate-500 mb-1">
+            <label className="block text-[12px] font-medium text-on-surface-variant mb-1">
               Dönem (boş bırakılırsa önceki ay)
             </label>
             <input
@@ -204,7 +204,7 @@ export default function AdminAffiliatePage() {
               placeholder="örn: 2026-04-01"
               value={computePeriod}
               onChange={e => setComputePeriod(e.target.value)}
-              className="border border-gray-200 rounded-xl px-3 py-2 text-[14px] focus:outline-none focus:ring-2 focus:ring-[#003781]/20 w-48"
+              className="border border-outline-variant/25 rounded-xl px-3 py-2 text-[14px] focus:outline-none focus:ring-2 focus:ring-[#003781]/20 w-48"
             />
           </div>
           <button
@@ -217,8 +217,8 @@ export default function AdminAffiliatePage() {
           </button>
         </form>
         {computeResult && (
-          <div className="mt-3 bg-emerald-50 border border-emerald-200 rounded-xl px-4 py-3">
-            <p className="text-[13px] text-emerald-700 font-medium">
+          <div className="mt-3 bg-secondary/10 border border-secondary/25 rounded-xl px-4 py-3">
+            <p className="text-[13px] text-secondary font-medium">
               {typeof computeResult.count === 'number'
                 ? `${computeResult.period} dönemi için ${computeResult.count} influencer işlendi.`
                 : String(computeResult.period)}
@@ -228,42 +228,42 @@ export default function AdminAffiliatePage() {
       </div>
 
       {/* ─── Star Adjustment ─── */}
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
-        <h2 className="text-[16px] font-bold text-slate-900 mb-4 flex items-center gap-2">
+      <div className="bg-white rounded-2xl border border-outline-variant/15 shadow-sm p-6">
+        <h2 className="text-[16px] font-bold text-on-surface mb-4 flex items-center gap-2">
           <span className="material-symbols-outlined text-[20px] text-[#003781]" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
           Yıldız Düzeltme
         </h2>
         <form onSubmit={handleStarAdjust} className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           <div>
-            <label className="block text-[12px] font-medium text-slate-500 mb-1">Influencer ID</label>
+            <label className="block text-[12px] font-medium text-on-surface-variant mb-1">Influencer ID</label>
             <input
               type="text"
               value={starInfluencerId}
               onChange={e => setStarInfluencerId(e.target.value)}
               placeholder="cuid..."
-              className="w-full border border-gray-200 rounded-xl px-3 py-2 text-[14px] focus:outline-none focus:ring-2 focus:ring-[#003781]/20"
+              className="w-full border border-outline-variant/25 rounded-xl px-3 py-2 text-[14px] focus:outline-none focus:ring-2 focus:ring-[#003781]/20"
               required
             />
           </div>
           <div>
-            <label className="block text-[12px] font-medium text-slate-500 mb-1">Delta (+ veya - yıldız)</label>
+            <label className="block text-[12px] font-medium text-on-surface-variant mb-1">Delta (+ veya - yıldız)</label>
             <input
               type="number"
               value={starDelta}
               onChange={e => setStarDelta(e.target.value)}
               placeholder="örn: 1000 veya -500"
-              className="w-full border border-gray-200 rounded-xl px-3 py-2 text-[14px] focus:outline-none focus:ring-2 focus:ring-[#003781]/20"
+              className="w-full border border-outline-variant/25 rounded-xl px-3 py-2 text-[14px] focus:outline-none focus:ring-2 focus:ring-[#003781]/20"
               required
             />
           </div>
           <div>
-            <label className="block text-[12px] font-medium text-slate-500 mb-1">Açıklama (zorunlu)</label>
+            <label className="block text-[12px] font-medium text-on-surface-variant mb-1">Açıklama (zorunlu)</label>
             <input
               type="text"
               value={starNote}
               onChange={e => setStarNote(e.target.value)}
               placeholder="Anlaşma bonusu..."
-              className="w-full border border-gray-200 rounded-xl px-3 py-2 text-[14px] focus:outline-none focus:ring-2 focus:ring-[#003781]/20"
+              className="w-full border border-outline-variant/25 rounded-xl px-3 py-2 text-[14px] focus:outline-none focus:ring-2 focus:ring-[#003781]/20"
               required
             />
           </div>
@@ -277,7 +277,7 @@ export default function AdminAffiliatePage() {
               {starSaving ? 'Güncelleniyor...' : 'Yıldız Ekle/Çıkar'}
             </button>
             {starMsg && (
-              <span className={`text-[13px] font-medium ${starMsg.includes('güncellendi') ? 'text-emerald-600' : 'text-red-500'}`}>
+              <span className={`text-[13px] font-medium ${starMsg.includes('güncellendi') ? 'text-secondary' : 'text-error'}`}>
                 {starMsg}
               </span>
             )}
@@ -286,48 +286,48 @@ export default function AdminAffiliatePage() {
       </div>
 
       {/* ─── Scores Table ─── */}
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+      <div className="bg-white rounded-2xl border border-outline-variant/15 shadow-sm p-6">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-[16px] font-bold text-slate-900 flex items-center gap-2">
+          <h2 className="text-[16px] font-bold text-on-surface flex items-center gap-2">
             <span className="material-symbols-outlined text-[20px] text-[#003781]">leaderboard</span>
             Performans Skorları (Bu Dönem)
           </h2>
           <button
             onClick={loadScores}
             disabled={scoresLoading}
-            className="flex items-center gap-1.5 border border-gray-200 text-gray-600 font-semibold px-4 py-2 rounded-xl text-[13px] hover:bg-gray-50 transition-all disabled:opacity-50"
+            className="flex items-center gap-1.5 border border-outline-variant/25 text-on-surface-variant font-semibold px-4 py-2 rounded-xl text-[13px] hover:bg-surface-container-low transition-all disabled:opacity-50"
           >
             <span className="material-symbols-outlined text-[16px]">refresh</span>
             {scoresLoading ? 'Yükleniyor...' : 'Hesapla & Yükle'}
           </button>
         </div>
         {scores.length === 0 ? (
-          <div className="text-center py-10 text-gray-300">
+          <div className="text-center py-10 text-outline-variant">
             <span className="material-symbols-outlined text-4xl">leaderboard</span>
-            <p className="text-[13px] text-gray-400 mt-2">Hesapla & Yükle butonuna tıklayın</p>
+            <p className="text-[13px] text-outline mt-2">Hesapla & Yükle butonuna tıklayın</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-[13px]">
               <thead>
-                <tr className="border-b border-gray-100">
-                  <th className="text-left text-[11px] font-semibold text-gray-400 uppercase tracking-wide pb-2">Influencer</th>
-                  <th className="text-right text-[11px] font-semibold text-gray-400 uppercase tracking-wide pb-2">Skor</th>
-                  <th className="text-right text-[11px] font-semibold text-gray-400 uppercase tracking-wide pb-2">Komisyon</th>
+                <tr className="border-b border-outline-variant/15">
+                  <th className="text-left text-[11px] font-semibold text-outline uppercase tracking-wide pb-2">Influencer</th>
+                  <th className="text-right text-[11px] font-semibold text-outline uppercase tracking-wide pb-2">Skor</th>
+                  <th className="text-right text-[11px] font-semibold text-outline uppercase tracking-wide pb-2">Komisyon</th>
                 </tr>
               </thead>
               <tbody>
                 {scores.map((s: ScoreRow) => (
-                  <tr key={s.influencerId} className="border-b border-gray-50 last:border-0">
+                  <tr key={s.influencerId} className="border-b border-outline-variant/10 last:border-0">
                     <td className="py-2.5">
-                      <p className="text-[13px] font-semibold text-gray-800">{s.influencer?.fullName ?? '—'}</p>
-                      <p className="text-[11px] font-mono text-gray-400">{s.influencer?.uniqueCode ?? s.influencerId}</p>
+                      <p className="text-[13px] font-semibold text-on-surface">{s.influencer?.fullName ?? '—'}</p>
+                      <p className="text-[11px] font-mono text-outline">{s.influencer?.uniqueCode ?? s.influencerId}</p>
                     </td>
                     <td className="py-2.5 text-right">
                       <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[12px] font-semibold ${
-                        s.score >= 75 ? 'bg-emerald-50 text-emerald-700' :
-                        s.score >= 40 ? 'bg-yellow-50 text-yellow-700' :
-                        'bg-gray-50 text-gray-600'
+                        s.score >= 75 ? 'bg-secondary/10 text-secondary' :
+                        s.score >= 40 ? 'bg-[#b8862f]/10 text-[#b8862f]' :
+                        'bg-surface-container-low text-on-surface-variant'
                       }`}>
                         {s.score}
                       </span>

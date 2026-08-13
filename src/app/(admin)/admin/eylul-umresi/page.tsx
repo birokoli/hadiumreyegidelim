@@ -6,8 +6,8 @@ import { DEFAULT_EYLUL_CAMPAIGN, DEFAULT_HANIM_UMRESI_CAMPAIGN, DEFAULT_ILK_UMRE
 
 type AdsConfig = { ad1: EylulCampaignConfig; ad2: EylulCampaignConfig; ad3: EylulCampaignConfig };
 
-const inputClass = "w-full rounded border border-zinc-200 bg-white px-3 py-2 text-xs text-zinc-900 outline-none focus:border-zinc-900";
-const labelClass = "mb-1 block text-[10px] font-bold uppercase tracking-wider text-zinc-500";
+const inputClass = "w-full rounded-lg border border-outline-variant/25 bg-surface-container-lowest px-3 py-2 text-xs text-on-surface outline-none focus:border-primary/40";
+const labelClass = "mb-1 block text-[10px] font-bold uppercase tracking-wider text-on-surface-variant";
 
 function Field({ label, value, onChange, rows, type = "text", required = false }: { label: string; value: string; onChange: (value: string) => void; rows?: number; type?: string; required?: boolean }) {
   return (
@@ -24,10 +24,10 @@ function Field({ label, value, onChange, rows, type = "text", required = false }
 
 function Section({ title, description, children }: { title: string; description?: string; children: React.ReactNode }) {
   return (
-    <section className="rounded border border-zinc-200 bg-white p-6 space-y-4">
+    <section className="rounded-2xl border border-outline-variant/15 bg-surface-container-lowest p-6 space-y-4">
       <div>
-        <h2 className="text-sm font-bold text-zinc-900 uppercase tracking-wider">{title}</h2>
-        {description && <p className="mt-0.5 text-xs text-zinc-500">{description}</p>}
+        <h2 className="text-sm font-bold text-primary uppercase tracking-wider">{title}</h2>
+        {description && <p className="mt-0.5 text-xs text-on-surface-variant">{description}</p>}
       </div>
       {children}
     </section>
@@ -71,23 +71,23 @@ export default function AdsAdminPage() {
     finally { setSaving(false); }
   };
 
-  if (loading) return <div className="p-8 max-w-7xl mx-auto min-h-screen bg-white text-zinc-500 text-xs">ADS sayfası yükleniyor...</div>;
+  if (loading) return <div className="p-8 max-w-7xl mx-auto min-h-screen bg-surface text-on-surface-variant text-xs">ADS sayfası yükleniyor...</div>;
 
   return (
-    <div className="p-6 lg:p-8 max-w-7xl mx-auto space-y-8 min-h-screen bg-white text-zinc-900 text-xs">
+    <div className="p-6 lg:p-8 max-w-7xl mx-auto space-y-8 min-h-screen bg-surface text-on-surface text-xs">
       {/* Header Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-zinc-200">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-outline-variant/15">
         <div>
-          <span className="text-[10px] font-bold tracking-widest text-zinc-400 uppercase">PAZARLAMA</span>
-          <h1 className="text-2xl font-light tracking-tight text-zinc-900 mt-1">ADS Sayfası Yönetimi</h1>
-          <p className="text-xs text-zinc-500 mt-0.5">Reklam sayfaları ve kampanya bandı içeriklerini yönetin.</p>
+          <span className="text-[10px] font-bold tracking-widest text-secondary uppercase">PAZARLAMA</span>
+          <h1 className="font-headline text-2xl font-bold tracking-tight text-primary mt-1">ADS Sayfası Yönetimi</h1>
+          <p className="text-xs text-on-surface-variant mt-0.5">Reklam sayfaları ve kampanya bandı içeriklerini yönetin.</p>
         </div>
 
         <div className="flex items-center gap-3">
           <Link
             href={activeAdTab === 1 ? "/eylul-umresi" : activeAdTab === 2 ? "/ilk-umrem" : "/hanim-umresi"}
             target="_blank"
-            className="inline-flex items-center gap-1.5 bg-white border border-zinc-200 text-zinc-900 hover:border-zinc-900 font-medium px-4 py-2 rounded text-xs transition-colors"
+            className="inline-flex items-center gap-1.5 bg-surface-container-lowest border border-outline-variant/25 text-primary hover:border-primary/40 font-bold px-4 py-2.5 rounded-xl text-xs transition-all active:scale-95"
           >
             <span className="material-symbols-outlined text-[16px]">open_in_new</span>
             <span>Canlı Sayfayı Aç</span>
@@ -106,10 +106,10 @@ export default function AdsAdminPage() {
             key={tab.id}
             type="button"
             onClick={() => { setActiveAdTab(tab.id); setMessage(null); }}
-            className={`p-4 rounded border text-left transition-all ${
+            className={`p-4 rounded-xl border text-left transition-all ${
               activeAdTab === tab.id
-                ? "border-zinc-900 bg-zinc-900 text-white"
-                : "border-zinc-200 bg-white text-zinc-700 hover:border-zinc-400"
+                ? "border-primary bg-primary text-white shadow-sm"
+                : "border-outline-variant/25 bg-surface-container-lowest text-on-surface-variant hover:border-primary/40"
             }`}
           >
             <span className="block text-[10px] font-bold uppercase tracking-widest opacity-60">{tab.label}</span>
@@ -119,7 +119,7 @@ export default function AdsAdminPage() {
       </div>
 
       {message && (
-        <div className={`p-3 rounded text-xs font-medium ${message.ok ? "bg-zinc-100 text-zinc-900 border border-zinc-200" : "bg-red-50 text-red-700 border border-red-200"}`}>
+        <div className={`p-3 rounded-xl text-xs font-medium ${message.ok ? "bg-secondary/10 text-secondary border border-secondary/25" : "bg-error/10 text-error border border-error/25"}`}>
           {message.text}
         </div>
       )}
@@ -159,7 +159,7 @@ export default function AdsAdminPage() {
           <button
             type="submit"
             disabled={saving}
-            className="px-6 py-2.5 bg-zinc-900 hover:bg-zinc-800 text-white font-medium rounded text-xs transition-colors"
+            className="px-6 py-2.5 bg-primary hover:bg-primary-container text-white font-bold rounded-xl text-xs transition-all active:scale-95"
           >
             {saving ? "Kaydediliyor..." : "ADS Sayfasını Kaydet"}
           </button>

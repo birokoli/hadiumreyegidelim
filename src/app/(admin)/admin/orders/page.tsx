@@ -156,8 +156,8 @@ export default function OrdersPage() {
 
       {/* Order Detail Modal */}
       {selectedOrder && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-on-primary-fixed/40 backdrop-blur-sm">
-          <div className="bg-surface-container-lowest border border-outline-variant/15 rounded-2xl max-w-xl w-full p-6 space-y-4 shadow-2xl">
+        <div className="admin-modal-scrim fixed inset-0 z-50 flex items-center justify-center p-4 bg-on-primary-fixed/40 backdrop-blur-sm">
+          <div className="admin-modal-panel bg-surface-container-lowest border border-outline-variant/15 rounded-2xl max-w-xl w-full p-6 space-y-4 shadow-2xl">
             <div className="flex items-center justify-between border-b border-outline-variant/15 pb-3">
               <div>
                 <h3 className="text-sm font-bold text-on-surface">Sipariş Detayı</h3>

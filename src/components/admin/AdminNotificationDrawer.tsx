@@ -22,10 +22,10 @@ export default function AdminNotificationDrawer({ isOpen, onClose, unreadLeads }
 
   return (
     <div className="fixed inset-0 z-50 overflow-hidden">
-      <div className="fixed inset-0 bg-on-primary-fixed/30 backdrop-blur-sm transition-opacity" onClick={onClose} />
+      <div className="admin-modal-scrim fixed inset-0 bg-on-primary-fixed/30 backdrop-blur-sm" onClick={onClose} />
 
       <div className="fixed inset-y-0 right-0 max-w-full flex pl-10">
-        <div className="w-screen max-w-md bg-surface-container-lowest border-l border-outline-variant/15 shadow-2xl flex flex-col">
+        <div className="admin-drawer-panel w-screen max-w-md bg-surface-container-lowest/95 backdrop-blur-xl border-l border-outline-variant/15 shadow-2xl flex flex-col">
 
           <div className="p-5 border-b border-outline-variant/12 flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -39,6 +39,7 @@ export default function AdminNotificationDrawer({ isOpen, onClose, unreadLeads }
             </div>
             <button
               onClick={onClose}
+              data-press
               className="p-1.5 rounded-full text-outline hover:text-primary hover:bg-primary/[0.06] transition-colors"
             >
               <span className="material-symbols-outlined text-[18px]">close</span>

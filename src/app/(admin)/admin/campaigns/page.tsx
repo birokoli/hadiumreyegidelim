@@ -85,8 +85,8 @@ export default function AdminCampaignsPage() {
 
       {/* Form modal */}
       {showForm && (
-        <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4 overflow-y-auto" onClick={() => setShowForm(false)}>
-          <div className="bg-surface-container-lowest rounded-3xl shadow-2xl w-full max-w-lg p-7 my-4" onClick={e => e.stopPropagation()}>
+        <div className="admin-modal-scrim fixed inset-0 bg-on-primary-fixed/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 overflow-y-auto" onClick={() => setShowForm(false)}>
+          <div className="admin-modal-panel bg-surface-container-lowest rounded-3xl shadow-2xl w-full max-w-lg p-7 my-4" onClick={e => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-5">
               <h2 className="text-[18px] font-bold text-on-surface">Yeni Kampanya</h2>
               <button onClick={() => setShowForm(false)} className="w-8 h-8 rounded-xl bg-surface-container flex items-center justify-center hover:bg-outline-variant/40 transition-all">

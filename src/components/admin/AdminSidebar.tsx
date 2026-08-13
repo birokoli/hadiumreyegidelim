@@ -108,7 +108,7 @@ export default function AdminSidebar({ logoUrl }: { logoUrl?: string }) {
     <>
       {sidebarOpen && (
         <div
-          className="fixed inset-0 z-40 bg-on-primary-fixed/30 backdrop-blur-sm lg:hidden"
+          className="admin-modal-scrim fixed inset-0 z-40 bg-on-primary-fixed/30 backdrop-blur-sm lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
@@ -116,7 +116,7 @@ export default function AdminSidebar({ logoUrl }: { logoUrl?: string }) {
       <aside
         className={`
           fixed left-0 top-0 h-full w-72 z-50 flex flex-col
-          bg-surface-container-lowest text-on-surface border-r border-outline-variant/15
+          bg-surface-container-lowest/90 backdrop-blur-2xl text-on-surface border-r border-outline-variant/15
           overflow-y-auto transition-transform duration-300 ease-[cubic-bezier(.16,1,.3,1)]
           ${sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
         `}
@@ -187,6 +187,7 @@ export default function AdminSidebar({ logoUrl }: { logoUrl?: string }) {
                       <Link
                         key={link.href}
                         href={link.href}
+                        data-press
                         className={`flex items-center justify-between px-3 py-2.5 rounded-xl text-[13px] font-medium transition-all duration-200 ${
                           isActive
                             ? "bg-primary text-white font-semibold shadow-[0_4px_14px_-4px_rgba(0,55,129,0.45)]"

@@ -135,7 +135,7 @@ export default function PackagesPage() {
       </div>
 
       {showAdd && (
-        <section className="bg-surface-container-low border border-outline-variant/15 p-6 rounded-2xl space-y-6">
+        <section className="admin-sheet-panel bg-surface-container-low border border-outline-variant/15 p-6 rounded-2xl space-y-6">
           <h3 className="text-sm font-bold text-on-surface border-b border-outline-variant/15 pb-3">
             {editingId ? 'Paketi Düzenle' : 'Yeni Paket Ekle'}
           </h3>

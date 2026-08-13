@@ -69,10 +69,10 @@ export default function AdminCommandPalette({ isOpen, onClose }: AdminCommandPal
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-24 px-4 bg-on-primary-fixed/40 backdrop-blur-sm">
+    <div className="admin-modal-scrim fixed inset-0 z-50 flex items-start justify-center pt-24 px-4 bg-on-primary-fixed/40 backdrop-blur-sm">
       <div className="fixed inset-0" onClick={onClose} />
 
-      <div className="relative w-full max-w-xl bg-surface-container-lowest rounded-2xl border border-outline-variant/15 shadow-2xl overflow-hidden z-10">
+      <div className="admin-modal-panel relative w-full max-w-xl bg-surface-container-lowest rounded-2xl border border-outline-variant/15 shadow-2xl overflow-hidden z-10">
         <div className="flex items-center px-4 border-b border-outline-variant/12">
           <span className="material-symbols-outlined text-outline text-[20px] mr-3">search</span>
           <input

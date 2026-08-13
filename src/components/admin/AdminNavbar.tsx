@@ -39,7 +39,8 @@ export default function AdminNavbar() {
         <div className="flex items-center gap-4">
           <button
             onClick={() => setSidebarOpen(true)}
-            className="lg:hidden p-1.5 rounded-full text-on-surface-variant hover:text-primary hover:bg-primary/[0.06] active:scale-90 transition-all"
+            data-press
+            className="lg:hidden p-1.5 rounded-full text-on-surface-variant hover:text-primary hover:bg-primary/[0.06] transition-all"
             aria-label="Menüyü aç"
           >
             <span className="material-symbols-outlined text-[20px]">menu</span>
@@ -48,6 +49,7 @@ export default function AdminNavbar() {
           {/* Search Trigger */}
           <button
             onClick={() => setShowCommandPalette(true)}
+            data-press
             className="hidden md:flex items-center justify-between gap-8 w-72 bg-surface-container-low hover:bg-surface-container text-on-surface-variant rounded-xl border border-transparent hover:border-primary/15 px-3 py-1.5 text-xs transition-all"
           >
             <div className="flex items-center gap-2">
@@ -98,7 +100,7 @@ export default function AdminNavbar() {
             </button>
 
             {showQuickActions && (
-              <div className="absolute top-11 right-0 w-56 bg-surface-container-lowest rounded-2xl border border-outline-variant/15 shadow-xl overflow-hidden z-50 py-1.5">
+              <div className="admin-sheet-panel absolute top-11 right-0 w-56 bg-surface-container-lowest rounded-2xl border border-outline-variant/15 shadow-xl overflow-hidden z-50 py-1.5" style={{ transformOrigin: "top right" }}>
                 <div className="px-3.5 py-2 border-b border-outline-variant/10">
                   <h3 className="text-[10.5px] font-bold text-outline uppercase tracking-wider">Hızlı Aksiyonlar</h3>
                 </div>

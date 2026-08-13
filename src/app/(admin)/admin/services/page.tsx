@@ -125,7 +125,7 @@ export default function ServicesPage() {
 
       {/* Add Form */}
       {showAddForm && (
-        <form onSubmit={handleAdd} className="bg-surface-container-low border border-outline-variant/15 p-6 rounded-2xl space-y-4 text-xs">
+        <form onSubmit={handleAdd} className="admin-sheet-panel bg-surface-container-low border border-outline-variant/15 p-6 rounded-2xl space-y-4 text-xs">
           <h3 className="text-sm font-bold text-on-surface border-b border-outline-variant/15 pb-3">
             {editingId ? "Servisi Düzenle" : "Yeni Servis Ekle"}
           </h3>

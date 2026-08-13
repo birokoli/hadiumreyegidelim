@@ -43,8 +43,7 @@ function ToastList({ items, onClose }: { items: ToastItem[]; onClose: (id: strin
       {items.map(t => (
         <div
           key={t.id}
-          className={`${STYLES[t.type].bg} text-white px-5 py-4 rounded-2xl shadow-2xl flex items-start gap-3 pointer-events-auto`}
-          style={{ animation: "toastIn 0.25s ease" }}
+          className={`admin-sheet-panel ${STYLES[t.type].bg} text-white px-5 py-4 rounded-2xl shadow-2xl flex items-start gap-3 pointer-events-auto`}
         >
           <span
             className="material-symbols-outlined text-[20px] shrink-0 mt-0.5"
@@ -61,14 +60,6 @@ function ToastList({ items, onClose }: { items: ToastItem[]; onClose: (id: strin
           </button>
         </div>
       ))}
-
-      {/* Toast keyframe — scoped inline so no build step needed */}
-      <style>{`
-        @keyframes toastIn {
-          from { opacity: 0; transform: translateY(16px) scale(0.96); }
-          to   { opacity: 1; transform: translateY(0)    scale(1);    }
-        }
-      `}</style>
     </div>
   );
 }

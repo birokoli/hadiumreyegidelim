@@ -111,22 +111,22 @@ export default function PackagesPage() {
     } catch (e) {}
   };
 
-  if (loading) return <div className="p-8 max-w-7xl mx-auto min-h-screen bg-white text-zinc-500 text-xs">Paketler yükleniyor...</div>;
+  if (loading) return <div className="p-8 max-w-7xl mx-auto min-h-screen bg-surface text-on-surface-variant text-xs">Paketler yükleniyor...</div>;
 
   return (
-    <div className="p-6 lg:p-8 max-w-7xl mx-auto space-y-8 min-h-screen bg-white text-zinc-900">
+    <div className="p-6 lg:p-8 max-w-7xl mx-auto space-y-8 min-h-screen bg-surface text-on-surface">
       {/* Header Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-zinc-200">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-outline-variant/15">
         <div>
-          <span className="text-[10px] font-bold tracking-widest text-zinc-400 uppercase">OPERASYON</span>
-          <h1 className="text-2xl font-light tracking-tight text-zinc-900 mt-1">Paket Yönetimi</h1>
-          <p className="text-xs text-zinc-500 mt-0.5">Sitede gösterilecek Umre paketlerini, fiyatlarını ve içeriklerini yönetin.</p>
+          <span className="text-[10px] font-bold tracking-widest text-secondary uppercase">Operasyon</span>
+          <h1 className="font-headline text-2xl font-bold tracking-tight text-primary mt-1">Paket Yönetimi</h1>
+          <p className="text-xs text-on-surface-variant mt-0.5">Sitede gösterilecek Umre paketlerini, fiyatlarını ve içeriklerini yönetin.</p>
         </div>
 
         <div className="flex items-center gap-3">
           <button
             onClick={() => showAdd ? handleCancel() : setShowAdd(true)}
-            className="inline-flex items-center gap-1.5 bg-zinc-900 hover:bg-zinc-800 text-white font-medium px-4 py-2 rounded text-xs transition-colors"
+            className="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-container text-white font-bold px-4 py-2.5 rounded-xl text-xs transition-all active:scale-95 shadow-sm"
           >
             <span className="material-symbols-outlined text-[16px]">{showAdd ? "close" : "add"}</span>
             <span>{showAdd ? "İptal Et" : "Yeni Paket Ekle"}</span>
@@ -135,40 +135,40 @@ export default function PackagesPage() {
       </div>
 
       {showAdd && (
-        <section className="bg-zinc-50 border border-zinc-200 p-6 rounded space-y-6">
-          <h3 className="text-sm font-bold text-zinc-900 border-b border-zinc-200 pb-3">
+        <section className="bg-surface-container-low border border-outline-variant/15 p-6 rounded-2xl space-y-6">
+          <h3 className="text-sm font-bold text-on-surface border-b border-outline-variant/15 pb-3">
             {editingId ? 'Paketi Düzenle' : 'Yeni Paket Ekle'}
           </h3>
 
           <form onSubmit={handleCreate} className="space-y-4 text-xs">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-zinc-600 font-medium mb-1">Paket Adı</label>
+                <label className="block text-on-surface-variant font-bold mb-1">Paket Adı</label>
                 <input
                   required
                   type="text"
                   value={newPackage.title}
                   onChange={e => setNewPackage({ ...newPackage, title: e.target.value })}
                   placeholder="Örn: Lüks İnziwa Umresi"
-                  className="w-full bg-white border border-zinc-200 rounded p-2 focus:outline-none"
+                  className="w-full bg-surface-container-lowest border border-outline-variant/25 rounded-lg p-2 focus:outline-none focus:border-primary/40"
                 />
               </div>
 
               <div>
-                <label className="block text-zinc-600 font-medium mb-1">URL Slug</label>
+                <label className="block text-on-surface-variant font-bold mb-1">URL Slug</label>
                 <input
                   type="text"
                   value={newPackage.slug}
                   onChange={e => setNewPackage({ ...newPackage, slug: e.target.value })}
                   placeholder="luks-inziva-umresi"
-                  className="w-full bg-white border border-zinc-200 rounded p-2 focus:outline-none"
+                  className="w-full bg-surface-container-lowest border border-outline-variant/25 rounded-lg p-2 focus:outline-none focus:border-primary/40"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className="block text-zinc-600 font-medium mb-1">Başlangıç Fiyatı</label>
+                <label className="block text-on-surface-variant font-bold mb-1">Başlangıç Fiyatı</label>
                 <input
                   required
                   type="number"
@@ -176,16 +176,16 @@ export default function PackagesPage() {
                   value={newPackage.price}
                   onChange={e => setNewPackage({ ...newPackage, price: e.target.value })}
                   placeholder="1250"
-                  className="w-full bg-white border border-zinc-200 rounded p-2 focus:outline-none"
+                  className="w-full bg-surface-container-lowest border border-outline-variant/25 rounded-lg p-2 focus:outline-none focus:border-primary/40"
                 />
               </div>
 
               <div>
-                <label className="block text-zinc-600 font-medium mb-1">Para Birimi</label>
+                <label className="block text-on-surface-variant font-bold mb-1">Para Birimi</label>
                 <select
                   value={newPackage.currency}
                   onChange={e => setNewPackage({ ...newPackage, currency: e.target.value })}
-                  className="w-full bg-white border border-zinc-200 rounded p-2 focus:outline-none"
+                  className="w-full bg-surface-container-lowest border border-outline-variant/25 rounded-lg p-2 focus:outline-none focus:border-primary/40"
                 >
                   <option value="USD">USD ($)</option>
                   <option value="SAR">SAR (ر.س)</option>
@@ -194,25 +194,25 @@ export default function PackagesPage() {
               </div>
 
               <div>
-                <label className="block text-zinc-600 font-medium mb-1">Süre / Gün</label>
+                <label className="block text-on-surface-variant font-bold mb-1">Süre / Gün</label>
                 <input
                   required
                   type="text"
                   value={newPackage.duration}
                   onChange={e => setNewPackage({ ...newPackage, duration: e.target.value })}
                   placeholder="7 Gece 8 Gün"
-                  className="w-full bg-white border border-zinc-200 rounded p-2 focus:outline-none"
+                  className="w-full bg-surface-container-lowest border border-outline-variant/25 rounded-lg p-2 focus:outline-none focus:border-primary/40"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-zinc-600 font-medium mb-1">Açıklama</label>
+              <label className="block text-on-surface-variant font-bold mb-1">Açıklama</label>
               <textarea
                 rows={3}
                 value={newPackage.description}
                 onChange={e => setNewPackage({ ...newPackage, description: e.target.value })}
-                className="w-full bg-white border border-zinc-200 rounded p-2 focus:outline-none"
+                className="w-full bg-surface-container-lowest border border-outline-variant/25 rounded-lg p-2 focus:outline-none focus:border-primary/40"
               />
             </div>
 
@@ -222,9 +222,9 @@ export default function PackagesPage() {
                   type="checkbox"
                   checked={newPackage.isPopular}
                   onChange={e => setNewPackage({ ...newPackage, isPopular: e.target.checked })}
-                  className="rounded border-zinc-300 text-zinc-900 focus:ring-zinc-900"
+                  className="rounded border-outline-variant/40 text-primary focus:ring-primary/40"
                 />
-                <span className="text-xs font-medium text-zinc-700">Popüler Paket</span>
+                <span className="text-xs font-bold text-on-surface-variant">Popüler Paket</span>
               </label>
 
               <label className="flex items-center gap-2 cursor-pointer">
@@ -232,16 +232,16 @@ export default function PackagesPage() {
                   type="checkbox"
                   checked={newPackage.published}
                   onChange={e => setNewPackage({ ...newPackage, published: e.target.checked })}
-                  className="rounded border-zinc-300 text-zinc-900 focus:ring-zinc-900"
+                  className="rounded border-outline-variant/40 text-primary focus:ring-primary/40"
                 />
-                <span className="text-xs font-medium text-zinc-700">Yayında</span>
+                <span className="text-xs font-bold text-on-surface-variant">Yayında</span>
               </label>
             </div>
 
             <div className="pt-2 flex justify-end">
               <button
                 type="submit"
-                className="px-6 py-2 bg-zinc-900 text-white rounded text-xs font-medium hover:bg-zinc-800 transition-colors"
+                className="px-6 py-2.5 bg-primary text-white rounded-xl text-xs font-bold hover:bg-primary-container transition-all active:scale-95"
               >
                 {editingId ? 'GÜNCELLE' : 'KAYDET'}
               </button>
@@ -251,9 +251,9 @@ export default function PackagesPage() {
       )}
 
       {/* Search Bar */}
-      <div className="flex items-center justify-between gap-4 border-b border-zinc-200 pb-4">
+      <div className="flex items-center justify-between gap-4 border-b border-outline-variant/15 pb-4">
         <div className="relative w-full sm:w-72">
-          <span className="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-zinc-400 text-[16px]">
+          <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[16px]">
             search
           </span>
           <input
@@ -261,15 +261,15 @@ export default function PackagesPage() {
             placeholder="Paket adı ile ara..."
             value={pkgSearch}
             onChange={e => setPkgSearch(e.target.value)}
-            className="w-full bg-white text-xs text-zinc-900 rounded pl-8 pr-3 py-1.5 border border-zinc-200 focus:outline-none focus:border-zinc-900"
+            className="w-full bg-surface-container-lowest text-xs text-on-surface rounded-xl pl-9 pr-3 py-2 border border-outline-variant/25 focus:outline-none focus:border-primary/40"
           />
         </div>
       </div>
 
       {/* Table */}
-      <div className="border border-zinc-200 rounded overflow-hidden">
+      <div className="border border-outline-variant/15 rounded-2xl overflow-hidden bg-surface-container-lowest">
         <table className="w-full text-left text-xs">
-          <thead className="bg-zinc-50 border-b border-zinc-200 text-zinc-500 uppercase tracking-wider font-semibold text-[10px]">
+          <thead className="bg-surface-container-low border-b border-outline-variant/15 text-on-surface-variant uppercase tracking-wider font-bold text-[10px]">
             <tr>
               <th className="px-4 py-3">Paket Adı</th>
               <th className="px-4 py-3">Süre</th>
@@ -278,31 +278,31 @@ export default function PackagesPage() {
               <th className="px-4 py-3 text-right">İşlem</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-zinc-100">
+          <tbody className="divide-y divide-outline-variant/10">
             {packages.filter(pkg => !pkgSearch || pkg.title?.toLowerCase().includes(pkgSearch.toLowerCase())).map(pkg => (
-              <tr key={pkg.id} className="hover:bg-zinc-50 transition-colors">
+              <tr key={pkg.id} className="hover:bg-primary/[0.03] transition-colors">
                 <td className="px-4 py-3">
                   <div className="flex items-center gap-2">
-                    <p className="font-semibold text-zinc-900">{pkg.title}</p>
+                    <p className="font-bold text-on-surface">{pkg.title}</p>
                     {pkg.isPopular && (
-                      <span className="bg-zinc-900 text-white text-[9px] font-bold px-1.5 py-0.2 rounded">POPÜLER</span>
+                      <span className="bg-[#b8862f] text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full">POPÜLER</span>
                     )}
                   </div>
                 </td>
-                <td className="px-4 py-3 text-zinc-500">{pkg.duration}</td>
-                <td className="px-4 py-3 font-mono font-bold text-zinc-900">{pkg.price} {pkg.currency}</td>
+                <td className="px-4 py-3 text-on-surface-variant">{pkg.duration}</td>
+                <td className="px-4 py-3 font-mono font-bold text-primary">{pkg.price} {pkg.currency}</td>
                 <td className="px-4 py-3">
-                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded border ${
-                    pkg.published ? 'bg-zinc-100 text-zinc-700 border-zinc-200' : 'bg-zinc-50 text-zinc-400 border-zinc-200'
+                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${
+                    pkg.published ? 'bg-secondary/10 text-secondary border-secondary/25' : 'bg-surface-container-low text-outline border-outline-variant/20'
                   }`}>
                     {pkg.published ? 'YAYINDA' : 'TASLAK'}
                   </span>
                 </td>
                 <td className="px-4 py-3 text-right space-x-2">
-                  <button onClick={() => handleEdit(pkg)} className="p-1 text-zinc-400 hover:text-zinc-900">
+                  <button onClick={() => handleEdit(pkg)} className="p-1.5 text-outline hover:text-primary transition-colors">
                     <span className="material-symbols-outlined text-[16px]">edit</span>
                   </button>
-                  <button onClick={() => handleDelete(pkg.id)} className="p-1 text-zinc-400 hover:text-red-600">
+                  <button onClick={() => handleDelete(pkg.id)} className="p-1.5 text-outline hover:text-error transition-colors">
                     <span className="material-symbols-outlined text-[16px]">delete</span>
                   </button>
                 </td>

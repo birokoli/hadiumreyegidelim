@@ -122,7 +122,7 @@ export default function GuidesPage() {
 
       {/* Form */}
       {showForm && (
-        <form onSubmit={handleSubmit} className="bg-white border border-outline-variant/20 rounded-2xl p-8 mb-10 shadow-sm space-y-6">
+        <form onSubmit={handleSubmit} className="bg-surface-container-lowest border border-outline-variant/20 rounded-2xl p-8 mb-10 shadow-sm space-y-6">
           <h3 className="text-2xl font-bold text-primary border-b border-outline-variant/20 pb-4">
             {editingId ? 'Rehberi Düzenle' : 'Yeni Rehber Ekle'}
           </h3>
@@ -148,7 +148,7 @@ export default function GuidesPage() {
               {form.image && !uploadingImage && (
                 <div className="mt-2 relative inline-block">
                   <img src={form.image} alt="Preview" className="h-16 w-12 object-cover rounded-lg border border-outline-variant/30" />
-                  <button type="button" onClick={() => setForm({ ...form, image: "" })} className="absolute -top-1.5 -right-1.5 bg-red-500 text-white rounded-full p-0.5">
+                  <button type="button" onClick={() => setForm({ ...form, image: "" })} className="absolute -top-1.5 -right-1.5 bg-error text-white rounded-full p-0.5">
                     <span className="material-symbols-outlined text-[10px]">close</span>
                   </button>
                 </div>
@@ -230,7 +230,7 @@ export default function GuidesPage() {
             placeholder="İsim veya ünvan ile ara..."
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 bg-white border border-outline-variant/20 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+            className="w-full pl-10 pr-4 py-2.5 bg-surface-container-lowest border border-outline-variant/20 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
           />
         </div>
         <span className="text-sm text-on-surface-variant">{filtered.length} rehber</span>
@@ -243,7 +243,7 @@ export default function GuidesPage() {
           if (guide.linkedPackages) { try { lp = JSON.parse(guide.linkedPackages); } catch {} }
           const linkedPkgs = packages.filter(p => lp.includes(p.id));
           return (
-            <div key={guide.id} className="bg-white rounded-2xl overflow-hidden shadow-sm border border-outline-variant/10 hover:shadow-md transition-all group">
+            <div key={guide.id} className="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-sm border border-outline-variant/10 hover:shadow-md transition-all group">
               <div className="relative h-56 overflow-hidden">
                 <img
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
@@ -259,7 +259,7 @@ export default function GuidesPage() {
                   <button onClick={() => openEdit(guide)} className="p-2 bg-white/90 backdrop-blur text-primary hover:bg-primary hover:text-white rounded-lg transition-all shadow-sm" title="Düzenle">
                     <span className="material-symbols-outlined text-[16px]">edit</span>
                   </button>
-                  <button onClick={() => handleDelete(guide.id)} className="p-2 bg-white/90 backdrop-blur text-red-500 hover:bg-red-500 hover:text-white rounded-lg transition-all shadow-sm" title="Sil">
+                  <button onClick={() => handleDelete(guide.id)} className="p-2 bg-white/90 backdrop-blur text-error hover:bg-error hover:text-white rounded-lg transition-all shadow-sm" title="Sil">
                     <span className="material-symbols-outlined text-[16px]">delete</span>
                   </button>
                 </div>

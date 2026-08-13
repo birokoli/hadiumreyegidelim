@@ -3,6 +3,7 @@ import Footer from "@/components/layout/Footer";
 import React from "react";
 import { prisma } from "@/lib/prisma";
 import FloatingWhatsApp from "@/components/ui/FloatingWhatsApp";
+import MotionInit from "@/components/ui/MotionInit";
 
 export const dynamic = 'force-dynamic';
 
@@ -50,6 +51,7 @@ export default async function MainLayout({
         <Footer logoUrl={logoUrl} />
       </div>
       <FloatingWhatsApp />
+      <MotionInit />
     </>
   );
 }

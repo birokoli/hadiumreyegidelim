@@ -34,11 +34,11 @@ export default function AdsCampaignLanding({ campaign, whatsappNumber }: { campa
           </div>
 
           <h1 className="font-headline text-5xl md:text-7xl text-white font-bold leading-[1.1] mb-4 drop-shadow-xl max-w-4xl mx-auto">
-            {campaign.title} <span className="text-[#FFD166]">{campaign.highlightedTitle}</span>
+            {campaign.title} <span className="text-[#c9a96e]">{campaign.highlightedTitle}</span>
           </h1>
 
           <div className="inline-flex items-baseline gap-3 mb-6">
-            <span className="text-[#FFD166] text-6xl md:text-7xl font-headline font-bold drop-shadow-lg">
+            <span className="text-[#c9a96e] text-6xl md:text-7xl font-headline font-bold drop-shadow-lg">
               {campaign.startingPrice}
             </span>
             <span className="text-white/80 text-xl font-headline italic">{campaign.priceSuffix}</span>
@@ -63,7 +63,7 @@ export default function AdsCampaignLanding({ campaign, whatsappNumber }: { campa
         <div className="max-w-screen-xl mx-auto px-6 md:px-8">
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-12 text-white text-center">
             <div className="flex items-center gap-3">
-              <span className="material-symbols-outlined text-[#FFD166] text-2xl" style={{ fontVariationSettings: "'FILL' 1" }}>flight_takeoff</span>
+              <span className="material-symbols-outlined text-[#c9a96e] text-2xl" style={{ fontVariationSettings: "'FILL' 1" }}>flight_takeoff</span>
               <div className="text-left">
                 <p className="text-[10px] uppercase tracking-widest text-white/60 font-bold">{campaign.departureOneLabel}</p>
                 <p className="font-bold text-sm">{campaign.departureOne}</p>
@@ -71,7 +71,7 @@ export default function AdsCampaignLanding({ campaign, whatsappNumber }: { campa
             </div>
             <div className="hidden sm:block w-px h-10 bg-white/20" />
             <div className="flex items-center gap-3">
-              <span className="material-symbols-outlined text-[#FFD166] text-2xl" style={{ fontVariationSettings: "'FILL' 1" }}>flight_takeoff</span>
+              <span className="material-symbols-outlined text-[#c9a96e] text-2xl" style={{ fontVariationSettings: "'FILL' 1" }}>flight_takeoff</span>
               <div className="text-left">
                 <p className="text-[10px] uppercase tracking-widest text-white/60 font-bold">{campaign.departureTwoLabel}</p>
                 <p className="font-bold text-sm">{campaign.departureTwo}</p>

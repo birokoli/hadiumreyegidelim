@@ -157,10 +157,10 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Eylül Grup Umresi Kampanya Banner */}
+      {/* Eylül Grup Umresi Kampanya Banner — iç reklam birimi */}
       <section className="bg-primary py-0 overflow-hidden">
         <div className="max-w-screen-2xl mx-auto">
-          <Link href="/eylul-umresi" className="group flex flex-col md:flex-row items-stretch min-h-[220px] relative">
+          <Link href="/eylul-umresi" data-reveal data-press className="group flex flex-col md:flex-row items-stretch min-h-[220px] relative">
             {/* Sol görsel şerit */}
             <div className="hidden md:block md:w-72 lg:w-96 relative shrink-0 overflow-hidden">
               <img
@@ -174,11 +174,11 @@ export default async function Home() {
             <div className="flex-1 px-10 md:px-14 py-10 flex flex-col justify-center relative z-10">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
                 <div>
-                  <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-4 rounded-full bg-[#FFD166]/20 border border-[#FFD166]/30 text-[#FFD166] font-bold text-[9px] tracking-[0.3em] uppercase">
+                  <div className="inline-flex items-center gap-2 px-4 py-1.5 mb-4 rounded-full bg-[#c9a96e]/20 border border-[#c9a96e]/30 text-[#c9a96e] font-bold text-[9px] tracking-[0.3em] uppercase">
                     <span className="material-symbols-outlined text-[12px]" style={{ fontVariationSettings: "'FILL' 1" }}>campaign</span>
                     {eylulCampaign.homeBadge}
                   </div>
-                  <h2 className="font-headline text-3xl md:text-4xl text-white font-bold leading-tight mb-2 group-hover:text-[#FFD166] transition-colors duration-300">
+                  <h2 className="font-headline text-3xl md:text-4xl text-white font-bold leading-tight mb-2 group-hover:text-[#c9a96e] transition-colors duration-300">
                     {eylulCampaign.homeTitle}
                   </h2>
                   <p className="text-white/70 text-sm max-w-lg leading-relaxed">
@@ -186,7 +186,7 @@ export default async function Home() {
                   </p>
                 </div>
                 <div className="shrink-0">
-                  <span className="inline-flex items-center gap-3 bg-[#FFD166] text-primary font-bold uppercase tracking-widest text-xs px-8 py-4 rounded-2xl shadow-2xl group-hover:bg-white group-hover:scale-105 transition-all">
+                  <span className="inline-flex items-center gap-3 bg-[#c9a96e] text-primary font-bold uppercase tracking-widest text-xs px-8 py-4 rounded-2xl shadow-2xl group-hover:bg-white group-hover:scale-105 transition-all">
                     {eylulCampaign.homeButton}
                     <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
                   </span>
@@ -196,7 +196,7 @@ export default async function Home() {
               <div className="flex flex-wrap gap-x-8 gap-y-2 mt-6 pt-6 border-t border-white/10">
                 {eylulCampaign.homeFeatures.map((item) => (
                   <span key={item} className="flex items-center gap-1.5 text-white/60 text-[11px] font-bold uppercase tracking-widest">
-                    <span className="material-symbols-outlined text-[#FFD166] text-[14px]" style={{ fontVariationSettings: "'FILL' 1" }}>check_circle</span>
+                    <span className="material-symbols-outlined text-[#c9a96e] text-[14px]" style={{ fontVariationSettings: "'FILL' 1" }}>check_circle</span>
                     {item}
                   </span>
                 ))}
@@ -209,7 +209,7 @@ export default async function Home() {
       {/* Premium Hazır Paketler Vitrini */}
       <section className="py-24 bg-surface-container-lowest relative overflow-hidden">
         <div className="max-w-screen-2xl mx-auto px-8 relative z-10">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6" data-reveal>
             <div>
               <span className="text-secondary font-bold tracking-widest uppercase text-[10px] block mb-3 border-l-2 border-secondary pl-3">
                 {homeToursKicker}
@@ -218,14 +218,14 @@ export default async function Home() {
                 {homeToursTitle}
               </h2>
             </div>
-            <Link href="/paketler" className="text-secondary font-bold flex items-center gap-2 hover:gap-4 transition-all uppercase tracking-widest text-[10px] bg-secondary/10 px-6 py-3 rounded-xl hover:bg-secondary/20 shadow-sm border border-secondary/10">
+            <Link href="/paketler" data-press className="text-secondary font-bold flex items-center gap-2 hover:gap-4 transition-all uppercase tracking-widest text-[10px] bg-secondary/10 px-6 py-3 rounded-xl hover:bg-secondary/20 shadow-sm border border-secondary/10">
               Tüm Paketleri Gör <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
             </Link>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {featuredPackages.map((pkg: any) => (
-              <div key={pkg.id} className="bg-white rounded-[2rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 group flex flex-col border border-outline-variant/10 hover:-translate-y-2 relative">
+              <div key={pkg.id} data-reveal className="bg-white rounded-[2rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 group flex flex-col border border-outline-variant/10 hover:-translate-y-2 relative">
                 {pkg.isPopular && (
                   <div className="absolute top-6 left-6 z-20 bg-secondary text-white font-bold text-[10px] uppercase tracking-widest px-4 py-2 rounded-full shadow-lg border border-secondary/20 backdrop-blur-md">
                     En Çok Tercih Edilen
@@ -288,7 +288,7 @@ export default async function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-16 relative">
             <div className="hidden md:block absolute top-12 left-[15%] right-[15%] h-px bg-outline-variant/50 z-0"></div>
             
-            <div className="relative z-10 group bg-surface hover:-translate-y-2 transition-transform duration-500">
+            <div className="relative z-10 group bg-surface hover:-translate-y-2 transition-transform duration-500" data-reveal>
               <div className="mb-8 w-24 h-24 rounded-full bg-surface-container-low flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-on-primary transition-colors duration-500 shadow-sm border border-outline-variant/20 group-hover:border-transparent">
                 <span className="material-symbols-outlined text-4xl" data-icon="edit_note">
                   edit_note
@@ -307,7 +307,7 @@ export default async function Home() {
               </p>
             </div>
             
-            <div className="relative z-10 group bg-surface hover:-translate-y-2 transition-transform duration-500">
+            <div className="relative z-10 group bg-surface hover:-translate-y-2 transition-transform duration-500" data-reveal>
               <div className="mb-8 w-24 h-24 rounded-full bg-surface-container-low flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-on-primary transition-colors duration-500 shadow-sm border border-outline-variant/20 group-hover:border-transparent">
                 <span className="material-symbols-outlined text-4xl" data-icon="description">
                   description
@@ -326,7 +326,7 @@ export default async function Home() {
               </p>
             </div>
             
-            <div className="relative z-10 group bg-surface hover:-translate-y-2 transition-transform duration-500">
+            <div className="relative z-10 group bg-surface hover:-translate-y-2 transition-transform duration-500" data-reveal>
               <div className="mb-8 w-24 h-24 rounded-full bg-surface-container-low flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-on-primary transition-colors duration-500 shadow-sm border border-outline-variant/20 group-hover:border-transparent">
                 <span className="material-symbols-outlined text-4xl" data-icon="forum">
                   forum
@@ -348,9 +348,9 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Hazır Program CTA */}
+      {/* Hazır Program CTA — iç reklam birimi */}
       <section className="bg-surface py-0 px-6 md:px-8 pb-24 md:pb-32">
-        <div className="max-w-screen-xl mx-auto overflow-hidden rounded-3xl border border-secondary/15 bg-white shadow-xl">
+        <div className="max-w-screen-xl mx-auto overflow-hidden rounded-3xl border border-secondary/15 bg-white shadow-xl" data-reveal>
           <div className="grid md:grid-cols-[0.8fr_1.2fr] items-stretch">
             <div className="relative min-h-[260px] md:min-h-full overflow-hidden">
               <img
@@ -361,7 +361,7 @@ export default async function Home() {
               <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-primary/80 md:bg-gradient-to-r md:from-primary/10 md:to-primary/90" />
               <div className="absolute inset-0 flex items-end p-7 md:p-9">
                 <p className="text-white text-xs font-bold uppercase tracking-[0.2em] flex items-center gap-2">
-                  <span className="material-symbols-outlined text-[#FFD166] text-[18px]" style={{ fontVariationSettings: "'FILL' 1" }}>event_available</span>
+                  <span className="material-symbols-outlined text-[#c9a96e] text-[18px]" style={{ fontVariationSettings: "'FILL' 1" }}>event_available</span>
                   {ilkUmremCampaign.homeFeatures[0]}
                 </p>
               </div>
@@ -376,7 +376,7 @@ export default async function Home() {
               <p className="text-on-surface-variant text-sm leading-relaxed mb-8 max-w-xl">
                 {ilkUmremCampaign.homeDescription}
               </p>
-              <Link href="/ilk-umrem" className="w-fit inline-flex items-center gap-3 bg-secondary text-white font-bold uppercase tracking-widest text-xs px-7 py-4 rounded-xl shadow-lg hover:bg-primary transition-colors">
+              <Link href="/ilk-umrem" data-press className="w-fit inline-flex items-center gap-3 bg-secondary text-white font-bold uppercase tracking-widest text-xs px-7 py-4 rounded-xl shadow-lg hover:bg-primary transition-colors">
                 {ilkUmremCampaign.homeButton}
                 <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
               </Link>
@@ -388,7 +388,7 @@ export default async function Home() {
       <section className="py-24 md:py-32 bg-surface-container">
         <div className="max-w-screen-2xl mx-auto px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-6 h-auto md:h-[600px] lg:h-[700px]">
-            <div className="md:col-span-2 md:row-span-2 relative overflow-hidden rounded-2xl shadow-lg bg-surface-container-lowest p-8 md:p-12 flex flex-col justify-end group">
+            <div className="md:col-span-2 md:row-span-2 relative overflow-hidden rounded-2xl shadow-lg bg-surface-container-lowest p-8 md:p-12 flex flex-col justify-end group" data-reveal>
               <img
                 alt="Mekke Harem-i Şerif Manzaralı Lüks Otel Konaklaması"
                 className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-1000"
@@ -406,7 +406,7 @@ export default async function Home() {
               </div>
             </div>
 
-            <div className="md:col-span-2 bg-secondary/10 hover:bg-secondary/20 transition-colors rounded-2xl p-8 md:p-10 flex flex-col justify-center border-l-4 border-secondary shadow-sm">
+            <div className="md:col-span-2 bg-secondary/10 hover:bg-secondary/20 transition-colors rounded-2xl p-8 md:p-10 flex flex-col justify-center border-l-4 border-secondary shadow-sm" data-reveal>
               <span className="material-symbols-outlined text-secondary text-5xl mb-6" data-icon="menu_book">
                 menu_book
               </span>
@@ -418,7 +418,7 @@ export default async function Home() {
               </p>
             </div>
 
-            <div className="bg-surface-container-lowest rounded-2xl p-8 hover:-translate-y-1 shadow-sm transition-transform flex flex-col items-center text-center justify-center border border-outline-variant/20">
+            <div className="bg-surface-container-lowest rounded-2xl p-8 hover:-translate-y-1 shadow-sm transition-transform flex flex-col items-center text-center justify-center border border-outline-variant/20" data-reveal>
               <span className="material-symbols-outlined text-tertiary text-4xl mb-4" data-icon="family_restroom">
                 family_restroom
               </span>
@@ -428,7 +428,7 @@ export default async function Home() {
               </p>
             </div>
 
-            <div className="bg-primary rounded-2xl p-8 shadow-lg hover:shadow-xl hover:scale-[1.02] flex flex-col items-center text-center justify-center text-on-primary transition-all">
+            <div className="bg-primary rounded-2xl p-8 shadow-lg hover:shadow-xl hover:scale-[1.02] flex flex-col items-center text-center justify-center text-on-primary transition-all" data-reveal>
               <span className="material-symbols-outlined text-on-primary text-4xl mb-4" data-icon="diamond">
                 diamond
               </span>
@@ -453,14 +453,14 @@ export default async function Home() {
                 {homeBlogTitle}
               </h2>
             </div>
-            <a href="/blog" className="text-secondary font-bold flex items-center gap-2 hover:gap-4 transition-all uppercase tracking-widest text-[10px] bg-secondary/10 px-6 py-3 rounded-xl hover:bg-secondary/20 shadow-sm">
+            <a href="/blog" data-press className="text-secondary font-bold flex items-center gap-2 hover:gap-4 transition-all uppercase tracking-widest text-[10px] bg-secondary/10 px-6 py-3 rounded-xl hover:bg-secondary/20 shadow-sm">
               Tüm Yazıları Gör <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
             </a>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {latestBlogs.map((blog) => (
-              <a href={`/blog/${blog.slug}`} key={blog.id} className="group flex flex-col bg-white rounded-[2rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-outline-variant/10 hover:-translate-y-2">
+              <a href={`/blog/${blog.slug}`} key={blog.id} data-reveal className="group flex flex-col bg-white rounded-[2rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-outline-variant/10 hover:-translate-y-2">
                 <div className="relative h-64 overflow-hidden bg-surface-container-low p-2">
                   {blog.imageUrl ? (
                     <Image src={blog.imageUrl} alt={blog.title} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover rounded-3xl group-hover:scale-105 transition-transform duration-700" />
@@ -513,28 +513,28 @@ export default async function Home() {
           </div>
 
           <div className="space-y-6">
-            <div className="bg-white rounded-2xl p-6 shadow-sm border border-outline-variant/20 hover:shadow-md transition-shadow">
+            <div className="bg-white rounded-2xl p-6 shadow-sm border border-outline-variant/20 hover:shadow-md transition-shadow" data-reveal>
               <h3 className="font-bold text-lg text-primary mb-3">1. Bireysel Umre Vizesi Nasıl Alınır? Zor Mu?</h3>
               <p className="text-on-surface-variant text-sm leading-relaxed">
                 Suudi Arabistan yönetimi artık <strong>bireysel umre vizesi</strong> alımını son derece kolaylaştırmıştır. Otel konaklamanız ve uçuşunuz belirlendikten sonra, acente garantörlüğü ile Nusuk sistemi üzerinden 24 saat içerisinde adınıza e-vize tanımlanır. Klasik turların evrak yüküyle uğraşmadan anında hazır olursunuz.
               </p>
             </div>
 
-            <div className="bg-white rounded-2xl p-6 shadow-sm border border-outline-variant/20 hover:shadow-md transition-shadow">
+            <div className="bg-white rounded-2xl p-6 shadow-sm border border-outline-variant/20 hover:shadow-md transition-shadow" data-reveal>
               <h3 className="font-bold text-lg text-primary mb-3">2. Diyanetsiz ve Tursuz "Kendi Başına Umre" Yapılabilir Mi?</h3>
               <p className="text-on-surface-variant text-sm leading-relaxed">
                 Evet, kesinlikle yapılabilir. Kalabalık kafilelere mahkum olmadan, ailenizle <strong>diyanetsiz umre turları</strong> planlamak en doğal hakkınızdır. Sistemimizde yer alan fiyat konfigüratörü ile Kabe manzaralı lüks otellerinizi tamamen kendi bütçenize göre seçer, "Kendi umrenizi kendiniz tasarlarsınız". Bu sistem klasik paketlere göre %30'a varan tasarruf sağlar.
               </p>
             </div>
 
-            <div className="bg-white rounded-2xl p-6 shadow-sm border border-outline-variant/20 hover:shadow-md transition-shadow">
+            <div className="bg-white rounded-2xl p-6 shadow-sm border border-outline-variant/20 hover:shadow-md transition-shadow" data-reveal>
               <h3 className="font-bold text-lg text-primary mb-3">3. Bireysel VIP Umre Turlarında Rehberlik Veriliyor Mu?</h3>
               <p className="text-on-surface-variant text-sm leading-relaxed">
                 Bireysel gitmeniz rehbersiz kalacağınız anlamına gelmez. Vize ve biletleriniz ayarlandıktan sonra, Mekke ve Medine'deki lokal <strong>özel ilahiyatçı rehberlerimiz</strong> karşılama ve ibadetlerinizi ifa etmeniz (Tavaf, Say) noktasında birebir size eşlik eder. 
               </p>
             </div>
             
-            <div className="bg-white rounded-2xl p-6 shadow-sm border border-outline-variant/20 hover:shadow-md transition-shadow">
+            <div className="bg-white rounded-2xl p-6 shadow-sm border border-outline-variant/20 hover:shadow-md transition-shadow" data-reveal>
               <h3 className="font-bold text-lg text-primary mb-3">4. Hangi Aylar (Fırsat Sezonu) Umre İçin Daha Ucuzdur?</h3>
               <p className="text-on-surface-variant text-sm leading-relaxed">
                 <strong>2026 Umre fiyatları</strong> döneme göre değişiklik gösterir. Özellikle Şevval ayı ve Kurban bayramı sonrası (Eylül, Ekim ayları) fiyatların en düşük olduğu "Yeşil Sezon"dur. Konfigüratörümüzdeki ısı haritasından bu takvimi görebilir ve çok ucuza VIP kalitesinde seyahat ayarlayabilirsiniz.
@@ -550,9 +550,9 @@ export default async function Home() {
           <img src={hanimCampaign.heroImage} alt="" className="w-full h-full object-cover" />
         </div>
         <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/95 to-[#001944]/85" />
-        <div className="relative z-10 max-w-screen-xl mx-auto px-8 flex flex-col lg:flex-row lg:items-center justify-between gap-10">
+        <div className="relative z-10 max-w-screen-xl mx-auto px-8 flex flex-col lg:flex-row lg:items-center justify-between gap-10" data-reveal>
           <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 px-4 py-2 mb-5 rounded-full bg-[#FFD166]/15 border border-[#FFD166]/30 text-[#FFD166] text-[10px] font-bold uppercase tracking-[0.2em]">
+            <div className="inline-flex items-center gap-2 px-4 py-2 mb-5 rounded-full bg-[#c9a96e]/15 border border-[#c9a96e]/30 text-[#c9a96e] text-[10px] font-bold uppercase tracking-[0.2em]">
               <span className="material-symbols-outlined text-[15px]" style={{ fontVariationSettings: "'FILL' 1" }}>campaign</span>
               {hanimCampaign.homeBadge}
             </div>
@@ -566,7 +566,7 @@ export default async function Home() {
               {hanimCampaign.homeFeatures.join(" · ")}
             </p>
           </div>
-          <Link href="/hanim-umresi" className="shrink-0 inline-flex items-center justify-center gap-3 bg-[#FFD166] text-primary font-bold uppercase tracking-widest text-xs px-9 py-5 rounded-2xl shadow-2xl hover:bg-white hover:scale-105 transition-all">
+          <Link href="/hanim-umresi" data-press className="shrink-0 inline-flex items-center justify-center gap-3 bg-[#c9a96e] text-primary font-bold uppercase tracking-widest text-xs px-9 py-5 rounded-2xl shadow-2xl hover:bg-white hover:scale-105 transition-all">
             {hanimCampaign.homeButton}
             <span className="material-symbols-outlined text-[19px]">arrow_forward</span>
           </Link>

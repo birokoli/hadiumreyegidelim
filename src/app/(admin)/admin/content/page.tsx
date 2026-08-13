@@ -78,7 +78,7 @@ const MediaUploader = ({ title, slug, onUploadComplete, currentUrl }: { title: s
     <div className="border border-outline-variant/30 rounded-2xl p-6 bg-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:border-primary/40 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all flex flex-col h-full">
       <div className="flex justify-between items-start mb-4 gap-4">
         <h4 className="font-headline font-bold text-primary text-[13px] leading-tight flex-1 line-clamp-3">{title}</h4>
-        {currentUrl && <span className="bg-success/10 text-success text-[9px] font-bold uppercase tracking-widest px-3 py-1 rounded-full whitespace-nowrap">Hazır</span>}
+        {currentUrl && <span className="bg-secondary/10 text-secondary text-[9px] font-bold uppercase tracking-widest px-3 py-1 rounded-full whitespace-nowrap">Hazır</span>}
       </div>
       {currentUrl ? (
         <div className="relative group rounded-xl overflow-hidden h-40 w-full mt-auto">
@@ -668,19 +668,19 @@ export default function ContentPage() {
   if (loading) return <div className="pt-24 px-12 pb-20 max-w-7xl mx-auto flex justify-center"><div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full"></div></div>;
 
   return (
-    <div className="p-6 lg:p-8 max-w-7xl mx-auto space-y-8 min-h-screen bg-white text-zinc-900">
+    <div className="p-6 lg:p-8 max-w-7xl mx-auto space-y-8 min-h-screen bg-surface text-on-surface">
       {/* Header Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-zinc-200">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-outline-variant/15">
         <div>
-          <span className="text-[10px] font-bold tracking-widest text-zinc-400 uppercase">ICERIK STUDYOSU</span>
-          <h1 className="text-2xl font-light tracking-tight text-zinc-900 mt-1">Görünüm ve İçerik Yönetimi</h1>
-          <p className="text-xs text-zinc-500 mt-0.5">Claude AI entegrasyonu ve metin editörü ile blog içeriklerini yönetin.</p>
+          <span className="text-[10px] font-bold tracking-widest text-secondary uppercase">ICERIK STUDYOSU</span>
+          <h1 className="font-headline text-2xl font-bold tracking-tight text-primary mt-1">Görünüm ve İçerik Yönetimi</h1>
+          <p className="text-xs text-on-surface-variant mt-0.5">Claude AI entegrasyonu ve metin editörü ile blog içeriklerini yönetin.</p>
         </div>
 
         <div className="flex items-center gap-3">
           <button 
             onClick={() => showAdd ? handleCancel() : setShowAdd(true)}
-            className="inline-flex items-center gap-1.5 bg-zinc-900 hover:bg-zinc-800 text-white font-medium px-4 py-2 rounded text-xs transition-colors"
+            className="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-container text-white font-bold px-4 py-2.5 rounded-xl text-xs transition-all active:scale-95 shadow-sm"
           >
             <span className="material-symbols-outlined text-[16px]">{showAdd ? "close" : "add"}</span>
             <span>{showAdd ? "İptal Et" : "Yeni Blog Ekle"}</span>
@@ -692,32 +692,32 @@ export default function ContentPage() {
         <section className="bg-surface-container p-12 rounded-2xl relative overflow-hidden mb-12 shadow-sm border border-outline-variant/10">
           
           {/* AI Generator Panel */}
-          <div className="bg-[#f0f4f8] border border-blue-200 p-8 rounded-2xl mb-12 relative overflow-hidden">
+          <div className="bg-[#f0f4f8] border border-primary/20 p-8 rounded-2xl mb-12 relative overflow-hidden">
             <div className="absolute top-0 right-0 p-6 opacity-10">
-              <span className="material-symbols-outlined text-8xl text-blue-800">magic_button</span>
+              <span className="material-symbols-outlined text-8xl text-primary">magic_button</span>
             </div>
             <div className="relative z-10">
-              <h3 className="font-headline text-2xl text-blue-900 font-bold mb-2 flex items-center gap-2">
-                <span className="material-symbols-outlined text-blue-600">auto_awesome</span>
+              <h3 className="font-headline text-2xl text-primary font-bold mb-2 flex items-center gap-2">
+                <span className="material-symbols-outlined text-primary">auto_awesome</span>
                 Claude AI Asistanı
               </h3>
-              <p className="text-sm text-blue-800/70 mb-6 max-w-2xl">
+              <p className="text-sm text-primary/70 mb-6 max-w-2xl">
                 Bireysel umre, ziyaret noktaları veya manevi deneyimler üzerine bir konu verin. Claude Opus eğitim verilerindeki güncel bilgilerle Google SEO standartlarında uzun ve kaliteli bir makaleyi otomatik olarak editörde yazar.
               </p>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 max-w-4xl">
                 <div>
-                  <label className="text-xs font-bold text-blue-900 uppercase tracking-widest mb-1 block">Konu veya Başlık Fikri</label>
+                  <label className="text-xs font-bold text-primary uppercase tracking-widest mb-1 block">Konu veya Başlık Fikri</label>
                   <input 
-                    className="w-full bg-white border border-blue-200 rounded-lg p-3 text-sm focus:ring-blue-500 outline-none shadow-sm"
+                    className="w-full bg-white border border-primary/20 rounded-lg p-3 text-sm focus:ring-primary/40 outline-none shadow-sm"
                     placeholder="Örn: Medine'de ziyaret edilecek gizli kalmış yerler"
                     value={aiTopic} onChange={e => setAiTopic(e.target.value)}
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-bold text-blue-900 uppercase tracking-widest mb-1 block">SEO Anahtar Kelimeleri</label>
+                  <label className="text-xs font-bold text-primary uppercase tracking-widest mb-1 block">SEO Anahtar Kelimeleri</label>
                   <input 
-                    className="w-full bg-white border border-blue-200 rounded-lg p-3 text-sm focus:ring-blue-500 outline-none shadow-sm"
+                    className="w-full bg-white border border-primary/20 rounded-lg p-3 text-sm focus:ring-primary/40 outline-none shadow-sm"
                     placeholder="medine ziyareti, uhud dağı, kuba mescidi"
                     value={aiKeywords} onChange={e => setAiKeywords(e.target.value)}
                   />
@@ -727,7 +727,7 @@ export default function ContentPage() {
               <button 
                 onClick={handleGenerateAI}
                 disabled={isGenerating || !aiTopic}
-                className="bg-gradient-to-r from-blue-700 to-indigo-800 text-white px-8 py-3.5 rounded-xl font-bold tracking-wide uppercase shadow-lg flex items-center gap-3 hover:shadow-xl hover:scale-[1.02] transition-all disabled:opacity-50 disabled:scale-100"
+                className="bg-gradient-to-r from-primary to-[#001944] text-white px-8 py-3.5 rounded-xl font-bold tracking-wide uppercase shadow-lg flex items-center gap-3 hover:shadow-xl hover:scale-[1.02] transition-all disabled:opacity-50 disabled:scale-100"
               >
                 {isGenerating ? (
                   <><span className="material-symbols-outlined animate-spin text-sm" style={{fontVariationSettings: "'FILL' 0"}}>sync</span> Makale Araştırılıyor ve Yazılıyor...</>
@@ -757,25 +757,25 @@ export default function ContentPage() {
 
             {/* Version History Panel */}
             {showVersionHistory && editingPostId && (
-              <div className="bg-slate-50 border border-slate-200 rounded-2xl p-5 mb-4">
+              <div className="bg-surface-container-low border border-outline-variant/25 rounded-2xl p-5 mb-4">
                 <h4 className="font-bold text-primary mb-3 flex items-center gap-2">
                   <span className="material-symbols-outlined text-[18px]">history</span>
                   Sürüm Geçmişi (Son 20)
                 </h4>
                 {loadingVersions ? (
-                  <div className="flex items-center gap-2 text-sm text-slate-500"><span className="material-symbols-outlined animate-spin text-[16px]">sync</span> Yükleniyor...</div>
+                  <div className="flex items-center gap-2 text-sm text-on-surface-variant"><span className="material-symbols-outlined animate-spin text-[16px]">sync</span> Yükleniyor...</div>
                 ) : versions.length === 0 ? (
-                  <p className="text-sm text-slate-500">Henüz sürüm kaydedilmemiş. İlk kaydetme sonrası otomatik oluşturulur.</p>
+                  <p className="text-sm text-on-surface-variant">Henüz sürüm kaydedilmemiş. İlk kaydetme sonrası otomatik oluşturulur.</p>
                 ) : (
                   <div className="space-y-2 max-h-64 overflow-y-auto">
                     {versions.map(v => (
-                      <div key={v.id} className="flex items-center justify-between bg-white border border-slate-100 rounded-xl px-4 py-3">
+                      <div key={v.id} className="flex items-center justify-between bg-white border border-outline-variant/15 rounded-xl px-4 py-3">
                         <div>
                           <span className="text-xs font-bold text-primary">v{v.version}</span>
-                          <span className="mx-2 text-slate-300">·</span>
-                          <span className="text-sm text-slate-700 font-medium">{v.title}</span>
-                          <span className="mx-2 text-slate-300">·</span>
-                          <span className="text-xs text-slate-400">{new Date(v.createdAt).toLocaleString('tr-TR')}</span>
+                          <span className="mx-2 text-outline-variant">·</span>
+                          <span className="text-sm text-on-surface font-medium">{v.title}</span>
+                          <span className="mx-2 text-outline-variant">·</span>
+                          <span className="text-xs text-outline">{new Date(v.createdAt).toLocaleString('tr-TR')}</span>
                         </div>
                         <button
                           type="button"
@@ -797,14 +797,14 @@ export default function ContentPage() {
               <div className="space-y-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center justify-between">
+                    <label className="text-[10px] font-bold text-outline uppercase tracking-widest flex items-center justify-between">
                       Yazı Başlığı (H1) <span className="text-secondary/60 lowercase italic font-normal tracking-normal flex items-center gap-1"><span className="material-symbols-outlined text-[12px]">auto_awesome</span> ai otomatik doldurur</span>
                     </label>
                     <input required className="w-full bg-surface border border-outline-variant/30 rounded-xl p-4 text-secondary focus:ring-primary focus:border-primary outline-none font-bold placeholder:font-normal" 
                       value={newPost.title} onChange={e => setNewPost(prev => ({...prev, title: e.target.value}))} placeholder="Örn: 2026'da Çiftler İçin Bireysel Umre Deneyimi" />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex justify-between items-center">
+                    <label className="text-[10px] font-bold text-outline uppercase tracking-widest flex justify-between items-center">
                       URL Slug <span className="text-secondary/60 lowercase italic font-normal tracking-normal flex items-center gap-1"><span className="material-symbols-outlined text-[12px]">auto_awesome</span> ai otomatik doldurur</span>
                     </label>
                     <input className="w-full bg-surface border border-outline-variant/30 rounded-xl p-4 text-secondary focus:ring-primary focus:border-primary outline-none" 
@@ -814,9 +814,9 @@ export default function ContentPage() {
 
                 {/* Meta Title */}
                 <div className="space-y-2">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex justify-between items-center">
+                  <label className="text-[10px] font-bold text-outline uppercase tracking-widest flex justify-between items-center">
                     SEO Meta Başlığı (Title Tag)
-                    <span className={`text-xs font-bold tabular-nums ${newPost.metaTitle.length > 60 ? 'text-error' : newPost.metaTitle.length >= 50 ? 'text-success' : 'text-outline'}`}>
+                    <span className={`text-xs font-bold tabular-nums ${newPost.metaTitle.length > 60 ? 'text-error' : newPost.metaTitle.length >= 50 ? 'text-secondary' : 'text-outline'}`}>
                       {newPost.metaTitle.length}/60
                     </span>
                   </label>
@@ -825,9 +825,9 @@ export default function ContentPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex justify-between items-center">
+                  <label className="text-[10px] font-bold text-outline uppercase tracking-widest flex justify-between items-center">
                     SEO Meta Description
-                    <span className={`text-xs font-bold tabular-nums ${newPost.description.length > 160 ? 'text-error' : newPost.description.length >= 120 ? 'text-success' : 'text-outline'}`}>
+                    <span className={`text-xs font-bold tabular-nums ${newPost.description.length > 160 ? 'text-error' : newPost.description.length >= 120 ? 'text-secondary' : 'text-outline'}`}>
                       {newPost.description.length}/160
                     </span>
                   </label>
@@ -837,7 +837,7 @@ export default function ContentPage() {
 
                 {/* Cover Image Alt Text */}
                 <div className="space-y-2">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                  <label className="text-[10px] font-bold text-outline uppercase tracking-widest">
                     Kapak Görseli Alt Metni (imageAlt)
                   </label>
                   <input className="w-full bg-surface border border-outline-variant/30 rounded-xl p-4 text-sm text-secondary focus:ring-primary focus:border-primary outline-none"
@@ -846,7 +846,7 @@ export default function ContentPage() {
 
                 {/* TL;DR */}
                 <div className="space-y-2">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                  <label className="text-[10px] font-bold text-outline uppercase tracking-widest flex items-center gap-2">
                     <span className="material-symbols-outlined text-[13px]">summarize</span>
                     TL;DR — Kısa Özet (İçerik öncesi gösterilir)
                   </label>
@@ -856,7 +856,7 @@ export default function ContentPage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                   <div className="space-y-2 lg:col-span-1">
-                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex justify-between items-center">
+                    <label className="text-[10px] font-bold text-outline uppercase tracking-widest flex justify-between items-center">
                       SEO Keywords <span className="text-secondary/60 lowercase italic font-normal tracking-normal flex items-center gap-1"><span className="material-symbols-outlined text-[12px]">auto_awesome</span> ai otomatik doldurur</span>
                     </label>
                     <input className="w-full bg-surface border border-outline-variant/30 rounded-xl p-4 text-sm text-secondary focus:ring-primary outline-none" 
@@ -870,7 +870,7 @@ export default function ContentPage() {
                       value={newPost.focusKeyword} onChange={e => setNewPost(prev => ({...prev, focusKeyword: e.target.value}))} placeholder="Örn: bireysel umre fiyatları" />
                   </div>
                   <div className="space-y-2 lg:col-span-1">
-                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex justify-between items-center">
+                    <label className="text-[10px] font-bold text-outline uppercase tracking-widest flex justify-between items-center">
                       Kategori <span className="text-secondary/60 lowercase italic font-normal tracking-normal flex items-center gap-1"><span className="material-symbols-outlined text-[12px]">auto_awesome</span> ai otomatik doldurur</span>
                     </label>
                     <div className="relative">
@@ -911,7 +911,7 @@ export default function ContentPage() {
 
                 {/* Tags */}
                 <div className="space-y-2">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                  <label className="text-[10px] font-bold text-outline uppercase tracking-widest flex items-center gap-2">
                     <span className="material-symbols-outlined text-[13px]">label</span>
                     Etiketler / Tags (virgülle ayır)
                   </label>
@@ -929,7 +929,7 @@ export default function ContentPage() {
                 {/* FAQ Builder */}
                 <div className="space-y-4 pt-6 border-t border-outline-variant/20">
                   <div className="flex items-center justify-between">
-                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                    <label className="text-[10px] font-bold text-outline uppercase tracking-widest flex items-center gap-2">
                       <span className="material-symbols-outlined text-[13px]">quiz</span>
                       SSS / FAQ Oluşturucu (FAQPage Schema otomatik eklenir)
                     </label>
@@ -1129,12 +1129,12 @@ export default function ContentPage() {
                  
                  <div className="flex flex-col items-center justify-center bg-white p-6 rounded-2xl shadow-sm border border-outline-variant/20 min-w-[180px]">
                     <span className="text-[10px] font-bold uppercase tracking-widest text-outline mb-2">Canlı SEO Skoru</span>
-                    <div className={`text-5xl font-headline font-black transition-colors ${newPost.seoScore >= 80 ? 'text-success' : newPost.seoScore >= 50 ? 'text-[#f59e0b]' : 'text-error'}`}>
+                    <div className={`text-5xl font-headline font-black transition-colors ${newPost.seoScore >= 80 ? 'text-secondary' : newPost.seoScore >= 50 ? 'text-[#f59e0b]' : 'text-error'}`}>
                        {newPost.seoScore} <span className="text-2xl text-outline-variant">/ 100</span>
                     </div>
                     {/* Progress Bar */}
                     <div className="w-full h-2.5 bg-surface-container rounded-full mt-4 overflow-hidden">
-                       <div className={`h-full transition-all duration-700 ease-out ${newPost.seoScore >= 80 ? 'bg-success' : newPost.seoScore >= 50 ? 'bg-[#f59e0b]' : 'bg-error'}`} style={{width: `${newPost.seoScore}%`}}></div>
+                       <div className={`h-full transition-all duration-700 ease-out ${newPost.seoScore >= 80 ? 'bg-secondary' : newPost.seoScore >= 50 ? 'bg-[#f59e0b]' : 'bg-error'}`} style={{width: `${newPost.seoScore}%`}}></div>
                     </div>
                  </div>
                </div>
@@ -1152,7 +1152,7 @@ export default function ContentPage() {
                </div>
 
                {aiAnalysisResult && (
-                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl bg-white p-8 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-blue-100 relative overflow-hidden">
+                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl bg-white p-8 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-primary/10 relative overflow-hidden">
                    {/* Background element */}
                    <div className="absolute top-0 right-0 p-8 opacity-5 -z-0">
                      <span className="material-symbols-outlined text-9xl text-primary">robot_2</span>
@@ -1169,7 +1169,7 @@ export default function ContentPage() {
                         </li>
                         <li className="flex justify-between items-center py-3 border-b border-surface-container/50">
                           <span className="text-sm text-on-surface-variant font-medium">Kullanıcı Amacı Uyumu:</span>
-                          <span className={`font-bold px-4 py-1.5 rounded-full text-xs uppercase tracking-widest shadow-sm ${aiAnalysisResult.kullanici_amaci_uyumu?.toLowerCase().includes('evet') ? 'bg-success text-white' : 'bg-error text-white'}`}>
+                          <span className={`font-bold px-4 py-1.5 rounded-full text-xs uppercase tracking-widest shadow-sm ${aiAnalysisResult.kullanici_amaci_uyumu?.toLowerCase().includes('evet') ? 'bg-secondary text-white' : 'bg-error text-white'}`}>
                             {aiAnalysisResult.kullanici_amaci_uyumu}
                           </span>
                         </li>
@@ -1183,7 +1183,7 @@ export default function ContentPage() {
                            <span key={i} className="bg-surface-container-high px-4 py-2 rounded-xl text-[13px] font-bold text-secondary border border-outline-variant/20 shadow-sm">{word}</span>
                         ))}
                         {(!aiAnalysisResult.eksik_lsi_kelimeler || aiAnalysisResult.eksik_lsi_kelimeler.length === 0) && (
-                           <span className="text-sm text-success font-medium flex items-center gap-2 bg-success/10 px-4 py-2 rounded-xl"><span className="material-symbols-outlined text-[18px]">verified</span> Harika, tüm LSI kelimeleri kullanmışsınız.</span>
+                           <span className="text-sm text-secondary font-medium flex items-center gap-2 bg-secondary/10 px-4 py-2 rounded-xl"><span className="material-symbols-outlined text-[18px]">verified</span> Harika, tüm LSI kelimeleri kullanmışsınız.</span>
                         )}
                       </div>
                    </div>
@@ -1230,14 +1230,14 @@ export default function ContentPage() {
 
                {viewMode === 'edit' ? (
                  <div className="space-y-4">
-                   <div className="bg-[#f0f4f8] border border-blue-200 p-4 rounded-xl flex flex-col md:flex-row gap-4 items-end shadow-inner">
+                   <div className="bg-[#f0f4f8] border border-primary/20 p-4 rounded-xl flex flex-col md:flex-row gap-4 items-end shadow-inner">
                      <div className="flex-1 w-full">
-                       <label className="text-[10px] font-bold text-blue-900 uppercase tracking-widest flex items-center gap-1 mb-2">
+                       <label className="text-[10px] font-bold text-primary uppercase tracking-widest flex items-center gap-1 mb-2">
                          <span className="material-symbols-outlined text-[14px]">auto_awesome</span>
                          Mevcut İçeriği Yapay Zeka İle Düzenle
                        </label>
                        <input 
-                         className="w-full bg-white border border-blue-200 rounded-lg p-3 text-sm focus:ring-blue-500 outline-none shadow-sm placeholder:text-blue-900/40"
+                         className="w-full bg-white border border-primary/20 rounded-lg p-3 text-sm focus:ring-primary/40 outline-none shadow-sm placeholder:text-primary/40"
                          placeholder="Örn: Bu makalenin son paragrafını daha samimi yaz ve /paketler sayfasına link ver..."
                          value={aiEditInstruction} 
                          onChange={e => setAiEditInstruction(e.target.value)}
@@ -1253,7 +1253,7 @@ export default function ContentPage() {
                        type="button"
                        onClick={handleEditAI}
                        disabled={isAiEditing || !aiEditInstruction || !newPost.content}
-                       className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-bold tracking-[0.15em] text-xs uppercase shadow-md transition-all flex items-center gap-2 whitespace-nowrap disabled:opacity-50"
+                       className="bg-primary hover:bg-primary-container text-white px-6 py-3 rounded-lg font-bold tracking-[0.15em] text-xs uppercase shadow-md transition-all flex items-center gap-2 whitespace-nowrap disabled:opacity-50"
                      >
                        {isAiEditing ? <span className="material-symbols-outlined animate-spin text-[16px]">sync</span> : <span className="material-symbols-outlined text-[16px]">magic_button</span>}
                        {isAiEditing ? "DÜZENLENİYOR..." : "UYGULA"}
@@ -1261,17 +1261,17 @@ export default function ContentPage() {
                    </div>
                    
                    {/* Claude / Markdown Yapıştır Paneli */}
-                   <div className="rounded-xl border border-dashed border-violet-300 bg-violet-50/50 p-4 mb-2">
+                   <div className="rounded-xl border border-dashed border-[#b8862f]/35 bg-[#b8862f]/[0.06] p-4 mb-2">
                      <div className="flex items-center justify-between mb-3">
                        <div className="flex items-center gap-2">
-                         <span className="material-symbols-outlined text-violet-600 text-[20px]">smart_toy</span>
-                         <span className="font-bold text-sm text-violet-700 uppercase tracking-widest">Claude'dan Yapıştır</span>
-                         <span className="text-[10px] text-violet-500 font-medium">Markdown → HTML otomatik çevrilir</span>
+                         <span className="material-symbols-outlined text-[#b8862f] text-[20px]">smart_toy</span>
+                         <span className="font-bold text-sm text-[#b8862f] uppercase tracking-widest">Claude'dan Yapıştır</span>
+                         <span className="text-[10px] text-[#b8862f]/80 font-medium">Markdown → HTML otomatik çevrilir</span>
                        </div>
                        <button
                          type="button"
                          onClick={() => setShowMarkdownPaste(v => !v)}
-                         className="text-[10px] font-bold uppercase tracking-widest text-violet-600 hover:text-violet-800 flex items-center gap-1 transition-colors"
+                         className="text-[10px] font-bold uppercase tracking-widest text-[#b8862f] hover:text-[#8f6a24] flex items-center gap-1 transition-colors"
                        >
                          <span className="material-symbols-outlined text-[16px]">{showMarkdownPaste ? 'expand_less' : 'expand_more'}</span>
                          {showMarkdownPaste ? 'Kapat' : 'Aç'}
@@ -1283,7 +1283,7 @@ export default function ContentPage() {
                            value={markdownInput}
                            onChange={e => setMarkdownInput(e.target.value)}
                            placeholder="Claude'un ürettiği markdown içeriği buraya yapıştır..."
-                           className="w-full h-64 p-4 text-sm font-mono border border-violet-200 rounded-lg bg-white resize-y focus:outline-none focus:ring-2 focus:ring-violet-400 text-slate-700 placeholder:text-slate-400"
+                           className="w-full h-64 p-4 text-sm font-mono border border-[#b8862f]/25 rounded-lg bg-white resize-y focus:outline-none focus:ring-2 focus:ring-[#b8862f]/40 text-on-surface placeholder:text-outline"
                          />
                          <div className="flex gap-3">
                            <button
@@ -1296,7 +1296,7 @@ export default function ContentPage() {
                                setShowMarkdownPaste(false);
                                toast("Markdown başarıyla HTML'e çevrildi ve editöre eklendi!", "success");
                              }}
-                             className="flex items-center gap-2 bg-violet-600 hover:bg-violet-700 text-white px-5 py-2.5 rounded-lg font-bold text-xs uppercase tracking-widest transition-all shadow-md shadow-violet-200"
+                             className="flex items-center gap-2 bg-[#b8862f] hover:bg-[#8f6a24] text-white px-5 py-2.5 rounded-lg font-bold text-xs uppercase tracking-widest transition-all shadow-md shadow-[#b8862f]/20"
                            >
                              <span className="material-symbols-outlined text-[16px]">transform</span>
                              Çevir & Ekle
@@ -1311,7 +1311,7 @@ export default function ContentPage() {
                                setShowMarkdownPaste(false);
                                toast("Markdown çevrildi — mevcut içerik değiştirildi.", "success");
                              }}
-                             className="flex items-center gap-2 bg-white border border-violet-300 hover:bg-violet-50 text-violet-700 px-5 py-2.5 rounded-lg font-bold text-xs uppercase tracking-widest transition-all"
+                             className="flex items-center gap-2 bg-white border border-[#b8862f]/35 hover:bg-[#b8862f]/10 text-[#b8862f] px-5 py-2.5 rounded-lg font-bold text-xs uppercase tracking-widest transition-all"
                            >
                              <span className="material-symbols-outlined text-[16px]">swap_horiz</span>
                              Değiştir
@@ -1319,7 +1319,7 @@ export default function ContentPage() {
                            <button
                              type="button"
                              onClick={() => { setMarkdownInput(""); }}
-                             className="text-xs text-slate-400 hover:text-slate-600 px-3 py-2 rounded-lg hover:bg-slate-100 transition-colors"
+                             className="text-xs text-outline hover:text-on-surface-variant px-3 py-2 rounded-lg hover:bg-surface-container transition-colors"
                            >
                              Temizle
                            </button>
@@ -1431,19 +1431,19 @@ export default function ContentPage() {
             <div className="pt-10 border-t border-outline-variant/20 mt-12 space-y-6">
               {/* ── Yayın Modu Seçici ── */}
               <div className="flex flex-wrap items-center gap-4">
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Yayın Modu</span>
+                <span className="text-[10px] font-bold text-outline uppercase tracking-widest">Yayın Modu</span>
                 <div className="flex rounded-xl overflow-hidden border border-outline-variant/30 shadow-sm">
                   <button
                     type="button"
                     onClick={() => { setPublishMode('immediate'); setNewPost(p => ({ ...p, published: true, scheduledAt: "" })); }}
-                    className={`flex items-center gap-2 px-5 py-2.5 text-xs font-bold uppercase tracking-widest transition-colors ${publishMode === 'immediate' ? 'bg-success text-white' : 'bg-surface text-slate-500 hover:bg-surface-container'}`}
+                    className={`flex items-center gap-2 px-5 py-2.5 text-xs font-bold uppercase tracking-widest transition-colors ${publishMode === 'immediate' ? 'bg-secondary text-white' : 'bg-surface text-on-surface-variant hover:bg-surface-container'}`}
                   >
                     <span className="material-symbols-outlined text-[16px]">rocket_launch</span> Hemen Yayınla
                   </button>
                   <button
                     type="button"
                     onClick={() => { setPublishMode('scheduled'); setNewPost(p => ({ ...p, published: false })); }}
-                    className={`flex items-center gap-2 px-5 py-2.5 text-xs font-bold uppercase tracking-widest transition-colors border-l border-outline-variant/30 ${publishMode === 'scheduled' ? 'bg-primary text-white' : 'bg-surface text-slate-500 hover:bg-surface-container'}`}
+                    className={`flex items-center gap-2 px-5 py-2.5 text-xs font-bold uppercase tracking-widest transition-colors border-l border-outline-variant/30 ${publishMode === 'scheduled' ? 'bg-primary text-white' : 'bg-surface text-on-surface-variant hover:bg-surface-container'}`}
                   >
                     <span className="material-symbols-outlined text-[16px]">schedule</span> Zamanla
                   </button>
@@ -1455,11 +1455,11 @@ export default function ContentPage() {
                     <div className="relative">
                       <input type="checkbox" className="sr-only peer" checked={newPost.published}
                         onChange={e => setNewPost(prev => ({ ...prev, published: e.target.checked }))} />
-                      <div className="w-12 h-6 bg-slate-200 peer-checked:bg-success rounded-full transition-colors"></div>
+                      <div className="w-12 h-6 bg-outline-variant/40 peer-checked:bg-secondary rounded-full transition-colors"></div>
                       <div className="absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform peer-checked:translate-x-6"></div>
                     </div>
                     <span className="text-sm font-bold">
-                      {newPost.published ? <span className="text-success">Yayında</span> : <span className="text-amber-600">Taslak (gizli)</span>}
+                      {newPost.published ? <span className="text-secondary">Yayında</span> : <span className="text-[#b8862f]">Taslak (gizli)</span>}
                     </span>
                   </label>
                 )}
@@ -1521,8 +1521,8 @@ export default function ContentPage() {
                               aspect-square w-full flex items-center justify-center rounded-full text-[13px] font-bold transition-colors
                               ${sel ? 'bg-primary text-white shadow-md' : ''}
                               ${!sel && todayDay ? 'border-2 border-primary text-primary' : ''}
-                              ${!sel && !todayDay && !past ? 'text-slate-700 hover:bg-primary/10' : ''}
-                              ${past ? 'text-slate-300 cursor-not-allowed' : ''}
+                              ${!sel && !todayDay && !past ? 'text-on-surface hover:bg-primary/10' : ''}
+                              ${past ? 'text-outline-variant cursor-not-allowed' : ''}
                             `}
                           >
                             {day}
@@ -1534,7 +1534,7 @@ export default function ContentPage() {
                     {/* Saat seçici */}
                     <div className="flex items-center gap-3 pt-2 border-t border-outline-variant/20">
                       <span className="material-symbols-outlined text-outline text-[18px]">schedule</span>
-                      <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Saat</label>
+                      <label className="text-[10px] font-bold text-outline uppercase tracking-widest">Saat</label>
                       <input
                         type="time"
                         value={pickerTime}
@@ -1588,7 +1588,7 @@ export default function ContentPage() {
                   setSelectedPosts(new Set());
                   fetchPosts();
                 }}
-                className="flex items-center gap-1.5 px-3 py-2 bg-red-100 text-red-600 rounded-xl font-bold text-xs hover:bg-red-200 transition-colors"
+                className="flex items-center gap-1.5 px-3 py-2 bg-error/10 text-error rounded-xl font-bold text-xs hover:bg-error/20 transition-colors"
               >
                 <span className="material-symbols-outlined text-[16px]">delete_sweep</span>
                 {selectedPosts.size} Sil
@@ -1627,7 +1627,7 @@ export default function ContentPage() {
                 <td className="px-8 py-6">
                   <div className="flex items-center gap-2 mb-1">
                     <p className="font-bold text-primary font-headline text-lg">{post.title}</p>
-                    {!post.published && <span className="text-[10px] bg-amber-100 text-amber-700 font-bold px-2 py-0.5 rounded">Taslak</span>}
+                    {!post.published && <span className="text-[10px] bg-[#b8862f]/10 text-[#b8862f] font-bold px-2 py-0.5 rounded">Taslak</span>}
                   </div>
                   <p className="text-xs text-tertiary font-bold tracking-widest uppercase mb-2">
                     {post.authorModel ? post.authorModel.name : post.author} {post.category && `• ${post.category.name}`}
@@ -1644,17 +1644,17 @@ export default function ContentPage() {
                   <div className="flex items-center justify-end gap-2">
                     {deletingId === post.id ? (
                       // Inline silme onayı
-                      <div className="flex items-center gap-2 bg-red-50 border border-red-200 rounded-xl px-3 py-2">
-                        <span className="text-xs font-bold text-red-600">Emin misin?</span>
+                      <div className="flex items-center gap-2 bg-error/5 border border-error/20 rounded-xl px-3 py-2">
+                        <span className="text-xs font-bold text-error">Emin misin?</span>
                         <button
                           onClick={() => handleDelete(post.id)}
-                          className="px-3 py-1 bg-red-600 text-white text-xs font-bold rounded-lg hover:bg-red-700 transition-colors"
+                          className="px-3 py-1 bg-error text-white text-xs font-bold rounded-lg hover:bg-error/85 transition-colors"
                         >
                           Sil
                         </button>
                         <button
                           onClick={() => setDeletingId(null)}
-                          className="px-3 py-1 bg-slate-200 text-slate-700 text-xs font-bold rounded-lg hover:bg-slate-300 transition-colors"
+                          className="px-3 py-1 bg-outline-variant/40 text-on-surface text-xs font-bold rounded-lg hover:bg-outline-variant/60 transition-colors"
                         >
                           İptal
                         </button>

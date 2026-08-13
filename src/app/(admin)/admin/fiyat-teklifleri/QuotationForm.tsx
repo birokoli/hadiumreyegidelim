@@ -226,60 +226,60 @@ export default function QuotationForm({ editId }: { editId?: string }) {
   const grandTotal = items.reduce((s, it) => s + it.saleTotalUsd, 0);
 
   return (
-    <div className="p-6 lg:p-8 max-w-7xl mx-auto space-y-6 min-h-screen bg-white text-zinc-900 text-xs">
+    <div className="p-6 lg:p-8 max-w-7xl mx-auto space-y-6 min-h-screen bg-surface text-on-surface text-xs">
       {/* Header */}
-      <div className="flex items-center justify-between gap-4 pb-4 border-b border-zinc-200">
+      <div className="flex items-center justify-between gap-4 pb-4 border-b border-outline-variant/15">
         <div>
-          <span className="text-[10px] font-bold tracking-widest text-zinc-400 uppercase">TEKLIF FORMU</span>
-          <h1 className="text-2xl font-light tracking-tight text-zinc-900 mt-0.5">
+          <span className="text-[10px] font-bold tracking-widest text-secondary uppercase">Teklif Formu</span>
+          <h1 className="font-headline text-2xl font-bold tracking-tight text-primary mt-0.5">
             {editId ? (quotationNo || 'Teklif Düzenle') : 'Yeni Fiyat Teklifi'}
           </h1>
         </div>
         <div className="flex items-center gap-2">
           {editId && (
-            <button onClick={downloadPdf} className="bg-white border border-zinc-200 text-zinc-900 hover:border-zinc-900 font-medium px-3 py-1.5 rounded transition-colors">
+            <button onClick={downloadPdf} className="bg-surface-container-lowest border border-outline-variant/25 text-primary hover:border-primary/40 font-bold px-3.5 py-2 rounded-xl transition-all active:scale-95">
               PDF İndir
             </button>
           )}
-          <select value={status} onChange={e => setStatus(e.target.value)} className="bg-white border border-zinc-200 text-zinc-900 rounded px-3 py-1.5 font-medium outline-none">
+          <select value={status} onChange={e => setStatus(e.target.value)} className="bg-surface-container-lowest border border-outline-variant/25 text-on-surface rounded-xl px-3 py-2 font-bold outline-none focus:border-primary/40">
             {STATUS_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
           </select>
-          <button onClick={save} disabled={saving} className="bg-zinc-900 hover:bg-zinc-800 text-white font-medium px-4 py-1.5 rounded transition-colors">
+          <button onClick={save} disabled={saving} className="bg-primary hover:bg-primary-container text-white font-bold px-4 py-2 rounded-xl transition-all active:scale-95 disabled:opacity-60">
             {saving ? 'Kaydediliyor...' : 'Kaydet'}
           </button>
         </div>
       </div>
 
       {/* Inputs */}
-      <div className="bg-zinc-50 border border-zinc-200 p-4 rounded grid grid-cols-1 md:grid-cols-4 gap-3">
+      <div className="bg-surface-container-low border border-outline-variant/15 p-4 rounded-2xl grid grid-cols-1 md:grid-cols-4 gap-3">
         <div>
-          <label className="block text-[10px] font-bold text-zinc-400 uppercase mb-1">Müşteri Adı</label>
-          <input type="text" value={customerName} onChange={e => setCustomerName(e.target.value)} className="w-full bg-white border border-zinc-200 text-zinc-900 rounded p-1.5 font-semibold outline-none" />
+          <label className="block text-[10px] font-bold text-outline uppercase mb-1">Müşteri Adı</label>
+          <input type="text" value={customerName} onChange={e => setCustomerName(e.target.value)} className="w-full bg-surface-container-lowest border border-outline-variant/25 text-on-surface rounded-lg p-2 font-bold outline-none focus:border-primary/40" />
         </div>
         <div>
-          <label className="block text-[10px] font-bold text-zinc-400 uppercase mb-1">Telefon</label>
-          <input type="text" value={customerPhone} onChange={e => setCustomerPhone(e.target.value)} className="w-full bg-white border border-zinc-200 text-zinc-900 rounded p-1.5 font-semibold outline-none" />
+          <label className="block text-[10px] font-bold text-outline uppercase mb-1">Telefon</label>
+          <input type="text" value={customerPhone} onChange={e => setCustomerPhone(e.target.value)} className="w-full bg-surface-container-lowest border border-outline-variant/25 text-on-surface rounded-lg p-2 font-bold outline-none focus:border-primary/40" />
         </div>
         <div>
-          <label className="block text-[10px] font-bold text-zinc-400 uppercase mb-1">Yetişkin Pax</label>
-          <input type="number" value={paxCount} onChange={e => handlePaxChange(parseInt(e.target.value) || 1)} className="w-full bg-white border border-zinc-200 text-zinc-900 rounded p-1.5 font-semibold outline-none" />
+          <label className="block text-[10px] font-bold text-outline uppercase mb-1">Yetişkin Pax</label>
+          <input type="number" value={paxCount} onChange={e => handlePaxChange(parseInt(e.target.value) || 1)} className="w-full bg-surface-container-lowest border border-outline-variant/25 text-on-surface rounded-lg p-2 font-bold outline-none focus:border-primary/40" />
         </div>
         <div>
-          <label className="block text-[10px] font-bold text-zinc-400 uppercase mb-1">Kar Marjı (%)</label>
-          <input type="number" value={margin} onChange={e => handleMarginChange(parseFloat(e.target.value) || 0)} className="w-full bg-white border border-zinc-200 text-zinc-900 rounded p-1.5 font-semibold outline-none" />
+          <label className="block text-[10px] font-bold text-outline uppercase mb-1">Kar Marjı (%)</label>
+          <input type="number" value={margin} onChange={e => handleMarginChange(parseFloat(e.target.value) || 0)} className="w-full bg-surface-container-lowest border border-outline-variant/25 text-on-surface rounded-lg p-2 font-bold outline-none focus:border-primary/40" />
         </div>
       </div>
 
       {/* Item List Table */}
-      <div className="border border-zinc-200 rounded overflow-hidden">
-        <div className="px-4 py-3 bg-zinc-50 border-b border-zinc-200 flex justify-between items-center">
-          <span className="font-semibold uppercase tracking-wider text-[10px] text-zinc-500">Teklif Kalemleri</span>
-          <button onClick={() => setLibModalOpen(true)} className="bg-zinc-900 text-white text-xs font-medium px-3 py-1 rounded">
+      <div className="border border-outline-variant/15 rounded-2xl overflow-hidden bg-surface-container-lowest">
+        <div className="px-4 py-3 bg-surface-container-low border-b border-outline-variant/15 flex justify-between items-center">
+          <span className="font-bold uppercase tracking-wider text-[10px] text-on-surface-variant">Teklif Kalemleri</span>
+          <button onClick={() => setLibModalOpen(true)} className="bg-primary hover:bg-primary-container text-white text-xs font-bold px-3.5 py-1.5 rounded-lg transition-all active:scale-95">
             + Hizmet Ekle
           </button>
         </div>
         <table className="w-full text-left text-xs">
-          <thead className="bg-zinc-50 border-b border-zinc-200 text-zinc-400 uppercase text-[10px] font-bold">
+          <thead className="bg-surface-container-low border-b border-outline-variant/15 text-on-surface-variant uppercase text-[10px] font-bold">
             <tr>
               <th className="p-3">Hizmet</th>
               <th className="p-3">Kategori</th>
@@ -288,15 +288,15 @@ export default function QuotationForm({ editId }: { editId?: string }) {
               <th className="p-3 text-right">İşlem</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-zinc-100">
+          <tbody className="divide-y divide-outline-variant/10">
             {items.map((it) => (
-              <tr key={it._key} className="hover:bg-zinc-50">
-                <td className="p-3 font-semibold text-zinc-900">{it.name}</td>
-                <td className="p-3 text-zinc-500">{it.category}</td>
-                <td className="p-3 font-mono font-bold text-zinc-900">${it.unitCostUsd}</td>
-                <td className="p-3 font-mono font-bold text-zinc-900 text-right">${it.saleTotalUsd.toFixed(2)}</td>
+              <tr key={it._key} className="hover:bg-primary/[0.03] transition-colors">
+                <td className="p-3 font-bold text-on-surface">{it.name}</td>
+                <td className="p-3 text-on-surface-variant">{it.category}</td>
+                <td className="p-3 font-mono font-bold text-on-surface">${it.unitCostUsd}</td>
+                <td className="p-3 font-mono font-bold text-primary text-right">${it.saleTotalUsd.toFixed(2)}</td>
                 <td className="p-3 text-right">
-                  <button onClick={() => removeItem(it._key)} className="text-zinc-400 hover:text-red-600">
+                  <button onClick={() => removeItem(it._key)} className="text-outline hover:text-error transition-colors">
                     <span className="material-symbols-outlined text-[16px]">delete</span>
                   </button>
                 </td>

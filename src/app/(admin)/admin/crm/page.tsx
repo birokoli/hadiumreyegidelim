@@ -6,11 +6,11 @@ import Link from "next/link";
 type LeadStage = "NEW" | "IN_DISCUSSION" | "QUOTATION_SENT" | "WON" | "LOST";
 
 const STAGES: { key: LeadStage; label: string; color: string; bg: string; border: string; icon: string }[] = [
-  { key: "NEW", label: "Yeni Talep / Lead", color: "text-zinc-900", bg: "bg-zinc-50", border: "border-zinc-200", icon: "inbox" },
-  { key: "IN_DISCUSSION", label: "Görüşmede", color: "text-zinc-900", bg: "bg-zinc-50", border: "border-zinc-200", icon: "call" },
-  { key: "QUOTATION_SENT", label: "Teklif Gönderildi", color: "text-zinc-900", bg: "bg-zinc-50", border: "border-zinc-200", icon: "request_quote" },
-  { key: "WON", label: "Satış Kazanıldı (WON)", color: "text-zinc-900", bg: "bg-zinc-50", border: "border-zinc-200", icon: "task_alt" },
-  { key: "LOST", label: "Kaybedildi (LOST)", color: "text-zinc-400", bg: "bg-zinc-50", border: "border-zinc-200", icon: "cancel" },
+  { key: "NEW", label: "Yeni Talep / Lead", color: "text-primary", bg: "bg-primary/[0.05]", border: "border-primary/20", icon: "inbox" },
+  { key: "IN_DISCUSSION", label: "Görüşmede", color: "text-[#b8862f]", bg: "bg-[#b8862f]/[0.06]", border: "border-[#b8862f]/25", icon: "call" },
+  { key: "QUOTATION_SENT", label: "Teklif Gönderildi", color: "text-secondary", bg: "bg-secondary/[0.06]", border: "border-secondary/25", icon: "request_quote" },
+  { key: "WON", label: "Satış Kazanıldı (WON)", color: "text-secondary", bg: "bg-secondary/[0.1]", border: "border-secondary/35", icon: "task_alt" },
+  { key: "LOST", label: "Kaybedildi (LOST)", color: "text-outline", bg: "bg-surface-container-low", border: "border-outline-variant/20", icon: "cancel" },
 ];
 
 export default function CrmPage() {
@@ -151,22 +151,22 @@ export default function CrmPage() {
   const winRate = leads.length > 0 ? Math.round((wonLeads.length / leads.length) * 100) : 0;
   const activeLeadsCount = leads.filter((l) => l.stage !== "LOST" && l.stage !== "WON").length;
 
-  if (loading) return <div className="p-8 max-w-7xl mx-auto min-h-screen bg-white text-zinc-500 text-xs">CRM Komuta Merkezi yükleniyor...</div>;
+  if (loading) return <div className="p-8 max-w-7xl mx-auto min-h-screen bg-surface text-on-surface-variant text-xs">CRM Komuta Merkezi yükleniyor...</div>;
 
   return (
-    <div className="p-6 lg:p-8 space-y-8 max-w-7xl mx-auto min-h-screen bg-white text-zinc-900">
+    <div className="p-6 lg:p-8 space-y-8 max-w-7xl mx-auto min-h-screen bg-surface text-on-surface">
       {/* Top Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-zinc-200">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-outline-variant/15">
         <div>
-          <span className="text-[10px] font-bold tracking-widest text-zinc-400 uppercase">SATIS & CRM</span>
-          <h1 className="text-2xl font-light tracking-tight text-zinc-900 mt-1">CRM Komuta Merkezi</h1>
-          <p className="text-xs text-zinc-500 mt-0.5">Tüm müşteri adaylarını ve satış fırsatlarını Kanban panosunda yönetin.</p>
+          <span className="text-[10px] font-bold tracking-widest text-secondary uppercase">Satış & CRM</span>
+          <h1 className="font-headline text-2xl font-bold tracking-tight text-primary mt-1">CRM Komuta Merkezi</h1>
+          <p className="text-xs text-on-surface-variant mt-0.5">Tüm müşteri adaylarını ve satış fırsatlarını Kanban panosunda yönetin.</p>
         </div>
 
         <div className="flex items-center gap-3 shrink-0">
           <button
             onClick={() => setShowAddModal(true)}
-            className="inline-flex items-center gap-1.5 bg-zinc-900 hover:bg-zinc-800 text-white font-medium px-4 py-2 rounded text-xs transition-colors"
+            className="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-container text-white font-bold px-4 py-2.5 rounded-xl text-xs transition-all active:scale-95 shadow-sm"
           >
             <span className="material-symbols-outlined text-[16px]">add</span>
             Yeni Fırsat Ekle
@@ -174,50 +174,50 @@ export default function CrmPage() {
         </div>
       </div>
 
-      {/* Top KPI Metrics Bar - Swiss Minimalist */}
+      {/* Top KPI Metrics Bar */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: "Toplam Fırsat Hacmi", value: `$${totalPipelineValue.toLocaleString()}`, badge: "PIPELINE" },
-          { label: "Kazanım Oranı (Win Rate)", value: `%${winRate}`, badge: "DONUSUM" },
-          { label: "Aktif Görüşmedeki Fırsatlar", value: `${activeLeadsCount} Müşteri`, badge: "IN PROGRESS" },
-          { label: "Toplam CRM Müşterisi", value: `${leads.length} Kayıt`, badge: "TOPLAM" },
+          { label: "Toplam Fırsat Hacmi", value: `$${totalPipelineValue.toLocaleString()}`, badge: "PIPELINE", accent: "text-primary" },
+          { label: "Kazanım Oranı (Win Rate)", value: `%${winRate}`, badge: "DÖNÜŞÜM", accent: "text-secondary" },
+          { label: "Aktif Görüşmedeki Fırsatlar", value: `${activeLeadsCount} Müşteri`, badge: "DEVAM EDİYOR", accent: "text-[#b8862f]" },
+          { label: "Toplam CRM Müşterisi", value: `${leads.length} Kayıt`, badge: "TOPLAM", accent: "text-on-surface-variant" },
         ].map((kpi) => (
-          <div key={kpi.label} className="p-5 rounded border border-zinc-200 bg-zinc-50/50 flex flex-col justify-between">
-            <span className="text-[10px] font-bold tracking-widest text-zinc-400 uppercase mb-3">{kpi.badge}</span>
+          <div key={kpi.label} className="p-5 rounded-2xl border border-outline-variant/15 bg-surface-container-lowest flex flex-col justify-between">
+            <span className={`text-[10px] font-bold tracking-widest uppercase mb-3 ${kpi.accent}`}>{kpi.badge}</span>
             <div>
-              <p className="text-xs text-zinc-500 font-medium">{kpi.label}</p>
-              <p className="text-2xl font-light text-zinc-900 tracking-tight mt-1">{kpi.value}</p>
+              <p className="text-xs text-on-surface-variant font-medium">{kpi.label}</p>
+              <p className="font-headline text-2xl font-bold text-on-surface tracking-tight mt-1">{kpi.value}</p>
             </div>
           </div>
         ))}
       </div>
 
       {/* Controls & View Switcher */}
-      <div className="flex justify-between items-center border-b border-zinc-200 pb-3">
+      <div className="flex justify-between items-center border-b border-outline-variant/15 pb-3">
         <div className="flex items-center gap-2">
           <button
             onClick={() => setViewMode("kanban")}
-            className={`px-3 py-1.5 rounded text-xs font-medium transition-colors border ${
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all border ${
               viewMode === "kanban"
-                ? "bg-zinc-900 text-white border-zinc-900"
-                : "bg-white text-zinc-600 border-zinc-200 hover:border-zinc-900"
+                ? "bg-primary text-white border-primary shadow-sm"
+                : "bg-surface-container-lowest text-on-surface-variant border-outline-variant/25 hover:border-primary/40"
             }`}
           >
             Kanban Görünümü
           </button>
           <button
             onClick={() => setViewMode("table")}
-            className={`px-3 py-1.5 rounded text-xs font-medium transition-colors border ${
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all border ${
               viewMode === "table"
-                ? "bg-zinc-900 text-white border-zinc-900"
-                : "bg-white text-zinc-600 border-zinc-200 hover:border-zinc-900"
+                ? "bg-primary text-white border-primary shadow-sm"
+                : "bg-surface-container-lowest text-on-surface-variant border-outline-variant/25 hover:border-primary/40"
             }`}
           >
             Tablo Görünümü
           </button>
         </div>
 
-        <span className="text-[11px] text-zinc-400 font-mono">Son Güncelleme: Canlı Senkronize</span>
+        <span className="text-[11px] text-outline font-mono">Son Güncelleme: Canlı Senkronize</span>
       </div>
 
       {/* View Content */}
@@ -230,21 +230,24 @@ export default function CrmPage() {
             return (
               <div
                 key={stg.key}
-                className="bg-zinc-50 border border-zinc-200 rounded p-4 flex flex-col min-h-[500px]"
+                className={`${stg.bg} border ${stg.border} rounded-2xl p-4 flex flex-col min-h-[500px]`}
               >
-                <div className="flex items-center justify-between pb-3 border-b border-zinc-200 mb-3">
-                  <div>
-                    <h3 className="text-xs font-semibold text-zinc-900">{stg.label}</h3>
-                    <p className="text-[10px] text-zinc-400 font-mono mt-0.5">${stageTotal.toLocaleString()}</p>
+                <div className="flex items-center justify-between pb-3 border-b border-outline-variant/15 mb-3">
+                  <div className="flex items-center gap-2">
+                    <span className={`material-symbols-outlined text-[16px] ${stg.color}`}>{stg.icon}</span>
+                    <div>
+                      <h3 className="text-xs font-bold text-on-surface">{stg.label}</h3>
+                      <p className="text-[10px] text-outline font-mono mt-0.5">${stageTotal.toLocaleString()}</p>
+                    </div>
                   </div>
-                  <span className="text-xs font-bold bg-white text-zinc-700 px-2 py-0.5 rounded border border-zinc-200">
+                  <span className={`text-xs font-bold bg-surface-container-lowest ${stg.color} px-2 py-0.5 rounded-full border ${stg.border}`}>
                     {stageLeads.length}
                   </span>
                 </div>
 
                 <div className="space-y-3 flex-1 overflow-y-auto">
                   {stageLeads.length === 0 ? (
-                    <div className="py-12 text-center text-[11px] text-zinc-400 italic">
+                    <div className="py-12 text-center text-[11px] text-outline italic">
                       Bu aşamada müşteri yok.
                     </div>
                   ) : (
@@ -252,16 +255,16 @@ export default function CrmPage() {
                       <div
                         key={lead.id}
                         onClick={() => setSelectedLead(lead)}
-                        className="p-3.5 bg-white border border-zinc-200 hover:border-zinc-900 rounded shadow-2xs cursor-pointer transition-all space-y-2"
+                        className="p-3.5 bg-surface-container-lowest border border-outline-variant/15 hover:border-primary/40 hover:shadow-sm rounded-xl cursor-pointer transition-all space-y-2"
                       >
                         <div className="flex items-start justify-between">
-                          <p className="text-xs font-semibold text-zinc-900">{lead.name}</p>
-                          <span className="text-xs font-mono font-bold text-zinc-900">${lead.valueUSD || 0}</span>
+                          <p className="text-xs font-bold text-on-surface">{lead.name}</p>
+                          <span className="text-xs font-mono font-bold text-primary">${lead.valueUSD || 0}</span>
                         </div>
 
-                        <p className="text-[11px] text-zinc-500 font-mono">{lead.phone}</p>
+                        <p className="text-[11px] text-outline font-mono">{lead.phone}</p>
 
-                        <div className="flex items-center justify-between pt-2 border-t border-zinc-100 text-[10px] text-zinc-400">
+                        <div className="flex items-center justify-between pt-2 border-t border-outline-variant/10 text-[10px] text-outline">
                           <span>{lead.preferredPackage || "Umre Talebi"}</span>
                           {lead.activities?.length > 0 && (
                             <span className="flex items-center gap-0.5">
@@ -279,9 +282,9 @@ export default function CrmPage() {
           })}
         </div>
       ) : (
-        <div className="border border-zinc-200 rounded overflow-hidden">
+        <div className="border border-outline-variant/15 rounded-2xl overflow-hidden bg-surface-container-lowest">
           <table className="w-full text-left text-xs">
-            <thead className="bg-zinc-50 border-b border-zinc-200 text-zinc-500 uppercase tracking-wider font-semibold text-[10px]">
+            <thead className="bg-surface-container-low border-b border-outline-variant/15 text-on-surface-variant uppercase tracking-wider font-bold text-[10px]">
               <tr>
                 <th className="px-4 py-3">Müşteri</th>
                 <th className="px-4 py-3">Telefon</th>
@@ -291,18 +294,18 @@ export default function CrmPage() {
                 <th className="px-4 py-3 text-right">İşlem</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-zinc-100">
+            <tbody className="divide-y divide-outline-variant/10">
               {leads.map((l) => (
-                <tr key={l.id} className="hover:bg-zinc-50 transition-colors">
-                  <td className="px-4 py-3 font-semibold text-zinc-900">{l.name}</td>
-                  <td className="px-4 py-3 text-zinc-500 font-mono">{l.phone}</td>
-                  <td className="px-4 py-3 text-zinc-600">{l.preferredPackage || "-"}</td>
-                  <td className="px-4 py-3 font-mono font-bold text-zinc-900">${l.valueUSD || 0}</td>
+                <tr key={l.id} className="hover:bg-primary/[0.03] transition-colors">
+                  <td className="px-4 py-3 font-bold text-on-surface">{l.name}</td>
+                  <td className="px-4 py-3 text-on-surface-variant font-mono">{l.phone}</td>
+                  <td className="px-4 py-3 text-on-surface-variant">{l.preferredPackage || "-"}</td>
+                  <td className="px-4 py-3 font-mono font-bold text-primary">${l.valueUSD || 0}</td>
                   <td className="px-4 py-3">
                     <select
                       value={l.stage || "NEW"}
                       onChange={(e) => handleStageChange(l.id, e.target.value as LeadStage)}
-                      className="bg-white border border-zinc-200 text-xs text-zinc-800 rounded px-2 py-1 focus:outline-none"
+                      className="bg-surface-container-lowest border border-outline-variant/25 text-xs text-on-surface rounded-lg px-2 py-1.5 focus:outline-none focus:border-primary/40"
                     >
                       {STAGES.map((s) => (
                         <option key={s.key} value={s.key}>
@@ -314,7 +317,7 @@ export default function CrmPage() {
                   <td className="px-4 py-3 text-right">
                     <button
                       onClick={() => setSelectedLead(l)}
-                      className="px-2.5 py-1 bg-zinc-900 text-white text-[11px] font-medium rounded hover:bg-zinc-800 transition-colors"
+                      className="px-2.5 py-1.5 bg-primary text-white text-[11px] font-bold rounded-lg hover:bg-primary-container transition-all active:scale-95"
                     >
                       Detay
                     </button>
@@ -328,25 +331,25 @@ export default function CrmPage() {
 
       {/* Selected Lead Modal */}
       {selectedLead && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-xs">
-          <div className="bg-white border border-zinc-200 rounded max-w-lg w-full p-6 space-y-4 shadow-2xl">
-            <div className="flex items-center justify-between border-b border-zinc-200 pb-3">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-on-primary-fixed/40 backdrop-blur-sm">
+          <div className="bg-surface-container-lowest border border-outline-variant/15 rounded-2xl max-w-lg w-full p-6 space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-outline-variant/15 pb-3">
               <div>
-                <h3 className="text-sm font-bold text-zinc-900">{selectedLead.name}</h3>
-                <p className="text-xs text-zinc-500 font-mono">{selectedLead.phone}</p>
+                <h3 className="text-sm font-bold text-on-surface">{selectedLead.name}</h3>
+                <p className="text-xs text-outline font-mono">{selectedLead.phone}</p>
               </div>
-              <button onClick={() => setSelectedLead(null)} className="text-zinc-400 hover:text-zinc-900">
+              <button onClick={() => setSelectedLead(null)} className="text-outline hover:text-primary transition-colors">
                 <span className="material-symbols-outlined text-[20px]">close</span>
               </button>
             </div>
 
-            <div className="space-y-3 text-xs text-zinc-700">
+            <div className="space-y-3 text-xs text-on-surface-variant">
               <div>
-                <label className="block text-[10px] font-bold uppercase text-zinc-400 mb-1">Aşama</label>
+                <label className="block text-[10px] font-bold uppercase text-outline mb-1">Aşama</label>
                 <select
                   value={selectedLead.stage || "NEW"}
                   onChange={(e) => handleStageChange(selectedLead.id, e.target.value as LeadStage)}
-                  className="w-full bg-white border border-zinc-200 text-xs text-zinc-800 rounded p-2 focus:outline-none"
+                  className="w-full bg-surface-container-lowest border border-outline-variant/25 text-xs text-on-surface rounded-lg p-2 focus:outline-none focus:border-primary/40"
                 >
                   {STAGES.map((s) => (
                     <option key={s.key} value={s.key}>
@@ -357,28 +360,28 @@ export default function CrmPage() {
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold uppercase text-zinc-400 mb-1">Fırsat Değeri ($)</label>
+                <label className="block text-[10px] font-bold uppercase text-outline mb-1">Fırsat Değeri ($)</label>
                 <input
                   type="number"
                   defaultValue={selectedLead.valueUSD || 0}
                   onBlur={(e) => handleUpdateValue(selectedLead.id, e.target.value)}
-                  className="w-full bg-white border border-zinc-200 text-xs text-zinc-800 rounded p-2 focus:outline-none"
+                  className="w-full bg-surface-container-lowest border border-outline-variant/25 text-xs text-on-surface rounded-lg p-2 focus:outline-none focus:border-primary/40"
                 />
               </div>
 
               <div>
-                <label className="block text-[10px] font-bold uppercase text-zinc-400 mb-1">Not Ekle</label>
+                <label className="block text-[10px] font-bold uppercase text-outline mb-1">Not Ekle</label>
                 <textarea
                   rows={2}
                   value={newNote}
                   onChange={(e) => setNewNote(e.target.value)}
                   placeholder="Görüşme notu yazın..."
-                  className="w-full bg-white border border-zinc-200 text-xs text-zinc-800 rounded p-2 focus:outline-none"
+                  className="w-full bg-surface-container-lowest border border-outline-variant/25 text-xs text-on-surface rounded-lg p-2 focus:outline-none focus:border-primary/40"
                 />
                 <button
                   onClick={handleAddActivityNote}
                   disabled={savingNote}
-                  className="mt-2 w-full py-1.5 bg-zinc-900 text-white rounded text-xs font-medium hover:bg-zinc-800 transition-colors"
+                  className="mt-2 w-full py-2 bg-primary text-white rounded-xl text-xs font-bold hover:bg-primary-container transition-all active:scale-95 disabled:opacity-60"
                 >
                   Notu Kaydet
                 </button>
@@ -390,51 +393,51 @@ export default function CrmPage() {
 
       {/* Add Lead Modal */}
       {showAddModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-xs">
-          <form onSubmit={handleCreateLead} className="bg-white border border-zinc-200 rounded max-w-md w-full p-6 space-y-4 shadow-2xl">
-            <div className="flex items-center justify-between border-b border-zinc-200 pb-3">
-              <h3 className="text-sm font-bold text-zinc-900">Yeni Fırsat / Müşteri Adayı</h3>
-              <button type="button" onClick={() => setShowAddModal(false)} className="text-zinc-400 hover:text-zinc-900">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-on-primary-fixed/40 backdrop-blur-sm">
+          <form onSubmit={handleCreateLead} className="bg-surface-container-lowest border border-outline-variant/15 rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-outline-variant/15 pb-3">
+              <h3 className="text-sm font-bold text-on-surface">Yeni Fırsat / Müşteri Adayı</h3>
+              <button type="button" onClick={() => setShowAddModal(false)} className="text-outline hover:text-primary transition-colors">
                 <span className="material-symbols-outlined text-[20px]">close</span>
               </button>
             </div>
 
             <div className="space-y-3 text-xs">
               <div>
-                <label className="block text-zinc-600 font-medium mb-1">Ad Soyad</label>
+                <label className="block text-on-surface-variant font-bold mb-1">Ad Soyad</label>
                 <input
                   type="text"
                   required
                   value={newLeadForm.name}
                   onChange={(e) => setNewLeadForm({ ...newLeadForm, name: e.target.value })}
-                  className="w-full bg-white border border-zinc-200 rounded p-2 focus:outline-none"
+                  className="w-full bg-surface-container-lowest border border-outline-variant/25 rounded-lg p-2 focus:outline-none focus:border-primary/40"
                 />
               </div>
 
               <div>
-                <label className="block text-zinc-600 font-medium mb-1">Telefon</label>
+                <label className="block text-on-surface-variant font-bold mb-1">Telefon</label>
                 <input
                   type="text"
                   required
                   value={newLeadForm.phone}
                   onChange={(e) => setNewLeadForm({ ...newLeadForm, phone: e.target.value })}
-                  className="w-full bg-white border border-zinc-200 rounded p-2 focus:outline-none"
+                  className="w-full bg-surface-container-lowest border border-outline-variant/25 rounded-lg p-2 focus:outline-none focus:border-primary/40"
                 />
               </div>
 
               <div>
-                <label className="block text-zinc-600 font-medium mb-1">Fiyat ($)</label>
+                <label className="block text-on-surface-variant font-bold mb-1">Fiyat ($)</label>
                 <input
                   type="number"
                   value={newLeadForm.valueUSD}
                   onChange={(e) => setNewLeadForm({ ...newLeadForm, valueUSD: e.target.value })}
-                  className="w-full bg-white border border-zinc-200 rounded p-2 focus:outline-none"
+                  className="w-full bg-surface-container-lowest border border-outline-variant/25 rounded-lg p-2 focus:outline-none focus:border-primary/40"
                 />
               </div>
             </div>
 
             <div className="pt-2">
-              <button type="submit" className="w-full py-2 bg-zinc-900 text-white rounded text-xs font-medium hover:bg-zinc-800 transition-colors">
+              <button type="submit" className="w-full py-2.5 bg-primary text-white rounded-xl text-xs font-bold hover:bg-primary-container transition-all active:scale-95">
                 Fırsatı Oluştur
               </button>
             </div>

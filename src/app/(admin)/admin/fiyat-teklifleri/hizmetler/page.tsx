@@ -99,22 +99,22 @@ export default function ServiceLibraryPage() {
 
   const filtered = services.filter(s => catFilter === 'all' || s.category === catFilter);
 
-  if (loading) return <div className="p-8 max-w-7xl mx-auto min-h-screen bg-white text-zinc-500 text-xs">Hizmet kütüphanesi yükleniyor...</div>;
+  if (loading) return <div className="p-8 max-w-7xl mx-auto min-h-screen bg-surface text-on-surface-variant text-xs">Hizmet kütüphanesi yükleniyor...</div>;
 
   return (
-    <div className="p-6 lg:p-8 max-w-7xl mx-auto space-y-8 min-h-screen bg-white text-zinc-900">
+    <div className="p-6 lg:p-8 max-w-7xl mx-auto space-y-8 min-h-screen bg-surface text-on-surface">
       {/* Header Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-zinc-200">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-outline-variant/15">
         <div>
-          <span className="text-[10px] font-bold tracking-widest text-zinc-400 uppercase">TEKLIF VE SERVISLER</span>
-          <h1 className="text-2xl font-light tracking-tight text-zinc-900 mt-1">Hizmet Kütüphanesi</h1>
-          <p className="text-xs text-zinc-500 mt-0.5">{services.length} hizmet şablonu aktif.</p>
+          <span className="text-[10px] font-bold tracking-widest text-secondary uppercase">Teklif ve Servisler</span>
+          <h1 className="font-headline text-2xl font-bold tracking-tight text-primary mt-1">Hizmet Kütüphanesi</h1>
+          <p className="text-xs text-on-surface-variant mt-0.5">{services.length} hizmet şablonu aktif.</p>
         </div>
 
         <div className="flex items-center gap-3">
           <button
             onClick={openNew}
-            className="inline-flex items-center gap-1.5 bg-zinc-900 hover:bg-zinc-800 text-white font-medium px-4 py-2 rounded text-xs transition-colors"
+            className="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-container text-white font-bold px-4 py-2.5 rounded-xl text-xs transition-all active:scale-95 shadow-sm"
           >
             <span className="material-symbols-outlined text-[16px]">add</span>
             <span>Yeni Hizmet</span>
@@ -123,13 +123,13 @@ export default function ServiceLibraryPage() {
       </div>
 
       {/* Filter Tabs */}
-      <div className="flex items-center gap-2 border-b border-zinc-200 pb-3 overflow-x-auto">
+      <div className="flex items-center gap-2 border-b border-outline-variant/15 pb-3 overflow-x-auto">
         <button
           onClick={() => setCatFilter('all')}
-          className={`px-3 py-1.5 rounded text-xs font-medium border transition-colors ${
+          className={`px-3.5 py-1.5 rounded-xl text-xs font-bold border transition-all shrink-0 ${
             catFilter === 'all'
-              ? 'bg-zinc-900 text-white border-zinc-900 font-semibold'
-              : 'bg-white text-zinc-600 border-zinc-200 hover:border-zinc-900'
+              ? 'bg-primary text-white border-primary shadow-sm'
+              : 'bg-surface-container-lowest text-on-surface-variant border-outline-variant/25 hover:border-primary/40'
           }`}
         >
           Tümü
@@ -138,10 +138,10 @@ export default function ServiceLibraryPage() {
           <button
             key={c.value}
             onClick={() => setCatFilter(c.value)}
-            className={`px-3 py-1.5 rounded text-xs font-medium border transition-colors ${
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold border transition-all shrink-0 ${
               catFilter === c.value
-                ? 'bg-zinc-900 text-white border-zinc-900 font-semibold'
-                : 'bg-white text-zinc-600 border-zinc-200 hover:border-zinc-900'
+                ? 'bg-primary text-white border-primary shadow-sm'
+                : 'bg-surface-container-lowest text-on-surface-variant border-outline-variant/25 hover:border-primary/40'
             }`}
           >
             {c.label}
@@ -150,14 +150,14 @@ export default function ServiceLibraryPage() {
       </div>
 
       {/* Table */}
-      <div className="border border-zinc-200 rounded overflow-hidden">
+      <div className="border border-outline-variant/15 rounded-2xl overflow-hidden bg-surface-container-lowest">
         {filtered.length === 0 ? (
-          <div className="py-16 text-center text-zinc-400 text-xs font-medium">
+          <div className="py-16 text-center text-outline text-xs font-medium">
             Henüz hizmet eklenmemiş.
           </div>
         ) : (
           <table className="w-full text-left text-xs">
-            <thead className="bg-zinc-50 border-b border-zinc-200 text-zinc-500 uppercase tracking-wider font-semibold text-[10px]">
+            <thead className="bg-surface-container-low border-b border-outline-variant/15 text-on-surface-variant uppercase tracking-wider font-bold text-[10px]">
               <tr>
                 <th className="px-4 py-3">Hizmet Adı</th>
                 <th className="px-4 py-3">Kategori</th>
@@ -166,21 +166,21 @@ export default function ServiceLibraryPage() {
                 <th className="px-4 py-3 text-right">İşlem</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-zinc-100">
+            <tbody className="divide-y divide-outline-variant/10">
               {filtered.map((svc) => {
                 const cat = CATEGORIES.find(c => c.value === svc.category);
                 const pt = PRICING_TYPES.find(p => p.value === svc.defaultPricingType);
                 return (
-                  <tr key={svc.id} className="hover:bg-zinc-50 transition-colors">
-                    <td className="px-4 py-3 font-semibold text-zinc-900">{svc.name}</td>
-                    <td className="px-4 py-3 text-zinc-500">{cat?.label || svc.category}</td>
-                    <td className="px-4 py-3 text-zinc-500">{pt?.label || svc.defaultPricingType}</td>
-                    <td className="px-4 py-3 font-mono font-bold text-zinc-900 text-right">${svc.defaultCostUsd || 0}</td>
+                  <tr key={svc.id} className="hover:bg-primary/[0.03] transition-colors">
+                    <td className="px-4 py-3 font-bold text-on-surface">{svc.name}</td>
+                    <td className="px-4 py-3 text-on-surface-variant">{cat?.label || svc.category}</td>
+                    <td className="px-4 py-3 text-on-surface-variant">{pt?.label || svc.defaultPricingType}</td>
+                    <td className="px-4 py-3 font-mono font-bold text-primary text-right">${svc.defaultCostUsd || 0}</td>
                     <td className="px-4 py-3 text-right space-x-2">
-                      <button onClick={() => openEdit(svc)} className="p-1 text-zinc-400 hover:text-zinc-900">
+                      <button onClick={() => openEdit(svc)} className="p-1.5 text-outline hover:text-primary transition-colors">
                         <span className="material-symbols-outlined text-[16px]">edit</span>
                       </button>
-                      <button onClick={() => del(svc.id, svc.name)} className="p-1 text-zinc-400 hover:text-red-600">
+                      <button onClick={() => del(svc.id, svc.name)} className="p-1.5 text-outline hover:text-error transition-colors">
                         <span className="material-symbols-outlined text-[16px]">delete</span>
                       </button>
                     </td>
@@ -194,32 +194,32 @@ export default function ServiceLibraryPage() {
 
       {/* Modal */}
       {modalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-xs">
-          <div className="bg-white border border-zinc-200 rounded max-w-md w-full p-6 space-y-4 shadow-2xl">
-            <div className="flex items-center justify-between border-b border-zinc-200 pb-3">
-              <h3 className="text-sm font-bold text-zinc-900">{editId ? 'Hizmet Düzenle' : 'Yeni Hizmet Ekle'}</h3>
-              <button onClick={() => setModalOpen(false)} className="text-zinc-400 hover:text-zinc-900">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-on-primary-fixed/40 backdrop-blur-sm">
+          <div className="bg-surface-container-lowest border border-outline-variant/15 rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl">
+            <div className="flex items-center justify-between border-b border-outline-variant/15 pb-3">
+              <h3 className="text-sm font-bold text-on-surface">{editId ? 'Hizmet Düzenle' : 'Yeni Hizmet Ekle'}</h3>
+              <button onClick={() => setModalOpen(false)} className="text-outline hover:text-primary transition-colors">
                 <span className="material-symbols-outlined text-[20px]">close</span>
               </button>
             </div>
 
             <div className="space-y-3 text-xs">
               <div>
-                <label className="block font-medium text-zinc-700 mb-1">Hizmet Adı</label>
+                <label className="block font-bold text-on-surface-variant mb-1">Hizmet Adı</label>
                 <input
                   type="text"
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  className="w-full bg-white border border-zinc-200 rounded p-2 focus:outline-none"
+                  className="w-full bg-surface-container-lowest border border-outline-variant/25 rounded-lg p-2 focus:outline-none focus:border-primary/40"
                 />
               </div>
 
               <div>
-                <label className="block font-medium text-zinc-700 mb-1">Kategori</label>
+                <label className="block font-bold text-on-surface-variant mb-1">Kategori</label>
                 <select
                   value={form.category}
                   onChange={(e) => setForm({ ...form, category: e.target.value })}
-                  className="w-full bg-white border border-zinc-200 rounded p-2 focus:outline-none"
+                  className="w-full bg-surface-container-lowest border border-outline-variant/25 rounded-lg p-2 focus:outline-none focus:border-primary/40"
                 >
                   {CATEGORIES.map((c) => (
                     <option key={c.value} value={c.value}>{c.label}</option>
@@ -228,12 +228,12 @@ export default function ServiceLibraryPage() {
               </div>
 
               <div>
-                <label className="block font-medium text-zinc-700 mb-1">Varsayılan Maliyet ($)</label>
+                <label className="block font-bold text-on-surface-variant mb-1">Varsayılan Maliyet ($)</label>
                 <input
                   type="number"
                   value={form.defaultCostUsd}
                   onChange={(e) => setForm({ ...form, defaultCostUsd: parseFloat(e.target.value) || 0 })}
-                  className="w-full bg-white border border-zinc-200 rounded p-2 focus:outline-none"
+                  className="w-full bg-surface-container-lowest border border-outline-variant/25 rounded-lg p-2 focus:outline-none focus:border-primary/40"
                 />
               </div>
             </div>
@@ -242,7 +242,7 @@ export default function ServiceLibraryPage() {
               <button
                 onClick={save}
                 disabled={saving}
-                className="w-full py-2 bg-zinc-900 text-white rounded text-xs font-medium hover:bg-zinc-800 transition-colors"
+                className="w-full py-2.5 bg-primary text-white rounded-xl text-xs font-bold hover:bg-primary-container transition-all active:scale-95 disabled:opacity-60"
               >
                 Kaydet
               </button>

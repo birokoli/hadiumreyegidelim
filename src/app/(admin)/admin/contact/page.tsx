@@ -74,57 +74,57 @@ export default function ContactLeadsPage() {
   const contactedCount = leads.filter(l => l.status === "CONTACTED").length;
   const resolvedCount = leads.filter(l => l.status === "RESOLVED").length;
 
-  if (loading) return <div className="p-8 max-w-7xl mx-auto min-h-screen bg-white text-zinc-500 text-xs">Talepler yükleniyor...</div>;
+  if (loading) return <div className="p-8 max-w-7xl mx-auto min-h-screen bg-surface text-on-surface-variant text-xs">Talepler yükleniyor...</div>;
 
   return (
-    <div className="p-6 lg:p-8 max-w-7xl mx-auto space-y-8 min-h-screen bg-white text-zinc-900">
+    <div className="p-6 lg:p-8 max-w-7xl mx-auto space-y-8 min-h-screen bg-surface text-on-surface">
       {/* Header Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-zinc-200">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-outline-variant/15">
         <div>
-          <span className="text-[10px] font-bold tracking-widest text-zinc-400 uppercase">SATIS & CRM</span>
-          <h1 className="text-2xl font-light tracking-tight text-zinc-900 mt-1">İletişim Talepleri & WhatsApp</h1>
-          <p className="text-xs text-zinc-500 mt-0.5">WhatsApp ve iletişim formu üzerinden gelen müşteri potansiyelleri.</p>
+          <span className="text-[10px] font-bold tracking-widest text-secondary uppercase">Satış & CRM</span>
+          <h1 className="font-headline text-2xl font-bold tracking-tight text-primary mt-1">İletişim Talepleri & WhatsApp</h1>
+          <p className="text-xs text-on-surface-variant mt-0.5">WhatsApp ve iletişim formu üzerinden gelen müşteri potansiyelleri.</p>
         </div>
       </div>
 
-      {/* KPI Counters - Swiss Style */}
+      {/* KPI Counters */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="p-5 rounded border border-zinc-200 bg-zinc-50/50 flex justify-between items-center">
+        <div className="p-5 rounded-2xl border border-error/20 bg-surface-container-lowest flex justify-between items-center">
           <div>
-            <span className="text-[10px] font-bold tracking-widest text-zinc-400 uppercase">OKUNMADI</span>
-            <p className="text-2xl font-light text-zinc-900 mt-1">{unreadCount}</p>
+            <span className="text-[10px] font-bold tracking-widest text-error uppercase">Okunmadı</span>
+            <p className="font-headline text-2xl font-bold text-on-surface mt-1">{unreadCount}</p>
           </div>
-          <span className="text-xs font-mono font-bold bg-zinc-900 text-white px-2 py-0.5 rounded">YENİ</span>
+          <span className="text-xs font-bold bg-error text-white px-2.5 py-1 rounded-full">YENİ</span>
         </div>
 
-        <div className="p-5 rounded border border-zinc-200 bg-zinc-50/50 flex justify-between items-center">
+        <div className="p-5 rounded-2xl border border-[#b8862f]/25 bg-surface-container-lowest flex justify-between items-center">
           <div>
-            <span className="text-[10px] font-bold tracking-widest text-zinc-400 uppercase">ULAŞILDI</span>
-            <p className="text-2xl font-light text-zinc-900 mt-1">{contactedCount}</p>
+            <span className="text-[10px] font-bold tracking-widest text-[#b8862f] uppercase">Ulaşıldı</span>
+            <p className="font-headline text-2xl font-bold text-on-surface mt-1">{contactedCount}</p>
           </div>
-          <span className="text-xs font-mono font-bold bg-zinc-100 text-zinc-700 px-2 py-0.5 rounded">GÖRÜŞMEDE</span>
+          <span className="text-xs font-bold bg-[#b8862f]/10 text-[#b8862f] px-2.5 py-1 rounded-full">GÖRÜŞMEDE</span>
         </div>
 
-        <div className="p-5 rounded border border-zinc-200 bg-zinc-50/50 flex justify-between items-center">
+        <div className="p-5 rounded-2xl border border-secondary/25 bg-surface-container-lowest flex justify-between items-center">
           <div>
-            <span className="text-[10px] font-bold tracking-widest text-zinc-400 uppercase">ÇÖZÜLDÜ</span>
-            <p className="text-2xl font-light text-zinc-900 mt-1">{resolvedCount}</p>
+            <span className="text-[10px] font-bold tracking-widest text-secondary uppercase">Çözüldü</span>
+            <p className="font-headline text-2xl font-bold text-on-surface mt-1">{resolvedCount}</p>
           </div>
-          <span className="text-xs font-mono font-bold bg-zinc-100 text-zinc-700 px-2 py-0.5 rounded">TAMAMLANDI</span>
+          <span className="text-xs font-bold bg-secondary/10 text-secondary px-2.5 py-1 rounded-full">TAMAMLANDI</span>
         </div>
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-zinc-200 pb-4">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-outline-variant/15 pb-4">
         <div className="flex items-center gap-1.5 w-full sm:w-auto">
           {(["ALL", "UNREAD", "CONTACTED", "RESOLVED"] as const).map((st) => (
             <button
               key={st}
               onClick={() => setStatusFilter(st)}
-              className={`px-3 py-1.5 rounded text-xs font-medium border transition-colors ${
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold border transition-all ${
                 statusFilter === st
-                  ? "bg-zinc-900 text-white border-zinc-900"
-                  : "bg-white text-zinc-600 border-zinc-200 hover:border-zinc-900"
+                  ? "bg-primary text-white border-primary shadow-sm"
+                  : "bg-surface-container-lowest text-on-surface-variant border-outline-variant/25 hover:border-primary/40"
               }`}
             >
               {st === "ALL" ? "Tümü" : st === "UNREAD" ? "Okunmadı" : st === "CONTACTED" ? "Ulaşıldı" : "Çözüldü"}
@@ -133,7 +133,7 @@ export default function ContactLeadsPage() {
         </div>
 
         <div className="relative w-full sm:w-64">
-          <span className="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-zinc-400 text-[16px]">
+          <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[16px]">
             search
           </span>
           <input
@@ -141,20 +141,20 @@ export default function ContactLeadsPage() {
             placeholder="İsim, telefon veya paket ara..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-white text-xs text-zinc-900 rounded pl-8 pr-3 py-1.5 border border-zinc-200 focus:outline-none focus:border-zinc-900"
+            className="w-full bg-surface-container-lowest text-xs text-on-surface rounded-xl pl-9 pr-3 py-2 border border-outline-variant/25 focus:outline-none focus:border-primary/40"
           />
         </div>
       </div>
 
       {/* Leads Table */}
-      <div className="border border-zinc-200 rounded overflow-hidden">
+      <div className="border border-outline-variant/15 rounded-2xl overflow-hidden bg-surface-container-lowest">
         {filtered.length === 0 ? (
-          <div className="py-16 text-center text-zinc-400 text-xs font-medium">
+          <div className="py-16 text-center text-outline text-xs font-medium">
             Aramanıza uygun talep bulunamadı.
           </div>
         ) : (
           <table className="w-full text-left text-xs">
-            <thead className="bg-zinc-50 border-b border-zinc-200 text-zinc-500 uppercase tracking-wider font-semibold text-[10px]">
+            <thead className="bg-surface-container-low border-b border-outline-variant/15 text-on-surface-variant uppercase tracking-wider font-bold text-[10px]">
               <tr>
                 <th className="px-4 py-3">Müşteri</th>
                 <th className="px-4 py-3">Telefon</th>
@@ -164,20 +164,20 @@ export default function ContactLeadsPage() {
                 <th className="px-4 py-3 text-right">İşlem</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-zinc-100">
+            <tbody className="divide-y divide-outline-variant/10">
               {filtered.map((l) => {
                 const date = new Date(l.createdAt).toLocaleDateString("tr-TR", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" });
                 return (
-                  <tr key={l.id} className="hover:bg-zinc-50 transition-colors">
-                    <td className="px-4 py-3 font-semibold text-zinc-900">{l.name}</td>
-                    <td className="px-4 py-3 font-mono text-zinc-500">{l.phone}</td>
-                    <td className="px-4 py-3 text-zinc-600">{l.package || "Özel İletişim Formu"}</td>
-                    <td className="px-4 py-3 text-zinc-400 font-mono">{date}</td>
+                  <tr key={l.id} className="hover:bg-primary/[0.03] transition-colors">
+                    <td className="px-4 py-3 font-bold text-on-surface">{l.name}</td>
+                    <td className="px-4 py-3 font-mono text-on-surface-variant">{l.phone}</td>
+                    <td className="px-4 py-3 text-on-surface-variant">{l.package || "Özel İletişim Formu"}</td>
+                    <td className="px-4 py-3 text-outline font-mono">{date}</td>
                     <td className="px-4 py-3">
                       <select
                         value={l.status}
                         onChange={(e) => updateStatus(l.id, e.target.value)}
-                        className="bg-white border border-zinc-200 text-xs text-zinc-800 rounded px-2 py-1 focus:outline-none"
+                        className="bg-surface-container-lowest border border-outline-variant/25 text-xs text-on-surface rounded-lg px-2 py-1.5 focus:outline-none focus:border-primary/40"
                       >
                         <option value="UNREAD">Okunmadı</option>
                         <option value="CONTACTED">Ulaşıldı</option>
@@ -189,14 +189,14 @@ export default function ContactLeadsPage() {
                         href={buildWaUrl(l)}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 bg-zinc-900 text-white hover:bg-zinc-800 px-2.5 py-1 rounded text-[11px] font-medium transition-colors"
+                        className="inline-flex items-center gap-1 bg-[#25D366] text-white hover:bg-[#1fb958] px-2.5 py-1.5 rounded-lg text-[11px] font-bold transition-all active:scale-95"
                       >
                         <span className="material-symbols-outlined text-[14px]">chat</span>
                         <span>WhatsApp</span>
                       </a>
                       <button
                         onClick={() => deleteLead(l.id)}
-                        className="p-1 text-zinc-400 hover:text-red-600 transition-colors"
+                        className="p-1.5 text-outline hover:text-error transition-colors"
                       >
                         <span className="material-symbols-outlined text-[16px]">delete</span>
                       </button>

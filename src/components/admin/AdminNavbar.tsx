@@ -34,27 +34,27 @@ export default function AdminNavbar() {
 
   return (
     <>
-      <header className="fixed top-0 right-0 left-0 lg:left-72 z-40 bg-white flex items-center justify-between px-6 h-14 border-b border-zinc-200">
+      <header className="fixed top-0 right-0 left-0 lg:left-72 z-40 bg-surface-container-lowest/80 backdrop-blur-xl flex items-center justify-between px-6 h-14 border-b border-outline-variant/12">
         {/* Left: Mobile Toggle & Cmd+K Search Bar */}
         <div className="flex items-center gap-4">
           <button
             onClick={() => setSidebarOpen(true)}
-            className="lg:hidden p-1.5 rounded text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100"
+            className="lg:hidden p-1.5 rounded-full text-on-surface-variant hover:text-primary hover:bg-primary/[0.06] active:scale-90 transition-all"
             aria-label="Menüyü aç"
           >
             <span className="material-symbols-outlined text-[20px]">menu</span>
           </button>
 
-          {/* Search Trigger (Apple/Swiss style) */}
+          {/* Search Trigger */}
           <button
             onClick={() => setShowCommandPalette(true)}
-            className="hidden md:flex items-center justify-between gap-8 w-72 bg-zinc-50 hover:bg-zinc-100 text-zinc-500 rounded border border-zinc-200 px-3 py-1.5 text-xs transition-colors"
+            className="hidden md:flex items-center justify-between gap-8 w-72 bg-surface-container-low hover:bg-surface-container text-on-surface-variant rounded-xl border border-transparent hover:border-primary/15 px-3 py-1.5 text-xs transition-all"
           >
             <div className="flex items-center gap-2">
-              <span className="material-symbols-outlined text-[16px] text-zinc-400">search</span>
+              <span className="material-symbols-outlined text-[16px] text-outline">search</span>
               <span>Hızlı komut veya sayfa ara...</span>
             </div>
-            <kbd className="px-1.5 py-0.5 text-[10px] font-mono font-medium bg-white text-zinc-500 rounded border border-zinc-200">
+            <kbd className="px-1.5 py-0.5 text-[10px] font-mono font-bold bg-surface-container-lowest text-on-surface-variant rounded-md border border-outline-variant/20">
               ⌘K
             </kbd>
           </button>
@@ -65,7 +65,7 @@ export default function AdminNavbar() {
           {/* Mobile Search */}
           <button
             onClick={() => setShowCommandPalette(true)}
-            className="md:hidden p-1.5 rounded text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100"
+            className="md:hidden p-1.5 rounded-full text-on-surface-variant hover:text-primary hover:bg-primary/[0.06] transition-all"
             title="Komut Arama (Cmd+K)"
           >
             <span className="material-symbols-outlined text-[20px]">search</span>
@@ -74,12 +74,12 @@ export default function AdminNavbar() {
           {/* Notification Drawer Button */}
           <button
             onClick={() => setShowNotificationDrawer(true)}
-            className="relative p-1.5 rounded text-zinc-500 hover:text-zinc-900 hover:bg-zinc-100 transition-colors"
+            className="relative p-1.5 rounded-full text-on-surface-variant hover:text-primary hover:bg-primary/[0.06] active:scale-90 transition-all"
             title="Bildirimler"
           >
             <span className="material-symbols-outlined text-[20px]">notifications</span>
             {totalNotifs > 0 && (
-              <span className="absolute top-1 right-1 w-2 h-2 bg-zinc-900 rounded-full ring-2 ring-white" />
+              <span className="absolute top-1 right-1 w-2 h-2 bg-secondary rounded-full ring-2 ring-surface-container-lowest" />
             )}
           </button>
 
@@ -87,10 +87,10 @@ export default function AdminNavbar() {
           <div className="relative" ref={quickRef}>
             <button
               onClick={() => setShowQuickActions((v) => !v)}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded border text-xs font-medium transition-colors ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-bold transition-all active:scale-95 ${
                 showQuickActions
-                  ? "bg-zinc-900 text-white border-zinc-900"
-                  : "bg-white text-zinc-900 border-zinc-200 hover:border-zinc-900"
+                  ? "bg-primary text-white border-primary shadow-sm"
+                  : "bg-surface-container-lowest text-primary border-outline-variant/25 hover:border-primary/40"
               }`}
             >
               <span className="material-symbols-outlined text-[16px]">add</span>
@@ -98,9 +98,9 @@ export default function AdminNavbar() {
             </button>
 
             {showQuickActions && (
-              <div className="absolute top-10 right-0 w-52 bg-white rounded border border-zinc-200 shadow-lg overflow-hidden z-50 py-1">
-                <div className="px-3 py-2 border-b border-zinc-100">
-                  <h3 className="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider">Hızlı Aksiyonlar</h3>
+              <div className="absolute top-11 right-0 w-56 bg-surface-container-lowest rounded-2xl border border-outline-variant/15 shadow-xl overflow-hidden z-50 py-1.5">
+                <div className="px-3.5 py-2 border-b border-outline-variant/10">
+                  <h3 className="text-[10.5px] font-bold text-outline uppercase tracking-wider">Hızlı Aksiyonlar</h3>
                 </div>
                 {[
                   { href: "/admin/packages", icon: "inventory_2", label: "Yeni Paket Ekle" },
@@ -112,9 +112,9 @@ export default function AdminNavbar() {
                     key={item.href}
                     href={item.href}
                     onClick={() => setShowQuickActions(false)}
-                    className="flex items-center gap-2.5 px-3 py-2 hover:bg-zinc-50 text-xs text-zinc-700 hover:text-zinc-900 transition-colors"
+                    className="flex items-center gap-2.5 px-3.5 py-2.5 hover:bg-primary/[0.06] text-xs font-medium text-on-surface-variant hover:text-primary transition-colors"
                   >
-                    <span className="material-symbols-outlined text-[16px] text-zinc-400">{item.icon}</span>
+                    <span className="material-symbols-outlined text-[16px] text-outline">{item.icon}</span>
                     {item.label}
                   </Link>
                 ))}
@@ -122,15 +122,15 @@ export default function AdminNavbar() {
             )}
           </div>
 
-          <div className="h-5 w-px bg-zinc-200 mx-1" />
+          <div className="h-5 w-px bg-outline-variant/25 mx-1" />
 
           {/* Profile User Badge */}
           <div className="flex items-center gap-2.5 pl-1">
             <div className="text-right hidden sm:block">
-              <p className="text-xs font-semibold text-zinc-900 leading-none">Yönetici</p>
-              <p className="text-[10px] text-zinc-400">Yönetim Ofisi</p>
+              <p className="text-xs font-bold text-on-surface leading-none">Yönetici</p>
+              <p className="text-[10px] text-outline mt-0.5">Yönetim Ofisi</p>
             </div>
-            <div className="w-7 h-7 rounded bg-zinc-900 text-white font-bold text-xs flex items-center justify-center">
+            <div className="w-8 h-8 rounded-full bg-primary text-white font-bold text-xs flex items-center justify-center font-headline shadow-sm">
               Y
             </div>
           </div>

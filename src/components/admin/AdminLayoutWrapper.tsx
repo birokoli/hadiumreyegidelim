@@ -17,7 +17,7 @@ export default function AdminLayoutWrapper({
 
   if (pathname === '/admin/login') {
     return (
-      <div className="bg-white text-zinc-900 min-h-screen font-body">
+      <div className="bg-surface text-on-surface min-h-screen font-body">
         {children}
       </div>
     );
@@ -25,10 +25,10 @@ export default function AdminLayoutWrapper({
 
   return (
     <AdminProvider>
-      <div className="bg-white text-zinc-900 min-h-screen font-body selection:bg-zinc-900 selection:text-white">
+      <div className="bg-surface text-on-surface min-h-screen font-body selection:bg-tertiary-fixed-dim selection:text-on-tertiary-fixed">
         {sidebar}
         {navbar}
-        <div className="ml-0 lg:ml-72 pt-14 min-h-screen bg-white">
+        <div className="ml-0 lg:ml-72 pt-14 min-h-screen bg-surface">
           {children}
         </div>
       </div>

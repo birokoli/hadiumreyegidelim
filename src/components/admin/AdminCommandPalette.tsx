@@ -69,28 +69,28 @@ export default function AdminCommandPalette({ isOpen, onClose }: AdminCommandPal
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-24 px-4 bg-black/40 backdrop-blur-xs">
+    <div className="fixed inset-0 z-50 flex items-start justify-center pt-24 px-4 bg-on-primary-fixed/40 backdrop-blur-sm">
       <div className="fixed inset-0" onClick={onClose} />
 
-      <div className="relative w-full max-w-xl bg-white rounded border border-zinc-200 shadow-2xl overflow-hidden z-10">
-        <div className="flex items-center px-4 border-b border-zinc-200">
-          <span className="material-symbols-outlined text-zinc-400 text-[20px] mr-3">search</span>
+      <div className="relative w-full max-w-xl bg-surface-container-lowest rounded-2xl border border-outline-variant/15 shadow-2xl overflow-hidden z-10">
+        <div className="flex items-center px-4 border-b border-outline-variant/12">
+          <span className="material-symbols-outlined text-outline text-[20px] mr-3">search</span>
           <input
             type="text"
-            className="w-full py-3.5 text-sm bg-transparent text-zinc-900 focus:outline-none placeholder:text-zinc-400"
+            className="w-full py-3.5 text-sm bg-transparent text-on-surface focus:outline-none placeholder:text-outline"
             placeholder="Bir sayfa veya komut arayın..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             autoFocus
           />
-          <kbd className="hidden sm:inline-flex px-1.5 py-0.5 text-[10px] font-mono font-medium text-zinc-400 bg-zinc-100 rounded border border-zinc-200">
+          <kbd className="hidden sm:inline-flex px-1.5 py-0.5 text-[10px] font-mono font-bold text-outline bg-surface-container-low rounded-md border border-outline-variant/20">
             ESC
           </kbd>
         </div>
 
         <div className="max-h-80 overflow-y-auto p-2">
           {filteredCommands.length === 0 ? (
-            <div className="py-8 text-center text-xs text-zinc-400">
+            <div className="py-8 text-center text-xs text-outline">
               Aramanızla eşleşen sonuç bulunamadı.
             </div>
           ) : (
@@ -99,27 +99,27 @@ export default function AdminCommandPalette({ isOpen, onClose }: AdminCommandPal
                 <button
                   key={cmd.id}
                   onClick={() => handleSelect(cmd)}
-                  className="w-full flex items-center justify-between px-3 py-2.5 rounded hover:bg-zinc-100 text-left transition-colors group"
+                  className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl hover:bg-primary/[0.06] text-left transition-colors group"
                 >
                   <div className="flex items-center gap-3">
-                    <span className="material-symbols-outlined text-zinc-400 group-hover:text-zinc-900 text-[18px]">
+                    <span className="material-symbols-outlined text-outline group-hover:text-primary text-[18px] transition-colors">
                       {cmd.icon}
                     </span>
                     <div>
-                      <div className="text-xs font-semibold text-zinc-900">{cmd.label}</div>
-                      <div className="text-[10px] text-zinc-400 font-medium">{cmd.category}</div>
+                      <div className="text-xs font-bold text-on-surface">{cmd.label}</div>
+                      <div className="text-[10px] text-outline font-medium">{cmd.category}</div>
                     </div>
                   </div>
-                  <span className="material-symbols-outlined text-zinc-300 text-[16px]">chevron_right</span>
+                  <span className="material-symbols-outlined text-outline-variant text-[16px]">chevron_right</span>
                 </button>
               ))}
             </div>
           )}
         </div>
 
-        <div className="px-4 py-2 bg-zinc-50 border-t border-zinc-100 flex items-center justify-between text-[11px] text-zinc-400">
+        <div className="px-4 py-2.5 bg-surface-container-low border-t border-outline-variant/10 flex items-center justify-between text-[11px] text-outline">
           <span>Seçim yapmak için tıklayın</span>
-          <span>Hadi Umreye Gidelim Swiss Command Center</span>
+          <span className="font-medium text-primary">Hadi Umreye Gidelim</span>
         </div>
       </div>
     </div>

@@ -30,10 +30,10 @@ export function useAdminContext() {
 
 // ─── Toast UI ──────────────────────────────────────
 const STYLES: Record<ToastType, { bg: string; icon: string }> = {
-  success: { bg: "bg-emerald-600", icon: "check_circle" },
-  error:   { bg: "bg-red-600",     icon: "error" },
-  info:    { bg: "bg-blue-600",    icon: "info" },
-  warning: { bg: "bg-amber-500",   icon: "warning" },
+  success: { bg: "bg-secondary",  icon: "check_circle" },
+  error:   { bg: "bg-error",      icon: "error" },
+  info:    { bg: "bg-primary",    icon: "info" },
+  warning: { bg: "bg-[#b8862f]",  icon: "warning" },
 };
 
 function ToastList({ items, onClose }: { items: ToastItem[]; onClose: (id: string) => void }) {

@@ -108,7 +108,7 @@ export default function AdminSidebar({ logoUrl }: { logoUrl?: string }) {
     <>
       {sidebarOpen && (
         <div
-          className="fixed inset-0 z-40 bg-black/30 backdrop-blur-xs lg:hidden"
+          className="fixed inset-0 z-40 bg-on-primary-fixed/30 backdrop-blur-sm lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
@@ -116,39 +116,39 @@ export default function AdminSidebar({ logoUrl }: { logoUrl?: string }) {
       <aside
         className={`
           fixed left-0 top-0 h-full w-72 z-50 flex flex-col
-          bg-white text-zinc-900 border-r border-zinc-200 shadow-none
-          overflow-y-auto transition-transform duration-200 ease-in-out
+          bg-surface-container-lowest text-on-surface border-r border-outline-variant/15
+          overflow-y-auto transition-transform duration-300 ease-[cubic-bezier(.16,1,.3,1)]
           ${sidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
         `}
       >
         {/* Brand Header */}
-        <div className="px-6 pt-7 pb-5 flex items-center justify-between shrink-0 border-b border-zinc-100">
-          <Link href="/admin" className="flex items-center gap-3">
+        <div className="px-6 pt-7 pb-5 flex items-center justify-between shrink-0 border-b border-outline-variant/10">
+          <Link href="/admin" className="flex items-center gap-2.5">
             {logoUrl ? (
               <Image src={logoUrl} alt="Logo" width={130} height={40} className="w-auto h-8 object-contain" priority />
             ) : (
               <div className="flex items-center gap-2">
-                <div className="w-7 h-7 bg-zinc-900 text-white rounded flex items-center justify-center font-bold text-xs">HU</div>
-                <span className="font-semibold text-sm tracking-tight text-zinc-900">HADI UMREYE</span>
+                <div className="w-7 h-7 bg-primary text-white rounded-lg flex items-center justify-center font-bold text-xs font-headline">HU</div>
+                <span className="font-headline font-bold text-sm tracking-tight text-primary">HADI UMREYE</span>
               </div>
             )}
-            <span className="text-[10px] font-bold tracking-wider uppercase px-2 py-0.5 bg-zinc-100 text-zinc-600 rounded">
-              ADMIN
+            <span className="text-[9px] font-bold tracking-[0.15em] uppercase px-2 py-0.5 bg-tertiary-fixed-dim/25 text-tertiary rounded-full">
+              Admin
             </span>
           </Link>
 
           <button
             onClick={() => setSidebarOpen(false)}
-            className="lg:hidden p-1.5 rounded text-zinc-400 hover:text-zinc-900 hover:bg-zinc-100"
+            className="lg:hidden p-1.5 rounded-full text-outline hover:text-primary hover:bg-surface-container-low transition-colors active:scale-90"
           >
             <span className="material-symbols-outlined text-[20px]">close</span>
           </button>
         </div>
 
         {/* Sidebar Quick Filter Input */}
-        <div className="px-4 py-3 border-b border-zinc-100">
+        <div className="px-4 py-3 border-b border-outline-variant/10">
           <div className="relative">
-            <span className="material-symbols-outlined absolute left-2.5 top-1/2 -translate-y-1/2 text-zinc-400 text-[15px]">
+            <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[16px]">
               search
             </span>
             <input
@@ -156,7 +156,7 @@ export default function AdminSidebar({ logoUrl }: { logoUrl?: string }) {
               placeholder="Menüde ara..."
               value={filterQuery}
               onChange={(e) => setFilterQuery(e.target.value)}
-              className="w-full bg-zinc-50 text-xs text-zinc-900 placeholder:text-zinc-400 rounded px-2.5 py-1.5 pl-8 border border-zinc-200 focus:outline-none focus:border-zinc-900"
+              className="w-full bg-surface-container-low text-xs text-on-surface placeholder:text-outline rounded-xl px-2.5 py-2 pl-9 border border-transparent focus:outline-none focus:border-primary/30 focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary/10 transition-all"
             />
           </div>
         </div>
@@ -172,7 +172,7 @@ export default function AdminSidebar({ logoUrl }: { logoUrl?: string }) {
 
             return (
               <div key={idx}>
-                <h4 className="text-[11px] font-semibold tracking-wider text-zinc-400 uppercase px-3 mb-2">
+                <h4 className="text-[10.5px] font-bold tracking-[0.12em] text-outline uppercase px-3 mb-2">
                   {group.title}
                 </h4>
                 <div className="space-y-0.5">
@@ -187,14 +187,17 @@ export default function AdminSidebar({ logoUrl }: { logoUrl?: string }) {
                       <Link
                         key={link.href}
                         href={link.href}
-                        className={`flex items-center justify-between px-3 py-2 rounded text-xs font-medium transition-colors ${
+                        className={`flex items-center justify-between px-3 py-2.5 rounded-xl text-[13px] font-medium transition-all duration-200 ${
                           isActive
-                            ? "bg-zinc-900 text-white font-semibold shadow-xs"
-                            : "text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100"
+                            ? "bg-primary text-white font-semibold shadow-[0_4px_14px_-4px_rgba(0,55,129,0.45)]"
+                            : "text-on-surface-variant hover:text-primary hover:bg-primary/[0.06]"
                         }`}
                       >
                         <div className="flex items-center gap-2.5">
-                          <span className={`material-symbols-outlined text-[18px] ${isActive ? "text-white" : "text-zinc-400"}`}>
+                          <span
+                            className={`material-symbols-outlined text-[18px] ${isActive ? "text-tertiary-fixed-dim" : "text-outline"}`}
+                            style={isActive ? { fontVariationSettings: "'FILL' 1" } : undefined}
+                          >
                             {link.icon}
                           </span>
                           <span>{link.label}</span>
@@ -202,12 +205,12 @@ export default function AdminSidebar({ logoUrl }: { logoUrl?: string }) {
 
                         {badgeValue !== undefined && badgeValue > 0 && (
                           <span
-                            className={`text-[10px] font-bold px-1.5 py-0.2 rounded ${
+                            className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full leading-none ${
                               isActive
-                                ? "bg-white text-zinc-900"
+                                ? "bg-white/20 text-white"
                                 : link.badgeKey === "unreadLeads"
-                                ? "bg-zinc-900 text-white"
-                                : "bg-zinc-100 text-zinc-600"
+                                ? "bg-secondary text-white"
+                                : "bg-surface-container text-on-surface-variant"
                             }`}
                           >
                             {badgeValue}
@@ -223,11 +226,11 @@ export default function AdminSidebar({ logoUrl }: { logoUrl?: string }) {
         </nav>
 
         {/* Footer Link */}
-        <div className="p-4 border-t border-zinc-100 shrink-0">
+        <div className="p-4 border-t border-outline-variant/10 shrink-0">
           <Link
             href="/"
             target="_blank"
-            className="w-full py-2 flex items-center justify-center gap-1.5 bg-zinc-900 text-white rounded text-xs font-medium hover:bg-zinc-800 transition-colors"
+            className="w-full py-2.5 flex items-center justify-center gap-1.5 bg-primary hover:bg-primary-container text-white rounded-xl text-xs font-bold uppercase tracking-wider transition-all active:scale-95 shadow-sm"
           >
             <span>Canlı Siteyi Gör</span>
             <span className="material-symbols-outlined text-[14px]">open_in_new</span>

@@ -75,7 +75,7 @@ export default async function AdminInfluencersPage() {
                   <p className="text-[12px] text-outline">{inf.email} · {inf.phone}</p>
                   <div className="flex items-center gap-2 mt-1 flex-wrap">
                     {inf.instagramHandle && (
-                      <span className="text-[11px] text-pink-600 bg-pink-50 px-2 py-0.5 rounded-full font-medium">@{inf.instagramHandle} · {(inf.instagramFollowers || 0).toLocaleString()} takipçi</span>
+                      <span className="text-[11px] text-error bg-error/10 px-2 py-0.5 rounded-full font-medium">@{inf.instagramHandle} · {(inf.instagramFollowers || 0).toLocaleString("en-US")} takipçi</span>
                     )}
                     {inf.tiktokHandle && (
                       <span className="text-[11px] text-on-surface-variant bg-surface-container px-2 py-0.5 rounded-full font-medium">TikTok: @{inf.tiktokHandle}</span>

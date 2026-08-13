@@ -358,7 +358,7 @@ export default function ExcelPricingCalculator({ initialCustomerName, initialPho
               <span className="text-[10px] font-bold tracking-widest text-secondary uppercase">SATIŞ</span>
               <div>
                 <p className="text-xs text-on-surface-variant font-medium">Toplam Satış ($)</p>
-                <p className="text-xl font-light text-on-surface mt-0.5">${totalRegisteredSaleUsd.toLocaleString()}</p>
+                <p className="text-xl font-light text-on-surface mt-0.5">${totalRegisteredSaleUsd.toLocaleString("en-US")}</p>
               </div>
             </div>
 
@@ -366,7 +366,7 @@ export default function ExcelPricingCalculator({ initialCustomerName, initialPho
               <span className="text-[10px] font-bold tracking-widest text-secondary uppercase">MALİYET</span>
               <div>
                 <p className="text-xs text-on-surface-variant font-medium">Toplam Maliyet ($)</p>
-                <p className="text-xl font-light text-on-surface mt-0.5">${totalRegisteredCostUsd.toLocaleString()}</p>
+                <p className="text-xl font-light text-on-surface mt-0.5">${totalRegisteredCostUsd.toLocaleString("en-US")}</p>
               </div>
             </div>
 
@@ -374,7 +374,7 @@ export default function ExcelPricingCalculator({ initialCustomerName, initialPho
               <span className="text-[10px] font-bold tracking-widest text-secondary uppercase">KÂR</span>
               <div>
                 <p className="text-xs text-on-surface-variant font-medium">Toplam Kâr ($)</p>
-                <p className="text-xl font-light text-on-surface mt-0.5">+${totalRegisteredProfitUsd.toLocaleString()}</p>
+                <p className="text-xl font-light text-on-surface mt-0.5">+${totalRegisteredProfitUsd.toLocaleString("en-US")}</p>
               </div>
             </div>
 

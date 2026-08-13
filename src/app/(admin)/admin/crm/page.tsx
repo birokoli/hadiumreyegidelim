@@ -177,7 +177,7 @@ export default function CrmPage() {
       {/* Top KPI Metrics Bar */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: "Toplam Fırsat Hacmi", value: `$${totalPipelineValue.toLocaleString()}`, badge: "PIPELINE", accent: "text-primary" },
+          { label: "Toplam Fırsat Hacmi", value: `$${totalPipelineValue.toLocaleString("en-US")}`, badge: "PIPELINE", accent: "text-primary" },
           { label: "Kazanım Oranı (Win Rate)", value: `%${winRate}`, badge: "DÖNÜŞÜM", accent: "text-secondary" },
           { label: "Aktif Görüşmedeki Fırsatlar", value: `${activeLeadsCount} Müşteri`, badge: "DEVAM EDİYOR", accent: "text-[#b8862f]" },
           { label: "Toplam CRM Müşterisi", value: `${leads.length} Kayıt`, badge: "TOPLAM", accent: "text-on-surface-variant" },
@@ -237,7 +237,7 @@ export default function CrmPage() {
                     <span className={`material-symbols-outlined text-[16px] ${stg.color}`}>{stg.icon}</span>
                     <div>
                       <h3 className="text-xs font-bold text-on-surface">{stg.label}</h3>
-                      <p className="text-[10px] text-outline font-mono mt-0.5">${stageTotal.toLocaleString()}</p>
+                      <p className="text-[10px] text-outline font-mono mt-0.5">${stageTotal.toLocaleString("en-US")}</p>
                     </div>
                   </div>
                   <span className={`text-xs font-bold bg-surface-container-lowest ${stg.color} px-2 py-0.5 rounded-full border ${stg.border}`}>

@@ -90,7 +90,7 @@ export default async function AdminInfluencerDetailPage({ params }: { params: Pr
               <p className="text-[13px] text-outline mt-0.5">{inf.email} · {inf.phone}</p>
               <div className="flex items-center gap-3 mt-2 flex-wrap">
                 {inf.instagramHandle && (
-                  <span className="text-[12px] text-pink-600 bg-pink-50 px-2.5 py-1 rounded-full font-medium">@{inf.instagramHandle} · {(inf.instagramFollowers || 0).toLocaleString('tr-TR')} takipçi</span>
+                  <span className="text-[12px] text-error bg-error/10 px-2.5 py-1 rounded-full font-medium">@{inf.instagramHandle} · {(inf.instagramFollowers || 0).toLocaleString('tr-TR')} takipçi</span>
                 )}
                 {inf.tiktokHandle && <span className="text-[12px] bg-surface-container text-on-surface-variant px-2.5 py-1 rounded-full font-medium">TikTok: @{inf.tiktokHandle}</span>}
                 {inf.youtubeHandle && <span className="text-[12px] bg-error/10 text-error px-2.5 py-1 rounded-full font-medium">YouTube: {inf.youtubeHandle}</span>}

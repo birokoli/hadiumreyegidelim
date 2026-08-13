@@ -54,20 +54,20 @@ export default function AiVisibilityPage() {
   const recommendations = audit?.recommendations ? JSON.parse(audit.recommendations) : [];
 
   return (
-    <div className="p-6 lg:p-8 max-w-7xl mx-auto space-y-8 min-h-screen bg-white text-zinc-900 text-xs">
+    <div className="p-6 lg:p-8 max-w-7xl mx-auto space-y-8 min-h-screen bg-surface text-on-surface text-xs">
       {/* Header Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-zinc-200">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-outline-variant/15">
         <div>
-          <span className="text-[10px] font-bold tracking-widest text-zinc-400 uppercase">GEO & LLM SEO</span>
-          <h1 className="text-2xl font-light tracking-tight text-zinc-900 mt-1">AI Görünürlük & LLM SEO Analizör</h1>
-          <p className="text-xs text-zinc-500 mt-0.5">Sitenizin ChatGPT, Perplexity ve Claude arama motorlarındaki görünürlüğünü analiz edin.</p>
+          <span className="text-[10px] font-bold tracking-widest text-secondary uppercase">GEO & LLM SEO</span>
+          <h1 className="font-headline text-2xl font-bold tracking-tight text-primary mt-1">AI Görünürlük & LLM SEO Analizör</h1>
+          <p className="text-xs text-on-surface-variant mt-0.5">Sitenizin ChatGPT, Perplexity ve Claude arama motorlarındaki görünürlüğünü analiz edin.</p>
         </div>
 
         <div className="flex items-center gap-2">
           <select
             value={targetUrl}
             onChange={(e) => setTargetUrl(e.target.value)}
-            className="bg-white text-zinc-900 text-xs font-medium rounded border border-zinc-200 px-3 py-2 outline-none"
+            className="bg-surface-container-lowest text-on-surface text-xs font-bold rounded-xl border border-outline-variant/25 px-3 py-2 outline-none focus:border-primary/40"
           >
             <option value="/">Ana Sayfa (/)</option>
             <option value="/bireysel-umre">Bireysel Umre (/bireysel-umre)</option>
@@ -79,7 +79,7 @@ export default function AiVisibilityPage() {
           <button
             onClick={handleRunAudit}
             disabled={loading}
-            className="bg-zinc-900 hover:bg-zinc-800 text-white font-medium px-4 py-2 rounded text-xs transition-colors shrink-0"
+            className="bg-primary hover:bg-primary-container text-white font-bold px-4 py-2.5 rounded-xl text-xs transition-all active:scale-95 shrink-0 disabled:opacity-60"
           >
             {loading ? "Taranıyor..." : "AI Taraması Başlat"}
           </button>
@@ -88,49 +88,49 @@ export default function AiVisibilityPage() {
 
       {/* Overview Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="p-4 rounded border border-zinc-200 bg-zinc-50/50 flex flex-col justify-between">
-          <span className="text-[10px] font-bold tracking-widest text-zinc-400 uppercase">SKOR</span>
+        <div className="p-4 rounded-2xl border border-outline-variant/15 bg-surface-container-lowest flex flex-col justify-between">
+          <span className="text-[10px] font-bold tracking-widest text-secondary uppercase">Skor</span>
           <div>
-            <p className="text-xs text-zinc-500 font-medium">Genel GEO Skoru</p>
-            <p className="text-2xl font-light text-zinc-900 mt-0.5">%{audit?.geoScore || 59}</p>
+            <p className="text-xs text-on-surface-variant font-medium">Genel GEO Skoru</p>
+            <p className="font-headline text-2xl font-bold text-primary mt-0.5">%{audit?.geoScore || 59}</p>
           </div>
         </div>
 
-        <div className="p-4 rounded border border-zinc-200 bg-zinc-50/50 flex flex-col justify-between">
-          <span className="text-[10px] font-bold tracking-widest text-zinc-400 uppercase">YAPISAL VERİ</span>
+        <div className="p-4 rounded-2xl border border-outline-variant/15 bg-surface-container-lowest flex flex-col justify-between">
+          <span className="text-[10px] font-bold tracking-widest text-secondary uppercase">Yapısal Veri</span>
           <div>
-            <p className="text-xs text-zinc-500 font-medium">Schema.org Yapısal Veri</p>
-            <p className="text-2xl font-light text-zinc-900 mt-0.5">%{audit?.schemaScore || 60}</p>
+            <p className="text-xs text-on-surface-variant font-medium">Schema.org Yapısal Veri</p>
+            <p className="font-headline text-2xl font-bold text-primary mt-0.5">%{audit?.schemaScore || 60}</p>
           </div>
         </div>
 
-        <div className="p-4 rounded border border-zinc-200 bg-zinc-50/50 flex flex-col justify-between">
-          <span className="text-[10px] font-bold tracking-widest text-zinc-400 uppercase">OKUNABİLİRLİK</span>
+        <div className="p-4 rounded-2xl border border-outline-variant/15 bg-surface-container-lowest flex flex-col justify-between">
+          <span className="text-[10px] font-bold tracking-widest text-secondary uppercase">Okunabilirlik</span>
           <div>
-            <p className="text-xs text-zinc-500 font-medium">LLM Okunabilirlik</p>
-            <p className="text-2xl font-light text-zinc-900 mt-0.5">%{audit?.llmReadabilityScore || 52}</p>
+            <p className="text-xs text-on-surface-variant font-medium">LLM Okunabilirlik</p>
+            <p className="font-headline text-2xl font-bold text-primary mt-0.5">%{audit?.llmReadabilityScore || 52}</p>
           </div>
         </div>
 
-        <div className="p-4 rounded border border-zinc-200 bg-zinc-50/50 flex flex-col justify-between">
-          <span className="text-[10px] font-bold tracking-widest text-zinc-400 uppercase">ALINTI</span>
+        <div className="p-4 rounded-2xl border border-outline-variant/15 bg-surface-container-lowest flex flex-col justify-between">
+          <span className="text-[10px] font-bold tracking-widest text-secondary uppercase">Alıntı</span>
           <div>
-            <p className="text-xs text-zinc-500 font-medium">AI Atıf Oranı</p>
-            <p className="text-2xl font-light text-zinc-900 mt-0.5">%{audit?.citationScore || 65}</p>
+            <p className="text-xs text-on-surface-variant font-medium">AI Atıf Oranı</p>
+            <p className="font-headline text-2xl font-bold text-primary mt-0.5">%{audit?.citationScore || 65}</p>
           </div>
         </div>
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-2 border-b border-zinc-200 pb-3">
+      <div className="flex items-center gap-2 border-b border-outline-variant/15 pb-3 overflow-x-auto">
         {(["overview", "schema", "markdown", "citations", "recommendations"] as const).map((t) => (
           <button
             key={t}
             onClick={() => setActiveTab(t)}
-            className={`px-3 py-1.5 rounded text-xs font-medium border transition-colors ${
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold border transition-all shrink-0 ${
               activeTab === t
-                ? "bg-zinc-900 text-white border-zinc-900 font-semibold"
-                : "bg-white text-zinc-600 border-zinc-200 hover:border-zinc-900"
+                ? "bg-primary text-white border-primary shadow-sm"
+                : "bg-surface-container-lowest text-on-surface-variant border-outline-variant/25 hover:border-primary/40"
             }`}
           >
             {t === "overview" && "Genel Bakış"}
@@ -143,23 +143,23 @@ export default function AiVisibilityPage() {
       </div>
 
       {/* Content */}
-      <div className="border border-zinc-200 rounded p-6 bg-white space-y-4">
+      <div className="border border-outline-variant/15 rounded-2xl p-6 bg-surface-container-lowest space-y-4">
         {recommendations.length > 0 ? (
           <div className="space-y-3">
             {recommendations.map((rec: any, index: number) => (
-              <div key={index} className="p-3 border border-zinc-200 rounded bg-zinc-50/50 flex items-start gap-3">
-                <span className="bg-zinc-900 text-white text-[9px] font-bold px-2 py-0.5 rounded">
+              <div key={index} className="p-3 border border-outline-variant/15 rounded-xl bg-surface-container-low flex items-start gap-3">
+                <span className="bg-primary text-white text-[9px] font-bold px-2 py-0.5 rounded-full shrink-0">
                   {rec.priority || "ÖNERİ"}
                 </span>
                 <div>
-                  <p className="font-semibold text-zinc-900">{rec.title || rec.type}</p>
-                  <p className="text-zinc-500 text-[11px] mt-0.5">{rec.description || rec.text}</p>
+                  <p className="font-bold text-on-surface">{rec.title || rec.type}</p>
+                  <p className="text-on-surface-variant text-[11px] mt-0.5">{rec.description || rec.text}</p>
                 </div>
               </div>
             ))}
           </div>
         ) : (
-          <div className="py-8 text-center text-zinc-400 text-xs">
+          <div className="py-8 text-center text-outline text-xs">
             Mevcut FAQPage şemasına "Bireysel Umre nedir?", "Vize süreci nasıl işler?" gibi eklemeler yaparak AI atıf oranını artırabilirsiniz.
           </div>
         )}

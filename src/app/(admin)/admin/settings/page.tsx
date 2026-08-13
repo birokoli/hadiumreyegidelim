@@ -140,7 +140,7 @@ export default function SettingsPage() {
         </div>
         <div className="flex items-center gap-3">
           {saveMsg && (
-            <span className={`text-sm font-bold px-4 py-2 rounded-xl ${saveMsg.type === 'ok' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+            <span className={`text-sm font-bold px-4 py-2 rounded-xl ${saveMsg.type === 'ok' ? 'bg-secondary/10 text-secondary' : 'bg-error/10 text-error'}`}>
               {saveMsg.text}
             </span>
           )}
@@ -166,7 +166,7 @@ export default function SettingsPage() {
       {/* ── BRANDING ── */}
       {activeTab === 'branding' && (
         <div className="space-y-8">
-          <div className="bg-white rounded-2xl p-8 border border-outline-variant/10 shadow-sm">
+          <div className="bg-surface-container-lowest rounded-2xl p-8 border border-outline-variant/15 shadow-sm">
             <h3 className="text-xl font-serif text-primary mb-6 flex items-center gap-2"><span className="material-symbols-outlined text-primary">palette</span> Kurumsal Kimlik</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               <div>
@@ -229,7 +229,7 @@ export default function SettingsPage() {
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl p-8 border border-outline-variant/10 shadow-sm">
+          <div className="bg-surface-container-lowest rounded-2xl p-8 border border-outline-variant/15 shadow-sm">
             <h3 className="text-xl font-serif text-primary mb-6 flex items-center gap-2"><span className="material-symbols-outlined text-outline">smart_button</span> Butonlar</h3>
             <div>
               <label className={lbl}>Buton Şekli</label>
@@ -258,7 +258,7 @@ export default function SettingsPage() {
       {/* ── HOME ── */}
       {activeTab === 'home' && (
         <div className="space-y-8">
-          <div className="bg-white rounded-2xl p-8 border border-outline-variant/10 shadow-sm">
+          <div className="bg-surface-container-lowest rounded-2xl p-8 border border-outline-variant/15 shadow-sm">
             <h3 className="text-xl font-serif text-primary mb-6 flex items-center gap-2"><span className="material-symbols-outlined text-tertiary">web</span> Hero Bölümü</h3>
             <div className="space-y-5">
               {[['HERO_TAGLINE','Üst Etiket'],['HERO_TITLE','Ana Başlık (H1)']].map(([key, label]) => (
@@ -275,7 +275,7 @@ export default function SettingsPage() {
               { title: 'Blog Vitrini',     fields: [['HOME_BLOG_KICKER','Üst Yazı'], ['HOME_BLOG_TITLE','Başlık']] },
               { title: 'SSS Bölümü',      fields: [['HOME_FAQ_TITLE','Başlık'],     ['HOME_FAQ_DESC','Açıklama']] },
             ].map(section => (
-              <div key={section.title} className="bg-white rounded-2xl p-6 border border-outline-variant/10 shadow-sm">
+              <div key={section.title} className="bg-surface-container-lowest rounded-2xl p-6 border border-outline-variant/15 shadow-sm">
                 <h4 className="font-bold text-primary mb-4">{section.title}</h4>
                 <div className="space-y-4">
                   {section.fields.map(([key, label]) => (
@@ -291,14 +291,14 @@ export default function SettingsPage() {
       {/* ── CONTACT ── */}
       {activeTab === 'contact' && (
         <div className="space-y-8">
-          <div className="bg-white rounded-2xl p-8 border border-outline-variant/10 shadow-sm">
+          <div className="bg-surface-container-lowest rounded-2xl p-8 border border-outline-variant/15 shadow-sm">
             <h3 className="text-xl font-serif text-primary mb-6 flex items-center gap-2"><span className="material-symbols-outlined text-[#25D366]">forum</span> WhatsApp Asistanı</h3>
             <div className="space-y-5">
               <div><label className={lbl}>WhatsApp Telefon Numarası</label><input type="text" value={settings.WHATSAPP_NUMBER} onChange={e => handleChange('WHATSAPP_NUMBER', e.target.value)} className={`${inp} font-mono`} placeholder="905404010038" /></div>
               <div><label className={lbl}>Otomatik Mesaj</label><textarea rows={4} value={settings.WHATSAPP_MESSAGE} onChange={e => handleChange('WHATSAPP_MESSAGE', e.target.value)} className={`${inp} resize-none`} /></div>
             </div>
           </div>
-          <div className="bg-white rounded-2xl p-8 border border-outline-variant/10 shadow-sm">
+          <div className="bg-surface-container-lowest rounded-2xl p-8 border border-outline-variant/15 shadow-sm">
             <h3 className="text-xl font-serif text-primary mb-6 flex items-center gap-2"><span className="material-symbols-outlined text-tertiary">contact_mail</span> İletişim Sayfası</h3>
             <div className="space-y-5">
               <div><label className={lbl}>Sayfa Başlığı</label><input type="text" value={settings.CONTACT_TITLE} onChange={e => handleChange('CONTACT_TITLE', e.target.value)} className={inp} /></div>
@@ -314,7 +314,7 @@ export default function SettingsPage() {
 
       {/* ── SOCIAL MEDIA ── */}
       {activeTab === 'social' && (
-        <div className="bg-white rounded-2xl p-8 border border-outline-variant/10 shadow-sm">
+        <div className="bg-surface-container-lowest rounded-2xl p-8 border border-outline-variant/15 shadow-sm">
           <h3 className="text-xl font-serif text-primary mb-2 flex items-center gap-2"><span className="material-symbols-outlined text-primary">share</span> Sosyal Medya Hesapları</h3>
           <p className="text-sm text-on-surface-variant mb-8">Footer ve iletişim sayfasında görünecek profil linkleri. Boş bırakılan hesaplar gösterilmez.</p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -338,7 +338,7 @@ export default function SettingsPage() {
       {/* ── SECURITY ── */}
       {activeTab === 'security' && (
         <div className="space-y-6">
-          <div className="bg-white rounded-2xl p-8 border border-outline-variant/10 shadow-sm">
+          <div className="bg-surface-container-lowest rounded-2xl p-8 border border-outline-variant/15 shadow-sm">
             <h3 className="text-xl font-serif text-primary mb-2 flex items-center gap-2"><span className="material-symbols-outlined text-primary">lock</span> Şifre Değiştir</h3>
             <p className="text-sm text-on-surface-variant mb-8">Yanlış şifre girişlerinde 5 denemeden sonra 15 dakika otomatik kilitleme aktif.</p>
             <form onSubmit={handlePasswordChange} className="space-y-5 max-w-md">
@@ -359,7 +359,7 @@ export default function SettingsPage() {
                 <input required type="password" value={pwForm.confirmPassword} onChange={e => setPwForm(prev => ({ ...prev, confirmPassword: e.target.value }))} className={inp} placeholder="••••••••" />
               </div>
               {pwMsg && (
-                <div className={`flex items-center gap-2 p-3 rounded-xl text-sm font-bold ${pwMsg.type === 'ok' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                <div className={`flex items-center gap-2 p-3 rounded-xl text-sm font-bold ${pwMsg.type === 'ok' ? 'bg-secondary/10 text-secondary' : 'bg-error/10 text-error'}`}>
                   <span className="material-symbols-outlined text-[18px]">{pwMsg.type === 'ok' ? 'check_circle' : 'error'}</span>
                   {pwMsg.text}
                 </div>
@@ -371,12 +371,12 @@ export default function SettingsPage() {
             </form>
           </div>
 
-          <div className="bg-amber-50 border border-amber-200 rounded-2xl p-6">
+          <div className="bg-[#b8862f]/10 border border-[#b8862f]/25 rounded-2xl p-6">
             <div className="flex items-start gap-3">
-              <span className="material-symbols-outlined text-amber-500 text-[22px] shrink-0 mt-0.5" style={{ fontVariationSettings: "'FILL' 1" }}>shield</span>
+              <span className="material-symbols-outlined text-[#b8862f] text-[22px] shrink-0 mt-0.5" style={{ fontVariationSettings: "'FILL' 1" }}>shield</span>
               <div>
-                <h4 className="font-bold text-amber-800 mb-1">Aktif Güvenlik Korumaları</h4>
-                <ul className="text-sm text-amber-700 space-y-1">
+                <h4 className="font-bold text-[#8f6a24] mb-1">Aktif Güvenlik Korumaları</h4>
+                <ul className="text-sm text-[#b8862f] space-y-1">
                   <li>• Brute force koruması: 5 hatalı girişte 15 dakika kilitleme</li>
                   <li>• Admin oturumu: HttpOnly çerez, 30 günlük geçerlilik</li>
                   <li>• Şifre: SHA-256 ile şifrelenmiş, veritabanında hash olarak saklanır</li>
@@ -391,7 +391,7 @@ export default function SettingsPage() {
       {/* ── SITEMAP ── */}
       {activeTab === 'sitemap' && (
         <div className="space-y-6">
-          <div className="bg-white rounded-2xl p-8 border border-outline-variant/10 shadow-sm">
+          <div className="bg-surface-container-lowest rounded-2xl p-8 border border-outline-variant/15 shadow-sm">
             <h3 className="text-xl font-serif text-primary mb-2 flex items-center gap-2"><span className="material-symbols-outlined text-primary">map</span> Sitemap Yönetimi</h3>
             <p className="text-sm text-on-surface-variant mb-6">
               Sitemap otomatik oluşturulur. Blog yazıları, paketler, kategoriler ve şehir bazlı sayfalar dahil edilir.
@@ -400,17 +400,17 @@ export default function SettingsPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
               {[
-                { title: 'Sitemap URL', value: 'https://hadiumreyegidelim.com/sitemap.xml', icon: 'link', color: 'text-blue-600 bg-blue-50' },
-                { title: 'Robots.txt', value: 'https://hadiumreyegidelim.com/robots.txt',   icon: 'smart_toy', color: 'text-slate-600 bg-slate-50' },
+                { title: 'Sitemap URL', value: 'https://hadiumreyegidelim.com/sitemap.xml', icon: 'link', color: 'text-primary bg-primary/[0.08]' },
+                { title: 'Robots.txt', value: 'https://hadiumreyegidelim.com/robots.txt',   icon: 'smart_toy', color: 'text-on-surface-variant bg-surface-container-low' },
               ].map(item => (
                 <div key={item.title} className={`flex items-center gap-4 p-4 rounded-xl border border-outline-variant/20 ${item.color.split(' ')[1]}`}>
                   <span className={`material-symbols-outlined text-[22px] ${item.color.split(' ')[0]}`}>{item.icon}</span>
                   <div className="min-w-0">
-                    <p className="text-xs font-bold text-slate-600 uppercase tracking-wider">{item.title}</p>
-                    <p className="text-sm font-mono text-slate-800 truncate">{item.value}</p>
+                    <p className="text-xs font-bold text-on-surface-variant uppercase tracking-wider">{item.title}</p>
+                    <p className="text-sm font-mono text-on-surface truncate">{item.value}</p>
                   </div>
-                  <a href={item.value} target="_blank" rel="noopener noreferrer" className="ml-auto shrink-0 p-1.5 hover:bg-white/60 rounded-lg transition-colors">
-                    <span className="material-symbols-outlined text-[18px] text-slate-500">open_in_new</span>
+                  <a href={item.value} target="_blank" rel="noopener noreferrer" className="ml-auto shrink-0 p-1.5 hover:bg-primary/10 rounded-lg transition-colors">
+                    <span className="material-symbols-outlined text-[18px] text-on-surface-variant">open_in_new</span>
                   </a>
                 </div>
               ))}
@@ -427,7 +427,7 @@ export default function SettingsPage() {
                   { label: 'Şehir Bazlı SEO Sayfaları', desc: '81 il × bireysel umre (yüksek öncelik: 0.85)' },
                 ].map(item => (
                   <div key={item.label} className="flex items-start gap-2">
-                    <span className="material-symbols-outlined text-green-500 text-[18px] mt-0.5 shrink-0" style={{ fontVariationSettings: "'FILL' 1" }}>check_circle</span>
+                    <span className="material-symbols-outlined text-secondary text-[18px] mt-0.5 shrink-0" style={{ fontVariationSettings: "'FILL' 1" }}>check_circle</span>
                     <div>
                       <p className="text-sm font-bold text-primary">{item.label}</p>
                       <p className="text-xs text-on-surface-variant">{item.desc}</p>
@@ -437,8 +437,8 @@ export default function SettingsPage() {
               </div>
             </div>
 
-            <div className="mt-6 p-4 bg-blue-50 rounded-xl border border-blue-200">
-              <p className="text-sm text-blue-800 font-medium">
+            <div className="mt-6 p-4 bg-primary/[0.08] rounded-xl border border-primary/20">
+              <p className="text-sm text-primary font-medium">
                 <span className="font-bold">Google Search Console:</span> sitemap.xml adresini ekledikten sonra yeni içerikler için manuel "Request Indexing" yapabilirsiniz.
                 Sitemap otomatik olarak Vercel rebuild sırasında güncellenir.
               </p>

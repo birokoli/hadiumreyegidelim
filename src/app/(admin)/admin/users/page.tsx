@@ -200,20 +200,20 @@ export default function AdminUsersPage() {
         </div>
 
         <div className="grid grid-cols-2 sm:flex gap-3 w-full xl:w-auto">
-          <div className="bg-white border border-outline-variant/10 rounded-2xl px-5 py-3 shadow-sm">
+          <div className="bg-surface-container-lowest border border-outline-variant/15 rounded-2xl px-5 py-3 shadow-sm">
             <p className="text-[10px] uppercase tracking-widest text-outline font-bold">Toplam</p>
             <p className="text-2xl font-bold text-primary leading-tight">{users.length}</p>
           </div>
-          <div className="bg-white border border-outline-variant/10 rounded-2xl px-5 py-3 shadow-sm">
+          <div className="bg-surface-container-lowest border border-outline-variant/15 rounded-2xl px-5 py-3 shadow-sm">
             <p className="text-[10px] uppercase tracking-widest text-outline font-bold">Aktif</p>
-            <p className="text-2xl font-bold text-emerald-600 leading-tight">{activeCount}</p>
+            <p className="text-2xl font-bold text-secondary leading-tight">{activeCount}</p>
           </div>
         </div>
       </header>
 
       {message && (
         <div className={`mb-6 flex items-center gap-2 px-4 py-3 rounded-xl text-sm font-bold ${
-          message.type === "ok" ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
+          message.type === "ok" ? "bg-secondary/10 text-secondary" : "bg-error/10 text-error"
         }`}>
           <span className="material-symbols-outlined text-[18px]">{message.type === "ok" ? "check_circle" : "error"}</span>
           {message.text}
@@ -221,7 +221,7 @@ export default function AdminUsersPage() {
       )}
 
       <div className="grid grid-cols-1 xl:grid-cols-[1fr_420px] gap-8 items-start">
-        <section className="bg-white rounded-2xl border border-outline-variant/10 shadow-sm overflow-hidden">
+        <section className="bg-surface-container-lowest rounded-2xl border border-outline-variant/15 shadow-sm overflow-hidden">
           <div className="p-5 border-b border-outline-variant/10 flex flex-col md:flex-row gap-4 md:items-center md:justify-between">
             <div>
               <h3 className="text-xl font-serif text-primary flex items-center gap-2">
@@ -231,7 +231,7 @@ export default function AdminUsersPage() {
               <p className="text-xs text-on-surface-variant mt-1">Aktif hesaplar panele giriş yapabilir.</p>
             </div>
             <div className="relative w-full md:w-72">
-              <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-[18px]">
+              <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-outline text-[18px]">
                 search
               </span>
               <input
@@ -288,12 +288,12 @@ export default function AdminUsersPage() {
                       <td className="px-5 py-4">
                         <div className="flex flex-wrap gap-1.5 max-w-xs">
                           {(user.role === "super_admin" ? ["Tüm Yetkiler"] : user.permissions).slice(0, 4).map(permission => (
-                            <span key={permission} className="px-2 py-1 rounded-lg bg-slate-100 text-slate-600 text-[11px] font-bold">
+                            <span key={permission} className="px-2 py-1 rounded-lg bg-surface-container text-on-surface-variant text-[11px] font-bold">
                               {PERMISSIONS.find(item => item.value === permission)?.label || permission}
                             </span>
                           ))}
                           {user.role !== "super_admin" && user.permissions.length > 4 && (
-                            <span className="px-2 py-1 rounded-lg bg-slate-100 text-slate-600 text-[11px] font-bold">
+                            <span className="px-2 py-1 rounded-lg bg-surface-container text-on-surface-variant text-[11px] font-bold">
                               +{user.permissions.length - 4}
                             </span>
                           )}
@@ -301,7 +301,7 @@ export default function AdminUsersPage() {
                       </td>
                       <td className="px-5 py-4">
                         <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold ${
-                          user.status === "active" ? "bg-emerald-50 text-emerald-700" : "bg-slate-100 text-slate-500"
+                          user.status === "active" ? "bg-secondary/10 text-secondary" : "bg-surface-container text-on-surface-variant"
                         }`}>
                           <span className="w-1.5 h-1.5 rounded-full bg-current" />
                           {user.status === "active" ? "Aktif" : "Pasif"}
@@ -315,7 +315,7 @@ export default function AdminUsersPage() {
                           <button
                             type="button"
                             onClick={() => startEdit(user)}
-                            className="p-2 rounded-xl text-slate-500 hover:bg-primary/10 hover:text-primary transition-colors"
+                            className="p-2 rounded-xl text-on-surface-variant hover:bg-primary/10 hover:text-primary transition-colors"
                             title="Düzenle"
                           >
                             <span className="material-symbols-outlined text-[20px]">edit</span>
@@ -324,7 +324,7 @@ export default function AdminUsersPage() {
                             type="button"
                             onClick={() => deleteUser(user)}
                             disabled={currentAdminId === user.id}
-                            className="p-2 rounded-xl text-slate-500 hover:bg-red-50 hover:text-red-600 transition-colors disabled:opacity-30 disabled:pointer-events-none"
+                            className="p-2 rounded-xl text-on-surface-variant hover:bg-error/10 hover:text-error transition-colors disabled:opacity-30 disabled:pointer-events-none"
                             title="Sil"
                           >
                             <span className="material-symbols-outlined text-[20px]">delete</span>
@@ -339,7 +339,7 @@ export default function AdminUsersPage() {
           )}
         </section>
 
-        <aside className="bg-white rounded-2xl p-6 border border-outline-variant/10 shadow-sm xl:sticky xl:top-24">
+        <aside className="bg-surface-container-lowest rounded-2xl p-6 border border-outline-variant/15 shadow-sm xl:sticky xl:top-24">
           <div className="flex items-start justify-between gap-4 mb-6">
             <div>
               <h3 className="text-xl font-serif text-primary flex items-center gap-2">
@@ -351,7 +351,7 @@ export default function AdminUsersPage() {
               </p>
             </div>
             {editing && (
-              <button type="button" onClick={resetForm} className="p-2 rounded-xl text-slate-500 hover:bg-slate-100 transition-colors" title="Yeni kullanıcı">
+              <button type="button" onClick={resetForm} className="p-2 rounded-xl text-on-surface-variant hover:bg-surface-container transition-colors" title="Yeni kullanıcı">
                 <span className="material-symbols-outlined text-[20px]">close</span>
               </button>
             )}
@@ -381,7 +381,7 @@ export default function AdminUsersPage() {
             </div>
             <div>
               <label className="block text-xs font-bold text-outline uppercase tracking-wider mb-2">
-                Şifre {editing && <span className="normal-case tracking-normal text-slate-400">(opsiyonel)</span>}
+                Şifre {editing && <span className="normal-case tracking-normal text-outline">(opsiyonel)</span>}
               </label>
               <input
                 type="password"

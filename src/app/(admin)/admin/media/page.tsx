@@ -132,7 +132,7 @@ export default function MediaPage() {
         </div>
         <div className="flex items-center gap-2">
           {selected.size > 0 && (
-            <button onClick={deleteSelected} className="flex items-center gap-2 px-4 py-2.5 bg-red-500 text-white rounded-xl font-bold text-sm hover:bg-red-600 transition-colors">
+            <button onClick={deleteSelected} className="flex items-center gap-2 px-4 py-2.5 bg-error text-white rounded-xl font-bold text-sm hover:bg-error/85 transition-colors">
               <span className="material-symbols-outlined text-[18px]">delete_sweep</span>
               {selected.size} Seçiliyi Sil
             </button>
@@ -140,7 +140,7 @@ export default function MediaPage() {
           <button
             onClick={() => fileInputRef.current?.click()}
             disabled={uploading}
-            className="flex items-center gap-2 px-5 py-2.5 bg-primary text-white rounded-xl font-bold text-sm hover:bg-[#002f6c] transition-colors shadow-sm disabled:opacity-60"
+            className="flex items-center gap-2 px-5 py-2.5 bg-primary text-white rounded-xl font-bold text-sm hover:bg-primary-container transition-colors shadow-sm disabled:opacity-60"
           >
             {uploading ? (
               <><span className="material-symbols-outlined text-[18px] animate-spin">sync</span> Yükleniyor...</>
@@ -161,10 +161,10 @@ export default function MediaPage() {
             placeholder="Dosya adı ile ara..."
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 bg-white border border-outline-variant/20 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
+            className="w-full pl-10 pr-4 py-2.5 bg-surface-container-lowest border border-outline-variant/20 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/20"
           />
         </div>
-        <div className="flex items-center gap-1 bg-white border border-outline-variant/20 rounded-xl p-1">
+        <div className="flex items-center gap-1 bg-surface-container-lowest border border-outline-variant/20 rounded-xl p-1">
           {(["all", "image", "other"] as const).map(f => (
             <button
               key={f}
@@ -175,7 +175,7 @@ export default function MediaPage() {
             </button>
           ))}
         </div>
-        <div className="flex items-center gap-1 bg-white border border-outline-variant/20 rounded-xl p-1">
+        <div className="flex items-center gap-1 bg-surface-container-lowest border border-outline-variant/20 rounded-xl p-1">
           <button onClick={() => setView("grid")} className={`p-1.5 rounded-lg transition-all ${view === "grid" ? 'bg-primary text-white' : 'text-on-surface-variant hover:bg-surface-container'}`}>
             <span className="material-symbols-outlined text-[18px]">grid_view</span>
           </button>
@@ -256,7 +256,7 @@ export default function MediaPage() {
                   <div className="flex gap-1 mt-2">
                     <button
                       onClick={() => copyUrl(file)}
-                      className={`flex-1 flex items-center justify-center gap-1 py-1 rounded-lg text-[10px] font-bold transition-all ${isCopied ? 'bg-emerald-100 text-emerald-700' : 'bg-primary/8 text-primary hover:bg-primary/15'}`}
+                      className={`flex-1 flex items-center justify-center gap-1 py-1 rounded-lg text-[10px] font-bold transition-all ${isCopied ? 'bg-secondary/10 text-secondary' : 'bg-primary/8 text-primary hover:bg-primary/15'}`}
                       title="URL'yi Kopyala"
                     >
                       <span className="material-symbols-outlined text-[12px]">{isCopied ? 'check' : 'content_copy'}</span>
@@ -268,7 +268,7 @@ export default function MediaPage() {
                     <button
                       onClick={() => deleteFile(file)}
                       disabled={isDeleting}
-                      className="p-1 bg-surface-container text-red-400 hover:bg-red-50 hover:text-red-600 rounded-lg transition-all disabled:opacity-40"
+                      className="p-1 bg-surface-container text-error/70 hover:bg-error/10 hover:text-error rounded-lg transition-all disabled:opacity-40"
                       title="Sil"
                     >
                       <span className="material-symbols-outlined text-[14px]">{isDeleting ? 'hourglass_empty' : 'delete'}</span>
@@ -281,7 +281,7 @@ export default function MediaPage() {
         </div>
       ) : (
         // List view
-        <div className="bg-white rounded-2xl border border-outline-variant/10 overflow-hidden">
+        <div className="bg-surface-container-lowest rounded-2xl border border-outline-variant/10 overflow-hidden">
           <table className="w-full text-left">
             <thead>
               <tr className="bg-surface-container-low border-b border-outline-variant/10">
@@ -321,14 +321,14 @@ export default function MediaPage() {
                     <td className="p-4 text-sm text-on-surface-variant hidden md:table-cell">{date}</td>
                     <td className="p-4">
                       <div className="flex items-center justify-end gap-1.5">
-                        <button onClick={() => copyUrl(file)} className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-[11px] font-bold transition-all ${isCopied ? 'bg-emerald-100 text-emerald-700' : 'bg-primary/8 text-primary hover:bg-primary/15'}`}>
+                        <button onClick={() => copyUrl(file)} className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-[11px] font-bold transition-all ${isCopied ? 'bg-secondary/10 text-secondary' : 'bg-primary/8 text-primary hover:bg-primary/15'}`}>
                           <span className="material-symbols-outlined text-[14px]">{isCopied ? 'check' : 'content_copy'}</span>
                           {isCopied ? 'Kopyalandı' : 'Kopyala'}
                         </button>
                         <a href={url} target="_blank" rel="noopener noreferrer" className="p-1.5 bg-surface-container text-on-surface-variant hover:bg-primary/10 hover:text-primary rounded-lg transition-all">
                           <span className="material-symbols-outlined text-[16px]">open_in_new</span>
                         </a>
-                        <button onClick={() => deleteFile(file)} disabled={isDeleting} className="p-1.5 bg-surface-container text-red-400 hover:bg-red-50 hover:text-red-600 rounded-lg transition-all disabled:opacity-40">
+                        <button onClick={() => deleteFile(file)} disabled={isDeleting} className="p-1.5 bg-surface-container text-error/70 hover:bg-error/10 hover:text-error rounded-lg transition-all disabled:opacity-40">
                           <span className="material-symbols-outlined text-[16px]">{isDeleting ? 'hourglass_empty' : 'delete'}</span>
                         </button>
                       </div>

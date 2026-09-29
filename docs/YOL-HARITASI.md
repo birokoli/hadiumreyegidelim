@@ -1,6 +1,37 @@
-# Yol haritası: SEO Masası, AI Görünürlük ve site düzeltmeleri
+# Yol haritası: SEO Masası, AI Görünürlük, blog motoru ve site düzeltmeleri
 
-Bu belge hadiumreyegidelim.com için sıradaki işlerin **tek doğru listesidir**. Claude Code ve Antigravity aynı belgeyi kullanır: her ajan işe buradan başlar, bitirdiği adımı burada işaretler. Kaynak: 29 Eylül 2026 canlı hata raporları (commit `acb8c74`).
+Bu belge hadiumreyegidelim.com için sıradaki işlerin **tek doğru listesidir**. Claude Code ve Antigravity aynı belgeyi kullanır: her ajan işe buradan başlar, bitirdiği adımı burada işaretler. İlk sürüm 29 Eylül 2026 canlı hata raporlarından çıkarıldı; son güncelleme 30 Eylül 2026.
+
+**Nasıl okunur:** Önce "Admin'de ne nerede" bölümüne bakın, sistemin parçalarını anlatır. Sonra "Görev dağılımı" tablosunda kimin neyi yaptığını görün. Adımlar fazlara ayrılmıştır; her adımda *neden* yapıldığı, *ne* yapılacağı ve *ne zaman bitmiş sayılacağı* yazar. `[x]` biten, `[ ]` bekleyen adımdır.
+
+---
+
+## 0. Admin'de ne nerede (sistem haritası)
+
+| Admin'deki yer | Ne işe yarar | Kod |
+|---|---|---|
+| **SEO Masası** (`/admin/seo`, menü: Pazarlama & Büyüme) | Google tarafı. 01 Durum özeti · 02 Denetim: sitemap'teki her sayfayı 33 kuralla kontrol eder (ücretsiz) · 03 Kelimeler: arama hacmi ve zorluk (DataForSEO) · 04 Sıralar: seçilen kelimelerde Google sırası · 05 Rakipler: alan adı karşılaştırması · 06 Programatik: şehir sayfalarının benzerliği ve açılabilecek sayfa grupları | `src/app/(admin)/admin/seo`, `src/app/api/admin/seo`, `src/lib/seo` |
+| **AI Görünürlük** (`/admin/ai-visibility`, menü: Sistem) | AI arama tarafı. Seçilen soruları ChatGPT, Gemini, Perplexity, Google AI Overview/AI Mode (DataForSEO) ve Claude'a sorar; markanın anılıp anılmadığını, sırasını, kaynakları ve rakipleri ölçer. 06 Hazırlık: sitenin AI'a uygunluk denetimi (ücretsiz) | `src/app/(admin)/admin/ai-visibility`, `src/app/api/admin/ai-vis`, `src/lib/ai-vis` |
+| **İçerik Stüdyosu → Blog İçerikleri** (`/admin/content`) | **Blog yazılarının tek yeri.** Üstte *Blog motoru* (Otomatik yazı · Yeni yazı üret · İç linkler), altta bütün yazılar (taslaklar dahil), düzenleyici ve yayınlama. Eski "Yapay Zeka (AI)" sayfası ve SEO Masası "07 Blog" buraya yönlenir | Sayfa: `src/app/(admin)/admin/content/page.tsx`, motor: `src/components/admin/content/BlogEngine.tsx`, `src/lib/geo-blog`, `src/app/api/admin/geo-blog` |
+| **Hata raporu** (SEO Masası ve AI Görünürlük menüsünde) | Sorunları, bağlantı testlerini (veritabanı, DataForSEO bakiyesi, Anthropic) ve son istekleri tek Markdown'da toplar; ajana yapıştırılır | `src/lib/diag`, `src/components/admin/seo/DiagButton.tsx` |
+| **Claude bütçesi** (Blog motoru → Otomatik yazı) | Bu ayki tahmini Claude harcaması ve aylık sınır | `src/lib/ai-budget.ts` |
+
+### Blog motoru nasıl çalışır
+
+1. **Konu seçimi (fırsat kuyruğu):** Öncelik sırası: rakiplerin AI yanıtlarında anılıp markanın anılmadığı sorular → AI'ın yanıt öncesi arattığı ama sitemizi kaynak göstermediği aramalar → takip edilen ve Google'da ilk 10'da olmayan kelimeler → markanın hiç anılmadığı AI soruları. Mevcut bir yazıyla örtüşen konular elenir.
+2. **Araştırma:** Claude web araması yapar (en fazla 6 arama). Yalnızca aramada gerçekten görülen URL'ler kaynak sayılır; doğrulanamayan bilgi atılır.
+3. **Yazım:** Kesin JSON şemasıyla yazılır: soru biçimli H2'ler, her bölümün başında 40–60 kelimelik doğrudan cevap, tablo, SSS. Rakamlar yalnızca doğrulanmış bilgilerden gelir ve kaynağına link verilir. İç linkler sitenin gerçek sayfa envanterinden seçilir.
+4. **Kalite kapısı:** Kod tarafında ölçülebilir kontroller (uzunluk, H1 yok, soru başlıkları, link geçerliliği, yasaklı AI kalıpları, tablo, SSS). Geçemezse ve süre varsa bir kez düzelttirilir.
+5. **Taslak:** Yazı `published:false` olarak kaydedilir ve İçerik Stüdyosu listesinde "Taslak · Kalite 85" gibi görünür. Otomatik yazıda her adım panelin "Son çalıştırmalar" listesine yazılır.
+6. **Yayın:** Listeden **Yayınla** ya da düzenleyiciden kaydetme. Yayına geçen her yazı (elle, zamanlanmış ya da otomatik) ölçüme bağlanır: odak kelime SEO sıra takibine, yazının cevapladığı soru AI Görünürlük sorularına eklenir.
+7. **Otomatik mod:** Cron her gün 09:00 ve 11:00'de (TSİ) dener, günde en fazla bir taslak üretir. "Kalite kapısını geçen taslağı otomatik yayınla" kapalıysa (varsayılan) yazılar onay bekler.
+
+### Claude bütçesi ve maliyet (Anthropic'te 40 $ yüklü)
+
+- Bir blog yazısı (araştırma + yazım, gerekirse düzeltme) tahmini **0,5–1 $**. AI Görünürlük'te Claude'a sorulan bir soru tahmini **0,05–0,2 $**. ChatGPT/Gemini/Perplexity/Google sorguları DataForSEO bakiyesinden düşer, Anthropic'ten değil.
+- Varsayılan **aylık sınır 15 $** (Blog motoru → Otomatik yazı panelinden değiştirilir). Sınır dolunca yeni Claude çağrısı yapılmaz, hata mesajı neden durduğunu söyler. Bu sınırla 40 $ en az 2–3 ay yeter.
+- Harcama liste fiyatıyla **tahmindir** (Opus 5: 5 $ / 25 $ milyon token, web araması 0,01 $). Kesin tutar: console.anthropic.com → Usage.
+- Tasarrufa yönelik kararlar: günde en fazla bir otomatik yazı; araştırmada en fazla 6 arama ve orta düzey düşünme (`effort: medium`); ikinci yazım yalnızca kalite kapısı geçilmezse; AI Görünürlük'te Claude motoru isteğe bağlı (Sorular sayfasından kapatılabilir).
 
 ---
 
@@ -27,7 +58,8 @@ Bir oturuma başlarken bu bölümü uygula. Kullanıcı başka bir şey istemedi
 | Canlı | Vercel, `main`'e push = production. Admin: `admin.hadiumreyegidelim.com` |
 | SEO Masası | `/admin/seo`, kod: `src/app/(admin)/admin/seo`, `src/app/api/admin/seo`, `src/lib/seo` |
 | AI Görünürlük | `/admin/ai-visibility`, kod: `src/app/(admin)/admin/ai-visibility`, `src/app/api/admin/ai-vis`, `src/lib/ai-vis` |
-| Veri | `Setting` tablosunda JSON: `SEO_*` ve `AI_VIS_*` anahtarları (şema değişikliği yok) |
+| Veri | `Setting` tablosunda JSON: `SEO_*`, `AI_VIS_*`, `ANTHROPIC_SPEND`, `AI_MONTHLY_BUDGET_USD`, `AUTO_BLOG_ENABLED`, `GEO_BLOG_AUTOPUBLISH` (şema değişikliği yok). Blog yazıları `Post`, otomatik yazı kayıtları `AILog` tablosunda |
+| Blog | Tek yer: İçerik Stüdyosu (`/admin/content`). Motor: `src/lib/geo-blog`; ortak Claude çağrısı `src/lib/geo-blog/claude.ts` (bütçe kontrolü burada) |
 | Ortam değişkenleri | `DATABASE_URL`, `DATAFORSEO_LOGIN`, `DATAFORSEO_PASSWORD`, `ANTHROPIC_API_KEY` (Vercel'de tanımlı) |
 | Hata raporu | Her SEO/AI sayfasında menüde **Hata raporu** düğmesi: sorunları, bağlantı testlerini ve istek kaydını Markdown olarak verir. Canlıda doğrulama için bunu iste |
 | Yerel geliştirme | Yerelde `.env` yok (kopyalanması engellendi); veritabanı ve API anahtarı gerektiren akışlar yerelde çalışmaz, canlıda Hata raporu ile doğrulanır. Yerel admin girişi: `localhost`'ta `admin_session=true` çerezi |
@@ -36,7 +68,11 @@ Bir oturuma başlarken bu bölümü uygula. Kullanıcı başka bir şey istemedi
 
 ---
 
-## 2. Mevcut durum (29 Eylül 2026)
+## 2. Mevcut durum
+
+**30 Eylül 2026 itibarıyla:** Blog motoru İçerik Stüdyosu'nda tek yerde. Anthropic'e 40 $ yüklendi, aylık 15 $ sınırlı bütçe takibi çalışıyor. Otomatik yazı varsayılan olarak kapalı: açmak için İçerik Stüdyosu → Blog motoru → Otomatik yazı. `ignoreBuildErrors` kapatıldı, tip hataları artık build'i durduruyor.
+
+**29 Eylül 2026 ilk ölçüm:**
 
 - **Bağlantılar:** Veritabanı çalışıyor. DataForSEO çalışıyor, bakiye **$50.81**; o günkü harcama $0.19 (24 AI sorgusu). Anthropic anahtarı geçerli ama **kredi yok**.
 - **SEO denetimi:** 128 sayfa, puan **83/100**. Canonical host (128 sayfa), yavaş yanıt (86), birden fazla H1 (85), uzun title (103), açıklama uzunluğu (14), link almayan sayfa (5), og:image eksik (5).
@@ -51,7 +87,7 @@ Bir oturuma başlarken bu bölümü uygula. Kullanıcı başka bir şey istemedi
 
 | Kim | Adımlar |
 |---|---|
-| **Kullanıcı** | 0.2 (Vercel ana alan adı), 0.3–0.5 (rakip, kelime, soru girişi), 1.5 (Safari gizli pencere testi), 1.7 (Vercel projeleri) |
+| **Kullanıcı** | 0.2 (Vercel ana alan adı), 0.3–0.5 (rakip, kelime, soru girişi), 0.6 (ilk blog taslağı ve otomatik yazıyı açma), 1.5 (Safari gizli pencere testi), 1.7 (Vercel projeleri) |
 | **Antigravity** | 2.3 H1 · 2.4 title · 2.5 meta/og:image · 2.6 link almayan sayfalar · 4.1 hazırlık puanı · 5.3 hata raporu diğer sayfalarda |
 | **Claude Code** | 1.6 güvenlik · 2.2 hız · 3.1 şehir sayfaları · 5.1 ignoreBuildErrors · 5.2 haftalık ölçüm (maliyet sınırıyla) |
 
@@ -75,6 +111,7 @@ Bir oturuma başlarken bu bölümü uygula. Kullanıcı başka bir şey istemedi
 - [ ] **0.3 Rakipler.** AI Görünürlük → Rakipler'e 3–5 rakip firma (ad + alan adı) gir; SEO Masası → Rakipler'e aynı alan adlarını gir.
 - [ ] **0.4 Takip edilen kelimeler.** SEO Masası → Kelimeler'de 10–20 hedef kelime seçip takibe al, Sıralar'da ilk kontrolü çalıştır.
 - [ ] **0.5 Sorular.** AI Görünürlük'teki soruları 10–15'e çıkar (öneriler + persona). Markalı soru eklemek gerekmez.
+- [ ] **0.6 İlk blog taslağı.** İçerik Stüdyosu → Blog motoru → Otomatik yazı → **Şimdi bir taslak yaz**. 2–4 dakika sonra taslak aşağıdaki listede "Taslak · Kalite …" olarak çıkar; açıp okuyun, uygunsa **Yayınla**. Sonucu beğenirseniz "Her gün otomatik taslak üret" kutusunu açın. Beklenen maliyet yazı başına 0,5–1 $.
 
 ### Faz 1 · Hata düzeltmeleri (kod, öncelikli)
 
@@ -193,6 +230,12 @@ Kurulan skill'ler: claude-seo eklentisi (seo-content, seo-content-brief, seo-clu
   - Her üretim "Yapay Zeka (AI)" sayfasının okuduğu `AILog`'a yazılıyor; cron atladığında nedeni de kaydediliyor. 07 Blog'a "Otomatik yazı" paneli (ayarlar, sıradaki konu, son çalıştırmalar, Şimdi yaz).
   - `/api/admin/trigger-ai` yetkisizdi ve eski (araştırmasız, doğrudan yayınlayan) boru hattını çalıştırıyordu → yetki eklendi, yeni motora bağlandı. `src/lib/blog-pipeline.ts` artık hiçbir yerden çağrılmıyor.
   - Kalite kapısı: soru başlığı tespitinde Türkçe `\b` hatası (ç/ş/ı), "cevap önce" paragraf kontrolü, izin verilmeyen etiket kontrolü, dış link URL normalleştirmesi. Yayınlama tek fonksiyonda (`src/lib/geo-blog/publish.ts`): 50 kelime / 60 soru sınırlarına uyuyor, `/llms.txt`'i yeniliyor.
+- [x] **6.13 Blog tek yerde: İçerik Stüdyosu** *(30.09, Claude)*
+  - Neden: Blog iki üç yerde duruyordu (İçerik Stüdyosu, SEO Masası 07 Blog, Yapay Zeka sayfası); kullanıcı tek yer istedi.
+  - Yapılan: Blog motoru (`src/components/admin/content/BlogEngine.tsx`) İçerik Stüdyosu'nun üstünde. Üretilen taslak doğrudan düzenleyicide açılır; listede taslaklara "Kalite" puanı ve "Yayınla". İçerik Stüdyosu'ndan, zamanlanmış yayından ve motordan yayına geçen her yazı ölçüme bağlanır (`connectMeasurement`). Eski "Claude AI Asistanı", `/api/ai/generate-blog`, `src/lib/blog-pipeline.ts` silindi; `/admin/seo/blog` ve `/admin/ai-logs` yönlendirme.
+- [x] **6.14 Claude bütçesi** *(30.09, Claude)*
+  - Neden: Anthropic'teki 40 $'ın kontrolsüz harcanmaması.
+  - Yapılan: `src/lib/ai-budget.ts`; blog motoru, AI Görünürlük'ün Claude motoru ve editördeki "AI ile düzenle" çağrıdan önce sınırı kontrol eder, sonra tahmini maliyeti yazar. Panelde harcama ve sınır ayarı.
 
 ---
 
@@ -202,6 +245,8 @@ En yeni en üstte. Her tamamlanan adım için bir satır.
 
 | Tarih | Ajan | Adım | Commit | Not |
 |---|---|---|---|---|
+| 2026-09-30 | Claude Code | 6.13, 6.14 | f1a3bd4 | Blog İçerik Stüdyosu'nda tek yerde; Claude aylık bütçe (15 $) ve harcama takibi; yol haritası açıklayıcı hale getirildi |
+| 2026-09-30 | Claude Code | 5.1 | b737aef | ignoreBuildErrors kaldırıldı |
 | 2026-09-30 | Claude Code | 6.12 | f856d5a | Faz 6 incelendi: 4 kritik hata ve 10+ iyileştirme düzeltildi; otomatik yazı paneli; görev dağılımı yazıldı |
 | 2026-09-29 | Antigravity | 6.6 | (bu commit) | GEO blog fırsat kuyruğu (getBlogOpportunities) yazıldı; AI content gaps, fan-out aramaları ve SEO kelimeleri skorlandı |
 | 2026-09-29 | Antigravity | 6.5 | (bu commit) | GEO blog boru hattı (generateBlogDraft) ve API uç noktaları (generate, publish, opportunities, links) yazıldı |

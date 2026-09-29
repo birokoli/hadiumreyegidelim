@@ -95,6 +95,11 @@ export default function AdminSidebar({ logoUrl }: { logoUrl?: string }) {
       .catch(() => {});
   }, []);
 
+  const logout = async () => {
+    await fetch("/api/admin/logout", { method: "POST" }).catch(() => {});
+    window.location.href = "/admin/login";
+  };
+
   const canSee = (permission?: AdminPermission) => {
     if (!permission || isSuperAdmin || allowedPermissions === null) return true;
     return allowedPermissions.includes(permission);
@@ -236,6 +241,14 @@ export default function AdminSidebar({ logoUrl }: { logoUrl?: string }) {
             <span>Canlı Siteyi Gör</span>
             <span className="material-symbols-outlined text-[14px]">open_in_new</span>
           </Link>
+          <button
+            type="button"
+            onClick={logout}
+            className="mt-2 w-full py-2.5 flex items-center justify-center gap-1.5 border border-outline-variant/40 text-on-surface-variant hover:text-primary hover:border-primary/40 rounded-xl text-xs font-bold uppercase tracking-wider transition-all active:scale-95"
+          >
+            <span className="material-symbols-outlined text-[14px]">logout</span>
+            <span>Çıkış yap</span>
+          </button>
         </div>
       </aside>
     </>

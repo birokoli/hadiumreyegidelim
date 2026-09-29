@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { ErrorLine, PageHead, Section, formatDate } from "@/components/admin/seo/ui";
 import type { BlogOpportunity } from "@/lib/geo-blog/opportunities";
 import type { PostLinkAnalysis } from "@/lib/geo-blog/links";
+import AutoBlogPanel from "@/components/admin/seo/AutoBlogPanel";
 
 interface PostItem {
   id: string;
@@ -243,10 +244,12 @@ function GeoBlogDesk() {
       <PageHead
         n="07"
         title="GEO Blog Motoru"
-        lede="Google AI Overviews ve ChatGPT'de yüksek görünürlük ve kaynak alıntılanabilirliği için tasarlanmış canlı web araştırmalı blog içerik motoru."
+        lede="Konuyu AI Görünürlük ve SEO verisinden seçer, web aramasıyla gerçek kaynaklardan araştırır, AI'ın alıntılayabileceği yapıda yazar ve kalite kapısından geçirip taslak olarak kaydeder. Yazı sitede, siz Yayınla'ya bastığınızda görünür."
       />
 
       <ErrorLine>{error}</ErrorLine>
+
+      <AutoBlogPanel onDraftCreated={fetchPosts} />
 
       <Section title="Yeni İçerik Üret" aside="Claude web search + Alıntılanabilirlik Kalite Kapısı">
         <div className="max-w-[800px] space-y-4">

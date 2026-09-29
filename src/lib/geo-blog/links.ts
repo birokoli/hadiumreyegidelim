@@ -16,16 +16,24 @@ export interface PostLinkAnalysis {
   suggestions: LinkSuggestion[];
 }
 
-/**
- * HTML içerisindeki kırık /rehber linklerini /blog olarak düzeltir.
- * /rehber/slug -> /blog/slug
- * /rehber -> /blog
- */
+/** Kırık link: yalnızca "/rehber" ana adresi 404 verir. "/rehber/{slug}" rehber profil sayfalarıdır ve çalışır. */
+const BROKEN_REHBER = /href=(["'])(?:https?:\/\/(?:www\.)?hadiumreyegidelim\.com)?\/rehber\/?(["'#?])/gi;
+
+export function countBrokenRehberLinks(html: string) {
+  return (html.match(BROKEN_REHBER) || []).length;
+}
+
+/** Kırık /rehber linklerini rehberlik hizmeti sayfasına (/rehberlik) çevirir; /rehber/{slug} linklerine dokunmaz */
 export function fixRehberLinks(html: string): string {
-  if (!html || !html.includes("/rehber")) return html;
-  return html
-    .replace(/href=(["'])\/rehber\//gi, 'href=$1/blog/')
-    .replace(/href=(["'])\/rehber(["'])/gi, 'href=$1/blog$2');
+  if (!html) return html;
+  return html.replace(BROKEN_REHBER, "href=$1/rehberlik$2");
+}
+
+/** Terimin kelime içinde değil, bütün kelime olarak geçtiği ilk konum (Türkçe harflere duyarlı) */
+function findWholeTerm(text: string, term: string) {
+  const escaped = term.toLocaleLowerCase("tr").replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const m = new RegExp(`(?<![\\p{L}\\p{N}])${escaped}(?![\\p{L}\\p{N}])`, "u").exec(text.toLocaleLowerCase("tr"));
+  return m ? m.index : -1;
 }
 
 /**
@@ -51,8 +59,6 @@ export function insertInternalLink(
   let inAnchor = false;
   let inHeading = false;
 
-  const termLower = term.toLocaleLowerCase("tr");
-
   const resultTokens = tokens.map((token) => {
     if (token.startsWith("<")) {
       const lower = token.toLowerCase();
@@ -64,7 +70,7 @@ export function insertInternalLink(
     }
 
     if (!inserted && !inAnchor && !inHeading) {
-      const idx = token.toLocaleLowerCase("tr").indexOf(termLower);
+      const idx = findWholeTerm(token, term);
       if (idx !== -1) {
         const matchedText = token.slice(idx, idx + term.length);
         const before = token.slice(0, idx);
@@ -95,8 +101,7 @@ export async function analyzePostLinks(targetPostId?: string): Promise<PostLinkA
   const results: PostLinkAnalysis[] = [];
 
   for (const post of posts) {
-    const rehberMatches = post.content.match(/href=(["'])\/rehber/gi);
-    const rehberLinkCount = rehberMatches ? rehberMatches.length : 0;
+    const rehberLinkCount = countBrokenRehberLinks(post.content);
 
     const suggestions: LinkSuggestion[] = [];
 
@@ -109,8 +114,8 @@ export async function analyzePostLinks(targetPostId?: string): Promise<PostLinkA
 
       for (const topic of target.topics) {
         if (!topic || topic.length < 4) continue;
-        const topicLower = topic.toLocaleLowerCase("tr");
-        if (post.content.toLocaleLowerCase("tr").includes(topicLower)) {
+        const plain = post.content.replace(/<a\b[\s\S]*?<\/a>|<h[1-6][\s\S]*?<\/h[1-6]>|<[^>]+>/gi, " ");
+        if (findWholeTerm(plain, topic) !== -1) {
           if (!suggestions.some((s) => s.targetPath === target.path)) {
             suggestions.push({
               term: topic,
@@ -158,7 +163,7 @@ export async function applyPostLinks(
     const before = updatedContent;
     updatedContent = fixRehberLinks(updatedContent);
     if (before !== updatedContent) {
-      fixedRehberCount = (before.match(/href=(["'])\/rehber/gi) || []).length;
+      fixedRehberCount = countBrokenRehberLinks(before);
     }
   }
 
@@ -199,9 +204,8 @@ export async function bulkFixRehberLinks() {
   let fixedLinksTotal = 0;
 
   for (const post of posts) {
-    if (!post.content.includes("/rehber")) continue;
-    const matches = post.content.match(/href=(["'])\/rehber/gi);
-    const linkCount = matches ? matches.length : 0;
+    const linkCount = countBrokenRehberLinks(post.content);
+    if (!linkCount) continue;
     const updated = fixRehberLinks(post.content);
 
     if (updated !== post.content) {

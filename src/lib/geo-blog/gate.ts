@@ -1,5 +1,6 @@
 import { isInternalPath, type LinkTarget } from "@/lib/geo-blog/inventory";
 import type { TopicResearch } from "@/lib/geo-blog/research";
+import { normalizeUrl } from "@/lib/geo-blog/claude";
 import type { GeneratedArticle } from "@/lib/geo-blog/write";
 
 export type GateIssueSeverity = "critical" | "warning";
@@ -29,6 +30,12 @@ const FORBIDDEN_PHRASES = [
   "adeta bir",
   "büyük bir titizlikle",
   "eşsiz bir",
+  "özetle",
+  "hayati önem",
+  "bu yazımızda",
+  "doğru yerdesiniz",
+  "hadi gelin",
+  "misafirlerimiz",
 ];
 
 function countWords(htmlOrText: string): number {
@@ -91,10 +98,31 @@ export function evaluateArticleQuality(
     score -= 15;
   }
 
-  const questionH2Count = h2Titles.filter((t) => t.endsWith("?") || /kaç|nasıl|neden|neler|nerede|kim|hangisi/i.test(t)).length;
+  const questionH2Count = h2Titles.filter((t) => t.endsWith("?") || /(?<!\p{L})(kaç|nasıl|neden|niçin|neler|nedir|nerede|ne zaman|hangi|kimler)(?!\p{L})/iu.test(t)).length;
   if (questionH2Count < 3) {
     issues.push({ severity: "warning", message: `En az 3 adet soru biçiminde H2 başlığı olmalı (${questionH2Count} adet bulundu).` });
     score -= 10;
+  }
+
+  // 5b. Cevap önce: her H2'nin altındaki ilk paragraf 25-80 kelimelik doğrudan cevap olmalı
+  const sections = article.content.split(/<h2[^>]*>/i).slice(1);
+  const firstParas = sections.map((sec) => sec.split(/<\/h2>/i)[1]?.match(/^\s*<p[^>]*>([\s\S]*?)<\/p>/i)?.[1] ?? "");
+  const answerFirst = firstParas.filter((p) => {
+    const w = countWords(p);
+    return w >= 25 && w <= 80 && !/^(bu|o|bunlar|şu|ancak|ama|fakat|ve)(?!\p{L})/iu.test(p.replace(/<[^>]+>/g, "").trim());
+  }).length;
+  if (sections.length && answerFirst / sections.length < 0.6) {
+    issues.push({ severity: "warning", message: `H2 bölümlerinin yalnızca ${answerFirst}/${sections.length} tanesi 25-80 kelimelik, konuyu adıyla anan doğrudan bir cevap paragrafıyla başlıyor.` });
+    score -= 10;
+  }
+
+  // 5c. İzin verilmeyen etiketler (script, style, iframe, img, div, span, h1…)
+  const disallowed = [...new Set([...article.content.matchAll(/<\s*([a-z0-9]+)[\s>]/gi)].map((m) => m[1].toLowerCase()))].filter(
+    (t) => !["p", "h2", "h3", "ul", "ol", "li", "table", "thead", "tbody", "tr", "th", "td", "strong", "em", "a", "br"].includes(t),
+  );
+  if (disallowed.length) {
+    issues.push({ severity: disallowed.some((t) => ["script", "style", "iframe"].includes(t)) ? "critical" : "warning", message: `İzin verilmeyen HTML etiketleri: ${disallowed.join(", ")}` });
+    score -= 5;
   }
 
   // 6. Tablo Kontrolü
@@ -104,7 +132,7 @@ export function evaluateArticleQuality(
   }
 
   // 7. SSS (FAQ) Kontrolü
-  if (!article.faq || article.faq.length < 3) {
+  if (!article.faq || article.faq.length < 4) {
     issues.push({ severity: "warning", message: "En az 4 adet SSS (FAQ) maddesi bulunmalı." });
     score -= 10;
   }
@@ -122,7 +150,7 @@ export function evaluateArticleQuality(
   const hrefMatches = Array.from(article.content.matchAll(/href=["']([^"']+)["']/g));
   const hrefs = hrefMatches.map((m) => m[1]);
 
-  const internalHrefs = hrefs.filter((h) => h.startsWith("/"));
+  const internalHrefs = hrefs.filter((h) => h.startsWith("/") || /^https?:\/\/(www\.)?hadiumreyegidelim\.com/i.test(h));
   let invalidInternalCount = 0;
   for (const href of internalHrefs) {
     if (!isInternalPath(href, inventory)) {
@@ -135,18 +163,18 @@ export function evaluateArticleQuality(
     score -= 15;
   }
 
-  if (internalHrefs.length < 3) {
+  if (internalHrefs.length < 4) {
     issues.push({ severity: "warning", message: `En az 4 iç link olmalı (${internalHrefs.length} adet bulundu).` });
     score -= 10;
   }
 
   // 10. Dış Link Kontrolü
-  const externalHrefs = hrefs.filter((h) => /^https?:\/\//.test(h));
-  const allowedSourceUrls = new Set(research.sources.map((s) => s.url));
+  const externalHrefs = hrefs.filter((h) => /^https?:\/\//.test(h) && !/^https?:\/\/(www\.)?hadiumreyegidelim\.com/i.test(h));
+  const allowedSourceUrls = new Set(research.sources.map((s) => normalizeUrl(s.url)));
   let invalidExternalCount = 0;
 
   for (const href of externalHrefs) {
-    if (!allowedSourceUrls.has(href)) {
+    if (!allowedSourceUrls.has(normalizeUrl(href))) {
       invalidExternalCount++;
     }
   }

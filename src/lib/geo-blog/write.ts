@@ -1,12 +1,9 @@
-import Anthropic from "@anthropic-ai/sdk";
-import { explainAnthropicError } from "@/lib/ai-vis/engines";
+import { callClaude } from "@/lib/geo-blog/claude";
 import { pickLinkTargets, type LinkTarget } from "@/lib/geo-blog/inventory";
 import type { TopicResearch } from "@/lib/geo-blog/research";
+import { slugify } from "@/lib/seo/programmatic";
 
-export type BlogFaqItem = {
-  question: string;
-  answer: string;
-};
+export type BlogFaqItem = { question: string; answer: string };
 
 export type GeneratedArticle = {
   title: string;
@@ -20,183 +17,102 @@ export type GeneratedArticle = {
   externalLinksUsed: string[];
 };
 
-/**
- * Araştırma verilerine ve sayfa envanterine dayanarak SEO + GEO alıntılanabilir blog yazısı üretir.
- */
-export async function writeArticle(
-  research: TopicResearch,
-  inventory: LinkTarget[]
-): Promise<GeneratedArticle> {
-  if (!process.env.ANTHROPIC_API_KEY) {
-    throw new Error("ANTHROPIC_API_KEY bulunamadı.");
-  }
+// Structured outputs: yanıt bu şemaya zorlanır; metinden JSON ayıklamaya gerek kalmaz
+const ARTICLE_SCHEMA = {
+  type: "object",
+  additionalProperties: false,
+  required: ["title", "slug", "metaDescription", "tldr", "content", "faq", "keywords"],
+  properties: {
+    title: { type: "string" },
+    slug: { type: "string" },
+    metaDescription: { type: "string" },
+    tldr: { type: "string" },
+    content: { type: "string" },
+    faq: {
+      type: "array",
+      items: {
+        type: "object",
+        additionalProperties: false,
+        required: ["question", "answer"],
+        properties: { question: { type: "string" }, answer: { type: "string" } },
+      },
+    },
+    keywords: { type: "array", items: { type: "string" } },
+  },
+} as const;
 
-  const linkCandidates = pickLinkTargets(research.topic, inventory, 12);
-  const internalLinkMap = linkCandidates.map((c) => ({
-    path: c.path,
-    title: c.title,
-    topics: c.topics,
-  }));
+const SYSTEM = `Sen hadiumreyegidelim.com için Google'da sıralanacak ve AI arama motorlarının (ChatGPT, Perplexity, Gemini, Google AI Overviews) alıntılayacağı Türkçe rehber yazıları yazan bir editörsün.
 
-  const externalSources = research.sources.map((s) => ({
-    url: s.url,
-    title: s.title ?? s.url,
-  }));
+BAŞLIK VE META
+- title: en fazla 60 karakter, odak kelime başta. Marka adı ekleme (şablon ekler).
+- slug: küçük harf, Türkçe karakter yok, tireli, en fazla 6 kelime.
+- metaDescription: 130-155 karakter, sorunun cevabını ve bir somut bilgiyi içersin.
+- tldr: 40-60 kelime; sorunun cevabı tek başına anlaşılır biçimde.
+- keywords: 5-8 hedef kelime.
 
-  const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+İÇERİK (content, HTML)
+- <h1> kullanma. İzinli etiketler: p, h2, h3, ul, ol, li, table, thead, tbody, tr, th, td, strong, em, a.
+- En az 5 <h2>; en az 3'ü insanların soracağı biçimde soru ("… kaç gün sürer?").
+- Her <h2>'nin hemen altındaki ilk <p> 40-60 kelimelik doğrudan cevaptır: konuyu adıyla anar (bu, o, bunlar ile başlamaz), tek başına okunduğunda anlaşılır.
+- Bölümler 130-170 kelimelik, kendi başına alıntılanabilir pasajlardan oluşsun.
+- En az 1 <table> (karşılaştırma, maliyet kalemleri, adımlar).
+- 1200-1900 kelime.
+- Rakam, tarih, fiyat, süre yalnızca verilen DOĞRULANMIŞ OLGULAR'dan gelir; her birinin yanında o olgunun kaynağına dış link ver. Olgularda olmayan rakam yazma; gerekiyorsa "güncel tutarı … sayfasından kontrol edin" de.
+- Uydurma deneyim, müşteri, yorum, istatistik yok. "Misafirlerimiz", "yıllardır gözlemliyoruz" gibi doğrulanamayan iddialar yok.
 
-  const systemPrompt = `Sen hadiumreyegidelim.com için alıntılanabilir (GEO) ve SEO uyumlu rehber yazıları hazırlayan uzman bir editörsün.
+LİNKLER
+- İç link: yalnızca İZİNLİ İÇ LİNKLER listesindeki path'ler, tam olarak yazıldığı gibi (ör. href="/bireysel-umre"). 5-8 iç link; link metni hedef sayfayı anlatsın ("buraya tıklayın" değil). /bireysel-umre veya /paketler en az birine doğal bir yerde link ver.
+- Dış link: yalnızca İZİNLİ DIŞ KAYNAKLAR listesindeki URL'ler, birebir aynı; target="_blank" rel="noopener noreferrer".
 
-Aşağıda sana verilen araştırma verilerini, doğrulanmış olguları ve izin verilen bağlantı listelerini kullanacaksın.
+ÜSLUP (no-ai-slop)
+- Kısa ve net cümleler; cevap önce, açıklama sonra.
+- Yasak: "günümüz dünyasında", "şüphesiz", "kuşkusuz", "sonuç olarak", "özetle", "unutulmaz bir deneyim", "eşsiz", "adeta", "son derece önemli", "hayati önem", "bu yazımızda", "merak ediyorsanız doğru yerdesiniz", "hadi gelin", emoji.
+- "Bu X değil, Y" kalıbı, retorik sorular ve dramatik tek kelimelik cümleler yok.
 
-YAZIM KURALLARI VE STANDARTLARI:
-1. BAŞLIK VE METATAGLAR:
-   - "title": En fazla 60 karakter olmalı, ilgi çekici ve net.
-   - "slug": Türkçe karakter içermeyen, tire ile ayrılmış URL yolu (ör. "bireysel-umre-rehberi-2026").
-   - "metaDescription": 120-160 karakter arası, arama sonucunda tıklamayı artıracak özet.
-   - "tldr": Sayfa başında kutu olarak gösterilecek 2-3 cümlelik net özet.
-   - "keywords": Virgülle ayrılmış 5-8 adet hedef kelime.
+faq: 4-6 soru; cevaplar 2-3 cümle ve içerikle çelişmesin.`;
 
-2. İÇERİK (content - HTML formatında):
-   - H1 ETİKETİ KESİNLİKLE KULLANMA (Sayfa başlığı H1 olacaktır).
-   - En az 4 adet <h2> başlığı kullan. H2 başlıklarının EN AZ 3 TANESİ SORU ŞEKLİNDE olmalıdır (ör. <h2>Umre Vizesi Kaç Günde Çıkar?</h2>).
-   - Her <h2> başlığının hemen altındaki İLK PARAGRAF 40-60 kelimelik, soruya doğrudan cevap veren bağımsız bir özet paragraf olmalıdır. AI arama motorları bu pasajları alıntılar.
-   - En az 1 adet düzgün HTML <table> etiketi içermeli (karşılaştırma, adımlar veya süreç tablosu).
-   - İçerik 1200 ile 2000 kelime arasında kapsamlı olmalıdır.
-   - Sadece <p>, <h2>, <h3>, <ul>, <ol>, <li>, <table>, <thead>, <tbody>, <tr>, <th>, <td>, <strong>, <em>, <a> etiketleri kullan.
+export async function writeArticle(research: TopicResearch, inventory: LinkTarget[], feedback: string[] = []): Promise<GeneratedArticle> {
+  const linkCandidates = pickLinkTargets(research.topic, inventory, 14);
+  const allowedInternal = linkCandidates.map((c) => ({ path: c.path, title: c.title }));
+  const allowedExternal = research.sources.map((s) => ({ url: s.url, title: s.title ?? s.url }));
 
-3. BAĞLANTI (LINK) KURALLARI:
-   - İÇ LİNKLER: Yalnızca verilen "IZIN_VERILEN_IC_LINKLER" listesindeki path adreslerini kullan! Metin içerisinde uygun yerlerde en az 4, en fazla 8 iç link ekle (ör. <a href="/bireysel-umre">bireysel umre planlama</a>).
-   - DIŞ LİNKLER: Yalnızca verilen "IZIN_VERILEN_DIS_KAYNAKLAR" listesindeki URL adreslerini kullan! Metinde doğrulanmış bir bilgiden bahsederken bu URL adreslerine rel="noopener noreferrer" target="_blank" ile link ver. Uydurma dış link ekleme!
+  const prompt = [
+    `KONU: ${research.topic}`,
+    `ARAYAN KİŞİNİN NİYETİ: ${research.userIntent}`,
+    `HEDEF KİTLE: ${research.targetAudience}`,
+    `SORULAR:\n${research.keyQuestions.map((q) => `- ${q}`).join("\n") || "- (araştırmadan soru çıkmadı; konuya göre sen belirle)"}`,
+    `DOĞRULANMIŞ OLGULAR:\n${research.facts.map((f) => `- ${f.claim} [kaynak: ${f.sourceUrl}]`).join("\n") || "- (doğrulanmış olgu yok: rakam vermeden, süreç ve kontrol listesi odaklı yaz)"}`,
+    `İZİNLİ İÇ LİNKLER:\n${JSON.stringify(allowedInternal)}`,
+    `İZİNLİ DIŞ KAYNAKLAR:\n${JSON.stringify(allowedExternal)}`,
+    feedback.length ? `ÖNCEKİ TASLAKTAKİ SORUNLAR (bu kez hepsini düzelt):\n${feedback.map((f) => `- ${f}`).join("\n")}` : "",
+  ]
+    .filter(Boolean)
+    .join("\n\n");
 
-4. AI-SLOP YASAKLARI:
-   - "Günümüz dünyasında", "Şüphesiz ki", "Sonuç olarak", "Harika bir yolculuk", "Unutulmaz bir deneyim", "Kuşkusuz", "Son derece önemli" vb. kalıplaşmış yapay metin laflarını KESİNLİKLE KULLANMA.
-   - Uydurma müşteri hikayeleri, temelsiz rakamlar yazma. Her sayısal veri doğrulanmış olgulara dayanmalıdır.
+  const { text } = await callClaude({ system: SYSTEM, prompt, schema: ARTICLE_SCHEMA as unknown as Record<string, unknown>, effort: "medium" });
 
-ÇIKTI FORMATI:
-Yanıtını TAM JSON formatında ver:
-{
-  "title": "...",
-  "slug": "...",
-  "metaDescription": "...",
-  "tldr": "...",
-  "content": "<p>...</p><h2>...</h2>...",
-  "faq": [
-    { "question": "Soru 1?", "answer": "Cevap 1" },
-    { "question": "Soru 2?", "answer": "Cevap 2" },
-    { "question": "Soru 3?", "answer": "Cevap 3" },
-    { "question": "Soru 4?", "answer": "Cevap 4" }
-  ],
-  "keywords": "kelime1, kelime2, kelime3"
-}`;
-
-  const userPrompt = `KONU: ${research.topic}
-KULLANICI NİYETİ: ${research.userIntent}
-HEDEF KİTLE: ${research.targetAudience}
-
-ANA SORULAR:
-${research.keyQuestions.map((q) => `- ${q}`).join("\n")}
-
-DOĞRULANMIŞ OLGULAR VE BİLGİLER:
-${research.facts.map((f) => `- ${f.claim} (Kaynak: ${f.sourceUrl})`).join("\n")}
-
-IZIN_VERILEN_IC_LINKLER:
-${JSON.stringify(internalLinkMap, null, 2)}
-
-IZIN_VERILEN_DIS_KAYNAKLAR:
-${JSON.stringify(externalSources, null, 2)}
-
-Lütfen yukarıdaki kurallara harfiyen uyarak tam JSON formatında blog yazısını üret.`;
-
-  const messages: Anthropic.MessageParam[] = [{ role: "user", content: userPrompt }];
-
-  let final: Anthropic.Message | null = null;
-  const blocks: Anthropic.ContentBlock[] = [];
-
-  for (let i = 0; i < 4; i++) {
-    const params = {
-      model: "claude-opus-5",
-      max_tokens: 16000,
-      thinking: { type: "adaptive" },
-      system: systemPrompt,
-      messages,
-      betas: ["server-side-fallback-2026-07-01"],
-      fallbacks: "default",
-    };
-
-    try {
-      final = (await client.beta.messages.create(
-        params as unknown as Anthropic.Beta.MessageCreateParamsNonStreaming
-      )) as unknown as Anthropic.Message;
-    } catch (e) {
-      throw new Error(explainAnthropicError(e));
-    }
-
-    blocks.push(...final.content);
-    if (final.stop_reason !== "pause_turn") break;
-    messages.push({ role: "assistant", content: final.content });
-  }
-
-  if (final?.stop_reason === "refusal") {
-    throw new Error("Claude bu konu için içerik üretimini reddetti.");
-  }
-
-  const responseText = blocks
-    .filter((b): b is Anthropic.TextBlock => b.type === "text")
-    .map((b) => b.text)
-    .join("")
-    .trim();
-
-  let parsed: Partial<GeneratedArticle> = {};
+  let parsed: { title: string; slug: string; metaDescription: string; tldr: string; content: string; faq: BlogFaqItem[]; keywords: string[] | string };
   try {
-    const jsonMatch = responseText.match(/```(?:json)?\s*([\s\S]*?)\s*```/) || [null, responseText];
-    const rawJson = jsonMatch[1] ?? responseText;
-    parsed = JSON.parse(rawJson);
+    parsed = JSON.parse(text);
   } catch {
-    const firstBrace = responseText.indexOf("{");
-    const lastBrace = responseText.lastIndexOf("}");
-    if (firstBrace !== -1 && lastBrace > firstBrace) {
-      try {
-        parsed = JSON.parse(responseText.slice(firstBrace, lastBrace + 1));
-      } catch {
-        parsed = {};
-      }
-    }
+    throw new Error("Claude yazı çıktısı JSON olarak okunamadı.");
   }
 
-  const content = parsed.content ?? "";
-
-  const internalUsedSet = new Set<string>();
-  const hrefMatches = content.matchAll(/href=["']([^"']+)["']/g);
-  const allowedInternalPaths = new Set(internalLinkMap.map((l) => l.path));
-  const allowedExternalUrls = new Set(externalSources.map((s) => s.url));
-
-  const externalUsedSet = new Set<string>();
-
-  for (const m of hrefMatches) {
-    const href = m[1];
-    if (allowedInternalPaths.has(href)) {
-      internalUsedSet.add(href);
-    } else if (allowedExternalUrls.has(href)) {
-      externalUsedSet.add(href);
-    }
-  }
-
-  const title = (parsed.title ?? research.topic).slice(0, 80).trim();
-  const rawSlug = parsed.slug ?? research.topic.toLowerCase().replace(/[^a-z0-9]+/g, "-");
-  const slug = rawSlug.replace(/^\/+|\/+$/g, "").toLowerCase();
+  const content = String(parsed.content ?? "");
+  const hrefs = [...content.matchAll(/href=["']([^"']+)["']/g)].map((m) => m[1]);
+  const internalSet = new Set(allowedInternal.map((l) => l.path));
+  const externalSet = new Set(allowedExternal.map((s) => s.url));
+  const title = String(parsed.title ?? research.topic).trim();
 
   return {
     title,
-    slug,
-    metaDescription: (parsed.metaDescription ?? `${title} rehberi.`).slice(0, 170).trim(),
-    tldr: parsed.tldr ?? `${title} hakkında detaylı rehber ve güncel bilgiler.`,
+    slug: slugify(String(parsed.slug || title)).split("-").slice(0, 8).join("-") || slugify(research.topic),
+    metaDescription: String(parsed.metaDescription ?? "").trim(),
+    tldr: String(parsed.tldr ?? "").trim(),
     content,
-    faq: Array.isArray(parsed.faq)
-      ? parsed.faq.filter((item): item is BlogFaqItem => Boolean(item && typeof item.question === "string" && typeof item.answer === "string"))
-      : [],
-    keywords: parsed.keywords ?? research.topic,
-    internalLinksUsed: Array.from(internalUsedSet),
-    externalLinksUsed: Array.from(externalUsedSet),
+    faq: (Array.isArray(parsed.faq) ? parsed.faq : []).filter((f) => f && typeof f.question === "string" && typeof f.answer === "string" && f.question.trim() && f.answer.trim()),
+    keywords: (Array.isArray(parsed.keywords) ? parsed.keywords : String(parsed.keywords ?? "").split(",")).map((k) => String(k).trim()).filter(Boolean).join(", "),
+    internalLinksUsed: [...new Set(hrefs.filter((h) => internalSet.has(h)))],
+    externalLinksUsed: [...new Set(hrefs.filter((h) => externalSet.has(h)))],
   };
 }

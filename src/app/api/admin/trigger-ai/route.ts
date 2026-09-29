@@ -1,31 +1,27 @@
-import { NextResponse, after } from 'next/server';
-import { prisma } from '@/lib/prisma';
-import { runBlogPipeline } from '@/lib/blog-pipeline';
+import { NextResponse, after } from "next/server";
+import { prisma } from "@/lib/prisma";
+import { runAutoBlog, runningJob, pickTopic } from "@/lib/geo-blog/auto";
+import { requireAiVisAdmin } from "@/lib/seo/guard";
 
-// Pipeline 5 dakikaya kadar çalışabilir
+// Araştırma + yazım 5 dakikaya kadar sürebilir; yanıt hemen döner, üretim arkada sürer
 export const maxDuration = 300;
 
+/** "Yapay Zeka (AI)" sayfasındaki "Şimdi yaz" düğmesi: GEO motoruyla bir taslak üretir */
 export async function POST() {
+  const denied = await requireAiVisAdmin();
+  if (denied) return denied;
   try {
-    // 1. Takılı kalan logları temizle
-    await prisma.aILog.updateMany({
-      where: { status: { notIn: ['COMPLETED', 'FAILED'] } },
-      data: { status: 'FAILED', details: 'Manuel tetikleme — önceki işlem temizlendi.', completedAt: new Date() },
-    });
+    const running = await runningJob();
+    if (running) return NextResponse.json({ error: "Zaten bir yazı üretiliyor; bitmesini bekleyin.", logId: running.id }, { status: 409 });
 
-    // 2. Log girişini HEMEN oluştur — UI bu satırı anında görür
-    const log = await prisma.aILog.create({
-      data: { status: 'INTERNET_SEARCH', details: 'Anahtar kelime seçiliyor...' },
-    });
-
-    // 3. Response döndükten sonra pipeline'ı direkt çağır (HTTP hop yok)
+    const topic = await pickTopic();
+    const log = await prisma.aILog.create({ data: { topic, status: "INTERNET_SEARCH", details: `GEO motoru: "${topic}" araştırılıyor` } });
     after(async () => {
-      await runBlogPipeline(log.id);
+      await runAutoBlog({ logId: log.id, topic }).catch((e) => console.error("[trigger-ai]", e));
     });
-
-    return NextResponse.json({ success: true, logId: log.id });
-  } catch (err: any) {
-    console.error('[trigger-ai]', err);
-    return NextResponse.json({ error: 'Tetikleme başarısız.' }, { status: 500 });
+    return NextResponse.json({ success: true, logId: log.id, topic });
+  } catch (err) {
+    console.error("[trigger-ai]", err);
+    return NextResponse.json({ error: "Tetikleme başarısız." }, { status: 500 });
   }
 }

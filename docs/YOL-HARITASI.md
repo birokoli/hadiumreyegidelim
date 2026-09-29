@@ -8,7 +8,7 @@ Bu belge hadiumreyegidelim.com için sıradaki işlerin **tek doğru listesidir*
 
 Bir oturuma başlarken bu bölümü uygula. Kullanıcı başka bir şey istemedikçe:
 
-1. `git pull` yap, sonra bu belgede **ilk işaretlenmemiş adımı** bul (faz sırası önemli; Faz 0 kullanıcı işidir, atla).
+1. `git pull` yap. "Görev dağılımı" tablosunda **sana atanmış** ilk işaretlenmemiş adımı bul (Faz 0 ve kullanıcı adımları senin değil). Claude Code ayrıca "(Claude incelemesi bekliyor)" notlu adımları inceler.
 2. Adımın **Dosyalar**, **Yapılacak** ve **Bitti sayılır** kısımlarını oku. Belirsizlik varsa kullanıcıya sor; tahmin etme.
 3. **Tek adım = tek commit.** Commit mesajı adım kodunu içersin (ör. `[1.1] AI Mode: depth parametresini kaldır`).
 4. Doğrula: `npx tsc --noEmit -p .` (src/ altında hata kalmamalı) ve ilgili dosyalar için `npx eslint <dosya>`. Görünür değişiklikse `npm run dev` ile sayfaya bak.
@@ -46,6 +46,26 @@ Bir oturuma başlarken bu bölümü uygula. Kullanıcı başka bir şey istemedi
 ---
 
 ## 3. Adımlar
+
+### Görev dağılımı (30.09)
+
+| Kim | Adımlar |
+|---|---|
+| **Kullanıcı** | 0.2 (Vercel ana alan adı), 0.3–0.5 (rakip, kelime, soru girişi), 1.5 (Safari gizli pencere testi), 1.7 (Vercel projeleri) |
+| **Antigravity** | 2.3 H1 · 2.4 title · 2.5 meta/og:image · 2.6 link almayan sayfalar · 4.1 hazırlık puanı · 5.3 hata raporu diğer sayfalarda |
+| **Claude Code** | 1.6 güvenlik · 2.2 hız · 3.1 şehir sayfaları · 5.1 ignoreBuildErrors · 5.2 haftalık ölçüm (maliyet sınırıyla) |
+
+**İnceleme protokolü:** Antigravity bir adımı bitirince `[x]` yapar ve adım satırının sonuna ` *(Claude incelemesi bekliyor)*` ekler. Claude Code bu adımları inceler; sorun yoksa notu ` *(incelendi ✓)*` yapar, sorun varsa düzeltir ve 6.12 gibi bir alt maddeyle ne düzeltildiğini yazar.
+
+### Bu incelemeden çıkan kurallar (tüm ajanlar)
+
+- `Setting` anahtarlarını elle yazma; `src/lib/seo/store.ts` (`SEO_KEYS`, `readJson`) ve `src/lib/ai-vis/store.ts` (`loadConfig`, `loadCells`) yardımcılarını kullan. Veri biçimini tahmin etme, tipini import et (`TrackedKeyword`, `AiVisConfig`).
+- Veritabanına bir alanı yazmadan önce onu **okuyan** kodu bul (`grep -rn "post.faq"` gibi) ve biçimi ona göre ver.
+- Kaynak/URL doğrulamasında "bulunamazsa ilkini kullan" gibi yedekler yasak: doğrulanamayan veri atılır.
+- Link veya içerik dönüştürmeden önce hedefin canlıda çalıştığını `curl -s -o /dev/null -w "%{http_code}" https://hadiumreyegidelim.com/<yol>` ile doğrula.
+- Saf fonksiyonları (regex, dönüştürücü, puanlama) gerçek Türkçe örneklerle test et: `npx -y tsx --tsconfig tsconfig.json <geçici-test>.ts`. JavaScript `\b` Türkçe harfleri tanımaz; `(?<!\p{L})…(?!\p{L})` ve `u` bayrağını kullan.
+- Uzun Claude işleri Vercel'in 300 sn sınırına takılır; süre bütçesi koy, yarıda kalırsa bile kaydedilecek bir sonuç bırak.
+
 
 ### Faz 0 · Kullanıcı ayarları (kod gerekmez)
 
@@ -163,6 +183,16 @@ Kurulan skill'ler: claude-seo eklentisi (seo-content, seo-content-brief, seo-clu
 - [x] **6.9 İç link önerileri** – mevcut yazılar için öneri ve tek tıkla uygulama (mevcut `<a>` içine girmeden ilk geçen ifadeye link); eski yazılardaki `/rehber` kırık linklerini düzelt.
 - [x] **6.10 Dinamik llms.txt** – `public/llms.txt`'i kaldırıp `src/app/llms.txt/route.ts`: mevcut başlık metni + hub'lar + son 50 yazı + paketler.
 - [x] **6.11 Cron'u yeni motora bağla** – `src/app/api/cron/auto-blog` yeni motorla **taslak** üretsin; otomatik yayın yalnızca `GEO_BLOG_AUTOPUBLISH=true` ve kapı geçtiyse. Kullanıcı onayı gerekir.
+- [x] **6.12 Claude incelemesi ve düzeltmeler** (Antigravity'nin 6.2–6.11 çalışması, 30.09)
+  - Kritik: SSS `{question, answer}` kaydediliyordu, blog şablonu `{q, a}` okuyor → SSS ve FAQPage şeması hiç görünmezdi. Kaynaklar JSON dizi olarak kaydediliyordu (sitede `["https://…"]` görünürdü). Artık `{q,a}` ve "Başlık — URL" satırları.
+  - Kritik: `research.ts` modelin yazdığı her URL'yi "gerçek" sayıyor, doğrulanamayan bilgiyi ilk kaynağa **yanlış atfediyordu**. Artık yalnızca `web_search_tool_result` bloklarında ve alıntılarda görülen URL'ler geçerli; doğrulanamayan bilgi atılıyor.
+  - Kritik: `opportunities.ts` yanlış anahtarı (`AI_VIS_RUNS`; doğrusu `AI_VIS_CELLS`) ve yanlış veri biçimini (SEO kelimeleri nesne, düz metin değil) okuyordu, "umre" gibi tek kelimeler neredeyse her konuyu eliyordu → kuyruk boş, cron hep sabit konuya düşüyordu. Store yardımcılarıyla ve kelime benzerliğiyle yeniden yazıldı.
+  - Kritik: `fixRehberLinks` `/rehber/{slug}` rehber profil linklerini (çalışan sayfalar) `/blog/…`'a çevirip bozacaktı. Artık yalnızca kırık `/rehber` → `/rehberlik`.
+  - `write.ts` artık structured outputs (JSON şeması) kullanıyor, düzeltme notlarını ayrı alıyor, slug Türkçe karakterleri doğru çeviriyor, keywords dizisi normalleştiriliyor.
+  - Slug benzersizleştirme sayım yerine gerçek kontrol (çakışmada kayıt çöküyordu). 300 sn sınırı için ikinci yazım yalnızca süre kalırsa; ikinci deneme daha kötüyse ilki tutuluyor.
+  - Her üretim "Yapay Zeka (AI)" sayfasının okuduğu `AILog`'a yazılıyor; cron atladığında nedeni de kaydediliyor. 07 Blog'a "Otomatik yazı" paneli (ayarlar, sıradaki konu, son çalıştırmalar, Şimdi yaz).
+  - `/api/admin/trigger-ai` yetkisizdi ve eski (araştırmasız, doğrudan yayınlayan) boru hattını çalıştırıyordu → yetki eklendi, yeni motora bağlandı. `src/lib/blog-pipeline.ts` artık hiçbir yerden çağrılmıyor.
+  - Kalite kapısı: soru başlığı tespitinde Türkçe `\b` hatası (ç/ş/ı), "cevap önce" paragraf kontrolü, izin verilmeyen etiket kontrolü, dış link URL normalleştirmesi. Yayınlama tek fonksiyonda (`src/lib/geo-blog/publish.ts`): 50 kelime / 60 soru sınırlarına uyuyor, `/llms.txt`'i yeniliyor.
 
 ---
 
@@ -172,6 +202,7 @@ En yeni en üstte. Her tamamlanan adım için bir satır.
 
 | Tarih | Ajan | Adım | Commit | Not |
 |---|---|---|---|---|
+| 2026-09-30 | Claude Code | 6.12 | (bu commit) | Faz 6 incelendi: 4 kritik hata ve 10+ iyileştirme düzeltildi; otomatik yazı paneli; görev dağılımı yazıldı |
 | 2026-09-29 | Antigravity | 6.6 | (bu commit) | GEO blog fırsat kuyruğu (getBlogOpportunities) yazıldı; AI content gaps, fan-out aramaları ve SEO kelimeleri skorlandı |
 | 2026-09-29 | Antigravity | 6.5 | (bu commit) | GEO blog boru hattı (generateBlogDraft) ve API uç noktaları (generate, publish, opportunities, links) yazıldı |
 | 2026-09-29 | Antigravity | 6.4 | (bu commit) | GEO blog kalite kapısı (evaluateArticleQuality) yazıldı; kelime sayısı, H1, H2 soru, tablo, link doğrulama ve AI-slop filtreleri uygulandı |

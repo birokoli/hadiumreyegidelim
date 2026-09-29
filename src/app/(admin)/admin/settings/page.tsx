@@ -97,8 +97,15 @@ export default function SettingsPage() {
         body: JSON.stringify({ headingSlug: key === 'HOME_HERO_VIDEO' ? 'anasayfa-video' : 'anasayfa-gorsel', ext, contentType: file.type }),
       }).then(r => r.json());
       if (!sign.signedURL) throw new Error(sign.error || 'Yükleme adresi alınamadı.');
-      const put = await fetch(sign.signedURL, { method: 'PUT', headers: { 'Content-Type': file.type || 'application/octet-stream', 'x-upsert': 'true' }, body: file });
-      if (!put.ok) throw new Error(`Yükleme başarısız (${put.status}).`);
+      // Supabase'in kendi istemcisiyle aynı biçim: FormData + x-upsert
+      const body = new FormData();
+      body.append('cacheControl', '31536000');
+      body.append('', file);
+      const put = await fetch(sign.signedURL, { method: 'PUT', headers: { 'x-upsert': 'true' }, body });
+      if (!put.ok) {
+        const detail = await put.json().catch(() => null) as { message?: string; error?: string } | null;
+        throw new Error(`Yükleme başarısız (${put.status})${detail?.message || detail?.error ? `: ${detail.message || detail.error}` : ''}`);
+      }
       handleChange(key, sign.publicUrl);
     } catch (err) {
       alert((err as Error).message);

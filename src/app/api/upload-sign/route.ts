@@ -59,12 +59,14 @@ export async function POST(req: Request) {
 
     const signBody = await signRes.json();
 
-    // Supabase relative path döndürebilir — tam URL'e çevir
     const rawSigned: string = signBody.signedURL || signBody.signed_url || signBody.url || "";
     if (!rawSigned) {
       return NextResponse.json({ error: `signedURL yok. Supabase yanıtı: ${JSON.stringify(signBody)}` }, { status: 500 });
     }
-    const signedURL = rawSigned.startsWith("http") ? rawSigned : `${supabaseUrl}${rawSigned}`;
+    // Supabase adresi depolama API'sine göre göreli döner ("/object/upload/sign/..."); başına /storage/v1 gerekir
+    const signedURL = rawSigned.startsWith("http")
+      ? rawSigned
+      : `${supabaseUrl}${rawSigned.startsWith("/storage/v1") ? "" : "/storage/v1"}${rawSigned}`;
     const publicUrl = `${supabaseUrl}/storage/v1/object/public/uploads/${filename}`;
 
     return NextResponse.json({ signedURL, publicUrl });

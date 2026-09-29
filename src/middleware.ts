@@ -15,7 +15,8 @@ const matchesPrefix = (pathname: string, prefixes: string[]) =>
 
 /** Bu istek yönetici oturumu gerektiriyor mu? (giriş ve siparişin oluşturulması hariç) */
 function apiNeedsAdmin(pathname: string, method: string) {
-  if (pathname === '/api/admin/login') return false;
+  // Giriş ve çıkış her zaman açık (çıkış, süresi dolmuş oturumu da temizleyebilmeli)
+  if (pathname === '/api/admin/login' || pathname === '/api/admin/logout') return false;
   if (matchesPrefix(pathname, ADMIN_ONLY_API)) return true;
   const write = method !== 'GET' && method !== 'HEAD' && method !== 'OPTIONS';
   if (write && matchesPrefix(pathname, ADMIN_WRITE_API)) return true;
@@ -104,7 +105,7 @@ export async function middleware(req: NextRequest) {
   // ─── ADMIN subdomaini ─────────────────────────────────────────────────
   if (isAdmin) {
     if (url === '/') return NextResponse.redirect(new URL('/admin', req.url));
-    if (url.startsWith('/admin/login') || url.startsWith('/api/admin/login')) return NextResponse.next();
+    if (url.startsWith('/admin/login') || url.startsWith('/api/admin/login') || url === '/api/admin/logout') return NextResponse.next();
     if (url.startsWith('/admin') || url.startsWith('/api/admin')) {
       if (!await adminTokenPayload(req)) {
         if (url.startsWith('/api/')) return NextResponse.json({ error: 'Oturum gerekli.' }, { status: 401 });
@@ -121,7 +122,7 @@ export async function middleware(req: NextRequest) {
   }
 
   if (url.startsWith('/admin')) {
-    if (url.startsWith('/admin/login') || url.startsWith('/api/admin/login')) return NextResponse.next();
+    if (url.startsWith('/admin/login') || url.startsWith('/api/admin/login') || url === '/api/admin/logout') return NextResponse.next();
     if (!await adminTokenPayload(req)) {
       return NextResponse.redirect(new URL('/admin/login', req.url));
     }

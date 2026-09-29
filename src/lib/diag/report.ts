@@ -63,9 +63,20 @@ function problems(server: ServerDiag | null, serverError: string | null, log: Di
     const comp = server.seo.competitors as { backlinkError?: string | null } | null;
     if (comp?.backlinkError) out.push(`[SEO/Rakipler] backlink verisi: ${comp.backlinkError}`);
     const ai = server.ai as { failedRuns?: { engine: string; error?: string }[] } | null;
-    const grouped = new Map<string, number>();
-    for (const r of ai?.failedRuns ?? []) grouped.set(`${r.engine}: ${r.error}`, (grouped.get(`${r.engine}: ${r.error}`) ?? 0) + 1);
-    for (const [k, n] of grouped) out.push(`[AI/${k.split(":")[0]}] ${n} yanıtta hata:${k.slice(k.indexOf(":") + 1)}`);
+    // Aynı hata her yanıtta farklı request_id taşır; gruplamadan önce ayıkla
+    const normalize = (err = "") =>
+      /credit balance is too low/i.test(err)
+        ? "Anthropic kredisi bitti (console.anthropic.com → Plans & Billing)"
+        : err.replace(/,?\s*"request_id"\s*:\s*"[^"]*"/g, "").replace(/\breq_[A-Za-z0-9]+/g, "").trim();
+    const grouped = new Map<string, { engine: string; error: string; n: number }>();
+    for (const r of ai?.failedRuns ?? []) {
+      const error = normalize(r.error);
+      const key = `${r.engine}\u0000${error}`;
+      const row = grouped.get(key) ?? { engine: r.engine, error, n: 0 };
+      row.n++;
+      grouped.set(key, row);
+    }
+    for (const g of grouped.values()) out.push(`[AI/${g.engine}] ${g.n} yanıtta hata: ${g.error}`);
   }
   const apiErrors = new Map<string, number>();
   for (const e of log.filter((x) => x.error)) {

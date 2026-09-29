@@ -70,7 +70,7 @@ Bir oturuma başlarken bu bölümü uygula. Kullanıcı başka bir şey istemedi
   - Yapılacak: (a) AI Overview için `40101`'de de 2 kez yeniden dene (Elmo `retryTransient` ile aynı; yalnızca bu uç nokta için). (b) Markdown `:load{` içeriyorsa ya da kaynaksız ve 80 karakterden kısaysa `no_surface` say, `note` alanına açıklama yaz.
   - Bitti sayılır: Yer tutucu metinler "AI yanıtı çıkmadı" olarak görünüyor; 40101 tek seferlik hatalarda sorgu başarısız olmuyor.
 
-- [ ] **1.3 Claude: kredi hatasını anlaşılır göster**
+- [x] **1.3 Claude: kredi hatasını anlaşılır göster**
   - Belirti: Ham JSON hata; tanı testi "ok" diyor çünkü `models.retrieve` kredi gerektirmiyor.
   - Dosyalar: `src/lib/ai-vis/engines.ts` (`runClaude`), `src/app/api/admin/diagnostics/route.ts`, `src/lib/diag/report.ts`.
   - Yapılacak: Anthropic SDK'nın hata sınıflarıyla (`Anthropic.BadRequestError` vb.) mesajı yakala; "credit balance" içeriyorsa "Anthropic kredisi bitti: console.anthropic.com → Plans & Billing" yaz. Rapordaki sorun listesinde aynı hatayı motor başına **tek satırda** grupla (şu an her yanıt ayrı satır çünkü request_id farklı; gruplamadan önce `request_id`'yi çıkar).

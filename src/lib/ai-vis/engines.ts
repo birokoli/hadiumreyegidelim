@@ -191,6 +191,23 @@ async function runGoogle(engine: "google-ai-overview" | "google-ai-mode", prompt
 
 // ─── Claude (Anthropic API, web araması) ───────────────────────────────────
 
+/** Anthropic hatalarını kısa, yönlendirici Türkçe mesaja çevirir (ham JSON ve request_id olmadan) */
+function explainAnthropicError(e: unknown): string {
+  const raw = e instanceof Error ? e.message : String(e);
+  if (/credit balance is too low/i.test(raw)) {
+    return "Anthropic kredisi bitti: console.anthropic.com → Plans & Billing'den kredi yükleyin ya da Sorular'da Claude'un işaretini kaldırın.";
+  }
+  if (e instanceof Anthropic.AuthenticationError) return "Anthropic API anahtarı geçersiz (401): Vercel'deki ANTHROPIC_API_KEY'i kontrol edin.";
+  if (e instanceof Anthropic.PermissionDeniedError) return "Anthropic hesabının bu modele ya da web aramasına izni yok (403).";
+  if (e instanceof Anthropic.RateLimitError) return "Anthropic hız sınırına takıldı (429); birkaç dakika sonra tekrar deneyin.";
+  if (e instanceof Anthropic.APIConnectionError) return "Anthropic API'ye bağlanılamadı; tekrar deneyin.";
+  if (e instanceof Anthropic.APIError) {
+    const message = (e.error as { error?: { message?: string } } | undefined)?.error?.message ?? raw;
+    return `Anthropic API ${e.status ?? ""}: ${message}`.trim();
+  }
+  return raw;
+}
+
 async function runClaude(prompt: string): Promise<EngineResult> {
   const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
   const messages: Anthropic.MessageParam[] = [{ role: "user", content: prompt }];
@@ -218,7 +235,11 @@ async function runClaude(prompt: string): Promise<EngineResult> {
       fallbacks: "default",
     };
     // SDK 0.90 tipleri `fallbacks` alanını henüz tanımıyor; gövde olduğu gibi iletilir
-    final = (await client.beta.messages.create(params as unknown as Anthropic.Beta.MessageCreateParamsNonStreaming)) as unknown as Anthropic.Message;
+    try {
+      final = (await client.beta.messages.create(params as unknown as Anthropic.Beta.MessageCreateParamsNonStreaming)) as unknown as Anthropic.Message;
+    } catch (e) {
+      throw new Error(explainAnthropicError(e));
+    }
     blocks.push(...final.content);
     if (final.stop_reason !== "pause_turn") break;
     messages.push({ role: "assistant", content: final.content });

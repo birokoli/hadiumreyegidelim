@@ -136,7 +136,13 @@ function Answer({ run, prev, config }: { run: AnalyzedRun; prev?: AnalyzedRun; c
         </div>
       </div>
 
-      {run.error && <p className="mt-3 text-[14px] text-[var(--seo-danger)]">{run.error}</p>}
+      {run.error && (
+        <p className="mt-3 text-[14px] text-[var(--seo-danger)]">
+          {/credit balance is too low/i.test(run.error)
+            ? "Anthropic kredisi bitti: console.anthropic.com → Plans & Billing'den kredi yükleyin ya da Sorular'da Claude'un işaretini kaldırın."
+            : run.error}
+        </p>
+      )}
       {run.note && <p className="mt-2 text-[13px] text-[var(--seo-ink-3)]">{run.note}</p>}
       {run.a.competitorsMentioned.length > 0 && (
         <p className="mt-2 text-[14px] text-[var(--seo-ink-2)]">Anılan rakipler: {run.a.competitorsMentioned.join(", ")}</p>

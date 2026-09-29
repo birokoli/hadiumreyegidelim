@@ -2,14 +2,16 @@ import { NextResponse } from "next/server";
 import { getAdminSession } from "@/lib/admin-auth";
 import { DataforseoError } from "./dataforseo";
 
-/** SEO uç noktaları middleware'e güvenmeden oturumu kendisi doğrular. */
-export async function requireSeoAdmin() {
+/** SEO ve AI görünürlük uç noktaları middleware'e güvenmeden oturumu kendisi doğrular. */
+export async function requireSeoAdmin(permissions: string[] = ["marketing"]) {
   const session = await getAdminSession();
   if (!session) return NextResponse.json({ error: "Yetkisiz." }, { status: 401 });
-  const allowed = session.role === "super_admin" || session.permissions.includes("marketing");
-  if (!allowed) return NextResponse.json({ error: "Bu bölüm için pazarlama yetkisi gerekiyor." }, { status: 403 });
+  const allowed = session.role === "super_admin" || permissions.some((p) => session.permissions.includes(p));
+  if (!allowed) return NextResponse.json({ error: "Bu bölüm için yetkiniz yok." }, { status: 403 });
   return null;
 }
+
+export const requireAiVisAdmin = () => requireSeoAdmin(["marketing", "dashboard"]);
 
 export function dfsErrorResponse(e: unknown) {
   if (e instanceof DataforseoError) {

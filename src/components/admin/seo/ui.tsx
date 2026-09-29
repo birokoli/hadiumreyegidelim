@@ -56,8 +56,8 @@ export function NeedsKey({ compact = false }: { compact?: boolean }) {
       <p className="text-[16px] font-bold">DataForSEO bağlı değil</p>
       <p className="mt-2 text-[14px] leading-relaxed text-[var(--seo-ink-2)]">
         Kelime hacmi, Google sırası ve rakip verisi DataForSEO&apos;dan gelir. Aylık abonelik yok; her sorgu için birkaç sent ödenir.
-        Vercel ortam değişkenlerine <code className="seo-mono text-[13px]">DATAFORSEO_LOGIN</code> ve{" "}
-        <code className="seo-mono text-[13px]">DATAFORSEO_PASSWORD</code> ekleyin (ya da open-seo ile aynı biçimde base64{" "}
+        Vercel ortam değişkenlerine <code className="seo-mono text-[13px]">DATAFORSEO_LOGIN</code>{" "}ve{" "}
+        <code className="seo-mono text-[13px]">DATAFORSEO_PASSWORD</code>{" "}ekleyin (ya da open-seo ile aynı biçimde base64{" "}
         <code className="seo-mono text-[13px]">DATAFORSEO_API_KEY</code>).
       </p>
       {!compact && (

@@ -1,169 +1,165 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import Link from "next/link";
+import { useMemo } from "react";
+import { AnimatedNumber } from "@/components/motion-primitives/animated-number";
+import { useAiVis } from "@/components/admin/ai-vis/AiVisProvider";
+import { EmptyPrompts, engineLabel, N, Pct, RunBar, RunProgress, TrendChart } from "@/components/admin/ai-vis/parts";
+import { ErrorLine, PageHead, Section } from "@/components/admin/seo/ui";
+import { byEngine, contentGaps, latestRuns, summarize, trend } from "@/lib/ai-vis/metrics";
+import { ENGINES } from "@/lib/ai-vis/types";
 
-export default function AiVisibilityPage() {
-  const [targetUrl, setTargetUrl] = useState("/");
-  const [loading, setLoading] = useState(false);
-  const [audit, setAudit] = useState<any>(null);
-  const [history, setHistory] = useState<any[]>([]);
-  const [activeTab, setActiveTab] = useState<"overview" | "schema" | "markdown" | "citations" | "recommendations">("overview");
+export default function AiVisibilityOverview() {
+  const { data, error, runnableEngines } = useAiVis();
 
-  useEffect(() => {
-    fetchHistory();
-  }, []);
+  const view = useMemo(() => {
+    if (!data) return null;
+    const runs = latestRuns(data.cells, data.config);
+    return {
+      runs,
+      summary: summarize(runs),
+      engines: byEngine(runs, data.config.engines),
+      trend: trend(data.daily),
+      gaps: contentGaps(runs, data.config),
+    };
+  }, [data]);
 
-  const fetchHistory = async () => {
-    try {
-      const res = await fetch("/api/admin/ai-visibility");
-      const data = await res.json();
-      if (data.audits && data.audits.length > 0) {
-        setHistory(data.audits);
-        setAudit(data.audits[0]);
-      }
-    } catch (e) {
-      console.error("Fetch history error:", e);
-    }
-  };
-
-  const handleRunAudit = async () => {
-    setLoading(true);
-    try {
-      const res = await fetch("/api/admin/ai-visibility", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url: targetUrl }),
-      });
-      const data = await res.json();
-      if (data.success && data.audit) {
-        setAudit(data.audit);
-        setHistory((prev) => [data.audit, ...prev]);
-      } else if (data.error) {
-        alert(`Hata: ${data.error}`);
-      }
-    } catch (e: any) {
-      alert(`Tarama başlatılamadı: ${e.message}`);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const schemaStatus = audit?.schemaStatus ? JSON.parse(audit.schemaStatus) : null;
-  const llmAnalysis = audit?.llmAnalysis ? JSON.parse(audit.llmAnalysis) : null;
-  const citationDetails = audit?.citationDetails ? JSON.parse(audit.citationDetails) : [];
-  const recommendations = audit?.recommendations ? JSON.parse(audit.recommendations) : [];
+  const missing = data ? data.config.engines.filter((e) => !data.available.includes(e)) : [];
+  const drift =
+    view && view.trend.last7.visibility != null && view.trend.prev7.visibility != null
+      ? view.trend.last7.visibility - view.trend.prev7.visibility
+      : null;
 
   return (
-    <div className="p-6 lg:p-8 max-w-7xl mx-auto space-y-8 min-h-screen bg-surface text-on-surface text-xs">
-      {/* Header Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-outline-variant/15">
-        <div>
-          <span className="text-[10px] font-bold tracking-widest text-secondary uppercase">GEO & LLM SEO</span>
-          <h1 className="font-headline text-2xl font-bold tracking-tight text-primary mt-1">AI Görünürlük & LLM SEO Analizör</h1>
-          <p className="text-xs text-on-surface-variant mt-0.5">Sitenizin ChatGPT, Perplexity ve Claude arama motorlarındaki görünürlüğünü analiz edin.</p>
-        </div>
+    <>
+      <PageHead
+        n="01"
+        title="Markanın AI yanıtlarındaki yeri"
+        lede="Müşterilerin AI'a sorduğu soruları ChatGPT, Gemini, Perplexity, Google ve Claude'a sorar; yanıtta Hadi Umreye Gidelim'in geçip geçmediğini, hangi sırada geçtiğini ve hangi sitelerin kaynak gösterildiğini ölçer."
+      >
+        <RunBar />
+      </PageHead>
+      <RunProgress />
+      <ErrorLine>{error}</ErrorLine>
 
-        <div className="flex items-center gap-2">
-          <select
-            value={targetUrl}
-            onChange={(e) => setTargetUrl(e.target.value)}
-            className="bg-surface-container-lowest text-on-surface text-xs font-bold rounded-xl border border-outline-variant/25 px-3 py-2 outline-none focus:border-primary/40"
-          >
-            <option value="/">Ana Sayfa (/)</option>
-            <option value="/bireysel-umre">Bireysel Umre (/bireysel-umre)</option>
-            <option value="/paketler">Umre Paketleri (/paketler)</option>
-            <option value="/umre-vizesi">Umre Vizesi (/umre-vizesi)</option>
-            <option value="/blog">Manevi Blog (/blog)</option>
-          </select>
+      {!data && !error && <p className="text-[var(--seo-ink-3)]">Yükleniyor…</p>}
+      {data && data.config.prompts.length === 0 && <EmptyPrompts />}
 
-          <button
-            onClick={handleRunAudit}
-            disabled={loading}
-            className="bg-primary hover:bg-primary-container text-white font-bold px-4 py-2.5 rounded-xl text-xs transition-all active:scale-95 shrink-0 disabled:opacity-60"
-          >
-            {loading ? "Taranıyor..." : "AI Taraması Başlat"}
-          </button>
-        </div>
-      </div>
-
-      {/* Overview Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="p-4 rounded-2xl border border-outline-variant/15 bg-surface-container-lowest flex flex-col justify-between">
-          <span className="text-[10px] font-bold tracking-widest text-secondary uppercase">Skor</span>
-          <div>
-            <p className="text-xs text-on-surface-variant font-medium">Genel GEO Skoru</p>
-            <p className="font-headline text-2xl font-bold text-primary mt-0.5">%{audit?.geoScore || 59}</p>
-          </div>
-        </div>
-
-        <div className="p-4 rounded-2xl border border-outline-variant/15 bg-surface-container-lowest flex flex-col justify-between">
-          <span className="text-[10px] font-bold tracking-widest text-secondary uppercase">Yapısal Veri</span>
-          <div>
-            <p className="text-xs text-on-surface-variant font-medium">Schema.org Yapısal Veri</p>
-            <p className="font-headline text-2xl font-bold text-primary mt-0.5">%{audit?.schemaScore || 60}</p>
-          </div>
-        </div>
-
-        <div className="p-4 rounded-2xl border border-outline-variant/15 bg-surface-container-lowest flex flex-col justify-between">
-          <span className="text-[10px] font-bold tracking-widest text-secondary uppercase">Okunabilirlik</span>
-          <div>
-            <p className="text-xs text-on-surface-variant font-medium">LLM Okunabilirlik</p>
-            <p className="font-headline text-2xl font-bold text-primary mt-0.5">%{audit?.llmReadabilityScore || 52}</p>
-          </div>
-        </div>
-
-        <div className="p-4 rounded-2xl border border-outline-variant/15 bg-surface-container-lowest flex flex-col justify-between">
-          <span className="text-[10px] font-bold tracking-widest text-secondary uppercase">Alıntı</span>
-          <div>
-            <p className="text-xs text-on-surface-variant font-medium">AI Atıf Oranı</p>
-            <p className="font-headline text-2xl font-bold text-primary mt-0.5">%{audit?.citationScore || 65}</p>
-          </div>
-        </div>
-      </div>
-
-      {/* Tabs */}
-      <div className="flex items-center gap-2 border-b border-outline-variant/15 pb-3 overflow-x-auto">
-        {(["overview", "schema", "markdown", "citations", "recommendations"] as const).map((t) => (
-          <button
-            key={t}
-            onClick={() => setActiveTab(t)}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold border transition-all shrink-0 ${
-              activeTab === t
-                ? "bg-primary text-white border-primary shadow-sm"
-                : "bg-surface-container-lowest text-on-surface-variant border-outline-variant/25 hover:border-primary/40"
-            }`}
-          >
-            {t === "overview" && "Genel Bakış"}
-            {t === "schema" && "Schema.org Yapısı"}
-            {t === "markdown" && "LLM Markdown"}
-            {t === "citations" && "AI Arama Testleri"}
-            {t === "recommendations" && "Geliştirme Önerileri"}
-          </button>
-        ))}
-      </div>
-
-      {/* Content */}
-      <div className="border border-outline-variant/15 rounded-2xl p-6 bg-surface-container-lowest space-y-4">
-        {recommendations.length > 0 ? (
-          <div className="space-y-3">
-            {recommendations.map((rec: any, index: number) => (
-              <div key={index} className="p-3 border border-outline-variant/15 rounded-xl bg-surface-container-low flex items-start gap-3">
-                <span className="bg-primary text-white text-[9px] font-bold px-2 py-0.5 rounded-full shrink-0">
-                  {rec.priority || "ÖNERİ"}
-                </span>
+      {data && view && data.config.prompts.length > 0 && (
+        <>
+          {view.summary.n === 0 ? (
+            <p className="max-w-[560px] text-[16px] text-[var(--seo-ink-2)]">
+              {data.config.prompts.length} soru hazır ama henüz sorulmadı. Sağ üstteki düğmeyle ilk ölçümü başlatın.
+            </p>
+          ) : (
+            <>
+              <div className="grid gap-12 lg:grid-cols-[auto_1fr] lg:items-end">
                 <div>
-                  <p className="font-bold text-on-surface">{rec.title || rec.type}</p>
-                  <p className="text-on-surface-variant text-[11px] mt-0.5">{rec.description || rec.text}</p>
+                  <p className="seo-label">Anılma oranı</p>
+                  <p className="mt-3 flex items-baseline gap-1">
+                    <span className="text-[56px] font-extrabold text-[var(--seo-ink-3)]">%</span>
+                    <AnimatedNumber value={Math.round((view.summary.visibility ?? 0) * 100)} className="seo-figure text-[140px] sm:text-[176px]" />
+                  </p>
+                  <p className="mt-3"><N n={view.summary.n} /></p>
+                </div>
+                <div className="max-w-[560px] pb-4">
+                  <p className="text-[18px] font-semibold leading-snug">
+                    Markalı olmayan {view.summary.n} yanıtın {Math.round((view.summary.visibility ?? 0) * view.summary.n)} tanesinde marka geçiyor.
+                  </p>
+                  {drift != null && Math.abs(drift) >= 0.05 && (
+                    <p className={`mt-3 text-[15px] font-semibold ${drift < 0 ? "text-[var(--seo-danger)]" : "text-[var(--seo-mark)]"}`}>
+                      Son 7 günde %{Math.round((view.trend.last7.visibility ?? 0) * 100)}, önceki 7 günde %{Math.round((view.trend.prev7.visibility ?? 0) * 100)}
+                      {drift < 0 ? "; belirgin bir düşüş var." : "; belirgin bir artış var."}
+                    </p>
+                  )}
+                  <p className="mt-3 text-[13px] leading-relaxed text-[var(--seo-ink-3)]">
+                    Markanın adının geçtiği sorular (ör. &quot;Hadi Umreye Gidelim güvenilir mi?&quot;) bu orana katılmaz; AI zaten markayı anmak zorunda kalır.
+                    Google&apos;ın AI yanıtı göstermediği sorular da ıskalama sayılmaz.
+                  </p>
                 </div>
               </div>
-            ))}
-          </div>
-        ) : (
-          <div className="py-8 text-center text-outline text-xs">
-            Mevcut FAQPage şemasına "Bireysel Umre nedir?", "Vize süreci nasıl işler?" gibi eklemeler yaparak AI atıf oranını artırabilirsiniz.
-          </div>
-        )}
-      </div>
-    </div>
+
+              <dl className="mt-16 flex flex-wrap gap-x-16 gap-y-8">
+                {[
+                  { label: "Ses payı", value: <Pct value={view.summary.sov} />, n: view.summary.n, hint: "marka / (marka + rakipler)" },
+                  { label: "Ortalama sıra", value: view.summary.avgPosition == null ? "—" : view.summary.avgPosition.toFixed(1), n: view.summary.positionN, hint: "liste yanıtlarında" },
+                  { label: "Kaynak payı", value: <Pct value={view.summary.citationShare} />, n: view.summary.citationN, hint: "kaynakların sitemize ait olanı" },
+                ].map((m) => (
+                  <div key={m.label}>
+                    <dd className="seo-figure text-[56px]">{m.value}</dd>
+                    <dt className="mt-2 flex items-baseline gap-2">
+                      <span className="seo-label">{m.label}</span>
+                      <N n={m.n} />
+                    </dt>
+                    <p className="mt-1 text-[12px] text-[var(--seo-ink-3)]">{m.hint}</p>
+                  </div>
+                ))}
+              </dl>
+
+              <Section title="Motorlara göre">
+                <div className="overflow-x-auto">
+                  <table className="seo-table">
+                    <thead>
+                      <tr>
+                        <th>Motor</th>
+                        <th className="num">Anılma</th>
+                        <th className="num">n</th>
+                        <th className="num">Ses payı</th>
+                        <th className="num">Ort. sıra</th>
+                        <th className="num">Kaynak payı</th>
+                        <th className="num">Yanıt yok</th>
+                        <th className="num">Hata</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {view.engines.map((e) => (
+                        <tr key={e.engine}>
+                          <td>
+                            <span className="font-semibold">{engineLabel(e.engine)}</span>
+                            <span className="block text-[12px] text-[var(--seo-ink-3)]">{ENGINES[e.engine].via}</span>
+                          </td>
+                          <td className="num text-[18px] font-extrabold"><Pct value={e.visibility} /></td>
+                          <td className="num text-[var(--seo-ink-3)]">{e.n}</td>
+                          <td className="num"><Pct value={e.sov} /></td>
+                          <td className="num">{e.avgPosition == null ? "—" : e.avgPosition.toFixed(1)}</td>
+                          <td className="num"><Pct value={e.citationShare} /></td>
+                          <td className="num">{e.noSurface || ""}</td>
+                          <td className={`num ${e.errors ? "font-bold text-[var(--seo-danger)]" : ""}`}>{e.errors || ""}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </Section>
+
+              <Section title="Günlük anılma oranı" aside="son 30 gün">
+                <TrendChart series={view.trend.series} />
+              </Section>
+
+              {view.gaps.length > 0 && (
+                <Section title="Rakiplerin geçip markanın geçmediği sorular" aside={<Link href="/admin/ai-visibility/rakipler" className="seo-link">Tümü</Link>}>
+                  <ul>
+                    {view.gaps.slice(0, 5).map((g) => (
+                      <li key={g.prompt.id} className="grid gap-1 py-3 sm:grid-cols-[1fr_auto] sm:gap-6">
+                        <Link href={`/admin/ai-visibility/yanitlar?p=${g.prompt.id}`} className="text-[16px] font-semibold hover:underline">{g.prompt.text}</Link>
+                        <span className="text-[13px] text-[var(--seo-ink-3)]">{g.competitors.join(", ")}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </Section>
+              )}
+            </>
+          )}
+
+          {(missing.length > 0 || runnableEngines.length === 0) && (
+            <p className="mt-16 max-w-[640px] text-[13px] leading-relaxed text-[var(--seo-ink-3)]">
+              Seçili ama çalışmayan motorlar: {missing.map(engineLabel).join(", ")}.{" "}
+              {missing.includes("claude") && "Claude için Vercel'de ANTHROPIC_API_KEY gerekir. "}
+              {missing.some((m) => m !== "claude") && "Diğerleri için DATAFORSEO_LOGIN ve DATAFORSEO_PASSWORD gerekir."}
+            </p>
+          )}
+        </>
+      )}
+    </>
   );
 }

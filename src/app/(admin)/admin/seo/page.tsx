@@ -99,7 +99,7 @@ export default function SeoOverviewPage() {
           <Section title="Takip edilen kelimeler" aside={<Link href="/admin/seo/siralar" className="seo-link">Sıralar</Link>}>
             {data.tracked.length === 0 ? (
               <p className="max-w-[560px] text-[15px] text-[var(--seo-ink-2)]">
-                Henüz kelime takip edilmiyor. <Link href="/admin/seo/kelimeler" className="seo-link">Kelime araştırmasından</Link> seçin
+                Henüz kelime takip edilmiyor. <Link href="/admin/seo/kelimeler" className="seo-link">Kelime araştırmasından</Link>{" "}seçin
                 ya da <Link href="/admin/seo/siralar" className="seo-link">elle ekleyin</Link>.
               </p>
             ) : (
@@ -150,7 +150,7 @@ export default function SeoOverviewPage() {
               </dl>
             ) : (
               <p className="text-[15px] text-[var(--seo-ink-2)]">
-                DataForSEO bağlı. Alan adı verisi için <Link href="/admin/seo/rakipler" className="seo-link">Rakipler</Link> sayfasında ilk karşılaştırmayı çalıştırın.
+                DataForSEO bağlı. Alan adı verisi için <Link href="/admin/seo/rakipler" className="seo-link">Rakipler</Link>{" "}sayfasında ilk karşılaştırmayı çalıştırın.
               </p>
             )}
           </Section>

@@ -55,7 +55,7 @@ function explainTaskError(code: number, message: string) {
   return `DataForSEO: ${message} (${code})`;
 }
 
-async function post<T>(path: string, body: unknown[]): Promise<{ result: T | null; cost: number }> {
+export async function dfsPost<T>(path: string, body: unknown[]): Promise<{ result: T | null; cost: number }> {
   const auth = authHeader();
   if (!auth) throw new DataforseoError("DataForSEO bağlı değil.", 412);
 
@@ -140,7 +140,7 @@ export async function keywordResearch(
   limit = 100,
 ): Promise<DfsResult<KeywordRow[]>> {
   if (mode === "related") {
-    const { result, cost } = await post<{ items?: { keyword_data?: LabsKeywordData }[] }>(
+    const { result, cost } = await dfsPost<{ items?: { keyword_data?: LabsKeywordData }[] }>(
       "/v3/dataforseo_labs/google/related_keywords/live",
       [{ keyword: seed, location_code: DFS_LOCATION_CODE, language_code: DFS_LANGUAGE_CODE, limit, depth: 2, include_serp_info: false }],
     );
@@ -148,7 +148,7 @@ export async function keywordResearch(
     return { data: byVolume(rows), cost };
   }
 
-  const { result, cost } = await post<{ items?: LabsKeywordData[] }>(
+  const { result, cost } = await dfsPost<{ items?: LabsKeywordData[] }>(
     "/v3/dataforseo_labs/google/keyword_suggestions/live",
     [{
       keyword: seed,
@@ -192,7 +192,7 @@ export type SerpCheck = {
 };
 
 export async function checkSerpPosition(keyword: string, domain: string): Promise<DfsResult<SerpCheck>> {
-  const { result, cost } = await post<{
+  const { result, cost } = await dfsPost<{
     items?: { type: string; rank_group?: number; domain?: string; url?: string; title?: string }[];
   }>("/v3/serp/google/organic/live/advanced", [
     { keyword, location_code: DFS_LOCATION_CODE, language_code: DFS_LANGUAGE_CODE, depth: 50, device: "mobile" },
@@ -224,7 +224,7 @@ export type DomainOverview = {
 };
 
 export async function domainOverview(domain: string): Promise<DfsResult<DomainOverview>> {
-  const { result, cost } = await post<{
+  const { result, cost } = await dfsPost<{
     items?: { metrics?: { organic?: { count?: number; etv?: number; pos_1?: number; pos_2_3?: number; pos_4_10?: number } } }[];
   }>("/v3/dataforseo_labs/google/domain_rank_overview/live", [
     { target: domain, location_code: DFS_LOCATION_CODE, language_code: DFS_LANGUAGE_CODE },
@@ -246,7 +246,7 @@ export async function domainOverview(domain: string): Promise<DfsResult<DomainOv
 export type RankedKeyword = { keyword: string; position: number; volume: number | null; url: string; etv: number | null };
 
 export async function rankedKeywords(domain: string, limit = 25): Promise<DfsResult<RankedKeyword[]>> {
-  const { result, cost } = await post<{
+  const { result, cost } = await dfsPost<{
     items?: {
       keyword_data?: { keyword?: string; keyword_info?: { search_volume?: number | null } };
       ranked_serp_element?: { serp_item?: { rank_group?: number; url?: string; etv?: number | null } };
@@ -274,7 +274,7 @@ export type BacklinkSummary = { backlinks: number | null; referringDomains: numb
 
 /** Backlinks API DataForSEO'da ayrı abonelik ister; yoksa DataforseoError fırlatır. */
 export async function backlinkSummary(domain: string): Promise<DfsResult<BacklinkSummary>> {
-  const { result, cost } = await post<{ backlinks?: number; referring_domains?: number; rank?: number }>(
+  const { result, cost } = await dfsPost<{ backlinks?: number; referring_domains?: number; rank?: number }>(
     "/v3/backlinks/summary/live",
     [{ target: domain, include_subdomains: true }],
   );

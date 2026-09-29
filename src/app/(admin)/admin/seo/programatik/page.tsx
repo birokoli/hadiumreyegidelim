@@ -82,7 +82,7 @@ export default function ProgrammaticPage() {
             </div>
             <div className="max-w-[540px] pb-3">
               <p className="text-[18px] font-semibold leading-snug">
-                {data.city.pageCount} il için <span className="seo-mono text-[15px]">/{"{şehir}"}-cikisli-bireysel-umre</span> sayfası var,{" "}
+                {data.city.pageCount} il için <span className="seo-mono text-[15px]">/{"{şehir}"}-cikisli-bireysel-umre</span>{" "}sayfası var,{" "}
                 {data.city.inSitemap === data.city.pageCount ? "hepsi sitemap'te." : `${data.city.inSitemap} tanesi sitemap'te.`}
               </p>
               <p className="mt-3 text-[15px] leading-relaxed text-[var(--seo-ink-2)]">

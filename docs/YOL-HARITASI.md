@@ -150,7 +150,7 @@ En yeni en üstte. Her tamamlanan adım için bir satır.
 
 | Tarih | Ajan | Adım | Commit | Not |
 |---|---|---|---|---|
-| 2026-09-29 | Claude Code | 1.4 | (bu commit) | DataForSEO günlük harcama dökümü yalnızca sıfır olmayan toplamlara indirildi |
+| 2026-09-29 | Claude Code | 1.4 | 84fd1b5 | DataForSEO günlük harcama dökümü yalnızca sıfır olmayan toplamlara indirildi |
 | 2026-09-29 | Claude Code | 1.3 | 396e648 | Claude hataları Türkçe ve yönlendirici; raporda gruplama |
 | 2026-09-29 | Claude Code | 1.1, 1.2 | cf7a443 | AI Mode depth kaldırıldı; AI Overview 40101 yeniden deneme ve yer tutucu tespiti. 0.2 kararı: www'suz ana adres |
 | 2026-09-29 | Claude Code | yol haritası | a45bb7c | Canlı hata raporlarından (acb8c74) oluşturuldu |

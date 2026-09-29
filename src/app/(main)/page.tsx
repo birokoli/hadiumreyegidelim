@@ -109,6 +109,7 @@ export default async function Home() {
   const hanimCampaign = parseEylulCampaign(settings[HANIM_UMRESI_CAMPAIGN_SETTING_KEY], DEFAULT_HANIM_UMRESI_CAMPAIGN);
 
   const home_banner_image = settings.home_banner_image || "https://lh3.googleusercontent.com/aida-public/AB6AXuCeWn_hW89LbHLjNkEyCjXnO56IpdLz_zRwB9BvtIjHV_CSU9n_ADpxoS-K9Y4UqzQtVdJ9tM238gIiQ3fIEgF50wPqba1ofx6HeAab2E8EYwvLnq_w13P3UCdpuZloJ2P_FBbqiM4ZrKqELKyG3sgBrj2SCUi6yLGc39nIApI_ip6uasqiKaUGRcpE7WnqmMcqOZVc-CUXOaphNXOHK18KEZCYKehmVy4cZRQP0tk7_PHK5iJh4cVmqsN9DeHNleLOmi97WPx_9Gw";
+  const heroVideo = settings.HOME_HERO_VIDEO?.trim() || "";
   const home_banner_title = settings.HERO_TITLE || "Ruhunuzun Ritmini Kalabalıklara Teslim Etmeyin.";
   const home_banner_subtitle = settings.HERO_DESC || "Ailenize ve Size Özel Butik Umre Deneyimi.";
   const whatsappNumber = settings.WHATSAPP_NUMBER ? settings.WHATSAPP_NUMBER.replace('+', '') : "905404010038";
@@ -137,6 +138,12 @@ export default async function Home() {
       <section className="relative z-20 w-full pt-28 md:pt-32 pb-10 md:pb-14">
         <div className="absolute inset-0 overflow-hidden">
           <Image alt="Kabe ve Mescid-i Haram" className="object-cover" src={home_banner_image} fill priority fetchPriority="high" sizes="100vw" quality={80} />
+          {heroVideo && (
+            // Döngü video; görsel altta kalır (video yüklenene kadar ve "hareketi azalt" açıksa görünür)
+            <video className="hero-video absolute inset-0 w-full h-full object-cover" autoPlay muted loop playsInline preload="auto" poster={home_banner_image} aria-hidden="true">
+              <source src={heroVideo} type={heroVideo.toLowerCase().endsWith(".webm") ? "video/webm" : "video/mp4"} />
+            </video>
+          )}
           <div className="absolute inset-0 bg-[#001944]/55" />
           <div className="absolute inset-0 bg-gradient-to-b from-[#001944]/40 via-transparent to-[#001944]/70" />
         </div>

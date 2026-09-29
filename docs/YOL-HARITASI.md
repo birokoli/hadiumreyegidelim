@@ -50,8 +50,8 @@ Bir oturuma başlarken bu bölümü uygula. Kullanıcı başka bir şey istemedi
 ### Faz 0 · Kullanıcı ayarları (kod gerekmez)
 
 - [ ] **0.1 Anthropic kredisi.** console.anthropic.com → Plans & Billing'den kredi yükle, **ya da** AI Görünürlük → Sorular'da Claude'un işaretini kaldır. Kredi olmadan her Claude sorgusu hata verir.
-- [ ] **0.2 Ana alan adı kararı.** KARAR (2026-09-29): **www'suz `hadiumreyegidelim.com`**. Kodun tamamı zaten bu adresi kullanıyor; kalan iş kullanıcıda: Vercel → Domains'te `hadiumreyegidelim.com`'u primary yap, `www`'yu ona 308 ile yönlendir. Yapılınca bu adımı ve 2.1'i işaretle (2.1'de kod değişikliği gerekmeyebilir, denetimle doğrula).
-  - Eski açıklama: Site `hadiumreyegidelim.com` adresini `www.hadiumreyegidelim.com`'a yönlendiriyor, ama canonical, sitemap ve robots www'suz adresi gösteriyor. Hangisi ana adres olacak? (Öneri: www'suz. Vercel → Domains'te apex'i "primary" yap, www'yu ona yönlendir. Bu seçilirse 2.1 çok küçülür.) Karar buraya yazılsın: `KARAR: …`
+- [ ] **0.2 Ana alan adı.** KARAR (2026-09-29): ana adres **www'suz `hadiumreyegidelim.com`**. Kod zaten bu adresi kullanıyor. Kalan iş kullanıcıda: Vercel → Domains'te `hadiumreyegidelim.com`'u primary yap, `www`'yu ona 308 ile yönlendir. Yapılınca bu adımı işaretle ve SEO Masası'nda denetimi yeniden çalıştırarak 2.1'i doğrula.
+  - Sorun: Şu an site www'suz adresi `www.hadiumreyegidelim.com`'a yönlendiriyor; canonical, sitemap ve robots ise www'suz adresi gösteriyor.
 - [ ] **0.3 Rakipler.** AI Görünürlük → Rakipler'e 3–5 rakip firma (ad + alan adı) gir; SEO Masası → Rakipler'e aynı alan adlarını gir.
 - [ ] **0.4 Takip edilen kelimeler.** SEO Masası → Kelimeler'de 10–20 hedef kelime seçip takibe al, Sıralar'da ilk kontrolü çalıştır.
 - [ ] **0.5 Sorular.** AI Görünürlük'teki soruları 10–15'e çıkar (öneriler + persona). Markalı soru eklemek gerekmez.
@@ -76,7 +76,7 @@ Bir oturuma başlarken bu bölümü uygula. Kullanıcı başka bir şey istemedi
   - Yapılacak: Anthropic SDK'nın hata sınıflarıyla (`Anthropic.BadRequestError` vb.) mesajı yakala; "credit balance" içeriyorsa "Anthropic kredisi bitti: console.anthropic.com → Plans & Billing" yaz. Rapordaki sorun listesinde aynı hatayı motor başına **tek satırda** grupla (şu an her yanıt ayrı satır çünkü request_id farklı; gruplamadan önce `request_id`'yi çıkar).
   - Bitti sayılır: Yanıtlar sayfasında ve raporda tek, Türkçe, yönlendirici mesaj.
 
-- [ ] **1.4 Hata raporunu kısalt**
+- [x] **1.4 Hata raporunu kısalt**
   - Belirti: DataForSEO `spentToday` alanı raporun ~750 satırını sıfırlarla dolduruyor.
   - Dosyalar: `src/app/api/admin/diagnostics/route.ts` veya `src/lib/seo/dataforseo.ts` (`dfsAccount`).
   - Yapılacak: `spentToday`'dan yalnızca `total` ve `total_*` alanlarından sıfır olmayanları döndür.
@@ -150,6 +150,9 @@ En yeni en üstte. Her tamamlanan adım için bir satır.
 
 | Tarih | Ajan | Adım | Commit | Not |
 |---|---|---|---|---|
+| 2026-09-29 | Claude Code | 1.4 | (bu commit) | DataForSEO günlük harcama dökümü yalnızca sıfır olmayan toplamlara indirildi |
+| 2026-09-29 | Claude Code | 1.3 | 396e648 | Claude hataları Türkçe ve yönlendirici; raporda gruplama |
+| 2026-09-29 | Claude Code | 1.1, 1.2 | cf7a443 | AI Mode depth kaldırıldı; AI Overview 40101 yeniden deneme ve yer tutucu tespiti. 0.2 kararı: www'suz ana adres |
 | 2026-09-29 | Claude Code | yol haritası | a45bb7c | Canlı hata raporlarından (acb8c74) oluşturuldu |
 | 2026-09-29 | Claude Code | önceki iş | acb8c74 | Excel Fiyat Motoru çökmesi ve teklif formu NaN/kişi sayısı düzeltildi |
 | 2026-09-29 | Claude Code | önceki iş | 19d3c81 | Hata raporu düğmesi eklendi |

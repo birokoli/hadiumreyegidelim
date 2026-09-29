@@ -311,5 +311,10 @@ export async function dfsAccount(): Promise<DfsAccount> {
     throw new DataforseoError(explainTaskError(task?.status_code ?? res.status, task?.status_message ?? json?.status_message ?? `HTTP ${res.status}`), task?.status_code);
   }
   const r = task.result?.[0];
-  return { login: r?.login ?? null, balance: r?.money?.balance ?? null, total: r?.money?.total ?? null, spentToday: r?.money?.statistics?.day ?? null };
+  // Günlük istatistik yüzlerce sıfırlı alt alan içerir; yalnızca harcama olan toplamları döndür
+  const day = r?.money?.statistics?.day ?? null;
+  const spentToday = day
+    ? Object.fromEntries(Object.entries(day).filter(([k, v]) => (k === "total" || k.startsWith("total_")) && typeof v === "number" && v > 0))
+    : null;
+  return { login: r?.login ?? null, balance: r?.money?.balance ?? null, total: r?.money?.total ?? null, spentToday };
 }

@@ -49,7 +49,7 @@ Bir oturuma başlarken bu bölümü uygula. Kullanıcı başka bir şey istemedi
 
 ### Faz 0 · Kullanıcı ayarları (kod gerekmez)
 
-- [ ] **0.1 Anthropic kredisi.** console.anthropic.com → Plans & Billing'den kredi yükle, **ya da** AI Görünürlük → Sorular'da Claude'un işaretini kaldır. Kredi olmadan her Claude sorgusu hata verir.
+- [x] **0.1 Anthropic kredisi.** ($40 yüklendi, 29.09) console.anthropic.com → Plans & Billing'den kredi yükle, **ya da** AI Görünürlük → Sorular'da Claude'un işaretini kaldır. Kredi olmadan her Claude sorgusu hata verir.
 - [ ] **0.2 Ana alan adı.** KARAR (2026-09-29): ana adres **www'suz `hadiumreyegidelim.com`**. Kod zaten bu adresi kullanıyor. Kalan iş kullanıcıda: Vercel → Domains'te `hadiumreyegidelim.com`'u primary yap, `www`'yu ona 308 ile yönlendir. Yapılınca bu adımı işaretle ve SEO Masası'nda denetimi yeniden çalıştırarak 2.1'i doğrula.
   - Sorun: Şu an site www'suz adresi `www.hadiumreyegidelim.com`'a yönlendiriyor; canonical, sitemap ve robots ise www'suz adresi gösteriyor.
 - [ ] **0.3 Rakipler.** AI Görünürlük → Rakipler'e 3–5 rakip firma (ad + alan adı) gir; SEO Masası → Rakipler'e aynı alan adlarını gir.
@@ -147,6 +147,23 @@ Bir oturuma başlarken bu bölümü uygula. Kullanıcı başka bir şey istemedi
 - [ ] **5.3 Hata raporu diğer admin sayfalarında.** `DiagButton`'ı Excel Fiyat Motoru ve Fiyat Teklifleri sayfalarına da ekle (şu an yalnızca SEO/AI).
 - [ ] **5.4 Depolamayı tabloya taşı.** AI yanıtları ve günlük özetler büyüyünce `Setting` JSON yerine Prisma modelleri (`AiVisRun`, `AiVisDaily`). Supabase migration'ı kullanıcı onayıyla, ham SQL ile (bkz. proje hafızası: `prisma db push` kullanılmıyor).
 
+### Faz 6 · GEO Blog Motoru (Google + AI'da görünür bloglar)
+
+Amaç: Konuyu veriden seç, gerçek kaynaklarla araştır, alıntılanabilir yaz, kaliteyi ölç, taslak olarak kaydet, onayla yayınla ve ölçüme bağla. Mevcut `src/lib/blog-pipeline.ts` rastgele konu seçiyor, araştırmadan yazıyor (uydurma deneyim/rakam isteyen prompt), sabit ve kırık bir link (`/rehber` → 404) koyuyor ve doğrudan yayınlıyor; yerine geçecek.
+Kurulan skill'ler: claude-seo eklentisi (seo-content, seo-content-brief, seo-cluster, seo-geo, seo-schema), geo-seo-claude (geo-citability, geo-content, geo-llmstxt), marketingskills (site-architecture, schema-markup). Alıntılanabilirlik ölçütü: cevap ilk cümlede, 134–167 kelimelik kendi başına anlaşılır pasajlar, soru H2'leri, kaynaklı rakamlar, tablo, SSS.
+
+- [x] **6.1 Sayfa envanteri ve link seçici** – `src/lib/geo-blog/inventory.ts` (HUBS canlıda 200 doğrulandı, yazılar, paketler, şehirler; `pickLinkTargets`, `isInternalPath`). Henüz hiçbir yerde kullanılmıyor.
+- [ ] **6.2 Araştırma** – `src/lib/geo-blog/research.ts`: Claude `claude-opus-5` + `web_search_20260209` (`user_location` TR, max_uses 8) ile konu için niyet, sorular, olgular `{claim, sourceUrl}` ve kaynaklar. Yalnızca web_search sonuçlarında gerçekten görülen URL'leri kabul et. Hata mesajları için `src/lib/ai-vis/engines.ts` içindeki `explainAnthropicError`'ı dışa aktarıp kullan. `fallbacks: "default"` + `server-side-fallback-2026-07-01` (bkz. `runClaude`).
+- [ ] **6.3 Yazım** – `src/lib/geo-blog/write.ts`: `client.messages.parse` + `jsonSchemaOutputFormat` (`@anthropic-ai/sdk/helpers/json-schema`) ile JSON: title (≤60), slug, metaDescription (120–160), tldr, content (HTML, H1 yok, ≥4 H2 ve ≥3'ü soru, her H2 40–60 kelimelik doğrudan cevapla başlar, 1 tablo, 1200–2000 kelime), faq (4–6), keywords. İç linkler yalnızca `pickLinkTargets` adaylarından (4–8), dış linkler yalnızca araştırma kaynaklarından. Uydurma deneyim, müşteri, rakam yok; her rakam bir kaynağa bağlı. no-ai-slop yasaklı kalıpları.
+- [ ] **6.4 Kalite kapısı** – `src/lib/geo-blog/gate.ts`: deterministik kontroller (uzunluklar, H1 yok, soru H2, iç linkler `isInternalPath`, dış linkler kaynak listesinde, tablo, SSS, yasaklı ifadeler, birimli rakam sayısı). Kritik hata ya da puan <80 ise hatalarla birlikte bir kez yeniden yazdır.
+- [ ] **6.5 Boru hattı ve API** – `src/lib/geo-blog/pipeline.ts` + `src/app/api/admin/geo-blog/{opportunities,generate,publish,links}/route.ts`. generate NDJSON ile ilerleme akıtır (maxDuration 300), sonucu **taslak** Post olarak kaydeder (`published:false`, `seoScore`, `faq` JSON, `tldr`, `references` = kaynak listesi). Yetki: `requireSeoAdmin()`.
+- [ ] **6.6 Fırsat kuyruğu** – AI Görünürlük içerik boşlukları ve anılmadığımız sorular (`src/lib/ai-vis/metrics.ts`: contentGaps, fanOutQueries), SEO'da takip edilip ilk 10'da olmayan kelimeler, mevcut yazılarla çakışmayan konular.
+- [ ] **6.7 Arayüz** – SEO Masası'na "07 Blog" bölümü (fırsatlar, konu yaz → üret, taslaklar + kapı puanı, önizleme, Yayınla). AI Görünürlük → Rakipler'deki içerik boşluklarına "Bu soru için yazı üret" linki. Tasarım dili SEO Masası ile aynı.
+- [ ] **6.8 Yayın sonrası ölçüm** – Yayınla: `published:true`, odak kelimeyi `SEO_TRACKED_KEYWORDS`'e, ana soruyu `AI_VIS_CONFIG.prompts`'a (etiket "blog") ekle, `revalidatePath`.
+- [ ] **6.9 İç link önerileri** – mevcut yazılar için öneri ve tek tıkla uygulama (mevcut `<a>` içine girmeden ilk geçen ifadeye link); eski yazılardaki `/rehber` kırık linklerini düzelt.
+- [ ] **6.10 Dinamik llms.txt** – `public/llms.txt`'i kaldırıp `src/app/llms.txt/route.ts`: mevcut başlık metni + hub'lar + son 50 yazı + paketler.
+- [ ] **6.11 Cron'u yeni motora bağla** – `src/app/api/cron/auto-blog` yeni motorla **taslak** üretsin; otomatik yayın yalnızca `GEO_BLOG_AUTOPUBLISH=true` ve kapı geçtiyse. Kullanıcı onayı gerekir.
+
 ---
 
 ## 4. Durum günlüğü
@@ -155,6 +172,7 @@ En yeni en üstte. Her tamamlanan adım için bir satır.
 
 | Tarih | Ajan | Adım | Commit | Not |
 |---|---|---|---|---|
+| 2026-09-29 | Claude Code | 6.1 | (bu commit) | Faz 6 planı yazıldı; envanter eklendi. claude-seo eklentisi ve geo-seo-claude skill'leri kuruldu (Claude + Antigravity). Anthropic'e $40 kredi yüklendi (0.1 tamam) |
 | 2026-09-29 | Claude Code | 1.4 | 84fd1b5 | DataForSEO günlük harcama dökümü yalnızca sıfır olmayan toplamlara indirildi |
 | 2026-09-29 | Claude Code | 1.3 | 396e648 | Claude hataları Türkçe ve yönlendirici; raporda gruplama |
 | 2026-09-29 | Claude Code | 1.1, 1.2 | cf7a443 | AI Mode depth kaldırıldı; AI Overview 40101 yeniden deneme ve yer tutucu tespiti. 0.2 kararı: www'suz ana adres |

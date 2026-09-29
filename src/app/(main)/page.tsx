@@ -472,14 +472,14 @@ export default async function Home() {
                 {homeBlogTitle}
               </h2>
             </div>
-            <a href="/blog" data-press className="text-secondary font-bold flex items-center gap-2 hover:gap-4 transition-all uppercase tracking-widest text-[10px] bg-secondary/10 px-6 py-3 rounded-xl hover:bg-secondary/20 shadow-sm">
+            <Link href="/blog" data-press className="text-secondary font-bold flex items-center gap-2 hover:gap-4 transition-all uppercase tracking-widest text-[10px] bg-secondary/10 px-6 py-3 rounded-xl hover:bg-secondary/20 shadow-sm">
               Tüm Yazıları Gör <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
-            </a>
+            </Link>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {latestBlogs.map((blog) => (
-              <a href={`/blog/${blog.slug}`} key={blog.id} data-reveal className="group flex flex-col bg-white rounded-[2rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-outline-variant/10 hover:-translate-y-2">
+              <Link href={`/blog/${blog.slug}`} key={blog.id} data-reveal className="group flex flex-col bg-white rounded-[2rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 border border-outline-variant/10 hover:-translate-y-2">
                 <div className="relative h-64 overflow-hidden bg-surface-container-low p-2">
                   {blog.imageUrl ? (
                     <Image src={blog.imageUrl} alt={blog.title} fill sizes="(max-width: 768px) 100vw, 33vw" className="object-cover rounded-3xl group-hover:scale-105 transition-transform duration-700" />
@@ -513,7 +513,7 @@ export default async function Home() {
                     </span>
                   </div>
                 </div>
-              </a>
+              </Link>
             ))}
             
             {latestBlogs.length === 0 && (

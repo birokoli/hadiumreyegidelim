@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { loadInventory } from "@/lib/geo-blog/inventory";
-import { externalAnchors, findCompetitorMentions, isAllowedExternal, loadCompetitorTerms, stripDisallowedLinks } from "@/lib/geo-blog/external-policy";
+import { externalAnchors, findCompetitorMentions, isAllowedExternal, loadCompetitorTerms, soldServiceFor, stripDisallowedLinks } from "@/lib/geo-blog/external-policy";
 
 export interface LinkSuggestion {
   term: string;
@@ -14,7 +14,7 @@ export interface PostLinkAnalysis {
   postSlug: string;
   hasRehberLinks: boolean;
   rehberLinkCount: number;
-  /** Resmî kurum dışı sitelere giden dış link sayısı (rakip siteler dahil) */
+  /** İzinsiz dış link sayısı: resmî kurum dışı siteler (rakipler dahil) ve sattığımız hizmete dış link */
   offDomainLinkCount: number;
   /** Yazıda geçen rakip adları (elle çıkarılmalı) */
   competitorMentions: string[];
@@ -107,7 +107,7 @@ export async function analyzePostLinks(targetPostId?: string): Promise<PostLinkA
 
   for (const post of posts) {
     const rehberLinkCount = countBrokenRehberLinks(post.content);
-    const offDomainLinkCount = externalAnchors(post.content).filter((a) => !isAllowedExternal(a.href)).length;
+    const offDomainLinkCount = externalAnchors(post.content).filter((a) => !isAllowedExternal(a.href) || soldServiceFor(a.text)).length;
     const competitorMentions = findCompetitorMentions(`${post.title} ${post.content}`, competitorTerms);
 
     const suggestions: LinkSuggestion[] = [];
@@ -238,12 +238,14 @@ export async function bulkStripDisallowedLinks() {
   const posts = await prisma.post.findMany({ select: { id: true, content: true } });
   let fixedPostsCount = 0;
   let removedLinksTotal = 0;
+  let redirectedLinksTotal = 0;
   for (const post of posts) {
-    const { html, removed } = stripDisallowedLinks(post.content);
-    if (!removed) continue;
+    const { html, removed, redirected } = stripDisallowedLinks(post.content);
+    if (!removed && !redirected) continue;
     await prisma.post.update({ where: { id: post.id }, data: { content: html } });
     fixedPostsCount++;
     removedLinksTotal += removed;
+    redirectedLinksTotal += redirected;
   }
-  return { fixedPostsCount, removedLinksTotal };
+  return { fixedPostsCount, removedLinksTotal, redirectedLinksTotal };
 }

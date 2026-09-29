@@ -1,7 +1,7 @@
 import { isInternalPath, type LinkTarget } from "@/lib/geo-blog/inventory";
 import type { TopicResearch } from "@/lib/geo-blog/research";
 import { normalizeUrl } from "@/lib/geo-blog/claude";
-import { anchorLooksLikeName, externalAnchors, findCompetitorMentions, isAllowedExternal } from "@/lib/geo-blog/external-policy";
+import { anchorLooksLikeName, externalAnchors, findCompetitorMentions, isAllowedExternal, soldServiceFor } from "@/lib/geo-blog/external-policy";
 import type { GeneratedArticle } from "@/lib/geo-blog/write";
 
 export type GateIssueSeverity = "critical" | "warning";
@@ -198,6 +198,15 @@ export function evaluateArticleQuality(
   if (namedAnchors.length > 0) {
     issues.push({ severity: "critical", message: `Dış link metni kurum/site adı olmamalı, konuyla ilgili kelime olmalı: ${namedAnchors.map((a) => `"${a.text}"`).join(", ")}.` });
     score -= 10;
+  }
+
+  const soldAnchors = anchors.filter((a) => soldServiceFor(a.text));
+  if (soldAnchors.length > 0) {
+    issues.push({
+      severity: "critical",
+      message: `Sattığımız hizmet dış siteye linklenmiş; kendi sayfamıza link verilmeli: ${soldAnchors.map((a) => `"${a.text}" → ${soldServiceFor(a.text)!.path}`).join(", ")}.`,
+    });
+    score -= 20;
   }
 
   // 10c. Rakip firma adı yazıda geçmemeli

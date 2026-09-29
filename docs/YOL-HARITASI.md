@@ -28,15 +28,16 @@ Bu belge hadiumreyegidelim.com için sıradaki işlerin **tek doğru listesidir*
 
 ### Dış link kuralı (kullanıcı kararı, 30.09)
 
-- Blog yazılarında dış link **yalnızca** resmî kurumlara verilir: Diyanet (`diyanet.gov.tr` ve alt alan adları), Nusuk (`nusuk.sa`), Suudi devlet siteleri (`*.gov.sa`) ve Suudi turizm otoritesi (`visitsaudi.com`).
+- Blog yazılarında dış link **yalnızca** resmî kurumların **bilgi** sayfalarına verilir: Diyanet (`diyanet.gov.tr` ve alt alan adları), Nusuk (`nusuk.sa`), Suudi devlet siteleri (`*.gov.sa`).
+- **Sattığımız hizmetler asla dışarı linklenmez** (müşteri kaçmasın): vize → `/umre-vizesi`, paket/fiyat → `/paketler`, rehberlik → `/rehberlik`, transfer/tren → `/hizmetler`, otel/konaklama/uçuş → `/bireysel-umre`. Vize portalları (`visa.*`, `visitsaudi.com`), Nusuk paket/otel sayfaları ve adresinde visa/hotel/booking/package geçen sayfalar resmî olsa da yasak. Dış link yalnızca ibadet kuralları, sağlık şartları, giriş kuralları, Ravza randevusu gibi bilgi konularına.
 - Rakip firma (acente, tur şirketi) sitelerine link verilmez; rakip adları yazıda geçmez.
 - Link metni kurum adı değil konu kelimesidir: `umre vizesi başvurusu` → vize portalı. "Diyanet'in sitesi", "Nusuk portalı" gibi metinler ve "Diyanet'e göre" gibi atıflar yok.
 - Nerede uygulanıyor: `src/lib/geo-blog/external-policy.ts`.
   - Araştırmada web araması yalnızca bu sitelerde yapılır (`allowed_domains`).
   - Yazım talimatı kuralları anlatır.
-  - Kalite kapısı izinsiz alan adını, kurum adıyla yazılmış link metnini ve rakip adını (AI Görünürlük → rakipler listesi) kritik hata sayar.
-  - Kayıttan önce izinsiz dış linkler silinir.
-  - Eski yazılar: İçerik Stüdyosu → Blog motoru → İç linkler sekmesinde "izinsiz dış linki kaldır" düğmesi; rakip adı geçen yazılar kırmızı etiketle gösterilir (metin elle düzeltilir).
+  - Kalite kapısı izinsiz alan adını, sattığımız hizmete verilmiş dış linki, kurum adıyla yazılmış link metnini ve rakip adını (AI Görünürlük → rakipler listesi) kritik hata sayar.
+  - Kayıttan önce: sattığımız hizmeti anlatan dış link kendi sayfamıza çevrilir, diğer izinsiz linkler silinir.
+  - Eski yazılar: İçerik Stüdyosu → Blog motoru → İç linkler sekmesinde "izinsiz dış linki düzelt" düğmesi (hizmet linklerini kendi sayfamıza çevirir, gerisini kaldırır); rakip adı geçen yazılar kırmızı etiketle gösterilir (metin elle düzeltilir).
 - Ajanlar: bu kuralı gevşetme; yeni resmî alan adı eklemek kullanıcı onayı ister.
 
 ### Claude bütçesi ve maliyet (Anthropic'te 40 $ yüklü)

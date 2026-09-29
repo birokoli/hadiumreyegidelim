@@ -198,7 +198,7 @@ function LinkTools({ onChanged }: { onChanged: () => void }) {
     load();
   }, [load]);
 
-  type LinkResult = { fixedPostsCount?: number; fixedLinksTotal?: number; insertedLinkCount?: number; removedLinksTotal?: number };
+  type LinkResult = { fixedPostsCount?: number; fixedLinksTotal?: number; insertedLinkCount?: number; removedLinksTotal?: number; redirectedLinksTotal?: number };
   const post = async (body: unknown, key: string, okNote: (r: LinkResult) => string) => {
     setBusy(key);
     setError("");
@@ -229,13 +229,13 @@ function LinkTools({ onChanged }: { onChanged: () => void }) {
           </button>
         )}
         {offDomain > 0 && (
-          <button className="seo-btn" disabled={busy !== null} onClick={() => post({ action: "strip_external" }, "strip", (r) => `${r.fixedPostsCount ?? 0} yazıdan ${r.removedLinksTotal ?? 0} izinsiz dış link kaldırıldı; link metinleri düz yazı olarak kaldı.`)}>
-            {busy === "strip" ? "Kaldırılıyor" : `${offDomain} izinsiz dış linki kaldır`}
+          <button className="seo-btn" disabled={busy !== null} onClick={() => post({ action: "strip_external" }, "strip", (r) => `${r.fixedPostsCount ?? 0} yazıda ${r.redirectedLinksTotal ?? 0} link kendi hizmet sayfamıza çevrildi, ${r.removedLinksTotal ?? 0} izinsiz dış link kaldırıldı.`)}>
+            {busy === "strip" ? "Kaldırılıyor" : `${offDomain} izinsiz dış linki düzelt`}
           </button>
         )}
       </div>
       <p className="mt-2 text-[13px] text-[var(--seo-ink-3)]">
-        Dış link kuralı: yalnızca Diyanet, Nusuk ve Suudi devlet sitelerine, konu kelimesi üzerinden link verilir. Rakip firma siteleri ve adları yazılarda yer almaz.
+        Dış link kuralı: yalnızca Diyanet, Nusuk ve Suudi devlet sitelerinin bilgi sayfalarına, konu kelimesi üzerinden link verilir. Sattığımız hizmetler (vize, paket, otel, uçuş, transfer, tren, rehberlik) kendi sayfamıza bağlanır. Rakip firma siteleri ve adları yazılarda yer almaz.
       </p>
       <div>
       </div>

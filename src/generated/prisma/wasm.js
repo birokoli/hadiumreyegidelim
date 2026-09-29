@@ -867,7 +867,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/Users/yasintoktas/.gemini/antigravity-ide/scratch/hadiumreyegidelim/src/generated/prisma",
+      "value": "/Users/yasintoktas/Projelerim/hadiumreyegidelim/src/generated/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -881,7 +881,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/Users/yasintoktas/.gemini/antigravity-ide/scratch/hadiumreyegidelim/prisma/schema.prisma",
+    "sourceFilePath": "/Users/yasintoktas/Projelerim/hadiumreyegidelim/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {

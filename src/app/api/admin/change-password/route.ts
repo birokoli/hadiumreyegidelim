@@ -1,12 +1,11 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { cookies } from 'next/headers';
 import bcrypt from 'bcryptjs';
 import { getAdminSession, hashLegacyAdminPassword } from '@/lib/admin-auth';
 
 export async function POST(request: Request) {
-  const cookieStore = await cookies();
-  if (cookieStore.get('admin_session')?.value !== 'true') {
+  const session = await getAdminSession();
+  if (!session) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
@@ -17,8 +16,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Yeni şifre en az 8 karakter olmalı.' }, { status: 400 });
     }
 
-    const session = await getAdminSession();
-    if (session && !session.legacy) {
+    if (!session.legacy) {
       const admin = await prisma.adminUser.findUnique({ where: { id: session.id } });
       if (!admin || !await bcrypt.compare(currentPassword, admin.password)) {
         return NextResponse.json({ error: 'Mevcut şifre hatalı.' }, { status: 401 });
@@ -38,7 +36,7 @@ export async function POST(request: Request) {
     // Verify legacy password
     const customPasswordSetting = await prisma.setting.findUnique({ where: { key: 'ADMIN_PASSWORD_HASH' } });
     const inputHash = hashLegacyAdminPassword(currentPassword);
-    const fallbackValid = currentPassword === 'Harun.28122017';
+    const fallbackValid = !customPasswordSetting && !!process.env.ADMIN_INITIAL_PASSWORD && currentPassword === process.env.ADMIN_INITIAL_PASSWORD;
     const hashValid = customPasswordSetting ? customPasswordSetting.value === inputHash : false;
 
     if (!fallbackValid && !hashValid) {

@@ -82,6 +82,7 @@ export async function GET() {
       DATAFORSEO_PASSWORD: has("DATAFORSEO_PASSWORD"),
       DATAFORSEO_API_KEY: has("DATAFORSEO_API_KEY"),
       ANTHROPIC_API_KEY: has("ANTHROPIC_API_KEY"),
+      JWT_SECRET: has("JWT_SECRET"),
     },
     probes: { database: db, dataforseo, anthropic },
     seo: {

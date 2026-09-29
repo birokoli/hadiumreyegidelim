@@ -1,9 +1,14 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { getAdminSession } from '@/lib/admin-auth';
+
+// Ziyaretçiye açık ayarlar; geri kalanı (şifre özeti, API durumları, harcamalar) yalnızca yöneticiye
+const PUBLIC_KEYS = ['whatsappNumber'];
 
 export async function GET() {
   try {
-    const settings = await prisma.setting.findMany();
+    const admin = await getAdminSession();
+    const settings = await prisma.setting.findMany(admin ? undefined : { where: { key: { in: PUBLIC_KEYS } } });
     return NextResponse.json(settings);
   } catch (error) {
     return NextResponse.json({ error: 'Failed to fetch settings' }, { status: 500 });

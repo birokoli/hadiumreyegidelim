@@ -2,9 +2,10 @@ import { cookies } from 'next/headers';
 import { SignJWT, jwtVerify } from 'jose';
 import crypto from 'crypto';
 import { prisma } from '@/lib/prisma';
+import { getJwtKey } from '@/lib/jwt-key';
 
-const ADMIN_JWT_SECRET = process.env.JWT_SECRET || 'HADI_UMREYE_GELENE_ALLAH_RAZI_OLSUN_12345';
-const adminKey = new TextEncoder().encode(ADMIN_JWT_SECRET);
+/** Ayarlar tablosundaki tek yönetici hesabının (eski giriş) token kimliği */
+export const LEGACY_ADMIN_ID = 'legacy-admin';
 
 export const ADMIN_PERMISSIONS = [
   'dashboard',
@@ -57,12 +58,12 @@ export async function createAdminToken(session: Omit<AdminSession, 'legacy'>) {
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
     .setExpirationTime('30d')
-    .sign(adminKey);
+    .sign(await getJwtKey());
 }
 
 export async function verifyAdminToken(token: string): Promise<AdminSession | null> {
   try {
-    const { payload } = await jwtVerify(token, adminKey);
+    const { payload } = await jwtVerify(token, await getJwtKey());
     if (!payload.id || !payload.email || !payload.username) return null;
 
     return {
@@ -78,26 +79,29 @@ export async function verifyAdminToken(token: string): Promise<AdminSession | nu
   }
 }
 
+export function legacyAdminSession(username: string): Omit<AdminSession, 'legacy'> {
+  return {
+    id: LEGACY_ADMIN_ID,
+    name: 'Yönetici',
+    username,
+    email: 'legacy-admin@hadiumreyegidelim.com',
+    role: 'super_admin',
+    permissions: [...ADMIN_PERMISSIONS],
+  };
+}
+
+/**
+ * Oturum yalnızca imzalı admin_token ile geçerlidir; admin_session=true çerezi tek başına
+ * yetki vermez (herkes tarayıcısında o çerezi yazabilir).
+ */
 export async function getAdminSession(): Promise<AdminSession | null> {
   const cookieStore = await cookies();
-  const legacySession = cookieStore.get('admin_session')?.value === 'true';
-  if (!legacySession) return null;
-
   const token = cookieStore.get('admin_token')?.value;
-  if (!token) {
-    return {
-      id: 'legacy-admin',
-      name: 'Yönetici',
-      username: 'Yasin',
-      email: '',
-      role: 'super_admin',
-      permissions: [...ADMIN_PERMISSIONS],
-      legacy: true,
-    };
-  }
+  if (!token) return null;
 
   const session = await verifyAdminToken(token);
   if (!session) return null;
+  if (session.id === LEGACY_ADMIN_ID) return { ...session, legacy: true };
 
   const admin = await prisma.adminUser.findUnique({
     where: { id: session.id },

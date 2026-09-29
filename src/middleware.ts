@@ -1,9 +1,28 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { jwtVerify } from 'jose';
+import { getJwtKey } from '@/lib/jwt-key';
 
 const ADMIN_PERMISSIONS = ['dashboard', 'orders', 'content', 'operations', 'marketing', 'settings', 'users'];
-const adminKey = new TextEncoder().encode(process.env.JWT_SECRET || 'HADI_UMREYE_GELENE_ALLAH_RAZI_OLSUN_12345');
+
+// Her alan adında yalnızca yöneticiye açık API'ler (tüm yöntemler)
+const ADMIN_ONLY_API = ['/api/admin', '/api/ai', '/api/posts', '/api/upload', '/api/upload-sign'];
+// Sitenin okuduğu ama yalnızca yöneticinin değiştirebileceği API'ler (GET dışı yöntemler)
+const ADMIN_WRITE_API = ['/api/categories', '/api/authors', '/api/packages', '/api/services', '/api/guides', '/api/hotels', '/api/settings'];
+
+const matchesPrefix = (pathname: string, prefixes: string[]) =>
+  prefixes.some(prefix => pathname === prefix || pathname.startsWith(`${prefix}/`));
+
+/** Bu istek yönetici oturumu gerektiriyor mu? (giriş ve siparişin oluşturulması hariç) */
+function apiNeedsAdmin(pathname: string, method: string) {
+  if (pathname === '/api/admin/login') return false;
+  if (matchesPrefix(pathname, ADMIN_ONLY_API)) return true;
+  const write = method !== 'GET' && method !== 'HEAD' && method !== 'OPTIONS';
+  if (write && matchesPrefix(pathname, ADMIN_WRITE_API)) return true;
+  // Sipariş listesi müşteri bilgisi içerir; siteden yalnızca POST (yeni sipariş) gelir
+  if (pathname === '/api/orders' && !write) return true;
+  return false;
+}
 
 function requiredAdminPermission(pathname: string) {
   if (pathname.startsWith('/admin/users') || pathname.startsWith('/api/admin/users')) return 'users';
@@ -21,24 +40,28 @@ function requiredAdminPermission(pathname: string) {
   return null;
 }
 
+/** İmzalı admin_token'ı doğrular; admin_session=true çerezi tek başına yetki vermez */
+async function adminTokenPayload(req: NextRequest) {
+  const token = req.cookies.get('admin_token')?.value;
+  if (!token) return null;
+  try {
+    const { payload } = await jwtVerify(token, await getJwtKey());
+    return payload.id && payload.email && payload.username ? payload : null;
+  } catch {
+    return null;
+  }
+}
+
 async function hasAdminPermission(req: NextRequest, pathname: string) {
-  const session = req.cookies.get('admin_session')?.value;
-  if (session !== 'true') return false;
+  const payload = await adminTokenPayload(req);
+  if (!payload) return false;
 
   const required = requiredAdminPermission(pathname);
   if (!required) return true;
 
-  const token = req.cookies.get('admin_token')?.value;
-  if (!token) return true;
-
-  try {
-    const { payload } = await jwtVerify(token, adminKey);
-    const role = String(payload.role || '');
-    const permissions = Array.isArray(payload.permissions) ? payload.permissions.map(String) : [];
-    return role === 'super_admin' || permissions.includes(required) || permissions.some(permission => ADMIN_PERMISSIONS.includes(permission) && permission === required);
-  } catch {
-    return false;
-  }
+  const role = String(payload.role || '');
+  const permissions = Array.isArray(payload.permissions) ? payload.permissions.map(String) : [];
+  return role === 'super_admin' || (ADMIN_PERMISSIONS.includes(required) && permissions.includes(required));
 }
 
 function unauthorized(req: NextRequest) {
@@ -54,6 +77,15 @@ export async function middleware(req: NextRequest) {
   const isMarketing = hostname.startsWith('marketing.');
   const isAdmin = hostname.startsWith('admin.');
   const isLocal = hostname.includes('localhost');
+
+  // ─── Yönetici API'leri — her alan adında ──────────────────────────────
+  if (url.startsWith('/api/') && apiNeedsAdmin(url, req.method)) {
+    if (!await adminTokenPayload(req)) {
+      return NextResponse.json({ error: 'Oturum gerekli.' }, { status: 401 });
+    }
+    if (!await hasAdminPermission(req, url)) return unauthorized(req);
+    return NextResponse.next();
+  }
 
   // ─── MARKETING subdomaini ─────────────────────────────────────────────
   if (isMarketing) {
@@ -74,8 +106,8 @@ export async function middleware(req: NextRequest) {
     if (url === '/') return NextResponse.redirect(new URL('/admin', req.url));
     if (url.startsWith('/admin/login') || url.startsWith('/api/admin/login')) return NextResponse.next();
     if (url.startsWith('/admin') || url.startsWith('/api/admin')) {
-      const session = req.cookies.get('admin_session');
-      if (!session || session.value !== 'true') {
+      if (!await adminTokenPayload(req)) {
+        if (url.startsWith('/api/')) return NextResponse.json({ error: 'Oturum gerekli.' }, { status: 401 });
         return NextResponse.redirect(new URL('/admin/login', req.url));
       }
       if (!await hasAdminPermission(req, url)) return unauthorized(req);
@@ -90,8 +122,7 @@ export async function middleware(req: NextRequest) {
 
   if (url.startsWith('/admin')) {
     if (url.startsWith('/admin/login') || url.startsWith('/api/admin/login')) return NextResponse.next();
-    const session = req.cookies.get('admin_session');
-    if (!session || session.value !== 'true') {
+    if (!await adminTokenPayload(req)) {
       return NextResponse.redirect(new URL('/admin/login', req.url));
     }
     if (!await hasAdminPermission(req, url)) return unauthorized(req);

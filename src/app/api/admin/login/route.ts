@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import bcrypt from 'bcryptjs';
-import { createAdminToken, hashLegacyAdminPassword, normalizePermissions } from '@/lib/admin-auth';
+import { createAdminToken, hashLegacyAdminPassword, legacyAdminSession, normalizePermissions } from '@/lib/admin-auth';
 
 // ─── In-memory brute force protection ─────────────────
 // { ip -> { attempts, lockedUntil } }
@@ -132,13 +132,14 @@ export async function POST(request: Request) {
     if (customPasswordSetting?.value) {
       // Compare with stored hash
       passwordValid = customPasswordSetting.value === inputHash;
-    } else {
-      // Fallback to original hardcoded password
-      passwordValid = rawPassword === 'Harun.28122017';
+    } else if (process.env.ADMIN_INITIAL_PASSWORD) {
+      // Şifre henüz ayarlanmadıysa yalnızca sunucu ortam değişkenindeki ilk şifre geçer
+      passwordValid = rawPassword === process.env.ADMIN_INITIAL_PASSWORD;
     }
 
     if (login === validUsername && passwordValid) {
       recordSuccess(ip);
+      const adminToken = await createAdminToken(legacyAdminSession(validUsername));
       const response = NextResponse.json({ success: true });
       response.cookies.set({
         name: 'admin_session',
@@ -149,7 +150,15 @@ export async function POST(request: Request) {
         sameSite: 'lax',
         maxAge: 30 * 24 * 60 * 60,
       });
-      response.cookies.delete('admin_token');
+      response.cookies.set({
+        name: 'admin_token',
+        value: adminToken,
+        httpOnly: true,
+        path: '/',
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 30 * 24 * 60 * 60,
+      });
       return response;
     }
 

@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { recordDiag } from "@/lib/diag/log";
 
 export function PageHead({ n, title, lede, children }: { n: string; title: string; lede: React.ReactNode; children?: React.ReactNode }) {
   return (
@@ -153,8 +154,21 @@ export function useDataforseoReady() {
 }
 
 export async function api<T>(url: string, init?: RequestInit): Promise<T> {
-  const res = await fetch(url, { ...init, headers: { "Content-Type": "application/json", ...(init?.headers ?? {}) } });
+  const started = performance.now();
+  const method = init?.method ?? "GET";
+  const request = typeof init?.body === "string" ? init.body : undefined;
+  let res: Response;
+  try {
+    res = await fetch(url, { ...init, headers: { "Content-Type": "application/json", ...(init?.headers ?? {}) } });
+  } catch (e) {
+    recordDiag({ kind: "api", method, url, ms: Math.round(performance.now() - started), request, error: `Ağ hatası: ${(e as Error).message}` });
+    throw e;
+  }
   const json = await res.json().catch(() => ({}));
+  const ms = Math.round(performance.now() - started);
+  // Başarılı yanıtta bile motor/görev hatası dönebilir (ör. AI run status=error); onu da kaydet
+  const innerError = json?.run?.status === "error" ? `run hatası (${json.run.engine}): ${json.run.error}` : json?.saveError || undefined;
+  recordDiag({ kind: "api", method, url, status: res.status, ms, request, error: !res.ok ? json.error || `HTTP ${res.status}` : innerError });
   if (!res.ok) {
     const err = new Error(json.error || `İstek başarısız (${res.status})`) as Error & { needsKey?: boolean };
     err.needsKey = Boolean(json.needsKey);

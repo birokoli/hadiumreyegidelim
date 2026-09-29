@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import DiagButton from "./DiagButton";
 
 export type Chapter = { href: string; n: string; label: string };
 
@@ -27,7 +28,8 @@ export default function DeskNav({ title, chapters, cross }: { title: string; cha
           </Link>
         );
       })}
-      <Link href={cross.href} className="ml-auto text-[13px] font-semibold text-[var(--seo-ink-3)] hover:text-[var(--seo-ink)]">
+      <DiagButton />
+      <Link href={cross.href} className="text-[13px] font-semibold text-[var(--seo-ink-3)] hover:text-[var(--seo-ink)]">
         {cross.label} ↗
       </Link>
     </nav>

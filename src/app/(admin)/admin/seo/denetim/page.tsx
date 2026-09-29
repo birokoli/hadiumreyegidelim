@@ -6,6 +6,7 @@ import { AnimatedNumber } from "@/components/motion-primitives/animated-number";
 import { TextShimmer } from "@/components/motion-primitives/text-shimmer";
 import { api, ErrorLine, formatDate, PageHead, Section, SegmentMeter, SEVERITY_ORDER, SeverityWord } from "@/components/admin/seo/ui";
 import type { AuditReport, Category, Issue } from "@/lib/seo/audit";
+import { recordDiag } from "@/lib/diag/log";
 
 type History = { id: string; finishedAt: string; score: number; issueCount: number; pageCount: number }[];
 
@@ -51,10 +52,16 @@ export default function SeoAuditPage() {
           const msg = JSON.parse(line);
           if (msg.type === "plan") setProgress({ done: 0, total: msg.total, path: "" });
           if (msg.type === "page") setProgress({ done: msg.done, total: msg.total, path: msg.path });
-          if (msg.type === "error") throw new Error(msg.error);
+          if (msg.type === "error") {
+            recordDiag({ kind: "api", method: "POST", url: "/api/admin/seo/audit (akış)", status: res.status, error: msg.error });
+            throw new Error(msg.error);
+          }
           if (msg.type === "done") {
             const r = msg.report as AuditReport;
-            if (msg.saveError) setError(msg.saveError);
+            if (msg.saveError) {
+              setError(msg.saveError);
+              recordDiag({ kind: "api", method: "POST", url: "/api/admin/seo/audit (akış)", status: res.status, error: msg.saveError });
+            }
             setReport(r);
             setFixed({});
             setHistory((h) => [{ id: r.id, finishedAt: r.finishedAt, score: r.score, issueCount: r.issues.length, pageCount: r.pageCount }, ...h].slice(0, 20));

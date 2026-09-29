@@ -287,3 +287,29 @@ export async function backlinkSummary(domain: string): Promise<DfsResult<Backlin
     cost,
   };
 }
+
+// ─── Hesap bilgisi (ücretsiz) ────────────────────────────────────────────
+
+export type DfsAccount = { login: string | null; balance: number | null; total: number | null; spentToday: Record<string, unknown> | null };
+
+/** GET /v3/appendix/user_data: ücretsiz; bakiye ve günlük harcama (open-seo appendix.ts ile aynı uç nokta) */
+export async function dfsAccount(): Promise<DfsAccount> {
+  const auth = authHeader();
+  if (!auth) throw new DataforseoError("DataForSEO bağlı değil.", 412);
+  const res = await fetch(`${API_BASE}/v3/appendix/user_data`, {
+    headers: { Authorization: auth },
+    signal: AbortSignal.timeout(15_000),
+    cache: "no-store",
+  });
+  if (res.status === 401) throw new DataforseoError("DataForSEO giriş bilgileri geçersiz.", 401);
+  const json = (await res.json().catch(() => null)) as Envelope<{
+    login?: string;
+    money?: { balance?: number; total?: number; statistics?: { day?: Record<string, unknown> } };
+  }> | null;
+  const task = json?.tasks?.[0];
+  if (!task || task.status_code !== 20000) {
+    throw new DataforseoError(explainTaskError(task?.status_code ?? res.status, task?.status_message ?? json?.status_message ?? `HTTP ${res.status}`), task?.status_code);
+  }
+  const r = task.result?.[0];
+  return { login: r?.login ?? null, balance: r?.money?.balance ?? null, total: r?.money?.total ?? null, spentToday: r?.money?.statistics?.day ?? null };
+}

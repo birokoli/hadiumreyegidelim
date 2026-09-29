@@ -3,6 +3,7 @@
 
 import Anthropic from "@anthropic-ai/sdk";
 import { explainAnthropicError } from "@/lib/ai-vis/engines";
+import { assertBudget, recordSpend, type Feature } from "@/lib/ai-budget";
 
 export const GEO_BLOG_MODEL = "claude-opus-5";
 
@@ -14,10 +15,13 @@ type CallInput = {
   schema?: Record<string, unknown>;
   effort?: "low" | "medium" | "high";
   maxTokens?: number;
+  /** Harcamanın yazılacağı kalem (aylık bütçe takibi) */
+  feature?: Feature;
 };
 
 export async function callClaude(input: CallInput): Promise<{ blocks: Anthropic.ContentBlock[]; text: string }> {
   if (!process.env.ANTHROPIC_API_KEY) throw new Error("ANTHROPIC_API_KEY tanımlı değil.");
+  await assertBudget(input.feature ?? "blog");
   const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
   const messages: Anthropic.MessageParam[] = [{ role: "user", content: input.prompt }];
   const blocks: Anthropic.ContentBlock[] = [];
@@ -46,6 +50,7 @@ export async function callClaude(input: CallInput): Promise<{ blocks: Anthropic.
     } catch (e) {
       throw new Error(explainAnthropicError(e));
     }
+    await recordSpend(input.feature ?? "blog", GEO_BLOG_MODEL, final.usage);
     blocks.push(...final.content);
     if (final.stop_reason !== "pause_turn") break;
     messages.push({ role: "assistant", content: final.content });

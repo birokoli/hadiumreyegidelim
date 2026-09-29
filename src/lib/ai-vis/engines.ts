@@ -6,6 +6,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { DataforseoError, dfsPost, isDataforseoConfigured } from "@/lib/seo/dataforseo";
 import { normalizeDomain } from "./analyze";
+import { assertBudget, recordSpend } from "@/lib/ai-budget";
 import type { Citation, EngineId, Run } from "./types";
 
 type EngineResult = Pick<Run, "status" | "text" | "citations" | "queries" | "cost" | "note">;
@@ -209,6 +210,7 @@ export function explainAnthropicError(e: unknown): string {
 }
 
 async function runClaude(prompt: string): Promise<EngineResult> {
+  await assertBudget("ai-visibility");
   const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
   const messages: Anthropic.MessageParam[] = [{ role: "user", content: prompt }];
   const tools: Anthropic.ToolUnion[] = [
@@ -221,6 +223,7 @@ async function runClaude(prompt: string): Promise<EngineResult> {
   ];
 
   let final: Anthropic.Message | null = null;
+  let claudeCost = 0;
   const blocks: Anthropic.ContentBlock[] = [];
   // Uzun süren sunucu aracı turu pause_turn ile durabilir; en fazla 3 kez devam ettir
   for (let i = 0; i < 4; i++) {
@@ -240,6 +243,8 @@ async function runClaude(prompt: string): Promise<EngineResult> {
     } catch (e) {
       throw new Error(explainAnthropicError(e));
     }
+    const usd = await recordSpend("ai-visibility", "claude-opus-5", final.usage);
+    claudeCost += usd;
     blocks.push(...final.content);
     if (final.stop_reason !== "pause_turn") break;
     messages.push({ role: "assistant", content: final.content });
@@ -271,8 +276,8 @@ async function runClaude(prompt: string): Promise<EngineResult> {
     text: text.slice(0, MAX_TEXT),
     citations: dedupe(cited),
     queries,
-    cost: 0,
-    note: "Claude maliyeti Anthropic hesabına yansır.",
+    cost: claudeCost,
+    note: "Claude maliyeti tahminidir (liste fiyatı); kesin tutar Anthropic konsolunda.",
   };
 }
 

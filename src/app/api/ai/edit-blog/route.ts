@@ -1,10 +1,15 @@
 import { NextResponse } from 'next/server';
 import Anthropic from '@anthropic-ai/sdk';
+import { assertBudget, recordSpend } from '@/lib/ai-budget';
+import { requireBlogAdmin } from '@/lib/seo/guard';
 
 const claude = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
 export async function POST(request: Request) {
+  const denied = await requireBlogAdmin();
+  if (denied) return denied;
   try {
+    await assertBudget('blog');
     if (!process.env.ANTHROPIC_API_KEY) {
       return NextResponse.json({ error: 'ANTHROPIC_API_KEY tanımlı değil.' }, { status: 500 });
     }
@@ -32,6 +37,7 @@ ${content}`,
       }],
     });
 
+    await recordSpend('blog', 'claude-sonnet-4-6', message.usage);
     let text = message.content[0].type === 'text' ? message.content[0].text : '';
     text = text.replace(/^```(?:html|xml)?\s*/i, '').replace(/\s*```$/i, '').trim();
 

@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { api, ErrorLine, formatDate, Section } from "@/components/admin/seo/ui";
 
@@ -13,6 +12,7 @@ type Status = {
   nextTopic: string | null;
   createdToday: number;
   logs: Log[];
+  budget: { month: string; usd: number; calls: number; limit: number; byFeature: Record<string, { usd: number; calls: number }> };
 };
 
 const RUNNING = (s: string) => !["COMPLETED", "FAILED"].includes(s);
@@ -56,6 +56,16 @@ export default function AutoBlogPanel({ onDraftCreated }: { onDraftCreated?: () 
     }
   };
 
+  const saveBudget = async (usd: number) => {
+    setError("");
+    try {
+      await api("/api/admin/geo-blog/auto", { method: "POST", body: JSON.stringify({ key: "AI_MONTHLY_BUDGET_USD", value: usd }) });
+      await load();
+    } catch (e) {
+      setError((e as Error).message);
+    }
+  };
+
   const runNow = async () => {
     setBusy(true);
     setError("");
@@ -74,6 +84,8 @@ export default function AutoBlogPanel({ onDraftCreated }: { onDraftCreated?: () 
     ? null
     : !data.anthropicKey
       ? "ANTHROPIC_API_KEY tanımlı değil; otomatik yazı çalışamaz."
+      : data.budget.usd >= data.budget.limit
+        ? `Bu ayın Claude bütçesi doldu (${data.budget.usd.toFixed(2)} / ${data.budget.limit} $). Sınırı artırın ya da gelecek ayı bekleyin.`
       : !data.autoBlog
         ? "Otomatik yazı kapalı. Açınca her gün bir taslak üretilir."
         : data.createdToday > 0
@@ -105,6 +117,7 @@ export default function AutoBlogPanel({ onDraftCreated }: { onDraftCreated?: () 
             <p className="mt-5 text-[13px] text-[var(--seo-ink-3)]">
               Sıradaki konu: <span className="font-semibold text-[var(--seo-ink)]">{data.nextTopic ?? "—"}</span>
             </p>
+            <BudgetLine budget={data.budget} onSave={saveBudget} />
             <button className="seo-btn mt-4" onClick={runNow} disabled={busy || running || !data.anthropicKey}>
               {running ? "Yazı üretiliyor" : busy ? "Başlatılıyor" : "Şimdi bir taslak yaz"}
             </button>
@@ -129,10 +142,41 @@ export default function AutoBlogPanel({ onDraftCreated }: { onDraftCreated?: () 
                 ))}
               </ul>
             )}
-            <Link href="/admin/ai-logs" className="seo-link mt-3 inline-block text-[13px]">Tüm kayıtlar (Yapay Zeka sayfası)</Link>
           </div>
         </div>
       )}
     </Section>
+  );
+}
+
+function BudgetLine({ budget, onSave }: { budget: Status["budget"]; onSave: (usd: number) => void }) {
+  const [limit, setLimit] = useState(String(budget.limit));
+  const pct = budget.limit > 0 ? Math.min(100, (budget.usd / budget.limit) * 100) : 100;
+  const blog = budget.byFeature.blog;
+  const ai = budget.byFeature["ai-visibility"];
+  return (
+    <div className="mt-6 max-w-[460px]">
+      <p className="seo-label">Bu ay Claude harcaması (tahmini)</p>
+      <p className="mt-1 text-[22px] font-extrabold">
+        ${budget.usd.toFixed(2)} <span className="text-[14px] font-semibold text-[var(--seo-ink-3)]">/ ${budget.limit} sınır</span>
+      </p>
+      <div className="mt-2 h-2 rounded-full bg-[var(--seo-paper-2)]" aria-hidden>
+        <div className="h-full rounded-full" style={{ width: `${pct}%`, background: pct >= 90 ? "var(--seo-danger)" : "var(--seo-mark)" }} />
+      </div>
+      <p className="mt-2 text-[12px] text-[var(--seo-ink-3)]">
+        Blog: ${(blog?.usd ?? 0).toFixed(2)} ({blog?.calls ?? 0} çağrı) · AI Görünürlük: ${(ai?.usd ?? 0).toFixed(2)} ({ai?.calls ?? 0} çağrı). Kesin tutar console.anthropic.com → Usage.
+      </p>
+      <form
+        className="mt-3 flex items-center gap-2 text-[13px]"
+        onSubmit={(e) => {
+          e.preventDefault();
+          onSave(Number(limit));
+        }}
+      >
+        <label htmlFor="budget" className="text-[var(--seo-ink-2)]">Aylık sınır $</label>
+        <input id="budget" type="number" min={0} max={500} step={1} value={limit} onChange={(e) => setLimit(e.target.value)} className="seo-input w-20 py-1.5 text-[13px]" />
+        <button className="seo-link">Kaydet</button>
+      </form>
+    </div>
   );
 }

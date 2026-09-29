@@ -202,7 +202,7 @@ En yeni en üstte. Her tamamlanan adım için bir satır.
 
 | Tarih | Ajan | Adım | Commit | Not |
 |---|---|---|---|---|
-| 2026-09-30 | Claude Code | 6.12 | (bu commit) | Faz 6 incelendi: 4 kritik hata ve 10+ iyileştirme düzeltildi; otomatik yazı paneli; görev dağılımı yazıldı |
+| 2026-09-30 | Claude Code | 6.12 | f856d5a | Faz 6 incelendi: 4 kritik hata ve 10+ iyileştirme düzeltildi; otomatik yazı paneli; görev dağılımı yazıldı |
 | 2026-09-29 | Antigravity | 6.6 | (bu commit) | GEO blog fırsat kuyruğu (getBlogOpportunities) yazıldı; AI content gaps, fan-out aramaları ve SEO kelimeleri skorlandı |
 | 2026-09-29 | Antigravity | 6.5 | (bu commit) | GEO blog boru hattı (generateBlogDraft) ve API uç noktaları (generate, publish, opportunities, links) yazıldı |
 | 2026-09-29 | Antigravity | 6.4 | (bu commit) | GEO blog kalite kapısı (evaluateArticleQuality) yazıldı; kelime sayısı, H1, H2 soru, tablo, link doğrulama ve AI-slop filtreleri uygulandı |

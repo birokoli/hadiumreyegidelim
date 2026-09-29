@@ -149,6 +149,19 @@ Bir oturuma başlarken bu bölümü uygula. Kullanıcı başka bir şey istemedi
   - Dosyalar: `src/lib/admin-auth.ts`, `src/middleware.ts`, `src/app/api/admin/login/route.ts`, `src/app/api/admin/quotations/route.ts` (kendi `checkAdmin`'i de çerez bakıyor).
   - Yapılacak: Her yerde imzalı `admin_token` JWT zorunlu olsun; eski çerez yolunu kaldır. Login'in her admin türü için token ürettiğini doğrula. Middleware `/api/admin/*`'ı her host'ta korusun (`/api/admin/login` hariç).
   - Bitti sayılır: Tarayıcıda yalnızca `admin_session=true` yazmak artık giriş sağlamıyor; normal girişle bütün admin sayfaları çalışıyor. **Kullanıcı onayı olmadan push etme** (herkesi dışarıda bırakma riski).
+  - **Durum (30.09, Claude Code):** Kod hazır, `guvenlik-1-6` dalında (main'e birleştirilmedi). Yapılanlar:
+    - Oturum yalnızca imzalı `admin_token` ile geçerli; eski ayarlar girişi de token alıyor (`id: legacy-admin`).
+    - Kaynak koddaki yedek admin şifresi kaldırıldı. Ayarlarda şifre yoksa yalnızca `ADMIN_INITIAL_PASSWORD` ortam değişkeni geçer.
+    - JWT anahtarı artık `JWT_SECRET`'tan, yoksa `DATABASE_URL`'den türetiliyor (kaynak koddaki sabit anahtar kaldırıldı; admin, influencer ve üye oturumları için ortak: `src/lib/jwt-key.ts`).
+    - Middleware her alan adında korur: `/api/admin/*` (login hariç), `/api/ai/*`, `/api/posts`, `/api/upload*`, `GET /api/orders` (müşteri bilgisi açıktaydı). `categories/authors/packages/services/guides/hotels/settings` için yalnızca yazma yöntemleri korunur, site GET ile okumaya devam eder.
+    - `GET /api/settings` ziyaretçiye yalnızca `whatsappNumber` döndürür (önceden şifre özeti dahil tüm ayarlar açıktı).
+    - Lokal test: çerezsiz, yalnızca `admin_session=true` ve eski anahtarla imzalanmış sahte token → 401; geçerli token → geçiyor; sitenin GET istekleri geçiyor.
+  - **Birleştirmeden önce kullanıcı yapacak (sırayla):**
+    1. Canlı sitede admin şifresini değiştir (Ayarlar → şifre değiştir). Eski yedek şifre depoda herkese açıktı; bu adım olmadan birleştirilirse ve DB'de admin kullanıcısı yoksa giriş yapılamaz.
+    2. Vercel → Settings → Environment Variables → `JWT_SECRET` ekle (uzun rastgele bir değer, Production + Preview). Eklenmezse sistem yine çalışır (DATABASE_URL'den türetir) ama ayrı sır daha iyidir.
+    3. Önizleme adresinde (Vercel → Deployments → `guvenlik-1-6`) giriş yap, Blog İçerikleri, SEO Masası ve Siparişler sayfalarını aç; çalışıyorsa Claude'a "birleştir" de.
+  - Not: Birleştirince herkesin oturumu bir kez kapanır (anahtar değişti); yeniden giriş yeterli. Üye (B2C) ve influencer oturumları da bir kez kapanır.
+  - Sonra yapılabilir: çıkış (logout) uç noktası yok; eski ayarlar şifresi sabit tuzlu SHA-256 (bcrypt'e geçirilmeli).
 
 - [ ] **1.7 Vercel'de iki proje, biri build'de başarısız**
   - Belirti: Her push iki Vercel projesine gidiyor: `hadiumreyegidelim.com` ve `hadiumreyegidelim`. `84fd1b5`'ten sonra `hadiumreyegidelim` projesinin build'i iki kez başarısız oldu (`8d56c03`, `cb32308`); `hadiumreyegidelim.com` projesi `cb32308`'de başarılı. Lokal `npx next build` sorunsuz. Ayrıca GitHub'da her commit'te başarısız bir "Workers Builds" (Cloudflare) ve Railway kontrolü görünüyor.
@@ -245,6 +258,7 @@ En yeni en üstte. Her tamamlanan adım için bir satır.
 
 | Tarih | Ajan | Adım | Commit | Not |
 |---|---|---|---|---|
+| 2026-09-30 | Claude Code | 1.6 (dalda) | guvenlik-1-6 | Admin oturumu imzalı token'a bağlandı; sipariş listesi ve ayarlar açığı kapatıldı. Kullanıcı onayı bekliyor |
 | 2026-09-30 | Claude Code | 6.13, 6.14 | f1a3bd4 | Blog İçerik Stüdyosu'nda tek yerde; Claude aylık bütçe (15 $) ve harcama takibi; yol haritası açıklayıcı hale getirildi |
 | 2026-09-30 | Claude Code | 5.1 | b737aef | ignoreBuildErrors kaldırıldı |
 | 2026-09-30 | Claude Code | 6.12 | f856d5a | Faz 6 incelendi: 4 kritik hata ve 10+ iyileştirme düzeltildi; otomatik yazı paneli; görev dağılımı yazıldı |

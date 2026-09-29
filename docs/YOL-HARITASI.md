@@ -302,6 +302,12 @@ Kurulan skill'ler: claude-seo eklentisi (seo-content, seo-content-brief, seo-clu
 - Mobil taşma düzeltildi: ızgaralarda `grid-cols-[minmax(0,1fr)]` ve `min-w-0` şart (kutucuk satırları sütunu genişletiyordu).
 - Lokal önizleme: `hadi-seo-dev` sunucusu (port 3002). Veritabanı bağlantısı yoksa sayfa varsayılan metinlerle ve boş paket/blog listesiyle açılır.
 
+**Üçüncü tur (30.09, kullanıcı: "her şey çok büyük, kullanıcı deneyimine katkısı yok; Airbnb/Skyscanner gibi olsun, mbdtravel.com/tr ve guideofdubai.com örnek"):**
+- Ana sayfa baştan sıkı düzende yazıldı (`src/app/(main)/page.tsx`): kısa hero, **Airbnb tarzı arama çubuğu** `src/components/home/UmrePlanner.tsx`, altında hızlı erişim sekmeleri (paketler, bireysel umre, vize, otel, transfer ve tren, rehberlik, ilk umrem, hanım umresi), kompakt Eylül bandı, paket kartları (mobilde yatay kaydırma), 3 adımlık "nasıl çalışır" şeridi, "Umre nasıl yapılır?" (UmrahSteps, küçültüldü), iki kampanya kartı yan yana, kompakt blog ve SSS. Büyük "bento" bölümü ve HeroPlanner kaldırıldı.
+- UmrePlanner, müşteriye WhatsApp'ta sorulan 7 soruyu toplar: kişi sayısı (yetişkin, 65+, çocuk 2–12, bebek 0–2), tarih aralığı (kendi aralık takvimi + "tarihlerim esnek"), yaş durumu, otel tercihi (Harem'e yürüme mesafesi / ekonomik / önerin), transfer, uzman hoca, vize; ayrıca Mekke ve Medine gece sayısı ve program sırası. Tarih aralığı seçilince geceler Mekke/Medine'ye ~5:4 dağıtılır. "Teklif al" numaralı (1️⃣–7️⃣) WhatsApp mesajı açar. Masaüstünde paneller çubuğun altında kart olarak, mobilde satırın altında açılır.
+- Dikkat: `src/app/layout.tsx` bütün `.rounded-full/.rounded-xl/...` sınıflarını `BUTTON_RADIUS` ayarına zorluyor; tam hap şekli için `rounded-[999px]` kullan. `(main)` düzeni bölümleri içerik genişliğine daraltıyor; tam genişlik bölümlere `w-full` ver.
+- Lokal dev sunucusu dosya değişikliklerini bazen kaçırıyor: `curl localhost:3002 | grep` ile kontrol et, gerekirse sunucuyu yeniden başlat.
+
 **Sonra (kullanıcı onayıyla):** Üst menü etiketleri kısaltılabilir ("Rehberler & Keşifler Portalı" → "Keşifler", "Manevi Rehberlik Blogu" → "Blog"); menü `src/components/layout/` altında, tüm siteyi etkiler.
 
 ## 4. Durum günlüğü

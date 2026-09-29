@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
-import { requireSeoAdmin } from "@/lib/seo/guard";
+import { requireBlogAdmin } from "@/lib/seo/guard";
 import { getBlogOpportunities } from "@/lib/geo-blog/opportunities";
 
 export async function GET() {
-  const denied = await requireSeoAdmin();
+  const denied = await requireBlogAdmin();
   if (denied) return denied;
 
   try {

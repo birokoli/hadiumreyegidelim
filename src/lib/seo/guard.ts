@@ -13,6 +13,9 @@ export async function requireSeoAdmin(permissions: string[] = ["marketing"]) {
 
 export const requireAiVisAdmin = () => requireSeoAdmin(["marketing", "dashboard"]);
 
+/** Blog motoru İçerik Stüdyosu'nda: içerik veya pazarlama yetkisi yeterli */
+export const requireBlogAdmin = () => requireSeoAdmin(["content", "marketing"]);
+
 export function dfsErrorResponse(e: unknown) {
   if (e instanceof DataforseoError) {
     const status = e.status === 412 ? 412 : 502;

@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 import { publishPost } from "@/lib/geo-blog/publish";
-import { requireSeoAdmin } from "@/lib/seo/guard";
+import { requireBlogAdmin } from "@/lib/seo/guard";
 
 export async function POST(req: Request) {
-  const denied = await requireSeoAdmin();
+  const denied = await requireBlogAdmin();
   if (denied) return denied;
 
   try {

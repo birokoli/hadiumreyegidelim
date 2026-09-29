@@ -28,7 +28,7 @@ export default function AdminCommandPalette({ isOpen, onClose }: AdminCommandPal
     { id: "pkg", label: "Lüks Paket Yönetimi", category: "Sayfalar", href: "/admin/packages", icon: "inventory_2" },
     { id: "calc", label: "Excel Fiyat Motoru", category: "Sayfalar", href: "/admin/fiyat-teklifleri/hesaplayici", icon: "calculate" },
     { id: "blog", label: "Blog İçerik Stüdyosu", category: "Sayfalar", href: "/admin/content", icon: "article" },
-    { id: "ai", label: "Yapay Zeka (AI) İzleme", category: "Sayfalar", href: "/admin/ai-logs", icon: "memory" },
+    { id: "ai", label: "Otomatik blog yazısı (Blog motoru)", category: "Sayfalar", href: "/admin/content?panel=auto", icon: "memory" },
     { id: "users", label: "Kullanıcı Yönetimi", category: "Sayfalar", href: "/admin/users", icon: "manage_accounts" },
     { id: "set", label: "Sistem Ayarları", category: "Sayfalar", href: "/admin/settings", icon: "settings" },
 

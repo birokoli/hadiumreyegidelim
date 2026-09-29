@@ -17,6 +17,15 @@ export async function publishPost(postId: string) {
   if (!post) throw new Error("Yazı bulunamadı.");
 
   const updated = post.published ? post : await prisma.post.update({ where: { id: postId }, data: { published: true, scheduledAt: null } });
+  const notes = await connectMeasurement(updated);
+  return { post: updated, notes };
+}
+
+/**
+ * Yayındaki yazıyı ölçüme bağlar. İçerik Stüdyosu'ndan (Kaydet/Yayınla) ya da zamanlanmış
+ * yayından çıkan yazılar için de çağrılır; hata yayını engellemez.
+ */
+export async function connectMeasurement(updated: { title: string; slug: string; focusKeyword: string | null }) {
   const notes: string[] = [];
 
   // 1. Odak kelime → sıra takibi (50 kelime sınırı)
@@ -51,5 +60,5 @@ export async function publishPost(postId: string) {
       /* önbellek temizliği yayını engellemez */
     }
   }
-  return { post: updated, notes };
+  return notes;
 }

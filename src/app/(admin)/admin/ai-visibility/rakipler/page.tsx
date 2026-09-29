@@ -65,7 +65,7 @@ export default function CompetitorsPage() {
                 <Link href={`/admin/ai-visibility/yanitlar?p=${g.prompt.id}`} className="text-[16px] font-semibold hover:underline">{g.prompt.text}</Link>
                 <span className="text-[13px] text-[var(--seo-ink-3)]">{g.competitors.join(", ")}</span>
                 <Link
-                  href={`/admin/seo/blog?topic=${encodeURIComponent(g.prompt.text)}`}
+                  href={`/admin/content?panel=new&topic=${encodeURIComponent(g.prompt.text)}`}
                   className="seo-btn text-[12px] py-1 px-2.5 whitespace-nowrap"
                 >
                   Bu soru için yazı üret →

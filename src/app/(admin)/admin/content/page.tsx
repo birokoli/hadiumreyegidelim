@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import "react-quill-new/dist/quill.snow.css";
 import { marked } from "marked";
 import { useAdminContext } from "@/components/admin/AdminContext";
+import BlogEngine from "@/components/admin/content/BlogEngine";
 
 // Rich text editörü Server-Side Rendering'de hata vermemesi için Next/Dynamic ile sarmalıyoruz
 const ReactQuill = dynamic(() => import("react-quill-new"), { 
@@ -218,9 +219,9 @@ export default function ContentPage() {
 
 
   // AI Prompt State
-  const [aiTopic, setAiTopic] = useState("");
-  const [aiKeywords, setAiKeywords] = useState("");
-  const [isGenerating, setIsGenerating] = useState(false);
+  // Blog motoru: ?topic= ve ?panel= ile (SEO Masası / AI Görünürlük / eski Yapay Zeka sayfasından) gelinebilir
+  const [engineInit, setEngineInit] = useState<{ topic: string; tab?: "auto" | "new" | "links" } | null>(null);
+  const [publishingId, setPublishingId] = useState<string | null>(null);
   const [aiEditInstruction, setAiEditInstruction] = useState("");
   const [isAiEditing, setIsAiEditing] = useState(false);
 
@@ -256,6 +257,9 @@ export default function ContentPage() {
 
   useEffect(() => {
     Promise.all([fetchPosts(), fetchCategories(), fetchAuthors()]).finally(() => setLoading(false));
+    const q = new URLSearchParams(window.location.search);
+    const panel = q.get("panel");
+    setEngineInit({ topic: q.get("topic") ?? "", tab: panel === "auto" || panel === "new" || panel === "links" ? panel : undefined });
   }, []);
 
   const parsedHeadings = useMemo(() => {
@@ -377,8 +381,6 @@ export default function ContentPage() {
     setShowAdd(false);
     setEditingPostId(null);
     setNewPost({ title: "", metaTitle: "", slug: "", description: "", keywords: "", tags: "", focusKeyword: "", seoScore: 0, imageUrl: "", imageAlt: "", tldr: "", faq: "[]", content: "", authorId: "", categoryId: "", personalExperience: "", references: "", published: true, scheduledAt: "" });
-    setAiTopic("");
-    setAiKeywords("");
     setAiEditInstruction("");
     setMediaMap({});
     setAiAnalysisResult(null);
@@ -452,8 +454,6 @@ export default function ContentPage() {
     } else {
       setPublishMode('immediate');
     }
-    setAiTopic("");
-    setAiKeywords("");
     setAiEditInstruction("");
     setMediaMap({});
     setAiAnalysisResult(null);
@@ -542,64 +542,34 @@ export default function ContentPage() {
     }
   };
 
-  const handleGenerateAI = async () => {
-    if (!aiTopic) {
-      toast("Lütfen bir konu veya taslak girin.", "warning");
-      return;
-    }
-    
-    setIsGenerating(true);
-    try {
-      const res = await fetch('/api/ai/generate-blog', {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-          topic: aiTopic, 
-          keywords: aiKeywords,
-          categories: categories.map(c => ({ id: c.id, name: c.name })),
-          authors: authors.map(a => ({ id: a.id, name: a.name, expertise: a.expertise }))
-        })
-      });
-      
-      if (!res.ok) {
-        const contentType = res.headers.get("content-type");
-        if (contentType?.includes("application/json")) {
-          const err = await res.json();
-          toast(err.error || "Yapay zeka hatası (limit aşımı vb.)", "error");
-        } else {
-          const errText = await res.text();
-          console.error("Sunucu Hatası (HTML):", errText);
-          toast("Sunucu hatası — terminali kontrol et.", "error");
-        }
-        return;
+  // Blog motorunun ürettiği taslağı düzenleyicide aç
+  const openDraft = async (postId: string) => {
+    const res = await fetch(`/api/posts?t=${Date.now()}`, { cache: "no-store" });
+    const data = await res.json().catch(() => []);
+    if (Array.isArray(data)) {
+      setPosts(data);
+      const post = data.find((p: any) => p.id === postId);
+      if (post) {
+        handleEdit(post);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        toast("Taslak hazır: gözden geçirip yayınlayabilirsiniz.", "success");
       }
-      
-      const data = await res.json();
-      
-      setNewPost(prev => {
-        const nextState = {
-          ...prev,
-          title: data.title || data.Title || prev.title,
-          slug: data.slug || data.Slug || prev.slug,
-          description: data.metaDescription || data.description || data.summary || data.MetaDescription || prev.description,
-          content: data.content || data.Content || prev.content,
-          keywords: data.keywords || data.Keywords || aiKeywords || prev.keywords,
-          focusKeyword: data.focusKeyword || data.FocusKeyword || prev.focusKeyword,
-          personalExperience: data.personalExperience || data.PersonalExperience || prev.personalExperience,
-          references: data.references || data.References || prev.references,
-          categoryId: data.categoryId || data.CategoryId || prev.categoryId,
-          authorId: data.authorId || data.AuthorId || prev.authorId,
-          imageUrl: data.imageUrl || data.ImageUrl || prev.imageUrl,
-        };
-        console.log("AI PARSED DATA BINDING:", data, "=>", nextState);
-        return nextState;
-      });
-      
-      toast("Claude makaleyi yazdı! Kategori ve Yazar alanlarını kontrol edip yayınlayabilirsiniz.", "success");
-    } catch (e) {
-      toast("İçerik üretilirken hata oluştu.", "error");
+    }
+  };
+
+  // Listedeki taslağı yayınla: sıra takibine ve AI Görünürlük'e de bağlanır
+  const publishDraft = async (postId: string) => {
+    setPublishingId(postId);
+    try {
+      const res = await fetch("/api/admin/geo-blog/publish", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ postId }) });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.error || "Yayınlanamadı.");
+      toast(`Yayınlandı. ${(data.notes || []).join(", ")}`, "success");
+      fetchPosts();
+    } catch (e: any) {
+      toast(e.message || "Yayınlanamadı.", "error");
     } finally {
-      setIsGenerating(false);
+      setPublishingId(null);
     }
   };
 
@@ -674,7 +644,7 @@ export default function ContentPage() {
         <div>
           <span className="text-[10px] font-bold tracking-widest text-secondary uppercase">ICERIK STUDYOSU</span>
           <h1 className="font-headline text-2xl font-bold tracking-tight text-primary mt-1">Görünüm ve İçerik Yönetimi</h1>
-          <p className="text-xs text-on-surface-variant mt-0.5">Claude AI entegrasyonu ve metin editörü ile blog içeriklerini yönetin.</p>
+          <p className="text-xs text-on-surface-variant mt-0.5">Blog yazılarının tek yeri: otomatik ve elle üretim, taslak onayı, düzenleme ve yayın.</p>
         </div>
 
         <div className="flex items-center gap-3">
@@ -688,56 +658,18 @@ export default function ContentPage() {
         </div>
       </div>
 
+      {engineInit && (
+        <BlogEngine
+          initialTopic={engineInit.topic}
+          initialTab={engineInit.tab}
+          onDraftCreated={openDraft}
+          onPostsChanged={fetchPosts}
+        />
+      )}
+
       {showAdd && (
         <section className="bg-surface-container p-12 rounded-2xl relative overflow-hidden mb-12 shadow-sm border border-outline-variant/10">
           
-          {/* AI Generator Panel */}
-          <div className="bg-[#f0f4f8] border border-primary/20 p-8 rounded-2xl mb-12 relative overflow-hidden">
-            <div className="absolute top-0 right-0 p-6 opacity-10">
-              <span className="material-symbols-outlined text-8xl text-primary">magic_button</span>
-            </div>
-            <div className="relative z-10">
-              <h3 className="font-headline text-2xl text-primary font-bold mb-2 flex items-center gap-2">
-                <span className="material-symbols-outlined text-primary">auto_awesome</span>
-                Claude AI Asistanı
-              </h3>
-              <p className="text-sm text-primary/70 mb-6 max-w-2xl">
-                Bireysel umre, ziyaret noktaları veya manevi deneyimler üzerine bir konu verin. Claude Opus eğitim verilerindeki güncel bilgilerle Google SEO standartlarında uzun ve kaliteli bir makaleyi otomatik olarak editörde yazar.
-              </p>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6 max-w-4xl">
-                <div>
-                  <label className="text-xs font-bold text-primary uppercase tracking-widest mb-1 block">Konu veya Başlık Fikri</label>
-                  <input 
-                    className="w-full bg-white border border-primary/20 rounded-lg p-3 text-sm focus:ring-primary/40 outline-none shadow-sm"
-                    placeholder="Örn: Medine'de ziyaret edilecek gizli kalmış yerler"
-                    value={aiTopic} onChange={e => setAiTopic(e.target.value)}
-                  />
-                </div>
-                <div>
-                  <label className="text-xs font-bold text-primary uppercase tracking-widest mb-1 block">SEO Anahtar Kelimeleri</label>
-                  <input 
-                    className="w-full bg-white border border-primary/20 rounded-lg p-3 text-sm focus:ring-primary/40 outline-none shadow-sm"
-                    placeholder="medine ziyareti, uhud dağı, kuba mescidi"
-                    value={aiKeywords} onChange={e => setAiKeywords(e.target.value)}
-                  />
-                </div>
-              </div>
-              
-              <button 
-                onClick={handleGenerateAI}
-                disabled={isGenerating || !aiTopic}
-                className="bg-gradient-to-r from-primary to-[#001944] text-white px-8 py-3.5 rounded-xl font-bold tracking-wide uppercase shadow-lg flex items-center gap-3 hover:shadow-xl hover:scale-[1.02] transition-all disabled:opacity-50 disabled:scale-100"
-              >
-                {isGenerating ? (
-                  <><span className="material-symbols-outlined animate-spin text-sm" style={{fontVariationSettings: "'FILL' 0"}}>sync</span> Makale Araştırılıyor ve Yazılıyor...</>
-                ) : (
-                  <><span className="material-symbols-outlined text-sm" style={{fontVariationSettings: "'FILL' 1"}}>temp_preferences_custom</span> Makaleyi Yaz</>
-                )}
-              </button>
-            </div>
-          </div>
-
           <form onSubmit={handleCreate} className="relative z-10 w-full space-y-8">
             <div className="flex items-center justify-between border-b border-outline-variant/20 pb-4 mb-8">
               <h3 className="font-headline text-3xl text-primary">
@@ -1628,6 +1560,9 @@ export default function ContentPage() {
                   <div className="flex items-center gap-2 mb-1">
                     <p className="font-bold text-primary font-headline text-lg">{post.title}</p>
                     {!post.published && <span className="text-[10px] bg-[#b8862f]/10 text-[#b8862f] font-bold px-2 py-0.5 rounded">Taslak</span>}
+                    {!post.published && typeof post.seoScore === "number" && post.seoScore > 0 && (
+                      <span className="text-[10px] bg-primary/10 text-primary font-bold px-2 py-0.5 rounded" title="Blog motoru kalite kapısı puanı">Kalite {post.seoScore}</span>
+                    )}
                   </div>
                   <p className="text-xs text-tertiary font-bold tracking-widest uppercase mb-2">
                     {post.authorModel ? post.authorModel.name : post.author} {post.category && `• ${post.category.name}`}
@@ -1661,6 +1596,16 @@ export default function ContentPage() {
                       </div>
                     ) : (
                       <>
+                        {!post.published && (
+                          <button
+                            onClick={() => publishDraft(post.id)}
+                            disabled={publishingId === post.id}
+                            className="px-3 py-2 bg-primary text-white text-xs font-bold rounded-lg hover:bg-[#002f6c] transition-all disabled:opacity-50"
+                            title="Taslağı yayınla ve ölçüme bağla"
+                          >
+                            {publishingId === post.id ? "..." : "Yayınla"}
+                          </button>
+                        )}
                         <button onClick={() => handleEdit(post)} className="p-2 bg-primary/10 text-primary hover:bg-primary hover:text-white rounded-lg transition-all" title="Yazıyı Düzenle">
                           <span className="material-symbols-outlined text-lg block">edit</span>
                         </button>

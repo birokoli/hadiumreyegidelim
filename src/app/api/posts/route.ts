@@ -1,5 +1,6 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { connectMeasurement } from '@/lib/geo-blog/publish';
 
 export const dynamic = 'force-dynamic';
 
@@ -59,6 +60,8 @@ export async function POST(request: Request) {
         ...(categoryId ? { category:    { connect: { id: categoryId } } } : {}),
       },
     });
+    // Yayında oluşturulan yazı: odak kelime sıra takibine, sorusu AI Görünürlük'e
+    if (post.published) await connectMeasurement(post).catch((e) => console.error('[posts] ölçüm bağlantısı', e));
     return NextResponse.json(post);
   } catch (error: any) {
     console.error("POST /api/posts Error:", error);
@@ -74,6 +77,7 @@ export async function PUT(request: NextRequest) {
     const scalars = buildScalars(body);
     const authorId   = body.authorId   || null;
     const categoryId = body.categoryId || null;
+    const before = await prisma.post.findUnique({ where: { id }, select: { published: true } });
 
     const post = await prisma.post.update({
       where: { id },
@@ -83,6 +87,8 @@ export async function PUT(request: NextRequest) {
         ...(categoryId ? { category:    { connect: { id: categoryId } } } : { category:    { disconnect: true } }),
       },
     });
+    // Taslaktan yayına geçen yazı ölçüme bağlanır
+    if (post.published && before && !before.published) await connectMeasurement(post).catch((e) => console.error('[posts] ölçüm bağlantısı', e));
     return NextResponse.json(post);
   } catch (error: any) {
     console.error("PUT /api/posts Error:", error);

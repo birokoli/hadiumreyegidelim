@@ -1,14 +1,14 @@
 import { NextResponse, after } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { runAutoBlog, runningJob, pickTopic } from "@/lib/geo-blog/auto";
-import { requireAiVisAdmin } from "@/lib/seo/guard";
+import { requireBlogAdmin } from "@/lib/seo/guard";
 
 // Araştırma + yazım 5 dakikaya kadar sürebilir; yanıt hemen döner, üretim arkada sürer
 export const maxDuration = 300;
 
 /** "Yapay Zeka (AI)" sayfasındaki "Şimdi yaz" düğmesi: GEO motoruyla bir taslak üretir */
 export async function POST() {
-  const denied = await requireAiVisAdmin();
+  const denied = await requireBlogAdmin();
   if (denied) return denied;
   try {
     const running = await runningJob();

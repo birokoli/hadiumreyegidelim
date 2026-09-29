@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
-import { requireSeoAdmin } from "@/lib/seo/guard";
+import { requireBlogAdmin } from "@/lib/seo/guard";
 import { generateBlogDraft } from "@/lib/geo-blog/pipeline";
 
 export const maxDuration = 300;
 
 export async function POST(req: Request) {
-  const denied = await requireSeoAdmin();
+  const denied = await requireBlogAdmin();
   if (denied) return denied;
 
   try {

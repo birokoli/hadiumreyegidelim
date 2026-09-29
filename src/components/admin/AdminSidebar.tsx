@@ -59,7 +59,6 @@ const menuGroups: { title: string; links: { href: string; icon: string; label: s
     links: [
       { href: "/admin/analytics", icon: "analytics",     label: "Analytics", permission: "dashboard"       },
       { href: "/admin/media",     icon: "photo_library", label: "Medya Galerisi", permission: "content"  },
-      { href: "/admin/ai-logs",       icon: "memory",        label: "Yapay Zeka (AI)", permission: "dashboard" },
       { href: "/admin/ai-visibility", icon: "search_hands_free", label: "AI Görünürlük", permission: "dashboard" },
       { href: "/admin/users",     icon: "manage_accounts", label: "Kullanıcılar", permission: "users" },
       { href: "/admin/settings",  icon: "settings",      label: "Ayarlar", permission: "settings" },

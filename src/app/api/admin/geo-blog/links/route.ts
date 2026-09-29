@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
-import { requireSeoAdmin } from "@/lib/seo/guard";
+import { requireBlogAdmin } from "@/lib/seo/guard";
 import { loadInventory, pickLinkTargets } from "@/lib/geo-blog/inventory";
 import { analyzePostLinks, applyPostLinks, bulkFixRehberLinks } from "@/lib/geo-blog/links";
 
 export async function GET(req: Request) {
-  const denied = await requireSeoAdmin();
+  const denied = await requireBlogAdmin();
   if (denied) return denied;
 
   try {
@@ -32,7 +32,7 @@ export async function GET(req: Request) {
 }
 
 export async function POST(req: Request) {
-  const denied = await requireSeoAdmin();
+  const denied = await requireBlogAdmin();
   if (denied) return denied;
 
   try {

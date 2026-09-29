@@ -67,6 +67,7 @@ LİNKLER
 - Dış linkin metni kurum ya da site adı DEĞİL, konuyla ilgili kelimedir. Doğru: <a href="…">umre vizesi başvurusu</a>, <a href="…">ihram yasakları</a>. Yanlış: "Diyanet'in sitesi", "Nusuk portalı", "resmî sayfa", adres metni.
 - Kurum adlarını kaynak göstermek için cümleye yazma ("Diyanet'e göre", "Nusuk'ta belirtildiği gibi" yok); bilgiyi doğrudan ver, linki ilgili kelimeye koy.
 - Başka hiçbir acente, tur şirketi ya da rakip firma adı, markası veya sitesi yazıda geçmez.
+- "TÜRSAB" ve "diyanetsiz" kelimeleri hiçbir biçimde (başlık, metin, SSS, anahtar kelime) geçmez. Onun yerine "bireysel umre", "kendi programıyla umre" de.
 - SATTIĞIMIZ HİZMETLER dış siteye asla linklenmez, müşteri kendi sayfamıza gider: vize → /umre-vizesi, paket ve fiyat → /paketler, rehberlik → /rehberlik, transfer ve tren → /hizmetler, otel, konaklama ve uçuş → /bireysel-umre. Vize portalı, otel, uçuş veya rezervasyon sitesi önerme; "vizenizi … üzerinden alabilirsiniz" gibi dış yönlendirme yok.
 - Dış link yalnızca bilgi içindir (ibadet kuralları, sağlık şartları, giriş kuralları, Ravza randevusu gibi); satış yaptığımız bir işlem için değil.
 

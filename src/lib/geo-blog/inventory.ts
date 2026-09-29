@@ -9,7 +9,7 @@ export type LinkTarget = { path: string; title: string; kind: "hub" | "post" | "
 
 /** Canlıda 200 döndüğü doğrulanmış ana sayfalar (29.09.2026). /rehber yok (404). */
 export const HUBS: LinkTarget[] = [
-  { path: "/bireysel-umre", title: "Bireysel umre planlama", kind: "hub", topics: ["bireysel umre", "kendi programıyla umre", "özel umre", "diyanetsiz umre", "umre planlama", "vip umre"] },
+  { path: "/bireysel-umre", title: "Bireysel umre planlama", kind: "hub", topics: ["bireysel umre", "kendi programıyla umre", "özel umre", "umre planlama", "vip umre"] },
   { path: "/paketler", title: "Umre paketleri ve fiyatları", kind: "hub", topics: ["umre paketi", "umre fiyatları", "umre turu", "umre turları", "umre ücreti", "lüks umre", "ekonomik umre"] },
   { path: "/umre-vizesi", title: "Umre vizesi başvurusu", kind: "hub", topics: ["umre vizesi", "suudi vize", "e-vize", "nusuk", "vize başvurusu", "turist vizesi"] },
   { path: "/ilk-umrem", title: "İlk kez umreye gidecekler için rehber", kind: "hub", topics: ["ilk umre", "ilk kez umre", "umre nasıl yapılır", "umre hazırlığı", "umre adımları", "ihram", "tavaf", "sa'y"] },

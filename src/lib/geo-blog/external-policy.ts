@@ -66,6 +66,16 @@ export async function loadCompetitorTerms(): Promise<string[]> {
   return [...new Set(terms.map((t) => t.trim()).filter((t) => t.length >= 3))];
 }
 
+/** Sitede ve yazılarda hiç geçmeyecek kelimeler (kullanıcı kararı) */
+export const BANNED_TERMS = ["TÜRSAB", "TURSAB", "diyanetsiz"];
+
+/** Metinde geçen yasaklı kelimeleri bulur (kelime içinde de arar: "diyanetsiz umre", "TÜRSAB'a") */
+export function findBannedTerms(text: string) {
+  const plain = text.replace(/<[^>]+>/g, " ").toLocaleLowerCase("tr");
+  const hits = BANNED_TERMS.filter((t) => plain.includes(t.toLocaleLowerCase("tr")));
+  return [...new Set(hits.map((t) => (t === "TURSAB" ? "TÜRSAB" : t)))];
+}
+
 const escapeRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 /** Metinde geçen rakip adlarını bulur (Türkçe harflerde doğru çalışan tam kelime eşleşmesi) */

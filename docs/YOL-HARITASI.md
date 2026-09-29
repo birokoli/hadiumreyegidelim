@@ -39,6 +39,7 @@ Bu belge hadiumreyegidelim.com için sıradaki işlerin **tek doğru listesidir*
   - Kayıttan önce: sattığımız hizmeti anlatan dış link kendi sayfamıza çevrilir, diğer izinsiz linkler silinir.
   - Eski yazılar: İçerik Stüdyosu → Blog motoru → İç linkler sekmesinde "izinsiz dış linki düzelt" düğmesi (hizmet linklerini kendi sayfamıza çevirir, gerisini kaldırır); rakip adı geçen yazılar kırmızı etiketle gösterilir (metin elle düzeltilir).
 - Ajanlar: bu kuralı gevşetme; yeni resmî alan adı eklemek kullanıcı onayı ister.
+- **Yasaklı kelimeler:** "TÜRSAB" ve "diyanetsiz" sitede, blogda, meta ve schema'da hiç geçmez (`BANNED_TERMS`, `external-policy.ts`). Onun yerine "bireysel umre", "kendi programıyla umre".
 
 ### Claude bütçesi ve maliyet (Anthropic'te 40 $ yüklü)
 
@@ -266,12 +267,43 @@ Kurulan skill'ler: claude-seo eklentisi (seo-content, seo-content-brief, seo-clu
 
 ---
 
+### Faz 7 · Ana sayfa yenileme (başladı: 30.09, Claude Code)
+
+**Nasıl çalışılır:** Bu büyük bir arayüz değişikliği. `main`'e doğrudan gönderilmez. İş `anasayfa` dalında yapılır; Vercel bu dal için ayrı bir önizleme adresi üretir (Vercel → Deployments → `anasayfa`). Kullanıcı önizlemeyi beğenip "canlıya al" demeden birleştirme yok. Dal yoksa `git checkout -b anasayfa origin/main` ile aç; varsa `git checkout anasayfa && git pull`.
+
+**Dosya:** `src/app/(main)/page.tsx` (tek dosya, sunucu bileşeni). Metinlerin çoğu admin'den (Ayarlar tablosu) geliyor: `HERO_TITLE`, `HERO_DESC`, `HERO_TAGLINE`, `HOME_CTA`, `WHATSAPP_CTA`, `HOME_TOURS_*`, `HOME_STEPS_*`, `HOME_BLOG_*`, `HOME_FAQ_*` ve kampanya ayarları (`src/lib/eylul-campaign.ts`). **Bu ayar anahtarlarını silme ya da yeniden adlandırma**; kullanıcı admin'den düzenliyor. Görünümü değiştir, veri kaynağını koru.
+
+**Değişmez kurallar (kullanıcı kararları):**
+- Renk: beyaz zemin, lacivert (`primary` #003781, koyu #001944) ana renk. Kırmızı yalnızca hata için. Kampanya bantlarındaki altın (#c9a96e) mevcut marka detayı, kalabilir; yeni yerlere yayma.
+- "TÜRSAB" ve "diyanetsiz" kelimeleri hiçbir yerde geçmez (metin, meta, schema, alt yazı).
+- Sattığımız hizmetler (vize, otel, uçuş, transfer, tren, paket, rehberlik) için dış link yok; kendi sayfalarımıza link.
+- Rakip firma adı yok.
+- Doğrulanmamış iddia ekleme. Mevcut "Nusuk ve vize garantisi", "24 saat içinde e-vize", "%30'a varan tasarruf" ifadeleri **kullanıcı onayı bekliyor**: silme, ama yeni yerlere de çoğaltma.
+- Yazım: no-ai-slop kuralları (bkz. Faz 6); "misafirlerimiz", "son derece", "eşsiz" gibi kalıplar yok.
+- Animasyon: `data-reveal` kullanılabilir (MotionInit rota değişiminde yeniden tarıyor, b6c6f09). Hero'daki ilk ekran öğelerine `data-reveal` koyma (ilk boyamada görünmez kalır, LCP'yi bozar).
+
+**Adımlar (sırayla; her biri ayrı commit, mesaj başında `[7.x]`):**
+
+- [ ] **7.1 Hero.** H1 şu an ekranda "SİZE ÖZEL MANEVİ ROTA" gösteriyor, "Bireysel Umre" yalnızca `sr-only` içinde gizli. Yapılacak: H1 içinde üstte görünür küçük satır "Bireysel Umre 2026", altında büyük `HERO_TITLE`. Yükseklik `min-h-[82vh]`; butonlar: birincil "Planlamaya başla" (`HOME_CTA`, /bireysel-umre), ikincil WhatsApp. Hero altına 3 kısa bilgi satırı (ör. "Tarihi siz seçersiniz · Otel ve uçuş dahil planlama · Türkçe rehberlik"), iddia içermeyen. Görsel `priority` kalsın.
+  - Bitti sayılır: H1 metni ekranda "Bireysel Umre" içeriyor; mobilde (375px) başlık 3 satırı geçmiyor; ilk ekranda görünmez öğe yok.
+- [ ] **7.2 Güven şeridi.** 5 ikonlu satır sade bir bantta; ikon + kısa etiket + tek satır açıklama. Metinler aynı (onay bekleyen iddialar dahil, değiştirme).
+- [ ] **7.3 Paketler.** "En Çok Tercih Edilen" rozeti en fazla **bir** pakette (ilk `isPopular` olanda) görünsün; şu an üçünde de var. Kartta fiyat göster: `price` + `currency` → "1.250 $'dan başlayan" (`toLocaleString('tr-TR')`). Kart başlığı `h3`.
+- [ ] **7.4 Nasıl çalışır (3 adım).** Aynı içerik, daha sıkı düzen; tırnaklı slogan kalkabilir.
+- [ ] **7.5 Blog bölümü.** Yazar olarak `post.author` ("ADMİN") yerine `authorModel.name` (Author ilişkisi; `include: { authorModel: { select: { name: true } } }`), yoksa yazar satırı gösterilmez. Tarih biçimi "12 Eylül 2026".
+- [ ] **7.6 SSS.** 4 soruyu `<details>/<summary>` ile açılır yap. **FAQPage JSON-LD'yi `src/app/layout.tsx`'ten kaldır** (şu an admin dahil her sayfada basılıyor, sayfadaki SSS ile de uyuşmuyor) ve ana sayfada görünen 4 soruyla birebir aynı metinle `page.tsx` içine taşı.
+- [ ] **7.7 Hız.** `page.tsx` ayarları ikinci kez `prisma.setting.findMany()` ile çekiyor; üç sorguyu `Promise.all` ile paralel çalıştır (2.2 ile birlikte kök layout önbelleği yapılınca oradaki yardımcıyı kullan).
+- [ ] **7.8 Kontrol ve önizleme.** `npx tsc --noEmit`, `npm run build`. Dalı gönder, önizleme adresinde masaüstü + mobil ekran görüntüsü al, kullanıcıya göster. Onaydan sonra `main`'e birleştir ve Durum günlüğüne yaz.
+
+**Sonra (kullanıcı onayıyla):** Üst menü etiketleri kısaltılabilir ("Rehberler & Keşifler Portalı" → "Keşifler", "Manevi Rehberlik Blogu" → "Blog"); menü `src/components/layout/` altında, tüm siteyi etkiler.
+
 ## 4. Durum günlüğü
 
 En yeni en üstte. Her tamamlanan adım için bir satır.
 
 | Tarih | Ajan | Adım | Commit | Not |
 |---|---|---|---|---|
+| 2026-09-30 | Claude Code | yasaklı kelimeler | (bu commit) | "TÜRSAB" ve "diyanetsiz" siteden kaldırıldı; blog motoru kalite kapısı, konu seçimi ve eski yazı taraması bu kelimeleri engelliyor. Faz 7 (ana sayfa) planı yazıldı |
+| 2026-09-30 | Claude Code | görünmez bölüm hatası | b6c6f09 | Site içi gezinmede data-reveal bölümleri görünmez kalıyordu; düzeltildi, headless Chrome ile doğrulandı (21/21) |
 | 2026-09-30 | Claude Code | dış link kuralı | (bu commit) | Dış link yalnızca Diyanet/Nusuk/Suudi resmî; konu kelimesine link; rakip adı ve sitesi yasak; eski yazılar için temizleme düğmesi |
 | 2026-09-30 | Claude Code | çıkış | a4e37ec, 75b8d4c | Admin paneline Çıkış yap düğmesi; geçersiz oturumda da çalışır |
 | 2026-09-30 | Claude Code | 1.6 ✓ canlı | e854365 (main'e 5c5d13c ile birleşti) | Admin oturumu imzalı token'a bağlandı; sipariş listesi ve ayarlar açığı kapatıldı. Canlıda doğrulandı: /api/orders 401, /api/settings yalnızca whatsappNumber |

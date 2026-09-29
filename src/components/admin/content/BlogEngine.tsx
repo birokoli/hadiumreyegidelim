@@ -253,7 +253,7 @@ function LinkTools({ onChanged }: { onChanged: () => void }) {
                 {it.postTitle}
                 {it.hasRehberLinks && <span className="ml-2 text-[12px] font-bold text-[var(--seo-danger)]">{it.rehberLinkCount} kırık link</span>}
                 {it.offDomainLinkCount > 0 && <span className="ml-2 text-[12px] font-bold text-[var(--seo-danger)]">{it.offDomainLinkCount} izinsiz dış link</span>}
-                {it.competitorMentions.length > 0 && <span className="ml-2 text-[12px] font-bold text-[var(--seo-danger)]">Rakip adı geçiyor: {it.competitorMentions.join(", ")}</span>}
+                {it.competitorMentions.length > 0 && <span className="ml-2 text-[12px] font-bold text-[var(--seo-danger)]">Rakip adı / yasaklı kelime: {it.competitorMentions.join(", ")}</span>}
               </p>
               <div className="mt-2 flex flex-wrap gap-x-6 gap-y-2">
                 {it.suggestions.map((s) => {

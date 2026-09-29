@@ -48,7 +48,7 @@ export default function PlannerPage() {
       "name": "Hadi Umre'ye Gidelim",
       "url": "https://hadiumreyegidelim.com"
     },
-    "touristType": ["Bireysel Umre", "VIP Aile Umresi", "Diyanetsiz Umre"]
+    "touristType": ["Bireysel Umre", "VIP Aile Umresi", "Kendi Programıyla Umre"]
   };
 
   const faqSchema = {
@@ -120,7 +120,7 @@ export default function PlannerPage() {
 
           <article className="prose prose-slate max-w-none text-on-surface-variant space-y-6">
             <h2 className="font-headline text-2xl md:text-3xl text-primary mt-8 mb-4">
-              Bireysel Umre Nedir? (E-Vize ve Nusuk İle Diyanetsiz Umre)
+              Bireysel Umre Nedir? (E-Vize ve Nusuk ile Kendi Programınızla Umre)
             </h2>
             <p className="mb-6 leading-relaxed">
               <strong>Bireysel umre</strong>, Diyanet İşleri veya geleneksel tur şirketlerinin belirlediği sabit tarihlere ve kalabalık gruplara mahkum olmadan; vize, uçak bileti, Mekke oteli, Medine konaklaması ve VIP transfer süreçlerinizi tamamen kendi özel bütçenize ve zamanınıza göre tasarladığınız <strong>kişiselleştirilmiş ibadet seyahatidir</strong>. Özellikle yaşlı ebeveynleri ile seyahat eden aileler veya çocuklu aileler için grubun temposuna uymak yerine kendi ritminde ibadet etmek büyük bir lükstür.

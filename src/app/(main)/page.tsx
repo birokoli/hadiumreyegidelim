@@ -521,9 +521,9 @@ export default async function Home() {
             </div>
 
             <div className="bg-white rounded-2xl p-6 shadow-sm border border-outline-variant/20 hover:shadow-md transition-shadow" data-reveal>
-              <h3 className="font-bold text-lg text-primary mb-3">2. Diyanetsiz ve Tursuz "Kendi Başına Umre" Yapılabilir Mi?</h3>
+              <h3 className="font-bold text-lg text-primary mb-3">2. Kafileye Katılmadan "Kendi Programıyla Umre" Yapılabilir Mi?</h3>
               <p className="text-on-surface-variant text-sm leading-relaxed">
-                Evet, kesinlikle yapılabilir. Kalabalık kafilelere mahkum olmadan, ailenizle <strong>diyanetsiz umre turları</strong> planlamak en doğal hakkınızdır. Sistemimizde yer alan fiyat konfigüratörü ile Kabe manzaralı lüks otellerinizi tamamen kendi bütçenize göre seçer, "Kendi umrenizi kendiniz tasarlarsınız". Bu sistem klasik paketlere göre %30'a varan tasarruf sağlar.
+                Evet, kesinlikle yapılabilir. Kalabalık kafilelere mahkum olmadan, ailenizle <strong>kendi programınızla umre</strong> planlamak en doğal hakkınızdır. Sistemimizde yer alan fiyat konfigüratörü ile Kabe manzaralı lüks otellerinizi tamamen kendi bütçenize göre seçer, "Kendi umrenizi kendiniz tasarlarsınız". Bu sistem klasik paketlere göre %30'a varan tasarruf sağlar.
               </p>
             </div>
 

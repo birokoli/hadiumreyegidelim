@@ -12,7 +12,7 @@ export const metadata: Metadata = {
     default: "Hadi Umre'ye Gidelim | Umrenizi Kolayca Planlayın",
   },
   description: "Bireysel umre vizesi nasıl alınır? Diyanete veya turlara bağımlı kalmadan, 2026 Özel Bireysel Umre ve VIP Aile umresi fiyatları hakkında şeffaf rehber.",
-  keywords: ["bireysel umre", "bireysel umre vizesi", "bireysel umre nasıl yapılır", "bireysel umre vizesi nasıl alınır", "diyanetsiz umre", "umre fiyatları 2026", "özel umre", "kendi imkanlarıyla umre", "vip umre"],
+  keywords: ["bireysel umre", "bireysel umre vizesi", "bireysel umre nasıl yapılır", "bireysel umre vizesi nasıl alınır", "umre fiyatları 2026", "özel umre", "kendi imkanlarıyla umre", "vip umre"],
   icons: {
     icon: '/logo.png?v=5',
     apple: '/logo.png?v=5'
@@ -124,7 +124,7 @@ export default async function RootLayout({
           "name": "Diyanet turları olmadan kendi imkanlarıyla umre yapılabilir mi?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Evet. Suudi Arabistan'ın son esnek kuralları sayesinde, yüksek komisyon alan tur şirketlerine mahkum kalmadan diyanetsiz bireysel umre yapmak son derece kolay ve yasaldır."
+            "text": "Evet. Suudi Arabistan'ın son esnek kuralları sayesinde, yüksek komisyon alan tur şirketlerine mahkum kalmadan kendi programınızla bireysel umre yapmak son derece kolay ve yasaldır."
           }
         }
       ]

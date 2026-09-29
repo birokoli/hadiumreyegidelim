@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { loadInventory } from "@/lib/geo-blog/inventory";
-import { externalAnchors, findCompetitorMentions, isAllowedExternal, loadCompetitorTerms, soldServiceFor, stripDisallowedLinks } from "@/lib/geo-blog/external-policy";
+import { externalAnchors, findBannedTerms, findCompetitorMentions, isAllowedExternal, loadCompetitorTerms, soldServiceFor, stripDisallowedLinks } from "@/lib/geo-blog/external-policy";
 
 export interface LinkSuggestion {
   term: string;
@@ -16,7 +16,7 @@ export interface PostLinkAnalysis {
   rehberLinkCount: number;
   /** İzinsiz dış link sayısı: resmî kurum dışı siteler (rakipler dahil) ve sattığımız hizmete dış link */
   offDomainLinkCount: number;
-  /** Yazıda geçen rakip adları (elle çıkarılmalı) */
+  /** Yazıda geçen rakip adları ve yasaklı kelimeler (TÜRSAB, diyanetsiz); elle çıkarılmalı */
   competitorMentions: string[];
   suggestions: LinkSuggestion[];
 }
@@ -108,7 +108,10 @@ export async function analyzePostLinks(targetPostId?: string): Promise<PostLinkA
   for (const post of posts) {
     const rehberLinkCount = countBrokenRehberLinks(post.content);
     const offDomainLinkCount = externalAnchors(post.content).filter((a) => !isAllowedExternal(a.href) || soldServiceFor(a.text)).length;
-    const competitorMentions = findCompetitorMentions(`${post.title} ${post.content}`, competitorTerms);
+    const competitorMentions = [
+      ...findCompetitorMentions(`${post.title} ${post.content}`, competitorTerms),
+      ...findBannedTerms(`${post.title} ${post.content}`),
+    ];
 
     const suggestions: LinkSuggestion[] = [];
 

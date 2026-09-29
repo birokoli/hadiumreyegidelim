@@ -1,7 +1,7 @@
 import { isInternalPath, type LinkTarget } from "@/lib/geo-blog/inventory";
 import type { TopicResearch } from "@/lib/geo-blog/research";
 import { normalizeUrl } from "@/lib/geo-blog/claude";
-import { anchorLooksLikeName, externalAnchors, findCompetitorMentions, isAllowedExternal, soldServiceFor } from "@/lib/geo-blog/external-policy";
+import { anchorLooksLikeName, externalAnchors, findBannedTerms, findCompetitorMentions, isAllowedExternal, soldServiceFor } from "@/lib/geo-blog/external-policy";
 import type { GeneratedArticle } from "@/lib/geo-blog/write";
 
 export type GateIssueSeverity = "critical" | "warning";
@@ -213,6 +213,13 @@ export function evaluateArticleQuality(
   const mentions = findCompetitorMentions([article.title, article.tldr, article.content, ...article.faq.map((f) => `${f.question} ${f.answer}`)].join(" "), competitorTerms);
   if (mentions.length > 0) {
     issues.push({ severity: "critical", message: `Rakip firma adı geçiyor, çıkarılmalı: ${mentions.join(", ")}.` });
+    score -= 20;
+  }
+
+  // 10d. Yasaklı kelimeler (TÜRSAB, diyanetsiz)
+  const banned = findBannedTerms([article.title, article.metaDescription, article.tldr, article.content, article.keywords, ...article.faq.map((f) => `${f.question} ${f.answer}`)].join(" "));
+  if (banned.length > 0) {
+    issues.push({ severity: "critical", message: `Yasaklı kelime geçiyor, çıkarılmalı: ${banned.join(", ")}.` });
     score -= 20;
   }
 

@@ -3,6 +3,7 @@ import { contentGaps, fanOutQueries, latestRuns } from "@/lib/ai-vis/metrics";
 import { loadCells, loadConfig } from "@/lib/ai-vis/store";
 import { readJson, SEO_KEYS } from "@/lib/seo/store";
 import type { TrackedKeyword } from "@/lib/seo/types";
+import { findBannedTerms } from "@/lib/geo-blog/external-policy";
 
 export type BlogOpportunity = {
   topic: string;
@@ -44,6 +45,8 @@ export async function getBlogOpportunities(): Promise<BlogOpportunity[]> {
   const out: BlogOpportunity[] = [];
   const seen: Set<string>[] = [];
   const add = (opp: BlogOpportunity) => {
+    // Yasaklı kelime (TÜRSAB, diyanetsiz) içeren konu yazılmaz
+    if (findBannedTerms(opp.topic).length) return;
     const w = words(opp.topic);
     if (w.size < 2) return;
     // Konu, mevcut bir yazının kelimelerinin çoğunu zaten kapsıyorsa yazılmış say

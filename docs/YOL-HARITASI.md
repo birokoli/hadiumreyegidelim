@@ -26,6 +26,19 @@ Bu belge hadiumreyegidelim.com için sıradaki işlerin **tek doğru listesidir*
 6. **Yayın:** Listeden **Yayınla** ya da düzenleyiciden kaydetme. Yayına geçen her yazı (elle, zamanlanmış ya da otomatik) ölçüme bağlanır: odak kelime SEO sıra takibine, yazının cevapladığı soru AI Görünürlük sorularına eklenir.
 7. **Otomatik mod:** Cron her gün 09:00 ve 11:00'de (TSİ) dener, günde en fazla bir taslak üretir. "Kalite kapısını geçen taslağı otomatik yayınla" kapalıysa (varsayılan) yazılar onay bekler.
 
+### Dış link kuralı (kullanıcı kararı, 30.09)
+
+- Blog yazılarında dış link **yalnızca** resmî kurumlara verilir: Diyanet (`diyanet.gov.tr` ve alt alan adları), Nusuk (`nusuk.sa`), Suudi devlet siteleri (`*.gov.sa`) ve Suudi turizm otoritesi (`visitsaudi.com`).
+- Rakip firma (acente, tur şirketi) sitelerine link verilmez; rakip adları yazıda geçmez.
+- Link metni kurum adı değil konu kelimesidir: `umre vizesi başvurusu` → vize portalı. "Diyanet'in sitesi", "Nusuk portalı" gibi metinler ve "Diyanet'e göre" gibi atıflar yok.
+- Nerede uygulanıyor: `src/lib/geo-blog/external-policy.ts`.
+  - Araştırmada web araması yalnızca bu sitelerde yapılır (`allowed_domains`).
+  - Yazım talimatı kuralları anlatır.
+  - Kalite kapısı izinsiz alan adını, kurum adıyla yazılmış link metnini ve rakip adını (AI Görünürlük → rakipler listesi) kritik hata sayar.
+  - Kayıttan önce izinsiz dış linkler silinir.
+  - Eski yazılar: İçerik Stüdyosu → Blog motoru → İç linkler sekmesinde "izinsiz dış linki kaldır" düğmesi; rakip adı geçen yazılar kırmızı etiketle gösterilir (metin elle düzeltilir).
+- Ajanlar: bu kuralı gevşetme; yeni resmî alan adı eklemek kullanıcı onayı ister.
+
 ### Claude bütçesi ve maliyet (Anthropic'te 40 $ yüklü)
 
 - Bir blog yazısı (araştırma + yazım, gerekirse düzeltme) tahmini **0,5–1 $**. AI Görünürlük'te Claude'a sorulan bir soru tahmini **0,05–0,2 $**. ChatGPT/Gemini/Perplexity/Google sorguları DataForSEO bakiyesinden düşer, Anthropic'ten değil.
@@ -144,12 +157,12 @@ Bir oturuma başlarken bu bölümü uygula. Kullanıcı başka bir şey istemedi
   - Yapılacak: Kullanıcıdan Safari'de eklentisiz (gizli pencere) sayfayı açıp Hata raporu almasını iste. Hata tekrar etmezse bu adımı "eklenti kaynaklı, yapılacak yok" diye kapat. Tekrar ederse `src/app/layout.tsx`'teki JSON-LD bloklarında `@context` alanı eksik bir nesne ara.
   - Bitti sayılır: Kaynak belirlendi ve not düşüldü.
 
-- [ ] **1.6 Güvenlik: admin oturumu taklit edilebiliyor** *(yüksek öncelik)*
+- [x] **1.6 Güvenlik: admin oturumu taklit edilebiliyor** *(yüksek öncelik)*
   - Sorun: `admin_session=true` çerezini elle yazan herkes süper admin oluyor (`getAdminSession` ve middleware, token yoksa izin veriyor). Ana alan adında `/api/admin/*` middleware ile hiç korunmuyor.
   - Dosyalar: `src/lib/admin-auth.ts`, `src/middleware.ts`, `src/app/api/admin/login/route.ts`, `src/app/api/admin/quotations/route.ts` (kendi `checkAdmin`'i de çerez bakıyor).
   - Yapılacak: Her yerde imzalı `admin_token` JWT zorunlu olsun; eski çerez yolunu kaldır. Login'in her admin türü için token ürettiğini doğrula. Middleware `/api/admin/*`'ı her host'ta korusun (`/api/admin/login` hariç).
   - Bitti sayılır: Tarayıcıda yalnızca `admin_session=true` yazmak artık giriş sağlamıyor; normal girişle bütün admin sayfaları çalışıyor. **Kullanıcı onayı olmadan push etme** (herkesi dışarıda bırakma riski).
-  - **Durum (30.09, Claude Code):** Kod hazır, `guvenlik-1-6` dalında (main'e birleştirilmedi). Yapılanlar:
+  - **Durum (30.09, Claude Code):** Canlıda (dal 23:42'de main'e birleştirildi). Kullanıcı admin şifresini değiştirdi. `JWT_SECRET` henüz eklenmediyse sistem DATABASE_URL'den türetilmiş anahtarla çalışır; eklemek önerilir. Yapılanlar:
     - Oturum yalnızca imzalı `admin_token` ile geçerli; eski ayarlar girişi de token alıyor (`id: legacy-admin`).
     - Kaynak koddaki yedek admin şifresi kaldırıldı. Ayarlarda şifre yoksa yalnızca `ADMIN_INITIAL_PASSWORD` ortam değişkeni geçer.
     - JWT anahtarı artık `JWT_SECRET`'tan, yoksa `DATABASE_URL`'den türetiliyor (kaynak koddaki sabit anahtar kaldırıldı; admin, influencer ve üye oturumları için ortak: `src/lib/jwt-key.ts`).
@@ -258,7 +271,9 @@ En yeni en üstte. Her tamamlanan adım için bir satır.
 
 | Tarih | Ajan | Adım | Commit | Not |
 |---|---|---|---|---|
-| 2026-09-30 | Claude Code | 1.6 (dalda) | guvenlik-1-6 | Admin oturumu imzalı token'a bağlandı; sipariş listesi ve ayarlar açığı kapatıldı. Kullanıcı onayı bekliyor |
+| 2026-09-30 | Claude Code | dış link kuralı | (bu commit) | Dış link yalnızca Diyanet/Nusuk/Suudi resmî; konu kelimesine link; rakip adı ve sitesi yasak; eski yazılar için temizleme düğmesi |
+| 2026-09-30 | Claude Code | çıkış | a4e37ec, 75b8d4c | Admin paneline Çıkış yap düğmesi; geçersiz oturumda da çalışır |
+| 2026-09-30 | Claude Code | 1.6 ✓ canlı | e854365 (main'e 5c5d13c ile birleşti) | Admin oturumu imzalı token'a bağlandı; sipariş listesi ve ayarlar açığı kapatıldı. Canlıda doğrulandı: /api/orders 401, /api/settings yalnızca whatsappNumber |
 | 2026-09-30 | Claude Code | 6.13, 6.14 | f1a3bd4 | Blog İçerik Stüdyosu'nda tek yerde; Claude aylık bütçe (15 $) ve harcama takibi; yol haritası açıklayıcı hale getirildi |
 | 2026-09-30 | Claude Code | 5.1 | b737aef | ignoreBuildErrors kaldırıldı |
 | 2026-09-30 | Claude Code | 6.12 | f856d5a | Faz 6 incelendi: 4 kritik hata ve 10+ iyileştirme düzeltildi; otomatik yazı paneli; görev dağılımı yazıldı |

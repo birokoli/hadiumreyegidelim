@@ -1,5 +1,6 @@
 import type Anthropic from "@anthropic-ai/sdk";
 import { callClaude, extractJson, normalizeUrl } from "@/lib/geo-blog/claude";
+import { isAllowedExternal, RESEARCH_DOMAINS } from "@/lib/geo-blog/external-policy";
 
 export type ResearchFact = { claim: string; sourceUrl: string };
 export type ResearchSource = { url: string; title?: string };
@@ -17,7 +18,7 @@ export type TopicResearch = {
 };
 
 const SYSTEM = `Sen hadiumreyegidelim.com için umre konusunda içerik araştırması yapan bir editörsün.
-Verilen konu için web araması yap. Öncelik resmî ve birincil kaynaklardadır: Diyanet (hac.diyanet.gov.tr), Nusuk (nusuk.sa), Suudi Hac ve Umre Bakanlığı (haj.gov.sa), Suudi vize portalı, havayolları ve havalimanları, güncel ve tarihli haberler.
+Verilen konu için web araması yap. Arama yalnızca resmî kurum sitelerine açıktır: Diyanet, Nusuk, Suudi devlet siteleri (gov.sa) ve Suudi turizm otoritesi. Özel şirket, acente ya da rakip firma sitelerini kaynak gösterme.
 
 Yanıtın SON kısmında yalnızca şu JSON'u bir kod bloğu içinde ver:
 {
@@ -38,7 +39,7 @@ export async function researchTopic(topic: string): Promise<TopicResearch> {
   const { blocks, text } = await callClaude({
     system: SYSTEM,
     prompt: `Konu: ${topic}`,
-    tools: [{ type: "web_search_20260209", name: "web_search", max_uses: 6, user_location: { type: "approximate", country: "TR" } }],
+    tools: [{ type: "web_search_20260209", name: "web_search", max_uses: 6, allowed_domains: RESEARCH_DOMAINS, user_location: { type: "approximate", country: "TR" } }],
     effort: "medium",
   });
 
@@ -52,14 +53,15 @@ export async function researchTopic(topic: string): Promise<TopicResearch> {
     }
     if (b.type === "web_search_tool_result" && Array.isArray((b as Anthropic.WebSearchToolResultBlock).content)) {
       for (const r of (b as Anthropic.WebSearchToolResultBlock).content as Anthropic.WebSearchResultBlock[]) {
-        if (r.url) seen.set(normalizeUrl(r.url), { url: r.url, title: r.title });
+        // Yalnızca resmî kurum sayfaları kaynak olabilir
+        if (r.url && isAllowedExternal(r.url)) seen.set(normalizeUrl(r.url), { url: r.url, title: r.title });
       }
     }
     if (b.type === "text") {
       for (const c of b.citations ?? []) {
         if ("url" in c && typeof c.url === "string") {
           const key = normalizeUrl(c.url);
-          if (!seen.has(key)) seen.set(key, { url: c.url, title: "title" in c && typeof c.title === "string" ? c.title : undefined });
+          if (!seen.has(key) && isAllowedExternal(c.url)) seen.set(key, { url: c.url, title: "title" in c && typeof c.title === "string" ? c.title : undefined });
         }
       }
     }
@@ -86,7 +88,7 @@ export async function researchTopic(topic: string): Promise<TopicResearch> {
   }
   const sources = [...sourceKeys].map((k) => seen.get(k)!).filter(Boolean);
 
-  if (seen.size === 0) throw new Error("Web araması sonuç döndürmedi; konu daha genel yazılarak tekrar denenmeli.");
+  if (seen.size === 0) throw new Error("Resmî kaynaklarda (Diyanet, Nusuk, Suudi devlet siteleri) bu konuda sonuç bulunamadı; konu daha genel yazılarak tekrar denenmeli.");
 
   return {
     topic,

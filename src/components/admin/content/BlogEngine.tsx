@@ -198,11 +198,12 @@ function LinkTools({ onChanged }: { onChanged: () => void }) {
     load();
   }, [load]);
 
-  const post = async (body: unknown, key: string, okNote: (r: { fixedPostsCount?: number; fixedLinksTotal?: number; insertedLinkCount?: number }) => string) => {
+  type LinkResult = { fixedPostsCount?: number; fixedLinksTotal?: number; insertedLinkCount?: number; removedLinksTotal?: number };
+  const post = async (body: unknown, key: string, okNote: (r: LinkResult) => string) => {
     setBusy(key);
     setError("");
     try {
-      const r = await api<{ fixedPostsCount?: number; fixedLinksTotal?: number; insertedLinkCount?: number }>("/api/admin/geo-blog/links", { method: "POST", body: JSON.stringify(body) });
+      const r = await api<LinkResult>("/api/admin/geo-blog/links", { method: "POST", body: JSON.stringify(body) });
       setNote(okNote(r));
       await load();
       onChanged();
@@ -214,6 +215,7 @@ function LinkTools({ onChanged }: { onChanged: () => void }) {
   };
 
   const broken = items?.filter((i) => i.hasRehberLinks).reduce((s, i) => s + i.rehberLinkCount, 0) ?? 0;
+  const offDomain = items?.reduce((s, i) => s + (i.offDomainLinkCount ?? 0), 0) ?? 0;
 
   return (
     <div className="mt-16">
@@ -226,13 +228,23 @@ function LinkTools({ onChanged }: { onChanged: () => void }) {
             {busy === "fix" ? "Düzeltiliyor" : `${broken} kırık /rehber linkini düzelt`}
           </button>
         )}
+        {offDomain > 0 && (
+          <button className="seo-btn" disabled={busy !== null} onClick={() => post({ action: "strip_external" }, "strip", (r) => `${r.fixedPostsCount ?? 0} yazıdan ${r.removedLinksTotal ?? 0} izinsiz dış link kaldırıldı; link metinleri düz yazı olarak kaldı.`)}>
+            {busy === "strip" ? "Kaldırılıyor" : `${offDomain} izinsiz dış linki kaldır`}
+          </button>
+        )}
+      </div>
+      <p className="mt-2 text-[13px] text-[var(--seo-ink-3)]">
+        Dış link kuralı: yalnızca Diyanet, Nusuk ve Suudi devlet sitelerine, konu kelimesi üzerinden link verilir. Rakip firma siteleri ve adları yazılarda yer almaz.
+      </p>
+      <div>
       </div>
       <ErrorLine>{error}</ErrorLine>
       {note && <p className="mt-3 text-[13px] font-semibold text-[var(--seo-mark)]">{note}</p>}
       {!items ? (
         <p className="mt-4 text-[13px] text-[var(--seo-ink-3)]">Yazılar taranıyor…</p>
       ) : items.length === 0 ? (
-        <p className="mt-4 text-[13px] text-[var(--seo-ink-3)]">Önerilecek iç link ya da kırık link yok.</p>
+        <p className="mt-4 text-[13px] text-[var(--seo-ink-3)]">Önerilecek iç link, kırık link ya da izinsiz dış link yok.</p>
       ) : (
         <ul className="mt-5">
           {items.map((it) => (
@@ -240,6 +252,8 @@ function LinkTools({ onChanged }: { onChanged: () => void }) {
               <p className="text-[15px] font-semibold">
                 {it.postTitle}
                 {it.hasRehberLinks && <span className="ml-2 text-[12px] font-bold text-[var(--seo-danger)]">{it.rehberLinkCount} kırık link</span>}
+                {it.offDomainLinkCount > 0 && <span className="ml-2 text-[12px] font-bold text-[var(--seo-danger)]">{it.offDomainLinkCount} izinsiz dış link</span>}
+                {it.competitorMentions.length > 0 && <span className="ml-2 text-[12px] font-bold text-[var(--seo-danger)]">Rakip adı geçiyor: {it.competitorMentions.join(", ")}</span>}
               </p>
               <div className="mt-2 flex flex-wrap gap-x-6 gap-y-2">
                 {it.suggestions.map((s) => {

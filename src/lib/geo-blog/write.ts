@@ -1,3 +1,4 @@
+import { isAllowedExternal } from "@/lib/geo-blog/external-policy";
 import { callClaude } from "@/lib/geo-blog/claude";
 import { pickLinkTargets, type LinkTarget } from "@/lib/geo-blog/inventory";
 import type { TopicResearch } from "@/lib/geo-blog/research";
@@ -62,7 +63,10 @@ BAŞLIK VE META
 
 LİNKLER
 - İç link: yalnızca İZİNLİ İÇ LİNKLER listesindeki path'ler, tam olarak yazıldığı gibi (ör. href="/bireysel-umre"). 5-8 iç link; link metni hedef sayfayı anlatsın ("buraya tıklayın" değil). /bireysel-umre veya /paketler en az birine doğal bir yerde link ver.
-- Dış link: yalnızca İZİNLİ DIŞ KAYNAKLAR listesindeki URL'ler, birebir aynı; target="_blank" rel="noopener noreferrer".
+- Dış link: yalnızca İZİNLİ DIŞ KAYNAKLAR listesindeki URL'ler (hepsi resmî kurum: Diyanet, Nusuk, Suudi devlet siteleri), birebir aynı; target="_blank" rel="noopener noreferrer".
+- Dış linkin metni kurum ya da site adı DEĞİL, konuyla ilgili kelimedir. Doğru: <a href="…">umre vizesi başvurusu</a>, <a href="…">ihram yasakları</a>. Yanlış: "Diyanet'in sitesi", "Nusuk portalı", "resmî sayfa", adres metni.
+- Kurum adlarını kaynak göstermek için cümleye yazma ("Diyanet'e göre", "Nusuk'ta belirtildiği gibi" yok); bilgiyi doğrudan ver, linki ilgili kelimeye koy.
+- Başka hiçbir acente, tur şirketi ya da rakip firma adı, markası veya sitesi yazıda geçmez.
 
 ÜSLUP (no-ai-slop)
 - Kısa ve net cümleler; cevap önce, açıklama sonra.
@@ -74,7 +78,7 @@ faq: 4-6 soru; cevaplar 2-3 cümle ve içerikle çelişmesin.`;
 export async function writeArticle(research: TopicResearch, inventory: LinkTarget[], feedback: string[] = []): Promise<GeneratedArticle> {
   const linkCandidates = pickLinkTargets(research.topic, inventory, 14);
   const allowedInternal = linkCandidates.map((c) => ({ path: c.path, title: c.title }));
-  const allowedExternal = research.sources.map((s) => ({ url: s.url, title: s.title ?? s.url }));
+  const allowedExternal = research.sources.filter((s) => isAllowedExternal(s.url)).map((s) => ({ url: s.url, title: s.title ?? s.url }));
 
   const prompt = [
     `KONU: ${research.topic}`,

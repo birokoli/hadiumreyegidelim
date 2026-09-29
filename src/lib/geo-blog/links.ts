@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { loadInventory } from "@/lib/geo-blog/inventory";
+import { externalAnchors, findCompetitorMentions, isAllowedExternal, loadCompetitorTerms, stripDisallowedLinks } from "@/lib/geo-blog/external-policy";
 
 export interface LinkSuggestion {
   term: string;
@@ -13,6 +14,10 @@ export interface PostLinkAnalysis {
   postSlug: string;
   hasRehberLinks: boolean;
   rehberLinkCount: number;
+  /** Resmî kurum dışı sitelere giden dış link sayısı (rakip siteler dahil) */
+  offDomainLinkCount: number;
+  /** Yazıda geçen rakip adları (elle çıkarılmalı) */
+  competitorMentions: string[];
   suggestions: LinkSuggestion[];
 }
 
@@ -90,7 +95,7 @@ export function insertInternalLink(
  * Tüm yazıları veya belirli bir yazıyı iç link fırsatları ve /rehber linkleri yönünden analiz eder.
  */
 export async function analyzePostLinks(targetPostId?: string): Promise<PostLinkAnalysis[]> {
-  const inventory = await loadInventory();
+  const [inventory, competitorTerms] = await Promise.all([loadInventory(), loadCompetitorTerms()]);
   const whereClause = targetPostId ? { id: targetPostId } : {};
 
   const posts = await prisma.post.findMany({
@@ -102,6 +107,8 @@ export async function analyzePostLinks(targetPostId?: string): Promise<PostLinkA
 
   for (const post of posts) {
     const rehberLinkCount = countBrokenRehberLinks(post.content);
+    const offDomainLinkCount = externalAnchors(post.content).filter((a) => !isAllowedExternal(a.href)).length;
+    const competitorMentions = findCompetitorMentions(`${post.title} ${post.content}`, competitorTerms);
 
     const suggestions: LinkSuggestion[] = [];
 
@@ -130,13 +137,15 @@ export async function analyzePostLinks(targetPostId?: string): Promise<PostLinkA
       if (suggestions.length >= 6) break;
     }
 
-    if (rehberLinkCount > 0 || suggestions.length > 0) {
+    if (rehberLinkCount > 0 || offDomainLinkCount > 0 || competitorMentions.length > 0 || suggestions.length > 0) {
       results.push({
         postId: post.id,
         postTitle: post.title,
         postSlug: post.slug,
         hasRehberLinks: rehberLinkCount > 0,
         rehberLinkCount,
+        offDomainLinkCount,
+        competitorMentions,
         suggestions,
       });
     }
@@ -219,4 +228,22 @@ export async function bulkFixRehberLinks() {
   }
 
   return { fixedPostsCount, fixedLinksTotal };
+}
+
+/**
+ * Tüm yazılarda resmî kurum dışı sitelere (rakipler dahil) giden dış linkleri kaldırır;
+ * link metni düz yazı olarak kalır.
+ */
+export async function bulkStripDisallowedLinks() {
+  const posts = await prisma.post.findMany({ select: { id: true, content: true } });
+  let fixedPostsCount = 0;
+  let removedLinksTotal = 0;
+  for (const post of posts) {
+    const { html, removed } = stripDisallowedLinks(post.content);
+    if (!removed) continue;
+    await prisma.post.update({ where: { id: post.id }, data: { content: html } });
+    fixedPostsCount++;
+    removedLinksTotal += removed;
+  }
+  return { fixedPostsCount, removedLinksTotal };
 }

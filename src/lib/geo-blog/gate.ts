@@ -1,6 +1,7 @@
 import { isInternalPath, type LinkTarget } from "@/lib/geo-blog/inventory";
 import type { TopicResearch } from "@/lib/geo-blog/research";
 import { normalizeUrl } from "@/lib/geo-blog/claude";
+import { anchorLooksLikeName, externalAnchors, findCompetitorMentions, isAllowedExternal } from "@/lib/geo-blog/external-policy";
 import type { GeneratedArticle } from "@/lib/geo-blog/write";
 
 export type GateIssueSeverity = "critical" | "warning";
@@ -50,7 +51,9 @@ function countWords(htmlOrText: string): number {
 export function evaluateArticleQuality(
   article: GeneratedArticle,
   research: TopicResearch,
-  inventory: LinkTarget[]
+  inventory: LinkTarget[],
+  /** Yazıda geçmemesi gereken rakip adları ve alan adları */
+  competitorTerms: string[] = [],
 ): GateReport {
   const issues: GateIssue[] = [];
   let score = 100;
@@ -182,6 +185,26 @@ export function evaluateArticleQuality(
   if (invalidExternalCount > 0) {
     issues.push({ severity: "critical", message: `${invalidExternalCount} adet araştırma dışı/uydurma dış link kullanıldı.` });
     score -= 15;
+  }
+
+  // 10b. Dış link politikası: yalnızca resmî kurumlar, link metni konu kelimesi
+  const anchors = externalAnchors(article.content);
+  const offDomain = anchors.filter((a) => !isAllowedExternal(a.href));
+  if (offDomain.length > 0) {
+    issues.push({ severity: "critical", message: `${offDomain.length} dış link resmî kurum dışı bir siteye gidiyor (yalnızca Diyanet, Nusuk, Suudi devlet siteleri).` });
+    score -= 20;
+  }
+  const namedAnchors = anchors.filter((a) => anchorLooksLikeName(a.text));
+  if (namedAnchors.length > 0) {
+    issues.push({ severity: "critical", message: `Dış link metni kurum/site adı olmamalı, konuyla ilgili kelime olmalı: ${namedAnchors.map((a) => `"${a.text}"`).join(", ")}.` });
+    score -= 10;
+  }
+
+  // 10c. Rakip firma adı yazıda geçmemeli
+  const mentions = findCompetitorMentions([article.title, article.tldr, article.content, ...article.faq.map((f) => `${f.question} ${f.answer}`)].join(" "), competitorTerms);
+  if (mentions.length > 0) {
+    issues.push({ severity: "critical", message: `Rakip firma adı geçiyor, çıkarılmalı: ${mentions.join(", ")}.` });
+    score -= 20;
   }
 
   // 11. Sayısal Veri / Birim Kontrolü

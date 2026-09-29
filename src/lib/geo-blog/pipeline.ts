@@ -3,6 +3,7 @@ import { loadInventory } from "@/lib/geo-blog/inventory";
 import { researchTopic } from "@/lib/geo-blog/research";
 import { writeArticle } from "@/lib/geo-blog/write";
 import { evaluateArticleQuality } from "@/lib/geo-blog/gate";
+import { loadCompetitorTerms, stripDisallowedLinks } from "@/lib/geo-blog/external-policy";
 import { slugify } from "@/lib/seo/programmatic";
 
 export type GenerateStep = "researching" | "writing" | "evaluating" | "retrying" | "saved";
@@ -50,21 +51,25 @@ export async function generateBlogDraft(topic: string, onProgress?: GenerateProg
     onProgress?.("writing", { message: `Yazı hazırlanıyor (${researchNote})…`, research });
     await logStatus(logId, "WRITING_CONTENT", `Yazılıyor: ${researchNote}`);
     let article = await writeArticle(research, inventory);
+    const competitorTerms = await loadCompetitorTerms();
 
     // 3. Kalite kapısı; gerekirse ve süre varsa bir kez düzelttir
     onProgress?.("evaluating", { message: "Kalite kapısı çalışıyor…" });
-    let gateReport = evaluateArticleQuality(article, research, inventory);
+    let gateReport = evaluateArticleQuality(article, research, inventory, competitorTerms);
     if (!gateReport.passed && Date.now() - started < RETRY_BUDGET_MS) {
       onProgress?.("retrying", { message: "Kalite şartları için yeniden yazılıyor…", gateReport });
       await logStatus(logId, "WRITING_CONTENT", `Kalite kapısı ${gateReport.score}/100; düzeltiliyor`);
       const retried = await writeArticle(research, inventory, gateReport.issues.map((i) => i.message));
-      const retriedReport = evaluateArticleQuality(retried, research, inventory);
+      const retriedReport = evaluateArticleQuality(retried, research, inventory, competitorTerms);
       // İkinci deneme daha kötüyse ilkini tut
       if (retriedReport.score >= gateReport.score) {
         article = retried;
         gateReport = retriedReport;
       }
     }
+
+    // Son güvence: kapıdan geçmese de taslakta izinsiz dış link kalmasın
+    article = { ...article, content: stripDisallowedLinks(article.content).html };
 
     // 4. Taslak olarak kaydet (yayın yalnızca onayla ya da GEO_BLOG_AUTOPUBLISH ile)
     const slug = await uniqueSlug(article.slug || clean);

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireBlogAdmin } from "@/lib/seo/guard";
 import { loadInventory, pickLinkTargets } from "@/lib/geo-blog/inventory";
-import { analyzePostLinks, applyPostLinks, bulkFixRehberLinks } from "@/lib/geo-blog/links";
+import { analyzePostLinks, applyPostLinks, bulkFixRehberLinks, bulkStripDisallowedLinks } from "@/lib/geo-blog/links";
 
 export async function GET(req: Request) {
   const denied = await requireBlogAdmin();
@@ -47,6 +47,11 @@ export async function POST(req: Request) {
         const result = await bulkFixRehberLinks();
         return NextResponse.json({ success: true, ...result });
       }
+    }
+
+    if (action === "strip_external") {
+      const result = await bulkStripDisallowedLinks();
+      return NextResponse.json({ success: true, ...result });
     }
 
     if (action === "apply_suggestions") {

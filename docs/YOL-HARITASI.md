@@ -294,6 +294,14 @@ Kurulan skill'ler: claude-seo eklentisi (seo-content, seo-content-brief, seo-clu
 - [x] **7.7 Hız.** `page.tsx` ayarları ikinci kez `prisma.setting.findMany()` ile çekiyor; üç sorguyu `Promise.all` ile paralel çalıştır (2.2 ile birlikte kök layout önbelleği yapılınca oradaki yardımcıyı kullan).
 - [ ] **7.8 Kontrol ve önizleme.** *(Durum 30.09: 7.1–7.7 `anasayfa` dalında, commit ab6c324 + c01e234; build ve tipler temiz. Önizleme adresi: `https://hadiumreyegidelimcom-git-anasayfa-yatos-projects-2b9810f4.vercel.app/` — Vercel girişi ister, kullanıcı kendi tarayıcısında açar. Ajan tarayıcısı Vercel'e giriş yapamadığı için görsel kontrol kullanıcının geri bildirimiyle yapılacak. Kullanıcı düzeltme isterse aynı dalda devam et.)* `npx tsc --noEmit`, `npm run build`. Dalı gönder, önizleme adresinde masaüstü + mobil ekran görüntüsü al, kullanıcıya göster. Onaydan sonra `main`'e birleştir ve Durum günlüğüne yaz.
 
+**Kullanıcı geri bildirimi (30.09) ve ikinci tur:** İlk hali "yeterince etkileşimli değil" bulundu. İstekler: daha etkileşimli ve göze hitap eden, gerçek WhatsApp logosu, "BOUTİQUE UMRE EXPERİENCE" etiketi ve "Sıfır bürokrasi"li güven şeridi **olmayacak**. Yapılanlar:
+- Hero iki sütun: solda başlık (H1 üst satırı sabit "Bireysel Umre 2026"; `HERO_TAGLINE` artık gösterilmiyor), sağda **planlama kartı** `src/components/home/HeroPlanner.tsx` (kalkış şehri, önümüzdeki 6 ay, 7/10/15/21 gün, kişi sayısı → seçimlerle dolu WhatsApp mesajı; "Otel ve uçuşu kendim seçeyim" → /bireysel-umre). Seçili kutucuk `motion` ile kayar.
+- Güven şeridi (TRUST_ITEMS) kaldırıldı.
+- Yeni bölüm **"Umre nasıl yapılır?"** `src/components/home/UmrahSteps.tsx`: İhram, Tavaf, Sa'y, Tıraş; tıklanabilir sekmeler, 6 sn'de bir kendiliğinden ilerler (kullanıcı dokununca durur), /ilk-umrem'e link.
+- `src/components/home/WhatsAppIcon.tsx`: SVG logo. Yeni bölümlerde Material Symbols yerine satır içi SVG kullanılıyor (yazı tipi yüklenmezse "task_alt" gibi adlar görünüyordu).
+- Mobil taşma düzeltildi: ızgaralarda `grid-cols-[minmax(0,1fr)]` ve `min-w-0` şart (kutucuk satırları sütunu genişletiyordu).
+- Lokal önizleme: `hadi-seo-dev` sunucusu (port 3002). Veritabanı bağlantısı yoksa sayfa varsayılan metinlerle ve boş paket/blog listesiyle açılır.
+
 **Sonra (kullanıcı onayıyla):** Üst menü etiketleri kısaltılabilir ("Rehberler & Keşifler Portalı" → "Keşifler", "Manevi Rehberlik Blogu" → "Blog"); menü `src/components/layout/` altında, tüm siteyi etkiler.
 
 ## 4. Durum günlüğü

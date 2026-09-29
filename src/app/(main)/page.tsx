@@ -2,6 +2,9 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import BrandImageFallback from "@/components/ui/BrandImageFallback";
+import HeroPlanner from "@/components/home/HeroPlanner";
+import UmrahSteps from "@/components/home/UmrahSteps";
+import WhatsAppIcon from "@/components/home/WhatsAppIcon";
 import { prisma } from "@/lib/prisma";
 import { Metadata } from "next";
 import { DEFAULT_HANIM_UMRESI_CAMPAIGN, DEFAULT_ILK_UMREM_CAMPAIGN, EYLUL_CAMPAIGN_SETTING_KEY, HANIM_UMRESI_CAMPAIGN_SETTING_KEY, ILK_UMREM_CAMPAIGN_SETTING_KEY, parseEylulCampaign } from "@/lib/eylul-campaign";
@@ -17,14 +20,6 @@ export const metadata: Metadata = {
 export const revalidate = 60;
 
 const HERO_FACTS = ["Tarihleri siz seçersiniz", "Otel, uçuş ve vize tek planda", "İlahiyatçı rehber seçeneği"];
-
-const TRUST_ITEMS = [
-  { icon: "task_alt", label: "Sıfır bürokrasi" },
-  { icon: "verified_user", label: "Nusuk ve vize garantisi" },
-  { icon: "directions_car", label: "Özel VIP transfer" },
-  { icon: "auto_stories", label: "Birebir ilahiyatçı rehber" },
-  { icon: "support_agent", label: "7/24 WhatsApp hizmeti" },
-];
 
 // Ana sayfadaki SSS; FAQPage şeması da buradan üretilir (sayfadaki metinle birebir aynı olmalı)
 const HOME_FAQ = [
@@ -86,9 +81,6 @@ export default async function Home() {
   
   const home_banner_title = settings.HERO_TITLE || "Ruhunuzun Ritmini Kalabalıklara Teslim Etmeyin.";
   const home_banner_subtitle = settings.HERO_DESC || "Ailenize ve Size Özel Butik Umre Deneyimi.";
-  const home_banner_tagline = settings.HERO_TAGLINE || "BOUTİQUE UMRE EXPERİENCE";
-  // H1 her zaman "umre" kelimesini ekranda içersin (SEO); admin etiketi içermiyorsa sabit metin
-  const heroKicker = /umre/i.test(home_banner_tagline) ? home_banner_tagline : "Bireysel Umre 2026";
   // "En çok tercih edilen" rozeti yalnızca bir pakette
   const popularPackageId = featuredPackages.find((p) => p.isPopular)?.id;
   
@@ -109,7 +101,7 @@ export default async function Home() {
 
   return (
     <>
-      <section className="relative min-h-[82vh] flex items-end md:items-center overflow-hidden pt-28 pb-24 md:pb-20">
+      <section className="relative min-h-[88vh] flex items-center overflow-hidden pt-28 pb-16 lg:pb-20">
         <div className="absolute inset-0 z-0">
           <Image
             alt="Kabe ve Mescid-i Haram"
@@ -121,61 +113,48 @@ export default async function Home() {
             sizes="100vw"
             quality={80}
           />
-          <div className="absolute inset-0 bg-[#001944]/45"></div>
-          <div className="absolute inset-0 bg-gradient-to-r from-[#001944]/85 via-[#001944]/45 to-transparent"></div>
+          <div className="absolute inset-0 bg-[#001944]/50"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-[#001944]/90 via-[#001944]/55 to-[#001944]/20"></div>
         </div>
 
-        <div className="relative z-10 max-w-screen-xl mx-auto px-6 md:px-8 w-full">
-          <div className="max-w-3xl">
+        <div className="relative z-10 max-w-screen-xl mx-auto px-5 md:px-8 w-full grid grid-cols-[minmax(0,1fr)] lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] gap-12 lg:gap-16 items-center">
+          <div>
             <h1 className="font-headline text-white font-bold tracking-tight">
-              <span className="block font-body text-xs md:text-sm font-semibold tracking-[0.22em] uppercase text-white/75 mb-5">
-                {heroKicker}
+              <span className="inline-flex items-center gap-2 font-body text-xs md:text-sm font-semibold tracking-[0.2em] uppercase text-white/80 mb-6">
+                <span className="w-8 h-px bg-white/50" aria-hidden="true" />
+                Bireysel Umre 2026
               </span>
-              <span className="block text-4xl sm:text-5xl lg:text-7xl leading-[1.08] text-balance">
+              <span className="block text-4xl sm:text-5xl xl:text-6xl leading-[1.08] text-balance">
                 {home_banner_title}
               </span>
             </h1>
-            <p className="mt-6 text-lg md:text-2xl text-white/85 max-w-2xl leading-relaxed">
+            <p className="mt-6 text-lg md:text-xl text-white/85 max-w-xl leading-relaxed">
               {home_banner_subtitle}
             </p>
-            <div className="mt-10 flex flex-col sm:flex-row gap-4">
-              <Link href="/bireysel-umre" data-press className="inline-flex items-center justify-center gap-2 bg-white text-primary px-8 py-4 rounded-xl font-bold tracking-wide text-sm uppercase shadow-xl hover:bg-primary hover:text-white transition-colors">
+            <div className="mt-9 flex flex-col sm:flex-row gap-3">
+              <Link href="/bireysel-umre" data-press className="inline-flex items-center justify-center gap-2 bg-white text-primary px-7 py-4 rounded-xl font-bold text-[15px] shadow-xl hover:bg-surface-container-low transition-colors">
                 {homeCta}
-                <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+                <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" className="w-4 h-4"><path fillRule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.64l-3.22-3.22a.75.75 0 111.06-1.06l4.5 4.5a.75.75 0 010 1.06l-4.5 4.5a.75.75 0 11-1.06-1.06l3.22-3.22H3.75A.75.75 0 013 10z" clipRule="evenodd" /></svg>
               </Link>
-              <a href={`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`} target="_blank" rel="noopener noreferrer" data-press className="inline-flex items-center justify-center gap-2 text-white font-bold border border-white/40 px-8 py-4 rounded-xl hover:bg-white/10 transition-colors uppercase tracking-wide text-sm backdrop-blur-sm">
-                <span className="material-symbols-outlined text-[18px]" style={{ fontVariationSettings: "'FILL' 1" }}>
-                  chat
-                </span>
+              <a href={`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`} target="_blank" rel="noopener noreferrer" data-press className="inline-flex items-center justify-center gap-2.5 text-white font-bold border border-white/35 px-7 py-4 rounded-xl hover:bg-white/10 transition-colors text-[15px] backdrop-blur-sm">
+                <WhatsAppIcon className="w-5 h-5 text-[#25D366]" />
                 {whatsappCta}
               </a>
             </div>
-            <ul className="mt-10 flex flex-wrap gap-x-6 gap-y-2 text-white/80 text-sm">
+            <ul className="mt-10 grid sm:grid-cols-3 gap-3 max-w-xl">
               {HERO_FACTS.map((fact) => (
-                <li key={fact} className="flex items-center gap-2">
-                  <span className="material-symbols-outlined text-[16px] text-white/60">check</span>
+                <li key={fact} className="flex items-center gap-2 text-white/85 text-sm">
+                  <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" className="w-4 h-4 text-white/60 shrink-0"><path fillRule="evenodd" d="M16.7 5.3a1 1 0 010 1.4l-8 8a1 1 0 01-1.4 0l-4-4a1 1 0 111.4-1.4L8 12.58l7.3-7.3a1 1 0 011.4 0z" clipRule="evenodd" /></svg>
                   {fact}
                 </li>
               ))}
             </ul>
           </div>
+          <div className="min-w-0 flex justify-center lg:justify-end">
+            <HeroPlanner whatsappNumber={whatsappNumber} />
+          </div>
         </div>
       </section>
-
-      <section className="relative z-10 -mt-10 px-4 md:px-8">
-        <div className="max-w-screen-xl mx-auto bg-white rounded-2xl shadow-[0_18px_50px_-20px_rgba(0,25,68,0.35)] border border-outline-variant/15">
-          <ul className="grid grid-cols-2 md:grid-cols-5 divide-outline-variant/15 md:divide-x">
-            {TRUST_ITEMS.map((item, i) => (
-              <li key={item.label} className={`flex items-center gap-3 px-5 py-5 md:py-6 ${i === TRUST_ITEMS.length - 1 ? "col-span-2 md:col-span-1" : ""}`}>
-                <span className="material-symbols-outlined text-primary text-[22px] shrink-0">{item.icon}</span>
-                <span className="text-[13px] font-semibold text-on-surface leading-snug">{item.label}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      <div className="h-16 md:h-20" />
 
       {/* Eylül Grup Umresi Kampanya Banner — iç reklam birimi */}
       <section className="bg-primary py-0 overflow-hidden">
@@ -292,6 +271,17 @@ export default async function Home() {
               </div>
             )}
           </div>
+        </div>
+      </section>
+
+      <section className="py-24 md:py-28 bg-surface-container-low">
+        <div className="max-w-screen-xl mx-auto px-5 md:px-8">
+          <div className="max-w-2xl mb-12 md:mb-16" data-reveal>
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary/70">Adım adım</p>
+            <h2 className="mt-3 font-headline text-3xl md:text-5xl text-primary font-bold">Umre nasıl yapılır?</h2>
+            <p className="mt-4 text-on-surface-variant text-base md:text-lg leading-relaxed">Umre dört adımda tamamlanır. Bir adıma dokunun, ne yapıldığını görün.</p>
+          </div>
+          <UmrahSteps />
         </div>
       </section>
 

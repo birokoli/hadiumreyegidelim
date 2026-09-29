@@ -98,36 +98,6 @@ export default async function RootLayout({
         "https://instagram.com/hadiumreyegidelim",
         "https://youtube.com/@hadiumreyegidelim"
       ]
-    },
-    {
-      "@context": "https://schema.org",
-      "@type": "FAQPage",
-      "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "Bireysel umre nasıl yapılır?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Bireysel umre, kafilelere bağlı kalmadan kendi otel ve uçuş tarihlerinizi seçtiğiniz konforlu bir ibadet yöntemidir. Isı haritamızdan yeşil fırsat günlerini seçerek vize, transfer ve lüks konaklamanızı anında organize edebilir, tasarruf edebilirsiniz."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Bireysel umre vizesi nasıl alınır?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Bireysel umre vizeleri tamamen yasal olarak 24 saat içinde Nusuk sistemiyle tarafımızca alınmaktadır. Otel ve uçak kombinasyonunuz kesinleştikten sonra bürokrasiye takılmadan 1 yıllık çok girişli turistik veya Suudi Arabistan e-vizeniz temin edilir."
-          }
-        },
-        {
-          "@type": "Question",
-          "name": "Diyanet turları olmadan kendi imkanlarıyla umre yapılabilir mi?",
-          "acceptedAnswer": {
-            "@type": "Answer",
-            "text": "Evet. Suudi Arabistan'ın son esnek kuralları sayesinde, yüksek komisyon alan tur şirketlerine mahkum kalmadan kendi programınızla bireysel umre yapmak son derece kolay ve yasaldır."
-          }
-        }
-      ]
     }
   ];
 

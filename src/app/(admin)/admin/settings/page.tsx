@@ -3,7 +3,8 @@
 import React, { useState, useEffect } from "react";
 
 const DEFAULTS = {
-  HERO_TAGLINE: "BOUTIQUE UMRE EXPERIENCE",
+  home_banner_image: "",
+  HOME_HERO_VIDEO: "",
   HERO_TITLE: "Ruhunuzun Ritmini Kalabalıklara Teslim Etmeyin.",
   HERO_DESC: "Ailenize ve Size Özel Butik Umre Deneyimi.",
   HOME_TOURS_KICKER: "Kişiselleştirilmiş Lüks Turlar",
@@ -78,6 +79,32 @@ export default function SettingsPage() {
       else alert("Logo yüklenirken hata: " + data.error);
     } catch { alert("Ağ hatası."); }
     finally { setUploadingLogo(false); }
+  };
+
+  const [uploadingMedia, setUploadingMedia] = useState<string | null>(null);
+
+  // Görsel ve video doğrudan depolamaya yüklenir (imzalı adres; Vercel'in 4,5 MB sınırına takılmaz)
+  const handleMediaUpload = async (e: React.ChangeEvent<HTMLInputElement>, key: string) => {
+    const file = e.target.files?.[0];
+    e.target.value = '';
+    if (!file) return;
+    if (file.size > 50 * 1024 * 1024) { alert('Dosya 50 MB’tan büyük olamaz.'); return; }
+    setUploadingMedia(key);
+    try {
+      const ext = file.name.split('.').pop()?.toLowerCase() || '';
+      const sign = await fetch('/api/upload-sign', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ headingSlug: key === 'HOME_HERO_VIDEO' ? 'anasayfa-video' : 'anasayfa-gorsel', ext, contentType: file.type }),
+      }).then(r => r.json());
+      if (!sign.signedURL) throw new Error(sign.error || 'Yükleme adresi alınamadı.');
+      const put = await fetch(sign.signedURL, { method: 'PUT', headers: { 'Content-Type': file.type || 'application/octet-stream', 'x-upsert': 'true' }, body: file });
+      if (!put.ok) throw new Error(`Yükleme başarısız (${put.status}).`);
+      handleChange(key, sign.publicUrl);
+    } catch (err) {
+      alert((err as Error).message);
+    } finally {
+      setUploadingMedia(null);
+    }
   };
 
   const handleSave = async () => {
@@ -261,10 +288,31 @@ export default function SettingsPage() {
           <div className="bg-surface-container-lowest rounded-2xl p-8 border border-outline-variant/15 shadow-sm">
             <h3 className="text-xl font-serif text-primary mb-6 flex items-center gap-2"><span className="material-symbols-outlined text-tertiary">web</span> Hero Bölümü</h3>
             <div className="space-y-5">
-              {[['HERO_TAGLINE','Üst Etiket'],['HERO_TITLE','Ana Başlık (H1)']].map(([key, label]) => (
+              {[['HERO_TITLE','Ana Başlık (H1)']].map(([key, label]) => (
                 <div key={key}><label className={lbl}>{label}</label><input type="text" value={settings[key]} onChange={e => handleChange(key, e.target.value)} className={inp} /></div>
               ))}
               <div><label className={lbl}>Açıklama</label><textarea rows={3} value={settings.HERO_DESC} onChange={e => handleChange('HERO_DESC', e.target.value)} className={`${inp} resize-none`} /></div>
+              <div className="grid md:grid-cols-2 gap-5 pt-2">
+                <div>
+                  <label className={lbl}>Arka plan görseli</label>
+                  <input type="url" placeholder="https://…" value={settings.home_banner_image} onChange={e => handleChange('home_banner_image', e.target.value)} className={inp} />
+                  <label className="mt-2 inline-flex cursor-pointer items-center gap-2 text-xs font-bold text-primary hover:underline">
+                    <input type="file" accept="image/jpeg,image/png,image/webp" className="hidden" disabled={uploadingMedia !== null} onChange={e => handleMediaUpload(e, 'home_banner_image')} />
+                    {uploadingMedia === 'home_banner_image' ? 'Yükleniyor…' : 'Görsel yükle'}
+                  </label>
+                  <p className="mt-1 text-[11px] text-on-surface-variant">Video yoksa bu görsel gösterilir; video varken de yüklenene kadar görünür.</p>
+                </div>
+                <div>
+                  <label className={lbl}>Arka plan videosu (MP4, döngü)</label>
+                  <input type="url" placeholder="https://….mp4" value={settings.HOME_HERO_VIDEO} onChange={e => handleChange('HOME_HERO_VIDEO', e.target.value)} className={inp} />
+                  <label className="mt-2 inline-flex cursor-pointer items-center gap-2 text-xs font-bold text-primary hover:underline">
+                    <input type="file" accept="video/mp4,video/webm" className="hidden" disabled={uploadingMedia !== null} onChange={e => handleMediaUpload(e, 'HOME_HERO_VIDEO')} />
+                    {uploadingMedia === 'HOME_HERO_VIDEO' ? 'Yükleniyor…' : 'Video yükle'}
+                  </label>
+                  {settings.HOME_HERO_VIDEO && <button type="button" onClick={() => handleChange('HOME_HERO_VIDEO', '')} className="ml-4 text-xs font-bold text-error hover:underline">Videoyu kaldır</button>}
+                  <p className="mt-1 text-[11px] text-on-surface-variant">Sessiz, 10–20 saniye, en fazla 20 MB önerilir (1080p, H.264). Kaydet'e basmayı unutmayın.</p>
+                </div>
+              </div>
             </div>
           </div>
 

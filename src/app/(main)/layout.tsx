@@ -16,7 +16,7 @@ export default async function MainLayout({
     where: { 
       key: { in: ['navbar_links', 'SITE_LOGO'] } 
     }
-  });
+  }).catch(() => []); // veritabanına ulaşılamazsa varsayılan menü ve logo
   
   let navLinks = [
     {label: "Paketler", url: "/paketler"},

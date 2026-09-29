@@ -30,11 +30,12 @@ export async function POST(req: Request) {
     }
 
     const safePrefix = headingSlug ? toSafeSlug(headingSlug) : "";
-    const cleanPrefix = safePrefix ? `${safePrefix}-` : "gorsel-";
+    const cleanPrefix = safePrefix ? `${safePrefix}-` : ["mp4", "webm"].includes(String(ext).toLowerCase()) ? "video-" : "gorsel-";
     const allowedExts: Record<string, string> = {
       jpg: "jpg", jpeg: "jpg", png: "png", webp: "webp", gif: "gif",
+      mp4: "mp4", webm: "webm",
     };
-    const safeExt = allowedExts[ext?.toLowerCase()] || "jpg";
+    const safeExt = allowedExts[String(ext ?? "").toLowerCase()] || "jpg";
     const filename = `${cleanPrefix}${Date.now()}.${safeExt}`;
 
     // Supabase Storage: signed upload URL al
@@ -57,7 +58,6 @@ export async function POST(req: Request) {
     }
 
     const signBody = await signRes.json();
-    console.log("Supabase sign response:", JSON.stringify(signBody));
 
     // Supabase relative path döndürebilir — tam URL'e çevir
     const rawSigned: string = signBody.signedURL || signBody.signed_url || signBody.url || "";
@@ -68,7 +68,7 @@ export async function POST(req: Request) {
     const publicUrl = `${supabaseUrl}/storage/v1/object/public/uploads/${filename}`;
 
     return NextResponse.json({ signedURL, publicUrl });
-  } catch (err: any) {
-    return NextResponse.json({ error: err?.message || "Sunucu hatası" }, { status: 500 });
+  } catch (err) {
+    return NextResponse.json({ error: (err as Error)?.message || "Sunucu hatası" }, { status: 500 });
   }
 }

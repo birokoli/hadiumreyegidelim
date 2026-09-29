@@ -252,6 +252,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .hero-video {
+    display: none;
+  }
   [data-reveal] {
     transition: opacity 0.25s ease;
     transform: none;

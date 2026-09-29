@@ -4,6 +4,7 @@ import { Suspense, useCallback, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { ErrorLine, PageHead, Section, formatDate } from "@/components/admin/seo/ui";
 import type { BlogOpportunity } from "@/lib/geo-blog/opportunities";
+import type { PostLinkAnalysis } from "@/lib/geo-blog/links";
 
 interface PostItem {
   id: string;
@@ -43,6 +44,12 @@ function GeoBlogDesk() {
   const [error, setError] = useState<string | null>(null);
   const [publishingId, setPublishingId] = useState<string | null>(null);
 
+  // Link Analizi Eyaleti
+  const [linkAnalyses, setLinkAnalyses] = useState<PostLinkAnalysis[]>([]);
+  const [analyzingLinks, setAnalyzingLinks] = useState(false);
+  const [applyingLinkPostId, setApplyingLinkPostId] = useState<string | null>(null);
+  const [fixingRehber, setFixingRehber] = useState(false);
+
   const fetchOpportunities = useCallback(async () => {
     setLoadingOps(true);
     try {
@@ -51,8 +58,8 @@ function GeoBlogDesk() {
       if (res.ok && json.opportunities) {
         setOpportunities(json.opportunities);
       }
-    } catch (e) {
-      console.error("Fırsatlar yüklenemedi:", e);
+    } catch {
+      console.error("Fırsatlar yüklenemedi.");
     } finally {
       setLoadingOps(false);
     }
@@ -66,17 +73,33 @@ function GeoBlogDesk() {
       if (res.ok && json.posts) {
         setPosts(json.posts);
       }
-    } catch (e) {
-      console.error("Yazılar yüklenemedi:", e);
+    } catch {
+      console.error("Yazılar yüklenemedi.");
     } finally {
       setLoadingPosts(false);
+    }
+  }, []);
+
+  const fetchLinkAnalyses = useCallback(async () => {
+    setAnalyzingLinks(true);
+    try {
+      const res = await fetch("/api/admin/geo-blog/links?analyze=true");
+      const json = await res.json();
+      if (res.ok && json.analyses) {
+        setLinkAnalyses(json.analyses);
+      }
+    } catch {
+      console.error("Link analizi yapılamadı.");
+    } finally {
+      setAnalyzingLinks(false);
     }
   }, []);
 
   useEffect(() => {
     fetchOpportunities();
     fetchPosts();
-  }, [fetchOpportunities, fetchPosts]);
+    fetchLinkAnalyses();
+  }, [fetchOpportunities, fetchPosts, fetchLinkAnalyses]);
 
   const handleGenerate = async (topicToRun?: string) => {
     const targetTopic = (topicToRun || topic).trim();
@@ -135,6 +158,7 @@ function GeoBlogDesk() {
       }
 
       await fetchPosts();
+      await fetchLinkAnalyses();
     } catch (e) {
       const errMsg = e instanceof Error ? e.message : String(e);
       setError(errMsg);
@@ -166,6 +190,51 @@ function GeoBlogDesk() {
       alert(e instanceof Error ? e.message : "Yayınlama hatası.");
     } finally {
       setPublishingId(null);
+    }
+  };
+
+  const handleApplyLink = async (postId: string, term: string, targetPath: string) => {
+    setApplyingLinkPostId(`${postId}-${term}`);
+    try {
+      const res = await fetch("/api/admin/geo-blog/links", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "apply_suggestions",
+          postId,
+          links: [{ term, targetPath }],
+        }),
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error || "Link eklenemedi.");
+
+      await fetchLinkAnalyses();
+      await fetchPosts();
+    } catch (e) {
+      alert(e instanceof Error ? e.message : "Link ekleme hatası.");
+    } finally {
+      setApplyingLinkPostId(null);
+    }
+  };
+
+  const handleFixRehber = async (postId?: string) => {
+    setFixingRehber(true);
+    try {
+      const res = await fetch("/api/admin/geo-blog/links", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "fix_rehber", postId }),
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error || "Kırık linkler düzeltilemedi.");
+
+      alert(`İşlem tamamlandı: ${json.fixedPostsCount ?? 1} yazıda kırık linkler /blog olarak güncellendi.`);
+      await fetchLinkAnalyses();
+      await fetchPosts();
+    } catch (e) {
+      alert(e instanceof Error ? e.message : "Düzeltme hatası.");
+    } finally {
+      setFixingRehber(false);
     }
   };
 
@@ -258,6 +327,83 @@ function GeoBlogDesk() {
                 >
                   Üret →
                 </button>
+              </div>
+            ))}
+          </div>
+        )}
+      </Section>
+
+      {/* İç Link Önerileri & Kırık Linkler */}
+      <Section title="İç Link Analizi & Kırık Linkler" aside="Mevcut yazılara tek tıkla iç link ekleyin veya kırık /rehber linklerini düzeltin">
+        <div className="mb-4 flex flex-wrap items-center gap-3">
+          <button
+            type="button"
+            className="seo-btn bg-[var(--seo-paper-2)] text-[var(--seo-ink)] hover:bg-[var(--seo-rule)] text-[13px] py-1.5 px-3"
+            onClick={() => fetchLinkAnalyses()}
+            disabled={analyzingLinks}
+          >
+            {analyzingLinks ? "Taranıyor..." : "Yazıları Yeniden Tara"}
+          </button>
+          <button
+            type="button"
+            className="seo-btn text-[13px] py-1.5 px-3"
+            onClick={() => handleFixRehber()}
+            disabled={fixingRehber}
+          >
+            {fixingRehber ? "Düzeltiliyor..." : "Tüm Kırık /rehber Linklerini /blog Yap →"}
+          </button>
+        </div>
+
+        {analyzingLinks ? (
+          <p className="text-[14px] text-[var(--seo-ink-3)]">Yazılar iç link fırsatları yönünden taranıyor...</p>
+        ) : linkAnalyses.length === 0 ? (
+          <p className="text-[14px] text-[var(--seo-ink-3)]">Tüm yazılarda iç linkler güncel ve kırık link bulunmuyor.</p>
+        ) : (
+          <div className="space-y-4 max-w-[960px]">
+            {linkAnalyses.map((item) => (
+              <div key={item.postId} className="rounded-[4px] bg-[var(--seo-paper-2)] p-4 space-y-3">
+                <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[var(--seo-rule)] pb-2">
+                  <div>
+                    <h3 className="text-[15px] font-bold text-[var(--seo-ink)]">{item.postTitle}</h3>
+                    <div className="text-[12px] text-[var(--seo-ink-3)] seo-mono">/blog/{item.postSlug}</div>
+                  </div>
+                  {item.hasRehberLinks && (
+                    <span className="rounded bg-[var(--seo-danger)] px-2 py-0.5 text-[11px] font-bold text-white">
+                      {item.rehberLinkCount} Kırık /rehber Linki
+                    </span>
+                  )}
+                </div>
+
+                {item.suggestions.length > 0 && (
+                  <div>
+                    <span className="text-[12px] font-bold text-[var(--seo-ink-3)] block mb-2">Önerilen İç Linkler</span>
+                    <div className="grid gap-2 sm:grid-cols-2">
+                      {item.suggestions.map((sugg, idx) => (
+                        <div
+                          key={idx}
+                          className="flex items-center justify-between gap-2 rounded bg-white p-2.5 border border-[var(--seo-rule)]"
+                        >
+                          <div className="min-w-0 flex-1">
+                            <span className="font-semibold text-[13px] text-[var(--seo-ink)] block truncate">
+                              &quot;{sugg.term}&quot;
+                            </span>
+                            <span className="text-[11px] text-[var(--seo-ink-3)] seo-mono block truncate">
+                              → {sugg.targetPath}
+                            </span>
+                          </div>
+                          <button
+                            type="button"
+                            className="seo-btn text-[11px] py-1 px-2 whitespace-nowrap"
+                            disabled={applyingLinkPostId === `${item.postId}-${sugg.term}`}
+                            onClick={() => handleApplyLink(item.postId, sugg.term, sugg.targetPath)}
+                          >
+                            {applyingLinkPostId === `${item.postId}-${sugg.term}` ? "..." : "Ekle"}
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             ))}
           </div>

@@ -160,7 +160,7 @@ Kurulan skill'ler: claude-seo eklentisi (seo-content, seo-content-brief, seo-clu
 - [x] **6.6 Fırsat kuyruğu** – AI Görünürlük içerik boşlukları ve anılmadığımız sorular (`src/lib/ai-vis/metrics.ts`: contentGaps, fanOutQueries), SEO'da takip edilip ilk 10'da olmayan kelimeler, mevcut yazılarla çakışmayan konular.
 - [x] **6.7 Arayüz** – SEO Masası'na "07 Blog" bölümü (fırsatlar, konu yaz → üret, taslaklar + kapı puanı, önizleme, Yayınla). AI Görünürlük → Rakipler'deki içerik boşluklarına "Bu soru için yazı üret" linki. Tasarım dili SEO Masası ile aynı.
 - [x] **6.8 Yayın sonrası ölçüm** – Yayınla: `published:true`, odak kelimeyi `SEO_TRACKED_KEYWORDS`'e, ana soruyu `AI_VIS_CONFIG.prompts`'a (etiket "blog") ekle, `revalidatePath`.
-- [ ] **6.9 İç link önerileri** – mevcut yazılar için öneri ve tek tıkla uygulama (mevcut `<a>` içine girmeden ilk geçen ifadeye link); eski yazılardaki `/rehber` kırık linklerini düzelt.
+- [x] **6.9 İç link önerileri** – mevcut yazılar için öneri ve tek tıkla uygulama (mevcut `<a>` içine girmeden ilk geçen ifadeye link); eski yazılardaki `/rehber` kırık linklerini düzelt.
 - [ ] **6.10 Dinamik llms.txt** – `public/llms.txt`'i kaldırıp `src/app/llms.txt/route.ts`: mevcut başlık metni + hub'lar + son 50 yazı + paketler.
 - [ ] **6.11 Cron'u yeni motora bağla** – `src/app/api/cron/auto-blog` yeni motorla **taslak** üretsin; otomatik yayın yalnızca `GEO_BLOG_AUTOPUBLISH=true` ve kapı geçtiyse. Kullanıcı onayı gerekir.
 

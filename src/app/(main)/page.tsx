@@ -16,20 +16,63 @@ export const metadata: Metadata = {
 
 export const revalidate = 60;
 
+const HERO_FACTS = ["Tarihleri siz seçersiniz", "Otel, uçuş ve vize tek planda", "İlahiyatçı rehber seçeneği"];
+
+const TRUST_ITEMS = [
+  { icon: "task_alt", label: "Sıfır bürokrasi" },
+  { icon: "verified_user", label: "Nusuk ve vize garantisi" },
+  { icon: "directions_car", label: "Özel VIP transfer" },
+  { icon: "auto_stories", label: "Birebir ilahiyatçı rehber" },
+  { icon: "support_agent", label: "7/24 WhatsApp hizmeti" },
+];
+
+// Ana sayfadaki SSS; FAQPage şeması da buradan üretilir (sayfadaki metinle birebir aynı olmalı)
+const HOME_FAQ = [
+  {
+    q: "Bireysel umre vizesi nasıl alınır?",
+    a: "Otel konaklamanız ve uçuşunuz belirlendikten sonra, acente garantörlüğü ile Nusuk sistemi üzerinden 24 saat içinde adınıza e-vize tanımlanır. Klasik turların evrak yüküyle uğraşmanız gerekmez.",
+  },
+  {
+    q: "Kafileye katılmadan kendi programıyla umre yapılabilir mi?",
+    a: "Evet. Ailenizle kendi programınızla umre planlayabilirsiniz. Fiyat konfigüratörümüzde Kâbe manzaralı otelleri bütçenize göre seçer, umrenizi kendiniz tasarlarsınız. Bu sistem klasik paketlere göre %30'a varan tasarruf sağlar.",
+  },
+  {
+    q: "Bireysel umrede rehberlik veriliyor mu?",
+    a: "Evet. Bireysel gitmek rehbersiz kalmak demek değildir. Mekke ve Medine'deki özel ilahiyatçı rehberlerimiz karşılamada ve tavaf, sa'y gibi ibadetlerde size birebir eşlik eder.",
+  },
+  {
+    q: "Umre için hangi aylar daha uygun fiyatlıdır?",
+    a: "Umre fiyatları döneme göre değişir. Şevval ayı ve Kurban Bayramı sonrası (eylül ve ekim) fiyatların en düşük olduğu dönemdir. Konfigüratörümüzdeki fiyat takviminden uygun tarihleri görebilirsiniz.",
+  },
+];
+
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: HOME_FAQ.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
+};
+
+const CURRENCY_SYMBOL: Record<string, string> = { USD: "$", EUR: "€", TRY: "₺", SAR: "SAR" };
+
+function formatPrice(price: number, currency: string) {
+  return `${price.toLocaleString("tr-TR", { maximumFractionDigits: 0 })} ${CURRENCY_SYMBOL[currency] ?? currency}`;
+}
+
 export default async function Home() {
-  const latestBlogs = await prisma.post.findMany({
-    where: { published: true },
-    orderBy: { createdAt: 'desc' },
-    take: 3
-  });
-
-  const featuredPackages = await prisma.package.findMany({
-    where: { published: true },
-    orderBy: { createdAt: 'desc' },
-    take: 3
-  });
-
-  const settingsArray = await prisma.setting.findMany();
+  const [latestBlogs, featuredPackages, settingsArray] = await Promise.all([
+    prisma.post.findMany({
+      where: { published: true },
+      orderBy: { createdAt: 'desc' },
+      take: 3,
+      include: { authorModel: { select: { name: true } } },
+    }),
+    prisma.package.findMany({
+      where: { published: true },
+      orderBy: { createdAt: 'desc' },
+      take: 3,
+    }),
+    prisma.setting.findMany(),
+  ]);
   const settings = settingsArray.reduce((acc, s) => { acc[s.key] = s.value; return acc; }, {} as Record<string, string>);
   const eylulCampaign = parseEylulCampaign(settings[EYLUL_CAMPAIGN_SETTING_KEY]);
   const ilkUmremCampaign = parseEylulCampaign(settings[ILK_UMREM_CAMPAIGN_SETTING_KEY], DEFAULT_ILK_UMREM_CAMPAIGN);
@@ -40,6 +83,10 @@ export default async function Home() {
   const home_banner_title = settings.HERO_TITLE || "Ruhunuzun Ritmini Kalabalıklara Teslim Etmeyin.";
   const home_banner_subtitle = settings.HERO_DESC || "Ailenize ve Size Özel Butik Umre Deneyimi.";
   const home_banner_tagline = settings.HERO_TAGLINE || "BOUTİQUE UMRE EXPERİENCE";
+  // H1 her zaman "umre" kelimesini ekranda içersin (SEO); admin etiketi içermiyorsa sabit metin
+  const heroKicker = /umre/i.test(home_banner_tagline) ? home_banner_tagline : "Bireysel Umre 2026";
+  // "En çok tercih edilen" rozeti yalnızca bir pakette
+  const popularPackageId = featuredPackages.find((p) => p.isPopular)?.id;
   
   const whatsappNumber = settings.WHATSAPP_NUMBER ? settings.WHATSAPP_NUMBER.replace('+', '') : "905404010038";
   const whatsappMessage = settings.WHATSAPP_MESSAGE ? encodeURIComponent(settings.WHATSAPP_MESSAGE) : "Merhaba, ana sayfanızdan ulaşıyorum, hizmetleriniz hakkında bilgi almak istiyorum.";
@@ -58,104 +105,73 @@ export default async function Home() {
 
   return (
     <>
-      <section className="relative min-h-[90vh] md:min-h-screen flex items-center justify-center overflow-hidden pt-20">
+      <section className="relative min-h-[82vh] flex items-end md:items-center overflow-hidden pt-28 pb-24 md:pb-20">
         <div className="absolute inset-0 z-0">
           <Image
-            alt="Kabe Manzaralı VIP Butik Umre Deneyimi"
+            alt="Kabe ve Mescid-i Haram"
             className="object-cover"
             src={home_banner_image}
             fill
             priority
             fetchPriority="high"
-            sizes="(max-width: 768px) 100vw, 100vw"
+            sizes="100vw"
             quality={80}
           />
-          {/* Universal contrast overlay for user-uploaded images */}
-          <div className="absolute inset-0 bg-black/40"></div>
-          <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/10 to-transparent"></div>
+          <div className="absolute inset-0 bg-[#001944]/45"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-[#001944]/85 via-[#001944]/45 to-transparent"></div>
         </div>
 
-        <div className="relative z-10 max-w-screen-xl mx-auto px-8 text-center mt-12 md:mt-0">
-          <div className="inline-block px-5 py-2 mb-8 rounded-full bg-white/10 border border-white/20 text-white font-label text-[10px] tracking-[0.3em] uppercase font-bold backdrop-blur-md shadow-xl">
-            {home_banner_tagline}
-          </div>
-          <h1 className="font-headline text-5xl md:text-7xl text-white leading-[1.15] mb-8 max-w-4xl mx-auto font-bold tracking-tight drop-shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
-            <span className="sr-only">Bireysel Umre Turları ve Fiyatları 2026 </span>
-            {home_banner_title}
-          </h1>
-          <p className="font-headline italic text-xl md:text-3xl text-white/90 mb-12 max-w-2xl mx-auto drop-shadow-md">
-            {home_banner_subtitle}
-          </p>
-          <div className="flex flex-col sm:flex-row gap-6 md:gap-8 justify-center items-center">
-            <Link href="/bireysel-umre" className="bg-primary text-white px-10 py-5 rounded-2xl font-bold tracking-widest text-sm uppercase shadow-2xl hover:bg-white hover:text-primary active:scale-95 transition-all">
-              {homeCta}
-            </Link>
-            <a href={`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-3 text-white font-bold border border-transparent bg-[#25D366] px-8 py-5 rounded-2xl hover:bg-[#128C7E] hover:text-white transition-all uppercase tracking-widest text-xs shadow-xl">
-              <span className="material-symbols-outlined text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>
-                chat
+        <div className="relative z-10 max-w-screen-xl mx-auto px-6 md:px-8 w-full">
+          <div className="max-w-3xl">
+            <h1 className="font-headline text-white font-bold tracking-tight">
+              <span className="block font-body text-xs md:text-sm font-semibold tracking-[0.22em] uppercase text-white/75 mb-5">
+                {heroKicker}
               </span>
-              {whatsappCta}
-            </a>
+              <span className="block text-4xl sm:text-5xl lg:text-7xl leading-[1.08] text-balance">
+                {home_banner_title}
+              </span>
+            </h1>
+            <p className="mt-6 text-lg md:text-2xl text-white/85 max-w-2xl leading-relaxed">
+              {home_banner_subtitle}
+            </p>
+            <div className="mt-10 flex flex-col sm:flex-row gap-4">
+              <Link href="/bireysel-umre" data-press className="inline-flex items-center justify-center gap-2 bg-white text-primary px-8 py-4 rounded-xl font-bold tracking-wide text-sm uppercase shadow-xl hover:bg-primary hover:text-white transition-colors">
+                {homeCta}
+                <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+              </Link>
+              <a href={`https://wa.me/${whatsappNumber}?text=${whatsappMessage}`} target="_blank" rel="noopener noreferrer" data-press className="inline-flex items-center justify-center gap-2 text-white font-bold border border-white/40 px-8 py-4 rounded-xl hover:bg-white/10 transition-colors uppercase tracking-wide text-sm backdrop-blur-sm">
+                <span className="material-symbols-outlined text-[18px]" style={{ fontVariationSettings: "'FILL' 1" }}>
+                  chat
+                </span>
+                {whatsappCta}
+              </a>
+            </div>
+            <ul className="mt-10 flex flex-wrap gap-x-6 gap-y-2 text-white/80 text-sm">
+              {HERO_FACTS.map((fact) => (
+                <li key={fact} className="flex items-center gap-2">
+                  <span className="material-symbols-outlined text-[16px] text-white/60">check</span>
+                  {fact}
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </section>
 
-      <section className="bg-surface-container-low py-16">
-        <div className="max-w-screen-2xl mx-auto px-8">
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-8 items-start">
-            <div className="flex flex-col items-center text-center space-y-4">
-              <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-primary shadow-sm hover:scale-110 transition-transform">
-                <span className="material-symbols-outlined text-2xl" data-icon="task_alt">
-                  task_alt
-                </span>
-              </div>
-              <span className="font-label text-xs font-bold tracking-widest text-on-surface-variant uppercase">
-                Sıfır Bürokrasi
-              </span>
-            </div>
-            <div className="flex flex-col items-center text-center space-y-4">
-              <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-primary shadow-sm hover:scale-110 transition-transform">
-                <span className="material-symbols-outlined text-2xl" data-icon="verified_user">
-                  verified_user
-                </span>
-              </div>
-              <span className="font-label text-xs font-bold tracking-widest text-on-surface-variant uppercase">
-                Nusuk ve Vize Garantisi
-              </span>
-            </div>
-            <div className="flex flex-col items-center text-center space-y-4">
-              <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-primary shadow-sm hover:scale-110 transition-transform">
-                <span className="material-symbols-outlined text-2xl" data-icon="directions_car">
-                  directions_car
-                </span>
-              </div>
-              <span className="font-label text-xs font-bold tracking-widest text-on-surface-variant uppercase">
-                Özel VIP Transfer
-              </span>
-            </div>
-            <div className="flex flex-col items-center text-center space-y-4">
-              <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-primary shadow-sm hover:scale-110 transition-transform">
-                <span className="material-symbols-outlined text-2xl" data-icon="auto_stories">
-                  auto_stories
-                </span>
-              </div>
-              <span className="font-label text-xs font-bold tracking-widest text-on-surface-variant uppercase">
-                Birebir İlahiyatçı Rehber
-              </span>
-            </div>
-            <div className="flex flex-col items-center text-center space-y-4 col-span-2 md:col-span-1">
-              <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center text-primary shadow-sm hover:scale-110 transition-transform">
-                <span className="material-symbols-outlined text-2xl" data-icon="support_agent">
-                  support_agent
-                </span>
-              </div>
-              <span className="font-label text-xs font-bold tracking-widest text-on-surface-variant uppercase">
-                7/24 WhatsApp Hizmeti
-              </span>
-            </div>
-          </div>
+      <section className="relative z-10 -mt-10 px-4 md:px-8">
+        <div className="max-w-screen-xl mx-auto bg-white rounded-2xl shadow-[0_18px_50px_-20px_rgba(0,25,68,0.35)] border border-outline-variant/15">
+          <ul className="grid grid-cols-2 md:grid-cols-5 divide-outline-variant/15 md:divide-x">
+            {TRUST_ITEMS.map((item, i) => (
+              <li key={item.label} className={`flex items-center gap-3 px-5 py-5 md:py-6 ${i === TRUST_ITEMS.length - 1 ? "col-span-2 md:col-span-1" : ""}`}>
+                <span className="material-symbols-outlined text-primary text-[22px] shrink-0">{item.icon}</span>
+                <span className="text-[13px] font-semibold text-on-surface leading-snug">{item.label}</span>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
+
+      <div className="h-16 md:h-20" />
 
       {/* Eylül Grup Umresi Kampanya Banner — iç reklam birimi */}
       <section className="bg-primary py-0 overflow-hidden">
@@ -224,9 +240,9 @@ export default async function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {featuredPackages.map((pkg: any) => (
+            {featuredPackages.map((pkg) => (
               <div key={pkg.id} data-reveal className="bg-white rounded-[2rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 group flex flex-col border border-outline-variant/10 hover:-translate-y-2 relative">
-                {pkg.isPopular && (
+                {pkg.id === popularPackageId && (
                   <div className="absolute top-6 left-6 z-20 bg-secondary text-white font-bold text-[10px] uppercase tracking-widest px-4 py-2 rounded-full shadow-lg border border-secondary/20 backdrop-blur-md">
                     En Çok Tercih Edilen
                   </div>
@@ -252,6 +268,12 @@ export default async function Home() {
                   </p>
                   
                   <div className="mt-auto pt-6 border-t border-outline-variant/10">
+                    {pkg.price > 0 && (
+                      <p className="mb-5 flex items-baseline justify-between text-on-surface-variant text-xs uppercase tracking-widest font-semibold">
+                        Başlangıç
+                        <span className="font-headline text-2xl text-primary font-bold normal-case tracking-normal">{formatPrice(pkg.price, pkg.currency)}</span>
+                      </p>
+                    )}
                     <Link href={`/paketler/${pkg.slug}`} className="w-full bg-primary text-white font-bold tracking-widest uppercase text-[11px] py-4 rounded-xl hover:bg-white hover:text-primary active:scale-95 transition-all flex justify-center items-center gap-3 shadow-md border border-transparent hover:border-outline-variant/20">
                       Paketi İncele <span className="material-symbols-outlined text-[16px]">touch_app</span>
                     </Link>
@@ -279,9 +301,6 @@ export default async function Home() {
               <h2 className="font-headline text-3xl md:text-5xl text-primary font-bold">
                 {homeStepsTitle}
               </h2>
-            </div>
-            <div className="text-on-surface-variant max-w-sm text-lg md:text-xl italic font-headline opacity-80 border-l-4 border-tertiary-fixed-dim pl-4">
-              "Kalbinizdeki niyet, bizim için en değerli rotadır. Sizin için her detayı incelikle tasarlıyoruz."
             </div>
           </div>
           
@@ -470,7 +489,7 @@ export default async function Home() {
                     </div>
                   )}
                   <div className="absolute top-6 left-6 bg-white/95 backdrop-blur-md px-4 py-2 rounded-full text-[10px] font-bold tracking-widest uppercase text-primary shadow-sm border border-outline-variant/10">
-                    {new Date(blog.createdAt).toLocaleDateString('tr-TR')}
+                    {new Date(blog.createdAt).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' })}
                   </div>
                 </div>
                 <div className="p-8 md:p-10 flex flex-col flex-1">
@@ -481,9 +500,13 @@ export default async function Home() {
                     {blog.description}
                   </p>
                   <div className="mt-auto pt-6 border-t border-outline-variant/10 flex items-center justify-between">
-                    <span className="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest flex items-center gap-2">
-                      <span className="material-symbols-outlined text-[14px]">edit_square</span> {blog.author}
-                    </span>
+                    {blog.authorModel?.name ? (
+                      <span className="text-[11px] font-semibold text-on-surface-variant flex items-center gap-2">
+                        <span className="material-symbols-outlined text-[14px]">edit_square</span> {blog.authorModel.name}
+                      </span>
+                    ) : (
+                      <span className="text-[11px] font-semibold text-on-surface-variant">Rehber yazısı</span>
+                    )}
                     <span className="text-white bg-secondary w-8 h-8 rounded-full flex items-center justify-center shadow-md group-hover:w-24 transition-all duration-300 overflow-hidden relative">
                       <span className="material-symbols-outlined text-[16px] absolute right-2">arrow_forward</span>
                       <span className="text-[10px] uppercase tracking-widest font-bold absolute left-4 opacity-0 group-hover:opacity-100 transition-opacity delay-100">Oku</span>
@@ -512,35 +535,18 @@ export default async function Home() {
             </p>
           </div>
 
-          <div className="space-y-6">
-            <div className="bg-white rounded-2xl p-6 shadow-sm border border-outline-variant/20 hover:shadow-md transition-shadow" data-reveal>
-              <h3 className="font-bold text-lg text-primary mb-3">1. Bireysel Umre Vizesi Nasıl Alınır? Zor Mu?</h3>
-              <p className="text-on-surface-variant text-sm leading-relaxed">
-                Suudi Arabistan yönetimi artık <strong>bireysel umre vizesi</strong> alımını son derece kolaylaştırmıştır. Otel konaklamanız ve uçuşunuz belirlendikten sonra, acente garantörlüğü ile Nusuk sistemi üzerinden 24 saat içerisinde adınıza e-vize tanımlanır. Klasik turların evrak yüküyle uğraşmadan anında hazır olursunuz.
-              </p>
-            </div>
-
-            <div className="bg-white rounded-2xl p-6 shadow-sm border border-outline-variant/20 hover:shadow-md transition-shadow" data-reveal>
-              <h3 className="font-bold text-lg text-primary mb-3">2. Kafileye Katılmadan "Kendi Programıyla Umre" Yapılabilir Mi?</h3>
-              <p className="text-on-surface-variant text-sm leading-relaxed">
-                Evet, kesinlikle yapılabilir. Kalabalık kafilelere mahkum olmadan, ailenizle <strong>kendi programınızla umre</strong> planlamak en doğal hakkınızdır. Sistemimizde yer alan fiyat konfigüratörü ile Kabe manzaralı lüks otellerinizi tamamen kendi bütçenize göre seçer, "Kendi umrenizi kendiniz tasarlarsınız". Bu sistem klasik paketlere göre %30'a varan tasarruf sağlar.
-              </p>
-            </div>
-
-            <div className="bg-white rounded-2xl p-6 shadow-sm border border-outline-variant/20 hover:shadow-md transition-shadow" data-reveal>
-              <h3 className="font-bold text-lg text-primary mb-3">3. Bireysel VIP Umre Turlarında Rehberlik Veriliyor Mu?</h3>
-              <p className="text-on-surface-variant text-sm leading-relaxed">
-                Bireysel gitmeniz rehbersiz kalacağınız anlamına gelmez. Vize ve biletleriniz ayarlandıktan sonra, Mekke ve Medine'deki lokal <strong>özel ilahiyatçı rehberlerimiz</strong> karşılama ve ibadetlerinizi ifa etmeniz (Tavaf, Say) noktasında birebir size eşlik eder. 
-              </p>
-            </div>
-            
-            <div className="bg-white rounded-2xl p-6 shadow-sm border border-outline-variant/20 hover:shadow-md transition-shadow" data-reveal>
-              <h3 className="font-bold text-lg text-primary mb-3">4. Hangi Aylar (Fırsat Sezonu) Umre İçin Daha Ucuzdur?</h3>
-              <p className="text-on-surface-variant text-sm leading-relaxed">
-                <strong>2026 Umre fiyatları</strong> döneme göre değişiklik gösterir. Özellikle Şevval ayı ve Kurban bayramı sonrası (Eylül, Ekim ayları) fiyatların en düşük olduğu "Yeşil Sezon"dur. Konfigüratörümüzdeki ısı haritasından bu takvimi görebilir ve çok ucuza VIP kalitesinde seyahat ayarlayabilirsiniz.
-              </p>
-            </div>
+          <div className="space-y-3">
+            {HOME_FAQ.map((item) => (
+              <details key={item.q} className="group bg-white rounded-2xl border border-outline-variant/20 shadow-sm open:shadow-md transition-shadow">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 p-6 [&::-webkit-details-marker]:hidden">
+                  <h3 className="font-bold text-base md:text-lg text-primary">{item.q}</h3>
+                  <span className="material-symbols-outlined text-primary transition-transform group-open:rotate-45 shrink-0">add</span>
+                </summary>
+                <p className="px-6 pb-6 -mt-2 text-on-surface-variant text-sm leading-relaxed">{item.a}</p>
+              </details>
+            ))}
           </div>
+          <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
         </div>
       </section>
 

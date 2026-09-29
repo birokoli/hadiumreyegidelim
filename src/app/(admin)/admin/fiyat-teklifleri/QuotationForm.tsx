@@ -99,8 +99,9 @@ export default function QuotationForm({ editId }: { editId?: string }) {
           setQuotationNo(q.quotationNo || '');
           setCustomerName(q.customerName || '');
           setCustomerPhone(q.customerPhone || '');
-          setPaxCount(q.paxCount || 1);
-          setChildCount(q.childCount || 0);
+          // Veritabanı ve API adultsCount / childrenCount kullanır
+          setPaxCount(q.adultsCount ?? q.paxCount ?? 1);
+          setChildCount(q.childrenCount ?? q.childCount ?? 0);
           setInfantCount(q.infantCount || 0);
           setTravelDate(q.travelDate || '');
           setStartDate(q.startDate ? q.startDate.slice(0, 10) : '');
@@ -136,7 +137,7 @@ export default function QuotationForm({ editId }: { editId?: string }) {
       vehicleType:       it.vehicleType,
       extraBedCount:     it.extraBedCount,
       extraBedPriceUsd:  it.extraBedPriceUsd,
-    }, m, pax, ch);
+    }, { adultsCount: pax, childrenCount: ch, margin: m });
   }, []);
 
   function handleMarginChange(newMargin: number) {
@@ -201,6 +202,7 @@ export default function QuotationForm({ editId }: { editId?: string }) {
 
     const body = {
       customerName, customerPhone, paxCount, childCount, infantCount,
+      adultsCount: paxCount, childrenCount: childCount,
       travelDate, startDate, validUntil, margin, usdRate,
       notes, status,
       items: items.map((it, idx) => ({ ...it, sortOrder: idx })),

@@ -162,7 +162,7 @@ async function buildLiveKnowledge(config: WhatsAppAIConfig) {
   ].join("\n\n");
 }
 
-export type AIReply = { reply: string; intent: string; leadType: string; leadScore: number; handoff: boolean; handoffReason: string; provider?: string; fallback?: boolean; warning?: string };
+export type AIReply = { reply: string; intent: string; leadType: string; leadScore: number; handoff: boolean; handoffReason: string; provider?: string; fallback?: boolean; warning?: string; workflowLogs?: Array<{ step: number; name: string; model: string; output: string; durationMs: number }> };
 
 type SalesContext = { umrahType?: "bireysel" | "grup"; people?: number; adults?: number; children?: number; days?: number; medinaDays?: number; roomOccupancy?: 2 | 3 | 4; month?: string; travelMonths: string[]; departureDate?: string; budget?: string; budgetScopeKnown: boolean; preferences: string[] };
 

@@ -259,6 +259,85 @@ export default function ExcelPricingCalculator({ initialCustomerName, initialPho
   const perPaxNakitUsd = paxCount > 0 ? totalSaleUsdNakit / paxCount : 0;
 
   // Generate WhatsApp Message text
+  // ── Teklif aksiyonları ─────────────────────────────────────────
+  // fc32bd2'de düğmeler eklenmiş ama işlevleri yazılmamıştı; bireysel sekmeler
+  // (Uygun/Orta/Pahalı) açılınca sayfa çöküyordu.
+  const [pdfCreatedId, setPdfCreatedId] = useState<string | null>(null);
+  const [actionStatus, setActionStatus] = useState<string>("");
+  const [savingQuotation, setSavingQuotation] = useState(false);
+
+  const handleCopyToClipboard = async () => {
+    const text = decodeURIComponent(generateWhatsAppMessage());
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      ta.remove();
+    }
+    setActionStatus("Teklif metni kopyalandı.");
+  };
+
+  const handleCreateQuotationDatabase = async () => {
+    if (!customerName.trim()) {
+      alert("Teklifi kaydetmek için müşteri adı girin.");
+      return;
+    }
+    setSavingQuotation(true);
+    setActionStatus("");
+    try {
+      const soldItems = currentItems.filter((item) => item.saleTry > 0);
+      const totalCost = soldItems.reduce((sum, item) => sum + item.costTry, 0);
+      const totalSale = soldItems.reduce((sum, item) => sum + item.saleTry, 0);
+      const margin = totalCost > 0 ? Math.round(((totalSale - totalCost) / totalCost) * 1000) / 10 : 0;
+      const toUsd = (tryValue: number, fallbackUsd: number) => (usdRate > 0 ? tryValue / usdRate : fallbackUsd);
+      // Teklif PDF'i yalnızca vize/hotel/transfer/tur/flight/extra kategorilerini listeler;
+      // eşlenmeyen kalem PDF'ten ve toplamdan düşerdi
+      const toQuotationCategory = (c: string) =>
+        ({ visa: "vize", vize: "vize", hotel: "hotel", transfer: "transfer", flight: "flight", tur: "tur" } as Record<string, string>)[c] ?? "extra";
+      const res = await fetch("/api/admin/quotations", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          customerName: customerName.trim(),
+          customerPhone,
+          adultsCount: paxCount,
+          childrenCount: 0,
+          margin,
+          usdRate,
+          notes: `Excel Fiyat Motoru, ${activeTab} paket. Mekke: ${mekkeHotelName}, Medine: ${medineHotelName}.`,
+          // PDF her kalemi "birim maliyet × (1 + marj)" ile yeniden hesaplar. Excel'de satır
+          // marjları farklı olabildiği için birim maliyet, müşteriye giden satış fiyatı
+          // Excel'dekiyle aynı çıkacak şekilde satıştan geri hesaplanır (marj PDF'te görünmez).
+          items: soldItems.map((item, idx) => {
+            const saleUsd = toUsd(item.saleTry, item.saleUsd);
+            return {
+              category: toQuotationCategory(item.category),
+              name: item.name,
+              description: item.note || null,
+              pricingType: "flat",
+              unitCostUsd: Math.round((saleUsd / (1 + margin / 100)) * 10000) / 10000,
+              quantity: 1,
+              saleTotalUsd: Math.round(saleUsd * 100) / 100,
+              sortOrder: idx,
+            };
+          }),
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.quotation) throw new Error(data.error || `Kayıt başarısız (${res.status})`);
+      setPdfCreatedId(data.quotation.id);
+      setActionStatus(`Teklif kaydedildi: ${data.quotation.quotationNo}`);
+    } catch (err) {
+      setActionStatus(err instanceof Error ? err.message : "Teklif kaydedilemedi.");
+    } finally {
+      setSavingQuotation(false);
+    }
+  };
+
   const generateWhatsAppMessage = () => {
     let msg = `*HADİ UMRE'YE GİDELİM - ${activeTab} UMRE PAKET TEKLİFİ*\n\n`;
     if (customerName) msg += `Sayın *${customerName}*,\n\n`;
@@ -816,11 +895,14 @@ export default function ExcelPricingCalculator({ initialCustomerName, initialPho
 
                 <button
                   onClick={handleCreateQuotationDatabase}
+                  disabled={savingQuotation}
                   className="w-full py-2 bg-surface-container-lowest border border-outline-variant/40 text-on-surface rounded font-medium hover:border-on-surface transition-colors flex items-center justify-center gap-2"
                 >
                   <span className="material-symbols-outlined text-[16px]">save</span>
                   <span>Teklifi Veritabanına Kaydet</span>
                 </button>
+
+                {actionStatus && <p className="text-[11px] text-on-surface-variant" aria-live="polite">{actionStatus}</p>}
 
                 {pdfCreatedId && (
                   <a

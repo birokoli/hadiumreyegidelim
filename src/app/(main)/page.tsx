@@ -135,7 +135,7 @@ export default async function Home() {
   return (
     <>
       {/* ─── Hero + planlayıcı ─────────────────────────────── */}
-      <section className="relative z-20 w-full pt-28 md:pt-32 pb-10 md:pb-14">
+      <section className="relative z-20 w-full pt-28 md:pt-32 pb-16 md:pb-44">
         <div className="absolute inset-0 overflow-hidden">
           <Image alt="Kabe ve Mescid-i Haram" className="object-cover" src={home_banner_image} fill priority fetchPriority="high" sizes="100vw" quality={80} />
           {heroVideo && (

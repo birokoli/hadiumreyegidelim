@@ -61,9 +61,15 @@ export default function CompetitorsPage() {
         <Section title="İçerik boşlukları" aside="rakiplerin anılıp markanın hiçbir motorda anılmadığı sorular">
           <ul>
             {view.gaps.map((g) => (
-              <li key={g.prompt.id} className="grid gap-1 py-3 sm:grid-cols-[1fr_auto] sm:gap-8">
+              <li key={g.prompt.id} className="grid gap-2 py-3 sm:grid-cols-[1fr_auto_auto] sm:items-center sm:gap-6">
                 <Link href={`/admin/ai-visibility/yanitlar?p=${g.prompt.id}`} className="text-[16px] font-semibold hover:underline">{g.prompt.text}</Link>
                 <span className="text-[13px] text-[var(--seo-ink-3)]">{g.competitors.join(", ")}</span>
+                <Link
+                  href={`/admin/seo/blog?topic=${encodeURIComponent(g.prompt.text)}`}
+                  className="seo-btn text-[12px] py-1 px-2.5 whitespace-nowrap"
+                >
+                  Bu soru için yazı üret →
+                </Link>
               </li>
             ))}
           </ul>

@@ -50,20 +50,21 @@ Bir oturuma başlarken bu bölümü uygula. Kullanıcı başka bir şey istemedi
 ### Faz 0 · Kullanıcı ayarları (kod gerekmez)
 
 - [ ] **0.1 Anthropic kredisi.** console.anthropic.com → Plans & Billing'den kredi yükle, **ya da** AI Görünürlük → Sorular'da Claude'un işaretini kaldır. Kredi olmadan her Claude sorgusu hata verir.
-- [ ] **0.2 Ana alan adı kararı.** Site `hadiumreyegidelim.com` adresini `www.hadiumreyegidelim.com`'a yönlendiriyor, ama canonical, sitemap ve robots www'suz adresi gösteriyor. Hangisi ana adres olacak? (Öneri: www'suz. Vercel → Domains'te apex'i "primary" yap, www'yu ona yönlendir. Bu seçilirse 2.1 çok küçülür.) Karar buraya yazılsın: `KARAR: …`
+- [ ] **0.2 Ana alan adı kararı.** KARAR (2026-09-29): **www'suz `hadiumreyegidelim.com`**. Kodun tamamı zaten bu adresi kullanıyor; kalan iş kullanıcıda: Vercel → Domains'te `hadiumreyegidelim.com`'u primary yap, `www`'yu ona 308 ile yönlendir. Yapılınca bu adımı ve 2.1'i işaretle (2.1'de kod değişikliği gerekmeyebilir, denetimle doğrula).
+  - Eski açıklama: Site `hadiumreyegidelim.com` adresini `www.hadiumreyegidelim.com`'a yönlendiriyor, ama canonical, sitemap ve robots www'suz adresi gösteriyor. Hangisi ana adres olacak? (Öneri: www'suz. Vercel → Domains'te apex'i "primary" yap, www'yu ona yönlendir. Bu seçilirse 2.1 çok küçülür.) Karar buraya yazılsın: `KARAR: …`
 - [ ] **0.3 Rakipler.** AI Görünürlük → Rakipler'e 3–5 rakip firma (ad + alan adı) gir; SEO Masası → Rakipler'e aynı alan adlarını gir.
 - [ ] **0.4 Takip edilen kelimeler.** SEO Masası → Kelimeler'de 10–20 hedef kelime seçip takibe al, Sıralar'da ilk kontrolü çalıştır.
 - [ ] **0.5 Sorular.** AI Görünürlük'teki soruları 10–15'e çıkar (öneriler + persona). Markalı soru eklemek gerekmez.
 
 ### Faz 1 · Hata düzeltmeleri (kod, öncelikli)
 
-- [ ] **1.1 Google AI Mode: `depth` hatası**
+- [x] **1.1 Google AI Mode: `depth` hatası**
   - Belirti: `DataForSEO: Invalid Field: 'depth'. (40501)`, 4/4 sorgu.
   - Dosyalar: `src/lib/ai-vis/engines.ts` → `runGoogle()`.
   - Yapılacak: `google-ai-mode` isteğinden `depth` alanını kaldır (yalnızca organic SERP'te kalsın). DataForSEO dokümanından `serp/google/ai_mode/live/advanced` parametrelerini kontrol et.
   - Bitti sayılır: Sorular'da AI Mode sütununda `!` kalmıyor; Hata raporunda `google-ai-mode` hatası yok.
 
-- [ ] **1.2 Google AI Overview: geçici hata ve boş yer tutucu**
+- [x] **1.2 Google AI Overview: geçici hata ve boş yer tutucu**
   - Belirti: 2 sorguda `Internal SE Server Error. (40101)`. "Başarılı" bir yanıtın metni ise anlamsız: `` `bilsis` :load{skill_names:[travel,shopping,local]} ``.
   - Dosyalar: `src/lib/ai-vis/engines.ts` (`runGoogle`), `src/lib/seo/dataforseo.ts` (`dfsPost` yeniden deneme).
   - Yapılacak: (a) AI Overview için `40101`'de de 2 kez yeniden dene (Elmo `retryTransient` ile aynı; yalnızca bu uç nokta için). (b) Markdown `:load{` içeriyorsa ya da kaynaksız ve 80 karakterden kısaysa `no_surface` say, `note` alanına açıklama yaz.

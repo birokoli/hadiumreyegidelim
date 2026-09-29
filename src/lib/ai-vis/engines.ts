@@ -123,28 +123,66 @@ type SerpResult = {
   items?: { type?: string; markdown?: string | null; references?: { url?: string; title?: string }[] | null }[] | null;
 };
 
+/** AI Overview'da DataForSEO ara sıra görev düzeyinde 40101 "Internal SE Server Error" veriyor;
+ * birkaç deneme çoğu zaman geçiriyor (Elmo retryTransient ile aynı yaklaşım). */
+async function withSeRetry<T>(call: () => Promise<T>, attempts = 3): Promise<T> {
+  for (let i = 1; ; i++) {
+    try {
+      return await call();
+    } catch (e) {
+      const transient = e instanceof DataforseoError && (e.status === 40101 || /Internal SE Server Error/i.test(e.message));
+      if (!transient || i >= attempts) throw e;
+      await new Promise((r) => setTimeout(r, 1000 * i));
+    }
+  }
+}
+
+/** Google AI yanıtı tam yüklenmeden alınan yer tutucu metinler (ör. "`bilsis` :load{skill_names:[...]}") */
+function isPlaceholder(markdown: string, referenceCount: number) {
+  return /:load\{|skill_names/.test(markdown) || (referenceCount === 0 && markdown.length < 80);
+}
+
 async function runGoogle(engine: "google-ai-overview" | "google-ai-mode", prompt: string): Promise<EngineResult> {
   const path = engine === "google-ai-overview" ? "/v3/serp/google/organic/live/advanced" : "/v3/serp/google/ai_mode/live/advanced";
   const { value, note } = await withLocation((loc) =>
-    dfsPost<SerpResult>(path, [
-      {
-        keyword: prompt,
-        ...loc,
-        depth: 10,
-        // AI Overview talep üzerine üretilir; bu olmadan çoğu zaman boş döner (Elmo notu)
-        ...(engine === "google-ai-overview" ? { load_async_ai_overview: true } : {}),
-      },
-    ]),
+    withSeRetry(() =>
+      dfsPost<SerpResult>(path, [
+        {
+          keyword: prompt,
+          ...loc,
+          // AI Mode uç noktası depth kabul etmiyor (40501 Invalid Field: 'depth')
+          ...(engine === "google-ai-overview"
+            ? {
+                depth: 10,
+                // AI Overview talep üzerine üretilir; bu olmadan çoğu zaman boş döner (Elmo notu)
+                load_async_ai_overview: true,
+              }
+            : {}),
+        },
+      ]),
+    ),
   );
   const overview = (value.result?.items ?? []).find((i) => i.type === "ai_overview");
-  if (!overview?.markdown?.trim()) {
+  const markdown = overview?.markdown?.trim() ?? "";
+  const references = overview?.references ?? [];
+  if (!markdown) {
     // Google bu soru için AI yanıtı göstermedi: ıskalama değil, yüzey yok
     return { status: "no_surface", text: "", citations: [], queries: [], cost: value.cost, note };
   }
+  if (isPlaceholder(markdown, references.length)) {
+    return {
+      status: "no_surface",
+      text: "",
+      citations: [],
+      queries: [],
+      cost: value.cost,
+      note: [note, "Google'ın AI yanıtı tam yüklenmeden alındı (yer tutucu metin); yanıt yok sayıldı."].filter(Boolean).join(" "),
+    };
+  }
   return {
     status: "ok",
-    text: overview.markdown.trim().slice(0, MAX_TEXT),
-    citations: dedupe((overview.references ?? []).map((r) => citation(r.url, r.title))),
+    text: markdown.slice(0, MAX_TEXT),
+    citations: dedupe(references.map((r) => citation(r.url, r.title))),
     queries: [],
     cost: value.cost,
     note,

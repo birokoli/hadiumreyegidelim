@@ -308,6 +308,9 @@ Kurulan skill'ler: claude-seo eklentisi (seo-content, seo-content-brief, seo-clu
 - Dikkat: `src/app/layout.tsx` bütün `.rounded-full/.rounded-xl/...` sınıflarını `BUTTON_RADIUS` ayarına zorluyor; tam hap şekli için `rounded-[999px]` kullan. `(main)` düzeni bölümleri içerik genişliğine daraltıyor; tam genişlik bölümlere `w-full` ver.
 - Lokal dev sunucusu dosya değişikliklerini bazen kaçırıyor: `curl localhost:3002 | grep` ile kontrol et, gerekirse sunucuyu yeniden başlat.
 
+**Arka plan videosu (a21d44a):** Admin → Ayarlar → Anasayfa → "Arka plan videosu" alanından MP4/WebM yüklenir (`/api/upload-sign` ile doğrudan Supabase'e; Vercel 4,5 MB sınırı yok, en fazla 50 MB). Ayar anahtarı `HOME_HERO_VIDEO`; boşsa `home_banner_image` görseli gösterilir. Video sessiz, döngülü, `playsInline` (Safari/iOS için şart); "hareketi azalt" açık cihazlarda gizlenir. Önerilen: 10–20 sn, ≤20 MB, 1080p H.264.
+**Safari notu:** Lokal dev'de Safari eski CSS'i önbellekten gösterebilir (yeni sınıflar yok gibi görünür); Cmd+Option+R ile yenile. Canlıda dosya adları hash'li olduğu için sorun olmaz.
+
 **Sonra (kullanıcı onayıyla):** Üst menü etiketleri kısaltılabilir ("Rehberler & Keşifler Portalı" → "Keşifler", "Manevi Rehberlik Blogu" → "Blog"); menü `src/components/layout/` altında, tüm siteyi etkiler.
 
 ## 4. Durum günlüğü

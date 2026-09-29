@@ -284,15 +284,15 @@ Kurulan skill'ler: claude-seo eklentisi (seo-content, seo-content-brief, seo-clu
 
 **Adımlar (sırayla; her biri ayrı commit, mesaj başında `[7.x]`):**
 
-- [ ] **7.1 Hero.** H1 şu an ekranda "SİZE ÖZEL MANEVİ ROTA" gösteriyor, "Bireysel Umre" yalnızca `sr-only` içinde gizli. Yapılacak: H1 içinde üstte görünür küçük satır "Bireysel Umre 2026", altında büyük `HERO_TITLE`. Yükseklik `min-h-[82vh]`; butonlar: birincil "Planlamaya başla" (`HOME_CTA`, /bireysel-umre), ikincil WhatsApp. Hero altına 3 kısa bilgi satırı (ör. "Tarihi siz seçersiniz · Otel ve uçuş dahil planlama · Türkçe rehberlik"), iddia içermeyen. Görsel `priority` kalsın.
+- [x] **7.1 Hero.** H1 şu an ekranda "SİZE ÖZEL MANEVİ ROTA" gösteriyor, "Bireysel Umre" yalnızca `sr-only` içinde gizli. Yapılacak: H1 içinde üstte görünür küçük satır "Bireysel Umre 2026", altında büyük `HERO_TITLE`. Yükseklik `min-h-[82vh]`; butonlar: birincil "Planlamaya başla" (`HOME_CTA`, /bireysel-umre), ikincil WhatsApp. Hero altına 3 kısa bilgi satırı (ör. "Tarihi siz seçersiniz · Otel ve uçuş dahil planlama · Türkçe rehberlik"), iddia içermeyen. Görsel `priority` kalsın.
   - Bitti sayılır: H1 metni ekranda "Bireysel Umre" içeriyor; mobilde (375px) başlık 3 satırı geçmiyor; ilk ekranda görünmez öğe yok.
-- [ ] **7.2 Güven şeridi.** 5 ikonlu satır sade bir bantta; ikon + kısa etiket + tek satır açıklama. Metinler aynı (onay bekleyen iddialar dahil, değiştirme).
-- [ ] **7.3 Paketler.** "En Çok Tercih Edilen" rozeti en fazla **bir** pakette (ilk `isPopular` olanda) görünsün; şu an üçünde de var. Kartta fiyat göster: `price` + `currency` → "1.250 $'dan başlayan" (`toLocaleString('tr-TR')`). Kart başlığı `h3`.
-- [ ] **7.4 Nasıl çalışır (3 adım).** Aynı içerik, daha sıkı düzen; tırnaklı slogan kalkabilir.
-- [ ] **7.5 Blog bölümü.** Yazar olarak `post.author` ("ADMİN") yerine `authorModel.name` (Author ilişkisi; `include: { authorModel: { select: { name: true } } }`), yoksa yazar satırı gösterilmez. Tarih biçimi "12 Eylül 2026".
-- [ ] **7.6 SSS.** 4 soruyu `<details>/<summary>` ile açılır yap. **FAQPage JSON-LD'yi `src/app/layout.tsx`'ten kaldır** (şu an admin dahil her sayfada basılıyor, sayfadaki SSS ile de uyuşmuyor) ve ana sayfada görünen 4 soruyla birebir aynı metinle `page.tsx` içine taşı.
-- [ ] **7.7 Hız.** `page.tsx` ayarları ikinci kez `prisma.setting.findMany()` ile çekiyor; üç sorguyu `Promise.all` ile paralel çalıştır (2.2 ile birlikte kök layout önbelleği yapılınca oradaki yardımcıyı kullan).
-- [ ] **7.8 Kontrol ve önizleme.** `npx tsc --noEmit`, `npm run build`. Dalı gönder, önizleme adresinde masaüstü + mobil ekran görüntüsü al, kullanıcıya göster. Onaydan sonra `main`'e birleştir ve Durum günlüğüne yaz.
+- [x] **7.2 Güven şeridi.** 5 ikonlu satır sade bir bantta; ikon + kısa etiket + tek satır açıklama. Metinler aynı (onay bekleyen iddialar dahil, değiştirme).
+- [x] **7.3 Paketler.** "En Çok Tercih Edilen" rozeti en fazla **bir** pakette (ilk `isPopular` olanda) görünsün; şu an üçünde de var. Kartta fiyat göster: `price` + `currency` → "1.250 $'dan başlayan" (`toLocaleString('tr-TR')`). Kart başlığı `h3`.
+- [x] **7.4 Nasıl çalışır (3 adım).** Aynı içerik, daha sıkı düzen; tırnaklı slogan kalkabilir.
+- [x] **7.5 Blog bölümü.** Yazar olarak `post.author` ("ADMİN") yerine `authorModel.name` (Author ilişkisi; `include: { authorModel: { select: { name: true } } }`), yoksa yazar satırı gösterilmez. Tarih biçimi "12 Eylül 2026".
+- [x] **7.6 SSS.** 4 soruyu `<details>/<summary>` ile açılır yap. **FAQPage JSON-LD'yi `src/app/layout.tsx`'ten kaldır** (şu an admin dahil her sayfada basılıyor, sayfadaki SSS ile de uyuşmuyor) ve ana sayfada görünen 4 soruyla birebir aynı metinle `page.tsx` içine taşı.
+- [x] **7.7 Hız.** `page.tsx` ayarları ikinci kez `prisma.setting.findMany()` ile çekiyor; üç sorguyu `Promise.all` ile paralel çalıştır (2.2 ile birlikte kök layout önbelleği yapılınca oradaki yardımcıyı kullan).
+- [ ] **7.8 Kontrol ve önizleme.** *(Durum 30.09: 7.1–7.7 `anasayfa` dalında, commit ab6c324 + c01e234; build ve tipler temiz. Önizleme adresi: `https://hadiumreyegidelimcom-git-anasayfa-yatos-projects-2b9810f4.vercel.app/` — Vercel girişi ister, kullanıcı kendi tarayıcısında açar. Ajan tarayıcısı Vercel'e giriş yapamadığı için görsel kontrol kullanıcının geri bildirimiyle yapılacak. Kullanıcı düzeltme isterse aynı dalda devam et.)* `npx tsc --noEmit`, `npm run build`. Dalı gönder, önizleme adresinde masaüstü + mobil ekran görüntüsü al, kullanıcıya göster. Onaydan sonra `main`'e birleştir ve Durum günlüğüne yaz.
 
 **Sonra (kullanıcı onayıyla):** Üst menü etiketleri kısaltılabilir ("Rehberler & Keşifler Portalı" → "Keşifler", "Manevi Rehberlik Blogu" → "Blog"); menü `src/components/layout/` altında, tüm siteyi etkiler.
 

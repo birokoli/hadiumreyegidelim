@@ -192,7 +192,7 @@ async function runGoogle(engine: "google-ai-overview" | "google-ai-mode", prompt
 // ─── Claude (Anthropic API, web araması) ───────────────────────────────────
 
 /** Anthropic hatalarını kısa, yönlendirici Türkçe mesaja çevirir (ham JSON ve request_id olmadan) */
-function explainAnthropicError(e: unknown): string {
+export function explainAnthropicError(e: unknown): string {
   const raw = e instanceof Error ? e.message : String(e);
   if (/credit balance is too low/i.test(raw)) {
     return "Anthropic kredisi bitti: console.anthropic.com → Plans & Billing'den kredi yükleyin ya da Sorular'da Claude'un işaretini kaldırın.";

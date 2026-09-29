@@ -1,0 +1,119 @@
+/* SEO Masası: marka renkleri (beyaz + lacivert), admin panelinin kart düzeninden ayrışan bir kompozisyon.
+   Kırmızı yalnızca hata için.
+   Hiyerarşiyi tipografi taşır; kart, gölge ve dekoratif çizgi yok.
+   Çizgi yalnızca yoğun veri tablolarında satır ayırıcı olarak kullanılır. */
+
+.seo-desk {
+  /* hadiumreyegidelim.com: ana renk beyaz, detay renk lacivert, kırmızı yalnızca hata */
+  --seo-paper: #ffffff;      /* ana zemin */
+  --seo-paper-2: #f2f5fa;    /* lacivert tonlu açık yüzey: input, bilgi kutusu */
+  --seo-ink: #001944;        /* koyu lacivert: metin ve büyük rakamlar */
+  --seo-ink-2: #3d4a66;      /* ikincil metin */
+  --seo-ink-3: #6b7690;      /* soluk metin, etiket */
+  --seo-rule: #e1e6ef;       /* tablo satır ayırıcı */
+  --seo-mark: #003781;       /* marka laciverti: aktif bölüm, düğme, vurgu */
+  --seo-danger: #ba1a1a;     /* yalnızca hata, kritik sorun ve düşüş */
+
+  background: var(--seo-paper);
+  color: var(--seo-ink);
+  font-family: var(--font-seo), "Inter", sans-serif;
+  /* tnum burada global değil: bu yazı tipinde nokta ve virgülü de genişletiyor.
+     Rakamlar .seo-figure, .num ve tabular-nums ile hizalanır. */
+  min-height: calc(100vh - 3.5rem);
+  -webkit-font-smoothing: antialiased;
+}
+
+.seo-desk ::selection {
+  background: #003781;
+  color: #ffffff;
+}
+
+.seo-desk .seo-mono {
+  font-family: var(--font-seo-mono), ui-monospace, monospace;
+  font-feature-settings: normal;
+  letter-spacing: -0.01em;
+}
+
+.seo-desk .seo-title {
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 0.95;
+}
+
+.seo-desk .seo-figure {
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  line-height: 0.85;
+  font-variant-numeric: tabular-nums;
+}
+
+.seo-desk .seo-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--seo-ink-3);
+  letter-spacing: 0.01em;
+}
+
+.seo-desk .seo-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--seo-mark);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 14px;
+  padding: 0.7rem 1.1rem;
+  border-radius: 4px;
+  transition: background-color 160ms ease, transform 120ms ease;
+}
+.seo-desk .seo-btn:hover { background: #001944; }
+.seo-desk .seo-btn:active { transform: translateY(1px); }
+.seo-desk .seo-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.seo-desk .seo-link {
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--seo-rule);
+  transition: text-decoration-color 160ms ease;
+}
+.seo-desk .seo-link:hover { text-decoration-color: var(--seo-mark); }
+
+.seo-desk .seo-input {
+  background: var(--seo-paper-2);
+  border-radius: 4px;
+  padding: 0.7rem 0.9rem;
+  font-size: 15px;
+  outline: 2px solid transparent;
+  outline-offset: 0;
+  transition: outline-color 140ms ease;
+}
+.seo-desk .seo-input::placeholder { color: var(--seo-ink-3); }
+.seo-desk .seo-input:focus { outline-color: var(--seo-mark); }
+
+.seo-desk :focus-visible {
+  outline: 2px solid var(--seo-mark);
+  outline-offset: 2px;
+}
+
+/* Yoğun veri tablosu: satır ayırıcı burada yapısal iş görüyor */
+.seo-desk .seo-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.seo-desk .seo-table th {
+  text-align: left;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--seo-ink-3);
+  padding: 0 0.75rem 0.6rem 0;
+  white-space: nowrap;
+}
+.seo-desk .seo-table td {
+  padding: 0.7rem 0.75rem 0.7rem 0;
+  border-top: 1px solid var(--seo-rule);
+  vertical-align: middle;
+}
+.seo-desk .seo-table .num { text-align: right; font-variant-numeric: tabular-nums; }
+
+@media (prefers-reduced-motion: reduce) {
+  .seo-desk * { transition: none !important; }
+}

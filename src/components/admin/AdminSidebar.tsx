@@ -48,6 +48,7 @@ const menuGroups: { title: string; links: { href: string; icon: string; label: s
       { href: "/admin/influencers", icon: "person_celebrate", label: "Influencer Yönetimi", permission: "marketing" },
       { href: "/admin/affiliate",   icon: "star",             label: "Affiliate Program", permission: "marketing" },
       { href: "/admin/campaigns",   icon: "campaign",         label: "Kampanyalar", permission: "marketing" },
+      { href: "/admin/seo",         icon: "travel_explore",   label: "SEO Masası", permission: "marketing" },
       { href: "/admin/eylul-umresi", icon: "ads_click",        label: "ADS Sayfası", permission: "marketing" },
       { href: "/admin/support",     icon: "support_agent",    label: "Canlı Destek", permission: "marketing" },
       { href: "/admin/whatsapp-ai", icon: "smart_toy",        label: "WhatsApp AI", permission: "marketing" },

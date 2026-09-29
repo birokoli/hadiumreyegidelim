@@ -135,19 +135,19 @@ export default async function Home() {
   return (
     <>
       {/* ─── Hero + planlayıcı ─────────────────────────────── */}
-      <section className="relative z-20 w-full pt-28 md:pt-32 pb-16 md:pb-44">
+      <section className="relative z-20 w-full pt-28 pb-16 md:pt-32 md:pb-12 md:min-h-[620px] md:flex md:flex-col md:justify-end">
         <div className="absolute inset-0 overflow-hidden">
-          <Image alt="Kabe ve Mescid-i Haram" className="object-cover" src={home_banner_image} fill priority fetchPriority="high" sizes="100vw" quality={80} />
+          <Image alt="Kabe ve Mescid-i Haram" className="object-cover object-bottom" src={home_banner_image} fill priority fetchPriority="high" sizes="100vw" quality={80} />
           {heroVideo && (
             // Döngü video; görsel altta kalır (video yüklenene kadar ve "hareketi azalt" açıksa görünür)
-            <video className="hero-video absolute inset-0 w-full h-full object-cover" autoPlay muted loop playsInline preload="auto" poster={home_banner_image} aria-hidden="true">
+            <video className="hero-video absolute inset-0 w-full h-full object-cover object-bottom" autoPlay muted loop playsInline preload="auto" poster={home_banner_image} aria-hidden="true">
               <source src={heroVideo} type={heroVideo.toLowerCase().endsWith(".webm") ? "video/webm" : "video/mp4"} />
             </video>
           )}
           <div className="absolute inset-0 bg-[#001944]/55" />
           <div className="absolute inset-0 bg-gradient-to-b from-[#001944]/40 via-transparent to-[#001944]/70" />
         </div>
-        <div className="relative max-w-screen-xl mx-auto px-4 md:px-8">
+        <div className="relative w-full max-w-screen-xl mx-auto px-4 md:px-8">
           <h1 className="font-headline text-white font-bold tracking-tight max-w-3xl">
             <span className="block font-body text-[12px] md:text-[13px] font-semibold tracking-[0.2em] uppercase text-white/75 mb-3">Bireysel Umre 2026</span>
             <span className="block text-3xl sm:text-4xl md:text-5xl leading-[1.12] text-balance">{home_banner_title}</span>

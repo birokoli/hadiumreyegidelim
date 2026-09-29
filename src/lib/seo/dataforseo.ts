@@ -44,33 +44,53 @@ type Envelope<T> = {
 
 export type DfsResult<T> = { data: T; cost: number };
 
+const MAX_ATTEMPTS = 3;
+const RETRY_BACKOFF_MS = 600;
+
+/** DataForSEO görev hata kodları: 5xxxx sunucu tarafı (geçici), 40xxx istek/hesap sorunu */
+function explainTaskError(code: number, message: string) {
+  if (code >= 50000) return `DataForSEO kendi tarafında hata verdi (${code} ${message}). Birkaç dakika sonra tekrar deneyin; bu sorgu için ücret kesilmedi.`;
+  if (code === 40104 || code === 40105) return `DataForSEO hesabı doğrulanmamış ya da bu API için izin yok (${code} ${message}). DataForSEO panelinde hesap doğrulamasını tamamlayın.`;
+  if (code === 40200 || code === 40210) return `DataForSEO bakiyesi yetersiz (${code}).`;
+  return `DataForSEO: ${message} (${code})`;
+}
+
 async function post<T>(path: string, body: unknown[]): Promise<{ result: T | null; cost: number }> {
   const auth = authHeader();
   if (!auth) throw new DataforseoError("DataForSEO bağlı değil.", 412);
 
-  const res = await fetch(`${API_BASE}${path}`, {
-    method: "POST",
-    headers: { Authorization: auth, "Content-Type": "application/json" },
-    body: JSON.stringify(body),
-    signal: AbortSignal.timeout(TIMEOUT_MS),
-    cache: "no-store",
-  });
+  // open-seo ile aynı yaklaşım: geçici 5xx hatalarında kısa bekleyip yeniden dene
+  let lastError: DataforseoError | null = null;
+  for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+    if (attempt > 1) await new Promise((r) => setTimeout(r, RETRY_BACKOFF_MS * (attempt - 1)));
 
-  if (!res.ok) {
-    const text = await res.text().catch(() => "");
+    const res = await fetch(`${API_BASE}${path}`, {
+      method: "POST",
+      headers: { Authorization: auth, "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+      signal: AbortSignal.timeout(TIMEOUT_MS),
+      cache: "no-store",
+    });
+
     if (res.status === 401) throw new DataforseoError("DataForSEO giriş bilgileri geçersiz.", 401);
     if (res.status === 402) throw new DataforseoError("DataForSEO bakiyesi yetersiz.", 402);
-    throw new DataforseoError(`DataForSEO ${res.status}: ${text.slice(0, 300)}`, res.status);
-  }
 
-  const json = (await res.json()) as Envelope<T>;
-  const task = json.tasks?.[0];
-  if (!task) throw new DataforseoError(json.status_message || "DataForSEO boş yanıt döndü.");
-  // 20000 = ok, 40102 = "no search results" (hata değil, boş sonuç)
-  if (task.status_code !== 20000 && task.status_code !== 40102) {
-    throw new DataforseoError(`${task.status_message} (${task.status_code})`, task.status_code);
+    // 5xx yanıtında da gövde çoğu zaman aynı zarf biçiminde gelir; görev kodunu oradan oku
+    const json = (await res.json().catch(() => null)) as Envelope<T> | null;
+    const task = json?.tasks?.[0];
+
+    if (task && (task.status_code === 20000 || task.status_code === 40102)) {
+      // 40102 = "no search results": hata değil, boş sonuç
+      return { result: task.result?.[0] ?? null, cost: task.cost ?? json?.cost ?? 0 };
+    }
+
+    const code = task?.status_code ?? res.status;
+    const message = task?.status_message ?? json?.status_message ?? `HTTP ${res.status}`;
+    lastError = new DataforseoError(explainTaskError(code, message), code >= 50000 ? 502 : code);
+    const transient = res.status >= 500 || code >= 50000;
+    if (!transient) throw lastError;
   }
-  return { result: task.result?.[0] ?? null, cost: task.cost ?? json.cost ?? 0 };
+  throw lastError!;
 }
 
 // ─── Anahtar kelime araştırması ──────────────────────────────────────────
@@ -112,6 +132,8 @@ function toKeywordRow(item: LabsKeywordData): KeywordRow | null {
   };
 }
 
+const byVolume = (rows: KeywordRow[]) => [...rows].sort((a, b) => (b.volume ?? -1) - (a.volume ?? -1));
+
 export async function keywordResearch(
   seed: string,
   mode: "suggestions" | "related",
@@ -123,7 +145,7 @@ export async function keywordResearch(
       [{ keyword: seed, location_code: DFS_LOCATION_CODE, language_code: DFS_LANGUAGE_CODE, limit, depth: 2, include_serp_info: false }],
     );
     const rows = (result?.items ?? []).map((i) => toKeywordRow(i.keyword_data ?? {})).filter(Boolean) as KeywordRow[];
-    return { data: rows, cost };
+    return { data: byVolume(rows), cost };
   }
 
   const { result, cost } = await post<{ items?: LabsKeywordData[] }>(
@@ -135,11 +157,10 @@ export async function keywordResearch(
       limit,
       include_seed_keyword: true,
       include_serp_info: false,
-      order_by: ["keyword_info.search_volume,desc"],
     }],
   );
   const rows = (result?.items ?? []).map(toKeywordRow).filter(Boolean) as KeywordRow[];
-  return { data: rows, cost };
+  return { data: byVolume(rows), cost };
 }
 
 /** Google Ads hacimleri; tek istekte 1000 kelimeye kadar. */

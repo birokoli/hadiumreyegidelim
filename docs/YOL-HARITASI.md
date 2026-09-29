@@ -93,6 +93,11 @@ Bir oturuma başlarken bu bölümü uygula. Kullanıcı başka bir şey istemedi
   - Yapılacak: Her yerde imzalı `admin_token` JWT zorunlu olsun; eski çerez yolunu kaldır. Login'in her admin türü için token ürettiğini doğrula. Middleware `/api/admin/*`'ı her host'ta korusun (`/api/admin/login` hariç).
   - Bitti sayılır: Tarayıcıda yalnızca `admin_session=true` yazmak artık giriş sağlamıyor; normal girişle bütün admin sayfaları çalışıyor. **Kullanıcı onayı olmadan push etme** (herkesi dışarıda bırakma riski).
 
+- [ ] **1.7 Vercel'de iki proje, biri build'de başarısız**
+  - Belirti: Her push iki Vercel projesine gidiyor: `hadiumreyegidelim.com` ve `hadiumreyegidelim`. `84fd1b5`'ten sonra `hadiumreyegidelim` projesinin build'i iki kez başarısız oldu (`8d56c03`, `cb32308`); `hadiumreyegidelim.com` projesi `cb32308`'de başarılı. Lokal `npx next build` sorunsuz. Ayrıca GitHub'da her commit'te başarısız bir "Workers Builds" (Cloudflare) ve Railway kontrolü görünüyor.
+  - Yapılacak (kullanıcı ile): Vercel'de hangi projenin `hadiumreyegidelim.com` ve `admin.hadiumreyegidelim.com` alan adlarına bağlı olduğunu kontrol et. Başarısız projenin build logunu (Vercel → Deployments → son deploy → Build Logs) ajana ver. Alan adı bağlı olmayan eski proje, Cloudflare Workers ve Railway bağlantıları kullanılmıyorsa kaldırılabilir; bu karar kullanıcının.
+  - Bitti sayılır: Alan adının bağlı olduğu proje her push'ta `success`; gereksiz entegrasyonlar kaldırıldı ya da nedenleri yazıldı.
+
 ### Faz 2 · Teknik SEO (site geneli)
 
 - [ ] **2.1 Canonical host** (0.2 kararına göre)

@@ -157,7 +157,7 @@ Kurulan skill'ler: claude-seo eklentisi (seo-content, seo-content-brief, seo-clu
 - [x] **6.3 Yazım** – `src/lib/geo-blog/write.ts`: `client.messages.parse` + `jsonSchemaOutputFormat` (`@anthropic-ai/sdk/helpers/json-schema`) ile JSON: title (≤60), slug, metaDescription (120–160), tldr, content (HTML, H1 yok, ≥4 H2 ve ≥3'ü soru, her H2 40–60 kelimelik doğrudan cevapla başlar, 1 tablo, 1200–2000 kelime), faq (4–6), keywords. İç linkler yalnızca `pickLinkTargets` adaylarından (4–8), dış linkler yalnızca araştırma kaynaklarından. Uydurma deneyim, müşteri, rakam yok; her rakam bir kaynağa bağlı. no-ai-slop yasaklı kalıpları.
 - [x] **6.4 Kalite kapısı** – `src/lib/geo-blog/gate.ts`: deterministik kontroller (uzunluklar, H1 yok, soru H2, iç linkler `isInternalPath`, dış linkler kaynak listesinde, tablo, SSS, yasaklı ifadeler, birimli rakam sayısı). Kritik hata ya da puan <80 ise hatalarla birlikte bir kez yeniden yazdır.
 - [x] **6.5 Boru hattı ve API** – `src/lib/geo-blog/pipeline.ts` + `src/app/api/admin/geo-blog/{opportunities,generate,publish,links}/route.ts`. generate NDJSON ile ilerleme akıtır (maxDuration 300), sonucu **taslak** Post olarak kaydeder (`published:false`, `seoScore`, `faq` JSON, `tldr`, `references` = kaynak listesi). Yetki: `requireSeoAdmin()`.
-- [ ] **6.6 Fırsat kuyruğu** – AI Görünürlük içerik boşlukları ve anılmadığımız sorular (`src/lib/ai-vis/metrics.ts`: contentGaps, fanOutQueries), SEO'da takip edilip ilk 10'da olmayan kelimeler, mevcut yazılarla çakışmayan konular.
+- [x] **6.6 Fırsat kuyruğu** – AI Görünürlük içerik boşlukları ve anılmadığımız sorular (`src/lib/ai-vis/metrics.ts`: contentGaps, fanOutQueries), SEO'da takip edilip ilk 10'da olmayan kelimeler, mevcut yazılarla çakışmayan konular.
 - [ ] **6.7 Arayüz** – SEO Masası'na "07 Blog" bölümü (fırsatlar, konu yaz → üret, taslaklar + kapı puanı, önizleme, Yayınla). AI Görünürlük → Rakipler'deki içerik boşluklarına "Bu soru için yazı üret" linki. Tasarım dili SEO Masası ile aynı.
 - [ ] **6.8 Yayın sonrası ölçüm** – Yayınla: `published:true`, odak kelimeyi `SEO_TRACKED_KEYWORDS`'e, ana soruyu `AI_VIS_CONFIG.prompts`'a (etiket "blog") ekle, `revalidatePath`.
 - [ ] **6.9 İç link önerileri** – mevcut yazılar için öneri ve tek tıkla uygulama (mevcut `<a>` içine girmeden ilk geçen ifadeye link); eski yazılardaki `/rehber` kırık linklerini düzelt.
@@ -172,6 +172,7 @@ En yeni en üstte. Her tamamlanan adım için bir satır.
 
 | Tarih | Ajan | Adım | Commit | Not |
 |---|---|---|---|---|
+| 2026-09-29 | Antigravity | 6.6 | (bu commit) | GEO blog fırsat kuyruğu (getBlogOpportunities) yazıldı; AI content gaps, fan-out aramaları ve SEO kelimeleri skorlandı |
 | 2026-09-29 | Antigravity | 6.5 | (bu commit) | GEO blog boru hattı (generateBlogDraft) ve API uç noktaları (generate, publish, opportunities, links) yazıldı |
 | 2026-09-29 | Antigravity | 6.4 | (bu commit) | GEO blog kalite kapısı (evaluateArticleQuality) yazıldı; kelime sayısı, H1, H2 soru, tablo, link doğrulama ve AI-slop filtreleri uygulandı |
 | 2026-09-29 | Antigravity | 6.3 | (bu commit) | GEO blog yazım modülü (writeArticle) yazıldı; SEO+GEO kuralları, H2 soru formatı, HTML tablo ve link kısıtları uygulandı |

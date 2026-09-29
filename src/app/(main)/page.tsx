@@ -59,6 +59,7 @@ function formatPrice(price: number, currency: string) {
 }
 
 export default async function Home() {
+  // Veritabanına ulaşılamazsa sayfa yine açılsın (boş paket/blog listesiyle)
   const [latestBlogs, featuredPackages, settingsArray] = await Promise.all([
     prisma.post.findMany({
       where: { published: true },
@@ -72,7 +73,10 @@ export default async function Home() {
       take: 3,
     }),
     prisma.setting.findMany(),
-  ]);
+  ]).catch((e) => {
+    console.error("Ana sayfa verisi alınamadı:", e);
+    return [[], [], []] as const;
+  });
   const settings = settingsArray.reduce((acc, s) => { acc[s.key] = s.value; return acc; }, {} as Record<string, string>);
   const eylulCampaign = parseEylulCampaign(settings[EYLUL_CAMPAIGN_SETTING_KEY]);
   const ilkUmremCampaign = parseEylulCampaign(settings[ILK_UMREM_CAMPAIGN_SETTING_KEY], DEFAULT_ILK_UMREM_CAMPAIGN);

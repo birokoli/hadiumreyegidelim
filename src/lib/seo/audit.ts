@@ -48,7 +48,10 @@ export type SiteFacts = {
   sitemapUrls: string[];
   hasLlmsTxt: boolean;
   httpRedirectsToHttps: boolean | null;
-  wwwResolvesToApex: boolean | null;
+  /** www'lu ve www'suz adres aynı son adrese mi varıyor */
+  hostsConsistent: boolean | null;
+  /** Sitenin fiilen açıldığı host (yönlendirmeler sonrası) */
+  finalHost: string | null;
 };
 
 export type AuditReport = {
@@ -206,12 +209,13 @@ async function fetchText(url: string): Promise<{ status: number; text: string; f
 
 export async function collectSiteFacts(): Promise<SiteFacts> {
   const apex = new URL(SITE_URL).hostname;
-  const [robots, sitemap, llms, http, www] = await Promise.all([
+  const [robots, sitemap, llms, http, www, bare] = await Promise.all([
     fetchText(`${SITE_URL}/robots.txt`),
     fetchText(`${SITE_URL}/sitemap.xml`),
     fetchText(`${SITE_URL}/llms.txt`),
     fetchText(`http://${apex}/`),
     fetchText(`https://www.${apex}/`),
+    fetchText(`https://${apex}/`),
   ]);
 
   const sitemapUrls =
@@ -224,7 +228,8 @@ export async function collectSiteFacts(): Promise<SiteFacts> {
     sitemapUrls,
     hasLlmsTxt: Boolean(llms && llms.status === 200 && !/<html/i.test(llms.text.slice(0, 500))),
     httpRedirectsToHttps: http ? http.finalUrl.startsWith("https://") : null,
-    wwwResolvesToApex: www ? new URL(www.finalUrl).hostname === apex : null,
+    hostsConsistent: www && bare ? new URL(www.finalUrl).hostname === new URL(bare.finalUrl).hostname : null,
+    finalHost: bare ? new URL(bare.finalUrl).hostname : null,
   };
 }
 
@@ -273,7 +278,7 @@ export function buildIssues(facts: SiteFacts, pages: PageResult[]): Issue[] {
   }
   if (facts.sitemapUrls.length === 0) add({ code: "sitemap-missing", category: "Taranabilirlik", severity: "kritik", title: "sitemap.xml boş ya da okunamadı", fix: "src/app/sitemap.ts çıktısını canlıda kontrol edin; veritabanı hatasında boş liste dönüyor olabilir." });
   if (facts.httpRedirectsToHttps === false) add({ code: "https-redirect", category: "Taranabilirlik", severity: "yüksek", title: "http:// adresi https:// adresine yönlenmiyor", fix: "Vercel alan adı ayarlarında HTTPS yönlendirmesini açın." });
-  if (facts.wwwResolvesToApex === false) add({ code: "www-split", category: "Taranabilirlik", severity: "orta", title: "www. ve www'suz adres ayrı çalışıyor", fix: "Vercel'de www.hadiumreyegidelim.com için hadiumreyegidelim.com'a 308 yönlendirmesi tanımlayın." });
+  if (facts.hostsConsistent === false) add({ code: "www-split", category: "Taranabilirlik", severity: "orta", title: "www. ve www'suz adres ayrı çalışıyor", fix: "Vercel'de iki adresten birini ana adres seçip diğerini ona 308 ile yönlendirin." });
 
   add({ code: "status-error", category: "Taranabilirlik", severity: "kritik", title: "Sitemap'teki sayfa hata döndürüyor", pages: pages.filter((p) => p.status !== 200).map((p) => `${p.path} (${p.status || p.error || "yanıt yok"})`), fix: "Sayfayı düzeltin ya da sitemap'ten çıkarın. Google hata veren URL'leri indeksten düşürür." });
   add({ code: "redirected", category: "Taranabilirlik", severity: "orta", title: "Sitemap yönlendirilen URL içeriyor", pages: ok.filter((p) => p.finalPath).map((p) => `${p.path} → ${p.finalPath}`), fix: "Sitemap'e yönlendirmenin son adresini yazın." });
@@ -284,6 +289,23 @@ export function buildIssues(facts: SiteFacts, pages: PageResult[]): Issue[] {
     pages: ok.filter((p) => p.canonical && toPath(p.canonical) !== null && toPath(p.canonical) !== p.path).map((p) => `${p.path} → ${toPath(p.canonical!)}`),
     fix: "Her benzersiz sayfa kendi adresini canonical olarak vermeli. Bilerek birleştirilen sayfalar değilse düzeltin.",
   });
+  if (facts.finalHost) {
+    const wrongHost = ok.filter((p) => {
+      if (!p.canonical) return false;
+      try {
+        return new URL(p.canonical, SITE_URL).hostname !== facts.finalHost;
+      } catch {
+        return false;
+      }
+    });
+    add({
+      code: "canonical-host", category: "Taranabilirlik", severity: "yüksek",
+      title: "Canonical, yönlendirme yapan adresi gösteriyor",
+      detail: `site ${facts.finalHost} üzerinde açılıyor`,
+      pages: wrongHost.map((p) => `${p.path} → ${p.canonical}`),
+      fix: `Canonical, sitemap ve robots.txt'teki adresler sitenin açıldığı host ile aynı olmalı (${facts.finalHost}). Ya Vercel'de ana alan adını değiştirin ya da SITE_URL/canonical değerlerini bu host'a çekin; Google yönlenen canonical'ı zayıf sinyal sayar.`,
+    });
+  }
   const linked = new Set(ok.flatMap((p) => p.links));
   add({ code: "orphan", category: "Taranabilirlik", severity: "orta", title: "Hiçbir sayfadan link almayan sayfa", pages: where((p) => p.path !== "/" && !linked.has(p.path)), fix: "Bu sayfalara ilgili hub sayfasından (paketler, blog, şehir listesi) link verin. Sadece sitemap'te duran sayfa zayıf sinyal alır." });
 

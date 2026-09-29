@@ -85,7 +85,7 @@ export default function SeoAuditPage() {
       <PageHead
         n="02"
         title="Site denetimi"
-        lede="Sitemap'teki her sayfayı canlı siteden çeker ve 32 kuralla kontrol eder: taranabilirlik, title ve açıklama, başlık yapısı, içerik uzunluğu, yapısal veri ve AI botlarının erişimi."
+        lede="Sitemap'teki her sayfayı canlı siteden çeker ve 33 kuralla kontrol eder: taranabilirlik, title ve açıklama, başlık yapısı, içerik uzunluğu, yapısal veri ve AI botlarının erişimi."
       >
         <button className="seo-btn" onClick={run} disabled={Boolean(progress)}>
           {progress ? "Denetleniyor" : report ? "Yeniden denetle" : "Denetimi başlat"}

@@ -149,7 +149,7 @@ En yeni en üstte. Her tamamlanan adım için bir satır.
 
 | Tarih | Ajan | Adım | Commit | Not |
 |---|---|---|---|---|
-| 2026-09-29 | Claude Code | yol haritası | (bu commit) | Canlı hata raporlarından (acb8c74) oluşturuldu |
+| 2026-09-29 | Claude Code | yol haritası | a45bb7c | Canlı hata raporlarından (acb8c74) oluşturuldu |
 | 2026-09-29 | Claude Code | önceki iş | acb8c74 | Excel Fiyat Motoru çökmesi ve teklif formu NaN/kişi sayısı düzeltildi |
 | 2026-09-29 | Claude Code | önceki iş | 19d3c81 | Hata raporu düğmesi eklendi |
 | 2026-09-29 | Claude Code | önceki iş | 6c83697 | AI Görünürlük yeniden kuruldu |

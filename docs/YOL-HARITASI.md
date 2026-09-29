@@ -162,7 +162,7 @@ Bir oturuma başlarken bu bölümü uygula. Kullanıcı başka bir şey istemedi
 
 ### Faz 5 · Otomasyon ve sağlamlık
 
-- [ ] **5.1 `ignoreBuildErrors` kapat.** `tsc` artık `src/` altında temiz (acb8c74). `next.config.ts`'te `typescript.ignoreBuildErrors`'ı kaldır ki tip hataları bir daha canlıya çıkmasın. Önce yerelde `npx next build` çalıştır.
+- [x] **5.1 `ignoreBuildErrors` kapat.** *(30.09, Claude: kaldırıldı; build artık tip kontrolü yapıyor)* `tsc` artık `src/` altında temiz (acb8c74). `next.config.ts`'te `typescript.ignoreBuildErrors`'ı kaldır ki tip hataları bir daha canlıya çıkmasın. Önce yerelde `npx next build` çalıştır.
 - [ ] **5.2 Haftalık otomatik ölçüm.** Vercel cron ile haftada bir AI sorularını ve sıra kontrolünü çalıştıran uç nokta; harcama sınırı (ör. tek çalıştırmada en fazla $2) ve `CRON_SECRET` kontrolü. Maliyet için kullanıcı onayı gerekir.
 - [ ] **5.3 Hata raporu diğer admin sayfalarında.** `DiagButton`'ı Excel Fiyat Motoru ve Fiyat Teklifleri sayfalarına da ekle (şu an yalnızca SEO/AI).
 - [ ] **5.4 Depolamayı tabloya taşı.** AI yanıtları ve günlük özetler büyüyünce `Setting` JSON yerine Prisma modelleri (`AiVisRun`, `AiVisDaily`). Supabase migration'ı kullanıcı onayıyla, ham SQL ile (bkz. proje hafızası: `prisma db push` kullanılmıyor).

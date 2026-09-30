@@ -34,6 +34,34 @@ Antigravity her iş oturumunda bu dosyanın **en üstüne** bir kayıt ekler. Am
 
 <!-- Kayıtlar bu çizginin altına, en yeni en üstte -->
 
+## 2026-10-01 — Claude Code: Antigravity denetimi (hata listesi) + umre vizesi başvuru sayfası
+**Dal / commit:** `main` · (bu commit)
+**Yapılan:**
+- Yeni sayfa `/umre-vizesi/basvuru`: ön başvuru formu (ad, telefon, e-posta, kişi sayısı, gidiş, uyruk, pasaport 6 ay geçerliliği, not, KVKK onayı). Başvuru `/api/contact` üzerinden admin → İletişim'e "Umre vizesi başvurusu" etiketiyle düşer; pasaport numarası formda istenmez. Service + FAQPage + BreadcrumbList şeması, sitemap, `/umre-vizesi`'den iki bağlantı. Ücret/süre yazılmadı (kullanıcıdan gelmedi).
+- www'siz ve www'li adresler: ikisi de çalışıyor (www'siz → tek yönlendirmeyle www, 200). Asıl adres www (`SITE_URL`).
+
+**Antigravity işinin denetimi (3.2 + 2.1):**
+Doğru yapılanlar: 21 sayfa kılavuzdaki konuların tamamını işliyor (tavafta remel/ıztıba, mikatta 5 mikat vb.); denetim 0 hata; gruplar içinde kopya yok (ay sayfaları ort. %14 benzerlik); ana sayfa değişmedi; her grup için kayıt ve kullanıcı onayı var; `SITE_URL` tek kaynak fikri doğru.
+
+| # | Hata | Durum |
+|---|---|---|
+| 1 | 7 ay sayfasında Mekke/Medine sıcaklıkları yanlış ve düşük (ör. Mekke ocak "23–27" → ort. ~31/19 °C; nisan "30–34" → ~38/25 °C); ekim/kasım Mekke "ılık" | ✅ Claude düzeltti |
+| 2 | 14 bağlantı metni adres gibi (`[mart-umresi](/mart-umresi)`) | ✅ düzeltildi, denetime kural eklendi |
+| 3 | 2.1 "tamamlandı" işaretlendi ama asıl sorun (canonical www'siz → 307) çözülmemişti; rehber canonical'ları, paket detayı, bireysel umre şeması atlanmıştı | ✅ düzeltildi (SITE_URL = www) |
+| 4 | Klasörde kendi SITE_URL işini geri alan kaydedilmemiş değişiklikler bırakıldı | ✅ temizlendi |
+| 5 | **Arama hacmi kuralı uygulanmadı** (SAYFA-GRUPLARI.md §3 zorunlu): hiçbir kayıtta hacim yok | ❌ AÇIK |
+| 6 | **Kaynak çeşitliliği:** 21 sayfanın tek kaynağı `diyanet.gov.tr` ana sayfası; yaşlı ve tekerlekli sandalye sayfalarında istenen sağlık kaynağı (moh.gov.sa) yok | ❌ AÇIK |
+| 7 | **Kullanıcının isteği yanlış devredildi:** kullanıcı "yazıların admin tarafı bağlantıları ve düzenlemesi nereden yapılacak" diye sordu; kayda "Claude paket kayıtları açsın" yazıldı. Paket uydurulamaz (kullanıcı paketleri kendisi girecek). Rehber sayfaları kod dosyası, admin'den düzenlenemiyor; kullanıcıya bu açıkça söylenmedi | ⚠️ Paket: rehberlerde gerçek paketler otomatik listeleniyor (çözüldü). Admin'den düzenleme: AÇIK (karar gerekir) |
+
+**Antigravity'nin yapacakları (sırayla):**
+1. #5: SEO Masası → Programatik → "Arama hacimlerini getir"; 21 sayfanın kelimelerinin hacmini tabloyla bu dosyaya yaz. Hacmi 0 olanları kullanıcıya göster; kaldırma/birleştirme kararı kullanıcının.
+2. #6: `yasli-umresi` ve `tekerlekli-sandalye-ile-umre`'ye sağlık şartları için `https://www.moh.gov.sa/` kaynağı ve metin içinde konu kelimesiyle bağlantı; açıldığını `curl -sIL` ile doğrula. Diğer sayfalarda konuya uygun ikinci resmî kaynak varsa ekle (yalnızca açıldığı doğrulanan adresler).
+3. #7: Kullanıcıya açıkça sor: rehber sayfalarının admin'den (İçerik Stüdyosu) düzenlenebilmesi isteniyor mu? İsteniyorsa bu bir geliştirme işidir (içeriğin veritabanına taşınması); kararı ve kapsamı buraya yaz, Claude Code'a devret.
+4. Sıralama planı: `docs/SIRALAMA-YOL-HARITASI.md` Faz A2–A4.
+
+**Sıradaki adım:** Yukarıdaki 1. madde.
+
+
 ## 2026-10-01 — Claude Code: Antigravity kontrolü, asıl adres www, içerik düzeltmeleri
 **Dal / commit:** `main` · (bu commit)
 **Yol haritası adımı:** Sıralama A1, 3.2 kontrol

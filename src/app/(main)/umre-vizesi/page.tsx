@@ -53,6 +53,9 @@ export default function UmreVizesiPage() {
             <p className="text-lg md:text-xl text-primary-50 leading-relaxed font-light">
               Kalabalık gruplara ve katı kurallı acentelere bağlı kalmak zorunda değilsiniz. Kendi ailenizle, tamamen bağımsız ve özgür bir umre deneyimi için gereken vize süreci sandığınızdan çok daha kolay.
             </p>
+            <Link href="/umre-vizesi/basvuru" className="mt-8 inline-flex items-center gap-2 rounded-2xl bg-white px-7 py-4 text-sm font-bold text-primary shadow-xl hover:bg-white/90">
+              Online vize başvurusu yap →
+            </Link>
           </div>
           <div className="absolute right-0 top-0 opacity-10 pointer-events-none transform translate-x-1/4 -translate-y-1/4 scale-150">
             <span className="material-symbols-outlined text-[400px]">flight_takeoff</span>
@@ -142,6 +145,9 @@ export default function UmreVizesiPage() {
               Elektronik Turizm vizenizi, lüks otellerinizi, VIP transferlerinizi ve usta rehberlik hizmetini ailenize özel tasarlayın; gerisini bize bırakın. Siz sadece ibadetinize odaklanın.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link href="/umre-vizesi/basvuru" className="bg-white text-slate-900 px-10 py-5 rounded-2xl font-bold tracking-widest text-sm uppercase shadow-2xl active:scale-95 transition-all">
+                VİZE BAŞVURUSU YAP
+              </Link>
               <Link href="/bireysel-umre" className="bg-primary text-white px-10 py-5 rounded-2xl font-bold tracking-widest text-sm uppercase shadow-2xl shadow-primary/30 hover:bg-white hover:text-slate-900 active:scale-95 transition-all">
                 KENDİ UMRENİ ŞİMDİ TASARLA
               </Link>

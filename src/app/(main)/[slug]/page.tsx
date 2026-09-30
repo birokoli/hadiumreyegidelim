@@ -5,7 +5,11 @@ import { notFound } from "next/navigation";
 import BireyselUmreClient from "@/components/features/BireyselUmreClient";
 import { turkeyCities, getTurkishCityBySlug, type TurkeyCity } from "@/lib/turkey-cities";
 import { cityTravelFacts, nearestCities, type Region } from "@/lib/city-geo";
-import { metaDescription, pageTitle } from "@/lib/seo/meta";
+import { DEFAULT_OG_IMAGE, metaDescription, pageTitle } from "@/lib/seo/meta";
+import ContentPageView from "@/components/content/ContentPageView";
+import { CONTENT_PAGES, getContentPage } from "@/content/pages";
+import { pageTitles } from "@/content/pages/titles";
+import { getSiteSettings } from "@/lib/site-settings";
 import { PageTrust, webPageJsonLd } from "@/components/seo/PageTrust";
 
 type Props = {
@@ -15,8 +19,18 @@ type Props = {
 const SUFFIX = "-cikisli-bireysel-umre";
 
 export function generateStaticParams() {
-  return turkeyCities.map((city) => ({ slug: `${city.slug}${SUFFIX}` }));
+  return [
+    ...turkeyCities.map((city) => ({ slug: `${city.slug}${SUFFIX}` })),
+    // Rehber sayfalarının kişi ve zaman grupları kök adreste (/aile-umresi, /ekim-umresi)
+    ...CONTENT_PAGES.filter((p) => ROOT_GROUPS.has(p.group)).map((p) => ({ slug: p.slug })),
+  ];
 }
+
+const ROOT_GROUPS = new Set(["kisi", "zaman"]);
+const rootContentPage = (slug: string) => {
+  const p = getContentPage(slug);
+  return p && ROOT_GROUPS.has(p.group) ? p : null;
+};
 
 // İstanbul'un iki havalimanından Cidde ve Medine'ye direkt tarifeli seferler var
 const DIRECT_HUBS = new Set(["IST", "SAW"]);
@@ -85,6 +99,15 @@ function buildCityContent(city: TurkeyCity) {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
+  const content = rootContentPage(slug);
+  if (content) {
+    return {
+      title: pageTitle(content.title),
+      description: content.description,
+      alternates: { canonical: `https://hadiumreyegidelim.com/${content.slug}` },
+      openGraph: { title: content.title, description: content.description, type: "article", images: [DEFAULT_OG_IMAGE] },
+    };
+  }
   if (!slug?.endsWith(SUFFIX)) return {};
   const city = getTurkishCityBySlug(slug.replace(SUFFIX, ""));
   if (!city) return {};
@@ -103,6 +126,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function DynamicCityUmrahPage({ params }: Props) {
   const { slug } = await params;
+  const content = rootContentPage(slug);
+  if (content) {
+    const whatsappNumber = ((await getSiteSettings()).WHATSAPP_NUMBER || "905404010038").replace("+", "");
+    return <ContentPageView page={content} whatsappNumber={whatsappNumber} relatedTitles={pageTitles()} />;
+  }
   if (!slug?.endsWith(SUFFIX)) notFound();
   const city = getTurkishCityBySlug(slug.replace(SUFFIX, ""));
   if (!city) notFound();

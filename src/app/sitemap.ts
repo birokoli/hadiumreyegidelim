@@ -1,6 +1,7 @@
 import { MetadataRoute } from 'next';
 import { prisma } from '@/lib/prisma';
 import { turkeyCities } from '@/lib/turkey-cities';
+import { CONTENT_PAGES, contentPath } from '@/content/pages';
 
 export const dynamic = 'force-dynamic';
 
@@ -119,6 +120,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...categoryUrls,
     ...blogUrls,
     ...packageUrls,
+    // Rehber sayfaları (3.2): ana sayfada listelenmez, Google sitemap ve /umre-rehberi'den bulur
+    {
+      url: `${baseUrl}/umre-rehberi`,
+      lastModified: new Date(CONTENT_PAGES.map((p) => p.reviewed).sort().at(-1) ?? Date.now()),
+      changeFrequency: 'weekly' as const,
+      priority: 0.8,
+    },
+    ...CONTENT_PAGES.map((p) => ({
+      url: `${baseUrl}${contentPath(p)}`,
+      lastModified: new Date(p.reviewed),
+      changeFrequency: 'monthly' as const,
+      priority: 0.8,
+    })),
     ...turkeyCities.map((city) => ({
       url: `${baseUrl}/${city.slug}-cikisli-bireysel-umre`,
       lastModified: new Date(),

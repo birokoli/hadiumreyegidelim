@@ -55,6 +55,8 @@ Son güncelleme: 30 Eylül 2026 (Claude Code). Bu belge, Claude Code'un yaptığ
 
 ## 5. Sıradaki işler (öncelik sırasıyla)
 
+0. **3.2 Programatik sayfa grupları — ANA İŞ.** Kılavuz: `docs/SAYFA-GRUPLARI.md` (kurallar esnetilmez). Dal `sayfa-gruplari`; altyapı ve örnek sayfa (`/umre-rehberi/ihram-nedir`) hazır, yalnızca içerik dosyaları yazılacak. Her 3–4 sayfada kullanıcıya **lokalde** (`http://localhost:3002/...`) göster, "canlıya al" demeden main'e birleştirme.
+
 1. **Kullanıcıyı 0.2–0.6 için yönlendir** (kod değil): Vercel'de ana alan adı; AI Görünürlük → Rakipler; SEO Masası → Kelimeler (10–20); AI soruları 10–15; ilk blog taslağı. Ayrıca ayar ezilmesi hatasında sıfırlanan değerleri admin'den yeniden girmesi (ana sayfa başlığı "SİZE ÖZEL MANEVİ ROTA", açıklama "Ruhunuzun Ritmini Kafilelere Teslim Etmeyin.", Instagram ve diğer sosyal linkler, logo/iletişim/WhatsApp mesajı kontrolü).
 2. **4.2 Temel ölçüm:** 0.3–0.5 bitince AI Görünürlük panelinden "Şimdi çalıştır"; sonuçları durum günlüğüne yaz.
 3. **Blog içerik gözden geçirme:** `umre-turlari-2026-fiyat-karsilastirmalari-diyanet-bireysel-vip` ve başlığında "diyanet"/"fiyat karşılaştırma" geçen eski yazılar; bireysel umre lehine düzenle (İçerik Stüdyosu'nda elle ya da "AI ile düzenle").

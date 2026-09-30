@@ -10,6 +10,10 @@ import bireyselUmreMiTurlaUmreMi from "./bireysel-umre-mi-turla-umre-mi";
 import ekonomikUmreMiLuksUmreMi from "./ekonomik-umre-mi-luks-umre-mi";
 import onceMekkeMiMedineMi from "./once-mekke-mi-medine-mi";
 import umreMiHacMi from "./umre-mi-hac-mi";
+import aileUmresi from "./aile-umresi";
+import yasliUmresi from "./yasli-umresi";
+import tekerlekliSandalyeIleUmre from "./tekerlekli-sandalye-ile-umre";
+import ogrenciUmresi from "./ogrenci-umresi";
 
 export const CONTENT_PAGES: ContentPage[] = [
   ihramNedir,
@@ -21,6 +25,10 @@ export const CONTENT_PAGES: ContentPage[] = [
   ekonomikUmreMiLuksUmreMi,
   onceMekkeMiMedineMi,
   umreMiHacMi,
+  aileUmresi,
+  yasliUmresi,
+  tekerlekliSandalyeIleUmre,
+  ogrenciUmresi,
 ];
 
 export const getContentPage = (slug: string) => CONTENT_PAGES.find((p) => p.slug === slug);

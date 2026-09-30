@@ -4,6 +4,15 @@ Son güncelleme: 30 Eylül 2026 (Claude Code). Bu belge, Claude Code'un yaptığ
 
 ---
 
+
+## 0. Kayıt ve geri devir (zorunlu)
+
+Kalan işleri Antigravity bitirir; ama iş her an Claude Code'a geri devredilebilecek durumda tutulur:
+- Her oturumda `docs/CALISMA-KAYDI.md`'nin en üstüne şablona uygun kayıt eklenir (yapılan, doğrulama, kullanıcı onayı, kararlar, açık kalanlar, **sıradaki adım**).
+- Her anlamlı adım commit'lenir ve push'lanır; yarım iş dalda kalır, dal adı kayda yazılır.
+- `docs/YOL-HARITASI.md` adımları ve Durum günlüğü güncel tutulur.
+- Kurallarda ya da mimaride bir değişiklik yapıldıysa bu belgeye de işlenir.
+
 ## 1. Proje ve altyapı
 
 - **Kod:** `~/Projelerim/hadiumreyegidelim` → GitHub `birokoli/hadiumreyegidelim`, dal `main`.

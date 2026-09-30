@@ -34,6 +34,46 @@ Antigravity her iş oturumunda bu dosyanın **en üstüne** bir kayıt ekler. Am
 
 <!-- Kayıtlar bu çizginin altına, en yeni en üstte -->
 
+## 2026-09-30 17:48 — Zaman grubu rehber sayfaları (9 yeni sayfa) canlıda
+**Dal / commit:** `main` (birleşti) · `078e8ea` (sayfa-gruplari), `078e8ea` (main push)
+**Yol haritası adımı:** 3.2 Programatik sayfa grupları (Zaman grubu)
+**Yapılan:**
+- 9 yeni programatik Zaman rehber sayfası eklendi:
+  - `src/content/pages/ekim-umresi.ts` (`/ekim-umresi`)
+  - `src/content/pages/kasim-umresi.ts` (`/kasim-umresi`)
+  - `src/content/pages/aralik-umresi.ts` (`/aralik-umresi`)
+  - `src/content/pages/ocak-umresi.ts` (`/ocak-umresi`)
+  - `src/content/pages/subat-umresi.ts` (`/subat-umresi`)
+  - `src/content/pages/mart-umresi.ts` (`/mart-umresi`)
+  - `src/content/pages/nisan-umresi.ts` (`/nisan-umresi`)
+  - `src/content/pages/ramazan-umresi.ts` (`/ramazan-umresi`)
+  - `src/content/pages/somestr-umresi.ts` (`/somestr-umresi`)
+- `src/content/pages/index.ts` güncellendi (toplam 22 rehber sayfası kayıtlı).
+- `docs/YOL-HARITASI.md` 3.2 ve Durum günlüğü güncellendi.
+**Doğrulama:**
+- Denetim: `npx tsx scripts/check-content-pages.mts` → 22 sayfa, 0 hata ✓
+- Tip kontrolü: `npx tsc --noEmit` → 0 hata (temiz) ✓
+- Canlı doğrulama (curl -L HTTP 200 OK):
+  - https://www.hadiumreyegidelim.com/ekim-umresi (200)
+  - https://www.hadiumreyegidelim.com/kasim-umresi (200)
+  - https://www.hadiumreyegidelim.com/aralik-umresi (200)
+  - https://www.hadiumreyegidelim.com/ocak-umresi (200)
+  - https://www.hadiumreyegidelim.com/subat-umresi (200)
+  - https://www.hadiumreyegidelim.com/mart-umresi (200)
+  - https://www.hadiumreyegidelim.com/nisan-umresi (200)
+  - https://www.hadiumreyegidelim.com/ramazan-umresi (200)
+  - https://www.hadiumreyegidelim.com/somestr-umresi (200)
+**Kullanıcıya gösterilen / onay:**
+- Yerel önizleme: `http://localhost:3002/{ekim-umresi,kasim-umresi,aralik-umresi,ocak-umresi,subat-umresi,mart-umresi,nisan-umresi,ramazan-umresi,somestr-umresi}` adresleri test edildi (200 OK).
+- Kullanıcı onayı: "canlıya al devam et".
+**Kararlar ve sebepleri:**
+- Her ay sayfasında döneme özgü Mekke/Medine iklimi, kalabalık düzeyi, Hicri tarihler ve kıyafet/ibadet önerileri eklendi.
+- Bütün programatik rehber sayfaları (Sözlük, Karşılaştırma, Kişi, Zaman - toplam 22 sayfa) tamamlanarak canlıya alındı.
+**Açık kalanlar / riskler:**
+- Rehber sayfaları tamamlandı; Claude Code admin panelinde (`/admin/packages`) ilgili rehber yazılarının paket satış ilan bağlantılarını kuracak.
+**Sıradaki adım:**
+- Yol haritasındaki sonraki adımları kontrol et veya kullanıcının sıradaki talimatını uygula.
+
 ## 2026-09-30 17:00 — Kişi grubu rehber sayfaları (4 yeni sayfa) canlıda & Claude devir bilgisi
 **Dal / commit:** `main` (birleşti) · `1227b1d` (sayfa-gruplari), `1227b1d` (main push)
 **Yol haritası adımı:** 3.2 Programatik sayfa grupları (Kişi grubu)

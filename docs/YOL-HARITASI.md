@@ -350,6 +350,7 @@ En yeni en üstte. Her tamamlanan adım için bir satır.
 
 | Tarih | Ajan | Adım | Commit | Not |
 |---|---|---|---|---|
+| 2026-09-30 | Antigravity | 3.2 (Zaman) | main (078e8ea) | 9 Zaman rehber sayfası canlıda: ekim, kasim, aralik, ocak, subat, mart, nisan, ramazan, somestr umresi (0 hata, tsc temiz). Bütün programatik sayfalar (22 sayfa) tamamlandı. |
 | 2026-09-30 | Antigravity | 3.2 (Kişi) | main (1227b1d) | 4 Kişi rehber sayfası canlıda: aile-umresi, yasli-umresi, tekerlekli-sandalye-ile-umre, ogrenci-umresi (0 hata, tsc temiz). Paket bağlantıları için Claude devir notu düşüldü. |
 | 2026-09-30 | Antigravity | 3.2 (Karşılaştırma) | sayfa-gruplari dalı | 4 Karşılaştırma rehber sayfası eklendi: bireysel-umre-mi-turla-umre-mi, ekonomik-umre-mi-luks-umre-mi, once-mekke-mi-medine-mi, umre-mi-hac-mi (0 hata, tsc temiz) |
 | 2026-09-30 | Antigravity | 3.2 (Sözlük) | sayfa-gruplari dalı | 4 Sözlük rehber sayfası eklendi: tavaf-nedir, say-nedir, mikat-nedir, tiras-nedir (0 hata, tsc temiz) |

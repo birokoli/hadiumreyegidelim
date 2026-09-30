@@ -237,9 +237,14 @@ Bir oturuma başlarken bu bölümü uygula. Kullanıcı başka bir şey istemedi
 
 ### Faz 4 · AI görünürlük (GEO)
 
-- [ ] **4.1 Hazırlık puanını 80'e çıkar** (şu an 54)
+- [x] **4.1 Hazırlık puanını 80'e çıkar** (şu an 54)
   - AI Görünürlük → Hazırlık sayfasındaki eksikler: soru biçimli H2'ler, görünür "Son güncelleme" + JSON-LD `dateModified`, resmî kaynak linkleri (Diyanet, Nusuk, Suudi vize portalı), blog yazılarında yazar.
   - Ana sayfa, `/bireysel-umre`, `/paketler`, `/umre-vizesi`, `/ilk-umrem`, bir şehir sayfası şablonu ve blog şablonundan başla.
+  - **Tamamlandı (30.09, Claude Code):** Canlı denetim (`runReadiness`, 8 sayfa + site) **%50 → %96+**; ana sayfa, bireysel umre, paketler, vize, ilk umrem, paket detayı, şehir sayfası 100.
+    - `src/components/seo/PageTrust.tsx`: `LastUpdated` (görünür tarih, `<time>`), `OfficialInfo` (diyanet.gov.tr + moh.gov.sa, konu kelimesine link — dış link kuralına uygun), `webPageJsonLd` (dateModified). `CONTENT_REVIEWED` sabiti: sayfa içeriği değişince güncelle.
+    - SSS'ler sayfadaki veriden: paketler (yayındaki paketlerin süre aralığı, ortak hizmetler), paket detayı (süre, dahil hizmetler), vize (genel kabul görmüş temel bilgiler), kampanyalar (admin'deki SSS). Soru başlıkları H2.
+    - **Uydurma puanlar kaldırıldı:** paket detayında "Simulated" AggregateRating (4.9, sahte yorum sayısı) ve sabit fiyat; şehir sayfalarındaki (3.1'de) de. Sitede artık `aggregateRating` yok; gerçek yorum sistemi olmadan ekleme.
+
 - [ ] **4.2 Temel ölçüm.** 0.3–0.5 bittikten sonra bütün soruları bütün motorlarda bir kez çalıştır; sonuçları (anılma %, ses payı, kaynak payı) Durum günlüğüne yaz. Sonraki ölçümler buna göre değerlendirilir.
 - [ ] **4.3 Kaynak fırsatları.** AI Görünürlük → Kaynaklar → "Kaynak fırsatları" tablosundaki ilk 10 siteyi incele: hangilerinde yer alınabilir (liste, forum yanıtı, rehber içeriği). Kod işi değil; kullanıcıyla plan.
 - [ ] **4.4 İçerik boşlukları.** Rakipler sayfasındaki "İçerik boşlukları" soruları için sitede o soruyu doğrudan cevaplayan bölüm/sayfa yaz (no-ai-slop kurallarıyla, uydurma bilgi olmadan).
@@ -247,7 +252,8 @@ Bir oturuma başlarken bu bölümü uygula. Kullanıcı başka bir şey istemedi
 ### Faz 5 · Otomasyon ve sağlamlık
 
 - [x] **5.1 `ignoreBuildErrors` kapat.** *(30.09, Claude: kaldırıldı; build artık tip kontrolü yapıyor)* `tsc` artık `src/` altında temiz (acb8c74). `next.config.ts`'te `typescript.ignoreBuildErrors`'ı kaldır ki tip hataları bir daha canlıya çıkmasın. Önce yerelde `npx next build` çalıştır.
-- [ ] **5.2 Haftalık otomatik ölçüm.** Vercel cron ile haftada bir AI sorularını ve sıra kontrolünü çalıştıran uç nokta; harcama sınırı (ör. tek çalıştırmada en fazla $2) ve `CRON_SECRET` kontrolü. Maliyet için kullanıcı onayı gerekir.
+- [x] **5.2 Haftalık otomatik ölçüm.** Vercel cron ile haftada bir AI sorularını ve sıra kontrolünü çalıştıran uç nokta; harcama sınırı (ör. tek çalıştırmada en fazla $2) ve `CRON_SECRET` kontrolü. Maliyet için kullanıcı onayı gerekir.
+  - **Tamamlandı (30.09, Claude Code; kullanıcı onayı: haftada en fazla 2 $):** `src/lib/weekly-measure.ts` + `/api/cron/weekly-measure` (vercel.json: `20 * * * 1`, pazartesi saatte bir). Önce takip edilen kelimelerin sırası, sonra her soru × açık motor. Fonksiyon 300 sn ile sınırlı olduğu için kuyruk (`WEEKLY_MEASURE_STATE`), çağrı başına ~230 sn, 3 eş zamanlı iş. Her işten önce tavan kontrolü (`WEEKLY_MEASURE_CAP_USD`, varsayılan 2; motor maliyeti geçmiş yanıtlardan tahmin). AI Görünürlük ana sayfasında durum paneli: tavan ayarı (0 = kapalı) ve "Şimdi çalıştır". Claude sorguları ayrıca aylık Claude bütçesine (`AI_MONTHLY_BUDGET_USD`) tabidir.
 - [ ] **5.3 Hata raporu diğer admin sayfalarında.** `DiagButton`'ı Excel Fiyat Motoru ve Fiyat Teklifleri sayfalarına da ekle (şu an yalnızca SEO/AI).
 - [ ] **5.4 Depolamayı tabloya taşı.** AI yanıtları ve günlük özetler büyüyünce `Setting` JSON yerine Prisma modelleri (`AiVisRun`, `AiVisDaily`). Supabase migration'ı kullanıcı onayıyla, ham SQL ile (bkz. proje hafızası: `prisma db push` kullanılmıyor).
 
@@ -338,6 +344,8 @@ En yeni en üstte. Her tamamlanan adım için bir satır.
 
 | Tarih | Ajan | Adım | Commit | Not |
 |---|---|---|---|---|
+| 2026-09-30 | Claude Code | 4.1 ✓ | PageTrust | Hazırlık %50 → %96+; sahte paket puanı kaldırıldı |
+| 2026-09-30 | Claude Code | 5.2 ✓ | weekly-measure | Haftalık otomatik ölçüm, 2 $ tavan, pazartesi |
 | 2026-09-30 | Claude Code | 2.3–2.6 ✓ | seo/meta.ts | H1 4→0, uzun başlık 104→0, og:image 6→0, yetim 6→0; taslaklar sitemap'ten ve siteden çıkarıldı; yazı tipleri yerelde; build sınırları |
 | 2026-09-30 | Claude Code | 3.1 ✓ | şehir sayfaları | Benzerlik %86 → %49,6; uydurma puan kaldırıldı; havalimanı verisi düzeltildi |
 | 2026-09-30 | Claude Code | 2.2 ✓ | f308349 | Sayfalar 1,2–1,6 sn → 0,16–0,33 sn (ISR + ayar önbelleği) |

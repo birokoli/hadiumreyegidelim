@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
-import { Inter, Noto_Serif } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const notoSerif = Noto_Serif({ subsets: ["latin"], weight: ["400", "700"], style: ["normal", "italic"], variable: "--font-noto-serif" });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://hadiumreyegidelim.com"),
@@ -96,7 +93,7 @@ export default async function RootLayout({
   ];
 
   return (
-    <html lang="tr" className={`${inter.variable} ${notoSerif.variable}`}>
+    <html lang="tr">
       <head>
         <script
           type="application/ld+json"
@@ -106,6 +103,9 @@ export default async function RootLayout({
         <link rel="dns-prefetch" href="https://lh3.googleusercontent.com" />
         <link rel="preconnect" href="https://images.unsplash.com" />
         <link rel="dns-prefetch" href="https://images.unsplash.com" />
+        {/* Ana yazı tipleri projede; ilk boyamada gecikmesin diye önceden yüklenir */}
+        <link rel="preload" href="/fonts/site/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preload" href="/fonts/site/noto-serif-latin-wght-normal.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL,GRAD@300,0,0&display=swap" />

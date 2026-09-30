@@ -194,6 +194,10 @@ Bir oturuma başlarken bu bölümü uygula. Kullanıcı başka bir şey istemedi
   - Olası neden: Kök layout her istekte `setting.findMany` çağırıyor; şehir ve blog sayfaları dinamik.
   - Yapılacak: Kök layout ve sayfalardaki ayar sorgularını önbelleğe al (Next 16 önbellek API'si için `node_modules/next/dist/docs` oku; `revalidate` / cache bileşenleri). Şehir sayfaları için statik üretim (generateStaticParams zaten var).
   - Bitti sayılır: Denetimde `slow` sayfa sayısı 20'nin altında.
+  - **Durum (30.09, Claude Code):** Ölçüm: canlıda bütün sayfalar `x-vercel-cache: MISS`, ilk bayt 1,2–1,6 sn. Sebep: `src/app/(main)/layout.tsx`'teki `export const dynamic = 'force-dynamic'` bütün siteyi her istekte baştan üretiyor; kök düzen her istekte bütün `Setting` tablosunu (admin JSON'ları dahil) çekiyor; footer, site düzeni ve sayfalar ayrıca ayar sorguluyor.
+    - Çözüm `hiz-2-2` dalında (354e682): `src/lib/site-settings.ts` (`unstable_cache`, etiket `site-settings`, admin anahtarları hariç), `src/lib/revalidate-public.ts`, (main) düzeninde `revalidate = 300`, paketler/paket detayı/blog yazısı/rehberlik 300, ayar ve içerik kaydeden API'lerde anında tazeleme.
+    - **Engel:** Bu değişiklikle sayfalar build sırasında önceden üretiliyor (veritabanı gerekiyor). `hadiumreyegidelim` projesi başarılı build etti, **`hadiumreyegidelim.com` projesi (alan adının bağlı olduğu) hem Preview hem Production'da başarısız**. main'de geri alındı (05a936f); canlı site etkilenmedi.
+    - Sıradaki: `.com` projesinin build logundaki hatayı oku (Vercel → hadiumreyegidelim.com → Deployments → 354e682 → Build Logs). Olası sebepler: bu projede `DATABASE_URL` build sırasında yok ya da iki proje aynı anda build ederken Supabase bağlantı sınırı doluyor. Log gelince düzelt, `hiz-2-2`'yi yeniden birleştir. Alternatif: şehir sayfalarında `generateStaticParams` boş dönsün (ilk ziyarette üretilsin) ve build'de veritabanı yükü azalsın.
 
 - [ ] **2.3 Birden fazla H1** (85 sayfa; şehir şablonu, blog, `/bireysel-umre`)
   - Dosyalar: `src/components/features/BireyselUmreClient.tsx`, blog yazı şablonu. Sayfada tek `<h1>`, diğerleri `<h2>`.

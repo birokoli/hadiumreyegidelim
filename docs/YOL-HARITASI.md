@@ -201,17 +201,23 @@ Bir oturuma başlarken bu bölümü uygula. Kullanıcı başka bir şey istemedi
     - Anında tazeleme: ayar kaydeden uçlar `revalidateSiteSettings()`, paket/rehber/yazı/hizmet API'leri `revalidatePublic(kind)` (`src/lib/revalidate-public.ts`) çağırır. Yeni bir içerik API'si eklersen bunu da çağır.
     - Not: Sayfalar artık build sırasında önceden üretiliyor; build'de veritabanı erişimi gerekir (Vercel'de var).
 
-- [ ] **2.3 Birden fazla H1** (85 sayfa; şehir şablonu, blog, `/bireysel-umre`)
+- [x] **2.3 Birden fazla H1** (85 sayfa; şehir şablonu, blog, `/bireysel-umre`)
   - Dosyalar: `src/components/features/BireyselUmreClient.tsx`, blog yazı şablonu. Sayfada tek `<h1>`, diğerleri `<h2>`.
   - Bitti sayılır: `h1-multiple` sorunu 5 sayfanın altında.
 
-- [ ] **2.4 Uzun title** (103 sayfa)
+- [x] **2.4 Uzun title** (103 sayfa)
   - Neden: Başlıklara eklenen `| Hadi Umre'ye Gidelim` son eki. Şehir sayfası title'ı: `{Şehir} Çıkışlı Bireysel Umre 2026 — Fiyat & Paketler`.
   - Yapılacak: Son eki kısalt ya da uzun başlıklarda kaldır; ana kelimeyi başta tut. 60 karakter hedefi.
   - Bitti sayılır: `title-long` sorunu 15 sayfanın altında.
 
-- [ ] **2.5 Meta açıklama uzunluğu** (14 sayfa) ve **og:image** (5 sayfa). Denetimdeki sayfa listesini kullan.
-- [ ] **2.6 Link almayan sayfalar** (5): `/umre-vizesi` ve 4 blog yazısı. İlgili hub sayfalarından link ver.
+- [x] **2.5 Meta açıklama uzunluğu** (14 sayfa) ve **og:image** (5 sayfa). Denetimdeki sayfa listesini kullan.
+- [x] **2.6 Link almayan sayfalar** (5): `/umre-vizesi` ve 4 blog yazısı. İlgili hub sayfalarından link ver.
+
+  - **2.3–2.6 tamamlandı (30.09, Claude Code; Antigravity'nin listesindeydi, kullanıcı "devam et" dedi).** Canlı tarama (sitemap'teki 124 sayfa): çift H1 4 → 0, uzun başlık 104 → 0, og:image eksik 6 → 0, bağlantı almayan sayfa 6 → 0. Açıklaması 120'den kısa 6 sayfa kaldı (kampanya açıklamaları admin'den geliyor: Ayarlar/Kampanya; KVKK ve kullanım şartları) — kısa açıklama hata değil.
+    - `src/lib/seo/meta.ts`: `pageTitle()` (sayfa başlığındaki site adını temizler; sığarsa şablonla bir kez ekler, sığmazsa `absolute`), `metaDescription()` (158, kelime ortasında kesmez), `DEFAULT_OG_IMAGE`. Yeni sayfalarda bunları kullan.
+    - Blog içeriğindeki `<h1>` render'da `<h2>` olur; ilgili yazılar 4 (önce aynı kategori, eksikse diğerleri).
+    - **Hata düzeltmesi:** Sitemap yayınlanmamış yazıları listeliyor, `/blog/[slug]` taslakları herkese açıyordu (6 "yetim" sayfa aslında taslaktı). Artık yalnızca yayındakiler; taslak 404. Admin listesinde taslaklar için bağlantı yerine not.
+    - **Build:** Site ve masa yazı tipleri `public/fonts` altında (`next/font/google` kaldırıldı). `next.config.ts`: build 4 işçi, sayfa başına 2 yeniden deneme; `src/lib/prisma.ts` build'de bağlantı sınırı 2. `.com` projesinin ara ara düşmesine karşı.
 
 ### Faz 3 · Programatik sayfalar ve içerik
 
@@ -332,6 +338,7 @@ En yeni en üstte. Her tamamlanan adım için bir satır.
 
 | Tarih | Ajan | Adım | Commit | Not |
 |---|---|---|---|---|
+| 2026-09-30 | Claude Code | 2.3–2.6 ✓ | seo/meta.ts | H1 4→0, uzun başlık 104→0, og:image 6→0, yetim 6→0; taslaklar sitemap'ten ve siteden çıkarıldı; yazı tipleri yerelde; build sınırları |
 | 2026-09-30 | Claude Code | 3.1 ✓ | şehir sayfaları | Benzerlik %86 → %49,6; uydurma puan kaldırıldı; havalimanı verisi düzeltildi |
 | 2026-09-30 | Claude Code | 2.2 ✓ | f308349 | Sayfalar 1,2–1,6 sn → 0,16–0,33 sn (ISR + ayar önbelleği) |
 | 2026-09-30 | Claude Code | 1.7 (sebep) | masa yazı tipleri | .com build'i Google Fonts indirmesinde düşüyordu; yazı tipleri yerelde |

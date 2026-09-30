@@ -50,6 +50,8 @@ Bu belge hadiumreyegidelim.com için sıradaki işlerin **tek doğru listesidir*
 
 ---
 
+> **Devir:** Claude Code'un yaptığı işlerin özeti, değişmez kurallar ve sıradaki işler `docs/ANTIGRAVITY-DEVIR.md`'de. Yeni bir ajan önce onu okumalı.
+
 ## 1. Ajanlar için çalışma kuralları
 
 Bir oturuma başlarken bu bölümü uygula. Kullanıcı başka bir şey istemedikçe:
@@ -344,6 +346,7 @@ En yeni en üstte. Her tamamlanan adım için bir satır.
 
 | Tarih | Ajan | Adım | Commit | Not |
 |---|---|---|---|---|
+| 2026-09-30 | Claude Code | blog satış + devir | BlogBrandCta, ANTIGRAVITY-DEVIR.md | Blog şablonunda marka kutuları, resmî kaynakça, dış link kuralı yayında; motor marka/satış kuralları; ilk yayında tarih = şimdi. Devir belgesi: docs/ANTIGRAVITY-DEVIR.md |
 | 2026-09-30 | Claude Code | 4.1 ✓ | PageTrust | Hazırlık %50 → %96+; sahte paket puanı kaldırıldı |
 | 2026-09-30 | Claude Code | 5.2 ✓ | weekly-measure | Haftalık otomatik ölçüm, 2 $ tavan, pazartesi |
 | 2026-09-30 | Claude Code | 2.3–2.6 ✓ | seo/meta.ts | H1 4→0, uzun başlık 104→0, og:image 6→0, yetim 6→0; taslaklar sitemap'ten ve siteden çıkarıldı; yazı tipleri yerelde; build sınırları |

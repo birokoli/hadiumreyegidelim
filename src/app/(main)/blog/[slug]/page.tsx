@@ -137,16 +137,25 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     ? await marked.parse(post.personalExperience)
     : null;
 
-  const relatedPosts = await prisma.post.findMany({
-    where: {
-      published: true,
-      id: { not: post.id },
-      ...(post.categoryId ? { categoryId: post.categoryId } : {}),
-    },
-    orderBy: { createdAt: 'desc' },
-    take: 3,
-    select: { slug: true, title: true, imageUrl: true, description: true, createdAt: true },
-  });
+  // İlgili yazılar: önce aynı kategori, eksik kalırsa diğer yayındaki yazılar (her yazı iç bağlantı alsın)
+  const relatedSelect = { slug: true, title: true, imageUrl: true, description: true, createdAt: true } as const;
+  const sameCategory = post.categoryId
+    ? await prisma.post.findMany({
+        where: { published: true, id: { not: post.id }, categoryId: post.categoryId },
+        orderBy: { createdAt: 'desc' },
+        take: 4,
+        select: relatedSelect,
+      })
+    : [];
+  const fill = sameCategory.length < 4
+    ? await prisma.post.findMany({
+        where: { published: true, id: { not: post.id }, slug: { notIn: sameCategory.map((p) => p.slug) } },
+        orderBy: { updatedAt: 'desc' },
+        take: 4 - sameCategory.length,
+        select: relatedSelect,
+      })
+    : [];
+  const relatedPosts = [...sameCategory, ...fill];
 
   // 3. Yapılandırılmış Veri (Schema Markup) - BlogPosting JSON-LD & Person (E-E-A-T)
   const jsonLd = {
@@ -414,7 +423,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             <span className="material-symbols-outlined text-secondary">auto_stories</span>
             İlgili Yazılar
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {relatedPosts.map((related) => (
               <Link key={related.slug} href={`/blog/${related.slug}`} className="group">
                 <article className="bg-white rounded-2xl overflow-hidden border border-outline-variant/10 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 h-full flex flex-col">

@@ -33,3 +33,36 @@ Antigravity her iş oturumunda bu dosyanın **en üstüne** bir kayıt ekler. Am
 ---
 
 <!-- Kayıtlar bu çizginin altına, en yeni en üstte -->
+
+## 2026-09-30 16:40 — Sözlük grubu rehber sayfaları (4 yeni sayfa) canlıda
+**Dal / commit:** `main` (birleşti) · `5caa856` (sayfa-gruplari), `8923eeb` (main merge)
+**Yol haritası adımı:** 3.2 Programatik sayfa grupları
+**Yapılan:**
+- 4 yeni programatik Sözlük rehber sayfası eklendi:
+  - `src/content/pages/tavaf-nedir.ts` (`/umre-rehberi/tavaf-nedir`)
+  - `src/content/pages/say-nedir.ts` (`/umre-rehberi/say-nedir`)
+  - `src/content/pages/mikat-nedir.ts` (`/umre-rehberi/mikat-nedir`)
+  - `src/content/pages/tiras-nedir.ts` (`/umre-rehberi/tiras-nedir`)
+- `src/content/pages/index.ts` güncellendi.
+- `docs/YOL-HARITASI.md` 3.2 ve Durum günlüğü güncellendi.
+**Doğrulama:**
+- Denetim: `npx tsx scripts/check-content-pages.mts` → 5 sayfa, 0 hata ✓
+- Tip kontrolü: `npx tsc --noEmit` → 0 hata (temiz) ✓
+- Vercel build: `hadiumreyegidelim.com` = success (`8923eeb`) ✓
+- Canlı doğrulama (curl -L HTTP 200 OK):
+  - https://www.hadiumreyegidelim.com/umre-rehberi/tavaf-nedir (200)
+  - https://www.hadiumreyegidelim.com/umre-rehberi/say-nedir (200)
+  - https://www.hadiumreyegidelim.com/umre-rehberi/mikat-nedir (200)
+  - https://www.hadiumreyegidelim.com/umre-rehberi/tiras-nedir (200)
+**Kullanıcıya gösterilen / onay:**
+- Yerel önizleme: `http://localhost:3002/umre-rehberi/{tavaf-nedir,say-nedir,mikat-nedir,tiras-nedir}` adresleri kullanıcıya sunuldu.
+- Kullanıcı seçimi: "Planlanan tüm kelimeler için içerik üretimine başla" ve "Tamam bunları canlıya alalım".
+**Kararlar ve sebepleri:**
+- Kelimelerin tamamına (Sözlük, Karşılaştırma, Kişi, Zaman) kullanıcı onayı doğrultusunda sırayla sayfa açılıyor.
+- Dış link kuralı (yalnızca diyanet.gov.tr, konu kelimesine link) ve yasaklı kelime kısıtlarına tam uyuldu.
+- `tekerlekli-sandalye-ile-umre` sayfası henüz açılmadığı için `say-nedir` içindeki iç link `/bireysel-umre`'ye yönlendirildi.
+**Açık kalanlar / riskler:**
+- Karşılaştırma, Kişi ve Zaman gruplarındaki kalan sayfalar yazılacak.
+**Sıradaki adım:**
+- 3.2 Karşılaştırma grubu sayfalarını yaz: `bireysel-umre-mi-turla-umre-mi`, `ekonomik-umre-mi-luks-umre-mi`, `once-mekke-mi-medine-mi`, `umre-mi-hac-mi`. `check-content-pages.mts` ve `tsc` doğrulamalarından sonra kullanıcıya göster.
+

@@ -1,4 +1,5 @@
 "use client";
+import { SITE_URL } from "@/lib/seo/site";
 import React, { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import dynamic from "next/dynamic";
 import "react-quill-new/dist/quill.snow.css";
@@ -956,7 +957,7 @@ export default function ContentPage() {
                              <code className="bg-surface-container px-2 py-0.5 rounded text-[9px] text-secondary/70 flex-1 truncate">
                                /blog/{p.slug}
                              </code>
-                             <button type="button" onClick={() => navigator.clipboard.writeText(`https://hadiumreyegidelim.com/blog/${p.slug}`)} className="text-[9px] bg-[#003781] text-white px-2 py-1 rounded font-bold uppercase hover:bg-primary-container hover:text-[#003781] transition-colors">Kopyala</button>
+                             <button type="button" onClick={() => navigator.clipboard.writeText(`${SITE_URL}/blog/${p.slug}`)} className="text-[9px] bg-[#003781] text-white px-2 py-1 rounded font-bold uppercase hover:bg-primary-container hover:text-[#003781] transition-colors">Kopyala</button>
                            </div>
                          </div>
                        ))}
@@ -981,7 +982,7 @@ export default function ContentPage() {
                     <div className="flex flex-col leading-none">
                       <span className="text-[14px] font-medium text-[#202124] mb-1">Ethereal Serenity</span>
                       <span className="text-[12px] text-[#4d5156]">
-                        https://hadiumreyegidelim.com &gt; blog &gt; {newPost.slug || <span className="text-[#70757a] italic">ornek-url-slug</span>}
+                        {SITE_URL.replace('https://', '')} &gt; blog &gt; {newPost.slug || <span className="text-[#70757a] italic">ornek-url-slug</span>}
                       </span>
                     </div>
                   </div>

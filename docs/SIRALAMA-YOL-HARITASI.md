@@ -36,11 +36,11 @@ Kural: Bir kelime kümesini yalnızca bir sayfa hedefler. Diğer sayfalar o sayf
 ## 3. Adımlar
 
 ### Faz A — Teknik temel (önce bu; hafta 1)
-- [ ] **A1 · Tek ana adres (kullanıcı, Vercel)** — Vercel → `hadiumreyegidelim.com` projesi → Settings → Domains: **`hadiumreyegidelim.com` (www'siz) Primary**, `www.hadiumreyegidelim.com` → apex'e **308 (kalıcı)** yönlendirme. Kod zaten www'siz adresi canonical kullanıyor; tek değişiklik Vercel'de. (Yol haritası 0.2 ile aynı karar.)
-  - Doğrula: `curl -sI https://www.hadiumreyegidelim.com/umre-vizesi` → `308` ve `location: https://hadiumreyegidelim.com/umre-vizesi`; `curl -sI https://hadiumreyegidelim.com/umre-vizesi` → `200`.
-  - Diğer Vercel projesi (`hadiumreyegidelim`) alan adı almıyorsa sorun değil; alıyorsa kaldır.
-- [ ] **A2 · Search Console (kullanıcı + Antigravity)** — Google Search Console'da `hadiumreyegidelim.com` alan adı mülkü (DNS doğrulaması). Sitemap: `https://hadiumreyegidelim.com/sitemap.xml` gönder. URL denetimi ile `/`, `/bireysel-umre`, `/umre-vizesi`, `/paketler` için "Dizine eklenmesini iste". Kapsam raporunda "Yönlendirmeli sayfa", "Canonical olmayan", "Keşfedildi, dizine eklenmedi" sayılarını `CALISMA-KAYDI.md`'ye yaz.
-- [ ] **A3 · Kod kontrolü (Antigravity)** — A1'den sonra canlıda: bütün sayfalarda canonical = `https://hadiumreyegidelim.com<yol>`, sitemap ve `robots.txt` aynı host, `og:url` aynı host, iç linklerde mutlak `www.` adresi yok (`grep -rn "www.hadiumreyegidelim" src`). Yönlendirme zinciri yok (tek atlama).
+- [x] **A1 · Tek ana adres — kodla çözüldü (1 Ekim, Claude Code)** — Kullanıcı kararı: Vercel'de www kaldırılmayacak. Bu yüzden asıl adres **`https://www.hadiumreyegidelim.com`** yapıldı: `src/lib/seo/site.ts` → `SITE_URL` (tek kaynak). Canonical, sitemap, robots, llms.txt, JSON-LD, og:url bu adresi gösterir; gösterilen adres doğrudan 200 döner, çelişki kalmadı. `SITE_DOMAIN` www'siz kalır (sıra takibinde karşılaştırma için).
+  - İsteğe bağlı iyileştirme (kullanıcı, Vercel): www'siz adresin www'ye yönlenmesi şu an **307 (geçici)**. Vercel → Domains → `hadiumreyegidelim.com` → Edit → yönlendirme kodunu **308 (kalıcı)** seçmek yeterli; www silinmez.
+  - Yeni kodda adres yazma; her zaman `SITE_URL` kullan.
+- [ ] **A2 · Search Console (kullanıcı + Antigravity)** — Google Search Console'da `hadiumreyegidelim.com` alan adı mülkü (DNS doğrulaması). Mülk `https://www.hadiumreyegidelim.com` (ya da alan adı mülkü) olmalı; sitemap `https://www.hadiumreyegidelim.com/sitemap.xml` olarak **yeniden gönderilir** (adresler www'ye döndü). URL denetimi ile `/`, `/bireysel-umre`, `/umre-vizesi`, `/paketler` için "Dizine eklenmesini iste". Kapsam raporunda "Yönlendirmeli sayfa", "Canonical olmayan", "Keşfedildi, dizine eklenmedi" sayılarını `CALISMA-KAYDI.md`'ye yaz.
+- [ ] **A3 · Kod kontrolü (Antigravity)** — canlıda: bütün sayfalarda canonical = `https://www.hadiumreyegidelim.com<yol>`, sitemap ve `robots.txt` aynı host, `og:url` aynı host, kodda elle yazılmış adres yok (`grep -rn "https://hadiumreyegidelim.com" src` yalnızca site.ts). Yönlendirme zinciri yok (tek atlama).
 - [ ] **A4 · Hacim** — SEO Masası → Kelimeler'de bu 22 kelimenin ve adaylarının arama hacmini çek; `CALISMA-KAYDI.md`'ye tablo olarak yaz. Faz B/C sırası hacme göre güncellenir.
 
 ### Faz B — Satış sayfaları (hafta 1–3)
@@ -88,7 +88,7 @@ Sıralama garanti edilemez; hedefler yön göstermek içindir, her 2 haftada ger
 
 ## 5. Kullanıcıdan gereken kararlar/veriler
 
-1. Vercel'de ana adres: www'siz `hadiumreyegidelim.com` (A1) — onay ve uygulama.
+1. ~~Vercel'de ana adres~~ — kodla çözüldü (www asıl adres). İsteğe bağlı: Vercel'de 307 → 308.
 2. Search Console erişimi (A2).
 3. Vize hizmet ücreti ve ortalama çıkış süresi (B1).
 4. Paketlerin gerçek fiyatları (B2).

@@ -4,6 +4,7 @@ import type { ContentPage } from "@/content/pages/types";
 import { contentPath } from "@/content/pages/types";
 import { BlogEndCta, BlogInlineCta } from "@/components/blog/BlogBrandCta";
 import { LastUpdated } from "@/components/seo/PageTrust";
+import { prisma } from "@/lib/prisma";
 import { SITE_URL } from "@/lib/seo/site";
 
 const SITE = SITE_URL;
@@ -40,7 +41,17 @@ const GROUP_LABEL: Record<ContentPage["group"], string> = {
 };
 
 /** Rehber sayfası: kişi, zaman, karşılaştırma ve sözlük gruplarının ortak şablonu */
-export default function ContentPageView({ page, whatsappNumber, relatedTitles }: { page: ContentPage; whatsappNumber: string; relatedTitles: Record<string, string> }) {
+const CURRENCY: Record<string, string> = { USD: "$", EUR: "€", TRY: "₺", SAR: "SAR" };
+
+/** Rehber sayfalarında gösterilen gerçek paketler (admin'de yayında olanlar; uydurma paket yok) */
+async function publishedPackages() {
+  return prisma.package
+    .findMany({ where: { published: true }, orderBy: [{ isPopular: "desc" }, { createdAt: "desc" }], take: 3, select: { slug: true, title: true, duration: true, price: true, currency: true } })
+    .catch(() => []);
+}
+
+export default async function ContentPageView({ page, whatsappNumber, relatedTitles }: { page: ContentPage; whatsappNumber: string; relatedTitles: Record<string, string> }) {
+  const packages = await publishedPackages();
   const url = `${SITE}${contentPath(page)}`;
   const isGuide = page.group === "karsilastirma" || page.group === "sozluk";
 
@@ -150,6 +161,28 @@ export default function ContentPageView({ page, whatsappNumber, relatedTitles }:
             ))}
           </ul>
         </section>
+
+        {packages.length > 0 && (
+          <section className="mt-12">
+            <div className="flex items-end justify-between gap-4">
+              <h2 className="font-headline text-xl font-bold text-primary">Umre paketlerimiz</h2>
+              <Link href="/paketler" className="text-sm font-semibold text-primary underline underline-offset-4">Tüm paketler</Link>
+            </div>
+            <ul className="mt-3 grid gap-3 sm:grid-cols-3">
+              {packages.map((p) => (
+                <li key={p.slug}>
+                  <Link href={`/paketler/${p.slug}`} className="block h-full rounded-xl border border-outline-variant/30 px-4 py-3 hover:border-primary/50">
+                    <span className="block font-semibold text-on-surface">{p.title}</span>
+                    <span className="mt-1 block text-[13px] text-on-surface-variant">
+                      {p.duration}
+                      {p.price > 0 ? ` · ${p.price.toLocaleString("tr-TR", { maximumFractionDigits: 0 })} ${CURRENCY[p.currency] ?? p.currency}'dan` : ""}
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
 
         <nav aria-label="İlgili sayfalar" className="mt-10">
           <h2 className="font-headline text-xl font-bold text-primary">İlgili sayfalar</h2>

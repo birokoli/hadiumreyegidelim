@@ -1,3 +1,4 @@
+import { SITE_URL } from "@/lib/seo/site";
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getInfluencerSession } from '@/lib/influencer-auth';
@@ -28,7 +29,7 @@ export async function GET() {
     where: { influencerId: session.id, clickedAt: { gte: monthStart } },
   });
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://hadiumreyegidelim.com';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || SITE_URL;
 
   return NextResponse.json({
     influencer: {

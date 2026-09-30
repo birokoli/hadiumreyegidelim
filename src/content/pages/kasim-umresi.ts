@@ -13,7 +13,7 @@ const page: ContentPage = {
     {
       h2: "Kasım ayında Kutsal Topraklarda hava koşulları nasıldır?",
       paragraphs: [
-        "Kasım ayı, Hicaz bölgesinde sonbaharın en güzel ve tatlı iklim şartlarının hüküm sürdüğü zaman dilimidir. Mekke-i Mükerreme ve Medine-i Münevvere genelinde gündüz sıcaklıkları 26-30 derece civarına geriler.",
+        "Kasım ayı, Hicaz bölgesinde sonbaharın en güzel ve tatlı iklim şartlarının hüküm sürdüğü zaman dilimidir. Mekke'de ortalama en yüksek sıcaklık yaklaşık 35 °C, en düşük yaklaşık 23 °C'dir; Medine'de ortalama en yüksek yaklaşık 30 °C, gece yaklaşık 17 °C. Ortalama değerlerdir; yolculuk öncesi güncel tahmine bakın.",
         "Özellikle Medine-i Münevvere bölgesinde akşam ve sabah saatlerinde açık havada hissedilir bir serinlik yaşanır. Mescid-i Nebevi avlusunda şemsiyeler kapandıktan sonra yapılan ibadetler oldukça huzurludur.",
         "Mekke-i Mükerreme bölgesinde Kâbe avlusunda gündüz saatlerinde dahi güneş yakıcılığını yitirdiği için tavaf ve sa'y ibadetleri bedeni yormadan tamamlanır. Verilen iklim değerleri genel ortalamalardır.",
         "Serin havalar sayesinde ziyaretçiler günün büyük bölümünü Mescid-i Haram çevresinde dua ve Kur'an tilaveti ile geçirebilmektedir. İbadet aralarında avludaki ferah mekanlarda dinlenmek mümkündür.",
@@ -87,7 +87,7 @@ const page: ContentPage = {
   faq: [
     {
         "q": "Kasım ayında Mekke çok soğuk olur mu?",
-        "a": "Hayır. Kasım ayında Mekke gündüzleri ılık ve ferah, geceleri ise tatlı bir serinliğe sahiptir; dondurucu bir soğuk yaşanmaz."
+        "a": "Hayır. Kasım ayında Mekke gündüzleri hâlâ sıcaktır (ortalama en yüksek yaklaşık 35 °C), geceleri ılıktır; soğuk yaşanmaz. Serinliği daha çok Medine'nin sabah ve gece saatlerinde hissedersiniz."
     },
     {
         "q": "Kasım umresinde çocuklarla seyahat rahat mıdır?",

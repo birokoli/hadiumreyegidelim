@@ -1,4 +1,5 @@
 'use client';
+import { SITE_URL } from "@/lib/seo/site";
 
 import { useEffect, useRef, useState } from 'react';
 
@@ -26,7 +27,7 @@ export default function StoryModal({
   const [downloading, setDownloading] = useState(false);
   const overlayRef = useRef<HTMLDivElement>(null);
 
-  const baseUrl     = 'https://hadiumreyegidelim.com';
+  const baseUrl     = SITE_URL;
   const trackingUrl = `${baseUrl}/c/${campaignSlug}?ref=${uniqueCode}`;
   const storyApiUrl = `/api/og/story?campaign=${campaignSlug}&ref=${uniqueCode}`;
 

@@ -13,7 +13,7 @@ const page: ContentPage = {
     {
       h2: "Mart ayında Mekke ve Medine iklimi nasıldır?",
       paragraphs: [
-        "Mart ayı, Suudi Arabistan'da kışın serinliğinin yerini ilkbaharın ılık günlerine bıraktığı tatlı bir geçiş dönemidir. Mekke-i Mükerreme'de gündüz sıcaklıkları 28-32 derece civarındayken, Medine-i Münevvere'de gündüz 24-28, gece ise 16-18 derece seviyesindedir.",
+        "Mart ayı, Suudi Arabistan'da kışın serinliğinin yerini ilkbaharın ılık günlerine bıraktığı tatlı bir geçiş dönemidir. Mekke'de ortalama en yüksek sıcaklık yaklaşık 35 °C, en düşük yaklaşık 21 °C'dir; Medine'de ortalama en yüksek yaklaşık 31 °C, gece yaklaşık 17 °C. Ortalama değerlerdir; yolculuk öncesi güncel tahmine bakın.",
         "Medine-i Münevvere'de bahar esintileri Mescid-i Nebevi avlusunda oturmayı ve ibadet etmeyi oldukça dinlendirici hale getirir.",
         "Mekke-i Mükerreme'de ise gündüz saatlerinde dahi nem oranının düşüklüğü sayesinde tavaf ve sa'y ibadetleri rahatlıkla tamamlanır. Verilen iklim bilgileri ortalama değerlerdir.",
         "İlkbahar iklimi, Kutsal Beldelerde açık havada vakit geçirmeyi ve ibadet etmeyi oldukça kolaylaştırır.",
@@ -50,7 +50,7 @@ const page: ContentPage = {
       h2: "Mart ayında bireysel umre ile esnek seyahat planı",
       paragraphs: [
         "Bireysel umre programı ile Mart ayında kendi bütçenize ve takviminize uygun seyahat detaylarını belirleyebilirsiniz. Programınızı [Hadi Umreye Gidelim tasarlayıcısı ile](/bireysel-umre) tarihlerini seçerek hemen oluşturabilirsiniz.",
-        "Gelecek bahar seçenekleri için [nisan-umresi](/nisan-umresi) ve [ramazan-umresi](/ramazan-umresi) sayfalarımızı, otel detayları için [paketler sayfamızı](/paketler) inceleyebilir; adımlar için [sa'y nedir](/umre-rehberi/say-nedir) rehberimizi okuyabilirsiniz.",
+        "Gelecek bahar seçenekleri için [nisan umresi](/nisan-umresi) ve [ramazan umresi](/ramazan-umresi) sayfalarımızı, otel detayları için [paketler sayfamızı](/paketler) inceleyebilir; adımlar için [sa'y nedir](/umre-rehberi/say-nedir) rehberimizi okuyabilirsiniz.",
         "Esnek planlama imkânı, grup kısıtlamalarına takılmadan Kutsal Beldelerde özgürce ibadet etmenizi sağlar.",
         "Mart ayının bahar havasında gerçekleşen bir umre seyahati ruhunuza tazelik katar. Özel ilahiyatçı rehber eşliğinde tarihi mekan gezileri düzenlenebilir.",
       ],

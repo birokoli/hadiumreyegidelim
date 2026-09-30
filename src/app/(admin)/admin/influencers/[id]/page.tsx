@@ -1,3 +1,4 @@
+import { SITE_URL } from "@/lib/seo/site";
 export const dynamic = 'force-dynamic';
 
 import { prisma } from '@/lib/prisma';
@@ -64,7 +65,7 @@ export default async function AdminInfluencerDetailPage({ params }: { params: Pr
 
   const tier = tierConfig[inf.tier] || tierConfig.davetci;
   const st = statusConfig[inf.status] || statusConfig.pending;
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://hadiumreyegidelim.com';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || SITE_URL;
 
   return (
     <div className="p-6 lg:p-8 max-w-6xl mx-auto space-y-6">

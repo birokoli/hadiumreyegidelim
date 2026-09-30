@@ -13,7 +13,7 @@ const page: ContentPage = {
     {
       h2: "Nisan ayında Mekke ve Medine iklim özellikleri nasıldır?",
       paragraphs: [
-        "Nisan ayı, Suudi Arabistan'da ılık bahar günlerinin kademeli olarak yaz sıcaklarına evrildiği bir zamandır. Mekke-i Mükerreme'de gündüz sıcaklıkları 30-34 derece seviyelerindeyken, Medine-i Münevvere'de gündüz 26-30, gece ise 18-20 derece civarındadır.",
+        "Nisan ayı, Suudi Arabistan'da ılık bahar günlerinin kademeli olarak yaz sıcaklarına evrildiği bir zamandır. Mekke'de ortalama en yüksek sıcaklık yaklaşık 38 °C, en düşük yaklaşık 25 °C'dir; Medine'de ortalama en yüksek yaklaşık 35 °C, gece yaklaşık 21 °C. Ortalama değerlerdir; yolculuk öncesi güncel tahmine bakın.",
         "Medine-i Münevvere'de bahar akşamları oldukça keyiflidir. Mescid-i Nebevi avlusundaki serin hava ibadet edenlere büyük bir huzur verir.",
         "Mekke-i Mükerreme'de gündüz saatlerinde güneş etkisini hissettirmeye başladığı için öğle saatlerinde gölgede veya klimalı iç alanlarda ibadet etmek tavsiye edilir. İklim verileri ortalamadır.",
         "Bahar aylarının son dönemi olan Nisan, yazın yoğun sıcakları öncesinde oldukça uygun bir seyahat penceresidir.",
@@ -50,7 +50,7 @@ const page: ContentPage = {
       h2: "Nisan ayında bireysel umre ile özgür seyahat imkânı",
       paragraphs: [
         "Nisan ayında bireysel umre tercih ederek seyahat tarihlerinizi ve otel tercihlerinizi tamamen kendi arzunuza göre kurgulayabilirsiniz. Özel seyahat planınızı [Hadi Umreye Gidelim tasarlayıcısından](/bireysel-umre) tarihlerini seçerek hemen hazırlayabilirsiniz.",
-        "Diğer bahar seçenekleri için [mart-umresi](/mart-umresi) ve [ramazan-umresi](/ramazan-umresi) sayfalarımızı, konaklama opsiyonları için [paketler sayfamızı](/paketler) inceleyebilir; adımlar için [ihram nedir](/umre-rehberi/ihram-nedir) rehberimizden faydalanabilirsiniz.",
+        "Diğer bahar seçenekleri için [mart umresi](/mart-umresi) ve [ramazan umresi](/ramazan-umresi) sayfalarımızı, konaklama opsiyonları için [paketler sayfamızı](/paketler) inceleyebilir; adımlar için [ihram nedir](/umre-rehberi/ihram-nedir) rehberimizden faydalanabilirsiniz.",
         "Esnek program imkânı sayesinde kafile temposuna bağlı kalmadan dilediğiniz vakit Kâbe'de vakit geçirebilirsiniz.",
         "Kendi temponuzda bir seyahat geçirmek ruhunuza dinlenme ve yenilenme imkânı sunar. Ailenizle birlikte Kutsal Topraklarda unutulmaz anlar yaşayabilirsiniz.",
       ],

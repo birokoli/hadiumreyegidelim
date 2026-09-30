@@ -13,7 +13,7 @@ const page: ContentPage = {
     {
       h2: "Aralık ayında Mekke ve Medine hava durumu nasıldır?",
       paragraphs: [
-        "Aralık ayı, Suudi Arabistan ikliminde kış etkilerinin hissedildiği dönemin başlangıcıdır. Mekke-i Mükerreme'de gündüz sıcaklıkları 24-28 derece civarında oldukça ılık seyrederken, Medine-i Münevvere'de gündüz 20-24, gece ise 12-15 derecelere kadar düşebilir.",
+        "Aralık ayı, Suudi Arabistan ikliminde kış etkilerinin hissedildiği dönemin başlangıcıdır. Mekke'de ortalama en yüksek sıcaklık yaklaşık 32 °C, en düşük yaklaşık 20 °C'dir; Medine'de ortalama en yüksek yaklaşık 26 °C, gece yaklaşık 14 °C. Ortalama değerlerdir; yolculuk öncesi güncel tahmine bakın.",
         "Medine kış aylarında tatlı bir serinliğe sahiptir. Mescid-i Nebevi avlusundaki geniş şemsiyeler altında vakit geçirirken üzerinize hırka veya yelek almanız gerekir.",
         "Mekke iklimi ise yılın en ferah dönemindedir. Güneş altında dahi terlemeden tavaf ve sa'y ibadetleri rahatlıkla eda edilebilir. Hava durumu verileri dönemsel değişiklikler gösterebilir.",
         "Serin iklim koşulları, bedensel yorgunluğu en aza indirerek ibadete ayrılan zamanın kalitesini yükseltir.",
@@ -87,7 +87,7 @@ const page: ContentPage = {
   faq: [
     {
         "q": "Aralık ayında Medine soğuk olur mu?",
-        "a": "Medine Aralık ayında geceleri 12-15 derecelere kadar düşebilir; bu nedenle yanınızda hırka veya hafif ceket bulundurmanız tavsiye edilir."
+        "a": "Medine'de aralık gecelerinde ortalama sıcaklık yaklaşık 14 °C'dir; bu nedenle yanınızda hırka veya hafif ceket bulundurmanız tavsiye edilir."
     },
     {
         "q": "Aralık umresinde Kâbe kalabalık mıdır?",

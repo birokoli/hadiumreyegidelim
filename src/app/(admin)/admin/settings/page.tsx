@@ -1,4 +1,5 @@
 "use client";
+import { SITE_URL } from "@/lib/seo/site";
 
 import React, { useState, useEffect } from "react";
 
@@ -475,8 +476,8 @@ export default function SettingsPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
               {[
-                { title: 'Sitemap URL', value: 'https://hadiumreyegidelim.com/sitemap.xml', icon: 'link', color: 'text-primary bg-primary/[0.08]' },
-                { title: 'Robots.txt', value: 'https://hadiumreyegidelim.com/robots.txt',   icon: 'smart_toy', color: 'text-on-surface-variant bg-surface-container-low' },
+                { title: 'Sitemap URL', value: `${SITE_URL}/sitemap.xml`, icon: 'link', color: 'text-primary bg-primary/[0.08]' },
+                { title: 'Robots.txt', value: `${SITE_URL}/robots.txt`,   icon: 'smart_toy', color: 'text-on-surface-variant bg-surface-container-low' },
               ].map(item => (
                 <div key={item.title} className={`flex items-center gap-4 p-4 rounded-xl border border-outline-variant/20 ${item.color.split(' ')[1]}`}>
                   <span className={`material-symbols-outlined text-[22px] ${item.color.split(' ')[0]}`}>{item.icon}</span>

@@ -41,6 +41,7 @@ export function validateContentPage(p: ContentPage, knownPaths: Set<string>): Is
   const hrefs = [...links.map((l) => l.href), ...p.related, ...p.sources.map((s) => s.href)];
   let hasPlanLink = p.related.includes("/bireysel-umre");
   for (const l of links) {
+    if (/^[a-z0-9]+(-[a-z0-9]+)+$/.test(l.text)) err(`bağlantı metni adres gibi yazılmış, okunur metin olmalı: "${l.text}"`);
     if (l.href.startsWith("/")) {
       if (!knownPaths.has(l.href)) err(`bilinmeyen iç link: ${l.href}`);
       if (l.href === "/bireysel-umre") hasPlanLink = true;

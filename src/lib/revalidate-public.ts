@@ -4,7 +4,7 @@
 import { revalidatePath } from "next/cache";
 
 const PATHS = {
-  packages: [["/"], ["/paketler"], ["/paketler/[slug]", "page"]],
+  packages: [["/"], ["/paketler"], ["/paketler/[slug]", "page"], ["/umre-rehberi/[slug]", "page"], ["/[slug]", "page"]],
   guides: [["/rehberlik"], ["/rehber/[slug]", "page"]],
   posts: [["/"], ["/blog"], ["/blog/[slug]", "page"], ["/sitemap.xml"]],
   services: [["/hizmetler"]],

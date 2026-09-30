@@ -1,3 +1,4 @@
+import { SITE_URL } from "@/lib/seo/site";
 // ─────────────────────────────────────────────────────────────────────────────
 // /c/[campaignSlug]?ref={code}
 // Kampanya takip linki: click logla → cookie ata → kampanya sayfasına yönlendir
@@ -19,7 +20,7 @@ export async function GET(
   const { campaignSlug } = await params;
   const { searchParams } = new URL(req.url);
   const refCode = searchParams.get('ref') ?? '';
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://hadiumreyegidelim.com';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || SITE_URL;
 
   // Kampanya ve katılımcıyı bul
   const [campaign, participant] = await Promise.all([

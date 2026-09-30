@@ -1,4 +1,5 @@
 'use client';
+import { SITE_URL } from "@/lib/seo/site";
 
 import { useCallback, useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
@@ -195,7 +196,7 @@ export default function InfluencerCampaignsPage() {
                         </p>
                       </div>
                       <button
-                        onClick={() => copy(`https://hadiumreyegidelim.com/c/${p.campaign.slug}?ref=${p.uniqueCode}`, `link-${p.id}`)}
+                        onClick={() => copy(`${SITE_URL}/c/${p.campaign.slug}?ref=${p.uniqueCode}`, `link-${p.id}`)}
                         className={`shrink-0 flex items-center gap-1 text-[12px] font-semibold px-3 py-1.5 rounded-lg transition-all ${copied === `link-${p.id}` ? 'bg-green-500 text-white' : 'bg-blue-100 text-blue-700 hover:bg-blue-200'}`}
                       >
                         <span className="material-symbols-outlined text-[14px]">{copied === `link-${p.id}` ? 'check' : 'content_copy'}</span>

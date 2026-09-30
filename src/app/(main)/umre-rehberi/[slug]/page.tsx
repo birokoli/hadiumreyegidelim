@@ -1,3 +1,4 @@
+import { SITE_URL } from "@/lib/seo/site";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import ContentPageView from "@/components/content/ContentPageView";
@@ -21,7 +22,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: pageTitle(page.title),
     description: page.description,
-    alternates: { canonical: `https://hadiumreyegidelim.com${contentPath(page)}` },
+    alternates: { canonical: `${SITE_URL}${contentPath(page)}` },
     openGraph: { title: page.title, description: page.description, type: "article", images: [DEFAULT_OG_IMAGE] },
   };
 }

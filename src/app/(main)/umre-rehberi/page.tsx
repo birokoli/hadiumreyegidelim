@@ -1,3 +1,4 @@
+import { SITE_URL } from "@/lib/seo/site";
 import Link from "next/link";
 import { Metadata } from "next";
 import { CONTENT_PAGES, contentPath } from "@/content/pages";
@@ -6,7 +7,7 @@ import { LastUpdated } from "@/components/seo/PageTrust";
 export const metadata: Metadata = {
   title: "Umre Rehberi: Terimler ve Karşılaştırmalar",
   description: "İhram, tavaf, sa'y gibi umre terimlerinin anlamları; bireysel umre, dönem ve kişiye göre umre planlama rehberleri. Hadi Umreye Gidelim'in umre rehberi.",
-  alternates: { canonical: "https://hadiumreyegidelim.com/umre-rehberi" },
+  alternates: { canonical: `${SITE_URL}/umre-rehberi` },
 };
 
 const GROUPS = [

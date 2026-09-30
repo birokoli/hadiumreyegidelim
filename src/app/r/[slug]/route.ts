@@ -1,3 +1,4 @@
+import { SITE_URL } from "@/lib/seo/site";
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
@@ -10,7 +11,7 @@ function isBot(userAgent: string): boolean {
 
 export async function GET(req: NextRequest, { params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://hadiumreyegidelim.com';
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || SITE_URL;
 
   // Influencer bul
   const influencer = await prisma.influencer.findUnique({ where: { uniqueUrl: slug } });

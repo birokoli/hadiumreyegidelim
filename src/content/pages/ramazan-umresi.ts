@@ -50,7 +50,7 @@ const page: ContentPage = {
       h2: "Ramazan ayında bireysel umre ile özel program imkânı",
       paragraphs: [
         "Ramazan umresini bireysel olarak planlamak, kalabalıklar arasında kendi ibadet ritminizi korumanıza yardımcı olur. Özel seyahat programınızı [Hadi Umreye Gidelim tasarlayıcısından](/bireysel-umre) tarihlerini seçerek hemen oluşturabilirsiniz.",
-        "Farklı dönem alternatifleri için [mart-umresi](/mart-umresi) ve [nisan-umresi](/nisan-umresi) rehberlerimizi, konaklama seçenekleri için [paketler sayfamızı](/paketler) inceleyebilir; ibadet adımları için [tavaf nedir](/umre-rehberi/tavaf-nedir) yazımızı okuyabilirsiniz.",
+        "Farklı dönem alternatifleri için [mart umresi](/mart-umresi) ve [nisan umresi](/nisan-umresi) rehberlerimizi, konaklama seçenekleri için [paketler sayfamızı](/paketler) inceleyebilir; ibadet adımları için [tavaf nedir](/umre-rehberi/tavaf-nedir) yazımızı okuyabilirsiniz.",
         "Bireysel planlama ile Ramazan ayının son 10 günündeki İtikâf ve Kadir Gecesi programlarınızı esnekçe kurgulayabilirsiniz.",
         "Mübarek Ramazan ayını Kâbe'de karşılamak ömrün en değerli manevi hatırası olur. Ailenizle birlikte bu mübarek günlerin feyzini yaşayabilirsiniz.",
       ],

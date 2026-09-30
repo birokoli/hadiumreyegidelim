@@ -50,7 +50,7 @@ const page: ContentPage = {
       h2: "Sömestr döneminde bireysel umre ile aileye özel program",
       paragraphs: [
         "Bireysel umre planlaması sayesinde sömestr tatilinizi tamamen kendi ailenizin tercih ettiği tarihler arasında kurgulayabilirsiniz. Özel programınızı [Hadi Umreye Gidelim tasarlayıcısından](/bireysel-umre) tarihlerini seçerek hemen oluşturabilirsiniz.",
-        "Diğer kış dönemi sayfalarımız için [ocak-umresi](/ocak-umresi) ve [subat-umresi](/subat-umresi) rehberlerimizi, konaklama alternatifleri için [paketler sayfamızı](/paketler) inceleyebilir; ilk adımlar için [ogrenci-umresi](/ogrenci-umresi) ve [aile-umresi](/aile-umresi) yazılarımızı okuyabilirsiniz.",
+        "Diğer kış dönemi sayfalarımız için [ocak umresi](/ocak-umresi) ve [şubat umresi](/subat-umresi) rehberlerimizi, konaklama alternatifleri için [paketler sayfamızı](/paketler) inceleyebilir; ilk adımlar için [öğrenci umresi](/ogrenci-umresi) ve [aile umresi](/aile-umresi) yazılarımızı okuyabilirsiniz.",
         "Bireysel umre seçeneği, grup bağımlılığı olmadan ailenize özel ilahiyatçı rehber ile seyahat etme imkânı sunar.",
         "Sömestr tatilinde manevi yenilenme yaşamak yeni eğitim dönemine motivasyon katar. Aile fertlerinin ortak duası seyahatin bereketini katlar.",
       ],
@@ -91,7 +91,7 @@ const page: ContentPage = {
     },
     {
         "q": "Sömestr umresinde hava soğuk olur mu?",
-        "a": "Ocak ve Şubat ayları Hicaz ikliminde tatlı bir serinliğe sahiptir; gündüzleri ılık, geceleri ise serindir."
+        "a": "Ocak ve şubat, yılın en serin aylarıdır: Mekke'de gündüz ortalaması yaklaşık 31–32 °C, Medine'de 24–27 °C; geceler Medine'de serindir."
     },
     {
         "q": "Sömestr tatilinde Umre vizesi almak kolay mıdır?",

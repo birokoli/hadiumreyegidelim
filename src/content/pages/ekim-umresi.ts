@@ -13,7 +13,7 @@ const page: ContentPage = {
     {
       h2: "Ekim ayında Mekke ve Medine hava durumu nasıldır?",
       paragraphs: [
-        "Ekim ayı, Suudi Arabistan ikliminde yaz aylarındaki kavurucu sıcakların yerini daha kabul edilebilir ve ılıman sıcaklıklara bıraktığı geçiş dönemidir. Mekke-i Mükerreme ve Medine-i Münevvere şehirlerinde gündüz sıcaklıkları ortalama 30-35 derece civarında seyrederken, gece saatlerinde hava belirgin şekilde serinler.",
+        "Ekim ayı, yaz sıcaklarının yavaş yavaş gerilediği bir geçiş dönemidir ama Mekke hâlâ sıcaktır: ortalama en yüksek sıcaklık yaklaşık 40 °C, en düşük yaklaşık 25 °C. Medine'de ortalama en yüksek yaklaşık 37 °C, gece yaklaşık 23 °C. Bunlar ortalama değerlerdir; yolculuk öncesi güncel hava tahminine bakın.",
         "Özellikle Medine-i Münevvere bölgesinde çöl ikliminin etkisiyle akşamları esinti artar. Bu durum Mescid-i Nebevi avlusunda akşam ve yatsı namazlarını kılmayı oldukça keyifli ve konforlu hale getirir.",
         "Mekke'de ise Kâbe avlusunda gündüz saatlerinde güneş altında kalmamak kaydıyla tavaf yapmak yaz aylarına kıyasla çok daha rahattır. İklim verileri genel ortalamalardır ve mevsimsel değişiklikler gösterebilir.",
         "Sonbahar ikliminin getirdiği bu ferahlık, uzun yürüyüşler yapmayı ve Mescid-i Haram'da daha fazla vakit geçirmeyi kolaylaştırır.",
@@ -40,7 +40,7 @@ const page: ContentPage = {
     {
       h2: "Ekim umresi için kıyafet hazırlığı nasıl olmalı?",
       paragraphs: [
-        "Ekim ayında seyahat ederken hem gündüzün ılık havasına hem de gecenin serinliğine uygun kıyafetler seçilmelidir. Erkek ziyaretçiler için ihram pamuklu ve ter emici kumaşlardan tercih edilmelidir.",
+        "Ekim ayında gündüz sıcağına uygun ince, açık renkli ve ter emici kıyafetler seçilmelidir; tavaf ve sa'y sabah erken ya da akşam saatlerine planlanmalıdır. Erkek ziyaretçiler için ihram pamuklu ve ter emici kumaşlardan tercih edilmelidir.",
         "Kadın ziyaretçilerin iç göstermeyen, dökümlü ve ince pamuklu kumaşlardan yapılmış elbiseler tercih etmesi ibadet esnasında büyük kolaylık sağlar. Yanınızda hafif bir şal veya hırka bulundurmak gece esintilerinde faydalı olur.",
         "Mescid-i Haram ve Mescid-i Nebevi mermerlerinde uzun yürüyüşler yapacağınız için yumuşak tabanlı ortopedik terlikler ve dikişsiz çoraplar valizde mutlaka yer almalıdır.",
         "Gündüz güneşten korunmak amacıyla güneş gözlüğü ve doğal dudak nemlendiricileri taşımak seyahat konforunu pekiştirir.",

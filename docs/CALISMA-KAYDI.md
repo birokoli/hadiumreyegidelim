@@ -34,6 +34,26 @@ Antigravity her iş oturumunda bu dosyanın **en üstüne** bir kayıt ekler. Am
 
 <!-- Kayıtlar bu çizginin altına, en yeni en üstte -->
 
+## 2026-10-01 — Claude Code: Antigravity kontrolü, asıl adres www, içerik düzeltmeleri
+**Dal / commit:** `main` · (bu commit)
+**Yol haritası adımı:** Sıralama A1, 3.2 kontrol
+**Yapılan:**
+- Asıl adres `https://www.hadiumreyegidelim.com` (`SITE_URL`); kullanıcı Vercel'de www'yi korumak istedi. Antigravity'nin SITE_URL birleştirmesinde kalan sabit adresler de bağlandı (rehber canonical'ları, paket detayı, bireysel umre şeması, influencer/kampanya bağlantıları, admin ayar önizlemeleri).
+- Ay sayfalarındaki sıcaklıklar yanlıştı (Mekke ocak "23–27" → ortalama ~31/19 °C; nisan "30–34" → ~38/25 °C vb.); iklim ortalamalarıyla düzeltildi, "ortalama, güncel tahmine bakın" notu eklendi; ekim/kasım Mekke'yi "ılık" diye anlatan yanıltıcı cümleler düzeltildi.
+- 14 bağlantı metni adres gibi yazılmıştı (`[mart-umresi](/mart-umresi)`); okunur metne çevrildi, denetime kural eklendi.
+- Rehber sayfalarına admin'de yayında olan **gerçek** paketler otomatik listeleniyor ("Umre paketlerimiz"); paket değişince sayfalar tazeleniyor.
+- Klasörde SITE_URL düzenlemesini geri alan kaydedilmemiş artıklar vardı; atıldı.
+**Doğrulama:** check-content-pages 22 sayfa 0 hata; tsc temiz; build "Compiled successfully"; canlı kontrol aşağıda.
+**Kullanıcıya gösterilen / onay:** Kullanıcı "www kaldırılmayacak, başka çare bul" dedi; çözüm kod tarafında.
+**Kararlar ve sebepleri:**
+- **Paket kaydı oluşturulmadı.** Önceki kayıttaki "rehber yazılarına göre satılabilir paket kayıtları aç" devri yapılmadı: paketler kullanıcının gerçek ürünleridir, içerik/fiyat uydurulamaz. Paketleri ve fiyatlarını kullanıcı admin → Paketler'den girer; rehber sayfaları onları otomatik gösterir.
+- Hava durumu gibi rakamlar yazılmadan önce güvenilir kaynakla karşılaştırılmalı; bu kez yanlış rakamlar canlıya çıkmıştı.
+**Açık kalanlar / riskler:**
+- Kullanıcı: Search Console'da www mülkü ve sitemap'i yeniden gönderme; isteğe bağlı Vercel 307 → 308; paket fiyatları; vize ücreti ve süresi.
+**Sıradaki adım:**
+- `docs/SIRALAMA-YOL-HARITASI.md` Faz A2–A4, sonra Faz B1 (`/umre-vizesi`, kullanıcıdan ücret/süre alınınca) ve B2 (`/umre-fiyatlari`, paket fiyatları girilince).
+
+
 ## 2026-09-30 18:30 — Canonical Host Konsolidasyonu (SITE_URL) ve Devir Notları
 **Dal / commit:** `sayfa-gruplari` · `7a7d471`
 **Yol haritası adımı:** 2.1 Canonical host konsolidasyonu & 3.2 Programatik rehber sayfaları devri

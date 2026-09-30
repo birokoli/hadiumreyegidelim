@@ -13,7 +13,7 @@ const page: ContentPage = {
     {
       h2: "Şubat ayında Mekke ve Medine hava şartları nasıldır?",
       paragraphs: [
-        "Şubat ayı, Hicaz coğrafyasında ilkbahar öncesi son serin günlerin yaşandığı mevsimdir. Mekke-i Mükerreme'de gündüz sıcaklıkları 25-29 derece civarında seyrederken, Medine-i Münevvere'de gündüz 21-25, gece ise 13-16 derece aralığındadır.",
+        "Şubat ayı, Hicaz coğrafyasında ilkbahar öncesi son serin günlerin yaşandığı mevsimdir. Mekke'de ortalama en yüksek sıcaklık yaklaşık 32 °C, en düşük yaklaşık 19 °C'dir; Medine'de ortalama en yüksek yaklaşık 27 °C, gece yaklaşık 14 °C. Ortalama değerlerdir; yolculuk öncesi güncel tahmine bakın.",
         "Medine-i Münevvere'de akşam vakitleri açık alanda ibadet ederken tatlı bir serinlik hissedilir. Mescid-i Nebevi avlusu bu ayda oldukça ferah bir atmosfere bürünür.",
         "Mekke-i Mükerreme'de Kâbe avlusunda gündüz saatlerinde tavaf yapmak bedeni yormaz. Güneş yakıcı olmadığı için ibadetler zindelikle eda edilir. Sıcaklıklar genel ortalamadır.",
         "Şubat ayının ılıman iklimi, Mescid-i Haram'da geçirilen saatlerin konforunu artırır.",
@@ -50,7 +50,7 @@ const page: ContentPage = {
       h2: "Şubat ayında bireysel umre avantajları nelerdir?",
       paragraphs: [
         "Bireysel umre seçeneği ile Şubat ayı seyahat günlerinizi kendi ailenizin tatil takvimine göre özgürce ayarlayabilirsiniz. Özel programınızı [Hadi Umreye Gidelim tasarlayıcısı ile](/bireysel-umre) tarihlerini seçerek hemen kurgulayabilirsiniz.",
-        "Diğer bahar dönemi seçenekleri için [mart-umresi](/mart-umresi) ve [somestr-umresi](/somestr-umresi) sayfalarımızı, konaklama imkânları için [paketler sayfamızı](/paketler) inceleyebilir; adımlar için [tavaf nedir](/umre-rehberi/tavaf-nedir) yazımızdan faydalanabilirsiniz.",
+        "Diğer bahar dönemi seçenekleri için [mart umresi](/mart-umresi) ve [sömestr umresi](/somestr-umresi) sayfalarımızı, konaklama imkânları için [paketler sayfamızı](/paketler) inceleyebilir; adımlar için [tavaf nedir](/umre-rehberi/tavaf-nedir) yazımızdan faydalanabilirsiniz.",
         "Bireysel planlama sayesinde otobüs saatlerine bağlı kalmadan dilediğiniz vakitte Harem-i Şerif'te vakit geçirebilirsiniz.",
         "Ailenizle birlikte huzurlu bir umre süreci geçirmek manevi bağlarınızı güçlendirir. Seyahat boyunca uzman rehberlerin bilgilerinden faydalanabilirsiniz.",
       ],

@@ -1,3 +1,4 @@
+import { SITE_URL } from "@/lib/seo/site";
 import React from 'react';
 export const revalidate = 300;
 import { prisma } from '@/lib/prisma';
@@ -82,7 +83,7 @@ export default async function PackageDetailPage({ params }: { params: Promise<{ 
             price: String(pkg.price),
             priceCurrency: pkg.currency || 'USD',
             availability: 'https://schema.org/InStock',
-            url: `https://hadiumreyegidelim.com/paketler/${pkg.slug}`,
+            url: `${SITE_URL}/paketler/${pkg.slug}`,
           },
         }
       : {}),
@@ -95,16 +96,16 @@ export default async function PackageDetailPage({ params }: { params: Promise<{ 
     { q: `${pkg.title} için nasıl rezervasyon yapılır?`, a: `Bu sayfadan ön rezervasyon talebi oluşturabilir ya da WhatsApp üzerinden tarih ve kişi sayısını iletebilirsiniz; güncel fiyat ve müsaitlik size yazılı olarak bildirilir.` },
   ].filter(Boolean) as { q: string; a: string }[];
   const faqJsonLd = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) };
-  const pageJsonLd = webPageJsonLd({ url: `https://hadiumreyegidelim.com/paketler/${pkg.slug}`, name: pkg.title, dateModified: pkg.updatedAt.toISOString() });
+  const pageJsonLd = webPageJsonLd({ url: `${SITE_URL}/paketler/${pkg.slug}`, name: pkg.title, dateModified: pkg.updatedAt.toISOString() });
 
   // Breadcrumb Schema
   const breadcrumbJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Anasayfa', item: 'https://hadiumreyegidelim.com' },
-      { '@type': 'ListItem', position: 2, name: 'Bireysel Umre Turları', item: 'https://hadiumreyegidelim.com/bireysel-umre' },
-      { '@type': 'ListItem', position: 3, name: pkg.title, item: `https://hadiumreyegidelim.com/paketler/${pkg.slug}` }
+      { '@type': 'ListItem', position: 1, name: 'Anasayfa', item: SITE_URL },
+      { '@type': 'ListItem', position: 2, name: 'Bireysel Umre Turları', item: `${SITE_URL}/bireysel-umre` },
+      { '@type': 'ListItem', position: 3, name: pkg.title, item: `${SITE_URL}/paketler/${pkg.slug}` }
     ]
   };
 

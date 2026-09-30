@@ -13,7 +13,7 @@ const page: ContentPage = {
     {
       h2: "Ocak ayında Kutsal Beldelerde iklim şartları nasıldır?",
       paragraphs: [
-        "Ocak ayı, Suudi Arabistan genelinde kış mevsiminin en belirgin şekilde hissedildiği zamandır. Mekke-i Mükerreme'de gündüz sıcaklıkları 23-27 derece aralığında seyrederken, Medine-i Münevvere'de gündüz 18-22, gece ise 10-13 derecelere kadar düşebilmektedir.",
+        "Ocak ayı, Suudi Arabistan genelinde kış mevsiminin en belirgin şekilde hissedildiği zamandır. Mekke'de ortalama en yüksek sıcaklık yaklaşık 31 °C, en düşük yaklaşık 19 °C'dir; Medine'de ortalama en yüksek yaklaşık 24 °C, gece yaklaşık 12 °C. Ortalama değerlerdir; yolculuk öncesi güncel tahmine bakın.",
         "Özellikle Medine'de sabah namazı ve yatsı namazı saatlerinde esen tatlı kış rüzgârları dış alanlarda ibadet eden ziyaretçiler için serin bir ortam oluşturur.",
         "Mekke'de ise Kâbe avlusunda gündüz saatlerinde güneş yakıcılığını tamamen kaybettiği için saatlerce nafile tavaf yapmak oldukça rahat ve dinlendiricidir. İklim verileri ortalamadır.",
         "Kış mevsiminin sunduğu bu iklim avantajı, bedensel efor gerektiren tavaf ve sa'y ibadetlerinin kolaylıkla tamamlanmasına yardımcı olur.",
@@ -50,7 +50,7 @@ const page: ContentPage = {
       h2: "Ocak ayında bireysel umre planlamanın sağladığı imkânlar",
       paragraphs: [
         "Bireysel umre organizasyonu sayesinde sömestr veya Ocak ayı seyahat tarihlerinizi okul takviminize tam uyumlu olarak kurgulayabilirsiniz. Kendi seyahat planınızı [Hadi Umreye Gidelim tasarlayıcısından](/bireysel-umre) tarihlerini seçerek hemen oluşturabilirsiniz.",
-        "Mevcut seyahat seçeneklerini görmek için [paketler sayfamızı](/paketler), diğer kış dönemi rehberlerimiz için [subat-umresi](/subat-umresi) ve [somestr-umresi](/somestr-umresi) içeriklerimizi inceleyebilir; ilk adımlar için [ihram nedir](/umre-rehberi/ihram-nedir) yazımızı okuyabilirsiniz.",
+        "Mevcut seyahat seçeneklerini görmek için [paketler sayfamızı](/paketler), diğer kış dönemi rehberlerimiz için [şubat umresi](/subat-umresi) ve [sömestr umresi](/somestr-umresi) içeriklerimizi inceleyebilir; ilk adımlar için [ihram nedir](/umre-rehberi/ihram-nedir) yazımızı okuyabilirsiniz.",
         "Kendi temponuzda seyahat etmek, sömestr kalabalığında dahi ailenizle huzurlu bir umre geçirme imkânı tanır.",
         "Bireysel planlama ile Kutsal Topraklarda geçirdiğiniz her anı daha verimli değerlendirebilirsiniz. Serin kış ortamında uzun süre Kâbe'yi seyretmek manevi duyguları pekiştirir.",
       ],
@@ -87,7 +87,7 @@ const page: ContentPage = {
   faq: [
     {
         "q": "Ocak ayında Mekke'de hava soğuk olur mu?",
-        "a": "Mekke Ocak ayında ılık ve ferah bir iklime sahiptir; Medine kadar serin olmasa da oldukça konforlu bir ibadet havası sunar."
+        "a": "Mekke ocakta gündüzleri sıcak (ortalama en yüksek yaklaşık 31 °C), geceleri ılıktır; yaz aylarına göre ibadet için çok daha rahattır. Serinliği asıl Medine'de hissedersiniz."
     },
     {
         "q": "Ocak umresine çocuklar ile gitmek uygun mudur?",

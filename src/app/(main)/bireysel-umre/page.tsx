@@ -48,7 +48,7 @@ export default function PlannerPage() {
     "provider": {
       "@type": "Organization",
       "name": "Hadi Umre'ye Gidelim",
-      "url": "https://hadiumreyegidelim.com"
+      "url": SITE_URL
     },
     "touristType": ["Bireysel Umre", "VIP Aile Umresi", "Kendi Programıyla Umre"]
   };

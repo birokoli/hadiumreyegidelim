@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
 import { marked } from 'marked';
 import { DEFAULT_OG_IMAGE, metaDescription, pageTitle } from "@/lib/seo/meta";
+import { OfficialInfo } from "@/components/seo/PageTrust";
 
 export const revalidate = 300;
 
@@ -335,6 +336,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           "
           dangerouslySetInnerHTML={{ __html: contentWithIds }}
         />
+        <OfficialInfo className="mt-10" />
       </article>
 
       {/* E-E-A-T References Injection */}

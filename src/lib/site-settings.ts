@@ -10,9 +10,9 @@ export const SITE_SETTINGS_TAG = "site-settings";
 // Ayarlar tablosunda admin araçlarının büyük JSON verileri de duruyor; siteye taşınmaz
 const PRIVATE_PREFIXES = ["SEO_", "AI_VIS_", "ANTHROPIC_", "ADMIN_", "AI_MONTHLY", "AUTO_BLOG", "GEO_BLOG", "WHATSAPP_AI", "WHATSAPP_BOT", "JWT", "CRON"];
 // Vercel önbellek girdisi en fazla 2 MB; tek değer 20 KB'ı geçerse siteye taşınmaz
-const MAX_VALUE_LENGTH = 20_000;
+export const MAX_VALUE_LENGTH = 20_000;
 
-const isPublicKey = (key: string) => !PRIVATE_PREFIXES.some((p) => key.toUpperCase().startsWith(p));
+export const isPublicKey = (key: string) => !PRIVATE_PREFIXES.some((p) => key.toUpperCase().startsWith(p));
 
 async function querySettings(): Promise<Record<string, string>> {
   const rows = await prisma.setting.findMany({ select: { key: true, value: true } });

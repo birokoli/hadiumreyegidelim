@@ -1,4 +1,4 @@
-import { revalidateSiteSettings } from "@/lib/site-settings";
+import { isPublicKey, MAX_VALUE_LENGTH, revalidateSiteSettings } from "@/lib/site-settings";
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { cookies } from 'next/headers';
@@ -13,11 +13,11 @@ export async function GET() {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const settings = await prisma.setting.findMany();
-    
-    // Convert array of objects to key-value pairs
+    // Yalnızca sitenin ayarları: SEO/AI araçlarının büyük JSON'ları yanıtı Vercel sınırının
+    // üstüne çıkarıyordu; istek düşünce form varsayılanlarla kalıp kaydedilen ayarları eziyordu
+    const settings = await prisma.setting.findMany({ select: { key: true, value: true } });
     const settingsMap = settings.reduce((acc: Record<string, string>, curr) => {
-      acc[curr.key] = curr.value;
+      if (isPublicKey(curr.key) && curr.value.length <= MAX_VALUE_LENGTH) acc[curr.key] = curr.value;
       return acc;
     }, {});
 

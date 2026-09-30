@@ -56,11 +56,21 @@ export default function SettingsPage() {
   const [pwSaving, setPwSaving] = useState(false);
   const [pwMsg, setPwMsg] = useState<{ type: 'ok' | 'err'; text: string } | null>(null);
 
+  // Veritabanından yüklenen değerler; Kaydet yalnızca bunlardan farklı olanları yazar
+  const [loaded, setLoaded] = useState<Record<string, string> | null>(null);
+  const [loadError, setLoadError] = useState(false);
+
   useEffect(() => {
     fetch('/api/admin/settings')
-      .then(res => res.json())
-      .then(data => { if (data && !data.error) setSettings(prev => ({ ...prev, ...data })); setLoading(false); })
-      .catch(() => setLoading(false));
+      .then(res => { if (!res.ok) throw new Error(String(res.status)); return res.json(); })
+      .then(data => {
+        if (!data || data.error) throw new Error('boş yanıt');
+        const merged = { ...DEFAULTS, ...data } as Record<string, string>;
+        setSettings(merged);
+        setLoaded(merged);
+      })
+      .catch(() => setLoadError(true))
+      .finally(() => setLoading(false));
   }, []);
 
   const handleChange = (key: string, value: string) => setSettings(prev => ({ ...prev, [key]: value }));
@@ -118,10 +128,14 @@ export default function SettingsPage() {
     setSaving(true);
     setSaveMsg(null);
     try {
+      if (!loaded) { setSaveMsg({ type: 'err', text: 'Ayarlar yüklenemedi; varsayılanların kayıtlı değerlerin üzerine yazılmaması için kaydetme kapalı. Sayfayı yenileyin.' }); return; }
+      const changed = Object.fromEntries(Object.entries(settings).filter(([k, v]) => loaded[k] !== v));
+      if (Object.keys(changed).length === 0) { setSaveMsg({ type: 'ok', text: 'Değişiklik yok.' }); return; }
       const res = await fetch('/api/admin/settings', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(settings)
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(changed)
       });
-      setSaveMsg(res.ok ? { type: 'ok', text: 'Ayarlar kaydedildi.' } : { type: 'err', text: 'Kaydetme başarısız!' });
+      if (res.ok) setLoaded(prev => ({ ...(prev ?? {}), ...changed }));
+      setSaveMsg(res.ok ? { type: 'ok', text: `Ayarlar kaydedildi (${Object.keys(changed).length} alan).` } : { type: 'err', text: 'Kaydetme başarısız!' });
     } catch { setSaveMsg({ type: 'err', text: 'Hata oluştu.' }); }
     finally { setSaving(false); setTimeout(() => setSaveMsg(null), 4000); }
   };
@@ -178,13 +192,19 @@ export default function SettingsPage() {
               {saveMsg.text}
             </span>
           )}
-          <button onClick={handleSave} disabled={saving}
+          <button onClick={handleSave} disabled={saving || !loaded}
             className="bg-primary hover:bg-[#002f6c] text-white px-7 py-3.5 rounded-xl font-bold flex items-center gap-2 transition-all shadow-md active:scale-95 disabled:opacity-50">
             <span className="material-symbols-outlined text-[20px]">save</span>
             {saving ? 'Kaydediliyor...' : 'Kaydet'}
           </button>
         </div>
       </header>
+
+      {loadError && (
+        <div className="mb-6 rounded-xl border border-error/30 bg-error/10 px-5 py-4 text-sm font-semibold text-error">
+          Kayıtlı ayarlar yüklenemedi. Kayıtlı değerlerin varsayılanlarla ezilmemesi için kaydetme kapatıldı; sayfayı yenileyin.
+        </div>
+      )}
 
       {/* Tabs */}
       <div className="flex flex-wrap gap-2 mb-8 border-b border-outline-variant/10 pb-4">

@@ -14,6 +14,15 @@ import aileUmresi from "./aile-umresi";
 import yasliUmresi from "./yasli-umresi";
 import tekerlekliSandalyeIleUmre from "./tekerlekli-sandalye-ile-umre";
 import ogrenciUmresi from "./ogrenci-umresi";
+import ekimUmresi from "./ekim-umresi";
+import kasimUmresi from "./kasim-umresi";
+import aralikUmresi from "./aralik-umresi";
+import ocakUmresi from "./ocak-umresi";
+import subatUmresi from "./subat-umresi";
+import martUmresi from "./mart-umresi";
+import nisanUmresi from "./nisan-umresi";
+import ramazanUmresi from "./ramazan-umresi";
+import somestrUmresi from "./somestr-umresi";
 
 export const CONTENT_PAGES: ContentPage[] = [
   ihramNedir,
@@ -29,6 +38,15 @@ export const CONTENT_PAGES: ContentPage[] = [
   yasliUmresi,
   tekerlekliSandalyeIleUmre,
   ogrenciUmresi,
+  ekimUmresi,
+  kasimUmresi,
+  aralikUmresi,
+  ocakUmresi,
+  subatUmresi,
+  martUmresi,
+  nisanUmresi,
+  ramazanUmresi,
+  somestrUmresi,
 ];
 
 export const getContentPage = (slug: string) => CONTENT_PAGES.find((p) => p.slug === slug);

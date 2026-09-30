@@ -6,6 +6,10 @@ import tavafNedir from "./tavaf-nedir";
 import sayNedir from "./say-nedir";
 import mikatNedir from "./mikat-nedir";
 import tirasNedir from "./tiras-nedir";
+import bireyselUmreMiTurlaUmreMi from "./bireysel-umre-mi-turla-umre-mi";
+import ekonomikUmreMiLuksUmreMi from "./ekonomik-umre-mi-luks-umre-mi";
+import onceMekkeMiMedineMi from "./once-mekke-mi-medine-mi";
+import umreMiHacMi from "./umre-mi-hac-mi";
 
 export const CONTENT_PAGES: ContentPage[] = [
   ihramNedir,
@@ -13,6 +17,10 @@ export const CONTENT_PAGES: ContentPage[] = [
   sayNedir,
   mikatNedir,
   tirasNedir,
+  bireyselUmreMiTurlaUmreMi,
+  ekonomikUmreMiLuksUmreMi,
+  onceMekkeMiMedineMi,
+  umreMiHacMi,
 ];
 
 export const getContentPage = (slug: string) => CONTENT_PAGES.find((p) => p.slug === slug);

@@ -237,7 +237,7 @@ Bir oturuma başlarken bu bölümü uygula. Kullanıcı başka bir şey istemedi
 
 - [ ] **3.2 Yeni sayfa grupları.** Programatik sayfasında "Arama hacimlerini getir" ile hacmi olan kalıpları seç (aile/yaşlı umresi, ay bazlı umre). Yalnızca hacmi olan ve gerçek içerik verilebilen sayfaları aç. Kullanıcı onayı gerekir.
   - **Altyapı hazır (30.09, Claude Code), içerik Antigravity'de:** Uygulama kılavuzu `docs/SAYFA-GRUPLARI.md` (kurallar, 20 sayfanın özeti, lokal önizleme ve onay akışı). Dal: `sayfa-gruplari` (main'e kullanıcı onayıyla). Kayıt `src/content/pages/`, şablon `ContentPageView`, adresler `/umre-rehberi/<slug>` (sözlük, karşılaştırma) ve kök `/<slug>` (kişi, zaman), merkez `/umre-rehberi`, sitemap ve llms.txt otomatik, denetim `npx tsx scripts/check-content-pages.mts`.
-  - **Açılan sayfalar (30.09):** `/umre-rehberi/ihram-nedir` (örnek), `/umre-rehberi/tavaf-nedir`, `/umre-rehberi/say-nedir`, `/umre-rehberi/mikat-nedir`, `/umre-rehberi/tiras-nedir`.
+  - **Açılan sayfalar (30.09):** `/umre-rehberi/ihram-nedir` (örnek), `/umre-rehberi/tavaf-nedir`, `/umre-rehberi/say-nedir`, `/umre-rehberi/mikat-nedir`, `/umre-rehberi/tiras-nedir`, `/umre-rehberi/bireysel-umre-mi-turla-umre-mi`, `/umre-rehberi/ekonomik-umre-mi-luks-umre-mi`, `/umre-rehberi/once-mekke-mi-medine-mi`, `/umre-rehberi/umre-mi-hac-mi`.
 
 
 ### Faz 4 · AI görünürlük (GEO)
@@ -350,6 +350,7 @@ En yeni en üstte. Her tamamlanan adım için bir satır.
 
 | Tarih | Ajan | Adım | Commit | Not |
 |---|---|---|---|---|
+| 2026-09-30 | Antigravity | 3.2 (Karşılaştırma) | sayfa-gruplari dalı | 4 Karşılaştırma rehber sayfası eklendi: bireysel-umre-mi-turla-umre-mi, ekonomik-umre-mi-luks-umre-mi, once-mekke-mi-medine-mi, umre-mi-hac-mi (0 hata, tsc temiz) |
 | 2026-09-30 | Antigravity | 3.2 (Sözlük) | sayfa-gruplari dalı | 4 Sözlük rehber sayfası eklendi: tavaf-nedir, say-nedir, mikat-nedir, tiras-nedir (0 hata, tsc temiz) |
 
 | 2026-09-30 | Claude Code | 3.2 altyapı | sayfa-gruplari dalı | Rehber sayfaları altyapısı + örnek ihram-nedir; kılavuz docs/SAYFA-GRUPLARI.md |

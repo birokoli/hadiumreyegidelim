@@ -215,10 +215,17 @@ Bir oturuma başlarken bu bölümü uygula. Kullanıcı başka bir şey istemedi
 
 ### Faz 3 · Programatik sayfalar ve içerik
 
-- [ ] **3.1 Şehir sayfalarını farklılaştır** (%86 aynı metin)
+- [x] **3.1 Şehir sayfalarını farklılaştır** (%86 aynı metin)
   - Dosyalar: `src/lib/turkey-cities.ts`, `src/app/(main)/[slug]/page.tsx`, `src/components/features/BireyselUmreClient.tsx`.
   - Yapılacak: Her şehre özgü veri ekle: kalkış havalimanı ve aktarma, tahmini uçuş süresi, o şehirden kalkan paketler (Package tablosu), şehre özgü 3 SSS. Uydurma veri ekleme; bilinmeyen alanı gösterme.
   - Bitti sayılır: SEO Masası → Programatik'te ortak metin oranı %60'ın altında.
+  - **Tamamlandı (30.09, Claude Code):** Canlı ölçüm (İstanbul, Ankara, Konya, Erzurum, Antalya; SEO Masası'yla aynı 5 kelimelik Jaccard): **%86 → %49,6**.
+    - `src/lib/city-geo.ts`: 81 il merkezinin yaklaşık koordinatı + bölgesi; Cidde/Medine kuş uçuşu mesafe, tahmini direkt uçuş (~800 km/sa + 30 dk), en yakın iller. Sayfada "yaklaşık" diye yazılır.
+    - `src/app/(main)/[slug]/page.tsx`: şehre özel giriş, bilgi tablosu, yolculuk planı, bölge notu (7 bölge), 3 SSS + FAQPage şeması, en yakın 4 il bağlantısı. Türkçe ekler `ablative()` / `dative()` ile.
+    - Uydurma `AggregateRating` (4.9/12) ve sabit fiyatlı `Product` şeması kaldırıldı → `Service`. Şablondaki ikinci H1 h2 yapıldı (2.3'ün şehir kısmı).
+    - Şehir sayfalarında 81 illik footer listesi gizli (`SeoCitiesFooter`), yerine yakın iller.
+    - Veri düzeltmesi: Adana/Mersin/Osmaniye → Çukurova (COV); Artvin → Rize-Artvin (RZV). Direkt sefer yalnızca IST/SAW için yazılır; diğerleri "çoğunlukla aktarmalı".
+    - Kalan fikir (kullanıcı onayıyla): Package tablosuna kalkış şehri alanı eklenirse şehir sayfasında o şehirden kalkan paketler de gösterilebilir.
 
 - [ ] **3.2 Yeni sayfa grupları.** Programatik sayfasında "Arama hacimlerini getir" ile hacmi olan kalıpları seç (aile/yaşlı umresi, ay bazlı umre). Yalnızca hacmi olan ve gerçek içerik verilebilen sayfaları aç. Kullanıcı onayı gerekir.
 
@@ -325,6 +332,7 @@ En yeni en üstte. Her tamamlanan adım için bir satır.
 
 | Tarih | Ajan | Adım | Commit | Not |
 |---|---|---|---|---|
+| 2026-09-30 | Claude Code | 3.1 ✓ | şehir sayfaları | Benzerlik %86 → %49,6; uydurma puan kaldırıldı; havalimanı verisi düzeltildi |
 | 2026-09-30 | Claude Code | 2.2 ✓ | f308349 | Sayfalar 1,2–1,6 sn → 0,16–0,33 sn (ISR + ayar önbelleği) |
 | 2026-09-30 | Claude Code | 1.7 (sebep) | masa yazı tipleri | .com build'i Google Fonts indirmesinde düşüyordu; yazı tipleri yerelde |
 | 2026-09-30 | Claude Code | ayar ezilmesi | admin ayarları | Kaydet, yükleme başarısız olunca bütün ayarları varsayılana çeviriyordu (ana sayfa başlığı ve Instagram linki sıfırlandı). GET küçültüldü, yalnızca değişen alanlar yazılıyor |

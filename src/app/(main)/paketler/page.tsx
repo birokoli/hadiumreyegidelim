@@ -1,5 +1,5 @@
 import React from "react";
-export const dynamic = 'force-dynamic';
+export const revalidate = 300;
 import { prisma } from "@/lib/prisma";
 import BrandImageFallback from "@/components/ui/BrandImageFallback";
 import Link from "next/link";

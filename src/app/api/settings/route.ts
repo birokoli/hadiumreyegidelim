@@ -1,3 +1,4 @@
+import { revalidateSiteSettings } from "@/lib/site-settings";
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getAdminSession } from '@/lib/admin-auth';
@@ -26,6 +27,7 @@ export async function POST(request: Request) {
       create: { key, value: String(value) },
     });
     
+    revalidateSiteSettings();
     return NextResponse.json(setting);
   } catch (error) {
     return NextResponse.json({ error: 'Failed to update setting' }, { status: 500 });

@@ -1,22 +1,20 @@
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import React from "react";
-import { prisma } from "@/lib/prisma";
+import { getSiteSettings } from "@/lib/site-settings";
 import FloatingWhatsApp from "@/components/ui/FloatingWhatsApp";
 import MotionInit from "@/components/ui/MotionInit";
 
-export const dynamic = 'force-dynamic';
+// Site sayfaları en geç 5 dakikada bir yeniden üretilir (sayfa daha kısa süre verirse o geçerli).
+// Admin'de içerik/ayar değişince revalidatePublic / revalidateSiteSettings beklemeden tazeler.
+export const revalidate = 300;
 
 export default async function MainLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const settingsArray = await prisma.setting.findMany({
-    where: { 
-      key: { in: ['navbar_links', 'SITE_LOGO'] } 
-    }
-  }).catch(() => []); // veritabanına ulaşılamazsa varsayılan menü ve logo
+  const settings = await getSiteSettings(); // önbellekli; ulaşılamazsa varsayılan menü ve logo
   
   let navLinks = [
     {label: "Paketler", url: "/paketler"},
@@ -30,17 +28,13 @@ export default async function MainLayout({
 
   let navbarCtaText = "Niyet Et";
 
-  settingsArray.forEach(setting => {
-    if (setting.key === 'navbar_links' && setting.value) {
-      try {
-        navLinks = JSON.parse(setting.value);
-      } catch(e) {}
-    } else if (setting.key === 'SITE_LOGO' && setting.value) {
-      logoUrl = setting.value;
-    } else if (setting.key === 'NAVBAR_CTA' && setting.value) {
-      navbarCtaText = setting.value;
-    }
-  });
+  if (settings.navbar_links) {
+    try {
+      navLinks = JSON.parse(settings.navbar_links);
+    } catch {}
+  }
+  if (settings.SITE_LOGO) logoUrl = settings.SITE_LOGO;
+  if (settings.NAVBAR_CTA) navbarCtaText = settings.NAVBAR_CTA;
 
   return (
     <>

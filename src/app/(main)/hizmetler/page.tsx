@@ -1,5 +1,6 @@
 import React from "react";
 import { prisma } from "@/lib/prisma";
+import { getSiteSettings } from "@/lib/site-settings";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -15,8 +16,7 @@ export default async function ServicesPage() {
     orderBy: { type: 'asc' }
   });
 
-  const settingsArray = await prisma.setting.findMany();
-  const settings = settingsArray.reduce((acc, s) => { acc[s.key] = s.value; return acc; }, {} as Record<string, string>);
+  const settings = await getSiteSettings();
   const services_banner_image = settings.services_banner_image || "https://lh3.googleusercontent.com/aida-public/AB6AXuCuam-SRusysTmFa8cNfGO0nrUWU2b4lhRvrL1t5uRMO09KYGq46lqmXVR1RTQwnsytK6mpj41mpYDz4mnEykVU3E4_79ZFGw1a_ajWIITp0yX5hzJZwCg4c8E7HxHm5PJe8Jj-nfYiMyZynnNE7AWzy5NoYBmvwnuf46RLKc244lqWhr8dRzr0t2K_CwE-RI3yAUKAAHlgeYna0rO0M3jgOYeUYsFay6HDarHuq5VlPkAp591b0L4AtzHAraP1GcnhRYAXT9ea8ig";
 
   return (

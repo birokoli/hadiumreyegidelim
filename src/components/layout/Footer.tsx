@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import React from "react";
 import SeoCitiesFooter from "./SeoCitiesFooter";
-import { prisma } from "@/lib/prisma";
+import { getSiteSettings } from "@/lib/site-settings";
 
 function sanitizeUrl(url: string): string {
   if (!url) return url;
@@ -12,11 +12,9 @@ function sanitizeUrl(url: string): string {
 
 async function getSocialLinks() {
   try {
-    const settings = await prisma.setting.findMany({
-      where: { key: { in: ['SOCIAL_INSTAGRAM', 'SOCIAL_FACEBOOK', 'SOCIAL_YOUTUBE', 'SOCIAL_TWITTER', 'SOCIAL_TIKTOK'] } }
-    });
-    return settings.reduce((acc: Record<string, string>, s) => {
-      acc[s.key] = sanitizeUrl(s.value);
+    const settings = await getSiteSettings();
+    return ['SOCIAL_INSTAGRAM', 'SOCIAL_FACEBOOK', 'SOCIAL_YOUTUBE', 'SOCIAL_TWITTER', 'SOCIAL_TIKTOK'].reduce((acc: Record<string, string>, key) => {
+      if (settings[key]) acc[key] = sanitizeUrl(settings[key]);
       return acc;
     }, {});
   } catch {

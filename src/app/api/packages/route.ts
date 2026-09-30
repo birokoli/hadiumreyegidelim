@@ -1,3 +1,4 @@
+import { revalidatePublic } from "@/lib/revalidate-public";
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
@@ -36,6 +37,7 @@ export async function POST(request: Request) {
         published: body.published !== undefined ? body.published : true,
       }
     });
+    revalidatePublic("packages");
     return NextResponse.json(pkg);
   } catch (error) {
     console.error("POST Error:", error);
@@ -68,6 +70,7 @@ export async function PUT(request: Request) {
         published: body.published,
       }
     });
+    revalidatePublic("packages");
     return NextResponse.json(pkg);
   } catch (error) {
     console.error("PUT Error:", error);
@@ -82,6 +85,7 @@ export async function DELETE(request: Request) {
     if (!id) return NextResponse.json({ error: 'ID is required' }, { status: 400 });
 
     await prisma.package.delete({ where: { id } });
+    revalidatePublic("packages");
     return NextResponse.json({ success: true });
   } catch (error) {
     return NextResponse.json({ error: 'Failed to delete package' }, { status: 500 });

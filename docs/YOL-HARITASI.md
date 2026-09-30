@@ -52,6 +52,8 @@ Bu belge hadiumreyegidelim.com için sıradaki işlerin **tek doğru listesidir*
 
 > **Devir:** Claude Code'un yaptığı işlerin özeti, değişmez kurallar ve sıradaki işler `docs/ANTIGRAVITY-DEVIR.md`'de. Yeni bir ajan önce onu okumalı.
 
+> **Google sıralama sorunu (1 Ekim):** Ana satış sayfaları ilk 50'de değil; kök sebep canonical/yönlendirme çelişkisi. Ayrıntılı plan `docs/SIRALAMA-YOL-HARITASI.md` (Faz A–E). Faz A1 (Vercel'de ana adres) her şeyden önce.
+
 ## 1. Ajanlar için çalışma kuralları
 
 Bir oturuma başlarken bu bölümü uygula. Kullanıcı başka bir şey istemedikçe:

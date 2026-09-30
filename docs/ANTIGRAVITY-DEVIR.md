@@ -64,6 +64,8 @@ Kalan işleri Antigravity bitirir; ama iş her an Claude Code'a geri devredilebi
 
 ## 5. Sıradaki işler (öncelik sırasıyla)
 
+**ÖNCELİK 1 — Google sıralama planı:** `docs/SIRALAMA-YOL-HARITASI.md`. Faz A (tek ana adres, Search Console, canonical kontrolü) tamamlanmadan içerik işlerinin etkisi görülmez. 3.2 sayfa grupları bunun ardından/paralelinde.
+
 0. **3.2 Programatik sayfa grupları — ANA İŞ.** Kılavuz: `docs/SAYFA-GRUPLARI.md` (kurallar esnetilmez). Dal `sayfa-gruplari`; altyapı ve örnek sayfa (`/umre-rehberi/ihram-nedir`) hazır, yalnızca içerik dosyaları yazılacak. Her 3–4 sayfada kullanıcıya **lokalde** (`http://localhost:3002/...`) göster, "canlıya al" demeden main'e birleştirme.
 
 1. **Kullanıcıyı 0.2–0.6 için yönlendir** (kod değil): Vercel'de ana alan adı; AI Görünürlük → Rakipler; SEO Masası → Kelimeler (10–20); AI soruları 10–15; ilk blog taslağı. Ayrıca ayar ezilmesi hatasında sıfırlanan değerleri admin'den yeniden girmesi (ana sayfa başlığı "SİZE ÖZEL MANEVİ ROTA", açıklama "Ruhunuzun Ritmini Kafilelere Teslim Etmeyin.", Instagram ve diğer sosyal linkler, logo/iletişim/WhatsApp mesajı kontrolü).

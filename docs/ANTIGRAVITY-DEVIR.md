@@ -58,7 +58,7 @@ Son güncelleme: 30 Eylül 2026 (Claude Code). Bu belge, Claude Code'un yaptığ
 1. **Kullanıcıyı 0.2–0.6 için yönlendir** (kod değil): Vercel'de ana alan adı; AI Görünürlük → Rakipler; SEO Masası → Kelimeler (10–20); AI soruları 10–15; ilk blog taslağı. Ayrıca ayar ezilmesi hatasında sıfırlanan değerleri admin'den yeniden girmesi (ana sayfa başlığı "SİZE ÖZEL MANEVİ ROTA", açıklama "Ruhunuzun Ritmini Kafilelere Teslim Etmeyin.", Instagram ve diğer sosyal linkler, logo/iletişim/WhatsApp mesajı kontrolü).
 2. **4.2 Temel ölçüm:** 0.3–0.5 bitince AI Görünürlük panelinden "Şimdi çalıştır"; sonuçları durum günlüğüne yaz.
 3. **Blog içerik gözden geçirme:** `umre-turlari-2026-fiyat-karsilastirmalari-diyanet-bireysel-vip` ve başlığında "diyanet"/"fiyat karşılaştırma" geçen eski yazılar; bireysel umre lehine düzenle (İçerik Stüdyosu'nda elle ya da "AI ile düzenle").
-4. **5.3:** `DiagButton`'ı Excel Fiyat Motoru ve Fiyat Teklifleri sayfalarına ekle.
+4. ~~5.3~~ tamamlandı (fiyat teklifleri ve Excel Fiyat Motoru'nda hata raporu düğmesi).
 5. **1.5:** Safari'de admin sayfasındaki `r["@context"].toLowerCase` hatası — gizli pencerede tekrar ediyor mu, kullanıcıyla kontrol.
 6. **1.7:** Kullanıcıyla iki Vercel projesinden gereksiz olanı kaldırma kararı (şu an ikisi de başarılı build ediyor).
 7. **3.2 / 4.3 / 4.4:** yeni sayfa grupları (arama hacmiyle, kullanıcı onayıyla), kaynak fırsatları, içerik boşlukları.

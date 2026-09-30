@@ -256,7 +256,8 @@ Bir oturuma başlarken bu bölümü uygula. Kullanıcı başka bir şey istemedi
 - [x] **5.1 `ignoreBuildErrors` kapat.** *(30.09, Claude: kaldırıldı; build artık tip kontrolü yapıyor)* `tsc` artık `src/` altında temiz (acb8c74). `next.config.ts`'te `typescript.ignoreBuildErrors`'ı kaldır ki tip hataları bir daha canlıya çıkmasın. Önce yerelde `npx next build` çalıştır.
 - [x] **5.2 Haftalık otomatik ölçüm.** Vercel cron ile haftada bir AI sorularını ve sıra kontrolünü çalıştıran uç nokta; harcama sınırı (ör. tek çalıştırmada en fazla $2) ve `CRON_SECRET` kontrolü. Maliyet için kullanıcı onayı gerekir.
   - **Tamamlandı (30.09, Claude Code; kullanıcı onayı: haftada en fazla 2 $):** `src/lib/weekly-measure.ts` + `/api/cron/weekly-measure` (vercel.json: `20 * * * 1`, pazartesi saatte bir). Önce takip edilen kelimelerin sırası, sonra her soru × açık motor. Fonksiyon 300 sn ile sınırlı olduğu için kuyruk (`WEEKLY_MEASURE_STATE`), çağrı başına ~230 sn, 3 eş zamanlı iş. Her işten önce tavan kontrolü (`WEEKLY_MEASURE_CAP_USD`, varsayılan 2; motor maliyeti geçmiş yanıtlardan tahmin). AI Görünürlük ana sayfasında durum paneli: tavan ayarı (0 = kapalı) ve "Şimdi çalıştır". Claude sorguları ayrıca aylık Claude bütçesine (`AI_MONTHLY_BUDGET_USD`) tabidir.
-- [ ] **5.3 Hata raporu diğer admin sayfalarında.** `DiagButton`'ı Excel Fiyat Motoru ve Fiyat Teklifleri sayfalarına da ekle (şu an yalnızca SEO/AI).
+- [x] **5.3 Hata raporu diğer admin sayfalarında.** `DiagButton`'ı Excel Fiyat Motoru ve Fiyat Teklifleri sayfalarına da ekle (şu an yalnızca SEO/AI).
+  - **Tamamlandı (30.09, Claude Code):** Rapor mantığı `src/lib/diag/useDiagReport.ts` hook'una taşındı (SEO Masası düğmesi de onu kullanıyor). `src/components/admin/FloatingDiagButton.tsx` (admin tasarımında, sağ alt) `src/app/(admin)/admin/fiyat-teklifleri/layout.tsx` ile teklif listesi, yeni teklif, teklif detayı, hizmet kütüphanesi ve Excel Fiyat Motoru sayfalarında. Rapor kapsamı `fiyat` (ilgili dosyalar: ExcelPricingCalculator, QuotationForm, quotations ve service-library API'leri). Excel motorunun koduna dokunulmadı. Başka bir admin bölümüne eklemek için o bölümün layout'una `<FloatingDiagButton />` koymak yeterli.
 - [ ] **5.4 Depolamayı tabloya taşı.** AI yanıtları ve günlük özetler büyüyünce `Setting` JSON yerine Prisma modelleri (`AiVisRun`, `AiVisDaily`). Supabase migration'ı kullanıcı onayıyla, ham SQL ile (bkz. proje hafızası: `prisma db push` kullanılmıyor).
 
 ### Faz 6 · GEO Blog Motoru (Google + AI'da görünür bloglar)
@@ -346,6 +347,7 @@ En yeni en üstte. Her tamamlanan adım için bir satır.
 
 | Tarih | Ajan | Adım | Commit | Not |
 |---|---|---|---|---|
+| 2026-09-30 | Claude Code | 5.3 ✓ | FloatingDiagButton | Fiyat teklifleri ve Excel Fiyat Motoru'nda hata raporu düğmesi |
 | 2026-09-30 | Claude Code | blog satış + devir | BlogBrandCta, ANTIGRAVITY-DEVIR.md | Blog şablonunda marka kutuları, resmî kaynakça, dış link kuralı yayında; motor marka/satış kuralları; ilk yayında tarih = şimdi. Devir belgesi: docs/ANTIGRAVITY-DEVIR.md |
 | 2026-09-30 | Claude Code | 4.1 ✓ | PageTrust | Hazırlık %50 → %96+; sahte paket puanı kaldırıldı |
 | 2026-09-30 | Claude Code | 5.2 ✓ | weekly-measure | Haftalık otomatik ölçüm, 2 $ tavan, pazartesi |

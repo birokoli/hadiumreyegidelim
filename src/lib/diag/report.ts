@@ -43,7 +43,16 @@ const FILES = {
     "src/lib/ai-vis/store.ts  (Setting tablosunda AI_VIS_* anahtarları)",
     "src/components/admin/ai-vis/AiVisProvider.tsx  (istemci tarafı çalıştırma sırası)",
   ],
+  fiyat: [
+    "src/app/(admin)/admin/fiyat-teklifleri/*  (sayfalar: teklif listesi, yeni teklif, teklif detayı, hizmet kütüphanesi, Excel Fiyat Motoru)",
+    "src/components/admin/ExcelPricingCalculator.tsx  (Excel Fiyat Motoru; dokunmadan önce kullanıcıya sor)",
+    "src/app/(admin)/admin/fiyat-teklifleri/QuotationForm.tsx  (teklif formu)",
+    "src/app/api/admin/quotations/*  (teklif CRUD, PDF)",
+    "src/app/api/admin/service-library/*  (hizmet kütüphanesi)",
+  ],
 };
+
+const SCOPE_TITLE = { seo: "SEO Masası", ai: "AI Görünürlük", fiyat: "Fiyat Teklifleri" } as const;
 
 function problems(server: ServerDiag | null, serverError: string | null, log: DiagEntry[], alerts: string[]) {
   const out: string[] = [];
@@ -97,12 +106,12 @@ export function buildReport(input: {
   page: string;
 }) {
   const { note, server, serverError, log, alerts, page } = input;
-  const scope = page.startsWith("/admin/ai-visibility") ? "ai" : "seo";
+  const scope: keyof typeof FILES = page.startsWith("/admin/ai-visibility") ? "ai" : page.startsWith("/admin/fiyat-teklifleri") ? "fiyat" : "seo";
   const found = problems(server, serverError, log, alerts);
   const json = (v: unknown) => "```json\n" + JSON.stringify(v, null, 2) + "\n```";
 
   return [
-    `# Hata raporu: ${scope === "ai" ? "AI Görünürlük" : "SEO Masası"} (admin.hadiumreyegidelim.com)`,
+    `# Hata raporu: ${SCOPE_TITLE[scope]} (admin.hadiumreyegidelim.com)`,
     "",
     "> Bu rapor admin panelindeki \"Hata raporu\" düğmesiyle otomatik üretildi. Sır değeri içermez (ortam değişkenleri yalnızca tanımlı/tanımsız).",
     "> Kod asistanı için: önce **Tespit edilen sorunlar**, sonra **İlgili dosyalar**. Repo: github.com/birokoli/hadiumreyegidelim · Next.js 16.2 (AGENTS.md: bu sürümde kırıcı değişiklikler var, node_modules/next/dist/docs okunmalı) · Prisma + Supabase · veriler `Setting` tablosunda `SEO_*` ve `AI_VIS_*` anahtarlarında JSON.",

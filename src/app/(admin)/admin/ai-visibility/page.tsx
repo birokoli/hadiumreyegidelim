@@ -8,6 +8,7 @@ import { EmptyPrompts, engineLabel, N, Pct, RunBar, RunProgress, TrendChart } fr
 import { ErrorLine, PageHead, Section } from "@/components/admin/seo/ui";
 import { byEngine, contentGaps, latestRuns, summarize, trend } from "@/lib/ai-vis/metrics";
 import { ENGINES } from "@/lib/ai-vis/types";
+import WeeklyMeasurePanel from "@/components/admin/ai-vis/WeeklyMeasurePanel";
 
 export default function AiVisibilityOverview() {
   const { data, error, runnableEngines } = useAiVis();
@@ -41,6 +42,7 @@ export default function AiVisibilityOverview() {
       </PageHead>
       <RunProgress />
       <ErrorLine>{error}</ErrorLine>
+      <WeeklyMeasurePanel />
 
       {!data && !error && <p className="text-[var(--seo-ink-3)]">Yükleniyor…</p>}
       {data && data.config.prompts.length === 0 && <EmptyPrompts />}

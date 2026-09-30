@@ -236,7 +236,9 @@ Bir oturuma başlarken bu bölümü uygula. Kullanıcı başka bir şey istemedi
     - Kalan fikir (kullanıcı onayıyla): Package tablosuna kalkış şehri alanı eklenirse şehir sayfasında o şehirden kalkan paketler de gösterilebilir.
 
 - [ ] **3.2 Yeni sayfa grupları.** Programatik sayfasında "Arama hacimlerini getir" ile hacmi olan kalıpları seç (aile/yaşlı umresi, ay bazlı umre). Yalnızca hacmi olan ve gerçek içerik verilebilen sayfaları aç. Kullanıcı onayı gerekir.
-  - **Altyapı hazır (30.09, Claude Code), içerik Antigravity'de:** Uygulama kılavuzu `docs/SAYFA-GRUPLARI.md` (kurallar, 20 sayfanın özeti, lokal önizleme ve onay akışı). Dal: `sayfa-gruplari` (main'e kullanıcı onayıyla). Kayıt `src/content/pages/`, şablon `ContentPageView`, adresler `/umre-rehberi/<slug>` (sözlük, karşılaştırma; `/rehber/` rehber profillerine ait olduğu için kullanılmadı) ve kök `/<slug>` (kişi, zaman), merkez `/umre-rehberi`, sitemap ve llms.txt otomatik, denetim `npx tsx scripts/check-content-pages.mts`. Örnek sayfa: `/umre-rehberi/ihram-nedir`. Ana sayfada listelenmez. Oteller (Profil) Hotel tablosu boş olduğu için bekliyor.
+  - **Altyapı hazır (30.09, Claude Code), içerik Antigravity'de:** Uygulama kılavuzu `docs/SAYFA-GRUPLARI.md` (kurallar, 20 sayfanın özeti, lokal önizleme ve onay akışı). Dal: `sayfa-gruplari` (main'e kullanıcı onayıyla). Kayıt `src/content/pages/`, şablon `ContentPageView`, adresler `/umre-rehberi/<slug>` (sözlük, karşılaştırma) ve kök `/<slug>` (kişi, zaman), merkez `/umre-rehberi`, sitemap ve llms.txt otomatik, denetim `npx tsx scripts/check-content-pages.mts`.
+  - **Açılan sayfalar (30.09):** `/umre-rehberi/ihram-nedir` (örnek), `/umre-rehberi/tavaf-nedir`, `/umre-rehberi/say-nedir`, `/umre-rehberi/mikat-nedir`, `/umre-rehberi/tiras-nedir`.
+
 
 ### Faz 4 · AI görünürlük (GEO)
 
@@ -348,6 +350,8 @@ En yeni en üstte. Her tamamlanan adım için bir satır.
 
 | Tarih | Ajan | Adım | Commit | Not |
 |---|---|---|---|---|
+| 2026-09-30 | Antigravity | 3.2 (Sözlük) | sayfa-gruplari dalı | 4 Sözlük rehber sayfası eklendi: tavaf-nedir, say-nedir, mikat-nedir, tiras-nedir (0 hata, tsc temiz) |
+
 | 2026-09-30 | Claude Code | 3.2 altyapı | sayfa-gruplari dalı | Rehber sayfaları altyapısı + örnek ihram-nedir; kılavuz docs/SAYFA-GRUPLARI.md |
 | 2026-09-30 | Claude Code | 5.3 ✓ | FloatingDiagButton | Fiyat teklifleri ve Excel Fiyat Motoru'nda hata raporu düğmesi |
 | 2026-09-30 | Claude Code | blog satış + devir | BlogBrandCta, ANTIGRAVITY-DEVIR.md | Blog şablonunda marka kutuları, resmî kaynakça, dış link kuralı yayında; motor marka/satış kuralları; ilk yayında tarih = şimdi. Devir belgesi: docs/ANTIGRAVITY-DEVIR.md |

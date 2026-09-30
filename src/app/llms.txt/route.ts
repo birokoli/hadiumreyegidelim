@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { HUBS } from "@/lib/geo-blog/inventory";
+import { CONTENT_PAGES, contentPath } from "@/content/pages";
 
 export const revalidate = 3600;
 
@@ -67,6 +68,10 @@ export async function GET() {
         lines.push(`- [${p.title}](${url})${desc ? ` — ${desc}` : ""}`);
       }
     }
+
+    // Rehber sayfaları (umre sözlüğü, karşılaştırmalar, kişi ve döneme göre umre)
+    lines.push("", "## Umre Rehberi", "", `- [Umre rehberi](${SITE_URL}/umre-rehberi) — terimler, karşılaştırmalar ve planlama rehberleri`);
+    for (const p of CONTENT_PAGES) lines.push(`- [${p.h1}](${SITE_URL}${contentPath(p)}) — ${p.description.slice(0, 140)}`);
 
     lines.push(
       "",

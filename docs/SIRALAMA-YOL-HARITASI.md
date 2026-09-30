@@ -66,7 +66,7 @@ Kural: Bir kelime kümesini yalnızca bir sayfa hedefler. Diğer sayfalar o sayf
 - [ ] **C3 · "bireysel umre fiyatları" yazısı (5. sıra)** — `/blog/bireysel-umre-vize-maliyet-rehberi`: güncel tut, `/umre-fiyatlari` ve `/umre-vizesi`'ye üstte bağlantı ver, başlığa dokunma.
 
 ### Faz D — Otorite ve güven (sürekli)
-- [ ] **D1 · Google İşletme Profili** (kullanıcı) — "Hadi Umreye Gidelim", kategori seyahat acentesi, gerçek adres/telefon, site bağlantısı `https://hadiumreyegidelim.com`. Yorum istemek için müşterilere bağlantı (gerçek yorumlar; sahte yorum yok).
+- [ ] **D1 · Google İşletme Profili** (kullanıcı) — "Hadi Umreye Gidelim", kategori seyahat acentesi, gerçek adres/telefon, site bağlantısı `https://www.hadiumreyegidelim.com`. Yorum istemek için müşterilere bağlantı (gerçek yorumlar; sahte yorum yok).
 - [ ] **D2 · Sosyal profiller** — "bireysel umre" aramasında Facebook/Instagram ilk üçte: kendi Instagram/Facebook hesaplarının biyografisinde site bağlantısı, gönderilerde `/bireysel-umre`; sitede `sameAs` (admin → Ayarlar → Sosyal Medya — sıfırlanan linkler yeniden girilmeli).
 - [ ] **D3 · Bağlantı ve anılma** — AI Görünürlük → Kaynaklar'daki "kaynak fırsatları" (yol haritası 4.3): forum/soru-cevap yanıtları, yerel rehberler, cami/dernek duyuruları. Satın alınmış bağlantı yok.
 - [ ] **D4 · Blog motoru** — yeni yazılar vize ve fiyat kümelerindeki cevapsız sorulara (ör. "umre vizesi kaç günde çıkar") yönlendirilir ve hedef sayfaya bağlanır; hedef sayfanın kelimesini başlıkta hedeflemez.

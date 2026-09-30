@@ -125,7 +125,7 @@ Bir oturuma başlarken bu bölümü uygula. Kullanıcı başka bir şey istemedi
 ### Faz 0 · Kullanıcı ayarları (kod gerekmez)
 
 - [x] **0.1 Anthropic kredisi.** ($40 yüklendi, 29.09) console.anthropic.com → Plans & Billing'den kredi yükle, **ya da** AI Görünürlük → Sorular'da Claude'un işaretini kaldır. Kredi olmadan her Claude sorgusu hata verir.
-- [ ] **0.2 Ana alan adı.** KARAR (2026-09-29): ana adres **www'suz `hadiumreyegidelim.com`**. Kod zaten bu adresi kullanıyor. Kalan iş kullanıcıda: Vercel → Domains'te `hadiumreyegidelim.com`'u primary yap, `www`'yu ona 308 ile yönlendir. Yapılınca bu adımı işaretle ve SEO Masası'nda denetimi yeniden çalıştırarak 2.1'i doğrula.
+- [x] **0.2 Ana alan adı.** *(1 Ekim, güncel karar)* Vercel'de www korunuyor; kodda asıl adres **`https://www.hadiumreyegidelim.com`** (`SITE_URL`). www'siz adres tek atlamayla www'ye gidiyor, ikisi de çalışıyor. İsteğe bağlı: Vercel'de yönlendirmeyi 307 → 308 yapmak.
   - Sorun: Şu an site www'suz adresi `www.hadiumreyegidelim.com`'a yönlendiriyor; canonical, sitemap ve robots ise www'suz adresi gösteriyor.
 - [ ] **0.3 Rakipler.** AI Görünürlük → Rakipler'e 3–5 rakip firma (ad + alan adı) gir; SEO Masası → Rakipler'e aynı alan adlarını gir.
 - [ ] **0.4 Takip edilen kelimeler.** SEO Masası → Kelimeler'de 10–20 hedef kelime seçip takibe al, Sıralar'da ilk kontrolü çalıştır.

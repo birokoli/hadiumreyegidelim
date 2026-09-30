@@ -6,6 +6,7 @@ import Link from 'next/link';
 import BrandImageFallback from '@/components/ui/BrandImageFallback';
 import { Metadata } from 'next';
 import { DEFAULT_OG_IMAGE, pageTitle } from "@/lib/seo/meta";
+import { PageTrust, webPageJsonLd } from "@/components/seo/PageTrust";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
@@ -73,20 +74,28 @@ export default async function PackageDetailPage({ params }: { params: Promise<{ 
       '@type': 'Brand',
       name: "Hadi Umre'ye Gidelim"
     },
-    offers: {
-      '@type': 'AggregateOffer',
-      priceCurrency: 'USD',
-      lowPrice: '1000',
-      availability: 'https://schema.org/InStock',
-      url: `https://hadiumreyegidelim.com/paketler/${pkg.slug}`
-    },
-    // E-Commerce SEO: Simulated aggregate rating for stars in SERP
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: '4.9',
-      reviewCount: String(90 + (pkg.slug.length % 50)) // Deterministic mock count
-    }
+    // Gerçek fiyat varsa Offer; uydurma puan/yorum yok
+    ...(pkg.price > 0
+      ? {
+          offers: {
+            '@type': 'Offer',
+            price: String(pkg.price),
+            priceCurrency: pkg.currency || 'USD',
+            availability: 'https://schema.org/InStock',
+            url: `https://hadiumreyegidelim.com/paketler/${pkg.slug}`,
+          },
+        }
+      : {}),
   };
+
+  // SSS paketin kendi verisinden
+  const faq = [
+    pkg.duration && { q: `${pkg.title} kaç gün sürer?`, a: `${pkg.title} programı ${pkg.duration} sürer. Günlük akış bu sayfadaki programda yer alır.` },
+    includes.length > 0 && { q: `${pkg.title} fiyatına neler dahil?`, a: `Pakete dahil olanlar: ${includes.join(", ")}.` },
+    { q: `${pkg.title} için nasıl rezervasyon yapılır?`, a: `Bu sayfadan ön rezervasyon talebi oluşturabilir ya da WhatsApp üzerinden tarih ve kişi sayısını iletebilirsiniz; güncel fiyat ve müsaitlik size yazılı olarak bildirilir.` },
+  ].filter(Boolean) as { q: string; a: string }[];
+  const faqJsonLd = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) };
+  const pageJsonLd = webPageJsonLd({ url: `https://hadiumreyegidelim.com/paketler/${pkg.slug}`, name: pkg.title, dateModified: pkg.updatedAt.toISOString() });
 
   // Breadcrumb Schema
   const breadcrumbJsonLd = {
@@ -103,6 +112,7 @@ export default async function PackageDetailPage({ params }: { params: Promise<{ 
     <main className="pt-20 bg-surface-container-lowest min-h-screen">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([faqJsonLd, pageJsonLd]) }} />
       {/* Hero Section */}
       <section className="relative h-[60vh] min-h-[400px] flex items-end pb-16 px-8 overflow-hidden">
         <div className="absolute inset-0 z-0">
@@ -263,6 +273,20 @@ export default async function PackageDetailPage({ params }: { params: Promise<{ 
         </section>
       )}
 
+      <section className="border-t border-outline-variant/10 py-16">
+        <div className="max-w-3xl mx-auto px-6 md:px-8">
+          <p className="text-secondary font-label text-xs tracking-[0.2em] font-bold uppercase mb-4">Sık sorulanlar</p>
+          <div className="divide-y divide-outline-variant/30 border-y border-outline-variant/30">
+            {faq.map((f) => (
+              <section key={f.q} className="py-5">
+                <h2 className="font-headline text-lg md:text-xl font-bold text-primary">{f.q}</h2>
+                <p className="mt-2 text-on-surface-variant leading-relaxed">{f.a}</p>
+              </section>
+            ))}
+          </div>
+          <PageTrust date={pkg.updatedAt} className="mt-8" />
+        </div>
+      </section>
     </main>
   );
 }

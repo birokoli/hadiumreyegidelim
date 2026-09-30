@@ -1,6 +1,7 @@
 import React from "react";
 import { Metadata } from "next";
 import BireyselUmreClient from "@/components/features/BireyselUmreClient";
+import { PageTrust } from "@/components/seo/PageTrust";
 
 export const metadata: Metadata = {
   title: "Bireysel Umre Tasarlayıcı 2026",
@@ -154,7 +155,7 @@ export default function PlannerPage() {
             </div>
 
             <h2 className="font-headline text-2xl md:text-3xl text-primary mt-10 mb-4">
-              2026 Bireysel Umre Fiyat Karşılaştırma Tablosu
+              Bireysel umre ile tur arasında fiyat farkı nedir?
             </h2>
             <div className="overflow-x-auto not-prose my-6">
               <table className="w-full text-left border-collapse bg-white dark:bg-slate-900 rounded-2xl overflow-hidden shadow-sm border border-slate-200 dark:border-slate-800">
@@ -191,7 +192,7 @@ export default function PlannerPage() {
             </div>
 
             <h2 className="font-headline text-2xl md:text-3xl text-primary mt-10 mb-4">
-              Sıkça Sorulan Sorular (GEO / Yapısal Veri Destekli)
+              Bireysel umre hakkında sık sorulan sorular
             </h2>
 
             <div className="space-y-4 my-8 not-prose">
@@ -245,6 +246,7 @@ export default function PlannerPage() {
                 </div>
               </details>
             </div>
+            <PageTrust className="not-prose mt-8" />
           </article>
         </div>
       </section>

@@ -8,6 +8,7 @@ import { prisma } from "@/lib/prisma";
 import { getSiteSettings } from "@/lib/site-settings";
 import { Metadata } from "next";
 import { DEFAULT_HANIM_UMRESI_CAMPAIGN, DEFAULT_ILK_UMREM_CAMPAIGN, EYLUL_CAMPAIGN_SETTING_KEY, HANIM_UMRESI_CAMPAIGN_SETTING_KEY, ILK_UMREM_CAMPAIGN_SETTING_KEY, parseEylulCampaign } from "@/lib/eylul-campaign";
+import { PageTrust, webPageJsonLd } from "@/components/seo/PageTrust";
 
 export const metadata: Metadata = {
   title: { absolute: "Bireysel Umre 2026 | Hadi Umre'ye Gidelim" },
@@ -317,7 +318,8 @@ export default async function Home() {
             </details>
           ))}
         </div>
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+        <PageTrust className="mt-6 text-center" />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([faqJsonLd, webPageJsonLd({ url: "https://hadiumreyegidelim.com/", name: "Bireysel Umre 2026" })]) }} />
       </section>
     </>
   );

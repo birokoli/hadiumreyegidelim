@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import BrandImageFallback from "@/components/ui/BrandImageFallback";
 import Link from "next/link";
 import { Metadata } from "next";
+import { PageTrust, webPageJsonLd } from "@/components/seo/PageTrust";
 
 export const metadata: Metadata = {
   title: "Umre Paketleri 2026: Ekonomik ve VIP",
@@ -19,8 +20,37 @@ export default async function PackagesPage() {
     orderBy: { createdAt: 'desc' }
   });
 
+  // SSS, yayındaki paketlerin gerçek verisinden üretilir (süre aralığı, ortak hizmetler)
+  const days = packages.map((p) => parseInt(String(p.duration).match(/\d+/)?.[0] ?? "", 10)).filter((n) => Number.isFinite(n) && n > 0);
+  const includeCounts = new Map<string, number>();
+  for (const p of packages) {
+    try {
+      for (const item of JSON.parse(p.includes ?? "[]") as string[]) includeCounts.set(item, (includeCounts.get(item) ?? 0) + 1);
+    } catch {}
+  }
+  const common = [...includeCounts.entries()].filter(([, c]) => c >= Math.ceil(packages.length / 2)).sort((a, b) => b[1] - a[1]).slice(0, 6).map(([k]) => k);
+  const faq = [
+    days.length > 0 && {
+      q: "Umre paketleri kaç gün sürer?",
+      a: `Şu anda yayında ${packages.length} paket var; süreler ${Math.min(...days)} gün ile ${Math.max(...days)} gün arasında değişir. Her paketin günlük programı kendi sayfasında yer alır.`,
+    },
+    common.length > 0 && {
+      q: "Umre paketlerine neler dahil?",
+      a: `Paketlerin çoğunda şunlar dahildir: ${common.join(", ")}. Dahil olan ve olmayan hizmetlerin tam listesi her paketin sayfasındadır.`,
+    },
+    {
+      q: "Hazır paket yerine kendi programımı yapabilir miyim?",
+      a: "Evet. Tarihi, oteli ve Mekke–Medine gün sayısını kendiniz seçmek için bireysel umre tasarlayıcısını kullanabilirsiniz; seçimlerinize göre hazırlanan teklif WhatsApp'tan iletilir.",
+    },
+  ].filter(Boolean) as { q: string; a: string }[];
+  const jsonLd = [
+    { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faq.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) },
+    webPageJsonLd({ url: "https://hadiumreyegidelim.com/paketler", name: "Umre Paketleri 2026" }),
+  ];
+
   return (
     <main className="pt-20">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <section className="relative h-[60vh] min-h-[500px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img
@@ -52,7 +82,7 @@ export default async function PackagesPage() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-12 gap-8">
-            {packages.map((pkg: any) => {
+            {packages.map((pkg) => {
               let includes: string[] = [];
               if (pkg.includes) {
                 try { includes = JSON.parse(pkg.includes); } catch(e){}
@@ -126,6 +156,22 @@ export default async function PackagesPage() {
               <p className="text-on-surface-variant max-w-lg mx-auto">Şu an için yayında olan bir umre paketi bulunmuyor. Tur planlamalarımız devam etmektedir, lütfen daha sonra tekrar kontrol edin.</p>
             </div>
           )}
+
+          <div className="max-w-3xl mx-auto mt-20">
+            <p className="font-label text-xs tracking-[0.3em] font-bold uppercase text-secondary mb-4 text-center">Sık sorulanlar</p>
+            <div className="divide-y divide-outline-variant/30 border-y border-outline-variant/30">
+              {faq.map((f) => (
+                <section key={f.q} className="py-5">
+                  <h2 className="font-headline text-lg md:text-xl font-bold text-primary">{f.q}</h2>
+                  <p className="mt-2 text-on-surface-variant leading-relaxed">
+                    {f.a}
+                    {f.q.startsWith("Hazır paket") && <> <Link href="/bireysel-umre" className="text-primary font-semibold underline underline-offset-4">Tasarlayıcıya git</Link></>}
+                  </p>
+                </section>
+              ))}
+            </div>
+            <PageTrust className="mt-8 text-center" />
+          </div>
         </div>
       </section>
     </main>

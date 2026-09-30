@@ -6,6 +6,7 @@ import BireyselUmreClient from "@/components/features/BireyselUmreClient";
 import { turkeyCities, getTurkishCityBySlug, type TurkeyCity } from "@/lib/turkey-cities";
 import { cityTravelFacts, nearestCities, type Region } from "@/lib/city-geo";
 import { metaDescription, pageTitle } from "@/lib/seo/meta";
+import { PageTrust, webPageJsonLd } from "@/components/seo/PageTrust";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -119,6 +120,7 @@ export default async function DynamicCityUmrahPage({ params }: Props) {
       provider: { "@type": "TravelAgency", name: "Hadi Umreye Gidelim", url: "https://hadiumreyegidelim.com" },
       url: `https://hadiumreyegidelim.com/${slug}`,
     },
+    webPageJsonLd({ url: `https://hadiumreyegidelim.com/${slug}`, name: `${city.name} Çıkışlı Bireysel Umre` }),
     {
       "@context": "https://schema.org",
       "@type": "FAQPage",
@@ -198,7 +200,7 @@ export default async function DynamicCityUmrahPage({ params }: Props) {
                 {faq.map((f) => (
                   <details key={f.q} className="group">
                     <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-4 [&::-webkit-details-marker]:hidden">
-                      <span className="font-semibold text-on-surface group-open:text-primary">{f.q}</span>
+                      <h2 className="font-semibold text-base text-on-surface group-open:text-primary">{f.q}</h2>
                       <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" className="w-5 h-5 text-primary shrink-0 transition-transform group-open:rotate-45"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /></svg>
                     </summary>
                     <p className="pb-4 -mt-1 text-sm text-on-surface-variant leading-relaxed">{f.a}</p>
@@ -223,7 +225,8 @@ export default async function DynamicCityUmrahPage({ params }: Props) {
               </nav>
             )}
 
-            <p className="mt-8 text-xs text-on-surface-variant">
+            <PageTrust className="mt-8" />
+            <p className="mt-2 text-xs text-on-surface-variant">
               Mesafeler il merkezleri arası kuş uçuşu, uçuş süreleri direkt uçuş için yaklaşık hesaplardır. Fiyat ve sefer bilgisi tarih seçildiğinde güncel olarak listelenir; kesin teklif WhatsApp üzerinden iletilir.
             </p>
           </div>

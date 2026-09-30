@@ -1,5 +1,6 @@
 import React from "react";
 import type { EylulCampaignConfig } from "@/lib/eylul-campaign";
+import { PageTrust } from "@/components/seo/PageTrust";
 
 export default function AdsCampaignLanding({ campaign, whatsappNumber }: { campaign: EylulCampaignConfig; whatsappNumber: string }) {
   const packages = campaign.packages;
@@ -13,8 +14,14 @@ export default function AdsCampaignLanding({ campaign, whatsappNumber }: { campa
 
   const heroWa = waMsg(campaign.whatsappMessage);
 
+  // Sayfadaki SSS birebir FAQPage olarak işaretlenir
+  const faqJsonLd = campaign.faqs.length
+    ? { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: campaign.faqs.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) }
+    : null;
+
   return (
     <main className="pt-20">
+      {faqJsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />}
       <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <img
@@ -183,10 +190,10 @@ export default function AdsCampaignLanding({ campaign, whatsappNumber }: { campa
           <div className="space-y-5">
             {campaign.faqs.map((faq) => (
               <div key={faq.q} className="bg-white rounded-2xl p-6 shadow-sm border border-outline-variant/20 hover:shadow-md transition-shadow">
-                <h3 className="font-bold text-primary mb-3 flex items-start gap-2">
+                <h2 className="font-bold text-base text-primary mb-3 flex items-start gap-2">
                   <span className="material-symbols-outlined text-secondary text-[20px] mt-0.5 shrink-0" style={{ fontVariationSettings: "'FILL' 1" }}>help</span>
                   {faq.q}
-                </h3>
+                </h2>
                 <p className="text-on-surface-variant text-sm leading-relaxed pl-7">{faq.a}</p>
               </div>
             ))}
@@ -197,6 +204,7 @@ export default function AdsCampaignLanding({ campaign, whatsappNumber }: { campa
               {campaign.faqButton}
             </a>
           </div>
+          <PageTrust className="mt-10 text-center" />
         </div>
       </section>
 

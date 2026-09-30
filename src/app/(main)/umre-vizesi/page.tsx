@@ -2,6 +2,7 @@ import React from "react";
 import { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
+import { PageTrust, webPageJsonLd } from "@/components/seo/PageTrust";
 
 export const metadata: Metadata = {
   title: { absolute: "Bireysel Umre Vizesi Nasıl Alınır? Suudi Arabistan E-Vize" },
@@ -12,9 +13,31 @@ export const metadata: Metadata = {
   }
 };
 
+// Genel kabul görmüş temel bilgiler; fiyat ve işlem süresi iddiası yok
+const VISA_FAQ = [
+  {
+    q: "Umre için hangi vize gerekir?",
+    a: "Türkiye'den umreye gidenler Suudi Arabistan'ın elektronik turist vizesiyle (e-vize) umre yapabilir. Ayrı bir \"bireysel umre vizesi\" türü yoktur; turist vizesi umre yapmaya izin verir.",
+  },
+  {
+    q: "Suudi Arabistan turist vizesi ne kadar geçerlidir?",
+    a: "Turist e-vizesi genellikle 1 yıl (365 gün) geçerli ve çok girişli verilir. Vize süresi boyunca Suudi Arabistan'da toplam en fazla 90 gün kalınabilir.",
+  },
+  {
+    q: "Vize başvurusu için pasaport ne kadar geçerli olmalı?",
+    a: "Pasaportun Suudi Arabistan'a giriş tarihinden itibaren en az 6 ay (yaklaşık 180 gün) geçerli olması gerekir. Vize işlemlerini pasaport bilgilerinizle biz yürütüyoruz.",
+  },
+];
+
+const visaJsonLd = [
+  { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: VISA_FAQ.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) },
+  webPageJsonLd({ url: "https://hadiumreyegidelim.com/umre-vizesi", name: "Bireysel Umre Vizesi Nasıl Alınır?" }),
+];
+
 export default function UmreVizesiPage() {
   return (
     <div className="pt-24 pb-16 min-h-screen bg-slate-50">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(visaJsonLd) }} />
       
       {/* Hero Section */}
       <section className="max-w-screen-xl mx-auto px-6 lg:px-8 mb-16">
@@ -40,7 +63,7 @@ export default function UmreVizesiPage() {
       <section className="max-w-screen-lg mx-auto px-6 lg:px-8">
         <div className="bg-white rounded-[2rem] p-8 md:p-12 shadow-xl shadow-slate-200/50 border border-slate-100 mb-16">
           <div className="prose prose-lg prose-slate max-w-none">
-            <h2 className="text-3xl font-headline font-bold text-slate-900 mb-6">"Bireysel Umre Vizesi" Efsanesi ve Gerçekler</h2>
+            <h2 className="text-3xl font-headline font-bold text-slate-900 mb-6">&quot;Bireysel umre vizesi&quot; diye bir vize var mı?</h2>
             <p>
               Piyasada sıkça duyduğunuz <strong>"Bireysel Umre Vizesi"</strong> aslında resmi olarak tek başına bir vize türü değildir. Suudi Arabistan'ın tüm dünyaya açılan turizm vizyonu kapsamında sunduğu <strong>Suudi Arabistan E-Turizm Vizesi</strong> (Elektronik Turistik Vize) başvurusu sırasında <em>"Umre de yapmak istiyorum"</em> (I will perform Umrah) seçeneğini işaretlemekten ibarettir.
             </p>
@@ -92,7 +115,18 @@ export default function UmreVizesiPage() {
             <p>
               Bireysel Umre, tamamen sizin özgür kişisel seyahatinizdir. Diyanet İşleri Başkanlığı'nın onay mekanizması, toplu hac veya umre organizasyonu düzenleyen "Acenteler"in yasal takibi için vardır. <strong>Kendi kendinize uçak biletinizi alıp E-Turizm Vizenizle yola çıktığınızda hiçbir aracı kurumun onayına ihtiyacınız yoktur.</strong> Bizler, bu süreçte sadece size danışmanlık yapan, en lüks otellerde ailenizle kalmanız için konfigürasyon altyapısı sunan, kendi kendimize millete hizmet veren insanlarız. 
             </p>
+
+            <h2 className="text-3xl font-headline font-bold text-slate-900 mb-6 mt-12">Umre vizesi hakkında sık sorulanlar</h2>
           </div>
+          <div className="mt-2 divide-y divide-slate-200 border-y border-slate-200">
+            {VISA_FAQ.map((f) => (
+              <section key={f.q} className="py-5">
+                <h2 className="font-headline text-lg md:text-xl font-bold text-slate-900">{f.q}</h2>
+                <p className="mt-2 text-slate-700 leading-relaxed">{f.a}</p>
+              </section>
+            ))}
+          </div>
+          <PageTrust className="mt-8" />
         </div>
       </section>
 

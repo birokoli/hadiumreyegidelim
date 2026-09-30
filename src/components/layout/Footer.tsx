@@ -3,6 +3,7 @@ import Image from "next/image";
 import React from "react";
 import SeoCitiesFooter from "./SeoCitiesFooter";
 import { getSiteSettings } from "@/lib/site-settings";
+import { SOCIAL_BRANDS, SOCIAL_KEYS, SocialIcon } from "@/components/icons/SocialIcons";
 
 function sanitizeUrl(url: string): string {
   if (!url) return url;
@@ -13,7 +14,7 @@ function sanitizeUrl(url: string): string {
 async function getSocialLinks() {
   try {
     const settings = await getSiteSettings();
-    return ['SOCIAL_INSTAGRAM', 'SOCIAL_FACEBOOK', 'SOCIAL_YOUTUBE', 'SOCIAL_TWITTER', 'SOCIAL_TIKTOK'].reduce((acc: Record<string, string>, key) => {
+    return SOCIAL_KEYS.reduce((acc: Record<string, string>, key) => {
       if (settings[key]) acc[key] = sanitizeUrl(settings[key]);
       return acc;
     }, {});
@@ -22,17 +23,10 @@ async function getSocialLinks() {
   }
 }
 
-const SOCIAL_ICONS: Record<string, { icon: string; label: string }> = {
-  SOCIAL_INSTAGRAM: { icon: 'photo_camera',    label: 'Instagram' },
-  SOCIAL_FACEBOOK:  { icon: 'thumb_up',         label: 'Facebook'  },
-  SOCIAL_YOUTUBE:   { icon: 'play_circle',      label: 'YouTube'   },
-  SOCIAL_TWITTER:   { icon: 'alternate_email',  label: 'X/Twitter' },
-  SOCIAL_TIKTOK:    { icon: 'music_video',      label: 'TikTok'    },
-};
 
 export default async function Footer({ logoUrl }: { logoUrl?: string }) {
   const socialLinks = await getSocialLinks();
-  const activeSocials = Object.entries(SOCIAL_ICONS).filter(([key]) => socialLinks[key]);
+  const activeSocials = SOCIAL_KEYS.filter((key) => socialLinks[key]);
 
   return (
     <>
@@ -70,16 +64,18 @@ export default async function Footer({ logoUrl }: { logoUrl?: string }) {
             </div>
             <div className="flex gap-3 flex-wrap">
               {activeSocials.length > 0 ? (
-                activeSocials.map(([key, { icon, label }]) => (
+                activeSocials.map((key) => (
                   <a
                     key={key}
                     href={socialLinks[key]}
                     target="_blank"
-                    rel="noopener noreferrer"
-                    title={label}
-                    className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-primary shadow-sm hover:scale-110 active:scale-95 transition-transform border border-outline-variant/30 hover:bg-primary hover:text-white"
+                    rel="noopener noreferrer me"
+                    aria-label={SOCIAL_BRANDS[key].label}
+                    title={SOCIAL_BRANDS[key].label}
+                    style={{ color: SOCIAL_BRANDS[key].color }}
+                    className="w-10 h-10 rounded-full bg-white flex items-center justify-center shadow-sm hover:scale-110 active:scale-95 transition-transform border border-outline-variant/30"
                   >
-                    <span className="material-symbols-outlined text-[20px]">{icon}</span>
+                    <SocialIcon name={key} />
                   </a>
                 ))
               ) : (

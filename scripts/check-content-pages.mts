@@ -1,14 +1,9 @@
 // Rehber sayfalarını kurallara göre denetler: npx tsx scripts/check-content-pages.mts
 import { CONTENT_PAGES, contentPath } from "../src/content/pages/index";
 import { validateContentPage } from "../src/content/pages/validate";
-import { turkeyCities } from "../src/lib/turkey-cities";
+import { knownContentPaths } from "../src/content/pages/known-paths";
 
-const known = new Set<string>([
-  "/", "/bireysel-umre", "/paketler", "/umre-vizesi", "/ilk-umrem", "/hanim-umresi", "/eylul-umresi", "/rehberlik",
-  "/hizmetler", "/blog", "/iletisim", "/hakkimizda", "/umre-rehberi",
-  ...turkeyCities.map((c) => `/${c.slug}-cikisli-bireysel-umre`),
-  ...CONTENT_PAGES.map(contentPath),
-]);
+const known = knownContentPaths();
 const slugs = new Set<string>();
 let errors = 0;
 for (const p of CONTENT_PAGES) {

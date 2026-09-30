@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { HUBS } from "@/lib/geo-blog/inventory";
-import { CONTENT_PAGES, contentPath } from "@/content/pages";
+import { contentPath } from "@/content/pages";
+import { getLiveContentPages } from "@/content/pages/store";
 import { SITE_URL } from "@/lib/seo/site";
 
 export const revalidate = 3600;
@@ -70,7 +71,7 @@ export async function GET() {
 
     // Rehber sayfaları (umre sözlüğü, karşılaştırmalar, kişi ve döneme göre umre)
     lines.push("", "## Umre Rehberi", "", `- [Umre rehberi](${SITE_URL}/umre-rehberi) — terimler, karşılaştırmalar ve planlama rehberleri`);
-    for (const p of CONTENT_PAGES) lines.push(`- [${p.h1}](${SITE_URL}${contentPath(p)}) — ${p.description.slice(0, 140)}`);
+    for (const p of await getLiveContentPages()) lines.push(`- [${p.h1}](${SITE_URL}${contentPath(p)}) — ${p.description.slice(0, 140)}`);
 
     lines.push(
       "",

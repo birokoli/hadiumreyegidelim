@@ -2,7 +2,8 @@ import { SITE_URL } from "@/lib/seo/site";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import ContentPageView from "@/components/content/ContentPageView";
-import { CONTENT_PAGES, contentPath, getContentPage } from "@/content/pages";
+import { CONTENT_PAGES, contentPath } from "@/content/pages";
+import { getLiveContentPage, getLiveContentPages } from "@/content/pages/store";
 import { pageTitles } from "@/content/pages/titles";
 import { DEFAULT_OG_IMAGE, pageTitle } from "@/lib/seo/meta";
 import { getSiteSettings } from "@/lib/site-settings";
@@ -17,7 +18,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const page = getContentPage(slug);
+  const page = await getLiveContentPage(slug);
   if (!page || !GUIDE_GROUPS.has(page.group)) return {};
   return {
     title: pageTitle(page.title),
@@ -29,8 +30,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function GuidePage({ params }: Props) {
   const { slug } = await params;
-  const page = getContentPage(slug);
+  const page = await getLiveContentPage(slug);
   if (!page || !GUIDE_GROUPS.has(page.group)) notFound();
   const whatsappNumber = ((await getSiteSettings()).WHATSAPP_NUMBER || "905404010038").replace("+", "");
-  return <ContentPageView page={page} whatsappNumber={whatsappNumber} relatedTitles={pageTitles()} />;
+  return <ContentPageView page={page} whatsappNumber={whatsappNumber} relatedTitles={pageTitles(await getLiveContentPages())} />;
 }

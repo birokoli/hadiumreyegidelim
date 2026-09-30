@@ -1,7 +1,8 @@
 import { MetadataRoute } from 'next';
 import { prisma } from '@/lib/prisma';
 import { turkeyCities } from '@/lib/turkey-cities';
-import { CONTENT_PAGES, contentPath } from '@/content/pages';
+import { contentPath } from '@/content/pages';
+import { getLiveContentPages } from '@/content/pages/store';
 import { SITE_URL } from '@/lib/seo/site';
 
 export const dynamic = 'force-dynamic';
@@ -43,6 +44,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     changeFrequency: 'daily' as const,
     priority: 0.85,
   }));
+
+  const CONTENT_PAGES = await getLiveContentPages();
 
   const packageUrls = packages.map((pkg) => ({
     url: `${baseUrl}/paketler/${pkg.slug}`,

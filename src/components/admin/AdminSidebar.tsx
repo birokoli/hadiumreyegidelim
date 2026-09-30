@@ -37,7 +37,8 @@ const menuGroups: { title: string; links: { href: string; icon: string; label: s
   {
     title: "İçerik Stüdyosu",
     links: [
-      { href: "/admin/content",    icon: "article",  label: "Blog İçerikleri", permission: "content", badgeKey: "totalPosts" },
+      { href: "/admin/content",    icon: "article",  label: "Blog İçerikleri", exact: true, permission: "content", badgeKey: "totalPosts" },
+      { href: "/admin/content/rehber", icon: "menu_book", label: "Rehber Sayfaları", permission: "content" },
       { href: "/admin/categories", icon: "category", label: "Kategoriler", permission: "content"     },
       { href: "/admin/authors",    icon: "badge",    label: "Yazarlar", permission: "content"        },
     ],

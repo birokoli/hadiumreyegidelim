@@ -1,7 +1,8 @@
 import { SITE_URL } from "@/lib/seo/site";
 import Link from "next/link";
 import { Metadata } from "next";
-import { CONTENT_PAGES, contentPath } from "@/content/pages";
+import { contentPath } from "@/content/pages";
+import { getLiveContentPages } from "@/content/pages/store";
 import { LastUpdated } from "@/components/seo/PageTrust";
 
 export const metadata: Metadata = {
@@ -18,7 +19,8 @@ const GROUPS = [
 ] as const;
 
 /** Rehber sayfalarının merkezi (ana sayfada listelenmez; Google bu sayfadan ve sitemap'ten bulur) */
-export default function UmreRehberiHub() {
+export default async function UmreRehberiHub() {
+  const CONTENT_PAGES = await getLiveContentPages();
   const latest = CONTENT_PAGES.map((p) => p.reviewed).sort().at(-1);
   return (
     <main className="w-full pt-28 pb-16 bg-surface">

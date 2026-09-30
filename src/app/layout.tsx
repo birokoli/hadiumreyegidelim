@@ -46,6 +46,7 @@ export const metadata: Metadata = {
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
 import { getSiteSettings } from "@/lib/site-settings";
+import { SOCIAL_KEYS } from "@/components/icons/SocialIcons";
 
 export default async function RootLayout({
   children,
@@ -86,10 +87,8 @@ export default async function RootLayout({
         "addressCountry": "TR"
       },
       "description": "2026 Yılı Özel, Lüks, ve Bireysel Aile Umresi Planlama Platformu.",
-      "sameAs": [
-        "https://instagram.com/hadiumreyegidelim",
-        "https://youtube.com/@hadiumreyegidelim"
-      ]
+      // Admin → Ayarlar → Sosyal Medya'da girilen hesaplar
+      "sameAs": SOCIAL_KEYS.map((k) => settings[k]?.trim()).filter(Boolean).map((u: string) => (/^https?:\/\//.test(u) ? u : `https://${u.replace(/^\/+/, "")}`))
     }
   ];
 

@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import bcrypt from 'bcryptjs';
-import { getAdminSession, hashLegacyAdminPassword } from '@/lib/admin-auth';
+import { getAdminSession, hashLegacyAdminPassword, verifyLegacyAdminPassword } from '@/lib/admin-auth';
 
 export async function POST(request: Request) {
   const session = await getAdminSession();
@@ -35,16 +35,15 @@ export async function POST(request: Request) {
 
     // Verify legacy password
     const customPasswordSetting = await prisma.setting.findUnique({ where: { key: 'ADMIN_PASSWORD_HASH' } });
-    const inputHash = hashLegacyAdminPassword(currentPassword);
     const fallbackValid = !customPasswordSetting && !!process.env.ADMIN_INITIAL_PASSWORD && currentPassword === process.env.ADMIN_INITIAL_PASSWORD;
-    const hashValid = customPasswordSetting ? customPasswordSetting.value === inputHash : false;
+    const hashValid = customPasswordSetting ? (await verifyLegacyAdminPassword(currentPassword, customPasswordSetting.value)).valid : false;
 
     if (!fallbackValid && !hashValid) {
       return NextResponse.json({ error: 'Mevcut şifre hatalı.' }, { status: 401 });
     }
 
     // Save new password hash
-    const newHash = hashLegacyAdminPassword(newPassword);
+    const newHash = await hashLegacyAdminPassword(newPassword);
     await prisma.setting.upsert({
       where: { key: 'ADMIN_PASSWORD_HASH' },
       update: { value: newHash },

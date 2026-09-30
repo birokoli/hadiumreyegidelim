@@ -31,7 +31,7 @@ function requiredAdminPermission(pathname: string) {
   if (pathname.startsWith('/admin/orders') || pathname.startsWith('/admin/contact') || pathname.startsWith('/admin/fiyat-teklifleri')) return 'orders';
   if (pathname.startsWith('/api/admin/orders') || pathname.startsWith('/api/admin/contact') || pathname.startsWith('/api/admin/quotations') || pathname.startsWith('/api/admin/service-library')) return 'orders';
   if (pathname.startsWith('/admin/content') || pathname.startsWith('/admin/categories') || pathname.startsWith('/admin/authors') || pathname.startsWith('/admin/media')) return 'content';
-  if (pathname.startsWith('/api/posts') || pathname.startsWith('/api/categories') || pathname.startsWith('/api/authors') || pathname.startsWith('/api/admin/media')) return 'content';
+  if (pathname.startsWith('/api/posts') || pathname.startsWith('/api/admin/content-pages') || pathname.startsWith('/api/categories') || pathname.startsWith('/api/authors') || pathname.startsWith('/api/admin/media')) return 'content';
   if (pathname.startsWith('/admin/packages') || pathname.startsWith('/admin/services') || pathname.startsWith('/admin/guides')) return 'operations';
   if (pathname.startsWith('/api/packages') || pathname.startsWith('/api/services') || pathname.startsWith('/api/guides')) return 'operations';
   if (pathname.startsWith('/admin/seo') || pathname.startsWith('/api/admin/seo')) return 'marketing';

@@ -80,6 +80,9 @@ Kalan işleri Antigravity bitirir; ama iş her an Claude Code'a geri devredilebi
 
 ## 6. Bilinen tuzaklar
 
+- **Rehber sayfaları admin'den düzenlenebilir** (1 Ekim): admin'de kaydedilmiş bir sayfanın kod dosyasını değiştirmek sitede görünmez. Önce admin → İçerik Stüdyosu → Rehber Sayfaları listesine bak (bkz. SAYFA-GRUPLARI.md başı).
+- **Görünüm yenilemelerinde işlev silme:** Temmuz'daki "Swiss Minimalist" yenilemeleri bazı admin sayfalarının işlevlerini sildi (WhatsApp AI sekmeleri 1 Ekim'de geri getirildi). Arayüz değiştirirken hiçbir düğme, alan ya da sekme kaldırılmaz; kaldırılacaksa kullanıcıya sorulur.
+
 - **Yerel dev sunucusu** (`hadi-seo-dev`, port 3002) dosya değişikliklerini bazen kaçırır: `curl localhost:3002 | grep <yeni-sınıf>` ile kontrol et, gerekirse yeniden başlat. Turbopack dev önbelleği eski CSS verebilir; production build çıktısı (`.next/static/chunks/*.css`) doğruyu gösterir.
 - **Safari** yerelde eski CSS'i önbellekten gösterebilir → Cmd+Option+R.
 - `src/app/layout.tsx` bütün `.rounded-*` sınıflarını `BUTTON_RADIUS` ayarına zorlar; tam hap için `rounded-[999px]`.

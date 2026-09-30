@@ -34,6 +34,25 @@ Antigravity her iş oturumunda bu dosyanın **en üstüne** bir kayıt ekler. Am
 
 <!-- Kayıtlar bu çizginin altına, en yeni en üstte -->
 
+## 2026-10-01 — Claude Code: rehber sayfaları admin'den düzenlenebilir, sosyal logolar, WhatsApp AI geri geldi, güvenlik
+**Dal / commit:** `main` · (bu commit)
+**Yapılan:**
+- **Rehber sayfaları admin'de:** İçerik Stüdyosu → Rehber Sayfaları (`/admin/content/rehber`). Liste + düzenleyici (başlık, açıklama, H1, giriş, bölümler, SSS, kaynaklar, ilgili sayfalar; sayaçlar, "Denetle", "Kaydet ve yayınla", "Özgün sürüme dön"). Kayıt `validate.ts` denetiminden geçmezse yapılmaz. Veri: Setting `CONTENT_PAGE:<slug>` (kod dosyası varsayılan; `src/content/pages/store.ts`). Adres (slug/grup) yalnızca koddan değişir. Sayfa, hub, sitemap, llms.txt canlı veriyi okur; kayıtta anında tazelenir. API: `/api/admin/content-pages` (yetki: content).
+- **Sosyal medya logoları:** Material ikonları (fotoğraf makinesi, beğeni…) yerine gerçek marka logoları (Simple Icons, CC0) ve marka renkleri: footer + admin ayarları. Organization şemasındaki `sameAs` artık admin'de girilen hesaplardan geliyor (önceden koda yazılı 2 adres vardı).
+- **WhatsApp AI sayfası geri getirildi:** Temmuz'daki görünüm yenilemesi (d9d871c) sayfanın QR, Bilgi Tabanı, AI Eğitim, Model Fabrikası, Test ve Ollama sekmelerini silmişti (495 → 127 satır; sekmeler boş açılıyordu). Önceki çalışan sürüm geri yüklendi; API'ler değişmemişti.
+- **Yeni talep bildirimi:** Sitedeki formlardan (vize başvurusu, iletişim) talep gelince WhatsApp AI → AI Eğitim → "Sorulara gidecek WhatsApp numarası"na WhatsApp mesajı gider (sitenin WhatsApp bot servisi üzerinden; `WHATSAPP_BOT_URL` + `WHATSAPP_BOT_TOKEN` tanımlı ve bot bağlıyken). Yoksa sessizce atlanır; talep her durumda admin'de.
+- **Güvenlik:** (1) Eski yönetici şifresi SHA-256 → bcrypt; eski özet ilk doğru girişte kendiliğinden bcrypt'e çevrilir, şifre değişmez. (2) `/api/admin/settings` artık imzalı oturum istiyor ve gizli anahtarları (ADMIN_*, SEO_*, AI_VIS_* …) yazmıyor: önceden "ayarlar" yetkili bir kullanıcı bu formdan ana yönetici şifresinin özetini değiştirebilirdi. (3) `/api/contact` yanıtı artık kaydın tamamını geri döndürmüyor.
+
+**Doğrulama:** `tsc` temiz; 22 rehber sayfası form ↔ kayıt dönüşümünden içerik kaybı olmadan geçiyor ve denetimde 0 hata; bozuk giriş (kısa giriş, "en ucuz garanti", rakip bağlantısı) denetimde yakalanıyor. Düzenleyici sahte API ile tarayıcıda denendi (masaüstü + 390 px, taşma 0). Yerelde veritabanı yok: gerçek kaydetme ve bildirim canlıda denenmeli.
+
+**Bulunan, yapılmayan (kullanıcı kararı):**
+- Fiyat teklifi formu (`fiyat-teklifleri/QuotationForm.tsx`), Temmuz yenilemesinde (5b85560) e-posta, tarih, geçerlilik, indirim, not, hizmet arama, serbest kalem ve senaryo toplamları alanlarını kaybetmiş (26 → 5 giriş alanı). Geri getirmek büyük arayüz değişikliği; kullanıcı onayı gerekir.
+- WhatsApp & İletişim sayfası toplu silme ve toplu durum değiştirme düğmelerini kaybetmiş (b7f6ac8).
+- AI Görünürlük verilerini ayrı tablolara taşımak (5.4): veritabanı değişikliği, veri henüz küçük; acil değil.
+
+**Not (Antigravity):** Bu commit sırasında `yasli-umresi.ts` ve `tekerlekli-sandalye-ile-umre.ts`'te senin kaydedilmemiş değişikliklerin vardı; dokunulmadı, commit'e alınmadı.
+
+
 ## 2026-10-01 — Claude Code: Antigravity denetimi (hata listesi) + umre vizesi başvuru sayfası
 **Dal / commit:** `main` · (bu commit)
 **Yapılan:**

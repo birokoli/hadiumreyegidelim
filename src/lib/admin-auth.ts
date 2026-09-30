@@ -1,6 +1,7 @@
 import { cookies } from 'next/headers';
 import { SignJWT, jwtVerify } from 'jose';
 import crypto from 'crypto';
+import bcrypt from 'bcryptjs';
 import { prisma } from '@/lib/prisma';
 import { getJwtKey } from '@/lib/jwt-key';
 
@@ -29,8 +30,26 @@ export type AdminSession = {
   legacy?: boolean;
 };
 
-export function hashLegacyAdminPassword(password: string): string {
+/** Eski yöntem (sabit tuzlu SHA-256): yalnızca eski kayıtları doğrulamak için */
+function legacySha256(password: string): string {
   return crypto.createHash('sha256').update(password + 'hug-salt-2026').digest('hex');
+}
+
+/** Ayarlardaki yönetici şifresi artık bcrypt ile saklanır */
+export function hashLegacyAdminPassword(password: string): Promise<string> {
+  return bcrypt.hash(password, 12);
+}
+
+/**
+ * Ayarlardaki şifre özetini doğrular. Eski SHA-256 özeti doğruysa `needsUpgrade: true` döner;
+ * çağıran taraf özeti bcrypt'e çevirir (ilk başarılı girişte kendiliğinden geçiş).
+ */
+export async function verifyLegacyAdminPassword(password: string, stored: string): Promise<{ valid: boolean; needsUpgrade: boolean }> {
+  if (stored.startsWith('$2')) return { valid: await bcrypt.compare(password, stored), needsUpgrade: false };
+  const a = Buffer.from(legacySha256(password));
+  const b = Buffer.from(stored);
+  const valid = a.length === b.length && crypto.timingSafeEqual(a, b);
+  return { valid, needsUpgrade: valid };
 }
 
 export function normalizePermissions(value: unknown): string[] {

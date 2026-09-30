@@ -1,4 +1,5 @@
-import { NextResponse } from 'next/server';
+import { NextResponse, after } from 'next/server';
+import { notifyNewLead } from '@/lib/lead-notify';
 import { prisma } from '@/lib/prisma';
 import { rateLimit, getClientIp } from '@/lib/rate-limit';
 
@@ -32,7 +33,10 @@ export async function POST(request: Request) {
       },
     });
 
-    return NextResponse.json({ success: true, contact: newContact });
+    // Yöneticiye WhatsApp bildirimi yanıtı bekletmeden gönderilir
+    after(() => notifyNewLead(newContact));
+
+    return NextResponse.json({ success: true });
   } catch (error: any) {
     console.error('Contact API Error:', error);
     return NextResponse.json(

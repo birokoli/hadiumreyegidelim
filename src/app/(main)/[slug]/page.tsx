@@ -8,7 +8,8 @@ import { turkeyCities, getTurkishCityBySlug, type TurkeyCity } from "@/lib/turke
 import { cityTravelFacts, nearestCities, type Region } from "@/lib/city-geo";
 import { DEFAULT_OG_IMAGE, metaDescription, pageTitle } from "@/lib/seo/meta";
 import ContentPageView from "@/components/content/ContentPageView";
-import { CONTENT_PAGES, getContentPage } from "@/content/pages";
+import { CONTENT_PAGES } from "@/content/pages";
+import { getLiveContentPage, getLiveContentPages } from "@/content/pages/store";
 import { pageTitles } from "@/content/pages/titles";
 import { getSiteSettings } from "@/lib/site-settings";
 import { PageTrust, webPageJsonLd } from "@/components/seo/PageTrust";
@@ -28,8 +29,8 @@ export function generateStaticParams() {
 }
 
 const ROOT_GROUPS = new Set(["kisi", "zaman"]);
-const rootContentPage = (slug: string) => {
-  const p = getContentPage(slug);
+const rootContentPage = async (slug: string) => {
+  const p = await getLiveContentPage(slug);
   return p && ROOT_GROUPS.has(p.group) ? p : null;
 };
 
@@ -100,7 +101,7 @@ function buildCityContent(city: TurkeyCity) {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const content = rootContentPage(slug);
+  const content = await rootContentPage(slug);
   if (content) {
     return {
       title: pageTitle(content.title),
@@ -127,10 +128,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function DynamicCityUmrahPage({ params }: Props) {
   const { slug } = await params;
-  const content = rootContentPage(slug);
+  const content = await rootContentPage(slug);
   if (content) {
     const whatsappNumber = ((await getSiteSettings()).WHATSAPP_NUMBER || "905404010038").replace("+", "");
-    return <ContentPageView page={content} whatsappNumber={whatsappNumber} relatedTitles={pageTitles()} />;
+    return <ContentPageView page={content} whatsappNumber={whatsappNumber} relatedTitles={pageTitles(await getLiveContentPages())} />;
   }
   if (!slug?.endsWith(SUFFIX)) notFound();
   const city = getTurkishCityBySlug(slug.replace(SUFFIX, ""));

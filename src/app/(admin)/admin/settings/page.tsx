@@ -1,5 +1,6 @@
 "use client";
 import { SITE_URL } from "@/lib/seo/site";
+import { SOCIAL_BRANDS, SocialIcon, type SocialKey } from "@/components/icons/SocialIcons";
 
 import React, { useState, useEffect } from "react";
 
@@ -395,14 +396,14 @@ export default function SettingsPage() {
           <p className="text-sm text-on-surface-variant mb-8">Footer ve iletişim sayfasında görünecek profil linkleri. Boş bırakılan hesaplar gösterilmez.</p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {[
-              { key: 'SOCIAL_INSTAGRAM', label: 'Instagram', icon: 'photo_camera',    placeholder: 'https://instagram.com/hesap' },
-              { key: 'SOCIAL_FACEBOOK',  label: 'Facebook',  icon: 'thumb_up',         placeholder: 'https://facebook.com/sayfa'   },
-              { key: 'SOCIAL_YOUTUBE',   label: 'YouTube',   icon: 'play_circle',      placeholder: 'https://youtube.com/@kanal'   },
-              { key: 'SOCIAL_TWITTER',   label: 'X / Twitter', icon: 'alternate_email', placeholder: 'https://x.com/hesap'          },
-              { key: 'SOCIAL_TIKTOK',    label: 'TikTok',    icon: 'music_video',      placeholder: 'https://tiktok.com/@hesap'    },
-            ].map(({ key, label, icon, placeholder }) => (
+              { key: 'SOCIAL_INSTAGRAM' as SocialKey, label: 'Instagram', icon: 'photo_camera',    placeholder: 'https://instagram.com/hesap' },
+              { key: 'SOCIAL_FACEBOOK' as SocialKey,  label: 'Facebook',  icon: 'thumb_up',         placeholder: 'https://facebook.com/sayfa'   },
+              { key: 'SOCIAL_YOUTUBE' as SocialKey,   label: 'YouTube',   icon: 'play_circle',      placeholder: 'https://youtube.com/@kanal'   },
+              { key: 'SOCIAL_TWITTER' as SocialKey,   label: 'X / Twitter', icon: 'alternate_email', placeholder: 'https://x.com/hesap'          },
+              { key: 'SOCIAL_TIKTOK' as SocialKey,    label: 'TikTok',    icon: 'music_video',      placeholder: 'https://tiktok.com/@hesap'    },
+            ].map(({ key, label, placeholder }) => (
               <div key={key}>
-                <label className={lbl}><span className="material-symbols-outlined text-[14px] mr-1">{icon}</span>{label}</label>
+                <label className={`${lbl} flex items-center gap-1.5`}><span style={{ color: SOCIAL_BRANDS[key].color }}><SocialIcon name={key} className="w-3.5 h-3.5" /></span>{label}</label>
                 <input type="url" value={settings[key] || ''} onChange={e => handleChange(key, e.target.value)} className={inp} placeholder={placeholder} />
               </div>
             ))}

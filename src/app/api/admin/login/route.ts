@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import bcrypt from 'bcryptjs';
-import { createAdminToken, hashLegacyAdminPassword, legacyAdminSession, normalizePermissions } from '@/lib/admin-auth';
+import { createAdminToken, hashLegacyAdminPassword, legacyAdminSession, normalizePermissions, verifyLegacyAdminPassword } from '@/lib/admin-auth';
 
 // ─── In-memory brute force protection ─────────────────
 // { ip -> { attempts, lockedUntil } }
@@ -126,12 +126,14 @@ export async function POST(request: Request) {
     const customUsernameSetting = await prisma.setting.findUnique({ where: { key: 'ADMIN_USERNAME' } }).catch(() => null);
 
     const validUsername = customUsernameSetting?.value || 'Yasin';
-    const inputHash = hashLegacyAdminPassword(rawPassword);
-
     let passwordValid = false;
     if (customPasswordSetting?.value) {
-      // Compare with stored hash
-      passwordValid = customPasswordSetting.value === inputHash;
+      const check = await verifyLegacyAdminPassword(rawPassword, customPasswordSetting.value);
+      passwordValid = check.valid;
+      // Eski SHA-256 özeti ilk doğru girişte bcrypt'e çevrilir
+      if (check.valid && check.needsUpgrade && login === validUsername) {
+        await prisma.setting.update({ where: { key: 'ADMIN_PASSWORD_HASH' }, data: { value: await hashLegacyAdminPassword(rawPassword) } }).catch(() => null);
+      }
     } else if (process.env.ADMIN_INITIAL_PASSWORD) {
       // Şifre henüz ayarlanmadıysa yalnızca sunucu ortam değişkenindeki ilk şifre geçer
       passwordValid = rawPassword === process.env.ADMIN_INITIAL_PASSWORD;

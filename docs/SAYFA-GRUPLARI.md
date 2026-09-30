@@ -18,6 +18,8 @@ Son güncelleme: 30 Eylül 2026 (Claude Code). **Altyapı hazır; yalnızca içe
 
 **Ana sayfaya hiçbir şey eklenmez.** Sayfalar Google'a sitemap, `/umre-rehberi` merkezi, `llms.txt` ve sayfalar arası "İlgili sayfalar" bağlantılarıyla ulaşır. Ana sayfa düzeni, menü ve footer değişmez.
 
+> **Admin'den düzenleme (1 Ekim):** Rehber sayfaları artık admin → İçerik Stüdyosu → **Rehber Sayfaları**'ndan da düzenlenebilir. Kod dosyası varsayılan sürümdür; admin'de kaydedilen sürüm (Setting tablosu, `CONTENT_PAGE:<slug>`) onun yerine geçer. **Bir sayfanın kod dosyasını değiştirmeden önce** o listede "Admin'de düzenlendi" yazıp yazmadığına bak: yazıyorsa kod değişikliğin sitede görünmez (listede "Kodda daha yeni sürüm var" uyarısı çıkar). Böyle bir sayfayı kodla değiştirmen gerekirse önce kullanıcıya sor. Adres (slug, grup) yalnızca koddan değişir. Admin kaydı da aynı denetimden (`validate.ts`) geçer.
+
 ## 1. Yeni sayfa ekleme (her sayfa için aynı 5 adım)
 
 1. `src/content/pages/<slug>.ts` dosyasını `ihram-nedir.ts`'i kopyalayarak oluştur.

@@ -1,15 +1,13 @@
 import { isPublicKey, MAX_VALUE_LENGTH, revalidateSiteSettings } from "@/lib/site-settings";
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { cookies } from 'next/headers';
+import { getAdminSession } from '@/lib/admin-auth';
 import { revalidatePath } from 'next/cache';
 
 export async function GET() {
   try {
-    const cookieStore = await cookies();
-    const sessionCookie = cookieStore.get('admin_session');
-    
-    if (!sessionCookie || sessionCookie.value !== 'true') {
+    // Oturum imzalı token ile doğrulanır (yetki kontrolü middleware'de: "settings")
+    if (!(await getAdminSession())) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -30,17 +28,16 @@ export async function GET() {
 
 export async function POST(request: Request) {
   try {
-    const cookieStore = await cookies();
-    const sessionCookie = cookieStore.get('admin_session');
-    
-    if (!sessionCookie || sessionCookie.value !== 'true') {
+    // Oturum imzalı token ile doğrulanır (yetki kontrolü middleware'de: "settings")
+    if (!(await getAdminSession())) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const updates = await request.json(); // Map of { key: value }
     
     for (const [key, value] of Object.entries(updates)) {
-      if (typeof value === 'string') {
+      // Gizli anahtarlar (ADMIN_PASSWORD_HASH, SEO_, AI_VIS_ …) bu formdan yazılamaz
+      if (typeof value === 'string' && isPublicKey(key) && value.length <= MAX_VALUE_LENGTH) {
         await prisma.setting.upsert({
           where: { key },
           update: { value },

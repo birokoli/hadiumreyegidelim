@@ -1,3 +1,4 @@
+import { SITE_URL } from "@/lib/seo/site";
 import React from "react";
 export const revalidate = 300;
 import { prisma } from "@/lib/prisma";
@@ -45,7 +46,7 @@ export default async function PackagesPage() {
   ].filter(Boolean) as { q: string; a: string }[];
   const jsonLd = [
     { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faq.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) },
-    webPageJsonLd({ url: "https://hadiumreyegidelim.com/paketler", name: "Umre Paketleri 2026" }),
+    webPageJsonLd({ url: `${SITE_URL}/paketler`, name: "Umre Paketleri 2026" }),
   ];
 
   return (

@@ -1,3 +1,4 @@
+import { SITE_URL } from "@/lib/seo/site";
 import React from "react";
 import Link from "next/link";
 import { Metadata } from "next";
@@ -104,7 +105,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return {
       title: pageTitle(content.title),
       description: content.description,
-      alternates: { canonical: `https://hadiumreyegidelim.com/${content.slug}` },
+      alternates: { canonical: `${SITE_URL}/${content.slug}` },
       openGraph: { title: content.title, description: content.description, type: "article", images: [DEFAULT_OG_IMAGE] },
     };
   }
@@ -120,7 +121,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         ? `${city.name} çıkışlı umre: ${city.airportCode} kalkış, Cidde'ye yaklaşık ${n(facts.toJeddah)} km, direkt uçuşla yaklaşık ${facts.jeddahFlight}. Otel, uçuş ve vizeyi tek planda seçin.`
         : `${city.name} çıkışlı umre: ${city.airportName} (${city.airportCode}) kalkışlı uçuş, otel, vize ve transferi tek planda seçin.`,
     ),
-    alternates: { canonical: `https://hadiumreyegidelim.com/${slug}` },
+    alternates: { canonical: `${SITE_URL}/${slug}` },
   };
 }
 
@@ -145,10 +146,10 @@ export default async function DynamicCityUmrahPage({ params }: Props) {
       name: `${city.name} Çıkışlı Bireysel Umre`,
       serviceType: "Bireysel umre planlama",
       areaServed: { "@type": "City", name: city.name },
-      provider: { "@type": "TravelAgency", name: "Hadi Umreye Gidelim", url: "https://hadiumreyegidelim.com" },
-      url: `https://hadiumreyegidelim.com/${slug}`,
+      provider: { "@type": "TravelAgency", name: "Hadi Umreye Gidelim", url: SITE_URL },
+      url: `${SITE_URL}/${slug}`,
     },
-    webPageJsonLd({ url: `https://hadiumreyegidelim.com/${slug}`, name: `${city.name} Çıkışlı Bireysel Umre` }),
+    webPageJsonLd({ url: `${SITE_URL}/${slug}`, name: `${city.name} Çıkışlı Bireysel Umre` }),
     {
       "@context": "https://schema.org",
       "@type": "FAQPage",

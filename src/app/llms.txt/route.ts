@@ -1,10 +1,9 @@
 import { prisma } from "@/lib/prisma";
 import { HUBS } from "@/lib/geo-blog/inventory";
 import { CONTENT_PAGES, contentPath } from "@/content/pages";
+import { SITE_URL } from "@/lib/seo/site";
 
 export const revalidate = 3600;
-
-const SITE_URL = "https://hadiumreyegidelim.com";
 
 export async function GET() {
   try {

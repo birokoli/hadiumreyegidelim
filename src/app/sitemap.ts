@@ -2,12 +2,13 @@ import { MetadataRoute } from 'next';
 import { prisma } from '@/lib/prisma';
 import { turkeyCities } from '@/lib/turkey-cities';
 import { CONTENT_PAGES, contentPath } from '@/content/pages';
+import { SITE_URL } from '@/lib/seo/site';
 
 export const dynamic = 'force-dynamic';
 
 // 4. Otomatik Sitemap
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://hadiumreyegidelim.com';
+  const baseUrl = SITE_URL;
 
   // Yalnızca yayındaki yazılar (taslaklar Google'a bildirilmez)
   const posts = await prisma.post.findMany({

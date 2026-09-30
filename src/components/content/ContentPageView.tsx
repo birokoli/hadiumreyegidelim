@@ -4,8 +4,9 @@ import type { ContentPage } from "@/content/pages/types";
 import { contentPath } from "@/content/pages/types";
 import { BlogEndCta, BlogInlineCta } from "@/components/blog/BlogBrandCta";
 import { LastUpdated } from "@/components/seo/PageTrust";
+import { SITE_URL } from "@/lib/seo/site";
 
-const SITE = "https://hadiumreyegidelim.com";
+const SITE = SITE_URL;
 const LINK_RE = /\[([^\]]+)\]\(([^)]+)\)/g;
 
 /** "[metin](/yol)" ve "[metin](https://…)" bağlantılarını React öğelerine çevirir */

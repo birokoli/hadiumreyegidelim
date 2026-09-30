@@ -1,3 +1,4 @@
+import { SITE_URL } from "@/lib/seo/site";
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
@@ -37,8 +38,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       type: 'article',
       publishedTime: post.createdAt.toISOString(),
       modifiedTime: post.updatedAt.toISOString(),
-      authors: [post.authorId ? "https://hadiumreyegidelim.com/blog" : post.author],
-      url: `https://hadiumreyegidelim.com/blog/${slug}`,
+      authors: [post.authorId ? `${SITE_URL}/blog` : post.author],
+      url: `${SITE_URL}/blog/${slug}`,
       images: ogImages,
     },
     twitter: {
@@ -203,7 +204,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     author: [{
       '@type': 'Person',
       name: post.authorModel?.name || post.author,
-      url: post.authorModel?.linkedin || post.authorModel?.twitter || 'https://hadiumreyegidelim.com/hakkimizda',
+      url: post.authorModel?.linkedin || post.authorModel?.twitter || `${SITE_URL}/hakkimizda`,
       jobTitle: post.authorModel?.expertise || undefined,
       description: post.authorModel?.bio || undefined,
       image: post.authorModel?.image || undefined
@@ -228,9 +229,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Anasayfa', item: 'https://hadiumreyegidelim.com' },
-      { '@type': 'ListItem', position: 2, name: 'Manevi Rehberlik Blogu', item: 'https://hadiumreyegidelim.com/blog' },
-      { '@type': 'ListItem', position: 3, name: post.title, item: `https://hadiumreyegidelim.com/blog/${post.slug}` }
+      { '@type': 'ListItem', position: 1, name: 'Anasayfa', item: SITE_URL },
+      { '@type': 'ListItem', position: 2, name: 'Manevi Rehberlik Blogu', item: `${SITE_URL}/blog` },
+      { '@type': 'ListItem', position: 3, name: post.title, item: `${SITE_URL}/blog/${post.slug}` }
     ]
   };
 

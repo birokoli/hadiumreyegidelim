@@ -1,9 +1,10 @@
+import { SITE_URL } from "@/lib/seo/site";
 import type { Metadata } from "next";
 import "./globals.css";
 
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://hadiumreyegidelim.com"),
+  metadataBase: new URL(SITE_URL),
   title: {
     template: "%s | Hadi Umre'ye Gidelim",
     default: "Hadi Umre'ye Gidelim | Umrenizi Kolayca Planlayın",
@@ -24,7 +25,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Bireysel Umre Rehberi | Suudi Arabistan e-Vize & Özel Fiyatlar 2026",
     description: "Bireysel umre vizesi nasıl alınır? Diyanet turlarına bağlanmadan, Mescid-i Haram'a sıfır, sadece ailenize özel butik umre organizasyonu kurun ve tasarruf edin.",
-    url: 'https://hadiumreyegidelim.com',
+    url: SITE_URL,
     siteName: "Hadi Umre'ye Gidelim",
     images: [
       {
@@ -38,7 +39,7 @@ export const metadata: Metadata = {
     type: 'website',
   },
   alternates: {
-    canonical: "https://hadiumreyegidelim.com",
+    canonical: SITE_URL,
   }
 };
 
@@ -65,10 +66,10 @@ export default async function RootLayout({
       "@context": "https://schema.org",
       "@type": "WebSite",
       "name": "Hadi Umre'ye Gidelim",
-      "url": "https://hadiumreyegidelim.com",
+      "url": SITE_URL,
       "potentialAction": {
         "@type": "SearchAction",
-        "target": "https://hadiumreyegidelim.com/blog?q={search_term_string}",
+        "target": `${SITE_URL}/blog?q={search_term_string}`,
         "query-input": "required name=search_term_string"
       }
     },
@@ -76,9 +77,9 @@ export default async function RootLayout({
       "@context": "https://schema.org",
       "@type": "Organization",
       "name": "Hadi Umre'ye Gidelim",
-      "image": `https://hadiumreyegidelim.com${settings.SITE_LOGO || '/logo.png'}`,
-      "@id": "https://hadiumreyegidelim.com",
-      "url": "https://hadiumreyegidelim.com",
+      "image": `${SITE_URL}${settings.SITE_LOGO || '/logo.png'}`,
+      "@id": SITE_URL,
+      "url": SITE_URL,
       "telephone": `+${settings.WHATSAPP_NUMBER || '905404010038'}`,
       "address": {
         "@type": "PostalAddress",

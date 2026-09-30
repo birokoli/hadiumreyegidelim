@@ -4,6 +4,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { turkeyCities } from "@/lib/turkey-cities";
+import { SITE_URL, SITE_DOMAIN } from "@/lib/seo/site";
 
 export type LinkTarget = { path: string; title: string; kind: "hub" | "post" | "package" | "city"; topics: string[] };
 
@@ -75,8 +76,8 @@ export function pickLinkTargets(topic: string, inventory: LinkTarget[], limit = 
 export function isInternalPath(href: string, inventory: LinkTarget[]) {
   let path = href;
   try {
-    const u = new URL(href, "https://hadiumreyegidelim.com");
-    if (!/(^|\.)hadiumreyegidelim\.com$/.test(u.hostname)) return false;
+    const u = new URL(href, SITE_URL);
+    if (!new RegExp(`(^|\\.)${SITE_DOMAIN.replace('.', '\\.')}$`).test(u.hostname)) return false;
     path = u.pathname.replace(/\/+$/, "") || "/";
   } catch {
     return false;

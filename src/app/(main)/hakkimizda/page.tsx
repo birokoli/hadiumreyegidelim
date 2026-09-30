@@ -1,3 +1,4 @@
+import { SITE_URL } from "@/lib/seo/site";
 import React from "react";
 import { Metadata } from "next";
 import Link from "next/link";
@@ -14,12 +15,12 @@ const jsonLd = {
   "@context": "https://schema.org",
   "@type": "AboutPage",
   "name": "Hakkımızda — Hadi Umreye Gidelim",
-  "url": "https://hadiumreyegidelim.com/hakkimizda",
+  "url": `${SITE_URL}/hakkimizda`,
   "description": "Hadi Umreye Gidelim hakkında bilgi edinin.",
   "publisher": {
     "@type": "Organization",
     "name": "Hadi Umreye Gidelim",
-    "url": "https://hadiumreyegidelim.com",
+    "url": SITE_URL,
   },
 };
 

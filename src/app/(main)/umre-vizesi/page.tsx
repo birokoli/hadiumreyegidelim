@@ -1,3 +1,4 @@
+import { SITE_URL } from "@/lib/seo/site";
 import React from "react";
 import { Metadata } from "next";
 import Link from "next/link";
@@ -9,7 +10,7 @@ export const metadata: Metadata = {
   description: "Acentelere bağlı kalmadan, 1 yıllık çok girişli Suudi Arabistan Turistik E-Vizesi ile Bireysel Umre yapmanın tüm detayları.",
   keywords: ["umre vizesi", "bireysel umre vizesi", "bireysel umre vizesi nasıl alınır", "suudi arabistan e vize umre", "umre vize fiyatları 2026", "turistik umre vizesi", "bireysel umre"],
   alternates: {
-    canonical: "https://hadiumreyegidelim.com/umre-vizesi",
+    canonical: `${SITE_URL}/umre-vizesi`,
   }
 };
 
@@ -31,7 +32,7 @@ const VISA_FAQ = [
 
 const visaJsonLd = [
   { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: VISA_FAQ.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) },
-  webPageJsonLd({ url: "https://hadiumreyegidelim.com/umre-vizesi", name: "Bireysel Umre Vizesi Nasıl Alınır?" }),
+  webPageJsonLd({ url: `${SITE_URL}/umre-vizesi`, name: "Bireysel Umre Vizesi Nasıl Alınır?" }),
 ];
 
 export default function UmreVizesiPage() {

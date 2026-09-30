@@ -1,3 +1,4 @@
+import { SITE_URL } from "@/lib/seo/site";
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -319,7 +320,7 @@ export default async function Home() {
           ))}
         </div>
         <PageTrust className="mt-6 text-center" />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([faqJsonLd, webPageJsonLd({ url: "https://hadiumreyegidelim.com/", name: "Bireysel Umre 2026" })]) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([faqJsonLd, webPageJsonLd({ url: `${SITE_URL}/`, name: "Bireysel Umre 2026" })]) }} />
       </section>
     </>
   );

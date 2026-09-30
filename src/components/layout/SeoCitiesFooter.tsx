@@ -2,9 +2,15 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { turkeyCities } from '@/lib/turkey-cities';
 
 export default function SeoCitiesFooter() {
+  const pathname = usePathname();
+  // Şehir sayfaları kendi "yakınındaki iller" bağlantılarını gösterir; 81 illik ortak liste
+  // orada tekrar edilmez (sayfaların birbirine benzerliğini yükseltiyordu)
+  if (pathname?.endsWith('-cikisli-bireysel-umre')) return null;
+
   return (
     <div className="w-full bg-surface-container-lowest border-t border-outline-variant/20 py-8 px-6 mt-10">
       <div className="max-w-screen-xl mx-auto">

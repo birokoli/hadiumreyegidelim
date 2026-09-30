@@ -6,14 +6,14 @@ export interface TurkeyCity {
 }
 
 export const turkeyCities: TurkeyCity[] = [
-  { slug: "adana", name: "Adana", airportCode: "ADA", airportName: "Adana Şakirpaşa" },
+  { slug: "adana", name: "Adana", airportCode: "COV", airportName: "Çukurova Havalimanı" },
   { slug: "adiyaman", name: "Adıyaman", airportCode: "ADF", airportName: "Adıyaman Havalimanı" },
   { slug: "afyonkarahisar", name: "Afyonkarahisar", airportCode: "KZR", airportName: "Zafer Havalimanı" },
   { slug: "agri", name: "Ağrı", airportCode: "AJI", airportName: "Ağrı Ahmed-i Hani" },
   { slug: "amasya", name: "Amasya", airportCode: "MZH", airportName: "Merzifon Havalimanı" },
   { slug: "ankara", name: "Ankara", airportCode: "ESB", airportName: "Ankara Esenboğa" },
   { slug: "antalya", name: "Antalya", airportCode: "AYT", airportName: "Antalya Havalimanı" },
-  { slug: "artvin", name: "Artvin", airportCode: "AAR", airportName: "Artvin Hopa (Batum Üzeri)" }, // Actually they often use Rize-Artvin RZV or Kars, let's use RZV
+  { slug: "artvin", name: "Artvin", airportCode: "RZV", airportName: "Rize-Artvin Havalimanı" },
   { slug: "aydin", name: "Aydın", airportCode: "ADB", airportName: "İzmir Adnan Menderes" }, // Closest
   { slug: "balikesir", name: "Balıkesir", airportCode: "EDO", airportName: "Balıkesir Koca Seyit" },
   { slug: "bilecik", name: "Bilecik", airportCode: "SAW", airportName: "Sabiha Gökçen" }, // Closest
@@ -38,7 +38,7 @@ export const turkeyCities: TurkeyCity[] = [
   { slug: "hakkari", name: "Hakkari", airportCode: "YKO", airportName: "Hakkari Yüksekova" },
   { slug: "hatay", name: "Hatay", airportCode: "HTY", airportName: "Hatay Havalimanı" },
   { slug: "isparta", name: "Isparta", airportCode: "ISE", airportName: "Isparta Süleyman Demirel" },
-  { slug: "mersin", name: "Mersin", airportCode: "ADA", airportName: "Adana Şakirpaşa" },
+  { slug: "mersin", name: "Mersin", airportCode: "COV", airportName: "Çukurova Havalimanı" },
   { slug: "istanbul", name: "İstanbul", airportCode: "IST", airportName: "İstanbul Havalimanı" },
   { slug: "izmir", name: "İzmir", airportCode: "ADB", airportName: "İzmir Adnan Menderes" },
   { slug: "kars", name: "Kars", airportCode: "KSY", airportName: "Kars Harakani" },
@@ -85,7 +85,7 @@ export const turkeyCities: TurkeyCity[] = [
   { slug: "yalova", name: "Yalova", airportCode: "SAW", airportName: "Sabiha Gökçen" },
   { slug: "karabuk", name: "Karabük", airportCode: "ONQ", airportName: "Zonguldak Çaycuma" },
   { slug: "kilis", name: "Kilis", airportCode: "GZT", airportName: "Gaziantep Havalimanı" },
-  { slug: "osmaniye", name: "Osmaniye", airportCode: "ADA", airportName: "Adana Şakirpaşa" },
+  { slug: "osmaniye", name: "Osmaniye", airportCode: "COV", airportName: "Çukurova Havalimanı" },
   { slug: "duzce", name: "Düzce", airportCode: "SAW", airportName: "Sabiha Gökçen" }
 ];
 

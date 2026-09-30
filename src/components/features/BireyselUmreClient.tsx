@@ -9,6 +9,8 @@ import { useConfiguratorStore } from "@/store/useConfiguratorStore";
 
 interface Props {
   initialDepartureCity?: string;
+  /** Kalkış listesinde gösterilecek ad (ör. "Konya Havalimanı (KYA)") */
+  initialDepartureLabel?: string;
   children?: React.ReactNode; 
   title?: string;
   subtitle?: string;
@@ -16,6 +18,7 @@ interface Props {
 
 export default function BireyselUmreClient({ 
   initialDepartureCity, 
+  initialDepartureLabel,
   children,
   title = "Umre Tasarlayıcı",
   subtitle = "Manevi yolculuğunuzun her adımını, ruhunuzun sükuneti ve bedenin huzuru için özenle şekillendirin." 
@@ -176,7 +179,7 @@ export default function BireyselUmreClient({
                        <label htmlFor="departureCity" className="block text-xs font-bold text-tertiary uppercase tracking-widest mb-2">Kalkış Şehri</label>
                        <select id="departureCity" value={departureCity} onChange={e => setDepartureCity(e.target.value)} className="w-full bg-surface border border-outline-variant/30 rounded-xl px-4 py-3 outline-none focus:border-primary font-medium text-sm">
                          {initialDepartureCity && !["IST", "SAW", "ESB", "ADB"].includes(initialDepartureCity) && (
-                           <option value={initialDepartureCity}>Seçili Şehir Konumu ({initialDepartureCity})</option>
+                           <option value={initialDepartureCity}>{initialDepartureLabel ?? `Seçili havalimanı (${initialDepartureCity})`}</option>
                          )}
                          <option value="IST">İstanbul Havalimanı (IST)</option>
                          <option value="SAW">Sabiha Gökçen (SAW)</option>

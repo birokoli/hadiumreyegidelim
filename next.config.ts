@@ -1,6 +1,15 @@
 import type { NextConfig } from "next";
 
 const nextConfig: any = {
+  // Sayfalar build sırasında veritabanından önceden üretilir. İki Vercel projesi aynı anda
+  // build ederken bağlantı sınırına takılmamak için işçi ve eş zamanlılık sınırlı; düşen
+  // sayfa build'i bozmadan önce yeniden denenir.
+  experimental: {
+    cpus: 4,
+    staticGenerationMaxConcurrency: 4,
+    staticGenerationMinPagesPerWorker: 40,
+    staticGenerationRetryCount: 2,
+  },
   async redirects() {
     return [
       {

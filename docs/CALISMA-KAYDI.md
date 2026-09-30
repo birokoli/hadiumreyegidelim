@@ -34,6 +34,38 @@ Antigravity her iş oturumunda bu dosyanın **en üstüne** bir kayıt ekler. Am
 
 <!-- Kayıtlar bu çizginin altına, en yeni en üstte -->
 
+## 2026-09-30 16:50 — Karşılaştırma grubu rehber sayfaları (4 yeni sayfa) canlıda
+**Dal / commit:** `main` (birleşti) · `f1a2ac2` (sayfa-gruplari), `f1a2ac2` (main push)
+**Yol haritası adımı:** 3.2 Programatik sayfa grupları (Karşılaştırma grubu)
+**Yapılan:**
+- 4 yeni programatik Karşılaştırma rehber sayfası eklendi:
+  - `src/content/pages/bireysel-umre-mi-turla-umre-mi.ts` (`/umre-rehberi/bireysel-umre-mi-turla-umre-mi`)
+  - `src/content/pages/ekonomik-umre-mi-luks-umre-mi.ts` (`/umre-rehberi/ekonomik-umre-mi-luks-umre-mi`)
+  - `src/content/pages/once-mekke-mi-medine-mi.ts` (`/umre-rehberi/once-mekke-mi-medine-mi`)
+  - `src/content/pages/umre-mi-hac-mi.ts` (`/umre-rehberi/umre-mi-hac-mi`)
+- `src/content/pages/index.ts` güncellendi (toplam 9 rehber sayfası kayıtlı).
+- `docs/YOL-HARITASI.md` 3.2 ve Durum günlüğü güncellendi.
+**Doğrulama:**
+- Denetim: `npx tsx scripts/check-content-pages.mts` → 9 sayfa, 0 hata ✓
+- Tip kontrolü: `npx tsc --noEmit` → 0 hata (temiz) ✓
+- Vercel build: `hadiumreyegidelim.com` = success (`f1a2ac2`), `hadiumreyegidelim` = success ✓
+- Canlı doğrulama (curl -L HTTP 200 OK):
+  - https://www.hadiumreyegidelim.com/umre-rehberi/bireysel-umre-mi-turla-umre-mi (200)
+  - https://www.hadiumreyegidelim.com/umre-rehberi/ekonomik-umre-mi-luks-umre-mi (200)
+  - https://www.hadiumreyegidelim.com/umre-rehberi/once-mekke-mi-medine-mi (200)
+  - https://www.hadiumreyegidelim.com/umre-rehberi/umre-mi-hac-mi (200)
+**Kullanıcıya gösterilen / onay:**
+- Yerel önizleme: `http://localhost:3002/umre-rehberi/{bireysel-umre-mi-turla-umre-mi,ekonomik-umre-mi-luks-umre-mi,once-mekke-mi-medine-mi,umre-mi-hac-mi}` adresleri test edildi (200 OK).
+- Kullanıcı onayı: "bu yaptıkların canlıya alınabilir".
+**Kararlar ve sebepleri:**
+- Fiyat karşılaştırmalarında grup/Diyanet tur fiyatı ölçü alınmadı; bireysel umrenin avantajları dürüstçe vurgulandı.
+- `umre-mi-hac-mi` sayfasında hac organizasyonu yapılmadığı net belirtildi; resmî kurum (Diyanet) dış bağlantı kısıtlarına uyuldu.
+**Açık kalanlar / riskler:**
+- Kişi (`/aile-umresi`, `/yasli-umresi`, `/tekerlekli-sandalye-ile-umre`, `/ogrenci-umresi`) ve Zaman (`/ekim-umresi`, `/kasim-umresi`, vb.) grubu sayfaları henüz yazılmadı.
+**Sıradaki adım:**
+- 3.2 Kişi grubu rehber sayfalarını yaz: `aile-umresi`, `yasli-umresi`, `tekerlekli-sandalye-ile-umre`, `ogrenci-umresi`. Kayıtları `src/content/pages/` dizinine ekle, `check-content-pages.mts` ve `tsc` ile doğrula, yerelde gösterip kullanıcı onayından sonra canlıya al.
+
+
 ## 2026-09-30 16:40 — Sözlük grubu rehber sayfaları (4 yeni sayfa) canlıda
 **Dal / commit:** `main` (birleşti) · `5caa856` (sayfa-gruplari), `8923eeb` (main merge)
 **Yol haritası adımı:** 3.2 Programatik sayfa grupları

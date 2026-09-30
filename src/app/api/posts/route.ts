@@ -1,3 +1,4 @@
+import { revalidatePublic } from "@/lib/revalidate-public";
 import { NextResponse, NextRequest } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { connectMeasurement } from '@/lib/geo-blog/publish';
@@ -62,6 +63,7 @@ export async function POST(request: Request) {
     });
     // Yayında oluşturulan yazı: odak kelime sıra takibine, sorusu AI Görünürlük'e
     if (post.published) await connectMeasurement(post).catch((e) => console.error('[posts] ölçüm bağlantısı', e));
+    revalidatePublic("posts");
     return NextResponse.json(post);
   } catch (error: any) {
     console.error("POST /api/posts Error:", error);
@@ -89,6 +91,7 @@ export async function PUT(request: NextRequest) {
     });
     // Taslaktan yayına geçen yazı ölçüme bağlanır
     if (post.published && before && !before.published) await connectMeasurement(post).catch((e) => console.error('[posts] ölçüm bağlantısı', e));
+    revalidatePublic("posts");
     return NextResponse.json(post);
   } catch (error: any) {
     console.error("PUT /api/posts Error:", error);
@@ -101,6 +104,7 @@ export async function DELETE(request: NextRequest) {
     const id = request.nextUrl.searchParams.get('id');
     if (!id) return NextResponse.json({ error: 'ID required' }, { status: 400 });
     await prisma.post.delete({ where: { id } });
+    revalidatePublic("posts");
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error(error);

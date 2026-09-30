@@ -1,3 +1,4 @@
+import { revalidateSiteSettings } from "@/lib/site-settings";
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { cookies } from 'next/headers';
@@ -51,6 +52,7 @@ export async function POST(request: Request) {
     // Instantly invalidate ALL cached pages so settings take effect immediately
     revalidatePath('/', 'layout');
 
+    revalidateSiteSettings();
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Settings Update Error:', error);

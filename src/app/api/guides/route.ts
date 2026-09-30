@@ -1,4 +1,3 @@
-import { revalidatePublic } from "@/lib/revalidate-public";
 import { NextResponse, NextRequest } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
@@ -36,7 +35,6 @@ export async function POST(request: Request) {
       }
     });
 
-    revalidatePublic("guides");
     return NextResponse.json(guide);
   } catch (error) {
     return NextResponse.json({ error: 'Failed to create guide' }, { status: 500 });
@@ -68,7 +66,6 @@ export async function PUT(request: NextRequest) {
       }
     });
 
-    revalidatePublic("guides");
     return NextResponse.json(guide);
   } catch (error) {
     return NextResponse.json({ error: 'Failed to update guide' }, { status: 500 });
@@ -81,7 +78,6 @@ export async function DELETE(request: NextRequest) {
     if (!id) return NextResponse.json({ error: 'ID required' }, { status: 400 });
 
     const guide = await prisma.guide.delete({ where: { id } });
-    revalidatePublic("guides");
     return NextResponse.json(guide);
   } catch (error) {
     return NextResponse.json({ error: 'Failed to delete guide' }, { status: 500 });

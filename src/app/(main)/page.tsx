@@ -5,7 +5,6 @@ import BrandImageFallback from "@/components/ui/BrandImageFallback";
 import UmrePlanner from "@/components/home/UmrePlanner";
 import UmrahSteps from "@/components/home/UmrahSteps";
 import { prisma } from "@/lib/prisma";
-import { getSiteSettings } from "@/lib/site-settings";
 import { Metadata } from "next";
 import { DEFAULT_HANIM_UMRESI_CAMPAIGN, DEFAULT_ILK_UMREM_CAMPAIGN, EYLUL_CAMPAIGN_SETTING_KEY, HANIM_UMRESI_CAMPAIGN_SETTING_KEY, ILK_UMREM_CAMPAIGN_SETTING_KEY, parseEylulCampaign } from "@/lib/eylul-campaign";
 
@@ -86,7 +85,7 @@ function formatPrice(price: number, currency: string) {
 
 export default async function Home() {
   // Veritabanına ulaşılamazsa sayfa yine açılsın (boş paket/blog listesiyle)
-  const [latestBlogs, featuredPackages, settings] = await Promise.all([
+  const [latestBlogs, featuredPackages, settingsArray] = await Promise.all([
     prisma.post.findMany({
       where: { published: true },
       orderBy: { createdAt: 'desc' },
@@ -98,11 +97,13 @@ export default async function Home() {
       orderBy: { createdAt: 'desc' },
       take: 3,
     }),
-    getSiteSettings(),
+    prisma.setting.findMany(),
   ]).catch((e) => {
     console.error("Ana sayfa verisi alınamadı:", e);
-    return [[], [], {} as Record<string, string>] as const;
+    return [[], [], []] as const;
   });
+
+  const settings = settingsArray.reduce((acc, s) => { acc[s.key] = s.value; return acc; }, {} as Record<string, string>);
   const eylulCampaign = parseEylulCampaign(settings[EYLUL_CAMPAIGN_SETTING_KEY]);
   const ilkUmremCampaign = parseEylulCampaign(settings[ILK_UMREM_CAMPAIGN_SETTING_KEY], DEFAULT_ILK_UMREM_CAMPAIGN);
   const hanimCampaign = parseEylulCampaign(settings[HANIM_UMRESI_CAMPAIGN_SETTING_KEY], DEFAULT_HANIM_UMRESI_CAMPAIGN);

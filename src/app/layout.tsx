@@ -47,14 +47,20 @@ export const metadata: Metadata = {
 
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
-import { getSiteSettings } from "@/lib/site-settings";
+import { prisma } from "@/lib/prisma";
 
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const settings = await getSiteSettings();
+  let settings: Record<string, string> = {};
+  try {
+    const settingsArray = await prisma.setting.findMany();
+    settings = settingsArray.reduce((acc, s) => { acc[s.key] = s.value; return acc; }, {} as Record<string, string>);
+  } catch (e) {
+    console.error("Layout Settings Fetch error:", e);
+  }
 
   const colorPrimary = settings.BRAND_PRIMARY || "#003781";
   const colorSecondary = settings.BRAND_SECONDARY || "#236B40";

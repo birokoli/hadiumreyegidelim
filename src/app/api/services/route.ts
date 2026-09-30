@@ -1,4 +1,3 @@
-import { revalidatePublic } from "@/lib/revalidate-public";
 import { NextResponse, NextRequest } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
@@ -29,7 +28,6 @@ export async function POST(request: Request) {
         extraData: extraData || null
       }
     });
-    revalidatePublic("services");
     return NextResponse.json(service);
   } catch (error) {
     return NextResponse.json({ error: 'Failed to create service' }, { status: 500 });
@@ -53,7 +51,6 @@ export async function PUT(request: Request) {
         extraData: extraData || null
       }
     });
-    revalidatePublic("services");
     return NextResponse.json(service);
   } catch (error) {
     return NextResponse.json({ error: 'Failed to update service' }, { status: 500 });
@@ -66,7 +63,6 @@ export async function DELETE(request: NextRequest) {
     if (!id) return NextResponse.json({ error: 'ID required' }, { status: 400 });
     
     const service = await prisma.service.delete({ where: { id } });
-    revalidatePublic("services");
     return NextResponse.json(service);
   } catch (error) {
     return NextResponse.json({ error: 'Failed to delete service' }, { status: 500 });

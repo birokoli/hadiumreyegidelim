@@ -1,7 +1,7 @@
 import React from 'react';
 import { Metadata } from "next";
 import ContactFormClient from '@/components/features/ContactFormClient';
-import { getSiteSettings } from "@/lib/site-settings";
+import { prisma } from "@/lib/prisma";
 
 export const metadata: Metadata = {
   title: "İletişim & Umre Danışmanlığı",
@@ -15,7 +15,13 @@ export default async function ContactPage({ searchParams }: { searchParams: Prom
   const { paket } = await searchParams;
   const selectedPackage = paket ? paket.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase()) : '';
 
-  const settings = await getSiteSettings();
+  let settings: Record<string, string> = {};
+  try {
+    const settingsArray = await prisma.setting.findMany();
+    settings = settingsArray.reduce((acc, s) => { acc[s.key] = s.value; return acc; }, {} as Record<string, string>);
+  } catch (e) {
+    console.error("Contact settings fetch error", e);
+  }
 
   const contactTitle = settings.CONTACT_TITLE || "İletişim & Rezervasyon";
   const contactDesc = settings.CONTACT_DESC || "Manevi yolculuğunuza ilk adımı birlikte atıyoruz. Formu doldurun, umre danışmanlarımız müsaitlik ve detaylar için en kısa sürede sizi arasın.";

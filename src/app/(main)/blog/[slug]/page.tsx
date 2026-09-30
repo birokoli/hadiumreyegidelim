@@ -4,7 +4,7 @@ import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
 import { marked } from 'marked';
 
-export const revalidate = 300;
+export const dynamic = 'force-dynamic';
 
 // 1. Dinamik Meta Etiketleri Altyapısı (Open Graph & Twitter)
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {

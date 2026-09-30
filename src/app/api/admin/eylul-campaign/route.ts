@@ -1,4 +1,3 @@
-import { revalidateSiteSettings } from "@/lib/site-settings";
 import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
@@ -56,6 +55,5 @@ export async function POST(request: Request) {
   revalidatePath("/ilk-umrem");
   revalidatePath("/hanim-umresi");
   revalidatePath("/");
-  revalidateSiteSettings();
   return NextResponse.json({ success: true, configs });
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-export const revalidate = 300;
+export const dynamic = 'force-dynamic';
 import { prisma } from '@/lib/prisma';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';

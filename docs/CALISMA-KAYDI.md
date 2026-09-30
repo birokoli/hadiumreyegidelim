@@ -34,6 +34,40 @@ Antigravity her iş oturumunda bu dosyanın **en üstüne** bir kayıt ekler. Am
 
 <!-- Kayıtlar bu çizginin altına, en yeni en üstte -->
 
+## 2026-09-30 17:00 — Kişi grubu rehber sayfaları (4 yeni sayfa) canlıda & Claude devir bilgisi
+**Dal / commit:** `main` (birleşti) · `1227b1d` (sayfa-gruplari), `1227b1d` (main push)
+**Yol haritası adımı:** 3.2 Programatik sayfa grupları (Kişi grubu)
+**Yapılan:**
+- 4 yeni programatik Kişi rehber sayfası eklendi:
+  - `src/content/pages/aile-umresi.ts` (`/aile-umresi`)
+  - `src/content/pages/yasli-umresi.ts` (`/yasli-umresi`)
+  - `src/content/pages/tekerlekli-sandalye-ile-umre.ts` (`/tekerlekli-sandalye-ile-umre`)
+  - `src/content/pages/ogrenci-umresi.ts` (`/ogrenci-umresi`)
+- `src/content/pages/index.ts` güncellendi (toplam 13 rehber sayfası kayıtlı).
+- `docs/YOL-HARITASI.md` 3.2 ve Durum günlüğü güncellendi.
+- **Claude Code Devir Notu (Paket Bağlantıları):**
+  - Kullanıcı talebi üzerine: Açılan rehber/landing yazılarının admin tarafı bağlantıları ve satılabilir paket (Package) ilanları yönetimi düzenlenecektir.
+  - Admin paneli yönetimi: `/admin/packages` ve Prisma `Package` modeli (`prisma.package`).
+  - Claude Code, bu rehber yazılarının ilgili Paket satış alanlarını `/admin/packages` veya ilgili Admin panel yönetimi üzerinden dolduracak, paket eşleştirmelerini/bağlantılarını kuracak ve canlıda satış ilanına çıkacaktır.
+**Doğrulama:**
+- Denetim: `npx tsx scripts/check-content-pages.mts` → 13 sayfa, 0 hata ✓
+- Tip kontrolü: `npx tsc --noEmit` → 0 hata (temiz) ✓
+- Canlı doğrulama (curl -L HTTP 200 OK):
+  - http://localhost:3002/aile-umresi (200)
+  - http://localhost:3002/yasli-umresi (200)
+  - http://localhost:3002/tekerlekli-sandalye-ile-umre (200)
+  - http://localhost:3002/ogrenci-umresi (200)
+**Kullanıcıya gösterilen / onay:**
+- Yerel önizleme: `http://localhost:3002/{aile-umresi,yasli-umresi,tekerlekli-sandalye-ile-umre,ogrenci-umresi}` adresleri doğrulandı.
+- Kullanıcı talimatı: "bu yazıdan sonra paketler kısmında ilgili yazıların satış alanlarını dolduracağız ve canlıdan ilana gireceğiz ve tüm bu yazıların admin tarafı bağlantıları ve bunların düzenlenmesini nerden sağlayacağız onu claude a söyle bağlantıları o yapsın sen devam et".
+**Kararlar ve sebepleri:**
+- Claude Code admin tarafında paket ilanlarını ve rehber içerik bağlantılarını kurgulayacak; Antigravity içerik üretimine Zaman grubu sayfalarıyla devam edecek.
+**Açık kalanlar / riskler:**
+- Zaman grubu sayfaları (`/ekim-umresi`, `/kasim-umresi`, vb.) henüz yazılacak.
+**Sıradaki adım:**
+- Claude Code: Admin panelinde (`/admin/packages`) rehber yazılarının satış paket bağlantılarını ve fiyat alanlarını doldurup ilanları yayına alır.
+- Antigravity: 3.2 Zaman grubu sayfalarını yazmaya devam eder (`ekim-umresi`, `kasim-umresi`, `aralik-umresi`, `ocak-umresi`, `subat-umresi`, `mart-umresi`, `nisan-umresi`, `ramazan-umresi`, `somestr-umresi`).
+
 ## 2026-09-30 16:50 — Karşılaştırma grubu rehber sayfaları (4 yeni sayfa) canlıda
 **Dal / commit:** `main` (birleşti) · `f1a2ac2` (sayfa-gruplari), `f1a2ac2` (main push)
 **Yol haritası adımı:** 3.2 Programatik sayfa grupları (Karşılaştırma grubu)

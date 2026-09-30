@@ -179,6 +179,7 @@ Bir oturuma başlarken bu bölümü uygula. Kullanıcı başka bir şey istemedi
   - Sonra yapılabilir: çıkış (logout) uç noktası yok; eski ayarlar şifresi sabit tuzlu SHA-256 (bcrypt'e geçirilmeli).
 
 - [ ] **1.7 Vercel'de iki proje, biri build'de başarısız**
+  - **Sebep bulundu (30.09):** `.com` projesinde build ara ara `next/font/google` hatasıyla düşüyordu (Schibsted Grotesk indirilemiyordu; aynı commit bir projede geçip diğerinde düşüyordu). Masa yazı tipleri artık `public/fonts/desk` altında, `seo.css`'te `@font-face` ile (d0… commit "Masa yazı tipleri projede barındırılıyor"). Kök düzendeki Inter ve Noto Serif hâlâ `next/font/google`; aynı hata onlarda görülürse aynı yöntemle yerele al. Kalan iş kullanıcıda: hangi projenin gereksiz olduğuna karar verip kaldırmak.
   - Belirti: Her push iki Vercel projesine gidiyor: `hadiumreyegidelim.com` ve `hadiumreyegidelim`. `84fd1b5`'ten sonra `hadiumreyegidelim` projesinin build'i iki kez başarısız oldu (`8d56c03`, `cb32308`); `hadiumreyegidelim.com` projesi `cb32308`'de başarılı. Lokal `npx next build` sorunsuz. Ayrıca GitHub'da her commit'te başarısız bir "Workers Builds" (Cloudflare) ve Railway kontrolü görünüyor.
   - Yapılacak (kullanıcı ile): Vercel'de hangi projenin `hadiumreyegidelim.com` ve `admin.hadiumreyegidelim.com` alan adlarına bağlı olduğunu kontrol et. Başarısız projenin build logunu (Vercel → Deployments → son deploy → Build Logs) ajana ver. Alan adı bağlı olmayan eski proje, Cloudflare Workers ve Railway bağlantıları kullanılmıyorsa kaldırılabilir; bu karar kullanıcının.
   - Bitti sayılır: Alan adının bağlı olduğu proje her push'ta `success`; gereksiz entegrasyonlar kaldırıldı ya da nedenleri yazıldı.
@@ -190,14 +191,15 @@ Bir oturuma başlarken bu bölümü uygula. Kullanıcı başka bir şey istemedi
   - Dosyalar: `src/app/layout.tsx` (metadataBase), `src/app/sitemap.ts`, `src/app/robots.ts`, `src/app/(main)/[slug]/page.tsx`, `grep -rn "https://hadiumreyegidelim.com" src` ile bulunan her yer. Tek bir `SITE_URL` sabitinde topla (`src/lib/seo/site.ts` hazır).
   - Bitti sayılır: SEO Masası → Denetim'de `canonical-host` sorunu yok.
 
-- [ ] **2.2 Sayfa hızı** (86 sayfa 1,5 sn üstü)
+- [x] **2.2 Sayfa hızı** (86 sayfa 1,5 sn üstü)
   - Olası neden: Kök layout her istekte `setting.findMany` çağırıyor; şehir ve blog sayfaları dinamik.
   - Yapılacak: Kök layout ve sayfalardaki ayar sorgularını önbelleğe al (Next 16 önbellek API'si için `node_modules/next/dist/docs` oku; `revalidate` / cache bileşenleri). Şehir sayfaları için statik üretim (generateStaticParams zaten var).
   - Bitti sayılır: Denetimde `slow` sayfa sayısı 20'nin altında.
-  - **Durum (30.09, Claude Code):** Ölçüm: canlıda bütün sayfalar `x-vercel-cache: MISS`, ilk bayt 1,2–1,6 sn. Sebep: `src/app/(main)/layout.tsx`'teki `export const dynamic = 'force-dynamic'` bütün siteyi her istekte baştan üretiyor; kök düzen her istekte bütün `Setting` tablosunu (admin JSON'ları dahil) çekiyor; footer, site düzeni ve sayfalar ayrıca ayar sorguluyor.
-    - Çözüm `hiz-2-2` dalında (354e682): `src/lib/site-settings.ts` (`unstable_cache`, etiket `site-settings`, admin anahtarları hariç), `src/lib/revalidate-public.ts`, (main) düzeninde `revalidate = 300`, paketler/paket detayı/blog yazısı/rehberlik 300, ayar ve içerik kaydeden API'lerde anında tazeleme.
-    - **Engel:** Bu değişiklikle sayfalar build sırasında önceden üretiliyor (veritabanı gerekiyor). `hadiumreyegidelim` projesi başarılı build etti, **`hadiumreyegidelim.com` projesi (alan adının bağlı olduğu) hem Preview hem Production'da başarısız**. main'de geri alındı (05a936f); canlı site etkilenmedi.
-    - Sıradaki: `.com` projesinin build logundaki hatayı oku (Vercel → hadiumreyegidelim.com → Deployments → 354e682 → Build Logs). Olası sebepler: bu projede `DATABASE_URL` build sırasında yok ya da iki proje aynı anda build ederken Supabase bağlantı sınırı doluyor. Log gelince düzelt, `hiz-2-2`'yi yeniden birleştir. Alternatif: şehir sayfalarında `generateStaticParams` boş dönsün (ilk ziyarette üretilsin) ve build'de veritabanı yükü azalsın.
+  - **Tamamlandı (30.09, Claude Code, f308349 + düzeltmeler):** Önce: bütün sayfalar `MISS`, ilk bayt 1,2–1,6 sn. Sonra: bütün sayfalar `HIT`, ilk bayt **0,16–0,33 sn**.
+    - `src/lib/site-settings.ts`: `getSiteSettings()` (`unstable_cache`, etiket `site-settings`, 10 dk; önbellek hata verirse doğrudan veritabanı). Admin anahtarları (`SEO_`, `AI_VIS_`, `ANTHROPIC_`, `ADMIN_`…) ve 20 KB üstü değerler siteye taşınmaz. Kök düzen, site düzeni, footer, ana sayfa, kampanya, iletişim ve hizmetler bunu kullanır; sayfalarda `prisma.setting` sorgusu yazma.
+    - `(main)/layout.tsx`: `force-dynamic` yerine `revalidate = 300`. Paketler, paket detayı, blog yazısı, rehberlik de 300. Profil sayfaları çerez okuduğu için kendiliğinden dinamik.
+    - Anında tazeleme: ayar kaydeden uçlar `revalidateSiteSettings()`, paket/rehber/yazı/hizmet API'leri `revalidatePublic(kind)` (`src/lib/revalidate-public.ts`) çağırır. Yeni bir içerik API'si eklersen bunu da çağır.
+    - Not: Sayfalar artık build sırasında önceden üretiliyor; build'de veritabanı erişimi gerekir (Vercel'de var).
 
 - [ ] **2.3 Birden fazla H1** (85 sayfa; şehir şablonu, blog, `/bireysel-umre`)
   - Dosyalar: `src/components/features/BireyselUmreClient.tsx`, blog yazı şablonu. Sayfada tek `<h1>`, diğerleri `<h2>`.
@@ -323,6 +325,9 @@ En yeni en üstte. Her tamamlanan adım için bir satır.
 
 | Tarih | Ajan | Adım | Commit | Not |
 |---|---|---|---|---|
+| 2026-09-30 | Claude Code | 2.2 ✓ | f308349 | Sayfalar 1,2–1,6 sn → 0,16–0,33 sn (ISR + ayar önbelleği) |
+| 2026-09-30 | Claude Code | 1.7 (sebep) | masa yazı tipleri | .com build'i Google Fonts indirmesinde düşüyordu; yazı tipleri yerelde |
+| 2026-09-30 | Claude Code | ayar ezilmesi | admin ayarları | Kaydet, yükleme başarısız olunca bütün ayarları varsayılana çeviriyordu (ana sayfa başlığı ve Instagram linki sıfırlandı). GET küçültüldü, yalnızca değişen alanlar yazılıyor |
 | 2026-09-30 | Claude Code | Faz 7 ✓ canlı | anasayfa → main | Yeni ana sayfa: Airbnb tarzı umre planlayıcı (7 müşteri sorusu, WhatsApp teklif), hızlı erişim, umre adımları, arka plan videosu desteği |
 | 2026-09-30 | Claude Code | yasaklı kelimeler | (bu commit) | "TÜRSAB" ve "diyanetsiz" siteden kaldırıldı; blog motoru kalite kapısı, konu seçimi ve eski yazı taraması bu kelimeleri engelliyor. Faz 7 (ana sayfa) planı yazıldı |
 | 2026-09-30 | Claude Code | görünmez bölüm hatası | b6c6f09 | Site içi gezinmede data-reveal bölümleri görünmez kalıyordu; düzeltildi, headless Chrome ile doğrulandı (21/21) |

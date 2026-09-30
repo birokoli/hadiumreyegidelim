@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
 import { marked } from 'marked';
+import { DEFAULT_OG_IMAGE, metaDescription, pageTitle } from "@/lib/seo/meta";
 
 export const revalidate = 300;
 
@@ -11,34 +12,36 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const post = await prisma.post.findUnique({ where: { slug } });
   
-  if (!post) {
-    return { title: 'Sayfa Bulunamadı' };
+  if (!post || !post.published) {
+    return { title: 'Sayfa Bulunamadı', robots: { index: false } };
   }
   
-  const seoTitle = (post as any).metaTitle || post.title;
+  const seoTitle = (post as { metaTitle?: string | null }).metaTitle || post.title;
+  const description = metaDescription(post.description);
+  const ogImages = post.imageUrl ? [{ url: post.imageUrl }] : [DEFAULT_OG_IMAGE];
 
   return {
-    title: { absolute: seoTitle },
-    description: post.description,
+    title: pageTitle(seoTitle),
+    description,
     keywords: post.keywords?.split(',').map(k => k.trim()),
     alternates: {
       canonical: `/blog/${slug}`,
     },
     openGraph: {
       title: seoTitle,
-      description: post.description || undefined,
+      description,
       type: 'article',
       publishedTime: post.createdAt.toISOString(),
       modifiedTime: post.updatedAt.toISOString(),
       authors: [post.authorId ? "https://hadiumreyegidelim.com/blog" : post.author],
       url: `https://hadiumreyegidelim.com/blog/${slug}`,
-      images: post.imageUrl ? [{ url: post.imageUrl }] : [],
+      images: ogImages,
     },
     twitter: {
       card: 'summary_large_image',
       title: seoTitle,
-      description: post.description || undefined,
-      images: post.imageUrl ? [post.imageUrl] : [],
+      description,
+      images: ogImages.map((i) => i.url),
     }
   };
 }
@@ -84,6 +87,8 @@ function extractToc(content: string) {
 }
 
 function injectHeadingIds(content: string) {
+  // Yazı içindeki <h1>'ler <h2> olur: sayfada tek H1 (yazı başlığı) kalmalı
+  content = content.replace(/<h1(\s[^>]*)?>([\s\S]*?)<\/h1>/gi, (_, attrs = "", inner) => `<h2${attrs}>${inner}</h2>`);
   return content.replace(/<h([23])([^>]*)>(.*?)<\/h\1>/gi, (_, level, attrs, inner) => {
     const text = inner.replace(/<[^>]*>/g, '');
     const id = toHeadingId(text);
@@ -120,7 +125,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     include: { category: true, authorModel: true }
   });
 
-  if (!post) notFound();
+  // Taslaklar herkese açık değildir (önizleme İçerik Stüdyosu'nda)
+  if (!post || !post.published) notFound();
 
   const readTime = getReadTime(post.content);
   const toc = extractToc(post.content);

@@ -3,8 +3,8 @@ import { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Hakkımızda — HadiUmreyeGidelim Kimdir?",
-  description: "Hadi Umreye Gidelim, kalabalık kafilelere bağlı kalmadan ailenize özel, butik ve VIP bireysel umre deneyimi sunan Türkiye merkezli bir organizasyon platformudur.",
+  title: "Hakkımızda: Biz Kimiz?",
+  description: "Hadi Umreye Gidelim, kalabalık kafilelere bağlı kalmadan ailenize özel butik ve VIP bireysel umre deneyimi sunan Türkiye merkezli bir platformdur.",
   alternates: {
     canonical: "/hakkimizda",
   },

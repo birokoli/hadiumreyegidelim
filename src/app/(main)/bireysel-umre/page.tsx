@@ -3,7 +3,7 @@ import { Metadata } from "next";
 import BireyselUmreClient from "@/components/features/BireyselUmreClient";
 
 export const metadata: Metadata = {
-  title: "2026 Bireysel Umre Tasarlayıcı — VIP Uçak + Otel + Vize + Özel Rehber",
+  title: "Bireysel Umre Tasarlayıcı 2026: Uçak, Otel, Vize",
   description: "Kendi Bireysel Umre planınızı oluşturun. 2026 en ucuz Mekke ve Medine uçak biletleri, Mescid-i Haram sıfır lüks oteller, Suudi e-vizesi ve VIP transfer seçenekleri.",
   alternates: {
     canonical: 'https://hadiumreyegidelim.com/bireysel-umre',
@@ -110,9 +110,9 @@ export default function PlannerPage() {
             <div className="inline-block px-4 py-1.5 mb-4 rounded-full bg-primary/10 text-primary font-bold text-xs tracking-widest uppercase">
               2026 ÖZEL BİREYSEL UMRE REHBERİ
             </div>
-            <h1 className="font-headline text-3xl md:text-5xl text-primary font-bold tracking-tight mb-4">
+            <h2 className="font-headline text-3xl md:text-5xl text-primary font-bold tracking-tight mb-4">
               Bireysel Umre Turları ve Fiyatları 2026: Özgürlüğünüzü Keşfedin
-            </h1>
+            </h2>
             <p className="text-on-surface-variant font-body max-w-3xl mx-auto text-base">
               Kalabalık 40-50 kişilik kafilelere bağlı kalmadan, kişi başı <strong>$1.250 USD'den başlayan</strong> şeffaf bütçe ile sadece ailenize özel Mekke ve Medine ibadet rehberi.
             </p>

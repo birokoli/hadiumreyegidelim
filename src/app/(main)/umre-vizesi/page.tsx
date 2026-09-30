@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 export const metadata: Metadata = {
-  title: "Bireysel Umre Vizesi Nasıl Alınır? | Suudi Arabistan E-Vize",
+  title: { absolute: "Bireysel Umre Vizesi Nasıl Alınır? Suudi Arabistan E-Vize" },
   description: "Acentelere bağlı kalmadan, 1 yıllık çok girişli Suudi Arabistan Turistik E-Vizesi ile Bireysel Umre yapmanın tüm detayları.",
   keywords: ["umre vizesi", "bireysel umre vizesi", "bireysel umre vizesi nasıl alınır", "suudi arabistan e vize umre", "umre vize fiyatları 2026", "turistik umre vizesi", "bireysel umre"],
   alternates: {

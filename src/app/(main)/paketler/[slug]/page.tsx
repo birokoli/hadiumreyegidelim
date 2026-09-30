@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import BrandImageFallback from '@/components/ui/BrandImageFallback';
 import { Metadata } from 'next';
+import { DEFAULT_OG_IMAGE, pageTitle } from "@/lib/seo/meta";
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
@@ -16,7 +17,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const shortDesc = pkg.description ? pkg.description.substring(0, 150) + "..." : "Sınırlı kontenjanlı, ayrıcalıklı Umre paketimizi keşfedin.";
 
   return { 
-    title: pkg.title,
+    title: pageTitle(pkg.title),
     description: shortDesc,
     alternates: {
       canonical: `/paketler/${slug}`
@@ -25,7 +26,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       title: pkg.title,
       description: shortDesc,
       type: 'website',
-      images: pkg.imageUrl ? [{ url: pkg.imageUrl }] : [],
+      images: pkg.imageUrl ? [{ url: pkg.imageUrl }] : [DEFAULT_OG_IMAGE],
     }
   };
 }

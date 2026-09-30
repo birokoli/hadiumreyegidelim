@@ -1567,10 +1567,14 @@ export default function ContentPage() {
                   <p className="text-xs text-tertiary font-bold tracking-widest uppercase mb-2">
                     {post.authorModel ? post.authorModel.name : post.author} {post.category && `• ${post.category.name}`}
                   </p>
-                  <a href={`/blog/${post.slug}`} target="_blank" rel="noreferrer" className="text-sm text-outline hover:text-secondary underline flex items-center gap-1 w-fit">
-                    /blog/{post.slug}
-                    <span className="material-symbols-outlined text-[14px]">open_in_new</span>
-                  </a>
+                  {post.published ? (
+                    <a href={`/blog/${post.slug}`} target="_blank" rel="noreferrer" className="text-sm text-outline hover:text-secondary underline flex items-center gap-1 w-fit">
+                      /blog/{post.slug}
+                      <span className="material-symbols-outlined text-[14px]">open_in_new</span>
+                    </a>
+                  ) : (
+                    <span className="text-sm text-outline" title="Taslaklar sitede görünmez">/blog/{post.slug} · yayınlanınca açılır</span>
+                  )}
                 </td>
                 <td className="px-8 py-6 text-sm text-on-surface-variant font-medium">
                   {new Date(post.createdAt).toLocaleDateString('tr-TR')}

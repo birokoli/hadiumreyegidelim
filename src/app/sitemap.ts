@@ -8,7 +8,9 @@ export const dynamic = 'force-dynamic';
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://hadiumreyegidelim.com';
 
+  // Yalnızca yayındaki yazılar (taslaklar Google'a bildirilmez)
   const posts = await prisma.post.findMany({
+    where: { published: true },
     orderBy: { updatedAt: 'desc' }
   }).catch(() => []);
 
@@ -16,7 +18,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     orderBy: { updatedAt: 'desc' },
     include: {
       _count: {
-        select: { posts: true }
+        select: { posts: { where: { published: true } } }
       }
     }
   }).catch(() => []);
@@ -104,12 +106,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     {
       url: `${baseUrl}/umre-vizesi`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/eylul-umresi`,
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 0.9,

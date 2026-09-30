@@ -10,7 +10,7 @@ import { Metadata } from "next";
 import { DEFAULT_HANIM_UMRESI_CAMPAIGN, DEFAULT_ILK_UMREM_CAMPAIGN, EYLUL_CAMPAIGN_SETTING_KEY, HANIM_UMRESI_CAMPAIGN_SETTING_KEY, ILK_UMREM_CAMPAIGN_SETTING_KEY, parseEylulCampaign } from "@/lib/eylul-campaign";
 
 export const metadata: Metadata = {
-  title: { absolute: "Bireysel Umre 2026 — Kendi Umreni Tasarla | HadiUmreyeGidelim" },
+  title: { absolute: "Bireysel Umre 2026: Kendi Umreni Tasarla | Hadi Umre'ye Gidelim" },
   description: "Diyanet turlarına veya kafilelere bağlı kalmadan, 2026 Özel Bireysel Umre ve VIP Aile umresi planlama platformu. En ucuz fiyatlar ve butik hizmet.",
   alternates: {
     canonical: "/",

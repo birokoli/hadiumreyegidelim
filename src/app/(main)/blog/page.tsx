@@ -5,7 +5,7 @@ import BrandImageFallback from '@/components/ui/BrandImageFallback';
 import { prisma } from '@/lib/prisma';
 
 export const metadata = {
-  title: { absolute: 'Manevi Rehberlik Blogu — Umre & Hac Yazıları | HadiUmreyeGidelim' },
+  title: 'Umre Rehber Yazıları ve Blog',
   description: 'Umre ve hac yolculuğunuzda size rehberlik edecek yazılar, Mekke ve Medine hakkında derinlemesine bilgiler, pratik ipuçları ve bireysel deneyimler.',
   alternates: { canonical: '/blog' },
 };

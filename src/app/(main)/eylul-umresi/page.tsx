@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import AdsCampaignLanding from "@/components/features/AdsCampaignLanding";
 import { getSiteSettings } from "@/lib/site-settings";
 import { EYLUL_CAMPAIGN_SETTING_KEY, parseEylulCampaign } from "@/lib/eylul-campaign";
+import { metaDescription, pageTitle } from "@/lib/seo/meta";
 
 export const revalidate = 60;
 
@@ -12,7 +13,7 @@ async function getCampaign() {
 
 export async function generateMetadata(): Promise<Metadata> {
   const { campaign } = await getCampaign();
-  return { title: campaign.seoTitle, description: campaign.seoDescription, alternates: { canonical: "/eylul-umresi" } };
+  return { title: pageTitle(campaign.seoTitle), description: metaDescription(campaign.seoDescription), alternates: { canonical: "/eylul-umresi" } };
 }
 
 export default async function Page() {

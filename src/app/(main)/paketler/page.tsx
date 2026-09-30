@@ -6,7 +6,7 @@ import Link from "next/link";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Umre Paketleri 2026 — Ekonomik & VIP Seçenekler",
+  title: "Umre Paketleri 2026: Ekonomik ve VIP",
   description: "Manevi yolculuğunuzu konfor ve huzur içinde geçirebilmeniz için her detayı düşünülmüş, VIP transferli ve özel rehberli Umre tur seçenekleri.",
   alternates: {
     canonical: "/paketler"

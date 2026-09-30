@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import BireyselUmreClient from "@/components/features/BireyselUmreClient";
 import { turkeyCities, getTurkishCityBySlug, type TurkeyCity } from "@/lib/turkey-cities";
 import { cityTravelFacts, nearestCities, type Region } from "@/lib/city-geo";
+import { metaDescription, pageTitle } from "@/lib/seo/meta";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -89,10 +90,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const facts = cityTravelFacts(city.slug);
 
   return {
-    title: `${city.name} Çıkışlı Bireysel Umre 2026 — ${city.airportCode} Kalkışlı Plan`,
-    description: facts
-      ? `${city.name} çıkışlı bireysel umre: ${city.airportName} (${city.airportCode}) kalkış, Cidde'ye yaklaşık ${n(facts.toJeddah)} km, tahmini direkt uçuş ${facts.jeddahFlight}. Otel, uçuş, vize ve transferi tek planda tasarlayın.`
-      : `${city.name} çıkışlı bireysel umre: ${city.airportName} (${city.airportCode}) kalkışlı uçuş, otel, vize ve transferi tek planda tasarlayın.`,
+    title: pageTitle(`${city.name} Çıkışlı Bireysel Umre 2026`),
+    description: metaDescription(
+      facts
+        ? `${city.name} çıkışlı umre: ${city.airportCode} kalkış, Cidde'ye yaklaşık ${n(facts.toJeddah)} km, direkt uçuşla yaklaşık ${facts.jeddahFlight}. Otel, uçuş ve vizeyi tek planda seçin.`
+        : `${city.name} çıkışlı umre: ${city.airportName} (${city.airportCode}) kalkışlı uçuş, otel, vize ve transferi tek planda seçin.`,
+    ),
     alternates: { canonical: `https://hadiumreyegidelim.com/${slug}` },
   };
 }

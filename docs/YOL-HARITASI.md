@@ -188,7 +188,8 @@ Bir oturuma başlarken bu bölümü uygula. Kullanıcı başka bir şey istemedi
 
 ### Faz 2 · Teknik SEO (site geneli)
 
-- [ ] **2.1 Canonical host** (0.2 kararına göre)
+- [x] **2.1 Canonical host** (0.2 kararına göre)
+  - **Tamamlandı (30.09, Antigravity, commit `7a7d471`):** Tüm canonical ve sitemap URL'leri `@/lib/seo/site` modülünden export edilen `SITE_URL` ve `SITE_DOMAIN` ile birleştirildi. `layout.tsx`, `sitemap.ts`, `robots.ts`, `llms.txt`, `inventory.ts` ve tüm sayfa/komponent canonical URL'leri `SITE_URL` ile güncellendi.
   - Sorun: 128 sayfada canonical, yönlendirme yapan adresi gösteriyor.
   - Dosyalar: `src/app/layout.tsx` (metadataBase), `src/app/sitemap.ts`, `src/app/robots.ts`, `src/app/(main)/[slug]/page.tsx`, `grep -rn "https://hadiumreyegidelim.com" src` ile bulunan her yer. Tek bir `SITE_URL` sabitinde topla (`src/lib/seo/site.ts` hazır).
   - Bitti sayılır: SEO Masası → Denetim'de `canonical-host` sorunu yok.

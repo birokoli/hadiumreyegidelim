@@ -34,6 +34,30 @@ Antigravity her iş oturumunda bu dosyanın **en üstüne** bir kayıt ekler. Am
 
 <!-- Kayıtlar bu çizginin altına, en yeni en üstte -->
 
+## 2026-09-30 18:30 — Canonical Host Konsolidasyonu (SITE_URL) ve Devir Notları
+**Dal / commit:** `sayfa-gruplari` · `7a7d471`
+**Yol haritası adımı:** 2.1 Canonical host konsolidasyonu & 3.2 Programatik rehber sayfaları devri
+**Yapılan:**
+- 22 rehber sayfasının tamamı (Sözlük: 4, Karşılaştırma: 4, Kişi: 4, Zaman: 9) canlıya alınıp `main`'e birleştirildi.
+- Task 2.1 kapsamındaki hardcoded `https://hadiumreyegidelim.com` domain string'leri `@/lib/seo/site` modülünden ihraç edilen `SITE_URL` ve `SITE_DOMAIN` ile konsolide edildi.
+- Güncellenen dosyalar: `src/app/layout.tsx`, `src/app/sitemap.ts`, `src/app/robots.ts`, `src/app/llms.txt/route.ts`, `src/components/content/ContentPageView.tsx`, `src/lib/geo-blog/inventory.ts` ve tüm ilgili `page.tsx` dosyaları.
+- `docs/YOL-HARITASI.md` 2.1 adımı `[x]` olarak güncellendi.
+**Doğrulama:**
+- `npx tsx scripts/check-content-pages.mts` → 22 sayfa, 0 hata ✓
+- `npx tsc --noEmit` → 0 hata (temiz) ✓
+**Kullanıcıya gösterilen / onay:**
+- 22 rehber sayfasının canlı yayın onayı alındı ve `main` branch'ine merge edilip Vercel deployment doğrulandı.
+- Canonical host konsolidasyonu lokalde tsc ve validator ile %100 doğrulandı.
+**Kararlar ve sebepleri:**
+- SEO Masası ve arama motorlarında canonical adres uyumsuzluklarını önlemek adına tüm domain yönlendirmeleri `SITE_URL`'e bağlandı.
+**Açık kalanlar / riskler:**
+- Paket Satış Bağlantıları: Kullanıcının isteği doğrultusunda, rehber yazılarının satılabilir paketler ile ilişkilendirilmesi, Admin paneli (`/admin/packages`) üzerinden paket satış alanlarının doldurulması ve rehber sayfalarına paket/satış bağlantılarının eklenmesi Claude Code'a devredilmiştir.
+**Sıradaki adım:**
+- Claude Code devralacak:
+  1. `/admin/packages` panelinde ilgili umre rehber yazıları için satılabilir paket kayıtları açılacak ve satış alanları doldurulacak.
+  2. Rehber sayfalarındaki (`src/content/pages/*.ts`) paket yönlendirmeleri ve Admin tarafı bağlantıları tanımlanacak.
+  3. Değişiklikler canlıya alınacak ve `main`'e merge edilecek.
+
 ## 2026-09-30 17:48 — Zaman grubu rehber sayfaları (9 yeni sayfa) canlıda
 **Dal / commit:** `main` (birleşti) · `078e8ea` (sayfa-gruplari), `078e8ea` (main push)
 **Yol haritası adımı:** 3.2 Programatik sayfa grupları (Zaman grubu)

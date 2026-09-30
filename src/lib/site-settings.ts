@@ -9,27 +9,32 @@ export const SITE_SETTINGS_TAG = "site-settings";
 
 // Ayarlar tablosunda admin araçlarının büyük JSON verileri de duruyor; siteye taşınmaz
 const PRIVATE_PREFIXES = ["SEO_", "AI_VIS_", "ANTHROPIC_", "ADMIN_", "AI_MONTHLY", "AUTO_BLOG", "GEO_BLOG", "WHATSAPP_AI", "WHATSAPP_BOT", "JWT", "CRON"];
-const MAX_VALUE_LENGTH = 100_000;
+// Vercel önbellek girdisi en fazla 2 MB; tek değer 20 KB'ı geçerse siteye taşınmaz
+const MAX_VALUE_LENGTH = 20_000;
 
 const isPublicKey = (key: string) => !PRIVATE_PREFIXES.some((p) => key.toUpperCase().startsWith(p));
 
-// Hata fırlatırsa önbelleğe alınmaz (anlık bir veritabanı hatası 10 dk boş ayar olarak kalmasın)
-const readSettings = unstable_cache(
-  async (): Promise<Record<string, string>> => {
-    const rows = await prisma.setting.findMany({ select: { key: true, value: true } });
-    const out: Record<string, string> = {};
-    for (const r of rows) {
-      if (isPublicKey(r.key) && r.value.length <= MAX_VALUE_LENGTH) out[r.key] = r.value;
-    }
-    return out;
-  },
-  ["site-settings-v1"],
-  { tags: [SITE_SETTINGS_TAG], revalidate: 600 },
-);
+async function querySettings(): Promise<Record<string, string>> {
+  const rows = await prisma.setting.findMany({ select: { key: true, value: true } });
+  const out: Record<string, string> = {};
+  for (const r of rows) {
+    if (isPublicKey(r.key) && r.value.length <= MAX_VALUE_LENGTH) out[r.key] = r.value;
+  }
+  return out;
+}
 
+// Hata fırlatırsa önbelleğe alınmaz (anlık bir veritabanı hatası 10 dk boş ayar olarak kalmasın)
+const readSettings = unstable_cache(querySettings, ["site-settings-v2"], { tags: [SITE_SETTINGS_TAG], revalidate: 600 });
+
+/** Önce önbellek; önbellek hata verirse doğrudan veritabanı (site asla boş ayarla açılmasın) */
 export async function getSiteSettings(): Promise<Record<string, string>> {
   try {
     return await readSettings();
+  } catch (e) {
+    console.error("[site-settings] önbellekten okunamadı, doğrudan okunuyor", e);
+  }
+  try {
+    return await querySettings();
   } catch (e) {
     console.error("[site-settings] ayarlar okunamadı", e);
     return {};

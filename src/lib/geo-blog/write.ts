@@ -3,6 +3,7 @@ import { callClaude } from "@/lib/geo-blog/claude";
 import { pickLinkTargets, type LinkTarget } from "@/lib/geo-blog/inventory";
 import type { TopicResearch } from "@/lib/geo-blog/research";
 import { slugify } from "@/lib/seo/programmatic";
+import { prisma } from "@/lib/prisma";
 
 export type BlogFaqItem = { question: string; answer: string };
 
@@ -61,6 +62,14 @@ BAŞLIK VE META
 - Rakam, tarih, fiyat, süre yalnızca verilen DOĞRULANMIŞ OLGULAR'dan gelir; her birinin yanında o olgunun kaynağına dış link ver. Olgularda olmayan rakam yazma; gerekiyorsa "güncel tutarı … sayfasından kontrol edin" de.
 - Uydurma deneyim, müşteri, yorum, istatistik yok. "Misafirlerimiz", "yıllardır gözlemliyoruz" gibi doğrulanamayan iddialar yok.
 
+MARKA VE SATIŞ (en önemli kural)
+- Hadi Umreye Gidelim bireysel umre konusunda uzman bir markadır. Yazının amacı okura doğru bilgi verirken onu bireysel umreye ve Hadi Umreye Gidelim'e yönlendirmektir.
+- "Hadi Umreye Gidelim" adını metinde 2-3 kez doğal biçimde an (ör. "Hadi Umreye Gidelim'in bireysel umre tasarlayıcısında tarihi ve oteli kendiniz seçebilirsiniz"). Reklam dili, abartı, "en iyi/en ucuz/garanti" yok.
+- En az bir yerde /bireysel-umre sayfasına, uygunsa /paketler sayfasına link ver; yazının son bölümü okuru kendi umresini planlamaya davet etsin.
+- Grup turu, kafile ya da Diyanet turu fiyatlarını ölçü/referans alma; "grup turu daha ucuz/daha uygun" gibi okuru başka seçeneğe yönelten ifadeler yazma. Karşılaştırma gerekiyorsa bireysel umrenin avantajlarını öne çıkar: kendi takvimi, otel seçimi, kalabalıksız program, aileye özel plan.
+- Fiyat verirsen yalnızca BİZİM PAKETLERİMİZ listesindeki gerçek fiyatları kullan ("Hadi Umreye Gidelim paketleri X'den başlar" gibi). Başka firma, piyasa ortalaması ya da tahmini fiyat yazma.
+- Başka bir acente, tur şirketi, uygulama ya da hizmet sağlayıcıyı önerme; okuru başka firmaya yönlendirme. Kaynak olarak yalnızca resmî kurumların bilgi sayfaları kullanılır.
+
 LİNKLER
 - İç link: yalnızca İZİNLİ İÇ LİNKLER listesindeki path'ler, tam olarak yazıldığı gibi (ör. href="/bireysel-umre"). 5-8 iç link; link metni hedef sayfayı anlatsın ("buraya tıklayın" değil). /bireysel-umre veya /paketler en az birine doğal bir yerde link ver.
 - Dış link: yalnızca İZİNLİ DIŞ KAYNAKLAR listesindeki URL'ler (hepsi resmî kurum: Diyanet, Nusuk, Suudi devlet siteleri), birebir aynı; target="_blank" rel="noopener noreferrer".
@@ -83,6 +92,14 @@ export async function writeArticle(research: TopicResearch, inventory: LinkTarge
   const allowedInternal = linkCandidates.map((c) => ({ path: c.path, title: c.title }));
   const allowedExternal = research.sources.filter((s) => isAllowedExternal(s.url)).map((s) => ({ url: s.url, title: s.title ?? s.url }));
 
+  // Fiyat ve paket bilgisi yalnızca kendi paketlerimizden
+  const packages = await prisma.package
+    .findMany({ where: { published: true }, select: { title: true, slug: true, price: true, currency: true, duration: true }, orderBy: { price: "asc" }, take: 8 })
+    .catch(() => []);
+  const ourPackages = packages
+    .map((p) => `- ${p.title} (${p.duration})${p.price > 0 ? `: ${p.price.toLocaleString("tr-TR")} ${p.currency}'dan` : ""} → /paketler/${p.slug}`)
+    .join("\n");
+
   const prompt = [
     `KONU: ${research.topic}`,
     `ARAYAN KİŞİNİN NİYETİ: ${research.userIntent}`,
@@ -91,6 +108,7 @@ export async function writeArticle(research: TopicResearch, inventory: LinkTarge
     `DOĞRULANMIŞ OLGULAR:\n${research.facts.map((f) => `- ${f.claim} [kaynak: ${f.sourceUrl}]`).join("\n") || "- (doğrulanmış olgu yok: rakam vermeden, süreç ve kontrol listesi odaklı yaz)"}`,
     `İZİNLİ İÇ LİNKLER:\n${JSON.stringify(allowedInternal)}`,
     `İZİNLİ DIŞ KAYNAKLAR:\n${JSON.stringify(allowedExternal)}`,
+    `BİZİM PAKETLERİMİZ (fiyat verilecekse yalnızca bunlar):\n${ourPackages || "- (yayında paket yok: fiyat yazma, tasarlayıcıya yönlendir)"}`,
     feedback.length ? `ÖNCEKİ TASLAKTAKİ SORUNLAR (bu kez hepsini düzelt):\n${feedback.map((f) => `- ${f}`).join("\n")}` : "",
   ]
     .filter(Boolean)

@@ -5,6 +5,9 @@ import Link from 'next/link';
 import { marked } from 'marked';
 import { DEFAULT_OG_IMAGE, metaDescription, pageTitle } from "@/lib/seo/meta";
 import { OfficialInfo } from "@/components/seo/PageTrust";
+import { BlogEndCta, BlogInlineCta } from "@/components/blog/BlogBrandCta";
+import { isAllowedExternal, stripDisallowedLinks } from "@/lib/geo-blog/external-policy";
+import { getSiteSettings } from "@/lib/site-settings";
 
 export const revalidate = 300;
 
@@ -119,6 +122,20 @@ function cleanAndWrapTables(content: string): string {
   return wrapped;
 }
 
+const BLOG_CONTENT_CLASS = `blog-content
+            w-full max-w-full
+            [&_h2]:font-headline [&_h2]:text-3xl [&_h2]:md:text-4xl [&_h2]:text-primary [&_h2]:mt-20 [&_h2]:mb-8 [&_h2]:font-bold [&_h2]:tracking-tight [&_h2]:border-b [&_h2]:border-outline-variant/20 [&_h2]:pb-4
+            [&_h3]:font-headline [&_h3]:text-2xl [&_h3]:text-secondary [&_h3]:mt-12 [&_h3]:mb-6 [&_h3]:font-bold [&_h3]:italic
+            [&_p]:text-[#334155] [&_p]:leading-[2.2] [&_p]:mb-8 [&_p]:font-body [&_p]:text-[1.125rem] [&_p]:tracking-wide
+            [&_a]:text-blue-600 [&_a]:font-bold [&_a]:underline [&_a]:underline-offset-[3px] [&_a]:decoration-blue-600/30 [&_a]:hover:decoration-blue-600 [&_a]:hover:text-blue-800 [&_a]:transition-all [&_a]:bg-blue-50/50 [&_a]:px-1 [&_a]:rounded-md
+            [&_ul]:list-none [&_ul]:pl-0 [&_ul]:mb-10 [&_ul_li]:relative [&_ul_li]:pl-8 [&_ul_li]:mb-4 [&_ul_li]:text-[#334155] [&_ul_li]:leading-[1.8]
+            [&_ul_li::before]:content-[''] [&_ul_li::before]:absolute [&_ul_li::before]:left-0 [&_ul_li::before]:top-[0.6em] [&_ul_li::before]:w-3 [&_ul_li::before]:h-3 [&_ul_li::before]:bg-secondary/40 [&_ul_li::before]:rounded-full
+            [&_blockquote]:border-l-4 [&_blockquote]:border-secondary [&_blockquote]:bg-secondary/5 [&_blockquote]:p-8 [&_blockquote]:rounded-r-3xl [&_blockquote]:italic [&_blockquote]:my-12 [&_blockquote]:text-xl [&_blockquote]:text-primary/90 [&_blockquote]:font-headline [&_blockquote]:shadow-sm
+            [&_img]:w-full [&_img]:h-auto [&_img]:rounded-[2rem] [&_img]:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.15)] [&_img]:my-16 [&_img]:object-cover [&_img]:border [&_img]:border-outline-variant/10 [&_img]:max-h-[600px]
+            [&_ol]:list-none [&_ol]:pl-0 [&_ol]:mb-10 [&_ol_li]:relative [&_ol_li]:pl-10 [&_ol_li]:mb-4 [&_ol_li]:text-[#334155] [&_ol_li]:leading-[1.8]
+            [&_strong]:font-bold [&_strong]:text-primary
+            [&_hr]:border-0 [&_hr]:border-t [&_hr]:border-slate-200 [&_hr]:my-12`;
+
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const post = await prisma.post.findUnique({
@@ -131,7 +148,23 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
   const readTime = getReadTime(post.content);
   const toc = extractToc(post.content);
-  const contentWithIds = cleanAndWrapTables(injectHeadingIds(post.content));
+  // Dış link kuralı yayında da uygulanır: rakip/resmî olmayan linkler kalkar, sattığımız
+  // hizmete giden dış link kendi sayfamıza çevrilir (eski yazılar dahil)
+  const contentWithIds = cleanAndWrapTables(injectHeadingIds(stripDisallowedLinks(post.content).html));
+  // Marka kutusu 3. ara başlıktan önce (yoksa içeriğin sonunda)
+  const h2Positions = [...contentWithIds.matchAll(/<h2[\s>]/gi)].map((m) => m.index ?? 0);
+  const splitAt = h2Positions.length >= 3 ? h2Positions[2] : contentWithIds.length;
+  const contentBefore = contentWithIds.slice(0, splitAt);
+  const contentAfter = contentWithIds.slice(splitAt);
+  // Kaynakça: yalnızca resmî kurum bağlantıları
+  const officialReferences = (post.references ?? "")
+    .split("\n")
+    .map((line) => line.trim())
+    .filter((line) => {
+      const url = line.match(/https?:\/\/\S+/)?.[0];
+      return Boolean(url && isAllowedExternal(url));
+    });
+  const whatsappNumber = ((await getSiteSettings()).WHATSAPP_NUMBER || "905404010038").replace("+", "");
 
   // personalExperience markdown → HTML (## başlıklar, listeler vb. temiz görünsün)
   const personalExperienceHtml = post.personalExperience
@@ -317,40 +350,25 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           </div>
         )}
 
-        {/* İçerik */}
-        <div
-          className="
-            blog-content
-            w-full max-w-full
-            [&_h2]:font-headline [&_h2]:text-3xl [&_h2]:md:text-4xl [&_h2]:text-primary [&_h2]:mt-20 [&_h2]:mb-8 [&_h2]:font-bold [&_h2]:tracking-tight [&_h2]:border-b [&_h2]:border-outline-variant/20 [&_h2]:pb-4
-            [&_h3]:font-headline [&_h3]:text-2xl [&_h3]:text-secondary [&_h3]:mt-12 [&_h3]:mb-6 [&_h3]:font-bold [&_h3]:italic
-            [&_p]:text-[#334155] [&_p]:leading-[2.2] [&_p]:mb-8 [&_p]:font-body [&_p]:text-[1.125rem] [&_p]:tracking-wide
-            [&_a]:text-blue-600 [&_a]:font-bold [&_a]:underline [&_a]:underline-offset-[3px] [&_a]:decoration-blue-600/30 [&_a]:hover:decoration-blue-600 [&_a]:hover:text-blue-800 [&_a]:transition-all [&_a]:bg-blue-50/50 [&_a]:px-1 [&_a]:rounded-md
-            [&_ul]:list-none [&_ul]:pl-0 [&_ul]:mb-10 [&_ul_li]:relative [&_ul_li]:pl-8 [&_ul_li]:mb-4 [&_ul_li]:text-[#334155] [&_ul_li]:leading-[1.8]
-            [&_ul_li::before]:content-[''] [&_ul_li::before]:absolute [&_ul_li::before]:left-0 [&_ul_li::before]:top-[0.6em] [&_ul_li::before]:w-3 [&_ul_li::before]:h-3 [&_ul_li::before]:bg-secondary/40 [&_ul_li::before]:rounded-full
-            [&_blockquote]:border-l-4 [&_blockquote]:border-secondary [&_blockquote]:bg-secondary/5 [&_blockquote]:p-8 [&_blockquote]:rounded-r-3xl [&_blockquote]:italic [&_blockquote]:my-12 [&_blockquote]:text-xl [&_blockquote]:text-primary/90 [&_blockquote]:font-headline [&_blockquote]:shadow-sm
-            [&_img]:w-full [&_img]:h-auto [&_img]:rounded-[2rem] [&_img]:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.15)] [&_img]:my-16 [&_img]:object-cover [&_img]:border [&_img]:border-outline-variant/10 [&_img]:max-h-[600px]
-            [&_ol]:list-none [&_ol]:pl-0 [&_ol]:mb-10 [&_ol_li]:relative [&_ol_li]:pl-10 [&_ol_li]:mb-4 [&_ol_li]:text-[#334155] [&_ol_li]:leading-[1.8]
-            [&_strong]:font-bold [&_strong]:text-primary
-            [&_hr]:border-0 [&_hr]:border-t [&_hr]:border-slate-200 [&_hr]:my-12
-          "
-          dangerouslySetInnerHTML={{ __html: contentWithIds }}
-        />
+        {/* İçerik (marka kutusu araya) */}
+        <div className={BLOG_CONTENT_CLASS} dangerouslySetInnerHTML={{ __html: contentBefore }} />
+        <BlogInlineCta whatsappNumber={whatsappNumber} topic={post.title} />
+        {contentAfter && <div className={BLOG_CONTENT_CLASS} dangerouslySetInnerHTML={{ __html: contentAfter }} />}
         <OfficialInfo className="mt-10" />
       </article>
 
-      {/* E-E-A-T References Injection */}
-      {post.references && (
+      {/* Kaynakça: yalnızca resmî kurumlar */}
+      {officialReferences.length > 0 && (
         <div className="max-w-3xl mx-auto px-6 mt-16 pt-10 border-t border-outline-variant/20">
           <h3 className="font-headline text-2xl text-primary font-bold tracking-tight mb-6 flex items-center gap-2">
-            <span className="material-symbols-outlined text-secondary">menu_book</span> Kaynakça ve Referanslar
+            <span className="material-symbols-outlined text-secondary">menu_book</span> Resmî kaynaklar
           </h3>
           <div className="bg-surface-container-low p-6 rounded-2xl border border-outline-variant/10 text-sm text-on-surface-variant leading-relaxed break-words whitespace-pre-wrap">
-            {post.references}
+            {officialReferences.join("\n")}
           </div>
         </div>
       )}
-      
+
       {/* FAQ Bölümü */}
       {faqItems.length > 0 && (
         <section className="max-w-3xl mx-auto px-6 mt-16 pt-10 border-t border-outline-variant/20">
@@ -417,6 +435,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           </div>
         </div>
       </div>
+
+      <BlogEndCta whatsappNumber={whatsappNumber} />
 
       {/* İlgili Yazılar */}
       {relatedPosts.length > 0 && (

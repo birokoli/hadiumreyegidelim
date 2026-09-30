@@ -25,7 +25,7 @@ export async function GET(req: Request) {
 
   let published = 0;
   for (const { id } of due) {
-    const post = await prisma.post.update({ where: { id }, data: { published: true } });
+    const post = await prisma.post.update({ where: { id }, data: { published: true, createdAt: new Date() } });
     published++;
     await connectMeasurement(post).catch((e) => console.error('[publish-scheduled] ölçüm bağlantısı', e));
   }

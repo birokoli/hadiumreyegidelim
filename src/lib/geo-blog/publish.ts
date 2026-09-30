@@ -16,7 +16,9 @@ export async function publishPost(postId: string) {
   const post = await prisma.post.findUnique({ where: { id: postId } });
   if (!post) throw new Error("Yazı bulunamadı.");
 
-  const updated = post.published ? post : await prisma.post.update({ where: { id: postId }, data: { published: true, scheduledAt: null } });
+  // İlk yayında yayın tarihi (createdAt) o an olur: taslak günler önce üretilmiş olsa da
+  // yazı ana sayfada ve blog listesinde en üstte görünür
+  const updated = post.published ? post : await prisma.post.update({ where: { id: postId }, data: { published: true, scheduledAt: null, createdAt: new Date() } });
   const notes = await connectMeasurement(updated);
   return { post: updated, notes };
 }

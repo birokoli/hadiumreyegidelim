@@ -85,6 +85,8 @@ export async function PUT(request: NextRequest) {
       where: { id },
       data: {
         ...scalars,
+        // Taslaktan yayına geçişte yayın tarihi o an olur (listelerde en üstte görünsün)
+        ...(scalars.published && before && !before.published ? { createdAt: new Date() } : {}),
         ...(authorId   ? { authorModel: { connect: { id: authorId } } }   : { authorModel: { disconnect: true } }),
         ...(categoryId ? { category:    { connect: { id: categoryId } } } : { category:    { disconnect: true } }),
       },

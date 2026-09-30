@@ -216,6 +216,23 @@ export function evaluateArticleQuality(
     score -= 20;
   }
 
+  // 10e. Marka ve satış: marka doğal biçimde anılmalı, okur tasarlayıcıya yönlenmeli
+  const plainContent = article.content.replace(/<[^>]+>/g, " ");
+  const brandMentions = (plainContent.match(/hadi\s*umre'?ye\s*gidelim/gi) ?? []).length;
+  if (brandMentions < 2) {
+    issues.push({ severity: "critical", message: `Marka adı (Hadi Umreye Gidelim) metinde en az 2 kez doğal biçimde geçmeli (${brandMentions} kez geçti).` });
+    score -= 15;
+  }
+  if (!/href=["']\/bireysel-umre["']/i.test(article.content)) {
+    issues.push({ severity: "critical", message: "Yazıda /bireysel-umre sayfasına link yok; okur kendi umresini planlamaya yönlendirilmeli." });
+    score -= 10;
+  }
+  const againstUs = plainContent.match(/(grup turu|kafile|diyanet turu|toplu tur)[^.]{0,60}(daha ucuz|daha uygun|daha avantajl|tercih edilmeli|öneririz)/i);
+  if (againstUs) {
+    issues.push({ severity: "critical", message: `Okuru grup/kafile turuna yönelten ifade var: "${againstUs[0].slice(0, 90)}". Bireysel umrenin avantajları öne çıkarılmalı.` });
+    score -= 15;
+  }
+
   // 10d. Yasaklı kelimeler (TÜRSAB, diyanetsiz)
   const banned = findBannedTerms([article.title, article.metaDescription, article.tldr, article.content, article.keywords, ...article.faq.map((f) => `${f.question} ${f.answer}`)].join(" "));
   if (banned.length > 0) {

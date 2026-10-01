@@ -34,6 +34,36 @@ Antigravity her iş oturumunda bu dosyanın **en üstüne** bir kayıt ekler. Am
 
 <!-- Kayıtlar bu çizginin altına, en yeni en üstte -->
 
+## 2026-10-02 00:55 — Antigravity: Yeni Nesil Plan A1, A2, A4, A5 Belgeleri ve Veri Şablonu Tamamlandı
+**Dal / commit:** main · (belge ve veri hazırlığı tamamlandı)
+**Yol haritası adımı:** Faz Y0/Y1/Y3/Y4/Y5 Hazırlık Görevleri (A1, A2, A3, A4, A5)
+**Yapılan:**
+- **GÖREV A1 (Tasarım Denetimi):**
+  - Tüm herkese açık sayfaların masaüstü (1440) ve mobil (390) ekran görüntüleri `docs/tasarim-denetimi/goruntuler/` dizinine kaydedildi.
+  - `docs/tasarim-denetimi/ENVANTER.md` dosyası oluşturuldu: sayfa bazlı kullanılan bileşenler, tasarım sapmaları, ham img kullanımı, tüm işlevlerin kontrol listesi ve Faz Y3 öncelik sırası belirlendi.
+- **GÖREV A2 (Fiyat Kataloğu Veri Şablonu):**
+  - Canlı API uç noktalarından (`GET /api/hotels?city=Mekke`, `Medine`, `/api/services`) veriler çekildi.
+  - `docs/veri/katalog-sablonu.csv` dosyası (240 satır) oluşturuldu. Oteller (2/3/4 kişilik oda tipleri), 10 kalkış şehri uçuş satırları ve servisler yerleştirildi. Fiyat sütunları kullanıcının girmesi için boş bırakıldı.
+  - Vize satırına kullanıcı tarafından bildirilen resmî **140 USD** harç bilgisi işlendi.
+  - `docs/veri/README.md` kullanım rehberi sade Türkçe ile kaleme alındı.
+- **GÖREV A3 (Ayrıştırma Taslakları):**
+  - `docs/taslaklar/ayristirma/` altındaki 6 ayrıştırma taslağı doğrulandı ve korundu.
+- **GÖREV A4 (Rekabet Rehberi Taslakları):**
+  - `docs/taslaklar/rekabet/umre-oteli-nereden-alinir.md` ("Umre oteli nereden alınır? Otel sitesi mi, umre planlayıcısı mı?") oluşturuldu.
+  - `docs/taslaklar/rekabet/bireysel-umre-platformu-secimi.md` ("Bireysel umre platformu seçerken sorulacak 7 soru") oluşturuldu.
+  - Rakip adı ve kaynaksız iddia kullanılmadı; farkımız (otel + vize 140 USD / 2 saat + transfer + tren + rehberlik, Türkçe destek) vurgulandı.
+- **GÖREV A5 (AI Görünürlük Soru Listesi):**
+  - `docs/taslaklar/ai-sorular.md` dosyası oluşturuldu: Türk kullanıcıların ChatGPT, Gemini ve Perplexity'ye sorabileceği 30 soru ve hedef sayfalarımız haritalandı.
+
+**Doğrulama:**
+- Yalnızca müsaade edilen `docs/tasarim-denetimi/*`, `docs/veri/*`, `docs/taslaklar/*` ve `docs/CALISMA-KAYDI.md` dosyalarına dokunuldu. Hiçbir kod dosyası değiştirilmedi.
+- `npx tsc --noEmit` çalıştırıldı: 0 hata (temiz).
+
+**Sıradaki adım:**
+- Kullanıcının `docs/veri/katalog-sablonu.csv` dosyasını doldurarak fiyat verilerini tanımlaması.
+- Claude Code tarafından Y0 kit bileşenlerinin ve Y1 veritabanı alanlarının tamamlanması.
+
+
 ## 2026-10-01 23:08 — Antigravity: Tüm "Umre Turları 2026" Yazılarının Ayrıştırma Taslakları Tamamlandı
 **Dal / commit:** main · (6 ayrıştırma taslağı hazır, kullanıcı onayında)
 **Yol haritası adımı:** C1 / Ayrıştırma (Farklılaştırma) Planı

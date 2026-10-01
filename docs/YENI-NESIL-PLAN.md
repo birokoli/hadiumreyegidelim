@@ -22,7 +22,12 @@
 - [x] **Tasarım temel bileşenleri** `src/components/ui/kit/` *(2 Ekim; vitrin: localhost:3002/kit; ana sayfa kitle yeniden kuruldu, görünüm aynı)*: ana sayfanın dilinden çıkarılır. İçerik: SectionHead, Card (görselli/görselsiz), PriceTag ("… USD'den"), Badge, Button (birincil, ikincil, WhatsApp), Stepper, EmptyState, PageHero, Breadcrumb. Ana sayfa bunlarla yeniden kurulur (görünüm aynı kalır).
 - [x] **Tasarım kılavuzu** `docs/TASARIM-DILI.md`: renk, yazı, boşluk, köşe, gölge, ikon (alt küme kuralı), görsel (`next/image` zorunlu), hareket.
 
-### Y1 · Kendi fiyat kataloğumuz (Claude; DB onayı gerekir)
+### Y1 · Kendi fiyat kataloğumuz (Claude; DB onayı alındı 2 Ekim)
+- [x] Şema: `ServiceLibrary` + yeni alanlar, `ServicePrice` (aylık satış fiyatı). İlk admin erişiminde `ensureCatalogSchema()` ile oluşur (yalnızca ekleme).
+- [x] Admin: Hizmet Kütüphanesi formunda "Sitede göster" bölümü + Temmuz'da kaybolan alanlar geri geldi (açıklama, fiyatlandırma tipi, araç, çocuk %, ek yatak). Yeni ekran: **Aylık Satış Fiyatları** (`/admin/fiyat-teklifleri/hizmetler/fiyatlar`), ay kopyalama + % artış.
+- [x] Site okuma katmanı `src/lib/catalog` (maliyet seçilmez, önbellek + anında tazeleme).
+- [ ] Kullanıcı: otelleri ve hizmetleri "Sitede göster" ile işaretleyip aylık fiyatları girer (ya da Antigravity'nin CSV şablonu).
+- [ ] Eski `Service`/`Hotel` → kütüphane taşıma ve eski uç noktaların kaldırılması (Y2 ile).
 Bugünkü durum:
 - `Service` (eski; tek fiyat) ve `Hotel` (eski; tek fiyat) planlayıcıyı besliyor.
 - `ServiceLibrary` (admin Hizmet Kütüphanesi) yalnızca **maliyet** tutuyor ve fiyat teklifi motorunu besliyor.

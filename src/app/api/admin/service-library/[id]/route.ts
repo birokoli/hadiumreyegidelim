@@ -1,10 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
 import { prisma } from '@/lib/prisma';
+import { getAdminSession } from '@/lib/admin-auth';
+import { ensureCatalogSchema } from '@/lib/catalog/schema';
+import { catalogFields } from '@/lib/catalog/admin-fields';
+import { revalidateCatalog } from '@/lib/catalog';
 
+// Yetki middleware'de ("orders"); burada ayrıca imzalı oturum aranır
 async function checkAdmin() {
-  const store = await cookies();
-  return store.get('admin_session')?.value === 'true';
+  if (!(await getAdminSession())) return false;
+  await ensureCatalogSchema();
+  return true;
 }
 
 export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -31,8 +36,10 @@ export async function PUT(req: NextRequest, { params }: { params: Promise<{ id: 
       defaultChildPercent:  defaultChildPercent ?? 0,
       defaultExtraBedPrice: defaultExtraBedPrice ?? 0,
       isActive:             isActive ?? true,
+      ...catalogFields(body),
     },
   });
+  revalidateCatalog();
 
   return NextResponse.json({ service });
 }
@@ -42,5 +49,6 @@ export async function DELETE(_req: NextRequest, { params }: { params: Promise<{ 
 
   const { id } = await params;
   await prisma.serviceLibrary.delete({ where: { id } });
+  revalidateCatalog();
   return NextResponse.json({ ok: true });
 }

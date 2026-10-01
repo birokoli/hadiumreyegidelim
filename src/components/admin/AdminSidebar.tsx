@@ -23,7 +23,8 @@ const menuGroups: { title: string; links: { href: string; icon: string; label: s
       { href: "/admin/orders",                    icon: "receipt_long",   label: "Talepler / Siparişler", permission: "orders" },
       { href: "/admin/contact",                   icon: "chat",           label: "WhatsApp & İletişim", permission: "orders", badgeKey: "unreadLeads" },
       { href: "/admin/fiyat-teklifleri",           icon: "request_quote",  label: "Fiyat Teklifleri", permission: "orders"     },
-      { href: "/admin/fiyat-teklifleri/hizmetler", icon: "library_books",  label: "Hizmet Kütüphanesi", permission: "orders"   },
+      { href: "/admin/fiyat-teklifleri/hizmetler", icon: "library_books",  label: "Hizmet Kütüphanesi", exact: true, permission: "orders"   },
+      { href: "/admin/fiyat-teklifleri/hizmetler/fiyatlar", icon: "calendar_month", label: "Aylık Satış Fiyatları", permission: "orders" },
     ],
   },
   {

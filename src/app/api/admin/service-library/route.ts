@@ -1,10 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
 import { prisma } from '@/lib/prisma';
+import { getAdminSession } from '@/lib/admin-auth';
+import { ensureCatalogSchema } from '@/lib/catalog/schema';
+import { catalogFields } from '@/lib/catalog/admin-fields';
+import { revalidateCatalog } from '@/lib/catalog';
 
+// Yetki middleware'de ("orders"); burada ayrıca imzalı oturum aranır
 async function checkAdmin() {
-  const store = await cookies();
-  return store.get('admin_session')?.value === 'true';
+  if (!(await getAdminSession())) return false;
+  await ensureCatalogSchema();
+  return true;
 }
 
 export async function GET() {
@@ -40,8 +45,10 @@ export async function POST(req: NextRequest) {
       defaultVehicleType:   defaultVehicleType || null,
       defaultChildPercent:  defaultChildPercent ?? 0,
       defaultExtraBedPrice: defaultExtraBedPrice ?? 0,
+      ...catalogFields(body),
     },
   });
+  revalidateCatalog();
 
   return NextResponse.json({ service }, { status: 201 });
 }

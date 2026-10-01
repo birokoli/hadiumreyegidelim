@@ -706,8 +706,33 @@ model ServiceLibrary {
   defaultExtraBedPrice Float    @default(0)
   isActive             Boolean  @default(true)
   sortOrder            Int      @default(0)
+  // ── Sitede görünen katalog (Y1, 2 Ekim 2026). Maliyet (defaultCostUsd) sitede asla gösterilmez.
+  isPublic             Boolean  @default(false)
+  slug                 String?  @unique
+  city                 String?  // mekke | medine | cidde | tr (uçuşta kalkış şehri adı)
+  imageUrl             String?
+  publicDescription    String?
+  hotelStars           Int?
+  distanceMeters       Int?
+  prices               ServicePrice[]
   createdAt            DateTime @default(now())
   updatedAt            DateTime @updatedAt
+}
+
+/// Aylık satış fiyatı (USD). variant: oda tipi ("2", "3", "4" kişilik) ya da araç tipi; tek fiyatlı kalemde "".
+model ServicePrice {
+  id           String         @id @default(cuid())
+  serviceId    String
+  service      ServiceLibrary @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  month        String         // YYYY-MM
+  variant      String         @default("")
+  salePriceUsd Float
+  note         String?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  @@unique([serviceId, month, variant])
+  @@index([month])
 }
 
 // ─────────────────────────────────────────────────────────

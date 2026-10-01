@@ -1,6 +1,7 @@
-// Canlıda sunulan adres www'li (Vercel'de www korunuyor; www'siz adres www'ye yönleniyor).
+// Asıl adres www'siz (kullanıcı kararı, 1 Ekim). Vercel'de www.hadiumreyegidelim.com → hadiumreyegidelim.com (308).
 // Canonical, sitemap, robots ve şemalar bu adresi gösterir: gösterilen adres doğrudan 200 dönmeli.
-export const SITE_URL = "https://www.hadiumreyegidelim.com";
+// Vercel yönlendirmesi ters çevrilmeden bu değer değiştirilmez (canonical yönlenen adresi gösterir).
+export const SITE_URL = "https://hadiumreyegidelim.com";
 export const SITE_DOMAIN = "hadiumreyegidelim.com";
 
 // DataForSEO: Türkiye (2792) + Türkçe

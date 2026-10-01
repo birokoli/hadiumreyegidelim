@@ -49,7 +49,12 @@ Hedef: **tek katalog, aylık satış fiyatı.**
 - Eski `Service` ve `Hotel` kayıtları kütüphaneye taşınır (taşıma betiği Claude; kontrol listesi Antigravity). Taşımadan sonra eski uç noktalar (`/api/hotels`, `/api/services`, `/api/flights`) kaldırılır.
 - **Uçuş:** canlı bilet araması yok. Kütüphanede kalkış şehri × ay için "tahmini uçuş fiyatı" kalemi var; teklifte "uçuşu biz ayarlarız" ya da "kendim alacağım" seçeneği.
 
-### Y2 · Bireysel umre planlayıcısı v2 (Claude motor + Antigravity ekranlar)
+### Y2 · Bireysel umre planlayıcısı v2 (Claude)
+- [x] Fiyat motoru `src/lib/pricing/plan.ts` (`quotePlan`, `planToText`); birim testi: 3 kişi / 2 oda örneği elle hesapla aynı.
+- [x] Ekran `src/components/planner/PlannerV2.tsx`: 6 adım + sağda canlı özet (mobilde alt çubuk); seçimler adres çubuğunda (`?ay=&mekke=&medine=&yetiskin=&cocuk=&oda=&mekkeotel=&medineotel=&ucus=&kalkis=&ek=`).
+- [x] Talep uç noktası `POST /api/plan-request`: fiyat sunucuda yeniden hesaplanır; admin → İletişim'e "Bireysel umre planı" (AI'dan geldiyse "· AI: ChatGPT" vb.) olarak düşer + yönetici bildirimi.
+- [x] Önizleme: **`/bireysel-umre/yeni`** (noindex, sitemap'te yok). Katalog dolunca ve kullanıcı onaylayınca `/bireysel-umre`'ye taşınır, eski 6 adım sayfası 301.
+- [ ] Admin'de talepten tek tıkla Fiyat Teklifi oluşturma.
 - Ana sayfadaki planlayıcı çubuğu ile aynı dil. Tek sayfa, adım adım:
   1. tarih ve gece;
   2. kişi ve oda;

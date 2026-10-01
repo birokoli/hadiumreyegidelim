@@ -34,6 +34,12 @@ Antigravity her iş oturumunda bu dosyanın **en üstüne** bir kayıt ekler. Am
 
 <!-- Kayıtlar bu çizginin altına, en yeni en üstte -->
 
+## 2026-10-01 — Claude Code: SEO denetimi yalnızca 1 sayfa tarıyordu
+**Sebep:** Asıl adres www'ye geçince `src/lib/seo/audit.ts` → `toPath` sitemap'teki adresleri www'siz host'la www'li `SITE_URL` host'unu karşılaştırarak eliyordu; 150 adresin hepsi düşüp yalnızca `/` kalıyordu. Aynı fonksiyon AI hazırlık analizinde site içi bağlantıları dış bağlantı sayıyordu; www kontrolü `www.www.` adresine bakıyordu.
+**Düzeltme:** Karşılaştırma `SITE_DOMAIN` ile. Canlı sitemap'le denendi: 150 adres → 150 sayfa. Sitemap'in kendisi her zaman doğruydu (150 adres).
+**Kural:** Host karşılaştırmalarında `SITE_URL` host'u değil `SITE_DOMAIN` kullanılır.
+
+
 ## 2026-10-01 — Claude Code: rehber sayfaları admin'den düzenlenebilir, sosyal logolar, WhatsApp AI geri geldi, güvenlik
 **Dal / commit:** `main` · (bu commit)
 **Yapılan:**

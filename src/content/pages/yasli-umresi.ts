@@ -23,7 +23,7 @@ const page: ContentPage = {
       h2: "Otel ve mesafe seçiminde dikkat edilecek hususlar nelerdir?",
       paragraphs: [
         "Mekke ve Medine'de otel seçerken en kritik kriter Harem-i Şerif avlusuna olan mesafedir. Yürüyerek 2-3 dakikada Kâbe'ye ulaşılabilen veya doğrudan mescit avlusuna kapısı açılan oteller tercih edilmelidir.",
-        "Ayrıca otelin asansör kapasitesi, tekerlekli sandalye girişine uygunluğu ve medikal yardım imkânları incelenmelidir. Resmî seyahat düzenlemeleri ve sağlık rehberliği için [resmî dinî duyuruları](https://www.diyanet.gov.tr/) takip edebilirsiniz.",
+        "Ayrıca otelin asansör kapasitesi, tekerlekli sandalye girişine uygunluğu ve medikal yardım imkânları incelenmelidir. Resmî seyahat düzenlemeleri için [resmî duyuruları](https://www.diyanet.gov.tr/), Suudi Arabistan girişindeki [aşı ve sağlık şartlarını](https://www.moh.gov.sa/en/healthawareness/pilgrims-health/pages/default.aspx) takip edebilirsiniz.",
         "Mescid-i Nebevi çevresindeki düz ayak oteller de Medine ziyaretinde büyük kolaylık sağlar. Yaşlılarımızın ibadete ulaşımını engelleyecek yokuşlu yollardan kaçınmak gerekir.",
         "Otel odalarında kaygan olmayan taban kaplamaları, tutunma barları ve geniş duş alanlarının yer alması yaşlıların güvenliği açısından mühimdir.",
       ],
@@ -82,7 +82,7 @@ const page: ContentPage = {
     },
     {
       q: "Kronik hastalığı olan yaşlılar umreye gidebilir mi?",
-      a: "Hekim onayı alındığı ve düzenli ilaçlar reçetesiyle taşındığı sürece kronik rahatsızlığı olanlar güvenle umre yapabilir.",
+      a: "Hekim onayı alındığı ve düzenli ilaçlar reçetesiyle taşındığı sürece kronik rahatsızlığı olanlar da umre yapabilir. Suudi Sağlık Bakanlığı 65 yaş üstü ve kronik hastalığı olan umreciler için ek aşı şartları açıklayabildiği için yola çıkmadan güncel şartlara bakın.",
     },
     {
       q: "Yaşlılar için en uygun umre dönemi ne zamandır?",
@@ -93,7 +93,10 @@ const page: ContentPage = {
       a: "Evet. Bireysel umre tasarlayıcımız üzerinden yaşlı büyüklerinize ibadet boyunca birebir eşlik edecek rehber seçebilirsiniz.",
     },
   ],
-  sources: [{ text: "Yaşlılar için seyahat ve ibadet bilgilendirmesi", href: "https://www.diyanet.gov.tr/" }],
+  sources: [
+    { text: "Yaşlılar için seyahat ve ibadet bilgilendirmesi", href: "https://www.diyanet.gov.tr/" },
+    { text: "Suudi Arabistan Sağlık Bakanlığı: umreci sağlığı ve aşı şartları", href: "https://www.moh.gov.sa/en/healthawareness/pilgrims-health/pages/default.aspx" }
+  ],
   related: ["/bireysel-umre", "/paketler", "/tekerlekli-sandalye-ile-umre", "/aile-umresi", "/ilk-umrem"],
   reviewed: "2026-09-30",
 };

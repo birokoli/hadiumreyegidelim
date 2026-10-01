@@ -13,7 +13,7 @@ const page: ContentPage = {
     {
       h2: "Harem-i Şerif'te tekerlekli sandalye kullanımı nasıldır?",
       paragraphs: [
-        "Suudi Arabistan yönetimi Mescid-i Haram ve Mescid-i Nebevi alanlarını engelli ve yaşlı ziyaretçilerin erişimine tam uyumlu hale getirmiştir. Rampalar, yürüyen bantlar, geniş asansörler ve özel erişim kapıları sayesinde tekerlekli sandalye kullanıcıları kesintisiz bir ulaşım imkânına sahiptir.",
+        "Suudi Arabistan yönetimi Mescid-i Haram ve Mescid-i Nebevi alanlarında engelli ve yaşlı ziyaretçiler için rampalar, yürüyen bantlar, geniş asansörler ve özel erişim kapıları bulunur. Bu düzenlemeler sayesinde tekerlekli sandalye kullanıcıları Harem'in büyük bölümüne kolayca ulaşabilir.",
         "Mescid-i Haram'a giriş yaparken engelli erişimine uygun kapıların tercih edilmesi, avlu zemininden ibadet alanlarına doğrudan ve zorlanmadan geçmeyi mümkün kılar.",
         "Özellikle tekerlekli sandalye ile gelen yolcuların biniş ve iniş noktalarında asansör kullanması yığılmaları engeller.",
         "Mescid-i Haram güvenlik ve hizmet personeli, tekerlekli sandalye kullanan ibadet edenlerin yönlendirilmesinde her an yardımcı olmaktadır. Engelli ziyaretçilerin Harem kapılarından giriş yaparken görevlilerin yönlendirmelerine uymaları zaman kaybını önler ve ibadete ulaşımı kolaylaştırır.",
@@ -49,13 +49,13 @@ const page: ContentPage = {
       h2: "Sandalye kiralama ve refakatçi imkânları nelerdir?",
       paragraphs: [
         "Kendi tekerlekli sandalyesini yanında götürmeyen ziyaretçiler Mescid-i Haram girişlerindeki kiralama noktalarından veya lisanslı görevlilerden destek alabilirler. Lisanslı sandalye görevlileri tavaf ve sa'y boyunca sandalyeyi sürerek ibadete eşlik ederler.",
-        "Resmî seyahat ve ibadet bilgilendirmeleri için [resmî ibadet duyurularını](https://www.diyanet.gov.tr/) takip edebilirsiniz. Engelsiz bir seyahat planlamak için [Hadi Umreye Gidelim tasarlayıcısından](/bireysel-umre) özel VIP araç ve refakatçi seçenekli programınızı oluşturabilir, tur detayları için [paketler sayfamızı](/paketler) veya yaşlı yakınlarınız için [yaşlı umresi](/yasli-umresi) rehberimizi inceleyebilirsiniz.",
+        "Resmî seyahat ve ibadet bilgilendirmeleri için [resmî duyuruları](https://www.diyanet.gov.tr/) ve [aşı ile sağlık şartlarını](https://www.moh.gov.sa/en/healthawareness/pilgrims-health/pages/default.aspx) takip edebilirsiniz. Engelsiz bir seyahat planlamak için [Hadi Umreye Gidelim tasarlayıcısından](/bireysel-umre) özel VIP araç ve refakatçi seçenekli programınızı oluşturabilir, tur detayları için [paketler sayfamızı](/paketler) veya yaşlı yakınlarınız için [yaşlı umresi](/yasli-umresi) rehberimizi inceleyebilirsiniz.",
         "Lisanslı görevliler ibadet dualarında ve duraklarında kılavuzluk yaparak seyahatin manevi huzurunu pekiştirir. İbadet süresince rehberlik alan ziyaretçiler hem tavaf dualarını eksiksiz okur hem de usulüne uygun olarak umrelerini tamamlar.",
         "Haram-i Şerif girişinde yetkili görevlilerden sandalye temin ederken resmi üniformalı ve yaka kartlı personeli tercih etmek güvenli hizmet almanıza imkân tanır.",
       ],
       bullets: [
-        "Uçak seyahatinde kendi sandalyenizi bagajda ücretsiz taşıtabilirsiniz",
-        "Harem girişinde lisanslı yeşil yelekli görevlilerden sandalye desteği alın",
+        "Kendi sandalyenizi uçakta taşıma koşullarını bilet alırken havayolundan teyit edin",
+        "Harem'deki tekerlekli sandalye hizmetini girişteki görevlilere sorun",
         "Elektrikli araç katında akülü sandalye kiralayarak ibadetinizi kendiniz yapın",
         "Harem'e yakın ve asansörlü otelleri tercih ederek mesafeyi kısaltın",
       ],
@@ -92,7 +92,10 @@ const page: ContentPage = {
       a: "Evet. Bireysel umre organizasyonlarımızda havalimanından itibaren tekerlekli sandalye ve refakatçi hizmeti organize edilmektedir.",
     },
   ],
-  sources: [{ text: "Engelsiz umre ve tekerlekli sandalye kullanımı bilgilendirmesi", href: "https://www.diyanet.gov.tr/" }],
+  sources: [
+    { text: "Engelsiz umre ve tekerlekli sandalye kullanımı bilgilendirmesi", href: "https://www.diyanet.gov.tr/" },
+    { text: "Suudi Arabistan Sağlık Bakanlığı: umreci sağlığı ve aşı şartları", href: "https://www.moh.gov.sa/en/healthawareness/pilgrims-health/pages/default.aspx" }
+  ],
   related: ["/bireysel-umre", "/yasli-umresi", "/paketler", "/umre-rehberi/tavaf-nedir", "/umre-rehberi/say-nedir"],
   reviewed: "2026-09-30",
 };

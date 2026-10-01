@@ -80,6 +80,8 @@ Kalan işleri Antigravity bitirir; ama iş her an Claude Code'a geri devredilebi
 
 ## 6. Bilinen tuzaklar
 
+- **Kaynak bağlantısı = konuyu anlatan sayfa.** Kurumun ana sayfası kaynak değildir; kaynak başlığı bağlantının içeriğini doğru anlatmalı (1 Ekim: moh.gov.sa ana sayfası düzeltildi). Yeni görevler: SIRALAMA-YOL-HARITASI.md → Faz H.
+
 - **Rehber sayfaları admin'den düzenlenebilir** (1 Ekim): admin'de kaydedilmiş bir sayfanın kod dosyasını değiştirmek sitede görünmez. Önce admin → İçerik Stüdyosu → Rehber Sayfaları listesine bak (bkz. SAYFA-GRUPLARI.md başı).
 - **Görünüm yenilemelerinde işlev silme:** Temmuz'daki "Swiss Minimalist" yenilemeleri bazı admin sayfalarının işlevlerini sildi (WhatsApp AI sekmeleri 1 Ekim'de geri getirildi). Arayüz değiştirirken hiçbir düğme, alan ya da sekme kaldırılmaz; kaldırılacaksa kullanıcıya sorulur.
 

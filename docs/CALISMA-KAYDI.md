@@ -34,6 +34,20 @@ Antigravity her iş oturumunda bu dosyanın **en üstüne** bir kayıt ekler. Am
 
 <!-- Kayıtlar bu çizginin altına, en yeni en üstte -->
 
+## 2026-10-01 — Claude Code: Antigravity'nin sağlık kaynağı işinin denetimi + 1 Ekim raporu görev listesine eklendi
+**Antigravity kaydı (aşağıda, "Sağlık Kaynakları (Hata #6)") için düzeltmeler:**
+1. **Kaynak bağlantısı yanlış sayfaya gidiyordu:** iki sayfada da `https://www.moh.gov.sa/pages/default.aspx` (Bakanlık ana sayfası) kullanılmıştı; kaynak başlıkları ise orada olmayan içerik vaat ediyordu ("engelli erişimi ve sağlık rehberi", "vize ve sağlık şartları duyuruları"). Hata #6'nın konusu tam da genel ana sayfaya bağlanmaktı. Bakanlığın **umreci sağlığı** sayfasına çevrildi: `https://www.moh.gov.sa/en/healthawareness/pilgrims-health/pages/default.aspx` (200 doğrulandı). Kaynak başlığı: "Suudi Arabistan Sağlık Bakanlığı: umreci sağlığı ve aşı şartları". Kaynak başlığında "vize" geçmez (sattığımız hizmet).
+2. **Doğrulanamayan iddialar yumuşatıldı** (tekerlekli sandalye): "tam uyumlu hale getirmiştir" → erişim düzenlemeleri var; "sandalyenizi bagajda ücretsiz taşıtabilirsiniz" → havayolundan teyit edin; "lisanslı yeşil yelekli görevliler" → Harem'deki tekerlekli sandalye hizmeti. Yaşlı umresi SSS: "güvenle umre yapabilir" → hekim onayı + 65 yaş üstü/kronik hastalar için Bakanlığın ek aşı şartlarına bakın.
+3. **Kayıttaki eskimiş bilgiler:**
+   - "Rehber sayfalarını veritabanına taşıma Claude'a devredildi": bu iş 1 Ekim'de **yapıldı** (İçerik Stüdyosu → Rehber Sayfaları).
+   - "Canonical/og:url `www` adresinde doğrulandı": asıl adres aynı gün **www'siz** oldu; A3 kontrolü `https://hadiumreyegidelim.com` üzerinde yeniden yapılmalı (Claude yaptı: canonical, sitemap, robots www'siz; www → 308).
+   - "Hacim Claude tarafından çekilmeli": Claude'un yerelinde de anahtar yok (.env okunmaz). **Kullanıcı** SEO Masası → Programatik → "Arama hacimlerini getir" düğmesine basar; sonuç admin'de görünür, Antigravity tabloyu buraya yazar. Maliyet onayı alındı.
+   - Değişiklikler commit edilmeden bırakılmıştı ("lokal değişiklikler hazır"); Claude düzeltmelerle birlikte commit etti.
+**Yeni görevler:** `docs/SIRALAMA-YOL-HARITASI.md` → **Faz H** (H1–H16), kaynak `docs/SITE-RAPORU-2026-10-01.md`.
+**Doğrulama:** `check-content-pages` 22 sayfa, 0 hata.
+**Sıradaki adım:** Claude: H1–H10 (H1 ve H3 önce lokalde kullanıcıya). Antigravity: H11 (kullanıcıdan vize ücreti/süresi gelince), H14; hacim tablosu (kullanıcı düğmeye bastıktan sonra).
+
+
 ## 2026-10-01 — Claude Code: asıl adres www'siz (hadiumreyegidelim.com)
 **Kullanıcı kararı:** Asıl adres `https://hadiumreyegidelim.com`; www ona yönlenir.
 **Yapılan:** Kullanıcı Vercel'de (proje `hadiumreyegidelim`) www'siz adresi Production'a bağladı, `www` → `hadiumreyegidelim.com` 308 yaptı; Namecheap'te `@` A kaydını Vercel'in önerdiği `216.150.1.1`'e çevirdi. Kodda `SITE_URL = "https://hadiumreyegidelim.com"` (canonical, sitemap, robots, şemalar).

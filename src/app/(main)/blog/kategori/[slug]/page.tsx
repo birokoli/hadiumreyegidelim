@@ -20,9 +20,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export const revalidate = 60;
 
-export default async function CategoryPage({ params }: { params: { slug: string } }) {
+// Next 16: params bir Promise. Beklenmeden okunduğunda slug undefined kalıyor ve sayfa 500 veriyordu (2 Ekim düzeltmesi).
+export default async function CategoryPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
   const category = await prisma.category.findUnique({
-    where: { slug: params.slug },
+    where: { slug },
     include: {
       posts: {
         where: { published: true },
@@ -66,7 +68,7 @@ export default async function CategoryPage({ params }: { params: { slug: string 
                 key={cat.id} 
                 href={`/blog/kategori/${cat.slug}`} 
                 className={`px-5 py-2 rounded-full text-xs font-bold uppercase tracking-widest shadow-sm transition-colors border ${
-                  cat.slug === params.slug 
+                  cat.slug === slug 
                     ? 'bg-primary text-white border-primary' 
                     : 'bg-surface-container-high text-on-surface-variant hover:bg-primary/10 hover:text-primary border-outline-variant/20'
                 }`}

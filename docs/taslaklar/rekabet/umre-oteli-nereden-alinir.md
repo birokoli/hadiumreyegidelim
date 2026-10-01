@@ -16,7 +16,7 @@
 
 ### H2: Otel Rezervasyon Sitelerinin Avantajları ve Sınırları
 Genel otel rezervasyon platformları geniş tesis seçeneği ve anlık fiyat listeleri sunar. Ancak kutsal topraklarda konaklama planlarken yalnızca otel odası kiralamak seyahatin sadece bir ayağıdır. Otel siteleri şu konularda destek sunmaz:
-- Resmî umre vizesi ve sağlık sigortası işlemleri
+- Resmî umre vizesi işlemleri
 - Havalimanı otel transferleri ve Mekke-Medine arası Haremeyn hızlı tren biletleri
 - Sahada Türkçe ilahiyatçı manevi rehberlik ve ziyaret programları
 
@@ -24,7 +24,7 @@ Genel otel rezervasyon platformları geniş tesis seçeneği ve anlık fiyat lis
 Bütüncül bir umre planlayıcısı kullandığınızda otel konaklamasının yanı sıra seyahatin tüm yasal ve lojistik ihtiyaçları tek bir pakette birleştirilir:
 - **Resmî Umre Vizesi:** Kişi başı **140 USD** işlem bedeliyle belgeleriniz tam olduğunda ortalama 2 iş saatinde onaylanır.
 - **Kesintisiz Ulaşım:** Cidde veya Medine havalimanı karşılamaları, özel VIP araçlar veya hızlı tren biletleri planınıza dâhil edilir.
-- **İnsan Desteği:** Sahada Türkçe konuşan manevi rehberler ve 7/24 rehberlik hattı ile her adımda yanınızdadır.
+- **İnsan Desteği:** Sahada Türkçe konuşan manevi rehberler ile her adımda yanınızdadır.
 
 ### H2: Hangisi Sizin İçin İdeal?
 - Yalnızca otel rezervasyonu yapıp vize ve ulaşım işlemlerini münferit yürütmek isteyenler otel sitelerini tercih edebilir.

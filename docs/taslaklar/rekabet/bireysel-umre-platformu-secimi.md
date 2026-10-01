@@ -15,7 +15,7 @@
 ## 7 Kritik Soru Rehberi
 
 1. **Vize İşlemleri ve Süresi Net mi?**  
-   Platform resmî e-vize sürecini şeffaf yürütüyor mu? *(Doğru model: Kişi başı 140 USD resmî vize harcı ve seyahat sigortası ile evraklar tamamlandığında ortalama 2 iş saatinde vize onayı).*
+   Platform resmî e-vize sürecini şeffaf yürütüyor mu? *(Doğru model: Kişi başı 140 USD resmî vize harcı ile evraklar tamamlandığında ortalama 2 iş saatinde vize onayı).*
 
 2. **Otellerin Harem'e Gerçek Mesafesi Bildiriliyor mu?**  
    Otelin Mescid-i Haram veya Mescid-i Nebevi'ye metre cinsinden yürüme mesafesi veya servis durumu açıkça yazıyor mu?

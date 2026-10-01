@@ -13,7 +13,7 @@ Uygulayan: Antigravity (kod ve içerik) + kullanıcı (Vercel, Search Console, i
 
 Sonuçlar:
 1. **Sıralanan her şey blog yazısı.** Ana satış sayfaları (`/bireysel-umre`, `/umre-vizesi`) hiçbir kelimede ilk 50'de değil; üstelik `/umre-vizesi` 2.000 kelimelik bir sayfa. İçerik varken sıralama yoksa önce **teknik/indeks sorunu** aranır.
-2. **Teknik sorun doğrulandı (1 Ekim):** Canonical etiketleri ve sitemap `https://hadiumreyegidelim.com/...` (www'siz) gösteriyor; bu adres **307 (geçici)** ile `https://www.hadiumreyegidelim.com/...`'a yönleniyor. Google'a "asıl adres" diye gösterilen adres başka yere geçici yönleniyor: çelişkili sinyal, indekslemeyi ve sıralamayı bölüyor.
+2. **Teknik sorun doğrulandı (1 Ekim):** Canonical etiketleri ve sitemap `https://hadiumreyegidelim.com/...` (www'siz) gösteriyor; bu adres **307 (geçici)** ile `https://hadiumreyegidelim.com/...`'a yönleniyor. Google'a "asıl adres" diye gösterilen adres başka yere geçici yönleniyor: çelişkili sinyal, indekslemeyi ve sıralamayı bölüyor.
 3. **Sıralayan içerik markanın aleyhine konumlanmış:** "Diyanet umre fiyatları" yazıları trafik alıyor ama okuru grup turuna bakmaya itiyor. Silinmeyecek (sıralamayı kaybederiz); bireysel umre lehine yeniden kurgulanacak.
 4. **Yamyamlık:** Aynı "umre turları 2026 diyanet fiyat" konusunu işleyen 6 yazı var; Google hangisini göstereceğini seçemiyor, güç bölünüyor.
 5. **Fiyat sayfası yok:** "umre fiyatları 2026" ve "10/15 günlük umre fiyatları" için hedef sayfa yok; paketlerde fiyat 0 girili.
@@ -36,11 +36,11 @@ Kural: Bir kelime kümesini yalnızca bir sayfa hedefler. Diğer sayfalar o sayf
 ## 3. Adımlar
 
 ### Faz A — Teknik temel (önce bu; hafta 1)
-- [x] **A1 · Tek ana adres — kodla çözüldü (1 Ekim, Claude Code)** — Kullanıcı kararı: Vercel'de www kaldırılmayacak. Bu yüzden asıl adres **`https://www.hadiumreyegidelim.com`** yapıldı: `src/lib/seo/site.ts` → `SITE_URL` (tek kaynak). Canonical, sitemap, robots, llms.txt, JSON-LD, og:url bu adresi gösterir; gösterilen adres doğrudan 200 döner, çelişki kalmadı. `SITE_DOMAIN` www'siz kalır (sıra takibinde karşılaştırma için).
+- [x] **A1 · Tek ana adres — kodla çözüldü (1 Ekim, Claude Code)** — Kullanıcı kararı: Vercel'de www kaldırılmayacak. Bu yüzden asıl adres **`https://hadiumreyegidelim.com`** yapıldı: `src/lib/seo/site.ts` → `SITE_URL` (tek kaynak). Canonical, sitemap, robots, llms.txt, JSON-LD, og:url bu adresi gösterir; gösterilen adres doğrudan 200 döner, çelişki kalmadı. `SITE_DOMAIN` www'siz kalır (sıra takibinde karşılaştırma için).
   - İsteğe bağlı iyileştirme (kullanıcı, Vercel): www'siz adresin www'ye yönlenmesi şu an **307 (geçici)**. Vercel → Domains → `hadiumreyegidelim.com` → Edit → yönlendirme kodunu **308 (kalıcı)** seçmek yeterli; www silinmez.
   - Yeni kodda adres yazma; her zaman `SITE_URL` kullan.
-- [ ] **A2 · Search Console (kullanıcı + Antigravity)** — Google Search Console'da `hadiumreyegidelim.com` alan adı mülkü (DNS doğrulaması). Mülk `https://www.hadiumreyegidelim.com` (ya da alan adı mülkü) olmalı; sitemap `https://www.hadiumreyegidelim.com/sitemap.xml` olarak **yeniden gönderilir** (adresler www'ye döndü). URL denetimi ile `/`, `/bireysel-umre`, `/umre-vizesi`, `/paketler` için "Dizine eklenmesini iste". Kapsam raporunda "Yönlendirmeli sayfa", "Canonical olmayan", "Keşfedildi, dizine eklenmedi" sayılarını `CALISMA-KAYDI.md`'ye yaz.
-- [ ] **A3 · Kod kontrolü (Antigravity)** — canlıda: bütün sayfalarda canonical = `https://www.hadiumreyegidelim.com<yol>`, sitemap ve `robots.txt` aynı host, `og:url` aynı host, kodda elle yazılmış adres yok (`grep -rn "https://hadiumreyegidelim.com" src` yalnızca site.ts). Yönlendirme zinciri yok (tek atlama).
+- [ ] **A2 · Search Console (kullanıcı + Antigravity)** — Google Search Console'da `hadiumreyegidelim.com` alan adı mülkü (DNS doğrulaması). Mülk `https://hadiumreyegidelim.com` (ya da alan adı mülkü) olmalı; sitemap `https://hadiumreyegidelim.com/sitemap.xml` olarak **yeniden gönderilir** (adresler www'ye döndü). URL denetimi ile `/`, `/bireysel-umre`, `/umre-vizesi`, `/paketler` için "Dizine eklenmesini iste". Kapsam raporunda "Yönlendirmeli sayfa", "Canonical olmayan", "Keşfedildi, dizine eklenmedi" sayılarını `CALISMA-KAYDI.md`'ye yaz.
+- [ ] **A3 · Kod kontrolü (Antigravity)** — canlıda: bütün sayfalarda canonical = `https://hadiumreyegidelim.com<yol>`, sitemap ve `robots.txt` aynı host, `og:url` aynı host, kodda elle yazılmış adres yok (`grep -rn "https://hadiumreyegidelim.com" src` yalnızca site.ts). Yönlendirme zinciri yok (tek atlama).
 - [ ] **A4 · Hacim** — SEO Masası → Kelimeler'de bu 22 kelimenin ve adaylarının arama hacmini çek; `CALISMA-KAYDI.md`'ye tablo olarak yaz. Faz B/C sırası hacme göre güncellenir.
 
 ### Faz B — Satış sayfaları (hafta 1–3)
@@ -66,7 +66,7 @@ Kural: Bir kelime kümesini yalnızca bir sayfa hedefler. Diğer sayfalar o sayf
 - [ ] **C3 · "bireysel umre fiyatları" yazısı (5. sıra)** — `/blog/bireysel-umre-vize-maliyet-rehberi`: güncel tut, `/umre-fiyatlari` ve `/umre-vizesi`'ye üstte bağlantı ver, başlığa dokunma.
 
 ### Faz D — Otorite ve güven (sürekli)
-- [ ] **D1 · Google İşletme Profili** (kullanıcı) — "Hadi Umreye Gidelim", kategori seyahat acentesi, gerçek adres/telefon, site bağlantısı `https://www.hadiumreyegidelim.com`. Yorum istemek için müşterilere bağlantı (gerçek yorumlar; sahte yorum yok).
+- [ ] **D1 · Google İşletme Profili** (kullanıcı) — "Hadi Umreye Gidelim", kategori seyahat acentesi, gerçek adres/telefon, site bağlantısı `https://hadiumreyegidelim.com`. Yorum istemek için müşterilere bağlantı (gerçek yorumlar; sahte yorum yok).
 - [ ] **D2 · Sosyal profiller** — "bireysel umre" aramasında Facebook/Instagram ilk üçte: kendi Instagram/Facebook hesaplarının biyografisinde site bağlantısı, gönderilerde `/bireysel-umre`; sitede `sameAs` (admin → Ayarlar → Sosyal Medya — sıfırlanan linkler yeniden girilmeli).
 - [ ] **D3 · Bağlantı ve anılma** — AI Görünürlük → Kaynaklar'daki "kaynak fırsatları" (yol haritası 4.3): forum/soru-cevap yanıtları, yerel rehberler, cami/dernek duyuruları. Satın alınmış bağlantı yok.
 - [ ] **D4 · Blog motoru** — yeni yazılar vize ve fiyat kümelerindeki cevapsız sorulara (ör. "umre vizesi kaç günde çıkar") yönlendirilir ve hedef sayfaya bağlanır; hedef sayfanın kelimesini başlıkta hedeflemez.

@@ -34,6 +34,42 @@ Antigravity her iş oturumunda bu dosyanın **en üstüne** bir kayıt ekler. Am
 
 <!-- Kayıtlar bu çizginin altına, en yeni en üstte -->
 
+## 2026-10-01 — Claude Code: asıl adres www'siz (hadiumreyegidelim.com)
+**Kullanıcı kararı:** Asıl adres `https://hadiumreyegidelim.com`; www ona yönlenir.
+**Yapılan:** Kullanıcı Vercel'de (proje `hadiumreyegidelim`) www'siz adresi Production'a bağladı, `www` → `hadiumreyegidelim.com` 308 yaptı; Namecheap'te `@` A kaydını Vercel'in önerdiği `216.150.1.1`'e çevirdi. Kodda `SITE_URL = "https://hadiumreyegidelim.com"` (canonical, sitemap, robots, şemalar).
+**Doğrulama:** www'siz 200; www ve http → tek 308 ile www'siz; alt sayfalar yolu koruyarak yönleniyor; admin alt alanı etkilenmedi.
+**Kullanıcıdan:** Search Console'da sitemap'i `https://hadiumreyegidelim.com/sitemap.xml` olarak yeniden gönder.
+**Kural:** `SITE_URL` Vercel yönlendirme yönüyle aynı olmalı; biri değişirse diğeri de değişir.
+
+
+## 2026-10-01 — Antigravity: Sağlık Kaynakları (Hata #6), Canonical Doğrulaması & Kullanıcı Onayları
+**Dal / commit:** `main` · (lokal değişiklikler hazır)
+**Yol haritası adımı:** Hata #6 (Kaynak çeşitliliği), Hata #5 (Hacim onayları), Hata #7 (Admin düzenleme kararı), Sıralama A3
+**Yapılan:**
+- **Sağlık Kaynakları (Hata #6):** `src/content/pages/yasli-umresi.ts` ve `src/content/pages/tekerlekli-sandalye-ile-umre.ts` sayfalarına Suudi Arabistan Sağlık Bakanlığı'nın resmî bilgi sayfası (`https://www.moh.gov.sa/pages/default.aspx`) eklendi.
+  - Metin içinde konu kelimelerine ("aşı ve sağlık şartlarını", "aşı ile sağlık şartlarını") link verildi.
+  - Sayfaların `sources` dizisine resmî başlıklarıyla eklendi.
+  - `curl -sIL https://www.moh.gov.sa/pages/default.aspx` ile adresin HTTP 200 OK döndüğü doğrulandı.
+- **Kullanıcı Kararları ve Onayları:**
+  - **Görev 1 (Hacim):** DataForSEO API arama hacmi maliyeti bildirilerek onay alındı. (Lokalde ortalama dosya ortamında DataForSEO anahtarları eksik olduğundan sorgulama Vercel ortamı/Claude Code tarafına bırakıldı).
+  - **Görev 3 (Admin düzenleme):** Kullanıcıya soruldu. Kullanıcı kararı: *"Rehber sayfalarının veritabanına taşınarak admin panelinden (İçerik Stüdyosu) düzenlenebilmesi geliştirme işi olarak Claude Code'a devredilsin."*
+- **Sıralama Planı (A3 Kod ve Canlı Kontrol):** Canlıda `https://www.hadiumreyegidelim.com/`, `/bireysel-umre` ve `/umre-rehberi/ihram-nedir` adreslerinin **HTTP 200 OK** döndüğü, canonical ve og:url etiketlerinin `SITE_URL`'e tam uyumlu olduğu doğrulandı.
+**Doğrulama:**
+- `npx tsx scripts/check-content-pages.mts` → **22 sayfa, 0 hata** ✓
+- `npx tsc --noEmit` → **0 hata (temiz)** ✓
+- `curl -sIL https://www.moh.gov.sa/pages/default.aspx` → **HTTP 200 OK** ✓
+**Kullanıcıya gösterilen / onay:**
+- Hacim çekme işlemi maliyeti (~$0.05–$0.10) onaylandı.
+- Admin panelinden rehber düzenleme mimarisi tercihi onaylandı ve Claude Code'a devredildi.
+**Açık kalanlar / riskler:**
+- **DataForSEO Arama Hacmi (Hata #5):** Yerel ortamda DataForSEO anahtarları bulunmadığından (Vercel ortam değişkenlerinde kayıtlıdır), 22 rehber sayfasının hacim tablosu Claude Code tarafından Vercel API / canlı admin paneli üzerinden çekilmelidir.
+- **Rehber Sayfalarının Veritabanına Taşınması (Hata #7):** Kullanıcının isteği doğrultusunda rehber sayfalarının DB tablosuna alınıp İçerik Stüdyosu'ndan düzenlenmesi mimari bir geliştirme işidir.
+**Sıradaki adım:**
+- Claude Code devralacak:
+  1. Vercel / canlı admin paneli uç noktası (`/api/admin/seo/programmatic`) üzerinden 22 kelimenin hacim verilerini çekip `CALISMA-KAYDI.md`'ye tablo halinde eklemek.
+  2. Rehber sayfalarını veritabanına taşıma (Admin'den düzenlenebilirlik) mimari geliştirmesini planlayıp uygulamak.
+  3. Sıralama yol haritası Faz A2 (Search Console sitemap & indeksleme) adımlarını tamamlamak.
+
 ## 2026-10-01 — Claude Code: SEO denetimi yalnızca 1 sayfa tarıyordu
 **Sebep:** Asıl adres www'ye geçince `src/lib/seo/audit.ts` → `toPath` sitemap'teki adresleri www'siz host'la www'li `SITE_URL` host'unu karşılaştırarak eliyordu; 150 adresin hepsi düşüp yalnızca `/` kalıyordu. Aynı fonksiyon AI hazırlık analizinde site içi bağlantıları dış bağlantı sayıyordu; www kontrolü `www.www.` adresine bakıyordu.
 **Düzeltme:** Karşılaştırma `SITE_DOMAIN` ile. Canlı sitemap'le denendi: 150 adres → 150 sayfa. Sitemap'in kendisi her zaman doğruydu (150 adres).

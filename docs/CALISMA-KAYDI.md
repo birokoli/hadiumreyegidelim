@@ -34,6 +34,38 @@ Antigravity her iş oturumunda bu dosyanın **en üstüne** bir kayıt ekler. Am
 
 <!-- Kayıtlar bu çizginin altına, en yeni en üstte -->
 
+## 2026-10-01 — Claude Code: Faz H tamam (H1–H10) + Antigravity işinin denetimi + arama hacmi düzeltmesi
+**Commitler:** `2302504` (ana sayfa, /rehberlik, hacim), sonraki commit (yazı tipi alt kümeleri). Hepsi canlı.
+**Yapılan:**
+- **Ana sayfa (kullanıcı onayıyla):**
+  - video yalnızca geniş ekranda ve sayfa yüklendikten sonra (`HeroVideo`); mobilde yok;
+  - kapak videonun ilk karesi (`public/images/hero-kabe.jpg`; eskisi 512 px geçici Google görseliydi);
+  - kampanya kartları `next/image`; `<main>`; açıklamadan "En ucuz";
+  - "Teklif al" düğmesi `#15803d` (kontrast 5,0).
+- **Yazı tipleri:** `*-latin-ext-*` dosyaları Latin Genişletilmiş-A + ₺ aralığına indirildi (187→18, 85→16, 238→23 KB). Türkçe karakterler ve kalınlık ekseni doğrulandı. Asıl dosyalar git geçmişinde.
+- **Arama hacmi "çıktı vermiyor":** sebep, yalnızca Google Ads servisinin kullanılmasıydı; yavaş, 60 sn'yi aşınca istek düşüyordu. Artık önce DataForSEO Labs `keyword_overview` (hızlı, 700 kelime), eksikler için Google Ads (40 sn sınır). `maxDuration` 120. Rehber sayfalarının 22 hedef kelimesi "Açılmış sayfalar" grubu olarak listede. Sonuç özeti ("N kelimenin M tanesinde hacim bulundu") gösteriliyor; hacmi olmayan "veri yok". Canlı API ile denenmedi (yerelde anahtar yok): kullanıcı tekrar basınca sonuç görülecek.
+- **Antigravity denetimi:**
+  - (1) `/rehberlik` başlığı site adıyla 71 karakterdi (şablon " | Hadi Umre'ye Gidelim" ekliyor) → "Umre Rehberliği: Mekke ve Medine" (55); H1 Antigravity'nin metniyle kaldı.
+  - (2) H11 `[x]` işaretlenmişti ama yalnızca taslak → `[ ]`.
+  - (3) Taslaklara inceleme notları eklendi (`docs/taslaklar/*` sonu): giriş paragrafındaki yorumlar, kaynaksız "sigorta dâhil" iddiası, resmî harç ile hizmet bedelinin ayrılması, visitsaudi'ye dış bağlantı önerisi (kural dışı), birleştirme planında ana kelimenin kaybolması, "Bebekle umre" bölümünün yanlış yazıya taşınması, "sıfır otel", emoji.
+  - (4) Antigravity'nin dosyaları (rehberlik, taslaklar) bu commit'lerle canlıya alındı; Antigravity bunları ayrıca push etmemeli.
+
+**Ölçüm (mobil Lighthouse, canlı):**
+
+| Sayfa | Önce | Sonra |
+|---|---|---|
+| Ana sayfa | 58, 19,8 MB | 89–93, LCP ~3,1 sn, 624 KB |
+| Vize yazısı | 57 | 92 |
+| Denizli | 60 | 85 |
+
+Masaüstü ana sayfa 94.
+
+**Sıradaki:**
+- Kullanıcı: hacim düğmesine tekrar basacak; vize ücreti/süresi; paket fiyatları; C1 planına onay.
+- Antigravity: taslakları Claude notlarına göre düzelt; hacim tablosu.
+- Claude: H13 (fiyatlar gelince), C1 301'leri (onaydan sonra).
+
+
 ## 2026-10-01 — Claude Code: Faz H, görünümü değiştirmeyen kısım (H3–H10)
 **Commit:** `acda0a4` (canlı)
 **Yapılan:**

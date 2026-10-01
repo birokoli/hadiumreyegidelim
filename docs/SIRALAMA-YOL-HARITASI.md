@@ -82,14 +82,14 @@ Kim: **C** Claude Code, **A** Antigravity, **S** kullanıcı. Görünümü deği
 **İş bölümü (1 Ekim, paralel çalışma):** Claude: H1–H10 (H6 blog yazı gövdesinde bağlantı düzeltmesi kodla, bütün yazılar için). Antigravity: H11 taslağı, H14, C1 birleştirme listesi ve taslağı, hacim tablosu. **Dosya sınırı:** Antigravity yalnızca `src/app/(main)/rehberlik/page.tsx`, `docs/taslaklar/*`, `docs/CALISMA-KAYDI.md` ve bu dosyadaki kendi maddelerinin kutucuklarına dokunur. Diğer her dosya o sırada Claude'da.
 
 **Hemen (kod)**
-- [ ] **H1 · Ana sayfa videosu (C, S)** — 20,8 MB mp4 `preload="auto"` ile iniyor. Mobilde oynatma yok ya da `preload="none"`, kapak görseli kalsın; video 720p ~2–3 MB'a sıkıştırılsın (dosya S'den); admin'de video yüklerken boyut uyarısı.
-- [ ] **H2 · Video kapağı (C)** — `lh3.googleusercontent.com/aida-public/…` geçici adres (357 KB, 1 gün önbellek) yerine kalıcı, küçültülmüş görsel.
-- [ ] **H3 · Kampanya ve /paketler görselleri (C)** — Unsplash `w=2600` → 1200; ana sayfa kampanya kartı, `/paketler` üst görseli ve paket kartları `next/image` ile. *(kısmen: /paketler ve kampanya sayfaları yayında; ana sayfa kampanya kartları onay bekliyor)*
+- [x] **H1 · Ana sayfa videosu (C, S)** — 20,8 MB mp4 `preload="auto"` ile iniyor. Mobilde oynatma yok ya da `preload="none"`, kapak görseli kalsın; video 720p ~2–3 MB'a sıkıştırılsın (dosya S'den); admin'de video yüklerken boyut uyarısı. *(1 Ekim, 2302504: mobilde video yok, masaüstünde yüklemeden sonra; kullanıcı onayı)*
+- [x] **H2 · Video kapağı (C)** — `lh3.googleusercontent.com/aida-public/…` geçici adres (357 KB, 1 gün önbellek) yerine kalıcı, küçültülmüş görsel. *(videonun ilk karesi `public/images/hero-kabe.jpg`)*
+- [x] **H3 · Kampanya ve /paketler görselleri (C)** — Unsplash `w=2600` → 1200; ana sayfa kampanya kartı, `/paketler` üst görseli ve paket kartları `next/image` ile.
 - [x] **H4 · Blog içerik görselleri (C)** — veritabanı HTML'indeki `<img>`'lere genişlik/yükseklik, ilk görsel hariç `loading="lazy"`, küçültme servisi. Hedef: vize yazısı mobil 57 → 85+. *(1 Ekim, acda0a4: vize yazısı mobil 57→92, LCP 14,9→2,8 sn, 6,3→2,2 MB)*
 - [x] **H5 · 404 blog adreslerine 301 (C)** — `mekke-medine-bebek-mamasi-bezi-temini-kolay-mi-2026` → `bebekle-umre-kolay-mi-2026-kurallar-ve-ipuclari`; `umre-turlari-2026-bireysel-umre` ve `2026-umre-turlari-hadi-umreye-gidelim-manevi-yenilenme` → `2026-umre-turlari-diyanet-bireysel-fiyatlar-vip-ipuclari`; `ayak-tabanlarinin-su-toplamamasi-…` → en yakın yazı. *(1 Ekim, acda0a4)*
 - [x] **H6 · Vize yazısında kırık bağlantı (C/A)** — iki `href="visa.visitsaudi.com"` (https yok, biri metinsiz). *(1 Ekim, acda0a4: https'siz bağlantılar kodla düzeltiliyor, vize bağlantısı /umre-vizesi'ye; tüm yazılar için)*
-- [ ] **H7 · Doğrulanamayan vaatler (C)** — ana sayfa açıklaması "En ucuz fiyatlar", tasarlayıcı açıklaması "en ucuz … sıfır lüks"; yeni doğrulanabilir metin. *(kısmen: tasarlayıcı yayında; ana sayfa açıklaması onay bekliyor)*
-- [ ] **H8 · Erişilebilirlik (C)** — ana sayfada `<main>`; `UmrahSteps` sekme rolleri; `text-primary/60` küçük etiketlerde kontrast; blog ve şehir sayfalarında başlık sırası. *(kısmen: sekme rolleri ve kontrast yayında; ana sayfa `<main>` ve WhatsApp düğmesi rengi onay bekliyor)*
+- [x] **H7 · Doğrulanamayan vaatler (C)** — ana sayfa açıklaması "En ucuz fiyatlar", tasarlayıcı açıklaması "en ucuz … sıfır lüks"; yeni doğrulanabilir metin.
+- [x] **H8 · Erişilebilirlik (C)** — ana sayfada `<main>`; `UmrahSteps` sekme rolleri; `text-primary/60` küçük etiketlerde kontrast; blog ve şehir sayfalarında başlık sırası.
 - [x] **H9 · İkon yazı tipi (C)** — Google Material Symbols 343 KB, oluşturmayı engelliyor → kullanılan ikonlarla alt küme ya da SVG. *(1 Ekim, acda0a4: 343 → 11 KB, `public/fonts/icons/ICONS.txt`; yeni ikon eklenirse alt küme yeniden üretilir)*
 - [x] **H10 · Logo (C)** — 110 KB PNG → WebP/SVG. *(1 Ekim, acda0a4: sekme simgesi 2–9 KB)*
 

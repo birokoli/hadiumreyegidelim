@@ -79,6 +79,8 @@ Kural: Bir kelime kümesini yalnızca bir sayfa hedefler. Diğer sayfalar o sayf
 ### Faz H — Hız ve 1 Ekim raporu bulguları (ayrıntı: `docs/SITE-RAPORU-2026-10-01.md`)
 Kim: **C** Claude Code, **A** Antigravity, **S** kullanıcı. Görünümü değiştiren işler (H1, H3) önce lokalde kullanıcıya gösterilir.
 
+**İş bölümü (1 Ekim, paralel çalışma):** Claude: H1–H10 (H6 blog yazı gövdesinde bağlantı düzeltmesi kodla, bütün yazılar için). Antigravity: H11 taslağı, H14, C1 birleştirme listesi ve taslağı, hacim tablosu. **Dosya sınırı:** Antigravity yalnızca `src/app/(main)/rehberlik/page.tsx`, `docs/taslaklar/*`, `docs/CALISMA-KAYDI.md` ve bu dosyadaki kendi maddelerinin kutucuklarına dokunur. Diğer her dosya o sırada Claude'da.
+
 **Hemen (kod)**
 - [ ] **H1 · Ana sayfa videosu (C, S)** — 20,8 MB mp4 `preload="auto"` ile iniyor. Mobilde oynatma yok ya da `preload="none"`, kapak görseli kalsın; video 720p ~2–3 MB'a sıkıştırılsın (dosya S'den); admin'de video yüklerken boyut uyarısı.
 - [ ] **H2 · Video kapağı (C)** — `lh3.googleusercontent.com/aida-public/…` geçici adres (357 KB, 1 gün önbellek) yerine kalıcı, küçültülmüş görsel.

@@ -34,6 +34,16 @@ Antigravity her iş oturumunda bu dosyanın **en üstüne** bir kayıt ekler. Am
 
 <!-- Kayıtlar bu çizginin altına, en yeni en üstte -->
 
+## 2026-10-02 — Claude Code: Antigravity A1–A5 denetimi + yeni çalışma düzeni
+**Sonuç: hızlı, doğruluğu düşük.**
+- **A1:** "Tüm sayfaların görüntüsü" denmiş, 5 dosya var. Envanter 19 olmayan görsele atıf yapıyor ve koda bakılmadan yazılmış: `/paketler`'de filtre ve `/blog`'da arama "var" denmiş (yok); vize formunda "pasaport no + dosya yükleme" denmiş (form bunları bilerek istemiyor); planlayıcı için mevcut değil, planlanan adımlar yazılmış.
+- **A2:** CSV yapısı doğru ve fiyatlar boş (iyi). Ama tekrarlar var (ekstralarda 109 satır / 67 farklı, turlarda 38 / 19), kategoriler tahmine dayalı (24 transferin 21'i başka kategoride), vize satırında "sigorta dâhil" iddiası var.
+- **A4:** "7/24 rehberlik hattı", "sağlık sigortası" doğrulanmamış.
+- **A5:** 4 hedef adres yanlış (`/umre-rehberi/ramazan-umresi` vb.); `/kesifler` 404.
+
+**Kullanıcı kararı (2 Ekim):** angarya işleri Antigravity yapar, Claude kontrol eder ve **canlıya yalnızca Claude alır**. Yeni düzen: `docs/antigravity/GOREVLER.md` (kurallar + G1–G4 paketleri, dosya sahipliği), teslimler `docs/antigravity/TESLIM.md` (kanıtlı). Antigravity commit ve push yapmaz.
+
+
 ## 2026-10-02 — Claude Code: Y0 (tasarım kiti) ve Y1 (kendi fiyat kataloğu) tamam
 **Commitler:** Y0 kit + ana sayfa; Y1 katalog; Prisma istemcisi. Hepsi canlı.
 

@@ -4,7 +4,7 @@
 // JSON-LD burada görünmez (Next.js sayfalarında şema sunucuda basıldığı
 // için bu sitede sorun değil).
 
-import { SITE_URL } from "./site";
+import { SITE_DOMAIN, SITE_URL } from "./site";
 
 const UA = "HadiUmreyeSEO/1.0 (+admin site denetimi)";
 const PAGE_TIMEOUT_MS = 15_000;
@@ -103,8 +103,9 @@ function collectSchemaTypes(node: unknown, into: Set<string>) {
 export function toPath(href: string): string | null {
   try {
     const u = new URL(href, SITE_URL);
+    // www'li ve www'siz adres aynı site sayılır (SITE_URL www'li, SITE_DOMAIN www'siz)
     const host = u.hostname.replace(/^www\./, "");
-    if (host !== new URL(SITE_URL).hostname) return null;
+    if (host !== SITE_DOMAIN) return null;
     const p = u.pathname.replace(/\/+$/, "") || "/";
     return decodeURIComponent(p);
   } catch {
@@ -208,7 +209,7 @@ async function fetchText(url: string): Promise<{ status: number; text: string; f
 }
 
 export async function collectSiteFacts(): Promise<SiteFacts> {
-  const apex = new URL(SITE_URL).hostname;
+  const apex = SITE_DOMAIN;
   const [robots, sitemap, llms, http, www, bare] = await Promise.all([
     fetchText(`${SITE_URL}/robots.txt`),
     fetchText(`${SITE_URL}/sitemap.xml`),
@@ -272,7 +273,7 @@ export function buildIssues(facts: SiteFacts, pages: PageResult[]): Issue[] {
     add({ code: "robots-missing", category: "Taranabilirlik", severity: "kritik", title: "robots.txt okunamadı", fix: "src/app/robots.ts dosyasının canlıda /robots.txt olarak 200 döndüğünü kontrol edin." });
   } else {
     if (robotsBlocks(facts.robots, "*")) add({ code: "robots-blocks-all", category: "Taranabilirlik", severity: "kritik", title: "robots.txt tüm siteyi kapatıyor", fix: "User-agent: * altındaki \"Disallow: /\" satırını kaldırın." });
-    if (!/^\s*sitemap:/im.test(facts.robots)) add({ code: "robots-no-sitemap", category: "Taranabilirlik", severity: "düşük", title: "robots.txt sitemap adresini vermiyor", fix: "robots.txt sonuna \"Sitemap: https://hadiumreyegidelim.com/sitemap.xml\" ekleyin." });
+    if (!/^\s*sitemap:/im.test(facts.robots)) add({ code: "robots-no-sitemap", category: "Taranabilirlik", severity: "düşük", title: "robots.txt sitemap adresini vermiyor", fix: `robots.txt sonuna "Sitemap: ${SITE_URL}/sitemap.xml" ekleyin.` });
     const blocked = AI_BOTS.filter((b) => robotsBlocks(facts.robots!, b));
     if (blocked.length) add({ code: "ai-bots-blocked", category: "Yapısal veri ve AI", severity: "yüksek", title: "AI arama botları engellenmiş", detail: blocked.join(", "), fix: "Bu botlar engelliyken ChatGPT, Perplexity ve Claude siteyi kaynak gösteremez. Engeli kaldırın ya da yalnızca eğitim botlarını (CCBot) kapatın." });
   }

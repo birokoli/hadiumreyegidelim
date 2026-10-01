@@ -44,7 +44,7 @@ Kural: Bir kelime kümesini yalnızca bir sayfa hedefler. Diğer sayfalar o sayf
 - [ ] **A4 · Hacim** — SEO Masası → Kelimeler'de bu 22 kelimenin ve adaylarının arama hacmini çek; `CALISMA-KAYDI.md`'ye tablo olarak yaz. Faz B/C sırası hacme göre güncellenir.
 
 ### Faz B — Satış sayfaları (hafta 1–3)
-- [ ] **B1 · `/umre-vizesi` yeniden yazımı** — *(1 Ekim: başvuru sayfası `/umre-vizesi/basvuru` açıldı; "umre vizesi başvuru/başvurusu" kelimelerinin hedefi bu sayfa. Ücret ve süre kullanıcıdan gelince hem rehbere hem başvuru sayfasına eklenecek.)* (Antigravity; önce kullanıcıdan **vize hizmet fiyatı** ve **ortalama çıkış süresi** alınır — bilinmeden rakam yazılmaz)
+- [ ] **B1 · `/umre-vizesi` yeniden yazımı** — *(1 Ekim: başvuru sayfası `/umre-vizesi/basvuru` açıldı; "umre vizesi başvuru/başvurusu" kelimelerinin hedefi bu sayfa. Ücret ve süre kullanıcıdan gelince hem rehbere hem başvuru sayfasına eklenecek.)* (Antigravity) — *1 Ekim: kullanıcı verdi: kişi başı **140 USD**, belgeler tamamsa **2 iş saati**. /umre-vizesi ve /umre-vizesi/basvuru'ya işlendi (Claude).*
   - `<title>`: "Umre Vizesi 2026: Kaç TL, Kaç Günde Çıkar?" (≤60 ile şablon). H1 "Umre vizesi nasıl alınır?".
   - İlk paragraf (40–60 kelime): vize türü, bizim ücretimiz, süre, nasıl başvurulur.
   - Soru başlıkları (her biri ayrı H2, altında doğrudan cevap): "Umre vizesi kaç TL?" (bizim fiyatımız + neyi kapsadığı), "Umre vizesi kaç günde çıkar?", "Umre vizesi nasıl alınır?" (adım listesi), "Başvuru için hangi belgeler gerekir?", "Vize ne kadar geçerli?", "Vize reddedilirse ne olur?" (bildiğin kadarını; uydurma yok).

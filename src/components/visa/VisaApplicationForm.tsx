@@ -51,7 +51,7 @@ export default function VisaApplicationForm({ whatsappNumber }: { whatsappNumber
       <div className="rounded-2xl border border-primary/20 bg-primary/[0.04] p-6 md:p-8" role="status">
         <p className="font-headline text-2xl font-bold text-primary">Başvurunuz alındı</p>
         <p className="mt-2 text-on-surface-variant leading-relaxed">
-          Ekibimiz sizi {form.phone} numarasından arayarak ya da WhatsApp&apos;tan yazarak ücret, süre ve gereken belgeleri bildirecek. Pasaport bilgilerinizi yalnızca bu görüşmede güvenli şekilde isteyeceğiz.
+          Ekibimiz sizi {form.phone} numarasından arayarak ya da WhatsApp&apos;tan yazarak gereken belgeleri ve ödeme adımını bildirecek. Pasaport bilgilerinizi yalnızca bu görüşmede güvenli şekilde isteyeceğiz.
         </p>
         <a href={wa} target="_blank" rel="noopener noreferrer" className="mt-5 inline-flex items-center gap-2 rounded-xl bg-[#25D366] px-5 py-3 text-sm font-bold text-white hover:bg-[#1fb857]">
           <WhatsAppIcon className="h-4 w-4" /> WhatsApp&apos;tan hemen yaz

@@ -62,3 +62,13 @@ Canlı veritabanı HTML içeriğinde iki adet kırık `visa.visitsaudi.com` bağ
 5. **Sağlık Bakanlığı bağlantısı** vize yazısında ancak "aşı şartları" bölümü varsa anlamlı; yoksa eklenmemeli.
 
 **Durum:** taslak. Kullanıcıdan süre ve ücret gelince düzeltilmiş metin admin → Blog İçerikleri'nden uygulanır.
+
+
+---
+
+## Kullanıcıdan gelen bilgi (1 Ekim)
+
+- **Süre:** vize 2 iş saati içinde çıkar (belgeler eksiksiz ulaştıktan sonra).
+- **Ücret:** kişi başı 140 USD (bizim umre vizesi hizmetimizin ücreti).
+- `[SÜRE]` ve `[ÜCRET]` yer tutucularına bu değerler yazılır. Resmî harçla karşılaştırma yapılmaz, "sigorta dâhil" gibi kaynaksız ek bilgi yazılmaz.
+- Aynı bilgiler canlıda: `/umre-vizesi` (SSS + üst bölüm) ve `/umre-vizesi/basvuru` (açıklama, SSS, Service şemasında Offer 140 USD).

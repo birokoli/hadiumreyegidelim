@@ -7,15 +7,23 @@ import { PageTrust, webPageJsonLd } from "@/components/seo/PageTrust";
 
 export const metadata: Metadata = {
   title: { absolute: "Bireysel Umre Vizesi Nasıl Alınır? Suudi Arabistan E-Vize" },
-  description: "Acentelere bağlı kalmadan, 1 yıllık çok girişli Suudi Arabistan Turistik E-Vizesi ile Bireysel Umre yapmanın tüm detayları.",
+  description: "Umre vizesi 2026: Suudi Arabistan turist e-vizesiyle umre yapılır. Vize hizmetimiz kişi başı 140 USD, belgeler tamamsa 2 iş saatinde çıkar.",
   keywords: ["umre vizesi", "bireysel umre vizesi", "bireysel umre vizesi nasıl alınır", "suudi arabistan e vize umre", "umre vize fiyatları 2026", "turistik umre vizesi", "bireysel umre"],
   alternates: {
     canonical: `${SITE_URL}/umre-vizesi`,
   }
 };
 
-// Genel kabul görmüş temel bilgiler; fiyat ve işlem süresi iddiası yok
+// Genel bilgiler + bizim vize hizmetimizin ücreti ve süresi (kullanıcıdan, 1 Ekim 2026)
 const VISA_FAQ = [
+  {
+    q: "Umre vizesi ne kadar sürede çıkar?",
+    a: "Hadi Umreye Gidelim üzerinden yapılan umre vizesi başvurusunda, belgeleriniz eksiksiz ulaştıktan sonra vize 2 iş saati içinde çıkar.",
+  },
+  {
+    q: "Umre vizesi ücreti ne kadar?",
+    a: "Umre vizesi hizmetimizin ücreti kişi başı 140 USD'dir. Başvuruyu online vize başvuru formumuzdan başlatabilirsiniz.",
+  },
   {
     q: "Umre için hangi vize gerekir?",
     a: "Türkiye'den umreye gidenler Suudi Arabistan'ın elektronik turist vizesiyle (e-vize) umre yapabilir. Ayrı bir \"bireysel umre vizesi\" türü yoktur; turist vizesi umre yapmaya izin verir.",
@@ -56,6 +64,7 @@ export default function UmreVizesiPage() {
             <Link href="/umre-vizesi/basvuru" className="mt-8 inline-flex items-center gap-2 rounded-2xl bg-white px-7 py-4 text-sm font-bold text-primary shadow-xl hover:bg-white/90">
               Online vize başvurusu yap →
             </Link>
+            <p className="mt-4 text-sm font-semibold text-white/85">Kişi başı 140 USD · Belgeler tamamsa 2 iş saatinde</p>
           </div>
           <div className="absolute right-0 top-0 opacity-10 pointer-events-none transform translate-x-1/4 -translate-y-1/4 scale-150">
             <span className="material-symbols-outlined text-[400px]">flight_takeoff</span>

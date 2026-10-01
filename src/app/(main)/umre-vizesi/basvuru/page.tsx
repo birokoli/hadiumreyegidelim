@@ -8,13 +8,13 @@ import { getSiteSettings } from "@/lib/site-settings";
 
 export const metadata: Metadata = {
   title: pageTitle("Umre Vizesi Başvurusu: Online Başvuru"),
-  description: "Umre vizesi başvurusunu Hadi Umreye Gidelim'e bırakın: formu doldurun, ekibimiz ücret, süre ve gereken belgeleri bildirsin, e-vizenizi sizin için alsın.",
+  description: "Umre vizesi başvurusu: kişi başı 140 USD, belgeleriniz tamamsa vize 2 iş saatinde çıkar. Formu doldurun, Suudi e-vizenizi sizin adınıza alalım.",
   alternates: { canonical: `${SITE_URL}/umre-vizesi/basvuru` },
 };
 
 const STEPS = [
   { t: "Formu doldurun", d: "Ad soyad, telefon, kişi sayısı ve planlanan gidiş tarihini yazın. Pasaport numarası istemiyoruz." },
-  { t: "Sizi arıyoruz", d: "Ekibimiz telefon ya da WhatsApp üzerinden ücreti, süreyi ve gereken belgeleri bildirir." },
+  { t: "Sizi arıyoruz", d: "Ekibimiz telefon ya da WhatsApp üzerinden gereken belgeleri ve ödeme adımını bildirir." },
   { t: "Belgeleri güvenle iletin", d: "Pasaport sayfanızın ve vesikalık fotoğrafınızın görüntüsünü görüşmede belirttiğimiz güvenli kanaldan gönderirsiniz." },
   { t: "E-vizeniz gelir", d: "Başvurunuzu Suudi Arabistan'ın elektronik vize sistemi üzerinden yaparız; onaylanan e-vize size iletilir." },
 ];
@@ -27,9 +27,9 @@ const DOCS = [
 ];
 
 const FAQ = [
-  { q: "Umre vizesi başvurusu nasıl yapılır?", a: "Bu sayfadaki ön başvuru formunu doldurmanız yeterli. Ekibimiz sizi arayarak ücreti, süreyi ve gereken belgeleri bildirir; başvuruyu elektronik vize sistemi üzerinden sizin adınıza yaparız." },
+  { q: "Umre vizesi başvurusu nasıl yapılır?", a: "Bu sayfadaki ön başvuru formunu doldurmanız yeterli. Ekibimiz sizi arayarak gereken belgeleri bildirir; başvuruyu elektronik vize sistemi üzerinden sizin adınıza yaparız." },
   { q: "Umre vizesi başvurusu için hangi belgeler gerekir?", a: "Giriş tarihinden itibaren en az 6 ay geçerli pasaport, pasaportun fotoğraflı sayfasının görüntüsü, dijital vesikalık fotoğraf ve iletişim bilgileri gerekir." },
-  { q: "Vize ücreti ve çıkış süresi ne kadar?", a: "Güncel ücret ve tahmini süre başvurunuzdan sonra telefonla ya da WhatsApp'tan yazılı olarak bildirilir. Umre paketimizi ya da bireysel umre planınızı bizden alırsanız vize işlemleri aynı planda yürütülür." },
+  { q: "Vize ücreti ve çıkış süresi ne kadar?", a: "Umre vizesi hizmetimizin ücreti kişi başı 140 USD'dir. Belgeleriniz eksiksiz ulaştıktan sonra vize 2 iş saati içinde çıkar. Umre paketimizi ya da bireysel umre planınızı bizden alırsanız vize işlemleri aynı planda yürütülür." },
   { q: "Pasaport bilgilerimi forma neden yazmıyorum?", a: "Kişisel verilerinizi korumak için formda pasaport numarası istemiyoruz. Belgeleri görüşmede belirttiğimiz güvenli kanaldan alırız." },
 ];
 
@@ -37,7 +37,7 @@ export default async function VisaApplicationPage() {
   const whatsappNumber = ((await getSiteSettings()).WHATSAPP_NUMBER || "905404010038").replace("+", "");
   const url = `${SITE_URL}/umre-vizesi/basvuru`;
   const jsonLd = [
-    { "@context": "https://schema.org", "@type": "Service", name: "Umre vizesi başvurusu", serviceType: "Suudi Arabistan e-vize başvurusu", provider: { "@type": "TravelAgency", name: "Hadi Umreye Gidelim", url: SITE_URL }, areaServed: "TR", url },
+    { "@context": "https://schema.org", "@type": "Service", name: "Umre vizesi başvurusu", serviceType: "Suudi Arabistan e-vize başvurusu", provider: { "@type": "TravelAgency", name: "Hadi Umreye Gidelim", url: SITE_URL }, areaServed: "TR", url, offers: { "@type": "Offer", price: "140", priceCurrency: "USD", description: "Kişi başı umre vizesi hizmeti; belgeler tamamsa 2 iş saatinde", url } },
     { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: FAQ.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) },
     { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [
       { "@type": "ListItem", position: 1, name: "Anasayfa", item: SITE_URL },
@@ -58,7 +58,7 @@ export default async function VisaApplicationPage() {
           <div className="min-w-0">
             <h1 className="font-headline text-3xl md:text-5xl font-bold text-primary leading-tight">Umre vizesi başvurusu</h1>
             <p className="mt-5 text-lg leading-relaxed text-on-surface">
-              Umre vizesi başvurunuzu Hadi Umreye Gidelim&apos;e bırakabilirsiniz. Formu doldurun; ekibimiz ücreti, süreyi ve gereken belgeleri bildirsin, Suudi Arabistan e-vizenizi sizin adınıza alsın. Umreyi kendi takviminizle planlamak isterseniz vize, uçuş ve otel aynı planda yürür.
+              Umre vizesi başvurunuzu Hadi Umreye Gidelim&apos;e bırakabilirsiniz. Ücret kişi başı 140 USD; belgeleriniz tamamsa vize 2 iş saatinde çıkar. Formu doldurun, ekibimiz gereken belgeleri bildirsin ve Suudi Arabistan e-vizenizi sizin adınıza alsın. Umreyi kendi takviminizle planlamak isterseniz vize, uçuş ve otel aynı planda yürür.
             </p>
 
             <section className="mt-10">

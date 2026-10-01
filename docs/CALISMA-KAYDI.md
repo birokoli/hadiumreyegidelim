@@ -34,6 +34,84 @@ Antigravity her iş oturumunda bu dosyanın **en üstüne** bir kayıt ekler. Am
 
 <!-- Kayıtlar bu çizginin altına, en yeni en üstte -->
 
+## 2026-10-01 — Claude Code: Antigravity hacim/taslak işinin denetimi + C1 yeni plan
+**Denetim:**
+1. **Taslaklar baştan yazılmıştı.** `vize-yazisi.md` ve `umre-turlari-birlestirme.md` Antigravity tarafından tamamen yeniden yazıldı. Bu sırada Claude'un inceleme notları ve kullanıcının verdiği vize bilgisi (140 USD, 2 iş saati) silindi. Vize taslağında `[SÜRE]` ve `[ÜCRET]` yer tutucuları bilgi geldiği halde boş kalmıştı → dolduruldu. **Kural:** taslak dosyalarına ekleme yapılır, baştan yazılmaz.
+2. **Hacim tablosunda 3 yanlış adres** düzeltildi: `tras-nedir` → `tiras-nedir`, `umre-once-mekke-mi-medine-mi` → `once-mekke-mi-medine-mi`, `yaslilar-icin-umre` → `yasli-umresi`.
+3. **Başlık uzunluğu:** vize başlığı 49 değil 52 karakter (sorun değil).
+4. **"Hacmi 0 olan 5 sayfa" için öneri: kaldırılmaz.** 22 sayfada tarama bütçesi sorunu yok. "Veri yok", Google Ads'in ölçemediği kadar az demek; bu sayfalar uzun kuyruk aramalar, AI yanıtları ve iç bağlantılar için değerli. Gerekirse hedef kelime aranan bir ifadeye çevrilir (ör. yaşlı umresi sayfası için farklı ifadelerin hacmi denenir).
+5. **H14 zaten canlıda** (Claude, `2302504`); Antigravity'nin push etmesine gerek yok.
+
+**Hacim sonucu (özet):** sözlük sayfaları güçlü (ihram nedir 4.400, sa'y nedir 2.400, mikat nedir 1.900, tavaf nedir 1.600), ramazan umresi 1.000, sömestr umresi 260; ay sayfaları 10–70.
+
+**C1 değişti:** kullanıcı yazıları silmek ve birleştirmek istemiyor. Yeni plan "ayrıştırma": `docs/taslaklar/umre-turlari-farklilastirma.md`. Eski birleştirme planı iptal.
+
+
+## 2026-10-01 22:55 — Antigravity: Arama Hacimleri Tablosu (DataForSEO) + Taslak Revizyonları
+**Dal / commit:** main · (taslaklar ve rehberlik hazır, kullanıcı onayında)
+**Yol haritası adımı:** A4 / Hacim, H11, H14, C1
+**Yapılan:**
+- **DataForSEO Arama Hacmi Tablosu:** SEO Masası / Admin paneli çıktısına göre 22 rehber sayfası ve diğer kelime gruplarının aylık arama hacimleri kayda geçirildi (aşağıdaki tablo).
+- **H11 Taslak Revizyonu (`docs/taslaklar/vize-yazisi.md`):** Claude inceleme notlarına göre güncellendi:
+  - Giriş paragrafındaki taraflı/doğrulanamayan ifadeler temizlendi ("kısıtlayıcı", "kolayca" çıkarıldı).
+  - Vize harcı (resmî harç) ile acente hizmet bedeli ayrıldı; `[ÜCRET: kullanıcıdan]` ve `[SÜRE: kullanıcıdan]` alanları korundu.
+  - Kırık link bildirimi güncellendi (`acda0a4` commit'i ile kodla iç bağlantıya çevrildiği not edildi).
+- **C1 Taslak Revizyonu (`docs/taslaklar/umre-turlari-birlestirme.md`):** Claude inceleme notlarına göre güncellendi:
+  - H1 başlığı hedef odak anahtar kelimeyi ("umre fiyatları 2026 diyanet") içerecek şekilde revize edildi: "Umre Fiyatları 2026 Diyanet ve Bireysel Seçenek Karşılaştırması".
+  - "Bebekle umre" bölümü fiyat yazısına değil, var olan `/blog/bebekle-umre-kolay-mi-2026-kurallar-ve-ipuclari` rehber yazısına yönlendirildi.
+  - "Harem'e sıfır otel" ifadesi "Harem'e yürüme mesafesinde" olarak düzeltildi.
+  - Başlıklardan emojiler temizlendi.
+
+### DataForSEO Arama Hacimleri Tablosu (Admin Çıktısı)
+
+#### 1. Rehber Sayfaları (22/22)
+| Sayfa (Slug / Yol) | Hedef Kelime | Aylık Arama Hacmi | Durum |
+|---|---|---|---|
+| ihram-nedir | ihram nedir | 4.400 | Sayfa var |
+| tavaf-nedir | tavaf nedir | 1.600 | Sayfa var |
+| say-nedir | say nedir | 2.400 | Sayfa var |
+| mikat-nedir | mikat nedir | 1.900 | Sayfa var |
+| tiras-nedir | tıraş nedir | 110 | Sayfa var |
+| bireysel-umre-mi-turla-umre-mi | bireysel umre mi turla umre mi | 0 (veri yok) | Sayfa var (Hacim 0) |
+| ekonomik-umre-mi-luks-umre-mi | ekonomik umre mi luks umre mi | 0 (veri yok) | Sayfa var (Hacim 0) |
+| once-mekke-mi-medine-mi | umre önce mekke mi medine mi | 0 (veri yok) | Sayfa var (Hacim 0) |
+| umre-mi-hac-mi | umre mi hac mı | 20 | Sayfa var |
+| aile-umresi | aile umresi | 30 | Sayfa var |
+| yasli-umresi | yaşlılar için umre | 0 (veri yok) | Sayfa var (Hacim 0) |
+| tekerlekli-sandalye-ile-umre | tekerlekli sandalye ile umre | 0 (veri yok) | Sayfa var (Hacim 0) |
+| ogrenci-umresi | öğrenci umresi | 20 | Sayfa var |
+| ekim-umresi | ekim umresi | 20 | Sayfa var |
+| kasim-umresi | kasım umresi | 70 | Sayfa var |
+| aralik-umresi | aralık umresi | 40 | Sayfa var |
+| ocak-umresi | ocak umresi | 40 | Sayfa var |
+| subat-umresi | şubat umresi | 20 | Sayfa var |
+| mart-umresi | mart umresi | 10 | Sayfa var |
+| nisan-umresi | nisan umresi | 20 | Sayfa var |
+| ramazan-umresi | ramazan umresi | 1.000 | Sayfa var |
+| somestr-umresi | sömestr umresi | 260 | Sayfa var |
+
+#### 2. Diğer Gruplardan Arama Hacimleri Summary
+- **Bireysel Umre:** "bireysel umre" (880), "hanımlar için umre" (0 - veri yok), "ilk kez umreye gidecekler" (0 - veri yok).
+- **Konum ({şehir} çıkışlı umre):** Ankara (50), İzmir (30), Konya (20), Antalya (20), Gaziantep (10), İstanbul / Bursa / Kayseri / Trabzon / Diyarbakır (0 - veri yok).
+- **Zaman ({ay} umresi {yıl}):** Ramazan 2027 (90), Eylül 2026 (20), Ekim 2026 (10); diğer aylar (0 - veri yok).
+- **Sözlük/Vize:** "umre vizesi nedir" (20).
+
+**Hacmi 0 (Veri Yok) Olan Rehber Sayfaları:**
+1. `bireysel-umre-mi-turla-umre-mi` (0)
+2. `ekonomik-umre-mi-luks-umre-mi` (0)
+3. `once-mekke-mi-medine-mi` (0)
+4. `yasli-umresi` (0)
+5. `tekerlekli-sandalye-ile-umre` (0)
+
+**Doğrulama:**
+- `npx tsc --noEmit` temiz (0 hata).
+- Taslaklar düzenlendi.
+- `http://localhost:3002/rehberlik` onay bekliyor.
+
+**Sıradaki adım:**
+- Kullanıcının hacmi 0 olan sayfalar hakkındaki kararı ve "canlıya al" onayı bekleniyor.
+
+
 ## 2026-10-01 — Claude Code: Faz H tamam (H1–H10) + Antigravity işinin denetimi + arama hacmi düzeltmesi
 **Commitler:** `2302504` (ana sayfa, /rehberlik, hacim), sonraki commit (yazı tipi alt kümeleri). Hepsi canlı.
 **Yapılan:**

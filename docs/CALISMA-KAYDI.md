@@ -34,6 +34,56 @@ Antigravity her iş oturumunda bu dosyanın **en üstüne** bir kayıt ekler. Am
 
 <!-- Kayıtlar bu çizginin altına, en yeni en üstte -->
 
+## 2026-10-01 23:08 — Antigravity: Tüm "Umre Turları 2026" Yazılarının Ayrıştırma Taslakları Tamamlandı
+**Dal / commit:** main · (6 ayrıştırma taslağı hazır, kullanıcı onayında)
+**Yol haritası adımı:** C1 / Ayrıştırma (Farklılaştırma) Planı
+**Yapılan:**
+- **Ana Yazı ve 5 Uydu Yazının Ayrıştırma Taslakları Hazırlandı:** `docs/taslaklar/ayristirma/` klasöründe 6 ayrı makale için spesifik rehber taslakları oluşturuldu:
+  1. **Ana Yazı:** `2026-umre-turlari-diyanet-bireysel-fiyatlar-vip-ipuclari.md` → Title: "Umre Fiyatları 2026: Diyanet mi, Bireysel mi?" (Diyanet & Bireysel genel fiyat karşılaştırması ana merkezi).
+  2. **Uydu 1:** `2026-umre-fiyatlari-rehberi.md` → Title: "Bireysel Umre Maliyeti 2026: Kalem Kalem Ne Tutar?" (Vize, uçak, otel, transfer bütçe kırılımı).
+  3. **Uydu 2:** `umre-turlari-2026-fiyat-karsilastirmalari-diyanet-bireysel-vip.md` → Title: "VIP Umre 2026: Harem'e Yakın Otel ve Özel Transfer" (Lüks konaklama ve özel VIP servisler).
+  4. **Uydu 3:** `umre-turlari-2026-bireysel-diyanet-fiyat-karsilastirma.md` → Title: "Çocukla ve Aileyle Umre 2026: Kişi Sayısına Göre Maliyet" (Aile ve çocuklu seyahat ipuçları).
+  5. **Uydu 4:** `umre-turlari-2026.md` → Title: "2026 Umre Dönemleri: Hangi Dönemde Ne Değişir?" (1., 2., 3., 4. Dönemler, Ramazan ve sömestr farkları).
+  6. **Uydu 5:** `umre-turlari-2026-hadi-umreye-gidelim.md` → Title: "Hadi Umreye Gidelim ile Umre: Nasıl Çalışıyoruz?" (Marka felsefesi ve saha rehberliği).
+
+**Veri ve Kural Kontrolleri:**
+- Gerçek veri kuralı: Vize ücreti **140 USD** (2 iş saati onay) olarak işlendi. Henüz tanımlanmayan paket fiyatları için sahte rakam yazılmadı, `/paketler` ve `/bireysel-umre` bağlantısı verildi.
+- Bağlantı ağı: 5 uydu yazı ana yazıya ("umre fiyatları 2026" anahtar kelimesiyle), ana yazı ise her uydu yazıya kendi konusuyla bağlandı.
+- Yasaklı kelimeler ("TÜRSAB", "diyanetsiz"), rakip isimleri ve "en ucuz", "garanti", "sıfır" kelimeleri kesinlikle kullanılmadı.
+- Yalnızca izin verilen `docs/taslaklar/*` ve `docs/CALISMA-KAYDI.md` dosyalarına dokunuldu.
+
+**Doğrulama:**
+- `npx tsc --noEmit` çalıştırıldı: 0 hata (temiz).
+- `/rehberlik` (H14) canlıda olduğu için push edilmedi.
+
+**Sıradaki adım:**
+- Kullanıcının bu taslakları incelemesi ve admin panelinden (Blog İçerikleri) veritabanı güncellemelerini uygulaması.
+- Claude Code tarafından 301/kategori kontrollerinin ve canlı denetiminin yapılması.
+
+
+## 2026-10-01 23:05 — Antigravity: C1 Birleştirme İptal → Ayrıştırma Planı Ana Yazı Taslağı Hazır
+**Dal / commit:** main · (ana yazı taslağı onay bekliyor)
+**Yol haritası adımı:** C1 / Ayrıştırma (Farklılaştırma)
+**Yapılan:**
+- **Birleştirme Planı İptal Edildi:** Kullanıcı kararı doğrultusunda 6 yazıyı birleştirme planı iptal edildi; `docs/taslaklar/umre-turlari-farklilastirma.md` planı uyarınca yazıları birbiriyle yarışmayan ayrı sorulara cevap veren "Ayrıştırma" sürecine geçildi.
+- **Ana Yazı Ayrıştırma Taslağı Oluşturuldu:** `docs/taslaklar/ayristirma/2026-umre-turlari-diyanet-bireysel-fiyatlar-vip-ipuclari.md` dosyası yazıldı.
+  - **Yeni Title (44 kar):** `Umre Fiyatları 2026: Diyanet mi, Bireysel mi?`
+  - **Yeni Meta Açıklama (147 kar):** `2026 yılı Diyanet ve bireysel umre seçeneklerinin fiyat karşılaştırması. Bütçenize en uygun umre yolculuğunu seçerken dikkat etmeniz gerekenler.`
+  - **Yeni H1:** `Umre Fiyatları 2026: Diyanet mi, Bireysel mi?`
+  - **Devredilen Bölümler:** VIP konaklama bölümü VIP umre yazısına, Bebekle umre 5 kural bölümü ise aile umresi ve bebekle umre rehber yazısına devredildi.
+  - **Veri / Fiyat Kuralları:** Vize maliyeti olarak yalnızca resmî **140 USD** (2 iş saatinde onay) bilgisi yazıldı. Paket fiyatları girilmediği için rakam uydurulmadı, `/paketler` yönlendirmesi sağlandı.
+  - **İç Bağlantı Ağı:** Ana merkez yazıdan diğer 5 uydu yazıya yönlendirme köprüleri kurgulandı.
+
+**Doğrulama:**
+- `npx tsc --noEmit` temiz (0 hata).
+- Yalnızca izin verilen `docs/taslaklar/*` ve `docs/CALISMA-KAYDI.md` dosyalarına dokunuldu.
+- `/rehberlik` (H14) canlıda olduğu için push edilmedi.
+
+**Sıradaki adım:**
+- Kullanıcının bu **Ana Yazı Ayrıştırma Taslağını** inceleyip onay vermesi.
+- Onay geldikten sonra sırasıyla kalan 5 uydu yazının ayrıştırma taslakları (`docs/taslaklar/ayristirma/<slug>.md`) hazırlanacak.
+
+
 ## 2026-10-01 — Claude Code: Antigravity hacim/taslak işinin denetimi + C1 yeni plan
 **Denetim:**
 1. **Taslaklar baştan yazılmıştı.** `vize-yazisi.md` ve `umre-turlari-birlestirme.md` Antigravity tarafından tamamen yeniden yazıldı. Bu sırada Claude'un inceleme notları ve kullanıcının verdiği vize bilgisi (140 USD, 2 iş saati) silindi. Vize taslağında `[SÜRE]` ve `[ÜCRET]` yer tutucuları bilgi geldiği halde boş kalmıştı → dolduruldu. **Kural:** taslak dosyalarına ekleme yapılır, baştan yazılmaz.

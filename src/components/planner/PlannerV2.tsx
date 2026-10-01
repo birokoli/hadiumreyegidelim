@@ -7,8 +7,8 @@
  */
 import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
-import type { CatalogItem } from "@/lib/catalog";
-import { quotePlan, planToText, type PlanInput, type RoomType } from "@/lib/pricing/plan";
+import type { CatalogItem, PaymentSettings } from "@/lib/catalog";
+import { paymentOptions, quotePlan, planToText, type PlanInput, type RoomType } from "@/lib/pricing/plan";
 import WhatsAppIcon from "@/components/home/WhatsAppIcon";
 
 type Month = { value: string; label: string };
@@ -104,7 +104,7 @@ function initialPlan(catalog: CatalogItem[], months: Month[], q: Record<string, 
   };
 }
 
-export default function PlannerV2({ catalog, months, whatsappNumber, query = {} }: { catalog: CatalogItem[]; months: Month[]; whatsappNumber: string; query?: Record<string, string | undefined> }) {
+export default function PlannerV2({ catalog, months, whatsappNumber, payment, query = {} }: { catalog: CatalogItem[]; months: Month[]; whatsappNumber: string; payment: PaymentSettings; query?: Record<string, string | undefined> }) {
   const byDistance = (a: CatalogItem, b: CatalogItem) => (a.distanceMeters ?? 1e9) - (b.distanceMeters ?? 1e9);
   const mekkeHotels = catalog.filter((c) => c.category === "hotel" && c.city === "mekke").sort(byDistance);
   const medineHotels = catalog.filter((c) => c.category === "hotel" && c.city === "medine").sort(byDistance);
@@ -142,7 +142,8 @@ export default function PlannerV2({ catalog, months, whatsappNumber, query = {} 
     if (r.error) { setState("idle"); return setError(r.error); }
     setState("sent");
   };
-  const waHref = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(planToText(input, quote, monthText))}`;
+  const waHref = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(planToText(input, quote, monthText, payment))}`;
+  const payRows = quote.totalUsd > 0 ? paymentOptions(quote.totalUsd, payment) : [];
 
   const hotelStep = (n: number, city: "Mekke" | "Medine", list: CatalogItem[], selected: string | null, key: "mekkeHotelId" | "medineHotelId", nights: number) => (
     <Step n={n} title={`${city} oteli`} hint={nights ? `${nights} gece · ${quote.rooms} oda (${input.roomType} kişilik) · gecelik oda fiyatları ${monthText} için` : `${city}'de konaklama yok`}>
@@ -241,6 +242,20 @@ export default function PlannerV2({ catalog, months, whatsappNumber, query = {} 
             ))}
             {quote.pending.filter((p) => !quote.lines.some((l) => p.startsWith(`${l.label}:`))).map((p) => <li key={p} className="text-white/70">• {p}</li>)}
           </ul>
+          {payRows.length > 0 && (
+            <div className="mt-4 border-t border-white/15 pt-3">
+              <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-white/70">Ödeme seçenekleri</p>
+              <ul className="mt-2 space-y-1 text-[13px]">
+                {payRows.map((r) => (
+                  <li key={r.key} className="flex justify-between gap-3">
+                    <span>{r.label}</span>
+                    <span className="text-right font-semibold">{usd(r.usd)}{r.tryAmount ? <span className="block text-[11px] font-normal text-white/70">≈ {r.tryAmount.toLocaleString("tr-TR")} TL</span> : null}</span>
+                  </li>
+                ))}
+              </ul>
+              {payment.usdTry && <p className="mt-2 text-[11px] text-white/60">TL karşılığı {payment.usdTry.toLocaleString("tr-TR")} ₺ kuruyla{payment.rateDate ? ` (${new Date(payment.rateDate).toLocaleDateString("tr-TR")})` : ""}; kesin tutar teklifte.</p>}
+            </div>
+          )}
         </div>
 
         <div className="rounded-2xl border border-outline-variant/20 bg-white p-5">

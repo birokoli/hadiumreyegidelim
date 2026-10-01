@@ -55,7 +55,8 @@ async function queryCatalog(): Promise<CatalogItem[]> {
       prices: { where: { month: { in: months } }, select: { month: true, variant: true, salePriceUsd: true }, orderBy: [{ month: "asc" }, { variant: "asc" }] },
     },
   });
-  return rows.map((r) => ({
+  // Nusuk randevusu sitede satılmaz (kullanıcı kararı, 2 Ekim): yanlışlıkla "Sitede göster" işaretlense de gösterilmez
+  return rows.filter((r) => !/nusuk/i.test(r.name)).map((r) => ({
     id: r.id,
     slug: r.slug,
     category: r.category as CatalogCategory,
@@ -106,4 +107,21 @@ export function revalidateCatalog() {
   } catch {
     /* tazeleme kaydı engellemez */
   }
+}
+
+// ─── Ödeme seçenekleri ve kur (admin → Aylık Satış Fiyatları → Ödeme ve kur) ───
+
+export type PaymentSettings = { usdTry: number | null; rateDate: string | null; ibanPercent: number; cardPercent: number };
+
+export const PAYMENT_KEYS = { usdTry: "PRICING_USD_TRY", rateDate: "PRICING_RATE_DATE", ibanPercent: "PRICING_IBAN_PERCENT", cardPercent: "PRICING_CARD_PERCENT" } as const;
+
+/** Site ayarlarından ödeme farkları ve dolar kuru. Varsayılan: IBAN +%20, kart +%26 (fiyat motoruyla aynı). */
+export function paymentSettingsFrom(settings: Record<string, string | undefined>): PaymentSettings {
+  const num = (v: string | undefined, d: number | null) => (v != null && v !== "" && Number.isFinite(Number(v)) ? Number(v) : d);
+  return {
+    usdTry: num(settings[PAYMENT_KEYS.usdTry], null),
+    rateDate: settings[PAYMENT_KEYS.rateDate] || null,
+    ibanPercent: num(settings[PAYMENT_KEYS.ibanPercent], 20) ?? 20,
+    cardPercent: num(settings[PAYMENT_KEYS.cardPercent], 26) ?? 26,
+  };
 }

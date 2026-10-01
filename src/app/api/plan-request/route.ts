@@ -2,7 +2,8 @@
 import { NextResponse, after } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { rateLimit, getClientIp } from "@/lib/rate-limit";
-import { getCatalog, monthLabel } from "@/lib/catalog";
+import { getCatalog, monthLabel, paymentSettingsFrom } from "@/lib/catalog";
+import { getSiteSettings } from "@/lib/site-settings";
 import { quotePlan, planToText, type PlanInput } from "@/lib/pricing/plan";
 import { notifyNewLead } from "@/lib/lead-notify";
 import { detectAiSource } from "@/lib/ai-source";
@@ -42,7 +43,8 @@ export async function POST(request: Request) {
   const quote = quotePlan(input, await getCatalog());
   const ai = detectAiSource(str(body?.referrer, 500), str(body?.utmSource, 60));
   const note = str(body?.note, 1000);
-  const message = [planToText(input, quote, monthLabel(month)), note && `Not: ${note}`, `Kaynak: ${ai ? `yapay zekâ (${ai})` : str(body?.utmSource, 60) || "site"}`].filter(Boolean).join("\n");
+  const payment = paymentSettingsFrom(await getSiteSettings().catch(() => ({} as Record<string, string>)));
+  const message = [planToText(input, quote, monthLabel(month), payment), note && `Not: ${note}`, `Kaynak: ${ai ? `yapay zekâ (${ai})` : str(body?.utmSource, 60) || "site"}`].filter(Boolean).join("\n");
 
   try {
     const lead = await prisma.contactRequest.create({ data: { name, phone, package: ai ? `Bireysel umre planı · AI: ${ai}` : "Bireysel umre planı", message } });

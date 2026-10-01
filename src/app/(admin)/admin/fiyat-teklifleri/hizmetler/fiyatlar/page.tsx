@@ -2,6 +2,7 @@
 
 // Aylık satış fiyatları (USD). Sitede planlayıcı, otel ve fiyat sayfaları bu tablodan beslenir.
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 
 type Service = { id: string; name: string; category: string; defaultPricingType: string; isPublic?: boolean; city?: string | null };
 type Price = { serviceId: string; month: string; variant: string; salePriceUsd: number };
@@ -23,10 +24,16 @@ export default function MonthlyPricesPage() {
   const [msg, setMsg] = useState("");
   const [busy, setBusy] = useState(false);
   const [copy, setCopy] = useState({ from: "", to: "", percent: 5, category: "", overwrite: false });
+  const [fill, setFill] = useState({ month: "", margin: 10, category: "", overwrite: false });
+  const [pay, setPay] = useState({ usdTry: "", rateDate: "", ibanPercent: "20", cardPercent: "26" });
 
-  const load = async () => {
+  type Loaded = { s: { error?: string; services?: Service[] }; p: { error?: string; months?: string[]; prices?: Price[]; payment?: { usdTry: number | null; rateDate: string | null; ibanPercent: number; cardPercent: number } } };
+  const fetchAll = async (): Promise<Loaded> => {
     const [s, p] = await Promise.all([fetch("/api/admin/service-library").then((r) => r.json()), fetch("/api/admin/service-prices?n=12").then((r) => r.json())]);
-    if (s.error || p.error) return setMsg(s.error || p.error);
+    return { s, p };
+  };
+  const apply = ({ s, p }: Loaded) => {
+    if (s.error || p.error) return setMsg(s.error || p.error || "");
     setServices(s.services ?? []);
     setMonths(p.months ?? []);
     const v: Record<string, string> = {};
@@ -34,8 +41,15 @@ export default function MonthlyPricesPage() {
     setValues(v);
     setDirty(new Set());
     setCopy((c) => ({ ...c, from: c.from || p.months?.[0] || "", to: c.to || p.months?.[1] || "" }));
+    setFill((c) => ({ ...c, month: c.month || p.months?.[0] || "" }));
+    if (p.payment) setPay({ usdTry: p.payment.usdTry ? String(p.payment.usdTry) : "", rateDate: p.payment.rateDate ?? "", ibanPercent: String(p.payment.ibanPercent), cardPercent: String(p.payment.cardPercent) });
   };
-  useEffect(() => { load(); }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  const load = () => fetchAll().then(apply);
+  useEffect(() => {
+    let alive = true;
+    fetchAll().then((d) => { if (alive) apply(d); });
+    return () => { alive = false; };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const rows = useMemo(() => {
     const list = services.filter((s) => !onlyPublic || s.isPublic);
@@ -77,6 +91,20 @@ export default function MonthlyPricesPage() {
     load();
   };
 
+  const post = async (payload: Record<string, unknown>, ok: (r: Record<string, number>) => string) => {
+    setBusy(true); setMsg("");
+    const r = await fetch("/api/admin/service-prices", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) }).then((x) => x.json());
+    setBusy(false);
+    if (r.error) return setMsg(r.error);
+    setMsg(ok(r));
+    load();
+  };
+  const runFill = () => {
+    if (dirty.size && !confirm("Kaydedilmemiş değişiklikler var; önce kaydedin. Yine de devam edilsin mi?")) return;
+    post({ action: "fromCost", ...fill, category: fill.category || undefined }, (r) => `${label(fill.month)}: ${r.filled} fiyat maliyetten hesaplandı (maliyet × ${1 + fill.margin / 100})${r.skipped ? `, ${r.skipped} dolu hücre korundu` : ""}. Yalnızca "Sitede göster" işaretli ve maliyeti girilmiş hizmetler.`);
+  };
+  const savePay = () => post({ action: "payment", usdTry: Number(pay.usdTry.replace(",", ".")) || 0, rateDate: pay.rateDate, ibanPercent: Number(pay.ibanPercent), cardPercent: Number(pay.cardPercent) }, () => "Ödeme farkları ve kur kaydedildi; planlayıcı bunlarla hesaplar.");
+
   const cell = "w-20 rounded-md border border-outline-variant/30 bg-white px-2 py-1 text-right font-mono text-xs focus:border-primary/50 focus:outline-none";
   const sel = "rounded-lg border border-outline-variant/30 bg-white px-2 py-1.5 text-xs";
 
@@ -84,7 +112,7 @@ export default function MonthlyPricesPage() {
     <div className="p-6 lg:p-8 max-w-[1400px] mx-auto space-y-6 min-h-screen bg-surface text-on-surface">
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-5 border-b border-outline-variant/15">
         <div>
-          <a href="/admin/fiyat-teklifleri/hizmetler" className="text-[11px] font-semibold text-on-surface-variant hover:text-primary">← Hizmet Kütüphanesi</a>
+          <Link href="/admin/fiyat-teklifleri/hizmetler" className="text-[11px] font-semibold text-on-surface-variant hover:text-primary">← Hizmet Kütüphanesi</Link>
           <h1 className="font-headline text-2xl font-bold tracking-tight text-primary mt-1">Aylık satış fiyatları (USD)</h1>
           <p className="text-xs text-on-surface-variant mt-1 max-w-2xl">Sitedeki planlayıcı, otel ve fiyat sayfaları bu fiyatlarla çalışır. Boş hücre = o ay satışta değil. Maliyet burada değil, Hizmet Kütüphanesi'nde; sitede asla gösterilmez.</p>
         </div>
@@ -103,6 +131,27 @@ export default function MonthlyPricesPage() {
         <label className="flex items-center gap-1.5"><input type="checkbox" checked={copy.overwrite} onChange={(e) => setCopy({ ...copy, overwrite: e.target.checked })} className="accent-[#003781]" /> Hedefte dolu hücrelerin üzerine yaz</label>
         <button onClick={runCopy} disabled={busy || copy.from === copy.to} className="rounded-lg border border-primary/30 px-3 py-1.5 font-bold text-primary disabled:opacity-50">Kopyala</button>
       </div>
+
+      <div className="grid gap-3 lg:grid-cols-2">
+        <div className="flex flex-wrap items-end gap-3 rounded-2xl border border-outline-variant/20 bg-white p-4 text-xs">
+          <span className="w-full font-bold text-primary">Maliyetten doldur <span className="font-normal text-on-surface-variant">(satış = maliyet × (1 + kâr %), fiyat motoruyla aynı kural)</span></span>
+          <label>Ay <select value={fill.month} onChange={(e) => setFill({ ...fill, month: e.target.value })} className={sel}>{months.map((m) => <option key={m} value={m}>{label(m)}</option>)}</select></label>
+          <label>Kâr % <input type="number" value={fill.margin} onChange={(e) => setFill({ ...fill, margin: Number(e.target.value) })} className={`${sel} w-16`} /></label>
+          <label>Kategori <select value={fill.category} onChange={(e) => setFill({ ...fill, category: e.target.value })} className={sel}><option value="">Hepsi</option>{ORDER.map((c) => <option key={c} value={c}>{CATEGORIES[c]}</option>)}</select></label>
+          <label className="flex items-center gap-1.5"><input type="checkbox" checked={fill.overwrite} onChange={(e) => setFill({ ...fill, overwrite: e.target.checked })} className="accent-[#003781]" /> Dolu hücrelerin üzerine yaz</label>
+          <button onClick={runFill} disabled={busy || !fill.month} className="rounded-lg border border-primary/30 px-3 py-1.5 font-bold text-primary disabled:opacity-50">Doldur</button>
+        </div>
+        <div className="flex flex-wrap items-end gap-3 rounded-2xl border border-outline-variant/20 bg-white p-4 text-xs">
+          <span className="w-full font-bold text-primary">Ödeme ve kur <span className="font-normal text-on-surface-variant">(planlayıcı nakit, IBAN ve kart tutarlarını ve ≈ TL karşılığını bununla gösterir)</span></span>
+          <label>Dolar kuru (₺) <input inputMode="decimal" value={pay.usdTry} onChange={(e) => setPay({ ...pay, usdTry: e.target.value })} placeholder="49,874" className={`${sel} w-20`} /></label>
+          <label>Kur tarihi <input type="date" value={pay.rateDate} onChange={(e) => setPay({ ...pay, rateDate: e.target.value })} className={sel} /></label>
+          <label>IBAN farkı % <input type="number" value={pay.ibanPercent} onChange={(e) => setPay({ ...pay, ibanPercent: e.target.value })} className={`${sel} w-14`} /></label>
+          <label>Kart farkı % <input type="number" value={pay.cardPercent} onChange={(e) => setPay({ ...pay, cardPercent: e.target.value })} className={`${sel} w-14`} /></label>
+          <button onClick={savePay} disabled={busy} className="rounded-lg bg-primary px-3 py-1.5 font-bold text-white disabled:opacity-50">Kaydet</button>
+        </div>
+      </div>
+
+      <p className="text-[11px] text-on-surface-variant">Not: "Nusuk randevusu" sitede satılmaz; listede olsa ve "Sitede göster" işaretlense bile sitede görünmez.</p>
 
       {msg && <p className="text-xs font-semibold text-secondary" role="status">{msg}</p>}
 

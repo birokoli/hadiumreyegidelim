@@ -34,6 +34,21 @@ Antigravity her iş oturumunda bu dosyanın **en üstüne** bir kayıt ekler. Am
 
 <!-- Kayıtlar bu çizginin altına, en yeni en üstte -->
 
+## 2026-10-02 — Claude Code: Y2 planlayıcı v2 (önizleme) + fiyat motoru kuralları + kategori 500 hatası
+**Commitler:** Y2 planlayıcı, blog kategori düzeltmesi + G1, ödeme ve kur (bu commit). Hepsi canlı.
+
+- **Planlayıcı v2:** `/bireysel-umre/yeni` (noindex). Fiyat motoru `src/lib/pricing/plan.ts`, ekran `src/components/planner/PlannerV2.tsx`, talep `POST /api/plan-request`. Talep admin → İletişim'e "Bireysel umre planı" olarak düşer; AI'dan geldiyse "· AI: ChatGPT" vb. Seçimler adres çubuğunda: plan paylaşılabilir ve AI asistanları hazır plan bağlantısı verebilir.
+- **Kullanıcının fiyat motoru kuralları siteye taşındı** (Excel Fiyat Motoru `ExcelPricingCalculator.tsx`):
+  - satış = maliyet × (1 + kâr %), varsayılan %10;
+  - nakit esas, IBAN +%20, kart +%26;
+  - kur elle.
+  - Aylık fiyat ekranına **"Maliyetten doldur"** (kâr %) ve **"Ödeme ve kur"** (dolar kuru, tarih, IBAN %, kart %) eklendi. Ayarlar `PRICING_USD_TRY`, `PRICING_RATE_DATE`, `PRICING_IBAN_PERCENT`, `PRICING_CARD_PERCENT`.
+  - Planlayıcı özetinde nakit, IBAN ve kart tutarları + ≈ TL; WhatsApp ve talep metninde de var.
+- **Sattığımız kalemler** (kullanıcı): uçak bileti, transfer, tren, Mekke oteli, Medine oteli, hoca, vize. **Nusuk randevusu sitede satılmaz:** katalog adı "nusuk" içeren kalemi "Sitede göster" işaretli olsa bile dışarıda bırakır.
+- **Hata:** `/blog/kategori/*` sayfalarının hepsi 500 veriyordu (Next 16'da `params` beklenmiyordu). Düzeltildi; olmayan kategori artık 404. Antigravity'nin ekran görüntüsünde hata sayfası vardı, fark edilmemişti.
+- **Antigravity G1:** onaylandı (CSV canlı API ile birebir). ENVANTER satır numaraları güvenilmez. G2'ye geçebilir.
+
+
 ## 2026-10-02 — Claude Code: Antigravity A1–A5 denetimi + yeni çalışma düzeni
 **Sonuç: hızlı, doğruluğu düşük.**
 - **A1:** "Tüm sayfaların görüntüsü" denmiş, 5 dosya var. Envanter 19 olmayan görsele atıf yapıyor ve koda bakılmadan yazılmış: `/paketler`'de filtre ve `/blog`'da arama "var" denmiş (yok); vize formunda "pasaport no + dosya yükleme" denmiş (form bunları bilerek istemiyor); planlayıcı için mevcut değil, planlanan adımlar yazılmış.

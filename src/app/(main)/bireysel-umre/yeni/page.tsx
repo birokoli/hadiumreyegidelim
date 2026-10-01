@@ -3,7 +3,7 @@
 import type { Metadata } from "next";
 import { PageHero, Container } from "@/components/ui/kit";
 import PlannerV2 from "@/components/planner/PlannerV2";
-import { getCatalog, monthsFrom, monthLabel } from "@/lib/catalog";
+import { getCatalog, monthsFrom, monthLabel, paymentSettingsFrom } from "@/lib/catalog";
 import { getSiteSettings } from "@/lib/site-settings";
 
 export const metadata: Metadata = {
@@ -26,7 +26,7 @@ export default async function PlannerPreviewPage({ searchParams }: { searchParam
         lead="Dönemi, Mekke ve Medine otelini, ulaşımı ve ekstraları seçin; o ayın güncel fiyatıyla toplamı görün. Planı gönderin, kesin teklifi ekibimiz iletsin."
       />
       <Container>
-        <PlannerV2 catalog={catalog} months={months} whatsappNumber={whatsappNumber} query={query} />
+        <PlannerV2 catalog={catalog} months={months} whatsappNumber={whatsappNumber} payment={paymentSettingsFrom(settings)} query={query} />
       </Container>
     </main>
   );

@@ -1,7 +1,7 @@
 // Bireysel umre planı fiyat motoru (Y2). Saf fonksiyonlar: hem sunucuda hem tarayıcıda çalışır.
 // Fiyatlar yalnızca katalogdaki aylık SATIŞ fiyatlarından gelir (src/lib/catalog). Kurallar fiyat teklifi
 // motoruyla (quotation-calc.ts) aynı: kişi başı, araç başı (kapasiteye göre araç sayısı), oda başı, sabit.
-import type { CatalogItem } from "@/lib/catalog";
+import type { CatalogItem, PaymentSettings } from "@/lib/catalog";
 import { vehicleCapacity } from "@/lib/quotation-calc";
 
 export type RoomType = "2" | "3" | "4";
@@ -117,7 +117,7 @@ export function quotePlan(input: PlanInput, catalog: CatalogItem[]): PlanQuote {
 }
 
 /** WhatsApp ve talep kaydı için numaralı düz metin */
-export function planToText(input: PlanInput, quote: PlanQuote, monthText: string): string {
+export function planToText(input: PlanInput, quote: PlanQuote, monthText: string, payment?: PaymentSettings): string {
   const out = [
     "Merhaba, bireysel umre planım:",
     `1) Dönem: ${monthText}`,
@@ -128,6 +128,22 @@ export function planToText(input: PlanInput, quote: PlanQuote, monthText: string
     ...quote.lines.map((l) => `   - ${l.label} · ${l.detail} · ${l.totalUsd != null ? `${l.totalUsd} USD` : "fiyat teklifte"}`),
     ...quote.pending.filter((p) => !quote.lines.some((l) => p.startsWith(`${l.label}:`))).map((p) => `   - ${p}`),
     `6) Planlayıcı tahmini: ${quote.totalUsd} USD (kişi başı ${quote.perPersonUsd} USD)${quote.complete ? "" : ", eksik kalemler teklifte eklenecek"}`,
+    ...(payment && quote.totalUsd > 0 ? ["7) Ödeme:", ...paymentOptions(quote.totalUsd, payment).map((r) => `   - ${r.label}: ${r.usd} USD${r.tryAmount ? ` (≈ ${r.tryAmount.toLocaleString("tr-TR")} TL)` : ""}`)] : []),
   ];
   return out.join("\n");
+}
+
+export type PaymentRow = { key: "nakit" | "iban" | "kart"; label: string; usd: number; tryAmount: number | null };
+
+/** Nakit esas; IBAN ve kart farkı fiyat motoruyla aynı (varsayılan +%20, +%26). Kur varsa ≈ TL. */
+export function paymentOptions(totalUsd: number, p: PaymentSettings): PaymentRow[] {
+  const rows: [PaymentRow["key"], string, number][] = [
+    ["nakit", "Nakit / peşin", 0],
+    ["iban", `IBAN / havale (+%${p.ibanPercent})`, p.ibanPercent],
+    ["kart", `Kredi kartı (+%${p.cardPercent})`, p.cardPercent],
+  ];
+  return rows.map(([key, label, pct]) => {
+    const usd = Math.round(totalUsd * (1 + pct / 100));
+    return { key, label, usd, tryAmount: p.usdTry ? Math.round(usd * p.usdTry) : null };
+  });
 }

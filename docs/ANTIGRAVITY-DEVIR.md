@@ -80,6 +80,8 @@ Kalan işleri Antigravity bitirir; ama iş her an Claude Code'a geri devredilebi
 
 ## 6. Bilinen tuzaklar
 
+- **2 Ekim'den itibaren ana plan `docs/YENI-NESIL-PLAN.md`** (Y0–Y6). Paketler ve dosya sahipliği oradaki iş bölümüne göre.
+
 - **Kaynak bağlantısı = konuyu anlatan sayfa.** Kurumun ana sayfası kaynak değildir; kaynak başlığı bağlantının içeriğini doğru anlatmalı (1 Ekim: moh.gov.sa ana sayfası düzeltildi). Yeni görevler: SIRALAMA-YOL-HARITASI.md → Faz H.
 
 - **Rehber sayfaları admin'den düzenlenebilir** (1 Ekim): admin'de kaydedilmiş bir sayfanın kod dosyasını değiştirmek sitede görünmez. Önce admin → İçerik Stüdyosu → Rehber Sayfaları listesine bak (bkz. SAYFA-GRUPLARI.md başı).

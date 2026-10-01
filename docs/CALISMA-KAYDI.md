@@ -34,6 +34,35 @@ Antigravity her iş oturumunda bu dosyanın **en üstüne** bir kayıt ekler. Am
 
 <!-- Kayıtlar bu çizginin altına, en yeni en üstte -->
 
+## 2026-10-02 — Claude Code: Y0 (tasarım kiti) ve Y1 (kendi fiyat kataloğu) tamam
+**Commitler:** Y0 kit + ana sayfa; Y1 katalog; Prisma istemcisi. Hepsi canlı.
+
+**Y0:**
+- `src/components/ui/kit/index.tsx`: PageHero, Section, Container, SectionHead, MediaCard, CardFooter, PriceTag, PostCard, Panel, Badge, ButtonLink, Steps, Faq + `faqJsonLd`, EmptyState, Breadcrumb.
+- Ana sayfa kitle kuruldu (görünüm aynı). SSS'den "24 saatte vize", "%30'a varan tasarruf", "eylül-ekim en ucuz" kaldırıldı.
+- Kılavuz `docs/TASARIM-DILI.md`. Vitrin **yalnızca yerelde**: http://localhost:3002/kit (canlıda 404).
+
+**Y1:**
+- **Şema (kullanıcı onayı 2 Ekim):** `ServiceLibrary` alanları `isPublic`, `slug`, `city`, `imageUrl`, `publicDescription`, `hotelStars`, `distanceMeters`; yeni tablo `ServicePrice` (`serviceId`, `month` YYYY-MM, `variant` oda tipi, `salePriceUsd`). Kütüphane ya da fiyat uç noktası ilk çağrıldığında `ensureCatalogSchema()` oluşturur (yalnızca ekleme, IF NOT EXISTS).
+- **Admin:**
+  - Hizmet Kütüphanesi formunda "Sitede göster" bölümü.
+  - Temmuz yenilemesinde formdan **silinmiş** alanlar geri geldi: açıklama, fiyatlandırma tipi, araç tipi, çocuk %, ek yatak (veride duruyordu, form göstermiyordu).
+  - Yeni ekran **Aylık Satış Fiyatları** `/admin/fiyat-teklifleri/hizmetler/fiyatlar`: 12 ay × hizmet, otelde 2/3/4 kişilik oda satırları; "ayı kopyala + %x artır".
+- **Site okuma katmanı:** `src/lib/catalog`. `getCatalog()`, `priceFor()`, `fromPrice()`, `monthsFrom()`, `monthLabel()`. Maliyet hiç seçilmez; kayıtta `revalidateCatalog()`.
+- **Güvenlik:** uçuş servisindeki açık RapidAPI anahtarı koddan kaldırıldı. Kullanıcı anahtarı RapidAPI panelinden iptal edecek (Claude hesaba giremez).
+- **Doğrulama:** tsc temiz; fiyat tablosu sahte API ile tarayıcıda denendi (giriş, kaydet, gönderilen veri doğru); canlıda uç nokta yetkisiz 401.
+
+**Sıradaki:**
+- Kullanıcı: kütüphanede otelleri ve hizmetleri "Sitede göster" ile işaretleyip fiyat girer. İlk açılışta tablolar oluşur.
+- Claude: Y2 fiyat motoru (`src/lib/pricing`) + planlayıcı v2 iskeleti.
+- Antigravity: A1–A5 bitince **Y3-1 /paketler dönüşümü** (aşağıdaki paket).
+
+### Antigravity paketi Y3-1: /paketler liste sayfası (A1 envanteri bittikten sonra)
+- **Dosya sahipliği:** yalnızca `src/app/(main)/paketler/page.tsx`. Kit (`src/components/ui/kit`) değiştirilmez; eksik parça varsa kayda yaz.
+- **Kurallar:** `docs/TASARIM-DILI.md` §5 kontrol listesi. Paket kartları `MediaCard` + `CardFooter` (ana sayfadaki gibi), sayfa başı `PageHero`, SSS varsa `Faq` + `faqJsonLd`. Sayfadaki her işlev korunur (A1 envanteri).
+- **Teslim:** yerelde önce/sonra ekran görüntüsü (1440 + 390), Lighthouse mobil sonucu, kullanıcı onayı. Push öncesi `git pull --rebase`; yalnızca kendi dosyası.
+
+
 ## 2026-10-02 00:55 — Antigravity: Yeni Nesil Plan A1, A2, A4, A5 Belgeleri ve Veri Şablonu Tamamlandı
 **Dal / commit:** main · (belge ve veri hazırlığı tamamlandı)
 **Yol haritası adımı:** Faz Y0/Y1/Y3/Y4/Y5 Hazırlık Görevleri (A1, A2, A3, A4, A5)

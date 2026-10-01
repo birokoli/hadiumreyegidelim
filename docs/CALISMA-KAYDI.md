@@ -34,6 +34,54 @@ Antigravity her iş oturumunda bu dosyanın **en üstüne** bir kayıt ekler. Am
 
 <!-- Kayıtlar bu çizginin altına, en yeni en üstte -->
 
+## 2026-10-01 — Claude Code: Faz H, görünümü değiştirmeyen kısım (H3–H10)
+**Commit:** `acda0a4` (canlı)
+**Yapılan:**
+- **H9 ikonlar:** Google Material Symbols (343 KB, oluşturmayı engelleyen CSS) kaldırıldı. Herkese açık sayfalar kullanılan 93 ikonu içeren 11 KB'lık alt kümeyi yüklüyor (`public/fonts/icons/material-symbols-site.woff2`, liste `ICONS.txt`). Admin, influencer paneli ve kampanya sayfaları (ikonlar admin'den seçilebiliyor) `FullIconFont` ile tam yazı tipini yüklüyor. **Yeni bir ikon eklenirse alt küme yeniden üretilmeli**, yoksa ikon adı yazı olarak görünür.
+- **H4 blog görselleri:** `src/lib/content-images.ts`: yazı gövdesindeki görseller Next görsel servisinden (640/828/1080, AVIF/WebP, geç yükleme). Kapak `next/image priority`, ilgili yazılar `next/image`.
+- **H6 bağlantılar:** `stripDisallowedLinks` https'siz alan adlarını tam adrese çevirip politikadan geçiriyor. `visa.visitsaudi.com` → `/umre-vizesi` (vize sattığımız hizmet). İçi boş bağlantılar kaldırılıyor. Bütün yazılar için geçerli.
+- **H5:** 4 kaldırılmış blog adresine 301.
+- **H7:** tasarlayıcı açıklaması ve Service şemasından "en ucuz", "sıfır lüks", "24 saatte vize" kaldırıldı.
+- **H8:** umre adımları sekme rolleri (tablist/tab/tabpanel), `text-primary/60` → `/80`.
+- **H3:** `/paketler` üst görseli ve paket kartları, kampanya sayfası görselleri `next/image`.
+- **H10:** sekme simgesi 110 KB `logo.png` yerine `public/icons/` (2–9 KB).
+- `FloatingWhatsApp` ayar yanıtı dizi değilse çökmüyor.
+
+**Ölçüm (mobil, Lighthouse):** vize yazısı 57 → **92** (LCP 14,9 → 2,8 sn, 6,3 → 2,2 MB); Denizli 60 → **85**.
+
+**Onay bekleyen (lokalde hazır, commit edilmedi):** ana sayfa:
+- video yalnızca geniş ekranda ve sayfa yüklendikten sonra; mobilde videonun ilk karesi kapak (`public/images/hero-kabe.jpg`; eski kapak 512 px geçici Google görseliydi);
+- kampanya kartları `next/image`;
+- `<main>`;
+- açıklamadan "En ucuz fiyatlar";
+- "Teklif al" düğmesi koyu yeşil (`#15803d`, kontrast 5,0; eski `#25D366` 2,0).
+
+**Antigravity notu:** `src/app/(main)/rehberlik/page.tsx` ve `docs/taslaklar/vize-yazisi.md` Antigravity'de; bu commit'e alınmadı.
+
+
+## 2026-10-01 22:30 — H14 /rehberlik Başlığı, H11 Vize Taslağı ve C1 Birleştirme Planı
+**Dal / commit:** main · (kullanıcı onayı bekleniyor)
+**Yol haritası adımı:** H14, H11, C1
+**Yapılan:**
+- **H14:** `src/app/(main)/rehberlik/page.tsx` metadata title: "Umre Rehberliği: Mekke ve Medine'de Türkçe Rehber" (49 karakter), meta açıklama: 148 karakter, H1 aynı başlıkla güncellendi.
+- **H11 Taslağı:** `docs/taslaklar/vize-yazisi.md` oluşturuldu. Yeni title (49 kar), meta açıklama (134 kar), 49 kelimelik doğrudan cevap giriş paragrafı, `[ÜCRET: kullanıcıdan]` ve `[SÜRE: kullanıcıdan]` alanları, başa `/umre-vizesi/basvuru` bağlantısı ve kırık `visa.visitsaudi.com` bağlantı bildirimi eklendi.
+- **C1 Taslağı:** `docs/taslaklar/umre-turlari-birlestirme.md` oluşturuldu. "Umre turları 2026 / diyanet / fiyat" konulu 6 blog yazısı incelendi; 5 yazının taşınacak özgün bölümleri, 301 yönlendirme planı ve ana yazının (`/blog/2026-umre-turlari-diyanet-bireysel-fiyatlar-vip-ipuclari`) konsolide başlık sırası belirlendi.
+**Doğrulama:**
+- `npx tsc --noEmit` çalıştırıldı: 0 hata (temiz).
+- Dış kaynak bağlantıları `curl -sIL` ile doğrulandı (`https://www.moh.gov.sa/en/healthawareness/pilgrims-health/pages/default.aspx` 200 OK).
+**Kullanıcıya gösterilen / onay:**
+- Yerel önizleme adresi: `http://localhost:3002/rehberlik` (kullanıcının incelemesi ve "canlıya al" onayı bekleniyor).
+- C1 birleştirme ve H11 taslakları sunuldu.
+**Kararlar ve sebepleri:**
+- Claude Code ile paralel çalışma kuralına tam uyuldu; sadece izin verilen dosyalar işlendi, `git add .` kullanılmadı.
+- Fiyat ve süre için tahmini rakam yazılmadı; kullanıcıdan gelecek veri için `[ÜCRET: kullanıcıdan]` ve `[SÜRE: kullanıcıdan]` yer tutucuları bırakıldı.
+**Açık kalanlar / riskler:**
+- Kullanıcı admin panelinden "Arama hacimlerini getir" çalıştırdığında 22 kelimenin hacim tablosu buraya eklenecek.
+- Kullanıcı onayından sonra push ve canlı Vercel doğrulama yapılacak.
+**Sıradaki adım:**
+- Kullanıcı "canlıya al" onayı verdikten sonra: `git pull --rebase origin main`, sadece izin verilen dosyaları `git add` ile ekle, commit at ve `git push origin main` yap.
+
+
 ## 2026-10-01 — Claude Code: Antigravity'nin sağlık kaynağı işinin denetimi + 1 Ekim raporu görev listesine eklendi
 **Antigravity kaydı (aşağıda, "Sağlık Kaynakları (Hata #6)") için düzeltmeler:**
 1. **Kaynak bağlantısı yanlış sayfaya gidiyordu:** iki sayfada da `https://www.moh.gov.sa/pages/default.aspx` (Bakanlık ana sayfası) kullanılmıştı; kaynak başlıkları ise orada olmayan içerik vaat ediyordu ("engelli erişimi ve sağlık rehberi", "vize ve sağlık şartları duyuruları"). Hata #6'nın konusu tam da genel ana sayfaya bağlanmaktı. Bakanlığın **umreci sağlığı** sayfasına çevrildi: `https://www.moh.gov.sa/en/healthawareness/pilgrims-health/pages/default.aspx` (200 doğrulandı). Kaynak başlığı: "Suudi Arabistan Sağlık Bakanlığı: umreci sağlığı ve aşı şartları". Kaynak başlığında "vize" geçmez (sattığımız hizmet).

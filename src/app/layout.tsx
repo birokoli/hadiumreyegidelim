@@ -12,8 +12,12 @@ export const metadata: Metadata = {
   description: "Bireysel umre vizesi nasıl alınır? Diyanete veya turlara bağımlı kalmadan, 2026 Özel Bireysel Umre ve VIP Aile umresi fiyatları hakkında şeffaf rehber.",
   keywords: ["bireysel umre", "bireysel umre vizesi", "bireysel umre nasıl yapılır", "bireysel umre vizesi nasıl alınır", "umre fiyatları 2026", "özel umre", "kendi imkanlarıyla umre", "vip umre"],
   icons: {
-    icon: '/logo.png?v=5',
-    apple: '/logo.png?v=5'
+    // Küçük dosyalar: eskiden 110 KB'lık logo.png her sayfada sekme simgesi olarak iniyordu
+    icon: [
+      { url: '/icons/icon-48.png', sizes: '48x48', type: 'image/png' },
+      { url: '/icons/icon-192.png', sizes: '192x192', type: 'image/png' },
+    ],
+    apple: '/icons/apple-icon-180.png'
   },
   robots: {
     index: true,
@@ -106,9 +110,8 @@ export default async function RootLayout({
         {/* Ana yazı tipleri projede; ilk boyamada gecikmesin diye önceden yüklenir */}
         <link rel="preload" href="/fonts/site/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
         <link rel="preload" href="/fonts/site/noto-serif-latin-wght-normal.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL,GRAD@300,0,0&display=swap" />
+        {/* İkonlar: yalnızca sitede kullanılanları içeren 11 KB'lık alt küme (tam yazı tipi 340 KB) */}
+        <link rel="preload" href="/fonts/icons/material-symbols-site.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
       </head>
       <body className="bg-surface text-neutral-900 font-body selection:bg-tertiary-fixed-dim selection:text-on-tertiary-fixed">
         <style dangerouslySetInnerHTML={{__html: `

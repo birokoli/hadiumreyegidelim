@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
+import FullIconFont from "@/components/ui/FullIconFont";
 
 export default function InfluencerLoginPage() {
   const router = useRouter();
@@ -40,6 +41,7 @@ export default function InfluencerLoginPage() {
 
   return (
     <div className="min-h-screen flex">
+      <FullIconFont />
 
       {/* ── SOL PANEL ── */}
       <div className="hidden lg:flex lg:w-[54%] bg-[#002d6a] relative overflow-hidden flex-col justify-between p-14">

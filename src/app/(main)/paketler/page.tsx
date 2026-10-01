@@ -6,6 +6,7 @@ import BrandImageFallback from "@/components/ui/BrandImageFallback";
 import Link from "next/link";
 import { Metadata } from "next";
 import { PageTrust, webPageJsonLd } from "@/components/seo/PageTrust";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "Umre Paketleri 2026: Ekonomik ve VIP",
@@ -54,10 +55,13 @@ export default async function PackagesPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <section className="relative h-[60vh] min-h-[500px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <img
+          <Image
             alt="Mekke Manzarası"
-            className="w-full h-full object-cover"
-            src="https://images.unsplash.com/photo-1565552645632-d725f8bfc19a?q=80&w=2600&auto=format&fit=crop"
+            className="object-cover"
+            src="https://images.unsplash.com/photo-1565552645632-d725f8bfc19a?q=80&w=2400&auto=format&fit=crop"
+            fill
+            priority
+            sizes="100vw"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-primary/90 via-primary/50 to-transparent"></div>
         </div>
@@ -99,7 +103,7 @@ export default async function PackagesPage() {
                   
                   <div className="xl:w-2/5 aspect-[4/3] xl:aspect-auto relative overflow-hidden bg-primary flex flex-col items-center justify-center">
                     {pkg.imageUrl ? (
-                      <img src={pkg.imageUrl} alt={pkg.title} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                      <Image src={pkg.imageUrl} alt={pkg.title} fill sizes="(min-width: 1280px) 40vw, 100vw" className="object-cover group-hover:scale-105 transition-transform duration-700" />
                     ) : (
                       <BrandImageFallback icon="mosque" />
                     )}

@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation';
 import { getInfluencerSession } from '@/lib/influencer-auth';
 import InfluencerSidebar from '@/components/influencer/InfluencerSidebar';
 import InfluencerTopBar from '@/components/influencer/InfluencerTopBar';
+import FullIconFont from "@/components/ui/FullIconFont";
 
 export default async function InfluencerLayout({ children }: { children: React.ReactNode }) {
   const session = await getInfluencerSession();
@@ -9,6 +10,7 @@ export default async function InfluencerLayout({ children }: { children: React.R
 
   return (
     <div className="min-h-screen bg-[#F5F5F7] flex">
+      <FullIconFont />
       <InfluencerSidebar />
       <div className="flex-1 flex flex-col min-h-screen lg:ml-64">
         <InfluencerTopBar session={session} />

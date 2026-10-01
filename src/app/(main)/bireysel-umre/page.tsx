@@ -6,7 +6,7 @@ import { PageTrust } from "@/components/seo/PageTrust";
 
 export const metadata: Metadata = {
   title: "Bireysel Umre Tasarlayıcı 2026",
-  description: "Kendi Bireysel Umre planınızı oluşturun. 2026 en ucuz Mekke ve Medine uçak biletleri, Mescid-i Haram sıfır lüks oteller, Suudi e-vizesi ve VIP transfer seçenekleri.",
+  description: "Bireysel umre planınızı kendiniz tasarlayın: tarih, Mekke ve Medine oteli, uçuş, vize ve transferi seçin, size özel teklifi WhatsApp'tan alın.",
   alternates: {
     canonical: `${SITE_URL}/bireysel-umre`,
   },
@@ -36,7 +36,7 @@ export default function PlannerPage() {
     "@context": "https://schema.org",
     "@type": "TouristTrip",
     "name": "2026 Özel Bireysel Umre ve VIP Aile Paketleri",
-    "description": "Mescid-i Haram ve Mescid-i Nebevi sıfır lüks oteller, 24 saatte Suudi e-vizesi, VIP transfer ve özel ilahiyatçı rehber eşliğinde kişiselleştirilmiş Umre organizasyonu.",
+    "description": "Mekke ve Medine otel seçimi, umre vizesi, uçuş, transfer ve isteğe bağlı ilahiyatçı rehber eşliğiyle kişiye özel bireysel umre planlaması.",
     "offers": {
       "@type": "Offer",
       "priceCurrency": "USD",
@@ -139,7 +139,7 @@ export default function PlannerPage() {
               <div className="bg-slate-50 dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800">
                 <span className="material-symbols-outlined text-emerald-600 text-3xl mb-2">hotel</span>
                 <h4 className="font-bold text-sm text-slate-800 dark:text-white">Kâbe'ye Yürüme Mesafesi</h4>
-                <p className="text-xs text-slate-500 mt-1">Mescid-i Haram ve Mescid-i Nebevi sıfır lüks oteller.</p>
+                <p className="text-xs text-slate-500 mt-1">Mescid-i Haram ve Mescid-i Nebevi’ye yürüme mesafesinde oteller.</p>
               </div>
 
               <div className="bg-slate-50 dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800">

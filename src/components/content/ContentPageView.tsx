@@ -132,7 +132,7 @@ export default async function ContentPageView({ page, whatsappNumber, relatedTit
           {isGuide && (<> <span aria-hidden="true">/</span> <Link href="/umre-rehberi" className="hover:text-primary">Umre rehberi</Link></>)}
           <span aria-hidden="true"> / </span><span>{page.h1}</span>
         </nav>
-        <p className="mt-6 text-[11px] font-bold uppercase tracking-[0.18em] text-primary/60">{GROUP_LABEL[page.group]}</p>
+        <p className="mt-6 text-[11px] font-bold uppercase tracking-[0.18em] text-primary/80">{GROUP_LABEL[page.group]}</p>
         <h1 className="mt-2 font-headline text-3xl md:text-5xl font-bold text-primary leading-tight">{page.h1}</h1>
         <p className="mt-6 text-lg md:text-xl leading-relaxed text-on-surface"><RichText text={page.lead} /></p>
         <LastUpdated date={page.reviewed} className="mt-4" />

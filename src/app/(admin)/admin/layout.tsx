@@ -4,6 +4,7 @@ import AdminNavbar from "@/components/admin/AdminNavbar";
 import AdminLayoutWrapper from "@/components/admin/AdminLayoutWrapper";
 import { prisma } from "@/lib/prisma";
 import { Metadata } from "next";
+import FullIconFont from "@/components/ui/FullIconFont";
 
 export const metadata: Metadata = {
   title: "Yönetim Paneli",
@@ -28,11 +29,14 @@ export default async function AdminLayout({
     console.error("Could not load SITE_LOGO", e);
   }
   return (
+    <>
+    <FullIconFont />
     <AdminLayoutWrapper 
       sidebar={<AdminSidebar logoUrl={logoUrl} />} 
       navbar={<AdminNavbar />}
     >
       {children}
     </AdminLayoutWrapper>
+    </>
   );
 }

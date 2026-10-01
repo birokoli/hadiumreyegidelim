@@ -14,7 +14,7 @@ export default function FloatingWhatsApp() {
       try {
         const res = await fetch("/api/settings");
         const data = await res.json();
-        const wa = data.find((s: any) => s.key === "whatsappNumber");
+        const wa = Array.isArray(data) ? data.find((s: { key: string; value: string }) => s.key === "whatsappNumber") : null;
         if (wa?.value) setWhatsappNumber(wa.value.replace("+", ""));
       } catch (err) {
         console.error("WhatsApp numarası çekilemedi", err);

@@ -46,7 +46,7 @@ export default function UmrahSteps() {
 
   return (
     <div className="grid grid-cols-[minmax(0,1fr)] lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] gap-6 lg:gap-12 items-center">
-      <div role="tablist" aria-label="Umre adımları" className="relative">
+      <div className="relative">
         <div className="absolute left-[19px] top-8 bottom-8 w-px bg-outline-variant/40" aria-hidden="true" />
         <motion.div
           className="absolute left-[19px] top-8 w-px bg-primary origin-top"
@@ -54,18 +54,20 @@ export default function UmrahSteps() {
           transition={{ type: "spring", stiffness: 120, damping: 20 }}
           aria-hidden="true"
         />
-        <ul>
+        <ul role="tablist" aria-label="Umre adımları">
           {STEPS.map((s, i) => {
             const on = i === active;
             const done = i < active;
             return (
-              <li key={s.name}>
+              <li key={s.name} role="presentation">
                 <button
                   type="button"
                   role="tab"
+                  id={`umre-adim-${i}`}
                   aria-selected={on}
+                  aria-controls="umre-adim-panel"
                   onClick={() => choose(i)}
-                  className={`relative w-full flex items-center gap-4 rounded-2xl px-0 py-3 h-16 text-left transition-colors ${on ? "" : "opacity-70 hover:opacity-100"}`}
+                  className={`relative w-full flex items-center gap-4 rounded-2xl px-0 py-3 h-16 text-left transition-colors ${on ? "" : "opacity-90 hover:opacity-100"}`}
                 >
                   <span
                     className={`relative z-10 w-10 h-10 shrink-0 rounded-full flex items-center justify-center font-bold text-[15px] transition-colors duration-300 ${on ? "bg-primary text-white shadow-lg shadow-primary/30" : done ? "bg-primary/10 text-primary" : "bg-white text-on-surface-variant border border-outline-variant/40"}`}
@@ -83,7 +85,7 @@ export default function UmrahSteps() {
         </ul>
       </div>
 
-      <div className="relative min-h-[230px] rounded-2xl bg-primary text-white p-6 md:p-8 overflow-hidden" role="tabpanel" aria-live="polite">
+      <div className="relative min-h-[230px] rounded-2xl bg-primary text-white p-6 md:p-8 overflow-hidden" role="tabpanel" id="umre-adim-panel" aria-labelledby={`umre-adim-${active}`} aria-live="polite">
         <div className="absolute -right-16 -top-16 w-64 h-64 rounded-full border border-white/10" aria-hidden="true" />
         <div className="absolute -right-4 -top-4 w-40 h-40 rounded-full border border-white/10" aria-hidden="true" />
         <AnimatePresence mode="wait">

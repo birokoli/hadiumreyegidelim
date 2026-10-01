@@ -17,6 +17,11 @@ const nextConfig: any = {
         destination: '/bireysel-umre',
         permanent: true,
       },
+      // Kaldırılan yazılar hâlâ Google'da görünüyordu (1 Ekim raporu): en yakın yaşayan yazıya
+      { source: '/blog/mekke-medine-bebek-mamasi-bezi-temini-kolay-mi-2026', destination: '/blog/bebekle-umre-kolay-mi-2026-kurallar-ve-ipuclari', permanent: true },
+      { source: '/blog/umre-turlari-2026-bireysel-umre', destination: '/blog/2026-umre-turlari-diyanet-bireysel-fiyatlar-vip-ipuclari', permanent: true },
+      { source: '/blog/2026-umre-turlari-hadi-umreye-gidelim-manevi-yenilenme', destination: '/blog/2026-umre-turlari-diyanet-bireysel-fiyatlar-vip-ipuclari', permanent: true },
+      { source: '/blog/ayak-tabanlarinin-su-toplamamasi-icin-harem-e-ozel-ayakkabi-corap-onerileri-2026', destination: '/blog/mescidi-haram-ziyaret-rehberi', permanent: true },
       // Yanlış slug prefix düzeltmesi: /blog/blog/:slug → /blog/:slug
       {
         source: '/blog/blog/:slug*',

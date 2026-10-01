@@ -13,7 +13,7 @@ export default function BrandImageFallback({ icon, className = "", iconSize = 4 
       <div 
         className="absolute inset-0 bg-center bg-no-repeat group-hover:scale-105 transition-transform duration-700 pointer-events-none"
         style={{ 
-            backgroundImage: "url('/logo.png')", 
+            backgroundImage: "url('/logo.webp')", 
             backgroundSize: "150%",
             filter: "brightness(0) invert(1) opacity(0.08)",
             mixBlendMode: "overlay"

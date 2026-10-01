@@ -183,7 +183,7 @@ export default async function DynamicCityUmrahPage({ params }: Props) {
         <section className="max-w-screen-xl mx-auto px-4 md:px-6 mt-24 relative z-10">
           <div className="bg-white p-6 md:p-10 rounded-3xl border border-outline-variant/20 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
             <header className="mb-8">
-              <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-primary/60">{facts ? `${facts.region} · ${city.airportCode}` : city.airportCode}</p>
+              <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-primary/80">{facts ? `${facts.region} · ${city.airportCode}` : city.airportCode}</p>
               <h2 className="mt-2 font-headline text-2xl md:text-4xl text-primary font-bold leading-tight">{from} umre yolculuğu</h2>
               <p className="mt-3 text-on-surface-variant text-base md:text-lg max-w-3xl leading-relaxed">
                 {city.name} çıkışlı bireysel umrede yolculuk {city.airportName} ({city.airportCode}) kalkışıyla başlar.{" "}

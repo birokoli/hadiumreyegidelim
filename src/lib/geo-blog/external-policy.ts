@@ -92,6 +92,15 @@ export function findCompetitorMentions(text: string, terms: string[]) {
 export function stripDisallowedLinks(html: string) {
   let removed = 0;
   let redirected = 0;
+  // Başında https:// olmayan alan adı bağlantıları (href="visa.visitsaudi.com") tarayıcıda site içi kırık adrese döner;
+  // önce tam adrese çevrilir, sonra aynı kurallardan geçer. İçi boş bağlantılar (yalnızca boşluk) kaldırılır.
+  html = html
+    .replace(/(<a\b[^>]*href=["'])([a-z0-9-]+(?:\.[a-z0-9-]+)*\.[a-z]{2,}(?:\/[^"']*)?)(["'])/gi, (full, a: string, host: string, b: string) =>
+      /\.(html?|php|aspx?|jpe?g|png|webp|pdf)$/i.test(host.split("/")[0]) ? full : `${a}https://${host}${b}`)
+    .replace(/<a\b[^>]*>(?:\s|&nbsp;)*<\/a>/gi, () => {
+      removed++;
+      return "";
+    });
   const out = html.replace(/<a\b[^>]*href=["'](https?:\/\/[^"']+)["'][^>]*>([\s\S]*?)<\/a>/gi, (full, href: string, inner: string) => {
     if (/^https?:\/\/(www\.)?hadiumreyegidelim\.com/i.test(href)) return full;
     const service = soldServiceFor(inner.replace(/<[^>]+>/g, " "));

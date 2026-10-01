@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import FullIconFont from "@/components/ui/FullIconFont";
 
 export default function InfluencerApplyPage() {
   const [step, setStep] = useState(1);
@@ -33,6 +34,7 @@ export default function InfluencerApplyPage() {
   if (success) {
     return (
       <div className="min-h-screen bg-[#F5F5F7] flex items-center justify-center px-4">
+      <FullIconFont />
         <div className="text-center max-w-md">
           <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-5">
             <span className="material-symbols-outlined text-4xl text-green-600" style={{ fontVariationSettings: "'FILL' 1" }}>check_circle</span>
@@ -54,6 +56,7 @@ export default function InfluencerApplyPage() {
 
   return (
     <div className="min-h-screen bg-[#F5F5F7] flex flex-col items-center justify-center px-4 py-12">
+      <FullIconFont />
       <div className="w-full max-w-[480px]">
         {/* Logo */}
         <div className="text-center mb-8">

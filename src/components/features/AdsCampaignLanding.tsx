@@ -1,6 +1,8 @@
 import React from "react";
 import type { EylulCampaignConfig } from "@/lib/eylul-campaign";
 import { PageTrust } from "@/components/seo/PageTrust";
+import FullIconFont from "@/components/ui/FullIconFont";
+import Image from "next/image";
 
 export default function AdsCampaignLanding({ campaign, whatsappNumber }: { campaign: EylulCampaignConfig; whatsappNumber: string }) {
   const packages = campaign.packages;
@@ -21,14 +23,14 @@ export default function AdsCampaignLanding({ campaign, whatsappNumber }: { campa
 
   return (
     <main className="pt-20">
+      {/* Kampanya ikonları admin'den seçilir; alt kümede olmayabilir */}
+      <FullIconFont />
       {faqJsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />}
       <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <img
-            src={campaign.heroImage}
-            alt={`${campaign.title} ${campaign.highlightedTitle}`}
-            className="w-full h-full object-cover"
-          />
+          {campaign.heroImage && (
+            <Image src={campaign.heroImage} alt={`${campaign.title} ${campaign.highlightedTitle}`} fill priority sizes="100vw" className="object-cover" />
+          )}
           <div className="absolute inset-0 bg-gradient-to-br from-primary/92 via-primary/75 to-[#001944]/85" />
         </div>
 
@@ -210,7 +212,7 @@ export default function AdsCampaignLanding({ campaign, whatsappNumber }: { campa
 
       <section className="py-20 bg-primary text-white relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
-          <img src={campaign.footerImage} alt="" className="w-full h-full object-cover" />
+          {campaign.footerImage && <Image src={campaign.footerImage} alt="" fill sizes="100vw" className="object-cover" />}
         </div>
         <div className="relative z-10 max-w-screen-xl mx-auto px-6 md:px-8 text-center">
           <h2 className="font-headline text-4xl md:text-5xl font-bold mb-4">{campaign.footerTitle}</h2>

@@ -9,6 +9,8 @@ import { OfficialInfo } from "@/components/seo/PageTrust";
 import { BlogEndCta, BlogInlineCta } from "@/components/blog/BlogBrandCta";
 import { isAllowedExternal, stripDisallowedLinks } from "@/lib/geo-blog/external-policy";
 import { getSiteSettings } from "@/lib/site-settings";
+import Image from 'next/image';
+import { optimizeContentImages } from "@/lib/content-images";
 
 export const revalidate = 300;
 
@@ -151,7 +153,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   const toc = extractToc(post.content);
   // Dış link kuralı yayında da uygulanır: rakip/resmî olmayan linkler kalkar, sattığımız
   // hizmete giden dış link kendi sayfamıza çevrilir (eski yazılar dahil)
-  const contentWithIds = cleanAndWrapTables(injectHeadingIds(stripDisallowedLinks(post.content).html));
+  const contentWithIds = optimizeContentImages(cleanAndWrapTables(injectHeadingIds(stripDisallowedLinks(post.content).html)));
   // Marka kutusu 3. ara başlıktan önce (yoksa içeriğin sonunda)
   const h2Positions = [...contentWithIds.matchAll(/<h2[\s>]/gi)].map((m) => m.index ?? 0);
   const splitAt = h2Positions.length >= 3 ? h2Positions[2] : contentWithIds.length;
@@ -262,7 +264,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               <li>
                 <div className="flex items-center">
                   <span className="material-symbols-outlined text-[14px] text-outline-variant mx-1">chevron_right</span>
-                  <span className="ms-1 text-xs font-bold text-primary/60 tracking-widest uppercase line-clamp-1 max-w-[150px] md:max-w-[300px]">
+                  <span className="ms-1 text-xs font-bold text-primary/80 tracking-widest uppercase line-clamp-1 max-w-[150px] md:max-w-[300px]">
                     {post.title}
                   </span>
                 </div>
@@ -271,8 +273,8 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           </nav>
 
           {post.imageUrl && (
-            <div className="w-full h-[400px] mb-10 rounded-3xl overflow-hidden shadow-[0px_32px_64px_-12px_rgba(0,55,129,0.06)] border border-outline-variant/10">
-              <img src={post.imageUrl} alt={(post as any).imageAlt || post.title} className="w-full h-full object-cover" />
+            <div className="relative w-full h-[400px] mb-10 rounded-3xl overflow-hidden shadow-[0px_32px_64px_-12px_rgba(0,55,129,0.06)] border border-outline-variant/10">
+              <Image src={post.imageUrl} alt={(post as any).imageAlt || post.title} fill priority sizes="(max-width: 768px) 100vw, 768px" className="object-cover" />
             </div>
           )}
           <div className="flex flex-wrap items-center gap-4 text-xs text-outline mb-6 uppercase tracking-[0.2em] font-bold">
@@ -403,7 +405,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           
           <div className="w-24 h-24 shrink-0 rounded-full bg-primary-container text-primary flex items-center justify-center font-headline text-4xl font-bold shadow-md overflow-hidden border-2 border-white ring-4 ring-primary/5">
             {post.authorModel?.image ? (
-              <img src={post.authorModel.image} alt={post.authorModel.name} className="w-full h-full object-cover" />
+              <Image src={post.authorModel.image} alt={post.authorModel.name} width={96} height={96} className="w-full h-full object-cover" />
             ) : (
                (post.authorModel?.name || post.author).charAt(0).toUpperCase()
             )}
@@ -451,11 +453,13 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               <Link key={related.slug} href={`/blog/${related.slug}`} className="group">
                 <article className="bg-white rounded-2xl overflow-hidden border border-outline-variant/10 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 h-full flex flex-col">
                   {related.imageUrl && (
-                    <div className="h-36 overflow-hidden">
-                      <img
+                    <div className="relative h-36 overflow-hidden">
+                      <Image
                         src={related.imageUrl}
                         alt={related.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        fill
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                        className="object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                     </div>
                   )}

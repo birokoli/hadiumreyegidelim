@@ -164,23 +164,54 @@ export async function keywordResearch(
 }
 
 /** Google Ads hacimleri; tek istekte 1000 kelimeye kadar. */
+/**
+ * Aylık arama hacmi. Önce DataForSEO Labs (hızlı, tek istekte 700 kelime); Labs veritabanında olmayan
+ * kelimeler için Google Ads (yavaş olabilir; 40 sn'de yanıt gelmezse o kelimeler "veri yok" kalır).
+ * Eskiden yalnızca Google Ads kullanılıyordu; yanıt 60 sn'yi geçince istek sessizce düşüyordu.
+ */
 export async function searchVolumes(keywords: string[]): Promise<DfsResult<Record<string, number | null>>> {
   const auth = authHeader();
   if (!auth) throw new DataforseoError("DataForSEO bağlı değil.", 412);
-  const res = await fetch(`${API_BASE}/v3/keywords_data/google_ads/search_volume/live`, {
-    method: "POST",
-    headers: { Authorization: auth, "Content-Type": "application/json" },
-    body: JSON.stringify([{ keywords: keywords.slice(0, 1000), location_code: DFS_LOCATION_CODE, language_code: DFS_LANGUAGE_CODE }]),
-    signal: AbortSignal.timeout(TIMEOUT_MS),
-    cache: "no-store",
-  });
-  if (!res.ok) throw new DataforseoError(`DataForSEO ${res.status}`, res.status);
-  const json = (await res.json()) as Envelope<{ keyword: string; search_volume: number | null }>;
-  const task = json.tasks?.[0];
-  if (!task || task.status_code !== 20000) throw new DataforseoError(task?.status_message || "Hacim alınamadı.");
-  const map: Record<string, number | null> = {};
-  for (const row of task.result ?? []) map[row.keyword] = row.search_volume;
-  return { data: map, cost: task.cost ?? 0 };
+  const list = [...new Set(keywords.map((k) => k.trim().toLocaleLowerCase("tr")).filter(Boolean))].slice(0, 700);
+  const map: Record<string, number | null> = Object.fromEntries(list.map((k) => [k, null]));
+  let cost = 0;
+
+  // 1) Labs: sonuç kelimeleri küçük harfe çevrilmiş olarak döner
+  const labs = await dfsPost<{ items?: { keyword: string; keyword_info?: { search_volume?: number | null } }[] }>(
+    "/v3/dataforseo_labs/google/keyword_overview/live",
+    [{ keywords: list, location_code: DFS_LOCATION_CODE, language_code: DFS_LANGUAGE_CODE }],
+  );
+  cost += labs.cost;
+  for (const item of labs.result?.items ?? []) {
+    const key = item.keyword.toLocaleLowerCase("tr");
+    if (key in map) map[key] = item.keyword_info?.search_volume ?? null;
+  }
+
+  // 2) Labs'ta bulunmayanlar için Google Ads (süre sınırlı; başarısız olursa Labs sonucu yeterli)
+  const missing = list.filter((k) => map[k] == null);
+  if (missing.length) {
+    try {
+      const res = await fetch(`${API_BASE}/v3/keywords_data/google_ads/search_volume/live`, {
+        method: "POST",
+        headers: { Authorization: auth, "Content-Type": "application/json" },
+        body: JSON.stringify([{ keywords: missing, location_code: DFS_LOCATION_CODE, language_code: DFS_LANGUAGE_CODE }]),
+        signal: AbortSignal.timeout(40_000),
+        cache: "no-store",
+      });
+      const json = (await res.json().catch(() => null)) as Envelope<{ keyword: string; search_volume: number | null }> | null;
+      const task = json?.tasks?.[0];
+      if (task?.status_code === 20000) {
+        cost += task.cost ?? 0;
+        for (const row of task.result ?? []) {
+          const key = row.keyword.toLocaleLowerCase("tr");
+          if (key in map && row.search_volume != null) map[key] = row.search_volume;
+        }
+      }
+    } catch {
+      /* Google Ads zaman aşımı: Labs sonuçlarıyla devam */
+    }
+  }
+  return { data: map, cost };
 }
 
 // ─── SERP / sıra takibi ─────────────────────────────────────────────────

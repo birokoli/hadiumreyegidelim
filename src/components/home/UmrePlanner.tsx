@@ -313,7 +313,7 @@ export default function UmrePlanner({ whatsappNumber }: { whatsappNumber: string
           target="_blank"
           rel="noopener noreferrer"
           onClick={() => setOpen(null)}
-          className="mt-2 md:mt-0 md:ml-1 shrink-0 inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1fb857] text-white font-bold rounded-xl md:rounded-[999px] px-6 py-3.5 text-[15px] transition-colors active:scale-[0.98]"
+          className="mt-2 md:mt-0 md:ml-1 shrink-0 inline-flex items-center justify-center gap-2 bg-[#15803d] hover:bg-[#166534] text-white font-bold rounded-xl md:rounded-[999px] px-6 py-3.5 text-[15px] transition-colors active:scale-[0.98]"
         >
           <WhatsAppIcon className="w-5 h-5" />
           Teklif al

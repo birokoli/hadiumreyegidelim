@@ -4,8 +4,8 @@ import { prisma } from "@/lib/prisma";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Manevi Rehberler & Gizli Mücevherler",
-  description: "Kutsal topraklardaki her adımınızı ilim ve hikmetle taçlandıran akademik rehberlerimiz ve kalabalıkların ötesindeki gizli ziyaret noktaları.",
+  title: "Umre Rehberliği: Mekke ve Medine",
+  description: "Mekke ve Medine'deki bireysel umre ziyaretleriniz için ilahiyatçı Türkçe rehberlik hizmeti. Manevi rehberler eşliğinde ibadet ve ziyaret planlama.",
   alternates: {
     canonical: "/rehberlik"
   }
@@ -27,7 +27,7 @@ export default async function RehberlikHubPage() {
             <span className="font-label text-xs uppercase tracking-[0.3em] text-tertiary font-bold mb-4 block bg-tertiary-fixed-dim/20 w-fit px-4 py-1.5 rounded-full">
               Gönül Dostları
             </span>
-            <h1 className="font-headline text-5xl md:text-6xl text-primary font-bold leading-tight">Manevi Rehberlerimiz</h1>
+            <h1 className="font-headline text-5xl md:text-6xl text-primary font-bold leading-tight">Umre Rehberliği: Mekke ve Medine'de Türkçe Rehber</h1>
             <p className="mt-6 text-xl text-on-surface-variant leading-relaxed font-body border-l-4 border-tertiary/30 pl-5 italic opacity-90">
               Kutsal topraklardaki her adımınızı ilim ve hikmetle taçlandıran, ruhunuza ayna tutan akademik rehberlerimizle tanışın.
             </p>

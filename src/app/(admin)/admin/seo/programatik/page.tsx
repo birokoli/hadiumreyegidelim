@@ -128,6 +128,12 @@ export default function ProgrammaticPage() {
             }
           >
             {needsKey && <div className="mb-10"><NeedsKey compact /></div>}
+            {volumes && (
+              <p className="mb-8 rounded-xl border border-[var(--seo-rule)] px-4 py-3 text-[14px]" role="status">
+                {Object.keys(volumes).length} kelimenin {Object.values(volumes).filter((v) => v != null).length} tanesinde aylık arama hacmi bulundu
+                {Object.values(volumes).some((v) => v == null) ? "; “veri yok” yazanların Türkiye'de ölçülebilir araması yok ya da çok düşük." : "."} Sonuçlar aşağıda her kelimenin yanında.
+              </p>
+            )}
             <p className="mb-12 max-w-[640px] text-[15px] text-[var(--seo-ink-2)]">
               Her grup bir şablon ve onu dolduracak bir veri kaynağıdır. Önce aranma hacmi olan kelimelerle başlayın; hacimsiz kelime için sayfa açmak tarama bütçesini boşa harcar.
             </p>
@@ -148,7 +154,7 @@ export default function ProgrammaticPage() {
                         <li key={c.keyword} className="grid grid-cols-[1fr_auto_auto] items-baseline gap-4 py-1.5 text-[15px]">
                           <span className={c.covered ? "" : "font-semibold"}>{c.keyword}</span>
                           <span className="tabular-nums text-[14px] font-bold">
-                            {volumes ? formatNumber(volumes[c.keyword]) : ""}
+                            {volumes ? (volumes[c.keyword.toLocaleLowerCase("tr")] == null ? <span className="text-[12px] font-normal text-[var(--seo-ink-3)]">veri yok</span> : formatNumber(volumes[c.keyword.toLocaleLowerCase("tr")])) : ""}
                           </span>
                           <span className={`text-[12px] font-semibold ${c.covered ? "text-[var(--seo-ink-3)]" : "text-[var(--seo-mark)]"}`}>
                             {c.covered ? "sayfa var" : "sayfa yok"}

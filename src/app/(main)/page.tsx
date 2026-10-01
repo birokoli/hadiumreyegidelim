@@ -2,6 +2,7 @@ import { SITE_URL } from "@/lib/seo/site";
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
+import HeroVideo from "@/components/home/HeroVideo";
 import BrandImageFallback from "@/components/ui/BrandImageFallback";
 import UmrePlanner from "@/components/home/UmrePlanner";
 import UmrahSteps from "@/components/home/UmrahSteps";
@@ -13,7 +14,7 @@ import { PageTrust, webPageJsonLd } from "@/components/seo/PageTrust";
 
 export const metadata: Metadata = {
   title: { absolute: "Bireysel Umre 2026 | Hadi Umre'ye Gidelim" },
-  description: "Diyanet turlarına veya kafilelere bağlı kalmadan, 2026 Özel Bireysel Umre ve VIP Aile umresi planlama platformu. En ucuz fiyatlar ve butik hizmet.",
+  description: "Bireysel umre 2026: tarihinizi, Mekke ve Medine otelinizi ve gün sayısını siz seçin; vize, uçuş ve transfer tek planda. Teklifi WhatsApp'tan alın.",
   alternates: {
     canonical: "/",
   },
@@ -70,7 +71,7 @@ function SectionHead({ kicker, title, href, linkLabel }: { kicker: string; title
   return (
     <div className="flex items-end justify-between gap-4 mb-6 md:mb-8">
       <div>
-        <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-primary/60">{kicker}</p>
+        <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-primary/80">{kicker}</p>
         <h2 className="mt-1.5 font-headline text-2xl md:text-3xl text-primary font-bold">{title}</h2>
       </div>
       {href && (
@@ -109,7 +110,8 @@ export default async function Home() {
   const ilkUmremCampaign = parseEylulCampaign(settings[ILK_UMREM_CAMPAIGN_SETTING_KEY], DEFAULT_ILK_UMREM_CAMPAIGN);
   const hanimCampaign = parseEylulCampaign(settings[HANIM_UMRESI_CAMPAIGN_SETTING_KEY], DEFAULT_HANIM_UMRESI_CAMPAIGN);
 
-  const home_banner_image = settings.home_banner_image || "https://lh3.googleusercontent.com/aida-public/AB6AXuCeWn_hW89LbHLjNkEyCjXnO56IpdLz_zRwB9BvtIjHV_CSU9n_ADpxoS-K9Y4UqzQtVdJ9tM238gIiQ3fIEgF50wPqba1ofx6HeAab2E8EYwvLnq_w13P3UCdpuZloJ2P_FBbqiM4ZrKqELKyG3sgBrj2SCUi6yLGc39nIApI_ip6uasqiKaUGRcpE7WnqmMcqOZVc-CUXOaphNXOHK18KEZCYKehmVy4cZRQP0tk7_PHK5iJh4cVmqsN9DeHNleLOmi97WPx_9Gw";
+  // Varsayılan kapak: ana sayfa videosunun ilk karesi (eskiden 512 px'lik geçici bir Google görseli büyütülüyordu)
+  const home_banner_image = settings.home_banner_image || "/images/hero-kabe.jpg";
   const heroVideo = settings.HOME_HERO_VIDEO?.trim() || "";
   const home_banner_title = settings.HERO_TITLE || "Ruhunuzun Ritmini Kalabalıklara Teslim Etmeyin.";
   const home_banner_subtitle = settings.HERO_DESC || "Ailenize ve Size Özel Butik Umre Deneyimi.";
@@ -134,16 +136,14 @@ export default async function Home() {
   ];
 
   return (
-    <>
+    <main id="main-content">
       {/* ─── Hero + planlayıcı ─────────────────────────────── */}
       <section className="relative z-20 w-full pt-28 pb-16 md:pt-32 md:pb-12 md:min-h-[620px] md:flex md:flex-col md:justify-end">
         <div className="absolute inset-0 overflow-hidden">
-          <Image alt="Kabe ve Mescid-i Haram" className="object-cover object-bottom" src={home_banner_image} fill priority fetchPriority="high" sizes="100vw" quality={80} />
+          <Image alt="Kabe ve Mescid-i Haram" className="object-cover object-bottom" src={home_banner_image} fill priority fetchPriority="high" sizes="100vw" quality={75} />
           {heroVideo && (
-            // Döngü video; görsel altta kalır (video yüklenene kadar ve "hareketi azalt" açıksa görünür)
-            <video className="hero-video absolute inset-0 w-full h-full object-cover object-bottom" autoPlay muted loop playsInline preload="auto" poster={home_banner_image} aria-hidden="true">
-              <source src={heroVideo} type={heroVideo.toLowerCase().endsWith(".webm") ? "video/webm" : "video/mp4"} />
-            </video>
+            // Döngü video yalnızca geniş ekranda ve sayfa yüklendikten sonra; altta kapak görseli kalır
+            <HeroVideo src={heroVideo} poster={`/_next/image?url=${encodeURIComponent(home_banner_image)}&w=1920&q=75`} />
           )}
           <div className="absolute inset-0 bg-[#001944]/55" />
           <div className="absolute inset-0 bg-gradient-to-b from-[#001944]/40 via-transparent to-[#001944]/70" />
@@ -178,7 +178,7 @@ export default async function Home() {
       <section className="w-full max-w-screen-xl mx-auto px-4 md:px-8 pt-10 md:pt-12">
         <Link href="/eylul-umresi" data-press className="group relative flex flex-col md:flex-row md:items-center gap-5 overflow-hidden rounded-2xl bg-primary text-white p-6 md:p-7">
           <div className="absolute inset-y-0 right-0 w-1/2 hidden md:block">
-            <img src={eylulCampaign.heroImage} alt="" className="w-full h-full object-cover opacity-30 group-hover:scale-105 transition-transform duration-700" />
+            {eylulCampaign.heroImage && <Image src={eylulCampaign.heroImage} alt="" fill sizes="(min-width: 1280px) 640px, 50vw" className="object-cover opacity-30 group-hover:scale-105 transition-transform duration-700" />}
             <div className="absolute inset-0 bg-gradient-to-r from-primary to-transparent" />
           </div>
           <div className="relative flex-1 min-w-0">
@@ -230,7 +230,7 @@ export default async function Home() {
       <section className="w-full bg-white border-y border-outline-variant/20">
         <div className="max-w-screen-xl mx-auto px-4 md:px-8 py-10 md:py-12 grid md:grid-cols-[0.8fr_2fr] gap-8 items-center">
           <div>
-            <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-primary/60">{homeStepsKicker}</p>
+            <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-primary/80">{homeStepsKicker}</p>
             <h2 className="mt-1.5 font-headline text-2xl md:text-[28px] leading-tight text-primary font-bold">{homeStepsTitle}</h2>
           </div>
           <ol className="grid sm:grid-cols-3 gap-4">
@@ -260,7 +260,7 @@ export default async function Home() {
           { c: hanimCampaign, href: "/hanim-umresi" },
         ].map(({ c, href }) => (
           <Link key={href} href={href} data-reveal className="group relative overflow-hidden rounded-2xl min-h-[220px] flex items-end p-6 text-white">
-            <img src={c.heroImage} alt="" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+            {c.heroImage && <Image src={c.heroImage} alt="" fill sizes="(min-width: 768px) 50vw, 100vw" className="object-cover group-hover:scale-105 transition-transform duration-700" />}
             <div className="absolute inset-0 bg-gradient-to-t from-[#001944]/95 via-[#001944]/55 to-[#001944]/10" />
             <div className="relative">
               <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-white/70">{c.homeBadge}</p>
@@ -322,6 +322,6 @@ export default async function Home() {
         <PageTrust className="mt-6 text-center" />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([faqJsonLd, webPageJsonLd({ url: `${SITE_URL}/`, name: "Bireysel Umre 2026" })]) }} />
       </section>
-    </>
+    </main>
   );
 }

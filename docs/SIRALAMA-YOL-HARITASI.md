@@ -94,10 +94,10 @@ Kim: **C** Claude Code, **A** Antigravity, **S** kullanıcı. Görünümü deği
 - [x] **H10 · Logo (C)** — 110 KB PNG → WebP/SVG. *(1 Ekim, acda0a4: sekme simgesi 2–9 KB)*
 
 **Kısa vade (içerik)**
-- [x] **H11 · Vize yazısı yenileme (A, S rakamlar)** — `/blog/bireysel-umre-vizesi-nasil-alinir`: 1.899 gösterim, sıra 9,9, TO %1,7. Başlık "Nusuk Vize Başvurusu 2026: Umre Vizesi Nasıl Alınır?"; süre/ücret sorularına doğrudan cevap; başta `/umre-vizesi/basvuru` bağlantısı.
+- [ ] **H11 · Vize yazısı yenileme (A, S rakamlar)** — `/blog/bireysel-umre-vizesi-nasil-alinir`: 1.899 gösterim, sıra 9,9, TO %1,7. Başlık "Nusuk Vize Başvurusu 2026: Umre Vizesi Nasıl Alınır?"; süre/ücret sorularına doğrudan cevap; başta `/umre-vizesi/basvuru` bağlantısı. *(taslak hazır: `docs/taslaklar/vize-yazisi.md` + Claude notları; süre/ücret ve uygulama bekliyor)*
 - [ ] **H12 · Paket fiyatları (S)** — B2 ve H13'ün ön koşulu.
 - [ ] **H13 · Şehir sayfası başlıkları (C)** — fiyatlar gelince "{İl} Umre Fiyatları 2026: {İl} Çıkışlı Bireysel Umre" + gerçek "başlayan fiyat" kutusu. Önce 10 il (Denizli, Samsun, Kütahya, Tokat, Kırıkkale, Amasya, Diyarbakır, Antalya, Mersin, İstanbul), 2 hafta izle.
-- [x] **H14 · /rehberlik başlığı (A)** — "Umre Rehberliği: Mekke ve Medine'de Türkçe Rehber" (274 gösterim, 0 tık).
+- [x] **H14 · /rehberlik başlığı (A)** — "Umre Rehberliği: Mekke ve Medine'de Türkçe Rehber" (274 gösterim, 0 tık). *(Claude: başlık site adıyla 71 karakterdi → "Umre Rehberliği: Mekke ve Medine", 55)*
 - [ ] **H15 · Kararlar (S)** — "Kutlu Rota" paket adı başka bir firma adıyla karışıyor (114 gösterim); "iPhone 18 Pro" yazısı konu dışı.
 - [ ] **H16 · Tekrar ölçüm (A)** — H1–H10 bitince ve 2 hafta sonra Search Console + PageSpeed yeniden; sonuç CALISMA-KAYDI.md'ye.
 

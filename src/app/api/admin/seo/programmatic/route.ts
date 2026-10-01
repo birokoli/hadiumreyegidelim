@@ -6,8 +6,9 @@ import { dfsErrorResponse, requireSeoAdmin } from "@/lib/seo/guard";
 import { buildPatterns, shingleSimilarity } from "@/lib/seo/programmatic";
 import { SITE_URL } from "@/lib/seo/site";
 import { turkeyCities } from "@/lib/turkey-cities";
+import { CONTENT_PAGES, contentPath } from "@/content/pages";
 
-export const maxDuration = 60;
+export const maxDuration = 120;
 
 const SAMPLE_CITIES = ["istanbul", "ankara", "izmir", "van", "rize", "adana"];
 
@@ -42,7 +43,16 @@ export async function GET() {
   const similarity = pairs.length ? pairs.reduce((a, b) => a + b, 0) / pairs.length : null;
 
   const year = new Date().getFullYear();
-  const patterns = buildPatterns(hotels, year).map((p) => ({
+  // Açılmış rehber sayfalarının hedef kelimeleri (hacim tablosu için; docs/SAYFA-GRUPLARI.md §3)
+  const guides = {
+    id: "guides",
+    playbook: "Açılmış sayfalar",
+    template: "Rehber sayfalarının hedef kelimeleri",
+    urlTemplate: "/umre-rehberi/{terim} · /{kişi|dönem}-umresi",
+    data: "src/content/pages (admin → İçerik Stüdyosu → Rehber Sayfaları)",
+    candidates: CONTENT_PAGES.map((p) => ({ keyword: p.keyword, covers: [contentPath(p)] })),
+  };
+  const patterns = [guides, ...buildPatterns(hotels, year)].map((p) => ({
     ...p,
     candidates: p.candidates.map((c) => ({ ...c, covered: c.covers.some((path) => existing.has(path)) })),
   }));

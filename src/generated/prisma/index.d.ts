@@ -214,6 +214,11 @@ export type QuotationItem = $Result.DefaultSelection<Prisma.$QuotationItemPayloa
  */
 export type ServiceLibrary = $Result.DefaultSelection<Prisma.$ServiceLibraryPayload>
 /**
+ * Model ServicePrice
+ * Aylık satış fiyatı (USD). variant: oda tipi ("2", "3", "4" kişilik) ya da araç tipi; tek fiyatlı kalemde "".
+ */
+export type ServicePrice = $Result.DefaultSelection<Prisma.$ServicePricePayload>
+/**
  * Model ProgramConfig
  * 
  */
@@ -776,6 +781,16 @@ export class PrismaClient<
     * ```
     */
   get serviceLibrary(): Prisma.ServiceLibraryDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.servicePrice`: Exposes CRUD operations for the **ServicePrice** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ServicePrices
+    * const servicePrices = await prisma.servicePrice.findMany()
+    * ```
+    */
+  get servicePrice(): Prisma.ServicePriceDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.programConfig`: Exposes CRUD operations for the **ProgramConfig** model.
@@ -1347,6 +1362,7 @@ export namespace Prisma {
     Quotation: 'Quotation',
     QuotationItem: 'QuotationItem',
     ServiceLibrary: 'ServiceLibrary',
+    ServicePrice: 'ServicePrice',
     ProgramConfig: 'ProgramConfig',
     StarLedger: 'StarLedger',
     PerformanceScore: 'PerformanceScore',
@@ -1374,7 +1390,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "order" | "setting" | "service" | "guide" | "category" | "author" | "post" | "package" | "hotel" | "aILog" | "user" | "adminUser" | "contactRequest" | "whatsAppConversation" | "whatsAppMessage" | "postVersion" | "influencer" | "supportChat" | "supportMessage" | "share" | "customer" | "sale" | "payment" | "paymentSale" | "loyaltyAccount" | "loyaltyTransaction" | "loyaltyRedemption" | "loyaltyCatalogItem" | "loyaltyMonthlyHistory" | "loyaltyMonthlyTierRule" | "loyaltyHonorTierRule" | "linkClick" | "attributionOverride" | "campaign" | "campaignParticipant" | "campaignCodeUsage" | "companySettings" | "quotation" | "quotationItem" | "serviceLibrary" | "programConfig" | "starLedger" | "performanceScore" | "performanceEvent" | "referral" | "referralQualification" | "aiVisibilityAudit" | "crmLead" | "crmActivity"
+      modelProps: "order" | "setting" | "service" | "guide" | "category" | "author" | "post" | "package" | "hotel" | "aILog" | "user" | "adminUser" | "contactRequest" | "whatsAppConversation" | "whatsAppMessage" | "postVersion" | "influencer" | "supportChat" | "supportMessage" | "share" | "customer" | "sale" | "payment" | "paymentSale" | "loyaltyAccount" | "loyaltyTransaction" | "loyaltyRedemption" | "loyaltyCatalogItem" | "loyaltyMonthlyHistory" | "loyaltyMonthlyTierRule" | "loyaltyHonorTierRule" | "linkClick" | "attributionOverride" | "campaign" | "campaignParticipant" | "campaignCodeUsage" | "companySettings" | "quotation" | "quotationItem" | "serviceLibrary" | "servicePrice" | "programConfig" | "starLedger" | "performanceScore" | "performanceEvent" | "referral" | "referralQualification" | "aiVisibilityAudit" | "crmLead" | "crmActivity"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -4338,6 +4354,80 @@ export namespace Prisma {
           }
         }
       }
+      ServicePrice: {
+        payload: Prisma.$ServicePricePayload<ExtArgs>
+        fields: Prisma.ServicePriceFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ServicePriceFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ServicePricePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ServicePriceFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ServicePricePayload>
+          }
+          findFirst: {
+            args: Prisma.ServicePriceFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ServicePricePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ServicePriceFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ServicePricePayload>
+          }
+          findMany: {
+            args: Prisma.ServicePriceFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ServicePricePayload>[]
+          }
+          create: {
+            args: Prisma.ServicePriceCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ServicePricePayload>
+          }
+          createMany: {
+            args: Prisma.ServicePriceCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ServicePriceCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ServicePricePayload>[]
+          }
+          delete: {
+            args: Prisma.ServicePriceDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ServicePricePayload>
+          }
+          update: {
+            args: Prisma.ServicePriceUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ServicePricePayload>
+          }
+          deleteMany: {
+            args: Prisma.ServicePriceDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ServicePriceUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ServicePriceUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ServicePricePayload>[]
+          }
+          upsert: {
+            args: Prisma.ServicePriceUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ServicePricePayload>
+          }
+          aggregate: {
+            args: Prisma.ServicePriceAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateServicePrice>
+          }
+          groupBy: {
+            args: Prisma.ServicePriceGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ServicePriceGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ServicePriceCountArgs<ExtArgs>
+            result: $Utils.Optional<ServicePriceCountAggregateOutputType> | number
+          }
+        }
+      }
       ProgramConfig: {
         payload: Prisma.$ProgramConfigPayload<ExtArgs>
         fields: Prisma.ProgramConfigFieldRefs
@@ -5140,6 +5230,7 @@ export namespace Prisma {
     quotation?: QuotationOmit
     quotationItem?: QuotationItemOmit
     serviceLibrary?: ServiceLibraryOmit
+    servicePrice?: ServicePriceOmit
     programConfig?: ProgramConfigOmit
     starLedger?: StarLedgerOmit
     performanceScore?: PerformanceScoreOmit
@@ -5834,6 +5925,37 @@ export namespace Prisma {
    */
   export type QuotationCountOutputTypeCountItemsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: QuotationItemWhereInput
+  }
+
+
+  /**
+   * Count Type ServiceLibraryCountOutputType
+   */
+
+  export type ServiceLibraryCountOutputType = {
+    prices: number
+  }
+
+  export type ServiceLibraryCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    prices?: boolean | ServiceLibraryCountOutputTypeCountPricesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * ServiceLibraryCountOutputType without action
+   */
+  export type ServiceLibraryCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ServiceLibraryCountOutputType
+     */
+    select?: ServiceLibraryCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * ServiceLibraryCountOutputType without action
+   */
+  export type ServiceLibraryCountOutputTypeCountPricesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ServicePriceWhereInput
   }
 
 
@@ -51799,6 +51921,8 @@ export namespace Prisma {
     defaultChildPercent: number | null
     defaultExtraBedPrice: number | null
     sortOrder: number | null
+    hotelStars: number | null
+    distanceMeters: number | null
   }
 
   export type ServiceLibrarySumAggregateOutputType = {
@@ -51806,6 +51930,8 @@ export namespace Prisma {
     defaultChildPercent: number | null
     defaultExtraBedPrice: number | null
     sortOrder: number | null
+    hotelStars: number | null
+    distanceMeters: number | null
   }
 
   export type ServiceLibraryMinAggregateOutputType = {
@@ -51820,6 +51946,13 @@ export namespace Prisma {
     defaultExtraBedPrice: number | null
     isActive: boolean | null
     sortOrder: number | null
+    isPublic: boolean | null
+    slug: string | null
+    city: string | null
+    imageUrl: string | null
+    publicDescription: string | null
+    hotelStars: number | null
+    distanceMeters: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -51836,6 +51969,13 @@ export namespace Prisma {
     defaultExtraBedPrice: number | null
     isActive: boolean | null
     sortOrder: number | null
+    isPublic: boolean | null
+    slug: string | null
+    city: string | null
+    imageUrl: string | null
+    publicDescription: string | null
+    hotelStars: number | null
+    distanceMeters: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -51852,6 +51992,13 @@ export namespace Prisma {
     defaultExtraBedPrice: number
     isActive: number
     sortOrder: number
+    isPublic: number
+    slug: number
+    city: number
+    imageUrl: number
+    publicDescription: number
+    hotelStars: number
+    distanceMeters: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -51863,6 +52010,8 @@ export namespace Prisma {
     defaultChildPercent?: true
     defaultExtraBedPrice?: true
     sortOrder?: true
+    hotelStars?: true
+    distanceMeters?: true
   }
 
   export type ServiceLibrarySumAggregateInputType = {
@@ -51870,6 +52019,8 @@ export namespace Prisma {
     defaultChildPercent?: true
     defaultExtraBedPrice?: true
     sortOrder?: true
+    hotelStars?: true
+    distanceMeters?: true
   }
 
   export type ServiceLibraryMinAggregateInputType = {
@@ -51884,6 +52035,13 @@ export namespace Prisma {
     defaultExtraBedPrice?: true
     isActive?: true
     sortOrder?: true
+    isPublic?: true
+    slug?: true
+    city?: true
+    imageUrl?: true
+    publicDescription?: true
+    hotelStars?: true
+    distanceMeters?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -51900,6 +52058,13 @@ export namespace Prisma {
     defaultExtraBedPrice?: true
     isActive?: true
     sortOrder?: true
+    isPublic?: true
+    slug?: true
+    city?: true
+    imageUrl?: true
+    publicDescription?: true
+    hotelStars?: true
+    distanceMeters?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -51916,6 +52081,13 @@ export namespace Prisma {
     defaultExtraBedPrice?: true
     isActive?: true
     sortOrder?: true
+    isPublic?: true
+    slug?: true
+    city?: true
+    imageUrl?: true
+    publicDescription?: true
+    hotelStars?: true
+    distanceMeters?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -52019,6 +52191,13 @@ export namespace Prisma {
     defaultExtraBedPrice: number
     isActive: boolean
     sortOrder: number
+    isPublic: boolean
+    slug: string | null
+    city: string | null
+    imageUrl: string | null
+    publicDescription: string | null
+    hotelStars: number | null
+    distanceMeters: number | null
     createdAt: Date
     updatedAt: Date
     _count: ServiceLibraryCountAggregateOutputType | null
@@ -52054,8 +52233,17 @@ export namespace Prisma {
     defaultExtraBedPrice?: boolean
     isActive?: boolean
     sortOrder?: boolean
+    isPublic?: boolean
+    slug?: boolean
+    city?: boolean
+    imageUrl?: boolean
+    publicDescription?: boolean
+    hotelStars?: boolean
+    distanceMeters?: boolean
     createdAt?: boolean
     updatedAt?: boolean
+    prices?: boolean | ServiceLibrary$pricesArgs<ExtArgs>
+    _count?: boolean | ServiceLibraryCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["serviceLibrary"]>
 
   export type ServiceLibrarySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -52070,6 +52258,13 @@ export namespace Prisma {
     defaultExtraBedPrice?: boolean
     isActive?: boolean
     sortOrder?: boolean
+    isPublic?: boolean
+    slug?: boolean
+    city?: boolean
+    imageUrl?: boolean
+    publicDescription?: boolean
+    hotelStars?: boolean
+    distanceMeters?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["serviceLibrary"]>
@@ -52086,6 +52281,13 @@ export namespace Prisma {
     defaultExtraBedPrice?: boolean
     isActive?: boolean
     sortOrder?: boolean
+    isPublic?: boolean
+    slug?: boolean
+    city?: boolean
+    imageUrl?: boolean
+    publicDescription?: boolean
+    hotelStars?: boolean
+    distanceMeters?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["serviceLibrary"]>
@@ -52102,15 +52304,30 @@ export namespace Prisma {
     defaultExtraBedPrice?: boolean
     isActive?: boolean
     sortOrder?: boolean
+    isPublic?: boolean
+    slug?: boolean
+    city?: boolean
+    imageUrl?: boolean
+    publicDescription?: boolean
+    hotelStars?: boolean
+    distanceMeters?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type ServiceLibraryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "category" | "name" | "description" | "defaultPricingType" | "defaultCostUsd" | "defaultVehicleType" | "defaultChildPercent" | "defaultExtraBedPrice" | "isActive" | "sortOrder" | "createdAt" | "updatedAt", ExtArgs["result"]["serviceLibrary"]>
+  export type ServiceLibraryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "category" | "name" | "description" | "defaultPricingType" | "defaultCostUsd" | "defaultVehicleType" | "defaultChildPercent" | "defaultExtraBedPrice" | "isActive" | "sortOrder" | "isPublic" | "slug" | "city" | "imageUrl" | "publicDescription" | "hotelStars" | "distanceMeters" | "createdAt" | "updatedAt", ExtArgs["result"]["serviceLibrary"]>
+  export type ServiceLibraryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    prices?: boolean | ServiceLibrary$pricesArgs<ExtArgs>
+    _count?: boolean | ServiceLibraryCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type ServiceLibraryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
+  export type ServiceLibraryIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
 
   export type $ServiceLibraryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "ServiceLibrary"
-    objects: {}
+    objects: {
+      prices: Prisma.$ServicePricePayload<ExtArgs>[]
+    }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       category: string
@@ -52123,6 +52340,13 @@ export namespace Prisma {
       defaultExtraBedPrice: number
       isActive: boolean
       sortOrder: number
+      isPublic: boolean
+      slug: string | null
+      city: string | null
+      imageUrl: string | null
+      publicDescription: string | null
+      hotelStars: number | null
+      distanceMeters: number | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["serviceLibrary"]>
@@ -52519,6 +52743,7 @@ export namespace Prisma {
    */
   export interface Prisma__ServiceLibraryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    prices<T extends ServiceLibrary$pricesArgs<ExtArgs> = {}>(args?: Subset<T, ServiceLibrary$pricesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ServicePricePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -52559,6 +52784,13 @@ export namespace Prisma {
     readonly defaultExtraBedPrice: FieldRef<"ServiceLibrary", 'Float'>
     readonly isActive: FieldRef<"ServiceLibrary", 'Boolean'>
     readonly sortOrder: FieldRef<"ServiceLibrary", 'Int'>
+    readonly isPublic: FieldRef<"ServiceLibrary", 'Boolean'>
+    readonly slug: FieldRef<"ServiceLibrary", 'String'>
+    readonly city: FieldRef<"ServiceLibrary", 'String'>
+    readonly imageUrl: FieldRef<"ServiceLibrary", 'String'>
+    readonly publicDescription: FieldRef<"ServiceLibrary", 'String'>
+    readonly hotelStars: FieldRef<"ServiceLibrary", 'Int'>
+    readonly distanceMeters: FieldRef<"ServiceLibrary", 'Int'>
     readonly createdAt: FieldRef<"ServiceLibrary", 'DateTime'>
     readonly updatedAt: FieldRef<"ServiceLibrary", 'DateTime'>
   }
@@ -52578,6 +52810,10 @@ export namespace Prisma {
      */
     omit?: ServiceLibraryOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ServiceLibraryInclude<ExtArgs> | null
+    /**
      * Filter, which ServiceLibrary to fetch.
      */
     where: ServiceLibraryWhereUniqueInput
@@ -52596,6 +52832,10 @@ export namespace Prisma {
      */
     omit?: ServiceLibraryOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ServiceLibraryInclude<ExtArgs> | null
+    /**
      * Filter, which ServiceLibrary to fetch.
      */
     where: ServiceLibraryWhereUniqueInput
@@ -52613,6 +52853,10 @@ export namespace Prisma {
      * Omit specific fields from the ServiceLibrary
      */
     omit?: ServiceLibraryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ServiceLibraryInclude<ExtArgs> | null
     /**
      * Filter, which ServiceLibrary to fetch.
      */
@@ -52662,6 +52906,10 @@ export namespace Prisma {
      */
     omit?: ServiceLibraryOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ServiceLibraryInclude<ExtArgs> | null
+    /**
      * Filter, which ServiceLibrary to fetch.
      */
     where?: ServiceLibraryWhereInput
@@ -52710,6 +52958,10 @@ export namespace Prisma {
      */
     omit?: ServiceLibraryOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ServiceLibraryInclude<ExtArgs> | null
+    /**
      * Filter, which ServiceLibraries to fetch.
      */
     where?: ServiceLibraryWhereInput
@@ -52752,6 +53004,10 @@ export namespace Prisma {
      * Omit specific fields from the ServiceLibrary
      */
     omit?: ServiceLibraryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ServiceLibraryInclude<ExtArgs> | null
     /**
      * The data needed to create a ServiceLibrary.
      */
@@ -52800,6 +53056,10 @@ export namespace Prisma {
      * Omit specific fields from the ServiceLibrary
      */
     omit?: ServiceLibraryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ServiceLibraryInclude<ExtArgs> | null
     /**
      * The data needed to update a ServiceLibrary.
      */
@@ -52867,6 +53127,10 @@ export namespace Prisma {
      */
     omit?: ServiceLibraryOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ServiceLibraryInclude<ExtArgs> | null
+    /**
      * The filter to search for the ServiceLibrary to update in case it exists.
      */
     where: ServiceLibraryWhereUniqueInput
@@ -52893,6 +53157,10 @@ export namespace Prisma {
      */
     omit?: ServiceLibraryOmit<ExtArgs> | null
     /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ServiceLibraryInclude<ExtArgs> | null
+    /**
      * Filter which ServiceLibrary to delete.
      */
     where: ServiceLibraryWhereUniqueInput
@@ -52913,6 +53181,30 @@ export namespace Prisma {
   }
 
   /**
+   * ServiceLibrary.prices
+   */
+  export type ServiceLibrary$pricesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ServicePrice
+     */
+    select?: ServicePriceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ServicePrice
+     */
+    omit?: ServicePriceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ServicePriceInclude<ExtArgs> | null
+    where?: ServicePriceWhereInput
+    orderBy?: ServicePriceOrderByWithRelationInput | ServicePriceOrderByWithRelationInput[]
+    cursor?: ServicePriceWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ServicePriceScalarFieldEnum | ServicePriceScalarFieldEnum[]
+  }
+
+  /**
    * ServiceLibrary without action
    */
   export type ServiceLibraryDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -52924,6 +53216,1141 @@ export namespace Prisma {
      * Omit specific fields from the ServiceLibrary
      */
     omit?: ServiceLibraryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ServiceLibraryInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model ServicePrice
+   */
+
+  export type AggregateServicePrice = {
+    _count: ServicePriceCountAggregateOutputType | null
+    _avg: ServicePriceAvgAggregateOutputType | null
+    _sum: ServicePriceSumAggregateOutputType | null
+    _min: ServicePriceMinAggregateOutputType | null
+    _max: ServicePriceMaxAggregateOutputType | null
+  }
+
+  export type ServicePriceAvgAggregateOutputType = {
+    salePriceUsd: number | null
+  }
+
+  export type ServicePriceSumAggregateOutputType = {
+    salePriceUsd: number | null
+  }
+
+  export type ServicePriceMinAggregateOutputType = {
+    id: string | null
+    serviceId: string | null
+    month: string | null
+    variant: string | null
+    salePriceUsd: number | null
+    note: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ServicePriceMaxAggregateOutputType = {
+    id: string | null
+    serviceId: string | null
+    month: string | null
+    variant: string | null
+    salePriceUsd: number | null
+    note: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type ServicePriceCountAggregateOutputType = {
+    id: number
+    serviceId: number
+    month: number
+    variant: number
+    salePriceUsd: number
+    note: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type ServicePriceAvgAggregateInputType = {
+    salePriceUsd?: true
+  }
+
+  export type ServicePriceSumAggregateInputType = {
+    salePriceUsd?: true
+  }
+
+  export type ServicePriceMinAggregateInputType = {
+    id?: true
+    serviceId?: true
+    month?: true
+    variant?: true
+    salePriceUsd?: true
+    note?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ServicePriceMaxAggregateInputType = {
+    id?: true
+    serviceId?: true
+    month?: true
+    variant?: true
+    salePriceUsd?: true
+    note?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type ServicePriceCountAggregateInputType = {
+    id?: true
+    serviceId?: true
+    month?: true
+    variant?: true
+    salePriceUsd?: true
+    note?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type ServicePriceAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ServicePrice to aggregate.
+     */
+    where?: ServicePriceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ServicePrices to fetch.
+     */
+    orderBy?: ServicePriceOrderByWithRelationInput | ServicePriceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ServicePriceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ServicePrices from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ServicePrices.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ServicePrices
+    **/
+    _count?: true | ServicePriceCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ServicePriceAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ServicePriceSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ServicePriceMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ServicePriceMaxAggregateInputType
+  }
+
+  export type GetServicePriceAggregateType<T extends ServicePriceAggregateArgs> = {
+        [P in keyof T & keyof AggregateServicePrice]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateServicePrice[P]>
+      : GetScalarType<T[P], AggregateServicePrice[P]>
+  }
+
+
+
+
+  export type ServicePriceGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ServicePriceWhereInput
+    orderBy?: ServicePriceOrderByWithAggregationInput | ServicePriceOrderByWithAggregationInput[]
+    by: ServicePriceScalarFieldEnum[] | ServicePriceScalarFieldEnum
+    having?: ServicePriceScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ServicePriceCountAggregateInputType | true
+    _avg?: ServicePriceAvgAggregateInputType
+    _sum?: ServicePriceSumAggregateInputType
+    _min?: ServicePriceMinAggregateInputType
+    _max?: ServicePriceMaxAggregateInputType
+  }
+
+  export type ServicePriceGroupByOutputType = {
+    id: string
+    serviceId: string
+    month: string
+    variant: string
+    salePriceUsd: number
+    note: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: ServicePriceCountAggregateOutputType | null
+    _avg: ServicePriceAvgAggregateOutputType | null
+    _sum: ServicePriceSumAggregateOutputType | null
+    _min: ServicePriceMinAggregateOutputType | null
+    _max: ServicePriceMaxAggregateOutputType | null
+  }
+
+  type GetServicePriceGroupByPayload<T extends ServicePriceGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ServicePriceGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ServicePriceGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ServicePriceGroupByOutputType[P]>
+            : GetScalarType<T[P], ServicePriceGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ServicePriceSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    serviceId?: boolean
+    month?: boolean
+    variant?: boolean
+    salePriceUsd?: boolean
+    note?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    service?: boolean | ServiceLibraryDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["servicePrice"]>
+
+  export type ServicePriceSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    serviceId?: boolean
+    month?: boolean
+    variant?: boolean
+    salePriceUsd?: boolean
+    note?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    service?: boolean | ServiceLibraryDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["servicePrice"]>
+
+  export type ServicePriceSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    serviceId?: boolean
+    month?: boolean
+    variant?: boolean
+    salePriceUsd?: boolean
+    note?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    service?: boolean | ServiceLibraryDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["servicePrice"]>
+
+  export type ServicePriceSelectScalar = {
+    id?: boolean
+    serviceId?: boolean
+    month?: boolean
+    variant?: boolean
+    salePriceUsd?: boolean
+    note?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type ServicePriceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "serviceId" | "month" | "variant" | "salePriceUsd" | "note" | "createdAt" | "updatedAt", ExtArgs["result"]["servicePrice"]>
+  export type ServicePriceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    service?: boolean | ServiceLibraryDefaultArgs<ExtArgs>
+  }
+  export type ServicePriceIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    service?: boolean | ServiceLibraryDefaultArgs<ExtArgs>
+  }
+  export type ServicePriceIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    service?: boolean | ServiceLibraryDefaultArgs<ExtArgs>
+  }
+
+  export type $ServicePricePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ServicePrice"
+    objects: {
+      service: Prisma.$ServiceLibraryPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      serviceId: string
+      month: string
+      variant: string
+      salePriceUsd: number
+      note: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["servicePrice"]>
+    composites: {}
+  }
+
+  type ServicePriceGetPayload<S extends boolean | null | undefined | ServicePriceDefaultArgs> = $Result.GetResult<Prisma.$ServicePricePayload, S>
+
+  type ServicePriceCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ServicePriceFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ServicePriceCountAggregateInputType | true
+    }
+
+  export interface ServicePriceDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ServicePrice'], meta: { name: 'ServicePrice' } }
+    /**
+     * Find zero or one ServicePrice that matches the filter.
+     * @param {ServicePriceFindUniqueArgs} args - Arguments to find a ServicePrice
+     * @example
+     * // Get one ServicePrice
+     * const servicePrice = await prisma.servicePrice.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ServicePriceFindUniqueArgs>(args: SelectSubset<T, ServicePriceFindUniqueArgs<ExtArgs>>): Prisma__ServicePriceClient<$Result.GetResult<Prisma.$ServicePricePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ServicePrice that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ServicePriceFindUniqueOrThrowArgs} args - Arguments to find a ServicePrice
+     * @example
+     * // Get one ServicePrice
+     * const servicePrice = await prisma.servicePrice.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ServicePriceFindUniqueOrThrowArgs>(args: SelectSubset<T, ServicePriceFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ServicePriceClient<$Result.GetResult<Prisma.$ServicePricePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ServicePrice that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ServicePriceFindFirstArgs} args - Arguments to find a ServicePrice
+     * @example
+     * // Get one ServicePrice
+     * const servicePrice = await prisma.servicePrice.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ServicePriceFindFirstArgs>(args?: SelectSubset<T, ServicePriceFindFirstArgs<ExtArgs>>): Prisma__ServicePriceClient<$Result.GetResult<Prisma.$ServicePricePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ServicePrice that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ServicePriceFindFirstOrThrowArgs} args - Arguments to find a ServicePrice
+     * @example
+     * // Get one ServicePrice
+     * const servicePrice = await prisma.servicePrice.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ServicePriceFindFirstOrThrowArgs>(args?: SelectSubset<T, ServicePriceFindFirstOrThrowArgs<ExtArgs>>): Prisma__ServicePriceClient<$Result.GetResult<Prisma.$ServicePricePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ServicePrices that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ServicePriceFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ServicePrices
+     * const servicePrices = await prisma.servicePrice.findMany()
+     * 
+     * // Get first 10 ServicePrices
+     * const servicePrices = await prisma.servicePrice.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const servicePriceWithIdOnly = await prisma.servicePrice.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends ServicePriceFindManyArgs>(args?: SelectSubset<T, ServicePriceFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ServicePricePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ServicePrice.
+     * @param {ServicePriceCreateArgs} args - Arguments to create a ServicePrice.
+     * @example
+     * // Create one ServicePrice
+     * const ServicePrice = await prisma.servicePrice.create({
+     *   data: {
+     *     // ... data to create a ServicePrice
+     *   }
+     * })
+     * 
+     */
+    create<T extends ServicePriceCreateArgs>(args: SelectSubset<T, ServicePriceCreateArgs<ExtArgs>>): Prisma__ServicePriceClient<$Result.GetResult<Prisma.$ServicePricePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ServicePrices.
+     * @param {ServicePriceCreateManyArgs} args - Arguments to create many ServicePrices.
+     * @example
+     * // Create many ServicePrices
+     * const servicePrice = await prisma.servicePrice.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ServicePriceCreateManyArgs>(args?: SelectSubset<T, ServicePriceCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ServicePrices and returns the data saved in the database.
+     * @param {ServicePriceCreateManyAndReturnArgs} args - Arguments to create many ServicePrices.
+     * @example
+     * // Create many ServicePrices
+     * const servicePrice = await prisma.servicePrice.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ServicePrices and only return the `id`
+     * const servicePriceWithIdOnly = await prisma.servicePrice.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ServicePriceCreateManyAndReturnArgs>(args?: SelectSubset<T, ServicePriceCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ServicePricePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ServicePrice.
+     * @param {ServicePriceDeleteArgs} args - Arguments to delete one ServicePrice.
+     * @example
+     * // Delete one ServicePrice
+     * const ServicePrice = await prisma.servicePrice.delete({
+     *   where: {
+     *     // ... filter to delete one ServicePrice
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ServicePriceDeleteArgs>(args: SelectSubset<T, ServicePriceDeleteArgs<ExtArgs>>): Prisma__ServicePriceClient<$Result.GetResult<Prisma.$ServicePricePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ServicePrice.
+     * @param {ServicePriceUpdateArgs} args - Arguments to update one ServicePrice.
+     * @example
+     * // Update one ServicePrice
+     * const servicePrice = await prisma.servicePrice.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ServicePriceUpdateArgs>(args: SelectSubset<T, ServicePriceUpdateArgs<ExtArgs>>): Prisma__ServicePriceClient<$Result.GetResult<Prisma.$ServicePricePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ServicePrices.
+     * @param {ServicePriceDeleteManyArgs} args - Arguments to filter ServicePrices to delete.
+     * @example
+     * // Delete a few ServicePrices
+     * const { count } = await prisma.servicePrice.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ServicePriceDeleteManyArgs>(args?: SelectSubset<T, ServicePriceDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ServicePrices.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ServicePriceUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ServicePrices
+     * const servicePrice = await prisma.servicePrice.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ServicePriceUpdateManyArgs>(args: SelectSubset<T, ServicePriceUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ServicePrices and returns the data updated in the database.
+     * @param {ServicePriceUpdateManyAndReturnArgs} args - Arguments to update many ServicePrices.
+     * @example
+     * // Update many ServicePrices
+     * const servicePrice = await prisma.servicePrice.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ServicePrices and only return the `id`
+     * const servicePriceWithIdOnly = await prisma.servicePrice.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ServicePriceUpdateManyAndReturnArgs>(args: SelectSubset<T, ServicePriceUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ServicePricePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ServicePrice.
+     * @param {ServicePriceUpsertArgs} args - Arguments to update or create a ServicePrice.
+     * @example
+     * // Update or create a ServicePrice
+     * const servicePrice = await prisma.servicePrice.upsert({
+     *   create: {
+     *     // ... data to create a ServicePrice
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ServicePrice we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ServicePriceUpsertArgs>(args: SelectSubset<T, ServicePriceUpsertArgs<ExtArgs>>): Prisma__ServicePriceClient<$Result.GetResult<Prisma.$ServicePricePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ServicePrices.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ServicePriceCountArgs} args - Arguments to filter ServicePrices to count.
+     * @example
+     * // Count the number of ServicePrices
+     * const count = await prisma.servicePrice.count({
+     *   where: {
+     *     // ... the filter for the ServicePrices we want to count
+     *   }
+     * })
+    **/
+    count<T extends ServicePriceCountArgs>(
+      args?: Subset<T, ServicePriceCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ServicePriceCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ServicePrice.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ServicePriceAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ServicePriceAggregateArgs>(args: Subset<T, ServicePriceAggregateArgs>): Prisma.PrismaPromise<GetServicePriceAggregateType<T>>
+
+    /**
+     * Group by ServicePrice.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ServicePriceGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ServicePriceGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ServicePriceGroupByArgs['orderBy'] }
+        : { orderBy?: ServicePriceGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ServicePriceGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetServicePriceGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ServicePrice model
+   */
+  readonly fields: ServicePriceFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ServicePrice.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ServicePriceClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    service<T extends ServiceLibraryDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ServiceLibraryDefaultArgs<ExtArgs>>): Prisma__ServiceLibraryClient<$Result.GetResult<Prisma.$ServiceLibraryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ServicePrice model
+   */
+  interface ServicePriceFieldRefs {
+    readonly id: FieldRef<"ServicePrice", 'String'>
+    readonly serviceId: FieldRef<"ServicePrice", 'String'>
+    readonly month: FieldRef<"ServicePrice", 'String'>
+    readonly variant: FieldRef<"ServicePrice", 'String'>
+    readonly salePriceUsd: FieldRef<"ServicePrice", 'Float'>
+    readonly note: FieldRef<"ServicePrice", 'String'>
+    readonly createdAt: FieldRef<"ServicePrice", 'DateTime'>
+    readonly updatedAt: FieldRef<"ServicePrice", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ServicePrice findUnique
+   */
+  export type ServicePriceFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ServicePrice
+     */
+    select?: ServicePriceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ServicePrice
+     */
+    omit?: ServicePriceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ServicePriceInclude<ExtArgs> | null
+    /**
+     * Filter, which ServicePrice to fetch.
+     */
+    where: ServicePriceWhereUniqueInput
+  }
+
+  /**
+   * ServicePrice findUniqueOrThrow
+   */
+  export type ServicePriceFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ServicePrice
+     */
+    select?: ServicePriceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ServicePrice
+     */
+    omit?: ServicePriceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ServicePriceInclude<ExtArgs> | null
+    /**
+     * Filter, which ServicePrice to fetch.
+     */
+    where: ServicePriceWhereUniqueInput
+  }
+
+  /**
+   * ServicePrice findFirst
+   */
+  export type ServicePriceFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ServicePrice
+     */
+    select?: ServicePriceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ServicePrice
+     */
+    omit?: ServicePriceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ServicePriceInclude<ExtArgs> | null
+    /**
+     * Filter, which ServicePrice to fetch.
+     */
+    where?: ServicePriceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ServicePrices to fetch.
+     */
+    orderBy?: ServicePriceOrderByWithRelationInput | ServicePriceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ServicePrices.
+     */
+    cursor?: ServicePriceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ServicePrices from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ServicePrices.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ServicePrices.
+     */
+    distinct?: ServicePriceScalarFieldEnum | ServicePriceScalarFieldEnum[]
+  }
+
+  /**
+   * ServicePrice findFirstOrThrow
+   */
+  export type ServicePriceFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ServicePrice
+     */
+    select?: ServicePriceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ServicePrice
+     */
+    omit?: ServicePriceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ServicePriceInclude<ExtArgs> | null
+    /**
+     * Filter, which ServicePrice to fetch.
+     */
+    where?: ServicePriceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ServicePrices to fetch.
+     */
+    orderBy?: ServicePriceOrderByWithRelationInput | ServicePriceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ServicePrices.
+     */
+    cursor?: ServicePriceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ServicePrices from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ServicePrices.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ServicePrices.
+     */
+    distinct?: ServicePriceScalarFieldEnum | ServicePriceScalarFieldEnum[]
+  }
+
+  /**
+   * ServicePrice findMany
+   */
+  export type ServicePriceFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ServicePrice
+     */
+    select?: ServicePriceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ServicePrice
+     */
+    omit?: ServicePriceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ServicePriceInclude<ExtArgs> | null
+    /**
+     * Filter, which ServicePrices to fetch.
+     */
+    where?: ServicePriceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ServicePrices to fetch.
+     */
+    orderBy?: ServicePriceOrderByWithRelationInput | ServicePriceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ServicePrices.
+     */
+    cursor?: ServicePriceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ServicePrices from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ServicePrices.
+     */
+    skip?: number
+    distinct?: ServicePriceScalarFieldEnum | ServicePriceScalarFieldEnum[]
+  }
+
+  /**
+   * ServicePrice create
+   */
+  export type ServicePriceCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ServicePrice
+     */
+    select?: ServicePriceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ServicePrice
+     */
+    omit?: ServicePriceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ServicePriceInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ServicePrice.
+     */
+    data: XOR<ServicePriceCreateInput, ServicePriceUncheckedCreateInput>
+  }
+
+  /**
+   * ServicePrice createMany
+   */
+  export type ServicePriceCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ServicePrices.
+     */
+    data: ServicePriceCreateManyInput | ServicePriceCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ServicePrice createManyAndReturn
+   */
+  export type ServicePriceCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ServicePrice
+     */
+    select?: ServicePriceSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ServicePrice
+     */
+    omit?: ServicePriceOmit<ExtArgs> | null
+    /**
+     * The data used to create many ServicePrices.
+     */
+    data: ServicePriceCreateManyInput | ServicePriceCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ServicePriceIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ServicePrice update
+   */
+  export type ServicePriceUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ServicePrice
+     */
+    select?: ServicePriceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ServicePrice
+     */
+    omit?: ServicePriceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ServicePriceInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ServicePrice.
+     */
+    data: XOR<ServicePriceUpdateInput, ServicePriceUncheckedUpdateInput>
+    /**
+     * Choose, which ServicePrice to update.
+     */
+    where: ServicePriceWhereUniqueInput
+  }
+
+  /**
+   * ServicePrice updateMany
+   */
+  export type ServicePriceUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ServicePrices.
+     */
+    data: XOR<ServicePriceUpdateManyMutationInput, ServicePriceUncheckedUpdateManyInput>
+    /**
+     * Filter which ServicePrices to update
+     */
+    where?: ServicePriceWhereInput
+    /**
+     * Limit how many ServicePrices to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ServicePrice updateManyAndReturn
+   */
+  export type ServicePriceUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ServicePrice
+     */
+    select?: ServicePriceSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ServicePrice
+     */
+    omit?: ServicePriceOmit<ExtArgs> | null
+    /**
+     * The data used to update ServicePrices.
+     */
+    data: XOR<ServicePriceUpdateManyMutationInput, ServicePriceUncheckedUpdateManyInput>
+    /**
+     * Filter which ServicePrices to update
+     */
+    where?: ServicePriceWhereInput
+    /**
+     * Limit how many ServicePrices to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ServicePriceIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ServicePrice upsert
+   */
+  export type ServicePriceUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ServicePrice
+     */
+    select?: ServicePriceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ServicePrice
+     */
+    omit?: ServicePriceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ServicePriceInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ServicePrice to update in case it exists.
+     */
+    where: ServicePriceWhereUniqueInput
+    /**
+     * In case the ServicePrice found by the `where` argument doesn't exist, create a new ServicePrice with this data.
+     */
+    create: XOR<ServicePriceCreateInput, ServicePriceUncheckedCreateInput>
+    /**
+     * In case the ServicePrice was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ServicePriceUpdateInput, ServicePriceUncheckedUpdateInput>
+  }
+
+  /**
+   * ServicePrice delete
+   */
+  export type ServicePriceDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ServicePrice
+     */
+    select?: ServicePriceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ServicePrice
+     */
+    omit?: ServicePriceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ServicePriceInclude<ExtArgs> | null
+    /**
+     * Filter which ServicePrice to delete.
+     */
+    where: ServicePriceWhereUniqueInput
+  }
+
+  /**
+   * ServicePrice deleteMany
+   */
+  export type ServicePriceDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ServicePrices to delete
+     */
+    where?: ServicePriceWhereInput
+    /**
+     * Limit how many ServicePrices to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ServicePrice without action
+   */
+  export type ServicePriceDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ServicePrice
+     */
+    select?: ServicePriceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ServicePrice
+     */
+    omit?: ServicePriceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ServicePriceInclude<ExtArgs> | null
   }
 
 
@@ -63932,11 +65359,32 @@ export namespace Prisma {
     defaultExtraBedPrice: 'defaultExtraBedPrice',
     isActive: 'isActive',
     sortOrder: 'sortOrder',
+    isPublic: 'isPublic',
+    slug: 'slug',
+    city: 'city',
+    imageUrl: 'imageUrl',
+    publicDescription: 'publicDescription',
+    hotelStars: 'hotelStars',
+    distanceMeters: 'distanceMeters',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
 
   export type ServiceLibraryScalarFieldEnum = (typeof ServiceLibraryScalarFieldEnum)[keyof typeof ServiceLibraryScalarFieldEnum]
+
+
+  export const ServicePriceScalarFieldEnum: {
+    id: 'id',
+    serviceId: 'serviceId',
+    month: 'month',
+    variant: 'variant',
+    salePriceUsd: 'salePriceUsd',
+    note: 'note',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type ServicePriceScalarFieldEnum = (typeof ServicePriceScalarFieldEnum)[keyof typeof ServicePriceScalarFieldEnum]
 
 
   export const ProgramConfigScalarFieldEnum: {
@@ -67734,8 +69182,16 @@ export namespace Prisma {
     defaultExtraBedPrice?: FloatFilter<"ServiceLibrary"> | number
     isActive?: BoolFilter<"ServiceLibrary"> | boolean
     sortOrder?: IntFilter<"ServiceLibrary"> | number
+    isPublic?: BoolFilter<"ServiceLibrary"> | boolean
+    slug?: StringNullableFilter<"ServiceLibrary"> | string | null
+    city?: StringNullableFilter<"ServiceLibrary"> | string | null
+    imageUrl?: StringNullableFilter<"ServiceLibrary"> | string | null
+    publicDescription?: StringNullableFilter<"ServiceLibrary"> | string | null
+    hotelStars?: IntNullableFilter<"ServiceLibrary"> | number | null
+    distanceMeters?: IntNullableFilter<"ServiceLibrary"> | number | null
     createdAt?: DateTimeFilter<"ServiceLibrary"> | Date | string
     updatedAt?: DateTimeFilter<"ServiceLibrary"> | Date | string
+    prices?: ServicePriceListRelationFilter
   }
 
   export type ServiceLibraryOrderByWithRelationInput = {
@@ -67750,12 +69206,21 @@ export namespace Prisma {
     defaultExtraBedPrice?: SortOrder
     isActive?: SortOrder
     sortOrder?: SortOrder
+    isPublic?: SortOrder
+    slug?: SortOrderInput | SortOrder
+    city?: SortOrderInput | SortOrder
+    imageUrl?: SortOrderInput | SortOrder
+    publicDescription?: SortOrderInput | SortOrder
+    hotelStars?: SortOrderInput | SortOrder
+    distanceMeters?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+    prices?: ServicePriceOrderByRelationAggregateInput
   }
 
   export type ServiceLibraryWhereUniqueInput = Prisma.AtLeast<{
     id?: string
+    slug?: string
     AND?: ServiceLibraryWhereInput | ServiceLibraryWhereInput[]
     OR?: ServiceLibraryWhereInput[]
     NOT?: ServiceLibraryWhereInput | ServiceLibraryWhereInput[]
@@ -67769,9 +69234,16 @@ export namespace Prisma {
     defaultExtraBedPrice?: FloatFilter<"ServiceLibrary"> | number
     isActive?: BoolFilter<"ServiceLibrary"> | boolean
     sortOrder?: IntFilter<"ServiceLibrary"> | number
+    isPublic?: BoolFilter<"ServiceLibrary"> | boolean
+    city?: StringNullableFilter<"ServiceLibrary"> | string | null
+    imageUrl?: StringNullableFilter<"ServiceLibrary"> | string | null
+    publicDescription?: StringNullableFilter<"ServiceLibrary"> | string | null
+    hotelStars?: IntNullableFilter<"ServiceLibrary"> | number | null
+    distanceMeters?: IntNullableFilter<"ServiceLibrary"> | number | null
     createdAt?: DateTimeFilter<"ServiceLibrary"> | Date | string
     updatedAt?: DateTimeFilter<"ServiceLibrary"> | Date | string
-  }, "id">
+    prices?: ServicePriceListRelationFilter
+  }, "id" | "slug">
 
   export type ServiceLibraryOrderByWithAggregationInput = {
     id?: SortOrder
@@ -67785,6 +69257,13 @@ export namespace Prisma {
     defaultExtraBedPrice?: SortOrder
     isActive?: SortOrder
     sortOrder?: SortOrder
+    isPublic?: SortOrder
+    slug?: SortOrderInput | SortOrder
+    city?: SortOrderInput | SortOrder
+    imageUrl?: SortOrderInput | SortOrder
+    publicDescription?: SortOrderInput | SortOrder
+    hotelStars?: SortOrderInput | SortOrder
+    distanceMeters?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: ServiceLibraryCountOrderByAggregateInput
@@ -67809,8 +69288,88 @@ export namespace Prisma {
     defaultExtraBedPrice?: FloatWithAggregatesFilter<"ServiceLibrary"> | number
     isActive?: BoolWithAggregatesFilter<"ServiceLibrary"> | boolean
     sortOrder?: IntWithAggregatesFilter<"ServiceLibrary"> | number
+    isPublic?: BoolWithAggregatesFilter<"ServiceLibrary"> | boolean
+    slug?: StringNullableWithAggregatesFilter<"ServiceLibrary"> | string | null
+    city?: StringNullableWithAggregatesFilter<"ServiceLibrary"> | string | null
+    imageUrl?: StringNullableWithAggregatesFilter<"ServiceLibrary"> | string | null
+    publicDescription?: StringNullableWithAggregatesFilter<"ServiceLibrary"> | string | null
+    hotelStars?: IntNullableWithAggregatesFilter<"ServiceLibrary"> | number | null
+    distanceMeters?: IntNullableWithAggregatesFilter<"ServiceLibrary"> | number | null
     createdAt?: DateTimeWithAggregatesFilter<"ServiceLibrary"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"ServiceLibrary"> | Date | string
+  }
+
+  export type ServicePriceWhereInput = {
+    AND?: ServicePriceWhereInput | ServicePriceWhereInput[]
+    OR?: ServicePriceWhereInput[]
+    NOT?: ServicePriceWhereInput | ServicePriceWhereInput[]
+    id?: StringFilter<"ServicePrice"> | string
+    serviceId?: StringFilter<"ServicePrice"> | string
+    month?: StringFilter<"ServicePrice"> | string
+    variant?: StringFilter<"ServicePrice"> | string
+    salePriceUsd?: FloatFilter<"ServicePrice"> | number
+    note?: StringNullableFilter<"ServicePrice"> | string | null
+    createdAt?: DateTimeFilter<"ServicePrice"> | Date | string
+    updatedAt?: DateTimeFilter<"ServicePrice"> | Date | string
+    service?: XOR<ServiceLibraryScalarRelationFilter, ServiceLibraryWhereInput>
+  }
+
+  export type ServicePriceOrderByWithRelationInput = {
+    id?: SortOrder
+    serviceId?: SortOrder
+    month?: SortOrder
+    variant?: SortOrder
+    salePriceUsd?: SortOrder
+    note?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    service?: ServiceLibraryOrderByWithRelationInput
+  }
+
+  export type ServicePriceWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    serviceId_month_variant?: ServicePriceServiceIdMonthVariantCompoundUniqueInput
+    AND?: ServicePriceWhereInput | ServicePriceWhereInput[]
+    OR?: ServicePriceWhereInput[]
+    NOT?: ServicePriceWhereInput | ServicePriceWhereInput[]
+    serviceId?: StringFilter<"ServicePrice"> | string
+    month?: StringFilter<"ServicePrice"> | string
+    variant?: StringFilter<"ServicePrice"> | string
+    salePriceUsd?: FloatFilter<"ServicePrice"> | number
+    note?: StringNullableFilter<"ServicePrice"> | string | null
+    createdAt?: DateTimeFilter<"ServicePrice"> | Date | string
+    updatedAt?: DateTimeFilter<"ServicePrice"> | Date | string
+    service?: XOR<ServiceLibraryScalarRelationFilter, ServiceLibraryWhereInput>
+  }, "id" | "serviceId_month_variant">
+
+  export type ServicePriceOrderByWithAggregationInput = {
+    id?: SortOrder
+    serviceId?: SortOrder
+    month?: SortOrder
+    variant?: SortOrder
+    salePriceUsd?: SortOrder
+    note?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: ServicePriceCountOrderByAggregateInput
+    _avg?: ServicePriceAvgOrderByAggregateInput
+    _max?: ServicePriceMaxOrderByAggregateInput
+    _min?: ServicePriceMinOrderByAggregateInput
+    _sum?: ServicePriceSumOrderByAggregateInput
+  }
+
+  export type ServicePriceScalarWhereWithAggregatesInput = {
+    AND?: ServicePriceScalarWhereWithAggregatesInput | ServicePriceScalarWhereWithAggregatesInput[]
+    OR?: ServicePriceScalarWhereWithAggregatesInput[]
+    NOT?: ServicePriceScalarWhereWithAggregatesInput | ServicePriceScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"ServicePrice"> | string
+    serviceId?: StringWithAggregatesFilter<"ServicePrice"> | string
+    month?: StringWithAggregatesFilter<"ServicePrice"> | string
+    variant?: StringWithAggregatesFilter<"ServicePrice"> | string
+    salePriceUsd?: FloatWithAggregatesFilter<"ServicePrice"> | number
+    note?: StringNullableWithAggregatesFilter<"ServicePrice"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"ServicePrice"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"ServicePrice"> | Date | string
   }
 
   export type ProgramConfigWhereInput = {
@@ -72621,8 +74180,16 @@ export namespace Prisma {
     defaultExtraBedPrice?: number
     isActive?: boolean
     sortOrder?: number
+    isPublic?: boolean
+    slug?: string | null
+    city?: string | null
+    imageUrl?: string | null
+    publicDescription?: string | null
+    hotelStars?: number | null
+    distanceMeters?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    prices?: ServicePriceCreateNestedManyWithoutServiceInput
   }
 
   export type ServiceLibraryUncheckedCreateInput = {
@@ -72637,8 +74204,16 @@ export namespace Prisma {
     defaultExtraBedPrice?: number
     isActive?: boolean
     sortOrder?: number
+    isPublic?: boolean
+    slug?: string | null
+    city?: string | null
+    imageUrl?: string | null
+    publicDescription?: string | null
+    hotelStars?: number | null
+    distanceMeters?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    prices?: ServicePriceUncheckedCreateNestedManyWithoutServiceInput
   }
 
   export type ServiceLibraryUpdateInput = {
@@ -72653,8 +74228,16 @@ export namespace Prisma {
     defaultExtraBedPrice?: FloatFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean
     sortOrder?: IntFieldUpdateOperationsInput | number
+    isPublic?: BoolFieldUpdateOperationsInput | boolean
+    slug?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    publicDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    hotelStars?: NullableIntFieldUpdateOperationsInput | number | null
+    distanceMeters?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    prices?: ServicePriceUpdateManyWithoutServiceNestedInput
   }
 
   export type ServiceLibraryUncheckedUpdateInput = {
@@ -72669,8 +74252,16 @@ export namespace Prisma {
     defaultExtraBedPrice?: FloatFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean
     sortOrder?: IntFieldUpdateOperationsInput | number
+    isPublic?: BoolFieldUpdateOperationsInput | boolean
+    slug?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    publicDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    hotelStars?: NullableIntFieldUpdateOperationsInput | number | null
+    distanceMeters?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    prices?: ServicePriceUncheckedUpdateManyWithoutServiceNestedInput
   }
 
   export type ServiceLibraryCreateManyInput = {
@@ -72685,6 +74276,13 @@ export namespace Prisma {
     defaultExtraBedPrice?: number
     isActive?: boolean
     sortOrder?: number
+    isPublic?: boolean
+    slug?: string | null
+    city?: string | null
+    imageUrl?: string | null
+    publicDescription?: string | null
+    hotelStars?: number | null
+    distanceMeters?: number | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -72701,6 +74299,13 @@ export namespace Prisma {
     defaultExtraBedPrice?: FloatFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean
     sortOrder?: IntFieldUpdateOperationsInput | number
+    isPublic?: BoolFieldUpdateOperationsInput | boolean
+    slug?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    publicDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    hotelStars?: NullableIntFieldUpdateOperationsInput | number | null
+    distanceMeters?: NullableIntFieldUpdateOperationsInput | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -72717,6 +74322,89 @@ export namespace Prisma {
     defaultExtraBedPrice?: FloatFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean
     sortOrder?: IntFieldUpdateOperationsInput | number
+    isPublic?: BoolFieldUpdateOperationsInput | boolean
+    slug?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    publicDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    hotelStars?: NullableIntFieldUpdateOperationsInput | number | null
+    distanceMeters?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ServicePriceCreateInput = {
+    id?: string
+    month: string
+    variant?: string
+    salePriceUsd: number
+    note?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    service: ServiceLibraryCreateNestedOneWithoutPricesInput
+  }
+
+  export type ServicePriceUncheckedCreateInput = {
+    id?: string
+    serviceId: string
+    month: string
+    variant?: string
+    salePriceUsd: number
+    note?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ServicePriceUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    month?: StringFieldUpdateOperationsInput | string
+    variant?: StringFieldUpdateOperationsInput | string
+    salePriceUsd?: FloatFieldUpdateOperationsInput | number
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    service?: ServiceLibraryUpdateOneRequiredWithoutPricesNestedInput
+  }
+
+  export type ServicePriceUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    serviceId?: StringFieldUpdateOperationsInput | string
+    month?: StringFieldUpdateOperationsInput | string
+    variant?: StringFieldUpdateOperationsInput | string
+    salePriceUsd?: FloatFieldUpdateOperationsInput | number
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ServicePriceCreateManyInput = {
+    id?: string
+    serviceId: string
+    month: string
+    variant?: string
+    salePriceUsd: number
+    note?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ServicePriceUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    month?: StringFieldUpdateOperationsInput | string
+    variant?: StringFieldUpdateOperationsInput | string
+    salePriceUsd?: FloatFieldUpdateOperationsInput | number
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ServicePriceUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    serviceId?: StringFieldUpdateOperationsInput | string
+    month?: StringFieldUpdateOperationsInput | string
+    variant?: StringFieldUpdateOperationsInput | string
+    salePriceUsd?: FloatFieldUpdateOperationsInput | number
+    note?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -76075,6 +77763,16 @@ export namespace Prisma {
     sortOrder?: SortOrder
   }
 
+  export type ServicePriceListRelationFilter = {
+    every?: ServicePriceWhereInput
+    some?: ServicePriceWhereInput
+    none?: ServicePriceWhereInput
+  }
+
+  export type ServicePriceOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type ServiceLibraryCountOrderByAggregateInput = {
     id?: SortOrder
     category?: SortOrder
@@ -76087,6 +77785,13 @@ export namespace Prisma {
     defaultExtraBedPrice?: SortOrder
     isActive?: SortOrder
     sortOrder?: SortOrder
+    isPublic?: SortOrder
+    slug?: SortOrder
+    city?: SortOrder
+    imageUrl?: SortOrder
+    publicDescription?: SortOrder
+    hotelStars?: SortOrder
+    distanceMeters?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -76096,6 +77801,8 @@ export namespace Prisma {
     defaultChildPercent?: SortOrder
     defaultExtraBedPrice?: SortOrder
     sortOrder?: SortOrder
+    hotelStars?: SortOrder
+    distanceMeters?: SortOrder
   }
 
   export type ServiceLibraryMaxOrderByAggregateInput = {
@@ -76110,6 +77817,13 @@ export namespace Prisma {
     defaultExtraBedPrice?: SortOrder
     isActive?: SortOrder
     sortOrder?: SortOrder
+    isPublic?: SortOrder
+    slug?: SortOrder
+    city?: SortOrder
+    imageUrl?: SortOrder
+    publicDescription?: SortOrder
+    hotelStars?: SortOrder
+    distanceMeters?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -76126,6 +77840,13 @@ export namespace Prisma {
     defaultExtraBedPrice?: SortOrder
     isActive?: SortOrder
     sortOrder?: SortOrder
+    isPublic?: SortOrder
+    slug?: SortOrder
+    city?: SortOrder
+    imageUrl?: SortOrder
+    publicDescription?: SortOrder
+    hotelStars?: SortOrder
+    distanceMeters?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -76135,6 +77856,60 @@ export namespace Prisma {
     defaultChildPercent?: SortOrder
     defaultExtraBedPrice?: SortOrder
     sortOrder?: SortOrder
+    hotelStars?: SortOrder
+    distanceMeters?: SortOrder
+  }
+
+  export type ServiceLibraryScalarRelationFilter = {
+    is?: ServiceLibraryWhereInput
+    isNot?: ServiceLibraryWhereInput
+  }
+
+  export type ServicePriceServiceIdMonthVariantCompoundUniqueInput = {
+    serviceId: string
+    month: string
+    variant: string
+  }
+
+  export type ServicePriceCountOrderByAggregateInput = {
+    id?: SortOrder
+    serviceId?: SortOrder
+    month?: SortOrder
+    variant?: SortOrder
+    salePriceUsd?: SortOrder
+    note?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ServicePriceAvgOrderByAggregateInput = {
+    salePriceUsd?: SortOrder
+  }
+
+  export type ServicePriceMaxOrderByAggregateInput = {
+    id?: SortOrder
+    serviceId?: SortOrder
+    month?: SortOrder
+    variant?: SortOrder
+    salePriceUsd?: SortOrder
+    note?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ServicePriceMinOrderByAggregateInput = {
+    id?: SortOrder
+    serviceId?: SortOrder
+    month?: SortOrder
+    variant?: SortOrder
+    salePriceUsd?: SortOrder
+    note?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type ServicePriceSumOrderByAggregateInput = {
+    salePriceUsd?: SortOrder
   }
 
   export type ProgramConfigCountOrderByAggregateInput = {
@@ -78376,6 +80151,62 @@ export namespace Prisma {
     upsert?: QuotationUpsertWithoutItemsInput
     connect?: QuotationWhereUniqueInput
     update?: XOR<XOR<QuotationUpdateToOneWithWhereWithoutItemsInput, QuotationUpdateWithoutItemsInput>, QuotationUncheckedUpdateWithoutItemsInput>
+  }
+
+  export type ServicePriceCreateNestedManyWithoutServiceInput = {
+    create?: XOR<ServicePriceCreateWithoutServiceInput, ServicePriceUncheckedCreateWithoutServiceInput> | ServicePriceCreateWithoutServiceInput[] | ServicePriceUncheckedCreateWithoutServiceInput[]
+    connectOrCreate?: ServicePriceCreateOrConnectWithoutServiceInput | ServicePriceCreateOrConnectWithoutServiceInput[]
+    createMany?: ServicePriceCreateManyServiceInputEnvelope
+    connect?: ServicePriceWhereUniqueInput | ServicePriceWhereUniqueInput[]
+  }
+
+  export type ServicePriceUncheckedCreateNestedManyWithoutServiceInput = {
+    create?: XOR<ServicePriceCreateWithoutServiceInput, ServicePriceUncheckedCreateWithoutServiceInput> | ServicePriceCreateWithoutServiceInput[] | ServicePriceUncheckedCreateWithoutServiceInput[]
+    connectOrCreate?: ServicePriceCreateOrConnectWithoutServiceInput | ServicePriceCreateOrConnectWithoutServiceInput[]
+    createMany?: ServicePriceCreateManyServiceInputEnvelope
+    connect?: ServicePriceWhereUniqueInput | ServicePriceWhereUniqueInput[]
+  }
+
+  export type ServicePriceUpdateManyWithoutServiceNestedInput = {
+    create?: XOR<ServicePriceCreateWithoutServiceInput, ServicePriceUncheckedCreateWithoutServiceInput> | ServicePriceCreateWithoutServiceInput[] | ServicePriceUncheckedCreateWithoutServiceInput[]
+    connectOrCreate?: ServicePriceCreateOrConnectWithoutServiceInput | ServicePriceCreateOrConnectWithoutServiceInput[]
+    upsert?: ServicePriceUpsertWithWhereUniqueWithoutServiceInput | ServicePriceUpsertWithWhereUniqueWithoutServiceInput[]
+    createMany?: ServicePriceCreateManyServiceInputEnvelope
+    set?: ServicePriceWhereUniqueInput | ServicePriceWhereUniqueInput[]
+    disconnect?: ServicePriceWhereUniqueInput | ServicePriceWhereUniqueInput[]
+    delete?: ServicePriceWhereUniqueInput | ServicePriceWhereUniqueInput[]
+    connect?: ServicePriceWhereUniqueInput | ServicePriceWhereUniqueInput[]
+    update?: ServicePriceUpdateWithWhereUniqueWithoutServiceInput | ServicePriceUpdateWithWhereUniqueWithoutServiceInput[]
+    updateMany?: ServicePriceUpdateManyWithWhereWithoutServiceInput | ServicePriceUpdateManyWithWhereWithoutServiceInput[]
+    deleteMany?: ServicePriceScalarWhereInput | ServicePriceScalarWhereInput[]
+  }
+
+  export type ServicePriceUncheckedUpdateManyWithoutServiceNestedInput = {
+    create?: XOR<ServicePriceCreateWithoutServiceInput, ServicePriceUncheckedCreateWithoutServiceInput> | ServicePriceCreateWithoutServiceInput[] | ServicePriceUncheckedCreateWithoutServiceInput[]
+    connectOrCreate?: ServicePriceCreateOrConnectWithoutServiceInput | ServicePriceCreateOrConnectWithoutServiceInput[]
+    upsert?: ServicePriceUpsertWithWhereUniqueWithoutServiceInput | ServicePriceUpsertWithWhereUniqueWithoutServiceInput[]
+    createMany?: ServicePriceCreateManyServiceInputEnvelope
+    set?: ServicePriceWhereUniqueInput | ServicePriceWhereUniqueInput[]
+    disconnect?: ServicePriceWhereUniqueInput | ServicePriceWhereUniqueInput[]
+    delete?: ServicePriceWhereUniqueInput | ServicePriceWhereUniqueInput[]
+    connect?: ServicePriceWhereUniqueInput | ServicePriceWhereUniqueInput[]
+    update?: ServicePriceUpdateWithWhereUniqueWithoutServiceInput | ServicePriceUpdateWithWhereUniqueWithoutServiceInput[]
+    updateMany?: ServicePriceUpdateManyWithWhereWithoutServiceInput | ServicePriceUpdateManyWithWhereWithoutServiceInput[]
+    deleteMany?: ServicePriceScalarWhereInput | ServicePriceScalarWhereInput[]
+  }
+
+  export type ServiceLibraryCreateNestedOneWithoutPricesInput = {
+    create?: XOR<ServiceLibraryCreateWithoutPricesInput, ServiceLibraryUncheckedCreateWithoutPricesInput>
+    connectOrCreate?: ServiceLibraryCreateOrConnectWithoutPricesInput
+    connect?: ServiceLibraryWhereUniqueInput
+  }
+
+  export type ServiceLibraryUpdateOneRequiredWithoutPricesNestedInput = {
+    create?: XOR<ServiceLibraryCreateWithoutPricesInput, ServiceLibraryUncheckedCreateWithoutPricesInput>
+    connectOrCreate?: ServiceLibraryCreateOrConnectWithoutPricesInput
+    upsert?: ServiceLibraryUpsertWithoutPricesInput
+    connect?: ServiceLibraryWhereUniqueInput
+    update?: XOR<XOR<ServiceLibraryUpdateToOneWithWhereWithoutPricesInput, ServiceLibraryUpdateWithoutPricesInput>, ServiceLibraryUncheckedUpdateWithoutPricesInput>
   }
 
   export type InfluencerCreateNestedOneWithoutStarLedgerEntriesInput = {
@@ -84204,6 +86035,174 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ServicePriceCreateWithoutServiceInput = {
+    id?: string
+    month: string
+    variant?: string
+    salePriceUsd: number
+    note?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ServicePriceUncheckedCreateWithoutServiceInput = {
+    id?: string
+    month: string
+    variant?: string
+    salePriceUsd: number
+    note?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ServicePriceCreateOrConnectWithoutServiceInput = {
+    where: ServicePriceWhereUniqueInput
+    create: XOR<ServicePriceCreateWithoutServiceInput, ServicePriceUncheckedCreateWithoutServiceInput>
+  }
+
+  export type ServicePriceCreateManyServiceInputEnvelope = {
+    data: ServicePriceCreateManyServiceInput | ServicePriceCreateManyServiceInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ServicePriceUpsertWithWhereUniqueWithoutServiceInput = {
+    where: ServicePriceWhereUniqueInput
+    update: XOR<ServicePriceUpdateWithoutServiceInput, ServicePriceUncheckedUpdateWithoutServiceInput>
+    create: XOR<ServicePriceCreateWithoutServiceInput, ServicePriceUncheckedCreateWithoutServiceInput>
+  }
+
+  export type ServicePriceUpdateWithWhereUniqueWithoutServiceInput = {
+    where: ServicePriceWhereUniqueInput
+    data: XOR<ServicePriceUpdateWithoutServiceInput, ServicePriceUncheckedUpdateWithoutServiceInput>
+  }
+
+  export type ServicePriceUpdateManyWithWhereWithoutServiceInput = {
+    where: ServicePriceScalarWhereInput
+    data: XOR<ServicePriceUpdateManyMutationInput, ServicePriceUncheckedUpdateManyWithoutServiceInput>
+  }
+
+  export type ServicePriceScalarWhereInput = {
+    AND?: ServicePriceScalarWhereInput | ServicePriceScalarWhereInput[]
+    OR?: ServicePriceScalarWhereInput[]
+    NOT?: ServicePriceScalarWhereInput | ServicePriceScalarWhereInput[]
+    id?: StringFilter<"ServicePrice"> | string
+    serviceId?: StringFilter<"ServicePrice"> | string
+    month?: StringFilter<"ServicePrice"> | string
+    variant?: StringFilter<"ServicePrice"> | string
+    salePriceUsd?: FloatFilter<"ServicePrice"> | number
+    note?: StringNullableFilter<"ServicePrice"> | string | null
+    createdAt?: DateTimeFilter<"ServicePrice"> | Date | string
+    updatedAt?: DateTimeFilter<"ServicePrice"> | Date | string
+  }
+
+  export type ServiceLibraryCreateWithoutPricesInput = {
+    id?: string
+    category: string
+    name: string
+    description?: string | null
+    defaultPricingType?: string
+    defaultCostUsd?: number
+    defaultVehicleType?: string | null
+    defaultChildPercent?: number
+    defaultExtraBedPrice?: number
+    isActive?: boolean
+    sortOrder?: number
+    isPublic?: boolean
+    slug?: string | null
+    city?: string | null
+    imageUrl?: string | null
+    publicDescription?: string | null
+    hotelStars?: number | null
+    distanceMeters?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ServiceLibraryUncheckedCreateWithoutPricesInput = {
+    id?: string
+    category: string
+    name: string
+    description?: string | null
+    defaultPricingType?: string
+    defaultCostUsd?: number
+    defaultVehicleType?: string | null
+    defaultChildPercent?: number
+    defaultExtraBedPrice?: number
+    isActive?: boolean
+    sortOrder?: number
+    isPublic?: boolean
+    slug?: string | null
+    city?: string | null
+    imageUrl?: string | null
+    publicDescription?: string | null
+    hotelStars?: number | null
+    distanceMeters?: number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ServiceLibraryCreateOrConnectWithoutPricesInput = {
+    where: ServiceLibraryWhereUniqueInput
+    create: XOR<ServiceLibraryCreateWithoutPricesInput, ServiceLibraryUncheckedCreateWithoutPricesInput>
+  }
+
+  export type ServiceLibraryUpsertWithoutPricesInput = {
+    update: XOR<ServiceLibraryUpdateWithoutPricesInput, ServiceLibraryUncheckedUpdateWithoutPricesInput>
+    create: XOR<ServiceLibraryCreateWithoutPricesInput, ServiceLibraryUncheckedCreateWithoutPricesInput>
+    where?: ServiceLibraryWhereInput
+  }
+
+  export type ServiceLibraryUpdateToOneWithWhereWithoutPricesInput = {
+    where?: ServiceLibraryWhereInput
+    data: XOR<ServiceLibraryUpdateWithoutPricesInput, ServiceLibraryUncheckedUpdateWithoutPricesInput>
+  }
+
+  export type ServiceLibraryUpdateWithoutPricesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultPricingType?: StringFieldUpdateOperationsInput | string
+    defaultCostUsd?: FloatFieldUpdateOperationsInput | number
+    defaultVehicleType?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultChildPercent?: FloatFieldUpdateOperationsInput | number
+    defaultExtraBedPrice?: FloatFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    isPublic?: BoolFieldUpdateOperationsInput | boolean
+    slug?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    publicDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    hotelStars?: NullableIntFieldUpdateOperationsInput | number | null
+    distanceMeters?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ServiceLibraryUncheckedUpdateWithoutPricesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    category?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultPricingType?: StringFieldUpdateOperationsInput | string
+    defaultCostUsd?: FloatFieldUpdateOperationsInput | number
+    defaultVehicleType?: NullableStringFieldUpdateOperationsInput | string | null
+    defaultChildPercent?: FloatFieldUpdateOperationsInput | number
+    defaultExtraBedPrice?: FloatFieldUpdateOperationsInput | number
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    sortOrder?: IntFieldUpdateOperationsInput | number
+    isPublic?: BoolFieldUpdateOperationsInput | boolean
+    slug?: NullableStringFieldUpdateOperationsInput | string | null
+    city?: NullableStringFieldUpdateOperationsInput | string | null
+    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    publicDescription?: NullableStringFieldUpdateOperationsInput | string | null
+    hotelStars?: NullableIntFieldUpdateOperationsInput | number | null
+    distanceMeters?: NullableIntFieldUpdateOperationsInput | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type InfluencerCreateWithoutStarLedgerEntriesInput = {
     id?: string
     fullName: string
@@ -87134,6 +89133,46 @@ export namespace Prisma {
     saleTotalUsd?: FloatFieldUpdateOperationsInput | number
     sortOrder?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ServicePriceCreateManyServiceInput = {
+    id?: string
+    month: string
+    variant?: string
+    salePriceUsd: number
+    note?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ServicePriceUpdateWithoutServiceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    month?: StringFieldUpdateOperationsInput | string
+    variant?: StringFieldUpdateOperationsInput | string
+    salePriceUsd?: FloatFieldUpdateOperationsInput | number
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ServicePriceUncheckedUpdateWithoutServiceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    month?: StringFieldUpdateOperationsInput | string
+    variant?: StringFieldUpdateOperationsInput | string
+    salePriceUsd?: FloatFieldUpdateOperationsInput | number
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ServicePriceUncheckedUpdateManyWithoutServiceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    month?: StringFieldUpdateOperationsInput | string
+    variant?: StringFieldUpdateOperationsInput | string
+    salePriceUsd?: FloatFieldUpdateOperationsInput | number
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ReferralQualificationCreateManyReferralInput = {

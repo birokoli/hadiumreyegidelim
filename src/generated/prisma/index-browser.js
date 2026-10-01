@@ -703,6 +703,24 @@ exports.Prisma.ServiceLibraryScalarFieldEnum = {
   defaultExtraBedPrice: 'defaultExtraBedPrice',
   isActive: 'isActive',
   sortOrder: 'sortOrder',
+  isPublic: 'isPublic',
+  slug: 'slug',
+  city: 'city',
+  imageUrl: 'imageUrl',
+  publicDescription: 'publicDescription',
+  hotelStars: 'hotelStars',
+  distanceMeters: 'distanceMeters',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ServicePriceScalarFieldEnum = {
+  id: 'id',
+  serviceId: 'serviceId',
+  month: 'month',
+  variant: 'variant',
+  salePriceUsd: 'salePriceUsd',
+  note: 'note',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -874,6 +892,7 @@ exports.Prisma.ModelName = {
   Quotation: 'Quotation',
   QuotationItem: 'QuotationItem',
   ServiceLibrary: 'ServiceLibrary',
+  ServicePrice: 'ServicePrice',
   ProgramConfig: 'ProgramConfig',
   StarLedger: 'StarLedger',
   PerformanceScore: 'PerformanceScore',

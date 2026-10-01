@@ -19,8 +19,8 @@
 
 ### Y0 · Hazırlık (Claude) — başladı
 - [x] Uçuş servisindeki açık RapidAPI anahtarı koddan kaldırıldı (2 Ekim). **Kullanıcı: RapidAPI panelinden anahtarı iptal et.** Anahtar GitHub geçmişinde duruyor.
-- [ ] **Tasarım temel bileşenleri** `src/components/ui/kit/`: ana sayfanın dilinden çıkarılır. İçerik: SectionHead, Card (görselli/görselsiz), PriceTag ("… USD'den"), Badge, Button (birincil, ikincil, WhatsApp), Stepper, EmptyState, PageHero, Breadcrumb. Ana sayfa bunlarla yeniden kurulur (görünüm aynı kalır).
-- [ ] **Tasarım kılavuzu** `docs/TASARIM-DILI.md`: renk, yazı, boşluk, köşe, gölge, ikon (alt küme kuralı), görsel (`next/image` zorunlu), hareket.
+- [x] **Tasarım temel bileşenleri** `src/components/ui/kit/` *(2 Ekim; vitrin: localhost:3002/kit; ana sayfa kitle yeniden kuruldu, görünüm aynı)*: ana sayfanın dilinden çıkarılır. İçerik: SectionHead, Card (görselli/görselsiz), PriceTag ("… USD'den"), Badge, Button (birincil, ikincil, WhatsApp), Stepper, EmptyState, PageHero, Breadcrumb. Ana sayfa bunlarla yeniden kurulur (görünüm aynı kalır).
+- [x] **Tasarım kılavuzu** `docs/TASARIM-DILI.md`: renk, yazı, boşluk, köşe, gölge, ikon (alt küme kuralı), görsel (`next/image` zorunlu), hareket.
 
 ### Y1 · Kendi fiyat kataloğumuz (Claude; DB onayı gerekir)
 Bugünkü durum:

@@ -3,7 +3,7 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import HeroVideo from "@/components/home/HeroVideo";
-import BrandImageFallback from "@/components/ui/BrandImageFallback";
+import { Arrow, Badge, CardFooter, EmptyState, Faq, faqJsonLd, MediaCard, PostCard, SectionHead, Steps } from "@/components/ui/kit";
 import UmrePlanner from "@/components/home/UmrePlanner";
 import UmrahSteps from "@/components/home/UmrahSteps";
 import { prisma } from "@/lib/prisma";
@@ -27,11 +27,11 @@ export const revalidate = 60;
 const HOME_FAQ = [
   {
     q: "Bireysel umre vizesi nasıl alınır?",
-    a: "Otel konaklamanız ve uçuşunuz belirlendikten sonra, acente garantörlüğü ile Nusuk sistemi üzerinden 24 saat içinde adınıza e-vize tanımlanır. Klasik turların evrak yüküyle uğraşmanız gerekmez.",
+    a: "Umre, Suudi Arabistan'ın turist e-vizesiyle yapılır. Başvurunuzu biz yaparız: belgeleriniz eksiksiz ulaştıktan sonra vize 2 iş saati içinde çıkar; hizmet ücreti kişi başı 140 USD'dir.",
   },
   {
     q: "Kafileye katılmadan kendi programıyla umre yapılabilir mi?",
-    a: "Evet. Ailenizle kendi programınızla umre planlayabilirsiniz. Fiyat konfigüratörümüzde Kâbe manzaralı otelleri bütçenize göre seçer, umrenizi kendiniz tasarlarsınız. Bu sistem klasik paketlere göre %30'a varan tasarruf sağlar.",
+    a: "Evet. Tarihi, Mekke ve Medine otelini ve gün sayısını kendiniz seçerek ailenizle kendi programınızla umre yapabilirsiniz. Vize, otel, transfer ve hızlı tren aynı planda ayarlanır.",
   },
   {
     q: "Bireysel umrede rehberlik veriliyor mu?",
@@ -39,17 +39,12 @@ const HOME_FAQ = [
   },
   {
     q: "Umre için hangi aylar daha uygun fiyatlıdır?",
-    a: "Umre fiyatları döneme göre değişir. Şevval ayı ve Kurban Bayramı sonrası (eylül ve ekim) fiyatların en düşük olduğu dönemdir. Konfigüratörümüzdeki fiyat takviminden uygun tarihleri görebilirsiniz.",
+    a: "Umre fiyatları döneme göre değişir; Ramazan ve sömestr gibi yoğun dönemlerde oteller pahalanır, yoğunluğun düştüğü aylarda fiyatlar daha uygundur. Seçtiğiniz tarih için güncel fiyatı planlayıcıdan teklif alarak öğrenebilirsiniz.",
   },
 ];
 
-const faqJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: HOME_FAQ.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })),
-};
+const homeFaqJsonLd = faqJsonLd(HOME_FAQ);
 
-const CURRENCY_SYMBOL: Record<string, string> = { USD: "$", EUR: "€", TRY: "₺", SAR: "SAR" };
 
 /** Hızlı erişim sekmeleri (ikonlar satır içi SVG: simge yazı tipine bağlı değil) */
 const QUICK_LINKS: { href: string; label: string; icon: React.ReactNode }[] = [
@@ -63,29 +58,8 @@ const QUICK_LINKS: { href: string; label: string; icon: React.ReactNode }[] = [
   { href: "/hanim-umresi", label: "Hanım umresi", icon: <path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z" /> },
 ];
 
-const Arrow = () => (
-  <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" className="w-4 h-4"><path fillRule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.64l-3.22-3.22a.75.75 0 111.06-1.06l4.5 4.5a.75.75 0 010 1.06l-4.5 4.5a.75.75 0 11-1.06-1.06l3.22-3.22H3.75A.75.75 0 013 10z" clipRule="evenodd" /></svg>
-);
 
-function SectionHead({ kicker, title, href, linkLabel }: { kicker: string; title: string; href?: string; linkLabel?: string }) {
-  return (
-    <div className="flex items-end justify-between gap-4 mb-6 md:mb-8">
-      <div>
-        <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-primary/80">{kicker}</p>
-        <h2 className="mt-1.5 font-headline text-2xl md:text-3xl text-primary font-bold">{title}</h2>
-      </div>
-      {href && (
-        <Link href={href} className="shrink-0 inline-flex items-center gap-1.5 text-[13px] font-semibold text-primary hover:underline underline-offset-4">
-          {linkLabel} <Arrow />
-        </Link>
-      )}
-    </div>
-  );
-}
 
-function formatPrice(price: number, currency: string) {
-  return `${price.toLocaleString("tr-TR", { maximumFractionDigits: 0 })} ${CURRENCY_SYMBOL[currency] ?? currency}`;
-}
 
 export default async function Home() {
   // Veritabanına ulaşılamazsa sayfa yine açılsın (boş paket/blog listesiyle)
@@ -196,31 +170,22 @@ export default async function Home() {
       <section className="w-full max-w-screen-xl mx-auto px-4 md:px-8 py-12 md:py-16">
         <SectionHead kicker={homeToursKicker} title={homeToursTitle} href="/paketler" linkLabel="Tüm paketler" />
         {featuredPackages.length === 0 ? (
-          <p className="py-10 text-center text-sm text-on-surface-variant border border-dashed border-outline-variant/40 rounded-2xl">Bu sezonun paketleri güncelleniyor.</p>
+          <EmptyState>Bu sezonun paketleri güncelleniyor.</EmptyState>
         ) : (
           <div className="flex md:grid md:grid-cols-3 gap-4 md:gap-5 overflow-x-auto md:overflow-visible snap-x snap-mandatory -mx-4 px-4 md:mx-0 md:px-0 [scrollbar-width:none]">
             {featuredPackages.map((pkg) => (
-              <Link key={pkg.id} href={`/paketler/${pkg.slug}`} data-reveal className="group snap-start shrink-0 w-[80%] sm:w-[55%] md:w-auto flex flex-col bg-white rounded-2xl overflow-hidden border border-outline-variant/20 hover:shadow-[0_18px_40px_-20px_rgba(0,25,68,0.4)] transition-shadow">
-                <div className="relative aspect-[16/10] bg-surface-container-low overflow-hidden">
-                  {pkg.imageUrl ? (
-                    <Image src={pkg.imageUrl} alt={pkg.title} fill sizes="(max-width: 768px) 80vw, 33vw" className="object-cover group-hover:scale-105 transition-transform duration-700" />
-                  ) : (
-                    <BrandImageFallback icon="mosque" iconSize={3} />
-                  )}
-                  <span className="absolute top-3 left-3 bg-white/95 text-primary text-[11px] font-bold px-2.5 py-1 rounded-lg">{pkg.duration}</span>
-                  {pkg.id === popularPackageId && <span className="absolute top-3 right-3 bg-primary text-white text-[11px] font-bold px-2.5 py-1 rounded-lg">En çok tercih edilen</span>}
-                </div>
-                <div className="p-4 md:p-5 flex flex-col flex-1">
-                  <h3 className="font-headline text-lg font-bold text-primary leading-snug line-clamp-2">{pkg.title}</h3>
-                  <p className="mt-1.5 text-[13px] text-on-surface-variant line-clamp-2">{pkg.description ? pkg.description.split('|||ITINERARY|||')[0] : ''}</p>
-                  <div className="mt-auto pt-4 flex items-end justify-between">
-                    {pkg.price > 0 ? (
-                      <p className="text-[12px] text-on-surface-variant">Başlangıç<span className="block font-headline text-xl font-bold text-primary">{formatPrice(pkg.price, pkg.currency)}</span></p>
-                    ) : <span />}
-                    <span className="inline-flex items-center gap-1 text-[13px] font-semibold text-primary group-hover:gap-2 transition-all">İncele <Arrow /></span>
-                  </div>
-                </div>
-              </Link>
+              <MediaCard
+                key={pkg.id}
+                href={`/paketler/${pkg.slug}`}
+                className="snap-start shrink-0 w-[80%] sm:w-[55%] md:w-auto"
+                title={pkg.title}
+                description={pkg.description ? pkg.description.split('|||ITINERARY|||')[0] : undefined}
+                image={pkg.imageUrl}
+                sizes="(max-width: 768px) 80vw, 33vw"
+                topLeft={<Badge>{pkg.duration}</Badge>}
+                topRight={pkg.id === popularPackageId ? <Badge tone="primary">En çok tercih edilen</Badge> : undefined}
+                footer={<CardFooter price={pkg.price} currency={pkg.currency} />}
+              />
             ))}
           </div>
         )}
@@ -233,17 +198,7 @@ export default async function Home() {
             <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-primary/80">{homeStepsKicker}</p>
             <h2 className="mt-1.5 font-headline text-2xl md:text-[28px] leading-tight text-primary font-bold">{homeStepsTitle}</h2>
           </div>
-          <ol className="grid sm:grid-cols-3 gap-4">
-            {steps.map((st) => (
-              <li key={st.n} className="flex gap-3">
-                <span className="w-9 h-9 shrink-0 rounded-full bg-primary/10 text-primary font-bold flex items-center justify-center">{st.n}</span>
-                <span>
-                  <span className="block font-semibold text-on-surface">{st.title}</span>
-                  <span className="block text-[13px] text-on-surface-variant mt-0.5">{st.text}</span>
-                </span>
-              </li>
-            ))}
-          </ol>
+          <Steps items={steps} />
         </div>
       </section>
 
@@ -277,27 +232,11 @@ export default async function Home() {
         <div className="max-w-screen-xl mx-auto px-4 md:px-8 py-12 md:py-16">
           <SectionHead kicker={homeBlogKicker} title={homeBlogTitle} href="/blog" linkLabel="Tüm yazılar" />
           {latestBlogs.length === 0 ? (
-            <p className="py-10 text-center text-sm text-on-surface-variant border border-dashed border-outline-variant/40 rounded-2xl bg-white">Henüz yayınlanmış yazı yok.</p>
+            <EmptyState onWhite>Henüz yayınlanmış yazı yok.</EmptyState>
           ) : (
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
               {latestBlogs.map((blog) => (
-                <Link key={blog.id} href={`/blog/${blog.slug}`} data-reveal className="group flex gap-4 sm:flex-col bg-white rounded-2xl overflow-hidden border border-outline-variant/20 hover:shadow-[0_18px_40px_-20px_rgba(0,25,68,0.35)] transition-shadow p-3 sm:p-0">
-                  <div className="relative w-24 h-24 sm:w-auto sm:h-auto sm:aspect-[16/9] shrink-0 rounded-xl sm:rounded-none overflow-hidden bg-surface-container-low">
-                    {blog.imageUrl ? (
-                      <Image src={blog.imageUrl} alt={blog.title} fill sizes="(max-width: 640px) 96px, 33vw" className="object-cover group-hover:scale-105 transition-transform duration-700" />
-                    ) : (
-                      <BrandImageFallback icon="menu_book" iconSize={2} />
-                    )}
-                  </div>
-                  <div className="min-w-0 sm:p-5 flex flex-col">
-                    <p className="text-[12px] text-on-surface-variant">
-                      {new Date(blog.createdAt).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' })}
-                      {blog.authorModel?.name ? ` · ${blog.authorModel.name}` : ""}
-                    </p>
-                    <h3 className="mt-1 font-headline text-base md:text-lg font-bold text-primary leading-snug line-clamp-2 group-hover:underline underline-offset-4">{blog.title}</h3>
-                    <p className="hidden sm:block mt-1.5 text-[13px] text-on-surface-variant line-clamp-2">{blog.description}</p>
-                  </div>
-                </Link>
+                <PostCard key={blog.id} href={`/blog/${blog.slug}`} title={blog.title} description={blog.description} image={blog.imageUrl} date={blog.createdAt} author={blog.authorModel?.name} />
               ))}
             </div>
           )}
@@ -308,19 +247,9 @@ export default async function Home() {
       <section className="w-full max-w-screen-md mx-auto px-4 md:px-8 py-12 md:py-16">
         <h2 className="font-headline text-2xl md:text-3xl font-bold text-primary text-center">{homeFaqTitle}</h2>
         <p className="mt-2 text-sm text-on-surface-variant text-center">{homeFaqDesc}</p>
-        <div className="mt-7 divide-y divide-outline-variant/30 border-y border-outline-variant/30">
-          {HOME_FAQ.map((item) => (
-            <details key={item.q} className="group">
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-4 [&::-webkit-details-marker]:hidden">
-                <h3 className="font-semibold text-[15px] md:text-base text-on-surface group-open:text-primary">{item.q}</h3>
-                <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" className="w-5 h-5 text-primary shrink-0 transition-transform group-open:rotate-45"><path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" /></svg>
-              </summary>
-              <p className="pb-4 -mt-1 text-sm text-on-surface-variant leading-relaxed">{item.a}</p>
-            </details>
-          ))}
-        </div>
+        <div className="mt-7"><Faq items={HOME_FAQ} /></div>
         <PageTrust className="mt-6 text-center" />
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([faqJsonLd, webPageJsonLd({ url: `${SITE_URL}/`, name: "Bireysel Umre 2026" })]) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([homeFaqJsonLd, webPageJsonLd({ url: `${SITE_URL}/`, name: "Bireysel Umre 2026" })]) }} />
       </section>
     </main>
   );

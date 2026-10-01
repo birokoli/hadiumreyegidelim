@@ -12,7 +12,9 @@ export async function GET(request: Request) {
   }
 
   // Get API key from env or use provided default
-  const apiKey = process.env.RAPIDAPI_KEY || 'ad6f06ba50msh1e1f35b839023acp128c19jsnbc1187c6fff0';
+  // Anahtar yalnızca ortam değişkeninden (kaynak koddaki açık anahtar 2 Ekim'de kaldırıldı; planlayıcı v2 ile bu servis tamamen kalkacak)
+  const apiKey = process.env.RAPIDAPI_KEY;
+  if (!apiKey) return NextResponse.json({ error: 'Uçuş servisi yapılandırılmamış.' }, { status: 503 });
 
   try {
     let url = `https://google-flights2.p.rapidapi.com/api/v1/searchFlights?departure_id=${departure_id}&arrival_id=${arrival_id}&outbound_date=${outbound_date}&currency=USD`;

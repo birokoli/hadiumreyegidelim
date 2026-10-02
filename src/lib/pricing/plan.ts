@@ -3,7 +3,6 @@
 import type { CatalogItem, PaymentSettings } from "@/lib/catalog";
 import { vehicleCapacity } from "@/lib/quotation-calc";
 
-export type RoomType = "2" | "3" | "4";
 
 export type PlanInput = {
   checkIn: string; // YYYY-MM-DD
@@ -12,7 +11,6 @@ export type PlanInput = {
   medineNights: number;
   adults: number;
   children: number; // 2–11 yaş
-  roomType: RoomType;
   mekkeHotelId: string | null;
   medineHotelId: string | null;
   visa: "biz" | "kendim";
@@ -36,17 +34,21 @@ export type PlanQuote = {
   complete: boolean; // bütün kalemlerin fiyatı biliniyor mu
 };
 
-const ROOM_CAP: Record<RoomType, number> = { "2": 2, "3": 3, "4": 4 };
 const round = (n: number) => Math.round(n);
 
-/** Kişi sayısına göre gereken oda sayısı (seçilen oda tipinde) */
-export const roomsNeeded = (people: number, roomType: RoomType) => Math.max(1, Math.ceil(people / ROOM_CAP[roomType]));
+/** Bir odada en fazla 4 kişi kalır (kullanıcı kuralı, 2 Ekim): 1–4 kişi 1 oda, 5–8 kişi 2 oda… */
+export const ROOM_CAPACITY = 4;
+export const roomsNeeded = (people: number) => Math.max(1, Math.ceil(people / ROOM_CAPACITY));
 
-export function unitPrice(item: CatalogItem, month: string, variant = ""): number | null {
-  const exact = item.prices?.find((p) => p.month === month && p.variant === variant);
-  if (exact) return exact.priceUsd;
-  const monthPrice = variant ? null : item.prices?.find((p) => p.month === month)?.priceUsd ?? null;
-  if (monthPrice != null) return monthPrice;
+/**
+ * Birim satış fiyatı. Otelde bu, **1 odanın 1 gecelik** fiyatıdır (giriş 16:00, ertesi gün çıkış 11:00).
+ * Sıra: o ayın fiyatı (oda tipi ayrımı yok; eskiden girilmiş 2/3/4 kişilik fiyat varsa en düşüğü) → alıştan hesaplanan basePriceUsd.
+ */
+export function unitPrice(item: CatalogItem, month: string): number | null {
+  const monthPrices = (item.prices ?? []).filter((p) => p.month === month);
+  const single = monthPrices.find((p) => p.variant === "");
+  if (single) return single.priceUsd;
+  if (monthPrices.length) return Math.min(...monthPrices.map((p) => p.priceUsd));
   return item.basePriceUsd ?? null;
 }
 
@@ -55,11 +57,11 @@ function lineFor(item: CatalogItem, input: PlanInput, people: number, rooms: num
   switch (item.pricingType) {
     case "per_room": {
       const nights = item.city === "medine" ? input.medineNights : input.mekkeNights;
-      const p = unitPrice(item, m, input.roomType);
+      const p = unitPrice(item, m);
       return {
         itemId: item.id,
         label: item.name,
-        detail: `${rooms} oda (${input.roomType} kişilik) × ${nights} gece`,
+        detail: `${rooms} oda × ${nights} gece`,
         totalUsd: p == null || nights <= 0 ? (nights <= 0 ? 0 : null) : round(p * rooms * nights),
       };
     }
@@ -81,7 +83,7 @@ function lineFor(item: CatalogItem, input: PlanInput, people: number, rooms: num
 
 export function quotePlan(input: PlanInput, catalog: CatalogItem[]): PlanQuote {
   const people = Math.max(1, input.adults + input.children);
-  const rooms = roomsNeeded(people, input.roomType);
+  const rooms = roomsNeeded(people);
   const byId = new Map(catalog.map((c) => [c.id, c]));
   const lines: PlanLine[] = [];
   const pending: string[] = [];
@@ -147,7 +149,7 @@ export function planToText(input: PlanInput, quote: PlanQuote, catalog: CatalogI
     `1) Tarih: ${trDate(input.checkIn)} – ${trDate(input.checkOut)} (${totalNights} gece)`,
     `2) Mekke: ${input.mekkeNights} gece${mekkeHotel ? ` · ${mekkeHotel.name}` : " (otel seçilmedi)"}`,
     `3) Medine: ${input.medineNights} gece${medineHotel ? ` · ${medineHotel.name}` : " (otel seçilmedi)"}`,
-    `4) Kişi & Oda: ${input.adults} yetişkin${input.children ? ` + ${input.children} çocuk` : ""} · ${quote.rooms} oda (${input.roomType} kişilik)`,
+    `4) Kişi & Oda: ${input.adults} yetişkin${input.children ? ` + ${input.children} çocuk` : ""} · ${quote.rooms} oda (odada en fazla 4 kişi)`,
     `5) Vize: ${input.visa === "biz" ? "Vizemi siz alın (vize hizmeti istiyorum)" : "Vizem var / kendim alacağım"}`,
     "6) Seçimler & Detaylar:",
     ...quote.lines.map((l) => `   - ${l.label} · ${l.detail} · ${l.totalUsd != null ? `${l.totalUsd} USD` : "fiyat teklifte"}`),

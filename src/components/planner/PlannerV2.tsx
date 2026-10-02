@@ -7,7 +7,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import type { CatalogItem, PaymentSettings } from "@/lib/catalog";
-import { paymentOptions, quotePlan, planToText, unitPrice, type PlanInput, type RoomType } from "@/lib/pricing/plan";
+import { paymentOptions, quotePlan, planToText, unitPrice, ROOM_CAPACITY, type PlanInput } from "@/lib/pricing/plan";
 import DateRangePicker, { nightsBetweenYmd } from "./DateRangePicker";
 import WhatsAppIcon from "@/components/home/WhatsAppIcon";
 
@@ -113,7 +113,6 @@ function initialPlan(catalog: CatalogItem[], query: Record<string, string | unde
     medineNights,
     adults: n("yetiskin", 1, 30, 2),
     children: n("cocuk", 0, 20, 0),
-    roomType: (["2", "3", "4"].includes(query.oda ?? "") ? query.oda : "2") as RoomType,
     mekkeHotelId: bySlug(query.mekkeotel)?.id ?? null,
     medineHotelId: bySlug(query.medineotel)?.id ?? null,
     visa: query.vize === "kendim" ? "kendim" : "biz",
@@ -144,7 +143,6 @@ export default function PlannerV2({ catalog, whatsappNumber, payment, query = {}
       medine: String(input.medineNights),
       yetiskin: String(input.adults),
       cocuk: String(input.children),
-      oda: input.roomType,
       vize: input.visa,
     });
     if (input.mekkeHotelId) q.set("mekkeotel", slugOf(input.mekkeHotelId));
@@ -202,7 +200,7 @@ export default function PlannerV2({ catalog, whatsappNumber, payment, query = {}
       <Step
         n={n}
         title={`${city} oteli (Zorunlu)`}
-        hint={nights ? `${nights} gece · ${quote.rooms} oda (${input.roomType} kişilik). Fiyatlar 1 gece içindir (giriş 16:00, ertesi gün çıkış 11:00); toplam = gecelik fiyat × gece × oda.` : `${city}'de konaklama yok`}
+        hint={nights ? `${nights} gece · ${quote.rooms} oda (odada en fazla ${ROOM_CAPACITY} kişi). Fiyatlar 1 gece içindir (giriş 16:00, ertesi gün çıkış 11:00); toplam = gecelik fiyat × gece × oda.` : `${city}'de konaklama yok`}
         warning={isMissing ? `Lütfen bir ${city} oteli seçin.` : undefined}
       >
         {nights > 0 && (
@@ -215,7 +213,7 @@ export default function PlannerV2({ catalog, whatsappNumber, payment, query = {}
                 image={h.imageUrl}
                 title={h.name}
                 sub={[h.hotelStars ? `${h.hotelStars} yıldız` : "", h.distanceMeters != null ? `Harem'e ${h.distanceMeters.toLocaleString("tr-TR")} m` : "", h.description ?? ""].filter(Boolean).join(" · ")}
-                right={<PriceNote value={unitPrice(h, input.checkIn.slice(0,7), input.roomType)} unit="oda / gece" />}
+                right={<PriceNote value={unitPrice(h, input.checkIn.slice(0,7))} unit="oda / gece" />}
               />
             ))}
             {!list.length && (
@@ -264,22 +262,7 @@ export default function PlannerV2({ catalog, whatsappNumber, payment, query = {}
             <Stepper label="Çocuk (2–11 yaş)" value={input.children} min={0} max={20} onChange={(v) => set({ children: v })} />
           </div>
 
-          <p className="mb-2 mt-4 text-[12px] font-bold uppercase tracking-wider text-primary/80">Oda Tipi</p>
-          <div className="flex gap-2" role="radiogroup" aria-label="Oda tipi">
-            {(["2", "3", "4"] as RoomType[]).map((r) => (
-              <button
-                key={r}
-                type="button"
-                role="radio"
-                aria-checked={input.roomType === r}
-                onClick={() => set({ roomType: r })}
-                className={`flex-1 rounded-xl border px-3 py-2.5 text-[13px] font-semibold ${input.roomType === r ? "border-primary bg-primary text-white" : "border-outline-variant/40 bg-white text-on-surface"}`}
-              >
-                {r} kişilik
-              </button>
-            ))}
-          </div>
-          <p className="mt-2 text-[12px] text-on-surface-variant">{quote.people} kişi için {quote.rooms} oda.</p>
+          <p className="mt-3 text-[12px] text-on-surface-variant">{quote.people} kişi için <b className="text-on-surface">{quote.rooms} oda</b>. Bir odada en fazla {ROOM_CAPACITY} kişi kalır (1–4 kişi 1 oda, 5–8 kişi 2 oda).</p>
         </Step>
 
         {/* Adım 2: Mekke Oteli */}

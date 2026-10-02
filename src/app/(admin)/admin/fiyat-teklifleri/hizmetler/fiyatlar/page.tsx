@@ -9,8 +9,7 @@ type Price = { serviceId: string; month: string; variant: string; salePriceUsd: 
 
 const CATEGORIES: Record<string, string> = { hotel: "Konaklama", transfer: "Transfer ve ulaşım", flight: "Uçuş (tahmini)", vize: "Vize", tur: "Gezi ve ziyaretler", extra: "Ekstra" };
 const ORDER = ["hotel", "transfer", "flight", "vize", "tur", "extra"];
-const UNIT: Record<string, string> = { per_person: "kişi başı", per_vehicle: "araç başı", per_room: "oda / gece", flat: "sabit" };
-const ROOM_VARIANTS = [{ v: "2", label: "2 kişilik oda" }, { v: "3", label: "3 kişilik oda" }, { v: "4", label: "4 kişilik oda" }];
+const UNIT: Record<string, string> = { per_person: "kişi başı", per_vehicle: "araç başı", per_room: "1 oda / 1 gece (en fazla 4 kişi)", flat: "sabit" };
 const MONTHS_TR = ["Oca", "Şub", "Mar", "Nis", "May", "Haz", "Tem", "Ağu", "Eyl", "Eki", "Kas", "Ara"];
 const label = (ym: string) => `${MONTHS_TR[Number(ym.slice(5)) - 1]} ${ym.slice(2, 4)}`;
 const key = (s: string, m: string, v: string) => `${s}|${m}|${v}`;
@@ -57,7 +56,8 @@ export default function MonthlyPricesPage() {
       const items = list.filter((s) => s.category === cat);
       if (!items.length) return [];
       return [{ head: CATEGORIES[cat] ?? cat }, ...items.flatMap((s) =>
-        s.defaultPricingType === "per_room" ? ROOM_VARIANTS.map((r, i) => ({ s, variant: r.v, sub: r.label, first: i === 0 })) : [{ s, variant: "", sub: UNIT[s.defaultPricingType] ?? "", first: true }],
+        // Otel fiyatı 1 odanın 1 gecelik fiyatı; oda tipi ayrımı yok (2 Ekim kullanıcı kuralı)
+        [{ s, variant: "", sub: UNIT[s.defaultPricingType] ?? "", first: true }],
       )];
     });
   }, [services, onlyPublic]);

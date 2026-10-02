@@ -34,6 +34,14 @@ Antigravity her iş oturumunda bu dosyanın **en üstüne** bir kayıt ekler. Am
 
 <!-- Kayıtlar bu çizginin altına, en yeni en üstte -->
 
+## 2026-10-02 — Claude Code: otel fiyat kuralı (kullanıcı)
+- **Otel fiyatı = 1 odanın 1 gecelik fiyatı.** Giriş 16:00, ertesi gün çıkış 11:00.
+- **Bir odada en fazla 4 kişi:** oda = ⌈kişi / 4⌉ (1–4 → 1, 5–8 → 2). Çocuklar (2–11) kişiye dahil.
+- **Toplam = gecelik oda fiyatı × oda × gece.**
+- Planlayıcıdan "2/3/4 kişilik oda tipi" kalktı. Aylık fiyat ekranında otel tek satır; "Maliyetten doldur" tek fiyat yazar. Daha önce oda tipine göre girilmiş fiyat varsa motor o ayın en düşüğünü kullanır.
+- Not: klasörde `PlannerV2.tsx`'i eski metne geri çeviren kaydedilmemiş bir değişiklik vardı (büyük olasılıkla eski kopya üzerinden düzenleme). Atıldı. **Antigravity: planlayıcı dosyaları G5 bittiği için yeniden Claude'da; dokunma.**
+
+
 ## 2026-10-02 — Claude Code: G2 + G5 denetimi ve yayını; yerel test veritabanı
 - **Yerel test veritabanı:** gömülü Postgres (PGlite) `localhost:5432`, canlıdaki herkese açık veriyle (7 paket, 18 otel, 175 hizmet) ve rastgele şifreli test yöneticisiyle. Kılavuz `docs/antigravity/YEREL-VERITABANI.md`, betikler `scripts/local/`. Geliştirme sunucusu bu veritabanına bağlı.
 - **G2 (/paketler) ve G5 (planlayıcı, kütüphane, talep ekranı)** yerelde gerçek veriyle uçtan uca denendi, düzeltmeler TESLIM.md'de, canlıya alındı.

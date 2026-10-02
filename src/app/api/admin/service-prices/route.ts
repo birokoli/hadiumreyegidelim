@@ -88,8 +88,8 @@ export async function POST(req: Request) {
       select: { id: true, defaultCostUsd: true, defaultPricingType: true },
     });
     const existing = new Set((await prisma.servicePrice.findMany({ where: { month: body.month }, select: { serviceId: true, variant: true } })).map((p) => `${p.serviceId}|${p.variant}`));
-    // Otelde maliyet oda/gece kabul edilir ve her oda tipine aynı fiyat yazılır; farklıysa tablodan düzeltilir
-    const cells = services.flatMap((s) => (s.defaultPricingType === "per_room" ? ["2", "3", "4"] : [""]).map((variant) => ({ s, variant })));
+    // Otelde maliyet 1 odanın 1 gecelik fiyatı (oda tipi ayrımı yok)
+    const cells = services.map((s) => ({ s, variant: "" }));
     const todo = cells.filter(({ s, variant }) => body.overwrite || !existing.has(`${s.id}|${variant}`));
     await prisma.$transaction(
       todo.map(({ s, variant }) => {

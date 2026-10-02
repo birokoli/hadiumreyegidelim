@@ -101,6 +101,30 @@ Kim: **C** Claude Code, **A** Antigravity, **S** kullanıcı. Görünümü deği
 - [ ] **H15 · Kararlar (S)** — "Kutlu Rota" paket adı başka bir firma adıyla karışıyor (114 gösterim); "iPhone 18 Pro" yazısı konu dışı.
 - [ ] **H16 · Tekrar ölçüm (A)** — H1–H10 bitince ve 2 hafta sonra Search Console + PageSpeed yeniden; sonuç CALISMA-KAYDI.md'ye.
 
+### Faz I — 2 Ekim dış SEO denetimi (kaynak: `~/Downloads/hadiumreyegidelim-seo-denetimi-2026-10-02.md` + kanıt klasörü)
+Denetim canlı siteden curl ile yapıldı; kodu görmedi. Aşağıdaki "Kod" notları Claude'un 2 Ekim'de kodla eşleştirmesidir. Esas alınan, raporun **devam denetimi** bölümüdür (ilk bölümdeki bazı sayılar orada düzeltildi). Kabul ölçütü her maddede: canlıdan curl ile yeniden kontrol, sonuç CALISMA-KAYDI.md'ye.
+
+**Hemen (teknik, C)**
+- [ ] **I1 · Ödeme sayfaları noindex** — 7 `/paketler/*/checkout` sayfası 200, `index, follow`, kanonik ana sayfa. Kod: `src/app/(main)/paketler/[slug]/checkout/page.tsx` kendi metadata'sını vermiyor, kök `layout.tsx`'teki robots ve canonical miras kalıyor. Çözüm: `robots: {index:false, follow:false}`, ana sayfa kanoniği kaldırılır. robots.txt ile kapatılmaz (Google noindex'i okuyabilmeli). Aynısı `/profil/giris` için.
+- [ ] **I2 · Kök metadata mirası** — kök layout'taki `alternates.canonical` ve robots her sayfaya ana sayfa kanoniği veriyor; kendi metadata'sı olmayan her sayfa (404, checkout, profil) etkileniyor. 404'te iki robots etiketi (`noindex` + `index, follow`) ve ana sayfa kanoniği var. Kök layout'tan canonical kaldırılır, her sayfa kendi kanoniğini verir; 404 gerçek 404 + tek `noindex` kalır. Aynı kök metadata'daki paylaşım açıklaması "Mescid-i Haram'a sıfır" ve "Diyanet turlarına bağlanmadan" diyor (kurala aykırı); doğrulanabilir metinle değiştirilir.
+- [ ] **I3 · Blog içi kırık bağlantılar** — 6 hedef, 5 kaynak yazı, 8 çift (veritabanı HTML'inde). H6'daki gibi kodla yeniden yazma + eski adreslere 301:
+  - `/blog/mescid-i-haram-ziyareti` → `/blog/mescidi-haram-ziyaret-rehberi`
+  - `/blog/nusuk-uygulamasi-kullanimi` → `/blog/nusuk-uygulamasi-nasil-kullanilir`
+  - `/otel-rezervasyonu` → `/bireysel-umre` (planlayıcı)
+  - `/tren-bileti-al` → `/bireysel-umre` (planlayıcı; tren artık planlayıcıda)
+  - `/blog/medine-gezilecek-yerler`, `/blog/mekke-hediyelik-esya-rehberi` → eşdeğer yazı yok: bağlantı düz metne çevrilir (S isterse sonra yazı açılır).
+- [ ] **I4 · Sitemap lastmod** — `src/app/sitemap.ts`'de 13 sabit giriş ve 81 il sayfası `new Date()` kullanıyor; her istekte değişiyor. Sabit sayfalara gerçek düzenleme tarihi (dosyada sabit), il sayfalarına şablonun son değişiklik tarihi. `/iletisim` ve `/hizmetler` sitemap'e eklenir; checkout eklenmez.
+- [ ] **I5 · admin host'unda genel sayfalar** — `admin.hadiumreyegidelim.com/hakkimizda` 200. Kod: `src/middleware.ts` admin dalı yalnız `/admin` ve `/api/admin`'i ele alıyor. Çözüm: admin host'ta `/admin*`, `/api/*`, `/_next/*`, statik dosyalar ve giriş yolları dışındaki her yol ana alana 308. Önce admin girişi, influencer ve kampanya sayfalarının etkilenmediği yerelde sınanır.
+- [ ] **I6 · Marka adı ve kurum şeması** — şemada iki yazım: `Hadi Umre'ye Gidelim` ve `Hadi Umreye Gidelim`. Tek yazım seçilir (S); Organization'a görünür ticari unvan ve adres (S verirse) eklenir. Şu an yalnız `addressCountry: TR`.
+- [ ] **I7 · Yazar şeması** — ad başında boşluk (`" Yasin Toktaş"`), unvan `HEAD OF TÜRKİYE OFFİCE & EDİTOR-İN-CHİEF` (Türkçe büyük harf dönüşümü İngilizce metni bozmuş). Kaynak: yazar kaydı (veritabanı, `authorModel.expertise`). Kodda `trim()`, kayıtta unvan düzeltilir (Türkçe unvan önerisi: "Türkiye Ofisi Sorumlusu ve Genel Yayın Yönetmeni").
+
+**İçerik ve karar**
+- [ ] **I8 · Geçmiş kampanya (S karar, C uygulama)** — 2 Ekim'de ana sayfa hâlâ "35 kişilik kontenjan · 15 veya 25 Eylül · $1.250'den" gösteriyor, `/eylul-umresi` yer ayırtma çağrısı yapıyor. Kaynak: admin "Eylül Umresi" ayarı (`EYLUL_CAMPAIGN_CONFIG`). Seçenek: ana sayfa kartını bir sonraki doğrulanmış programla değiştirmek ya da kaldırmak; `/eylul-umresi` "2026 Eylül programı tamamlandı" notu + `/ekim-umresi` ve planlayıcıya yönlendirme. Sayfa silinmez (gösterim alıyor).
+- [ ] **I9 · Paket şeması (H12'ye bağlı)** — 7 pakette `Product` var, `offers` yok. Fiyat sayfada görünürse aynı fiyatla `Offer`; görünmezse `Product` yerine `TouristTrip` (zengin sonuç beklentisi olmadan). Uydurma fiyat/puan yok.
+- [ ] **I10 · Paylaşım görselleri (A)** — 122 sayfada aynı Unsplash `og:image`. İl ve kampanya sayfaları için kendi görselimiz (`public/images/` altında, kullanım hakkı bizde). A görsel listesini ve önerisini hazırlar, C bağlar.
+- [ ] **I11 · Şehir sayfaları (veri ile)** — rapor toplu birleştirme/noindex **önermiyor**; önce Search Console (07 Search Console bölümü) ile il bazında gösterim/tıklama. 0 gösterimli iller ile gösterim alan iller ayrılır; H13 (fiyatlı başlık) önce gösterim alan 10 ilde. Adana'da kalkış alanı JS sonrası doğru (COV); kaynak HTML'de IST seçili görünüyor → ilk HTML'de de doğru il seçilsin (C).
+- [ ] **I12 · Hız / Vercel bölgesi (ölçümle)** — yanıtlar `bom1::iad1` (fonksiyon ABD Doğu). Supabase bölgesi kontrol edilmeden bölge değiştirilmez; veritabanı ile fonksiyon aynı bölgede olmalı. C ölçer, S onaylar.
+
 ## 4. Hedefler (gerçekçi)
 
 | Süre | Hedef |

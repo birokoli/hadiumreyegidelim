@@ -194,7 +194,27 @@ export default function PlannerV2({ catalog, whatsappNumber, payment, query = {}
         const v = vehicleByKey(k)!;
         const n = Math.ceil(people / v.capacity);
         return (
-          <Choice key={k} checked={activeVehicle === k} onClick={() => setVehiclePick(k)} image={vehicleImages[k] ?? null} title={v.label} sub={`${v.note}${n > 1 ? ` · ${people} kişi için ${n} araç` : ""}`} />
+          <button
+            key={k}
+            type="button"
+            role="radio"
+            aria-checked={activeVehicle === k}
+            onClick={() => setVehiclePick(k)}
+            className={`overflow-hidden rounded-xl border text-left transition-colors ${activeVehicle === k ? "border-primary ring-1 ring-primary" : "border-outline-variant/30 hover:border-primary/40"}`}
+          >
+            <span className="relative block aspect-[4/3] bg-[#f3f3f3]">
+              {vehicleImages[k] && <Image src={vehicleImages[k]!} alt={v.label} fill sizes="(max-width: 640px) 100vw, 320px" className="object-contain" />}
+            </span>
+            <span className="flex items-center gap-3 p-3">
+              <span className="min-w-0 flex-1">
+                <span className="block font-semibold text-on-surface">{v.label}</span>
+                <span className="block text-[12px] text-on-surface-variant">{v.note}{n > 1 ? ` · ${people} kişi için ${n} araç` : ""}</span>
+              </span>
+              <span aria-hidden="true" className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 ${activeVehicle === k ? "border-primary bg-primary" : "border-outline-variant/60"}`}>
+                {activeVehicle === k && <span className="h-2 w-2 rounded-full bg-white" />}
+              </span>
+            </span>
+          </button>
         );
       })}
     </div>

@@ -9,7 +9,8 @@ export const metadata: Metadata = {
   alternates: { canonical: "/hizmetler" },
 };
 
-export const revalidate = 300;
+// Katalog derleme anında okunamayabiliyor (boş liste önbelleğe girer); istek anında okunur, getCatalog zaten önbellekli
+export const dynamic = "force-dynamic";
 
 // Fiyat birimi: oteller 1 oda / 1 gece (en fazla 4 kişi)
 const UNIT: Record<string, string> = { per_room: "/ oda · gece", per_person: "/ kişi", per_vehicle: "/ araç", flat: "" };

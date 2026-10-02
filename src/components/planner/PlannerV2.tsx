@@ -52,14 +52,14 @@ function Step({ n, title, hint, warning, children }: { n: number; title: string;
   );
 }
 
-function Choice({ checked, onClick, title, sub, right, image, type = "radio" }: { checked: boolean; onClick: () => void; title: string; sub?: string; right?: React.ReactNode; image?: string | null; type?: "radio" | "checkbox" }) {
+function Choice({ checked, onClick, title, sub, right, image, type = "radio", muted }: { checked: boolean; onClick: () => void; title: string; sub?: string; right?: React.ReactNode; image?: string | null; type?: "radio" | "checkbox"; muted?: boolean }) {
   return (
     <button
       type="button"
       role={type}
       aria-checked={checked}
       onClick={onClick}
-      className={`flex w-full items-center gap-3 rounded-xl border p-3 text-left transition-colors ${checked ? "border-primary bg-primary/[0.04] ring-1 ring-primary" : "border-outline-variant/30 bg-white hover:border-primary/40"}`}
+      className={`flex w-full items-center gap-3 rounded-xl border p-3 text-left transition-colors ${checked ? "border-primary bg-primary/[0.04] ring-1 ring-primary" : "border-outline-variant/30 bg-white hover:border-primary/40"}${muted && !checked ? " opacity-55 hover:opacity-90" : ""}`}
     >
       {image !== undefined && (
         <span className="relative h-12 w-16 sm:h-14 sm:w-20 shrink-0 overflow-hidden rounded-lg bg-surface-container-low">
@@ -281,14 +281,15 @@ export default function PlannerV2({ catalog, whatsappNumber, payment, query = {}
             <Choice
               checked={input.visa === "biz"}
               onClick={() => set({ visa: "biz" })}
-              title="Vizemi siz alın (vize hizmeti istiyorum)"
-              sub="Belgeleriniz eksiksiz ulaştığında vizeniz 2 iş saatinde çıkar (kişi başı 140 USD)"
+              title="Suudi Arabistan e-vize"
+              sub="Başvurunuzu biz yaparız; belgeleriniz eksiksiz ulaştığında vizeniz 2 iş saatinde çıkar (kişi başı 140 USD)"
             />
             <Choice
               checked={input.visa === "kendim"}
               onClick={() => set({ visa: "kendim" })}
-              title="Vizem var ya da kendim alacağım"
+              title="Vizem var"
               sub="Vize ücreti plana eklenmez"
+              muted
             />
           </div>
         </Step>

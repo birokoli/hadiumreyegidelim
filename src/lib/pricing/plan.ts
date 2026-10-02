@@ -169,7 +169,7 @@ export function planToText(input: PlanInput, quote: PlanQuote, catalog: CatalogI
     `2) Mekke: ${input.mekkeNights} gece${mekkeHotel ? ` · ${mekkeHotel.name}` : " (otel seçilmedi)"}`,
     `3) Medine: ${input.medineNights} gece${medineHotel ? ` · ${medineHotel.name}` : " (otel seçilmedi)"}`,
     `4) Kişi & Oda: ${input.adults} yetişkin${input.children ? ` + ${input.children} çocuk` : ""}${input.infants ? ` + ${input.infants} bebek (0–2 yaş, otele bildirilmez; beşik ücreti)` : ""} · ${quote.rooms} oda (odada en fazla 4 kişi)`,
-    `5) Vize: ${input.visa === "biz" ? "Vizemi siz alın (vize hizmeti istiyorum)" : "Vizem var / kendim alacağım"}`,
+    `5) Vize: ${input.visa === "biz" ? "Suudi Arabistan e-vize (bizden)" : "Vizem var"}`,
     "6) Seçimler & Detaylar:",
     ...quote.lines.map((l) => `   - ${l.label} · ${l.detail} · ${l.totalUsd != null ? `${l.totalUsd} USD` : "fiyat teklifte"}`),
     ...quote.pending.filter((p) => !quote.lines.some((l) => p.startsWith(`${l.label}:`))).map((p) => `   - ${p}`),

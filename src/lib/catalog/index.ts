@@ -51,7 +51,7 @@ export const monthLabel = (ym: string) => `${MONTH_TR[Number(ym.slice(5, 7)) - 1
 export async function queryCatalog(): Promise<CatalogItem[]> {
   await ensureCatalogSchema();
   // Tek seferlik veri düzeltmesi (2 Ekim); hata olursa katalog yine okunur
-  await import("./data-fixes").then((m) => m.runDataFixesOnce()).catch((e) => console.error("[data-fix]", e));
+  await import("./data-fixes").then(async (m) => { await m.runDataFixesOnce(); await m.runDataFixesOnceB(); }).catch((e) => console.error("[data-fix]", e));
   const months = monthsFrom(currentMonth(), 13);
   const rows = await prisma.serviceLibrary.findMany({
     where: { isPublic: true, isActive: true },

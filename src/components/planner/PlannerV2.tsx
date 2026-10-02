@@ -219,6 +219,31 @@ export default function PlannerV2({ catalog, whatsappNumber, payment, query = {}
       })}
     </div>
   );
+  // Tren: bilet türü (Ekonomi/Business) seçilir, o türün seferleri listelenir. Tür değişince seçili seferler karşılığına taşınır.
+  const trainClass = (c: CatalogItem): "ekonomi" | "business" | null => (/business/i.test(c.name) ? "business" : /econom|ekonomi/i.test(c.name) ? "ekonomi" : null);
+  const trainLabel = (c: CatalogItem) =>
+    c.name
+      .replace(/\s*\((economy|business|ekonomi)\)/i, "")
+      .replace(/\s+-\s+/g, " → ")
+      .replace(/\s*\[non-stop\]/i, " · aktarmasız")
+      .replace(/\s*\[1-2 duraklı\]/i, " · 1–2 duraklı")
+      .trim();
+  const [classPick, setClassPick] = useState<"ekonomi" | "business" | null>(null);
+  const chosenClass = trains.find((t) => input.serviceIds.includes(t.id));
+  const activeClass = classPick ?? (chosenClass ? trainClass(chosenClass) : null) ?? "ekonomi";
+  useEffect(() => {
+    let changed = false;
+    const next = input.serviceIds.flatMap((id) => {
+      const t = trains.find((x) => x.id === id);
+      if (!t || trainClass(t) === activeClass) return [id];
+      changed = true;
+      const same = trains.find((x) => trainClass(x) === activeClass && trainLabel(x) === trainLabel(t));
+      return same ? [same.id] : [];
+    });
+    if (changed) setInput((p) => ({ ...p, serviceIds: next }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeClass]);
+
   const routeList = (kind: "transfer" | "tur", empty: string) => {
     const list = routesFor(kind);
     return list.length ? (
@@ -412,21 +437,27 @@ export default function PlannerV2({ catalog, whatsappNumber, payment, query = {}
             <p className="text-[13px] text-on-surface-variant">Araç transferi teklifte eklenir.</p>
           )}
         </Step>
-        <Step n={6} title="Haremeyn hızlı treni" hint="Mekke, Medine ve Cidde arası tren; fiyat kişi başıdır">
+        <Step n={6} title="Haremeyn hızlı treni" hint="Önce bilet türünü seçin, sonra seferleri ekleyin; fiyat kişi başıdır">
           {trains.length ? (
-            <div className="space-y-2">
-              {trains.map((t) => (
-                <Choice
-                  key={t.id}
-                  type="checkbox"
-                  checked={input.serviceIds.includes(t.id)}
-                  onClick={() => toggle(t.id)}
-                  title={t.name}
-                  sub={t.description ?? undefined}
-                  right={<PriceNote value={unitPrice(t, input.checkIn.slice(0,7))} unit={UNIT[t.pricingType]} />}
-                />
-              ))}
-            </div>
+            <>
+              <div className="grid grid-cols-2 gap-2" role="radiogroup" aria-label="Bilet türü">
+                {(["ekonomi", "business"] as const).filter((c) => trains.some((t) => trainClass(t) === c)).map((c) => (
+                  <Choice key={c} checked={activeClass === c} onClick={() => setClassPick(c)} title={c === "ekonomi" ? "Ekonomi" : "Business"} />
+                ))}
+              </div>
+              <div className="mt-3 space-y-2">
+                {trains.filter((t) => trainClass(t) === activeClass).sort((x, y) => trainLabel(x).localeCompare(trainLabel(y), "tr")).map((t) => (
+                  <Choice
+                    key={t.id}
+                    type="checkbox"
+                    checked={input.serviceIds.includes(t.id)}
+                    onClick={() => toggle(t.id)}
+                    title={trainLabel(t)}
+                    right={<PriceNote value={unitPrice(t, input.checkIn.slice(0,7))} unit="kişi başı" />}
+                  />
+                ))}
+              </div>
+            </>
           ) : (
             <p className="text-[13px] text-on-surface-variant">Tren bileti teklifte eklenir.</p>
           )}

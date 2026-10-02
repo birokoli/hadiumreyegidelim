@@ -67,3 +67,36 @@ export async function runDataFixesOnce() {
   await prisma.setting.upsert({ where: { key: FLAG }, update: { value: JSON.stringify(log) }, create: { key: FLAG, value: JSON.stringify(log) } });
   console.log("[data-fix] 2026-10-02", log);
 }
+
+// İkinci düzeltme (2 Ekim, kullanıcı): Medine otelleri şimdilik gizli; Haremeyn treni eski hizmet tablosundan (TRAIN) aktarılır.
+// Eski tablodaki fiyat alış fiyatıdır; kütüphanedeki diğer kalemler gibi kâr payı eklenerek satılır.
+const FLAG_B = "DATA_FIX_2026_10_02_B";
+let ranB = false;
+
+export async function runDataFixesOnceB() {
+  if (ranB) return;
+  ranB = true;
+  if (await prisma.setting.findUnique({ where: { key: FLAG_B } })) return;
+  const log: Record<string, number> = {};
+  log.medineHidden = (await prisma.serviceLibrary.updateMany({ where: { category: "hotel", city: "medine" }, data: { isPublic: false } })).count;
+
+  const trains = await prisma.service.findMany({ where: { type: { in: ["TRAIN", "train"] } } });
+  let created = 0;
+  let shown = 0;
+  for (const s of trains) {
+    const existing = await prisma.serviceLibrary.findFirst({ where: { name: { equals: s.name, mode: "insensitive" } } });
+    if (existing) {
+      await prisma.serviceLibrary.update({ where: { id: existing.id }, data: { isPublic: true, isActive: true, category: "transfer", defaultPricingType: "per_person" } });
+      shown++;
+    } else {
+      await prisma.serviceLibrary.create({
+        data: { category: "transfer", name: s.name, publicDescription: s.description ?? null, defaultPricingType: "per_person", defaultCostUsd: s.price ?? 0, isPublic: true, isActive: true },
+      });
+      created++;
+    }
+  }
+  log.trainsCreated = created;
+  log.trainsShown = shown;
+  await prisma.setting.upsert({ where: { key: FLAG_B }, update: { value: JSON.stringify(log) }, create: { key: FLAG_B, value: JSON.stringify(log) } });
+  console.log("[data-fix] 2026-10-02 B", log);
+}

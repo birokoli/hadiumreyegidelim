@@ -39,7 +39,7 @@ export default async function Footer({ logoUrl }: { logoUrl?: string }) {
                 <Image src={logoUrl || "/logo.png"} alt="Hadi Umreye" width={240} height={80} className="h-16 w-auto object-contain" />
               </div>
               <p className="font-label text-xs uppercase tracking-widest text-on-surface-variant">
-                © {new Date().getFullYear()} Hadi Umreye - Butik ve Manevi Yolculuğunuz
+                © {new Date().getFullYear()} Hadi Umreye Gidelim - Bireysel ve VIP Umre
               </p>
             </div>
             <div className="flex flex-wrap gap-x-12 gap-y-6">

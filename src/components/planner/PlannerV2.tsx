@@ -202,7 +202,7 @@ export default function PlannerV2({ catalog, whatsappNumber, payment, query = {}
       <Step
         n={n}
         title={`${city} oteli (Zorunlu)`}
-        hint={nights ? `${nights} gece · ${quote.rooms} oda (${input.roomType} kişilik) · gecelik oda fiyatları ${input.checkIn.slice(0,7)} dönemi için` : `${city}'de konaklama yok`}
+        hint={nights ? `${nights} gece · ${quote.rooms} oda (${input.roomType} kişilik). Fiyatlar 1 gece içindir (giriş 16:00, ertesi gün çıkış 11:00); toplam = gecelik fiyat × gece × oda.` : `${city}'de konaklama yok`}
         warning={isMissing ? `Lütfen bir ${city} oteli seçin.` : undefined}
       >
         {nights > 0 && (
@@ -241,7 +241,7 @@ export default function PlannerV2({ catalog, whatsappNumber, payment, query = {}
           <DateRangePicker checkIn={input.checkIn} checkOut={input.checkOut} onChange={handleDateChange} />
           
           <div className="mt-4 p-3 rounded-xl bg-surface-container-low flex items-center justify-between text-xs font-semibold text-primary">
-            <span>Seçilen Süre: {totalNights} Gece</span>
+            <span>Seçilen süre: {totalNights} gece <span className="font-normal text-on-surface-variant">(otele giriş 16:00, çıkış 11:00)</span></span>
             <span>{trRange(input.checkIn, input.checkOut)}</span>
           </div>
 

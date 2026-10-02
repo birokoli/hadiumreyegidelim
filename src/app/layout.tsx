@@ -6,10 +6,10 @@ import "./globals.css";
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    template: "%s | Hadi Umre'ye Gidelim",
-    default: "Hadi Umre'ye Gidelim | Umrenizi Kolayca Planlayın",
+    template: "%s | Hadi Umreye Gidelim",
+    default: "Hadi Umreye Gidelim | Umrenizi Kolayca Planlayın",
   },
-  description: "Bireysel umre vizesi nasıl alınır? Diyanete veya turlara bağımlı kalmadan, 2026 Özel Bireysel Umre ve VIP Aile umresi fiyatları hakkında şeffaf rehber.",
+  description: "Bireysel ve VIP umre: otelinizi, transferinizi ve tarihlerinizi kendiniz seçin, fiyatı anında görün. Suudi Arabistan e-vize ve Türkçe rehberlik.",
   keywords: ["bireysel umre", "bireysel umre vizesi", "bireysel umre nasıl yapılır", "bireysel umre vizesi nasıl alınır", "umre fiyatları 2026", "özel umre", "kendi imkanlarıyla umre", "vip umre"],
   icons: {
     // Küçük dosyalar: eskiden 110 KB'lık logo.png her sayfada sekme simgesi olarak iniyordu
@@ -28,9 +28,9 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "Bireysel Umre Rehberi | Suudi Arabistan e-Vize & Özel Fiyatlar 2026",
-    description: "Bireysel umre vizesi nasıl alınır? Diyanet turlarına bağlanmadan, Mescid-i Haram'a sıfır, sadece ailenize özel butik umre organizasyonu kurun ve tasarruf edin.",
+    description: "Bireysel ve VIP umre: otelinizi, transferinizi ve tarihlerinizi kendiniz seçin, fiyatı anında görün. Suudi Arabistan e-vize ve Türkçe rehberlik.",
     url: SITE_URL,
-    siteName: "Hadi Umre'ye Gidelim",
+    siteName: "Hadi Umreye Gidelim",
     images: [
       {
         url: 'https://images.unsplash.com/photo-1565552645632-d725f8bfc19a?q=80&w=2600&auto=format&fit=crop',
@@ -70,7 +70,7 @@ export default async function RootLayout({
     {
       "@context": "https://schema.org",
       "@type": "WebSite",
-      "name": "Hadi Umre'ye Gidelim",
+      "name": "Hadi Umreye Gidelim",
       "url": SITE_URL,
       "potentialAction": {
         "@type": "SearchAction",
@@ -81,7 +81,8 @@ export default async function RootLayout({
     {
       "@context": "https://schema.org",
       "@type": "Organization",
-      "name": "Hadi Umre'ye Gidelim",
+      "name": "Hadi Umreye Gidelim",
+      "alternateName": ["Hadi Umre'ye Gidelim", "hadiumreyegidelim.com"],
       "image": `${SITE_URL}${settings.SITE_LOGO || '/logo.png'}`,
       "@id": SITE_URL,
       "url": SITE_URL,
@@ -90,7 +91,20 @@ export default async function RootLayout({
         "@type": "PostalAddress",
         "addressCountry": "TR"
       },
-      "description": "2026 Yılı Özel, Lüks, ve Bireysel Aile Umresi Planlama Platformu.",
+      "description": "Bireysel ve VIP umre planlama: Mekke ve Medine otelleri, transfer, tren, rehberlik ve Suudi Arabistan e-vize.",
+      // Bağlı olduğumuz lisanslı acente (alt bilgide de küçük yazıyla görünür)
+      "parentOrganization": {
+        "@type": "TravelAgency",
+        "name": "MBD Tourism L.L.C.",
+        "legalName": "MBD TOURISM L.L.C",
+        "address": { "@type": "PostalAddress", "addressLocality": "Dubai", "addressCountry": "AE" },
+        "hasCredential": {
+          "@type": "EducationalOccupationalCredential",
+          "credentialCategory": "license",
+          "name": "DTCM Lisans No: 1203162",
+          "recognizedBy": { "@type": "GovernmentOrganization", "name": "Dubai Ekonomi ve Turizm Departmanı (DTCM)" }
+        }
+      },
       // Admin → Ayarlar → Sosyal Medya'da girilen hesaplar
       "sameAs": SOCIAL_KEYS.map((k) => settings[k]?.trim()).filter(Boolean).map((u: string) => (/^https?:\/\//.test(u) ? u : `https://${u.replace(/^\/+/, "")}`))
     }

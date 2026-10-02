@@ -101,6 +101,10 @@ export default async function Footer({ logoUrl }: { logoUrl?: string }) {
               Kullanım Şartları
             </Link>
           </div>
+          {/* Kurum bilgisi: küçük ama görünür (gizli metin arama motorlarınca cezalandırılır); şemadaki parentOrganization ile aynı */}
+          <p className="mt-4 text-[10px] leading-relaxed text-on-surface-variant/60 max-w-3xl">
+            Hadi Umreye Gidelim, MBD Tourism L.L.C. iştirakidir. MBD Tourism L.L.C., Dubai Ekonomi ve Turizm Departmanı (DTCM) tarafından lisanslı seyahat acentesidir. DTCM Lisans No: 1203162.
+          </p>
         </div>
       </footer>
     </>

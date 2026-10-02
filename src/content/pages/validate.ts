@@ -2,7 +2,7 @@
 import { BANNED_TERMS, isAllowedExternal, soldServiceFor } from "@/lib/geo-blog/external-policy";
 import type { ContentPage } from "./types";
 
-const SUFFIX = " | Hadi Umre'ye Gidelim";
+const SUFFIX = " | Hadi Umreye Gidelim";
 const words = (s: string) => s.replace(/\[([^\]]+)\]\([^)]+\)/g, "$1").split(/\s+/).filter(Boolean).length;
 const LINK_RE = /\[([^\]]+)\]\(([^)]+)\)/g;
 

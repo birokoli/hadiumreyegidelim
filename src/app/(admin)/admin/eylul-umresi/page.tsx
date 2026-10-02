@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { DEFAULT_EYLUL_CAMPAIGN, DEFAULT_HANIM_UMRESI_CAMPAIGN, DEFAULT_ILK_UMREM_CAMPAIGN, EylulCampaignConfig } from "@/lib/eylul-campaign";
+import { DEFAULT_EYLUL_CAMPAIGN, DEFAULT_HANIM_UMRESI_CAMPAIGN, DEFAULT_ILK_UMREM_CAMPAIGN, EylulCampaignConfig, isHomeCardLive } from "@/lib/eylul-campaign";
 
 type AdsConfig = { ad1: EylulCampaignConfig; ad2: EylulCampaignConfig; ad3: EylulCampaignConfig };
 
@@ -130,6 +130,16 @@ export default function AdsAdminPage() {
             <Field label="SEO Başlığı" value={form.seoTitle} onChange={(v) => setField("seoTitle", v)} />
             <Field label="SEO Açıklaması" rows={3} value={form.seoDescription} onChange={(v) => setField("seoDescription", v)} />
           </div>
+        </Section>
+
+        <Section title="Ana Sayfa Kartı Yayın Tarihleri" description="Kart ana sayfada yalnızca bu tarihler arasında görünür (iki gün de dahil). Boş bırakılan alan sınır koymaz. Tarih geçince kart kendiliğinden kalkar; yeni tarih girince geri gelir. Kampanya sayfasının kendisi yayında kalır.">
+          <div className="grid gap-4 md:grid-cols-2">
+            <Field label="İlk gün" type="date" value={form.homeVisibleFrom} onChange={(v) => setField("homeVisibleFrom", v)} />
+            <Field label="Son gün" type="date" value={form.homeVisibleUntil} onChange={(v) => setField("homeVisibleUntil", v)} />
+          </div>
+          <p className="mt-3 text-xs font-semibold text-on-surface-variant">
+            Şu an: {isHomeCardLive(form) ? "ana sayfada görünüyor" : "ana sayfada görünmüyor"}
+          </p>
         </Section>
 
         <Section title="Kapak Alanı" description="Ana reklam alanı içerikleri.">

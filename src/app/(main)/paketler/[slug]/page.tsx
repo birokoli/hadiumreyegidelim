@@ -85,7 +85,7 @@ export default async function PackageDetailPage({ params }: { params: Promise<{ 
     image: pkg.imageUrl ? [pkg.imageUrl] : [],
     brand: {
       '@type': 'Brand',
-      name: "Hadi Umre'ye Gidelim"
+      name: "Hadi Umreye Gidelim"
     },
     ...(pkg.price > 0
       ? {

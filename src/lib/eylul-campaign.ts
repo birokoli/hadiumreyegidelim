@@ -51,6 +51,9 @@ export type EylulCampaignConfig = {
   footerNote: string;
   footerButton: string;
   homeBadge: string;
+  /** Ana sayfa kartının görüneceği ilk ve son gün (YYYY-AA-GG, İstanbul). Boşsa sınır yok. */
+  homeVisibleFrom: string;
+  homeVisibleUntil: string;
   homeTitle: string;
   homeDescription: string;
   homeButton: string;
@@ -138,6 +141,8 @@ export const DEFAULT_EYLUL_CAMPAIGN: EylulCampaignConfig = {
   footerNote: "Grup umresi · Toplam 35 kişilik kontenjan",
   footerButton: "WhatsApp'a Yaz",
   homeBadge: "35 KİŞİLİK KONTENJAN · 15 VEYA 25 EYLÜL",
+  homeVisibleFrom: "",
+  homeVisibleUntil: "2026-09-25",
   homeTitle: "Eylül Grup Umresi — Kişi Başı $1.250'den",
   homeDescription: "10, 15 veya 20 günlük programlar · Vize, uçak bileti, otel ve tüm mübarek yerler turu dahil.",
   homeButton: "Kampanyayı İncele",
@@ -160,6 +165,8 @@ export const DEFAULT_EYLUL_CAMPAIGN: EylulCampaignConfig = {
 
 export const DEFAULT_ILK_UMREM_CAMPAIGN: EylulCampaignConfig = {
   ...DEFAULT_EYLUL_CAMPAIGN,
+  homeVisibleFrom: "",
+  homeVisibleUntil: "",
   seoTitle: "İlk Umrem Kampanyası | Hadi Umreye Gidelim",
   seoDescription: "İlk kez umreye gidecek misafirlerimize özel, hazırlıktan ibadetlerin tamamlanmasına kadar rehberli umre programı.",
   heroImage: DEFAULT_EYLUL_CAMPAIGN.readyCtaImage,
@@ -198,6 +205,8 @@ export const DEFAULT_ILK_UMREM_CAMPAIGN: EylulCampaignConfig = {
 
 export const DEFAULT_HANIM_UMRESI_CAMPAIGN: EylulCampaignConfig = {
   ...DEFAULT_EYLUL_CAMPAIGN,
+  homeVisibleFrom: "",
+  homeVisibleUntil: "",
   seoTitle: "Hanım Umresi Kampanyası | Hadi Umreye Gidelim",
   seoDescription: "Hanım misafirlerimize özel, huzurlu ve güvenli grup düzeniyle hazırlanan umre programı.",
   heroImage: DEFAULT_EYLUL_CAMPAIGN.finalAdsImage,
@@ -257,4 +266,16 @@ export function parseEylulCampaign(value?: string | null, fallback = DEFAULT_EYL
   } catch {
     return fallback;
   }
+}
+
+/** Bugünün tarihi (İstanbul), YYYY-AA-GG */
+export function istanbulToday(now = new Date()): string {
+  return new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Istanbul" }).format(now);
+}
+
+/** Ana sayfa kartı bugün yayında mı? Tarihler dahil; boş alan sınır koymaz. */
+export function isHomeCardLive(c: Pick<EylulCampaignConfig, "homeVisibleFrom" | "homeVisibleUntil">, today = istanbulToday()): boolean {
+  if (c.homeVisibleFrom && today < c.homeVisibleFrom) return false;
+  if (c.homeVisibleUntil && today > c.homeVisibleUntil) return false;
+  return true;
 }

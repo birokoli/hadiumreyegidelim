@@ -21,7 +21,7 @@ export type ContentPage = {
   group: ContentGroup;
   /** Hedef arama kelimesi (SEO Masası → Programatik'teki kelime) */
   keyword: string;
-  /** <title> çekirdeği; site adı şablonla eklenir. Çekirdek + " | Hadi Umre'ye Gidelim" ≤ 60 */
+  /** <title> çekirdeği; site adı şablonla eklenir. Çekirdek + " | Hadi Umreye Gidelim" ≤ 60 */
   title: string;
   /** Meta açıklama, 120–158 karakter */
   description: string;

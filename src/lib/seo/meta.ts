@@ -1,7 +1,7 @@
 // Sayfa başlığı ve açıklaması için ortak kurallar (denetimdeki title-long / description sorunları).
-// Kök düzen başlığa " | Hadi Umre'ye Gidelim" ekler; sayfa başlığında site adı tekrar yazılmaz.
+// Kök düzen başlığa " | Hadi Umreye Gidelim" ekler; sayfa başlığında site adı tekrar yazılmaz.
 
-export const SITE_NAME = "Hadi Umre'ye Gidelim";
+export const SITE_NAME = "Hadi Umreye Gidelim";
 const TEMPLATE_SUFFIX = ` | ${SITE_NAME}`;
 const MAX_TITLE = 60;
 const MAX_DESCRIPTION = 158;

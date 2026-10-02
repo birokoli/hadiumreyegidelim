@@ -9,11 +9,11 @@ import UmrahSteps from "@/components/home/UmrahSteps";
 import { prisma } from "@/lib/prisma";
 import { getSiteSettings } from "@/lib/site-settings";
 import { Metadata } from "next";
-import { DEFAULT_HANIM_UMRESI_CAMPAIGN, DEFAULT_ILK_UMREM_CAMPAIGN, EYLUL_CAMPAIGN_SETTING_KEY, HANIM_UMRESI_CAMPAIGN_SETTING_KEY, ILK_UMREM_CAMPAIGN_SETTING_KEY, parseEylulCampaign } from "@/lib/eylul-campaign";
+import { DEFAULT_HANIM_UMRESI_CAMPAIGN, DEFAULT_ILK_UMREM_CAMPAIGN, EYLUL_CAMPAIGN_SETTING_KEY, HANIM_UMRESI_CAMPAIGN_SETTING_KEY, ILK_UMREM_CAMPAIGN_SETTING_KEY, isHomeCardLive, parseEylulCampaign } from "@/lib/eylul-campaign";
 import { PageTrust, webPageJsonLd } from "@/components/seo/PageTrust";
 
 export const metadata: Metadata = {
-  title: { absolute: "Bireysel Umre 2026 | Hadi Umre'ye Gidelim" },
+  title: { absolute: "Bireysel Umre 2026 | Hadi Umreye Gidelim" },
   description: "Bireysel umre 2026: tarihinizi, Mekke ve Medine otelinizi ve gün sayısını siz seçin; vize, uçuş ve transfer tek planda. Teklifi WhatsApp'tan alın.",
   alternates: {
     canonical: "/",
@@ -148,8 +148,8 @@ export default async function Home() {
         </ul>
       </nav>
 
-      {/* ─── Kampanya bandı ────────────────────────────────── */}
-      <section className="w-full max-w-screen-xl mx-auto px-4 md:px-8 pt-10 md:pt-12">
+      {/* ─── Kampanya bandı (admin'deki yayın tarihleri arasında) ─── */}
+      {isHomeCardLive(eylulCampaign) && <section className="w-full max-w-screen-xl mx-auto px-4 md:px-8 pt-10 md:pt-12">
         <Link href="/eylul-umresi" data-press className="group relative flex flex-col md:flex-row md:items-center gap-5 overflow-hidden rounded-2xl bg-primary text-white p-6 md:p-7">
           <div className="absolute inset-y-0 right-0 w-1/2 hidden md:block">
             {eylulCampaign.heroImage && <Image src={eylulCampaign.heroImage} alt="" fill sizes="(min-width: 1280px) 640px, 50vw" className="object-cover opacity-30 group-hover:scale-105 transition-transform duration-700" />}
@@ -164,7 +164,7 @@ export default async function Home() {
             {eylulCampaign.homeButton} <Arrow />
           </span>
         </Link>
-      </section>
+      </section>}
 
       {/* ─── Paketler ──────────────────────────────────────── */}
       <section className="w-full max-w-screen-xl mx-auto px-4 md:px-8 py-12 md:py-16">
@@ -213,7 +213,7 @@ export default async function Home() {
         {[
           { c: ilkUmremCampaign, href: "/ilk-umrem" },
           { c: hanimCampaign, href: "/hanim-umresi" },
-        ].map(({ c, href }) => (
+        ].filter(({ c }) => isHomeCardLive(c)).map(({ c, href }) => (
           <Link key={href} href={href} data-reveal className="group relative overflow-hidden rounded-2xl min-h-[220px] flex items-end p-6 text-white">
             {c.heroImage && <Image src={c.heroImage} alt="" fill sizes="(min-width: 768px) 50vw, 100vw" className="object-cover group-hover:scale-105 transition-transform duration-700" />}
             <div className="absolute inset-0 bg-gradient-to-t from-[#001944]/95 via-[#001944]/55 to-[#001944]/10" />

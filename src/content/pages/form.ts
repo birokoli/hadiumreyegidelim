@@ -8,7 +8,7 @@ export type Form = {
   sections: SectionForm[]; faq: { q: string; a: string }[]; sources: string; related: string;
 };
 
-export const SUFFIX = " | Hadi Umre'ye Gidelim";
+export const SUFFIX = " | Hadi Umreye Gidelim";
 export const words = (s: string) => s.replace(/\[([^\]]+)\]\([^)]+\)/g, "$1").split(/\s+/).filter(Boolean).length;
 const lines = (s: string) => s.split("\n").map((l) => l.trim()).filter(Boolean);
 

@@ -42,9 +42,7 @@ export const metadata: Metadata = {
     locale: 'tr_TR',
     type: 'website',
   },
-  alternates: {
-    canonical: SITE_URL,
-  }
+  // Kök kanonik yok (Faz I2): her sayfa kendi kanoniğini verir; vermeyen sayfa ana sayfanın kopyası gibi bildirilmesin
 };
 
 import { SpeedInsights } from "@vercel/speed-insights/next";

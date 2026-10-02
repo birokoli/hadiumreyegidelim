@@ -47,7 +47,8 @@ const MONTH_TR = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmu
 export const monthLabel = (ym: string) => `${MONTH_TR[Number(ym.slice(5, 7)) - 1]} ${ym.slice(0, 4)}`;
 
 
-async function queryCatalog(): Promise<CatalogItem[]> {
+/** Önbelleksiz okuma (admin durum paneli için) */
+export async function queryCatalog(): Promise<CatalogItem[]> {
   await ensureCatalogSchema();
   const months = monthsFrom(currentMonth(), 13);
   const rows = await prisma.serviceLibrary.findMany({

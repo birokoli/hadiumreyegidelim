@@ -78,14 +78,20 @@ export default function ServiceLibraryPage() {
   const [togglingId, setTogglingId] = useState<string | null>(null);
   const [importing, setImporting] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  type CatalogStatus = { total: number; public: number; hotels: { public: number; mekke: number; medine: number; noCity: string[] }; noPrice: string[]; nusukHidden: string[]; siteNow: number; siteFresh: number | null; error: string | null };
+  const [status, setStatus] = useState<CatalogStatus | null>(null);
+  const loadStatus = () => fetch('/api/admin/catalog-status').then((r) => r.json()).then((d) => setStatus(d.error && d.total == null ? null : d)).catch(() => {});
+  const refreshSite = async () => { await fetch('/api/admin/catalog-status', { method: 'POST' }); setTimeout(loadStatus, 800); };
 
   useEffect(() => {
     let alive = true;
+    fetch('/api/admin/catalog-status').then((r) => r.json()).then((d) => { if (alive) setStatus(d.error && d.total == null ? null : d); }).catch(() => {});
     fetch('/api/admin/service-library').then((r) => r.json()).then((d) => { if (alive) { setServices(d.services ?? []); setLoading(false); } }).catch(() => { if (alive) setLoading(false); });
     return () => { alive = false; };
   }, []);
 
   async function load() {
+    loadStatus();
     const res = await fetch('/api/admin/service-library');
     if (res.ok) setServices((await res.json()).services ?? []);
     setLoading(false);
@@ -121,6 +127,7 @@ export default function ServiceLibraryPage() {
 
   async function save() {
     if (!form.name.trim()) return alert('Hizmet adı zorunlu.');
+    if (form.category === 'hotel' && !form.city) return alert('Otel için şehir seçin (Mekke ya da Medine); şehri olmayan otel planlayıcıda görünmez.');
     setSaving(true);
     const url = editId ? `/api/admin/service-library/${editId}` : '/api/admin/service-library';
     const method = editId ? 'PUT' : 'POST';
@@ -246,6 +253,25 @@ export default function ServiceLibraryPage() {
       {errorMsg && (
         <div className="p-3 bg-error/10 text-error rounded-xl text-xs font-bold border border-error/20">
           {errorMsg}
+        </div>
+      )}
+
+      {status && (
+        <div className={`rounded-2xl border p-4 text-xs ${status.error || status.hotels.noCity.length || !status.hotels.mekke || !status.hotels.medine ? 'border-amber-300 bg-amber-50' : 'border-primary/20 bg-primary/[0.03]'}`} role="status">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <p className="font-bold text-primary">
+              Sitede şu an: {status.siteNow} kalem · Mekke oteli {status.hotels.mekke} · Medine oteli {status.hotels.medine}
+              {status.siteFresh != null && status.siteFresh !== status.siteNow && <span className="ml-2 font-normal text-amber-800">(güncel veride {status.siteFresh}; site henüz yenilenmedi)</span>}
+            </p>
+            <button onClick={refreshSite} className="rounded-lg border border-primary/30 px-3 py-1.5 font-bold text-primary hover:bg-primary/[0.05]">Siteyi yenile</button>
+          </div>
+          <ul className="mt-2 space-y-1 text-on-surface-variant">
+            {status.public === 0 && <li>• Hiçbir kalem "Sitede göster" durumunda değil. Satmak istediklerinizin anahtarını açın (ya da "Hepsini sitede göster").</li>}
+            {status.hotels.noCity.length > 0 && <li>• <b>Şehri seçilmemiş {status.hotels.noCity.length} otel</b> planlayıcıda görünmez (Mekke/Medine bilinmiyor): {status.hotels.noCity.slice(0, 8).join(', ')}{status.hotels.noCity.length > 8 ? '…' : ''}. Düzenle → Şehir.</li>}
+            {status.noPrice.length > 0 && <li>• Alış fiyatı ve aylık fiyatı olmayan {status.noPrice.length} kalem sitede "teklifte" görünür: {status.noPrice.slice(0, 6).join(', ')}{status.noPrice.length > 6 ? '…' : ''}.</li>}
+            {status.nusukHidden.length > 0 && <li>• Nusuk kalemleri işaretli olsa da sitede gösterilmez (kural).</li>}
+            {status.error && <li className="text-error">• Katalog okunurken hata: {status.error}</li>}
+          </ul>
         </div>
       )}
 
@@ -407,6 +433,14 @@ export default function ServiceLibraryPage() {
                   Sitede göster (planlayıcı, otel ve fiyat sayfaları)
                 </label>
                 <p className="text-[11px] text-on-surface-variant">Sitede yalnızca satış fiyatı (varsayılan: maliyet + %15 otel / %10 diğer) veya aylık özel fiyat görünür; maliyet asla gösterilmez.</p>
+                {!form.isPublic && form.category === 'hotel' && (
+                  <div>
+                    <label className="block font-bold text-on-surface-variant mb-1">Şehir (otel için gerekli)</label>
+                    <select value={form.city} onChange={(e) => setForm({ ...form, city: e.target.value })} className="w-full bg-surface-container-lowest border border-outline-variant/25 rounded-lg p-2 focus:outline-none focus:border-primary/40">
+                      {CITIES.map((c) => <option key={c.value} value={c.value}>{c.label}</option>)}
+                    </select>
+                  </div>
+                )}
                 {form.isPublic && (
                   <div className="grid grid-cols-2 gap-3 pt-1">
                     <div>

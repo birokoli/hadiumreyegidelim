@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { VEHICLE_TYPES } from '@/lib/quotation-calc';
 
 interface ServiceItem {
@@ -69,12 +70,20 @@ export default function ServiceLibraryPage() {
   const [services, setServices] = useState<ServiceItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [catFilter, setCatFilter] = useState('all');
+  const [publicFilter, setPublicFilter] = useState<'all' | 'public' | 'hidden'>('all');
   const [modalOpen, setModalOpen] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
   const [form, setForm] = useState({ ...BLANK });
   const [saving, setSaving] = useState(false);
+  const [togglingId, setTogglingId] = useState<string | null>(null);
+  const [importing, setImporting] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    let alive = true;
+    fetch('/api/admin/service-library').then((r) => r.json()).then((d) => { if (alive) { setServices(d.services ?? []); setLoading(false); } }).catch(() => { if (alive) setLoading(false); });
+    return () => { alive = false; };
+  }, []);
 
   async function load() {
     const res = await fetch('/api/admin/service-library');
@@ -120,13 +129,80 @@ export default function ServiceLibraryPage() {
     setSaving(false);
   }
 
+  async function togglePublic(svc: ServiceItem) {
+    setTogglingId(svc.id);
+    setErrorMsg(null);
+    const nextPublic = !svc.isPublic;
+    const body = {
+      category: svc.category,
+      name: svc.name,
+      description: svc.description || '',
+      defaultPricingType: svc.defaultPricingType,
+      defaultCostUsd: svc.defaultCostUsd,
+      defaultVehicleType: svc.defaultVehicleType || 'sedan',
+      defaultChildPercent: svc.defaultChildPercent || 0,
+      defaultExtraBedPrice: svc.defaultExtraBedPrice || 0,
+      isPublic: nextPublic,
+      slug: svc.slug || '',
+      city: svc.city || '',
+      imageUrl: svc.imageUrl || '',
+      publicDescription: svc.publicDescription || '',
+      hotelStars: svc.hotelStars ?? '',
+      distanceMeters: svc.distanceMeters ?? '',
+    };
+    const res = await fetch(`/api/admin/service-library/${svc.id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    if (res.ok) {
+      setServices(prev => prev.map(s => s.id === svc.id ? { ...s, isPublic: nextPublic } : s));
+    } else {
+      setErrorMsg(`"${svc.name}" sitede gösterim durumu güncellenemedi.`);
+    }
+    setTogglingId(null);
+  }
+
+  async function makeAllFilteredPublic() {
+    const hiddenInFilter = filtered.filter(s => !s.isPublic);
+    if (hiddenInFilter.length === 0) return alert('Seçili filtredeki tüm hizmetler zaten sitede görünüyor.');
+    if (!confirm(`Filtrelenen ${hiddenInFilter.length} hizmet sitede gösterilecek. Onaylıyor musunuz?`)) return;
+
+    for (const svc of hiddenInFilter) {
+      await togglePublic({ ...svc, isPublic: false });
+    }
+  }
+
+  async function importLegacy() {
+    if (!confirm('Eski otel ve hizmetler kütüphaneye aktarılsın mı? Mevcut kayıtlar korunacak, mükerrer olanlar atlanacak.')) return;
+    setImporting(true);
+    try {
+      const res = await fetch('/api/admin/service-library/import-legacy', { method: 'POST' });
+      const data = await res.json();
+      if (res.ok) {
+        alert(`Aktarım tamamlandı: ${data.created ?? 0} yeni kayıt eklendi, ${data.skipped ?? 0} kayıt zaten vardı${data.completed ? `, ${data.completed} otelin eksik bilgisi (şehir, yıldız, mesafe, görsel) tamamlandı` : ''}.`);
+        await load();
+      } else {
+        alert(`Aktarım hatası: ${data.error || 'Bilinmeyen hata'}`);
+      }
+    } catch (err) {
+      alert(`Aktarım hatası: ${err instanceof Error ? err.message : 'bilinmeyen'}`);
+    }
+    setImporting(false);
+  }
+
   async function del(id: string, name: string) {
     if (!confirm(`"${name}" silinsin mi?`)) return;
     await fetch(`/api/admin/service-library/${id}`, { method: 'DELETE' });
     setServices(prev => prev.filter(s => s.id !== id));
   }
 
-  const filtered = services.filter(s => catFilter === 'all' || s.category === catFilter);
+  const filtered = services.filter(s => {
+    if (catFilter !== 'all' && s.category !== catFilter) return false;
+    if (publicFilter === 'public' && !s.isPublic) return false;
+    if (publicFilter === 'hidden' && s.isPublic) return false;
+    return true;
+  });
 
   if (loading) return <div className="p-8 max-w-7xl mx-auto min-h-screen bg-surface text-on-surface-variant text-xs">Hizmet kütüphanesi yükleniyor...</div>;
 
@@ -137,20 +213,29 @@ export default function ServiceLibraryPage() {
         <div>
           <span className="text-[10px] font-bold tracking-widest text-secondary uppercase">Teklif ve Servisler</span>
           <h1 className="font-headline text-2xl font-bold tracking-tight text-primary mt-1">Hizmet Kütüphanesi</h1>
-          <p className="text-xs text-on-surface-variant mt-0.5">{services.length} hizmet şablonu aktif.</p>
+          <p className="text-xs text-on-surface-variant mt-0.5">{services.length} hizmet şablonu aktif ({services.filter(s => s.isPublic).length} sitede görünür).</p>
         </div>
 
-        <div className="flex items-center gap-3">
-          <a
-            href="/admin/fiyat-teklifleri/hizmetler/fiyatlar"
-            className="inline-flex items-center gap-1.5 border border-primary/30 text-primary font-bold px-4 py-2.5 rounded-xl text-xs hover:bg-primary/[0.04]"
+        <div className="flex items-center gap-3 flex-wrap">
+          <button
+            onClick={importLegacy}
+            disabled={importing}
+            className="inline-flex items-center gap-1.5 border border-outline-variant/30 text-on-surface font-bold px-3.5 py-2 rounded-xl text-xs hover:bg-surface-container-low disabled:opacity-50"
+          >
+            <span className="material-symbols-outlined text-[16px]">download</span>
+            <span>{importing ? 'Aktarılıyor...' : 'Eski verileri aktar'}</span>
+          </button>
+
+          <Link href="/admin/fiyat-teklifleri/hizmetler/fiyatlar"
+            className="inline-flex items-center gap-1.5 border border-primary/30 text-primary font-bold px-3.5 py-2 rounded-xl text-xs hover:bg-primary/[0.04]"
           >
             <span className="material-symbols-outlined text-[16px]">calendar_month</span>
             <span>Aylık satış fiyatları</span>
-          </a>
+          </Link>
+          
           <button
             onClick={openNew}
-            className="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-container text-white font-bold px-4 py-2.5 rounded-xl text-xs transition-all active:scale-95 shadow-sm"
+            className="inline-flex items-center gap-1.5 bg-primary hover:bg-primary-container text-white font-bold px-4 py-2 rounded-xl text-xs transition-all active:scale-95 shadow-sm"
           >
             <span className="material-symbols-outlined text-[16px]">add</span>
             <span>Yeni Hizmet</span>
@@ -158,38 +243,85 @@ export default function ServiceLibraryPage() {
         </div>
       </div>
 
-      {/* Filter Tabs */}
-      <div className="flex items-center gap-2 border-b border-outline-variant/15 pb-3 overflow-x-auto">
-        <button
-          onClick={() => setCatFilter('all')}
-          className={`px-3.5 py-1.5 rounded-xl text-xs font-bold border transition-all shrink-0 ${
-            catFilter === 'all'
-              ? 'bg-primary text-white border-primary shadow-sm'
-              : 'bg-surface-container-lowest text-on-surface-variant border-outline-variant/25 hover:border-primary/40'
-          }`}
-        >
-          Tümü
-        </button>
-        {CATEGORIES.map((c) => (
+      {errorMsg && (
+        <div className="p-3 bg-error/10 text-error rounded-xl text-xs font-bold border border-error/20">
+          {errorMsg}
+        </div>
+      )}
+
+      {/* Filters and Batch Actions */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-outline-variant/15 pb-4">
+        {/* Category Filter */}
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 md:pb-0">
           <button
-            key={c.value}
-            onClick={() => setCatFilter(c.value)}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold border transition-all shrink-0 ${
-              catFilter === c.value
+            onClick={() => setCatFilter('all')}
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold border transition-all shrink-0 ${
+              catFilter === 'all'
                 ? 'bg-primary text-white border-primary shadow-sm'
                 : 'bg-surface-container-lowest text-on-surface-variant border-outline-variant/25 hover:border-primary/40'
             }`}
           >
-            {c.label}
+            Tümü
           </button>
-        ))}
+          {CATEGORIES.map((c) => (
+            <button
+              key={c.value}
+              onClick={() => setCatFilter(c.value)}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold border transition-all shrink-0 ${
+                catFilter === c.value
+                  ? 'bg-primary text-white border-primary shadow-sm'
+                  : 'bg-surface-container-lowest text-on-surface-variant border-outline-variant/25 hover:border-primary/40'
+              }`}
+            >
+              {c.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Public Status Filter & Action */}
+        <div className="flex items-center gap-3 shrink-0">
+          <div className="flex items-center gap-1 bg-surface-container-low p-1 rounded-xl border border-outline-variant/20">
+            <button
+              onClick={() => setPublicFilter('all')}
+              className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
+                publicFilter === 'all' ? 'bg-white text-primary shadow-sm' : 'text-on-surface-variant hover:text-primary'
+              }`}
+            >
+              Tümü
+            </button>
+            <button
+              onClick={() => setPublicFilter('public')}
+              className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
+                publicFilter === 'public' ? 'bg-white text-primary shadow-sm' : 'text-on-surface-variant hover:text-primary'
+              }`}
+            >
+              Sitede
+            </button>
+            <button
+              onClick={() => setPublicFilter('hidden')}
+              className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
+                publicFilter === 'hidden' ? 'bg-white text-primary shadow-sm' : 'text-on-surface-variant hover:text-primary'
+              }`}
+            >
+              Gizli
+            </button>
+          </div>
+
+          <button
+            onClick={makeAllFilteredPublic}
+            className="inline-flex items-center gap-1 bg-secondary/10 text-secondary hover:bg-secondary/20 font-bold px-3 py-1.5 rounded-xl text-xs transition-colors"
+          >
+            <span className="material-symbols-outlined text-[16px]">visibility</span>
+            <span>Hepsini sitede göster</span>
+          </button>
+        </div>
       </div>
 
       {/* Table */}
       <div className="border border-outline-variant/15 rounded-2xl overflow-hidden bg-surface-container-lowest">
         {filtered.length === 0 ? (
           <div className="py-16 text-center text-outline text-xs font-medium">
-            Henüz hizmet eklenmemiş.
+            Filtreye uygun hizmet bulunamadı.
           </div>
         ) : (
           <table className="w-full text-left text-xs">
@@ -198,7 +330,7 @@ export default function ServiceLibraryPage() {
                 <th className="px-4 py-3">Hizmet Adı</th>
                 <th className="px-4 py-3">Kategori</th>
                 <th className="px-4 py-3">Fiyatlandırma Tipi</th>
-                <th className="px-4 py-3">Sitede</th>
+                <th className="px-4 py-3">Sitede Göster</th>
                 <th className="px-4 py-3 text-right">Alış Fiyatı ($)</th>
                 <th className="px-4 py-3 text-right">İşlem</th>
               </tr>
@@ -212,7 +344,23 @@ export default function ServiceLibraryPage() {
                     <td className="px-4 py-3 font-bold text-on-surface">{svc.name}</td>
                     <td className="px-4 py-3 text-on-surface-variant">{cat?.label || svc.category}</td>
                     <td className="px-4 py-3 text-on-surface-variant">{pt?.label || svc.defaultPricingType}</td>
-                    <td className="px-4 py-3">{svc.isPublic ? <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-bold text-primary">Görünür</span> : <span className="text-[10px] text-outline">Gizli</span>}</td>
+                    <td className="px-4 py-3">
+                      <button
+                        onClick={() => togglePublic(svc)}
+                        disabled={togglingId === svc.id}
+                        className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold border transition-all cursor-pointer ${
+                          svc.isPublic
+                            ? 'bg-primary/10 border-primary/30 text-primary hover:bg-primary/20'
+                            : 'bg-outline-variant/15 border-outline-variant/25 text-outline hover:bg-outline-variant/30 hover:text-on-surface'
+                        }`}
+                        title="Sitede gösterim durumunu değiştirmek için tıklayın"
+                      >
+                        <span className="material-symbols-outlined text-[14px]">
+                          {svc.isPublic ? 'visibility' : 'visibility_off'}
+                        </span>
+                        <span>{svc.isPublic ? 'Görünür' : 'Gizli'}</span>
+                      </button>
+                    </td>
                     <td className="px-4 py-3 font-mono font-bold text-primary text-right">${svc.defaultCostUsd || 0}</td>
                     <td className="px-4 py-3 text-right space-x-2">
                       <button onClick={() => openEdit(svc)} className="p-1.5 text-outline hover:text-primary transition-colors">
@@ -252,6 +400,49 @@ export default function ServiceLibraryPage() {
                 />
               </div>
 
+              {/* Sitede Göster Kutusu (Hizmet Adının hemen altında) */}
+              <div className="rounded-xl border border-primary/20 bg-primary/[0.03] p-3 space-y-2">
+                <label className="flex items-center gap-2 font-bold text-on-surface cursor-pointer">
+                  <input type="checkbox" checked={form.isPublic} onChange={(e) => setForm({ ...form, isPublic: e.target.checked })} className="h-4 w-4 accent-[#003781]" />
+                  Sitede göster (planlayıcı, otel ve fiyat sayfaları)
+                </label>
+                <p className="text-[11px] text-on-surface-variant">Sitede yalnızca satış fiyatı (varsayılan: maliyet + %15 otel / %10 diğer) veya aylık özel fiyat görünür; maliyet asla gösterilmez.</p>
+                {form.isPublic && (
+                  <div className="grid grid-cols-2 gap-3 pt-1">
+                    <div>
+                      <label className="block font-bold text-on-surface-variant mb-1">Şehir</label>
+                      <select value={form.city} onChange={(e) => setForm({ ...form, city: e.target.value })} className="w-full bg-surface-container-lowest border border-outline-variant/25 rounded-lg p-2 focus:outline-none focus:border-primary/40">
+                        {CITIES.map((c) => <option key={c.value} value={c.value}>{c.label}</option>)}
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block font-bold text-on-surface-variant mb-1">Adres (boşsa addan üretilir)</label>
+                      <input type="text" value={form.slug} onChange={(e) => setForm({ ...form, slug: e.target.value })} placeholder="ornek-otel-mekke" className="w-full bg-surface-container-lowest border border-outline-variant/25 rounded-lg p-2 focus:outline-none focus:border-primary/40 font-mono" />
+                    </div>
+                    {form.category === 'hotel' && (
+                      <>
+                        <div>
+                          <label className="block font-bold text-on-surface-variant mb-1">Yıldız</label>
+                          <input type="number" min={1} max={5} value={form.hotelStars} onChange={(e) => setForm({ ...form, hotelStars: e.target.value === '' ? '' : Number(e.target.value) })} className="w-full bg-surface-container-lowest border border-outline-variant/25 rounded-lg p-2 focus:outline-none focus:border-primary/40" />
+                        </div>
+                        <div>
+                          <label className="block font-bold text-on-surface-variant mb-1">Harem'e mesafe (metre)</label>
+                          <input type="number" value={form.distanceMeters} onChange={(e) => setForm({ ...form, distanceMeters: e.target.value === '' ? '' : Number(e.target.value) })} className="w-full bg-surface-container-lowest border border-outline-variant/25 rounded-lg p-2 focus:outline-none focus:border-primary/40" />
+                        </div>
+                      </>
+                    )}
+                    <div className="col-span-2">
+                      <label className="block font-bold text-on-surface-variant mb-1">Görsel adresi</label>
+                      <input type="url" value={form.imageUrl} onChange={(e) => setForm({ ...form, imageUrl: e.target.value })} placeholder="https://…" className="w-full bg-surface-container-lowest border border-outline-variant/25 rounded-lg p-2 focus:outline-none focus:border-primary/40" />
+                    </div>
+                    <div className="col-span-2">
+                      <label className="block font-bold text-on-surface-variant mb-1">Sitedeki açıklama (müşteri görür; "en ucuz", "sıfır", "garanti" yazmayın)</label>
+                      <textarea rows={3} value={form.publicDescription} onChange={(e) => setForm({ ...form, publicDescription: e.target.value })} className="w-full bg-surface-container-lowest border border-outline-variant/25 rounded-lg p-2 focus:outline-none focus:border-primary/40" />
+                    </div>
+                  </div>
+                )}
+              </div>
+
               <div>
                 <label className="block font-bold text-on-surface-variant mb-1">Kategori</label>
                 <select
@@ -284,7 +475,7 @@ export default function ServiceLibraryPage() {
                 {form.defaultPricingType === 'per_vehicle' && (
                   <div>
                     <label className="block font-bold text-on-surface-variant mb-1">Araç tipi</label>
-                    <select value={form.defaultVehicleType} onChange={(e) => setForm({ ...form, defaultVehicleType: e.target.value })} className="w-full bg-surface-container-lowest border border-outline-variant/25 rounded-lg p-2 focus:outline-none focus:border-primary/40">
+                    <select value={form.defaultVehicleType} onChange={(e) => setForm({ ...form, defaultVehicleType: e.target.value })} className="w-full bg-surface-container-lowest border border-outline-variant/25 rounded-lg p-2 focus:outline-none focus:border-primary/40 font-mono text-xs">
                       {VEHICLE_TYPES.map((v) => <option key={v.value} value={v.value}>{v.label}</option>)}
                     </select>
                   </div>
@@ -299,48 +490,6 @@ export default function ServiceLibraryPage() {
                   <div>
                     <label className="block font-bold text-on-surface-variant mb-1">Ek yatak maliyeti ($)</label>
                     <input type="number" value={form.defaultExtraBedPrice} onChange={(e) => setForm({ ...form, defaultExtraBedPrice: parseFloat(e.target.value) || 0 })} className="w-full bg-surface-container-lowest border border-outline-variant/25 rounded-lg p-2 focus:outline-none focus:border-primary/40" />
-                  </div>
-                )}
-              </div>
-
-              <div className="rounded-xl border border-primary/20 bg-primary/[0.03] p-4 space-y-3">
-                <label className="flex items-center gap-2 font-bold text-on-surface">
-                  <input type="checkbox" checked={form.isPublic} onChange={(e) => setForm({ ...form, isPublic: e.target.checked })} className="h-4 w-4 accent-[#003781]" />
-                  Sitede göster (planlayıcı, otel ve fiyat sayfaları)
-                </label>
-                <p className="text-[11px] text-on-surface-variant">Sitede yalnızca aylık satış fiyatları görünür; maliyet asla gösterilmez. Fiyatları "Aylık satış fiyatları" ekranından girin.</p>
-                {form.isPublic && (
-                  <div className="grid grid-cols-2 gap-3">
-                    <div>
-                      <label className="block font-bold text-on-surface-variant mb-1">Şehir</label>
-                      <select value={form.city} onChange={(e) => setForm({ ...form, city: e.target.value })} className="w-full bg-surface-container-lowest border border-outline-variant/25 rounded-lg p-2 focus:outline-none focus:border-primary/40">
-                        {CITIES.map((c) => <option key={c.value} value={c.value}>{c.label}</option>)}
-                      </select>
-                    </div>
-                    <div>
-                      <label className="block font-bold text-on-surface-variant mb-1">Adres (boşsa addan üretilir)</label>
-                      <input type="text" value={form.slug} onChange={(e) => setForm({ ...form, slug: e.target.value })} placeholder="ornek-otel-mekke" className="w-full bg-surface-container-lowest border border-outline-variant/25 rounded-lg p-2 focus:outline-none focus:border-primary/40 font-mono" />
-                    </div>
-                    {form.category === 'hotel' && (
-                      <>
-                        <div>
-                          <label className="block font-bold text-on-surface-variant mb-1">Yıldız</label>
-                          <input type="number" min={1} max={5} value={form.hotelStars} onChange={(e) => setForm({ ...form, hotelStars: e.target.value === '' ? '' : Number(e.target.value) })} className="w-full bg-surface-container-lowest border border-outline-variant/25 rounded-lg p-2 focus:outline-none focus:border-primary/40" />
-                        </div>
-                        <div>
-                          <label className="block font-bold text-on-surface-variant mb-1">Harem'e mesafe (metre)</label>
-                          <input type="number" value={form.distanceMeters} onChange={(e) => setForm({ ...form, distanceMeters: e.target.value === '' ? '' : Number(e.target.value) })} className="w-full bg-surface-container-lowest border border-outline-variant/25 rounded-lg p-2 focus:outline-none focus:border-primary/40" />
-                        </div>
-                      </>
-                    )}
-                    <div className="col-span-2">
-                      <label className="block font-bold text-on-surface-variant mb-1">Görsel adresi</label>
-                      <input type="url" value={form.imageUrl} onChange={(e) => setForm({ ...form, imageUrl: e.target.value })} placeholder="https://…" className="w-full bg-surface-container-lowest border border-outline-variant/25 rounded-lg p-2 focus:outline-none focus:border-primary/40" />
-                    </div>
-                    <div className="col-span-2">
-                      <label className="block font-bold text-on-surface-variant mb-1">Sitedeki açıklama (müşteri görür; "en ucuz", "sıfır", "garanti" yazmayın)</label>
-                      <textarea rows={3} value={form.publicDescription} onChange={(e) => setForm({ ...form, publicDescription: e.target.value })} className="w-full bg-surface-container-lowest border border-outline-variant/25 rounded-lg p-2 focus:outline-none focus:border-primary/40" />
-                    </div>
                   </div>
                 )}
               </div>

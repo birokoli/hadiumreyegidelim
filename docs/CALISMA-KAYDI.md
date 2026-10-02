@@ -34,6 +34,17 @@ Antigravity her iş oturumunda bu dosyanın **en üstüne** bir kayıt ekler. Am
 
 <!-- Kayıtlar bu çizginin altına, en yeni en üstte -->
 
+## 2026-10-02 — Claude Code: G2 + G5 denetimi ve yayını; yerel test veritabanı
+- **Yerel test veritabanı:** gömülü Postgres (PGlite) `localhost:5432`, canlıdaki herkese açık veriyle (7 paket, 18 otel, 175 hizmet) ve rastgele şifreli test yöneticisiyle. Kılavuz `docs/antigravity/YEREL-VERITABANI.md`, betikler `scripts/local/`. Geliştirme sunucusu bu veritabanına bağlı.
+- **G2 (/paketler) ve G5 (planlayıcı, kütüphane, talep ekranı)** yerelde gerçek veriyle uçtan uca denendi, düzeltmeler TESLIM.md'de, canlıya alındı.
+- **Kullanıcının yapacakları (canlı):**
+  - Hizmet Kütüphanesi → "Eski verileri aktar" (oteller şehir, yıldız ve mesafeyle gelir);
+  - satılacakları "Sitede göster";
+  - Aylık Satış Fiyatları → "Ödeme ve kur";
+  - `/bireysel-umre/yeni`'de kontrol.
+- Fiyat kuralı: ayın satış fiyatı girilmişse o; yoksa alış × 1,15 (otel) / × 1,10 (diğer), tam dolar.
+
+
 ## 2026-10-02 — Claude Code: Y2 planlayıcı v2 (önizleme) + fiyat motoru kuralları + kategori 500 hatası
 **Commitler:** Y2 planlayıcı, blog kategori düzeltmesi + G1, ödeme ve kur (bu commit). Hepsi canlı.
 

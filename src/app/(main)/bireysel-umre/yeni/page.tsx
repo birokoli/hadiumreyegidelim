@@ -26,7 +26,7 @@ export default async function PlannerPreviewPage({ searchParams }: { searchParam
         lead="Dönemi, Mekke ve Medine otelini, ulaşımı ve ekstraları seçin; o ayın güncel fiyatıyla toplamı görün. Planı gönderin, kesin teklifi ekibimiz iletsin."
       />
       <Container>
-        <PlannerV2 catalog={catalog} months={months} whatsappNumber={whatsappNumber} payment={paymentSettingsFrom(settings)} query={query} />
+        <PlannerV2 catalog={catalog} months={months} whatsappNumber={whatsappNumber} payment={paymentSettingsFrom(settings)} query={query} todayYmd={new Date().toLocaleDateString("en-CA", { timeZone: "Europe/Istanbul" })} />
       </Container>
     </main>
   );

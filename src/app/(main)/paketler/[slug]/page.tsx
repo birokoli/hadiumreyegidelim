@@ -3,17 +3,28 @@ import React from 'react';
 export const revalidate = 300;
 import { prisma } from '@/lib/prisma';
 import { notFound } from 'next/navigation';
-import Link from 'next/link';
+import Image from 'next/image';
 import BrandImageFallback from '@/components/ui/BrandImageFallback';
 import { Metadata } from 'next';
 import { DEFAULT_OG_IMAGE, pageTitle } from "@/lib/seo/meta";
 import { PageTrust, webPageJsonLd } from "@/components/seo/PageTrust";
+import { getSiteSettings } from "@/lib/site-settings";
+import {
+  Badge,
+  ButtonLink,
+  Faq,
+  faqJsonLd,
+  PageHero,
+  Panel,
+  PriceTag,
+  Section,
+} from '@/components/ui/kit';
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const pkg = await prisma.package.findUnique({
     where: { slug },
-  });
+  }).catch(() => null);
   if (!pkg) return { title: 'Bulunamadı' };
   
   const shortDesc = pkg.description ? pkg.description.substring(0, 150) + "..." : "Sınırlı kontenjanlı, ayrıcalıklı Umre paketimizi keşfedin.";
@@ -35,6 +46,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function PackageDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
+  const whatsappNumber = ((await getSiteSettings().catch(() => ({} as Record<string, string>))).WHATSAPP_NUMBER || "905404010038").replace("+", "");
   const pkg = await prisma.package.findUnique({
     where: { slug },
   });
@@ -75,7 +87,6 @@ export default async function PackageDetailPage({ params }: { params: Promise<{ 
       '@type': 'Brand',
       name: "Hadi Umre'ye Gidelim"
     },
-    // Gerçek fiyat varsa Offer; uydurma puan/yorum yok
     ...(pkg.price > 0
       ? {
           offers: {
@@ -95,7 +106,8 @@ export default async function PackageDetailPage({ params }: { params: Promise<{ 
     includes.length > 0 && { q: `${pkg.title} fiyatına neler dahil?`, a: `Pakete dahil olanlar: ${includes.join(", ")}.` },
     { q: `${pkg.title} için nasıl rezervasyon yapılır?`, a: `Bu sayfadan ön rezervasyon talebi oluşturabilir ya da WhatsApp üzerinden tarih ve kişi sayısını iletebilirsiniz; güncel fiyat ve müsaitlik size yazılı olarak bildirilir.` },
   ].filter(Boolean) as { q: string; a: string }[];
-  const faqJsonLd = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) };
+
+  const faqSchema = faqJsonLd(faq);
   const pageJsonLd = webPageJsonLd({ url: `${SITE_URL}/paketler/${pkg.slug}`, name: pkg.title, dateModified: pkg.updatedAt.toISOString() });
 
   // Breadcrumb Schema
@@ -110,184 +122,156 @@ export default async function PackageDetailPage({ params }: { params: Promise<{ 
   };
 
   return (
-    <main className="pt-20 bg-surface-container-lowest min-h-screen">
+    <main id="main-content">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([faqJsonLd, pageJsonLd]) }} />
-      {/* Hero Section */}
-      <section className="relative h-[60vh] min-h-[400px] flex items-end pb-16 px-8 overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          {pkg.imageUrl ? (
-            <img
-              alt={pkg.title}
-              className="w-full h-full object-cover absolute inset-0"
-              src={pkg.imageUrl}
-            />
-          ) : (
-             <BrandImageFallback icon="mosque" iconSize={8} />
-          )}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent"></div>
-        </div>
-        
-        <div className="relative z-10 w-full max-w-screen-xl mx-auto flex flex-col md:flex-row md:items-end justify-between gap-8">
-          <div className="max-w-3xl">
-            {/* Visual Breadcrumbs */}
-            <nav className="flex mb-6" aria-label="Breadcrumb">
-              <ol className="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
-                <li className="inline-flex items-center">
-                  <Link href="/" className="inline-flex items-center text-xs font-bold text-white/70 hover:text-white transition-colors tracking-widest uppercase">
-                    Anasayfa
-                  </Link>
-                </li>
-                <li>
-                  <div className="flex items-center">
-                    <span className="material-symbols-outlined text-[14px] text-white/50 mx-1">chevron_right</span>
-                    <Link href="/bireysel-umre" className="ms-1 text-xs font-bold text-white/70 hover:text-white transition-colors tracking-widest uppercase">
-                      Bireysel Turlar
-                    </Link>
-                  </div>
-                </li>
-              </ol>
-            </nav>
-
-            {pkg.isPopular && (
-              <span className="bg-secondary text-primary font-bold text-xs uppercase tracking-widest px-4 py-1.5 rounded-full inline-block mb-4 shadow-xl">
-                En Çok Tercih Edilen
-              </span>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([faqSchema, pageJsonLd]) }} />
+      
+      <PageHero
+        crumbs={[
+          { label: 'Anasayfa', href: '/' },
+          { label: 'Bireysel Turlar', href: '/bireysel-umre' },
+          { label: pkg.title }
+        ]}
+        kicker={pkg.isPopular ? "En Çok Tercih Edilen" : "Umre Paketi"}
+        title={pkg.title}
+        lead={
+          <div className="flex flex-wrap items-center gap-3 mt-2">
+            {pkg.duration && <Badge tone="primary">{pkg.duration}</Badge>}
+            {pkg.price > 0 && <PriceTag amount={pkg.price} currency={pkg.currency} label="Başlangıç" />}
+          </div>
+        }
+        aside={
+          <div className="relative aspect-[16/10] rounded-2xl overflow-hidden bg-surface-container-low border border-outline-variant/20 shadow-md">
+            {pkg.imageUrl ? (
+              <Image
+                src={pkg.imageUrl}
+                alt={pkg.title}
+                fill
+                sizes="(max-width: 1024px) 100vw, 40vw"
+                className="object-cover"
+                priority
+              />
+            ) : (
+              <BrandImageFallback icon="mosque" iconSize={5} />
             )}
-            <h1 className="font-headline text-5xl md:text-7xl text-white font-bold leading-tight mb-6">{pkg.title}</h1>
-            <div className="flex flex-wrap items-center gap-4 text-white/90 text-sm font-medium">
-              <span className="flex items-center gap-2 bg-white/20 border border-white/10 px-4 py-2 rounded-full backdrop-blur-md">
-                <span className="material-symbols-outlined text-[20px]">schedule</span>
-                {pkg.duration}
-              </span>
-            </div>
           </div>
-          
-          <div className="flex-shrink-0">
-             <Link href={`/paketler/${pkg.slug}/checkout`} className="bg-primary hover:bg-white hover:text-primary text-white px-10 py-5 rounded-xl font-bold tracking-widest text-sm uppercase shadow-2xl transition-all flex items-center justify-center gap-3">
-                HEMEN YER AYIRTIN
-                <span className="material-symbols-outlined">arrow_forward</span>
-             </Link>
-          </div>
-        </div>
-      </section>
+        }
+      />
 
-      {/* Content Section */}
-      <section className="max-w-screen-xl mx-auto px-8 py-20 grid grid-cols-1 lg:grid-cols-3 gap-16">
-        {/* Left Column: Description & Includes */}
-        <div className="lg:col-span-2 space-y-16">
-          <div>
-            <h2 className="text-3xl font-headline font-bold text-primary mb-6">Paket Bilgileri</h2>
-            <div className="text-on-surface-variant font-light leading-relaxed text-[17px] whitespace-pre-wrap">
-              {mainDesc}
-            </div>
-          </div>
-          
-          {itinerary.length > 0 && (
-            <div>
-              <h2 className="text-3xl font-headline font-bold text-primary mb-8 mt-12">Kronolojik Harita</h2>
-              <div className="space-y-6 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-outline-variant/30 before:to-transparent">
-                {itinerary.map((item, i) => (
-                  <div key={i} className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
-                    <div className="flex items-center justify-center w-10 h-10 rounded-full bg-surface-container-low border-4 border-white text-secondary font-bold shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10 text-sm">
-                      {item.day}
-                    </div>
-                    <div className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-white p-6 rounded-3xl shadow-sm border border-outline-variant/10 group-hover:shadow-md group-hover:border-primary/20 transition-all">
-                      <div className="text-[10px] uppercase tracking-widest text-secondary font-bold mb-1">Gün {item.day}</div>
-                      <h4 className="text-lg font-bold text-primary mb-2 font-headline">{item.title}</h4>
-                      <p className="text-sm text-on-surface-variant leading-relaxed font-light">{item.desc}</p>
-                    </div>
-                  </div>
-                ))}
+      <Section tone="muted">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-12">
+          {/* Sol Kolon: Bilgiler, Harita, Dahil Hizmetler */}
+          <div className="lg:col-span-2 space-y-8">
+            <Panel tone="white">
+              <h2 className="text-2xl font-headline font-bold text-primary mb-4">Paket Bilgileri</h2>
+              <div className="text-on-surface-variant font-light leading-relaxed text-base whitespace-pre-wrap">
+                {mainDesc}
               </div>
-            </div>
-          )}
-          
-          {includes.length > 0 && (
-            <div className="bg-white p-10 rounded-3xl border border-outline-variant/10 shadow-sm">
-              <h3 className="text-xl font-headline font-bold text-primary mb-8 flex items-center gap-3">
-                <span className="material-symbols-outlined text-secondary text-2xl">verified</span>
-                Fiyata Dahil Olan Hizmetler
-              </h3>
-              <ul className="grid grid-cols-1 md:grid-cols-2 gap-y-4 gap-x-6">
-                {includes.map((item, i) => (
-                  <li key={i} className="flex items-start gap-3 text-secondary-dark font-medium">
-                     <span className="material-symbols-outlined text-secondary text-xl shrink-0 mt-0.5">check_circle</span>
-                     <span className="leading-snug text-[15px]">{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </div>
+            </Panel>
 
-        {/* Right Column: Call To Action Sticky Card */}
-        <div className="lg:col-span-1">
-          <div className="bg-surface-container-lowest p-8 rounded-3xl border border-outline-variant/20 sticky top-32 shadow-xl shadow-primary/5">
-            <span className="text-xs font-bold text-secondary tracking-widest uppercase block mb-3">Durum</span>
-            <div className="text-3xl font-headline font-bold text-primary mb-6">
-              Müsait
-            </div>
-            
-            <p className="text-sm text-on-surface-variant mb-10 leading-relaxed font-light">
-              Manevi tasarım, konaklama, transfer ve rehberlik detayları tamamen size özel organize edilmektedir. Katılım durumunuzu netleştirmek ve paket detaylarını konuşmak için bizimle iletişime geçin.
-            </p>
+            {itinerary.length > 0 && (
+              <Panel tone="white">
+                <h2 className="text-2xl font-headline font-bold text-primary mb-6">Kronolojik Harita</h2>
+                <div className="space-y-6 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-outline-variant/30 before:to-transparent">
+                  {itinerary.map((item, i) => (
+                    <div key={i} className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                      <div className="flex items-center justify-center w-10 h-10 rounded-full bg-surface-container-low border-4 border-white text-secondary font-bold shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10 text-sm">
+                        {item.day}
+                      </div>
+                      <div className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] bg-white p-5 rounded-2xl shadow-sm border border-outline-variant/10 group-hover:shadow-md transition-all">
+                        <div className="text-[10px] uppercase tracking-widest text-secondary font-bold mb-1">Gün {item.day}</div>
+                        <h4 className="text-base font-bold text-primary mb-1 font-headline">{item.title}</h4>
+                        <p className="text-xs text-on-surface-variant leading-relaxed font-light">{item.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </Panel>
+            )}
 
-            <Link href={`/paketler/${pkg.slug}/checkout`} className="w-full bg-primary text-white font-bold tracking-widest text-sm px-6 py-4 rounded-xl hover:bg-primary-container hover:text-primary shadow-xl shadow-primary/20 transition-all flex items-center justify-center gap-2 mb-4">
-               REZERVASYON YAP
-               <span className="material-symbols-outlined text-[20px]">airplane_ticket</span>
-            </Link>
-            
-            <Link href="/iletisim" className="w-full bg-white border-2 border-primary/20 text-primary font-bold tracking-widest text-xs px-6 py-4 rounded-xl hover:bg-primary/5 transition-all flex items-center justify-center gap-2">
-               WHATSAPP İLE SOR
-               <span className="material-symbols-outlined text-[18px]">chat</span>
-            </Link>
+            {includes.length > 0 && (
+              <Panel tone="white">
+                <h3 className="text-xl font-headline font-bold text-primary mb-6 flex items-center gap-2">
+                  <span className="material-symbols-outlined text-secondary text-2xl">verified</span>
+                  Fiyata Dahil Olan Hizmetler
+                </h3>
+                <ul className="grid grid-cols-1 md:grid-cols-2 gap-y-3 gap-x-6">
+                  {includes.map((item, i) => (
+                    <li key={i} className="flex items-start gap-2.5 text-sm text-primary font-medium">
+                      <span className="material-symbols-outlined text-secondary text-base shrink-0 mt-0.5">check_circle</span>
+                      <span className="leading-snug">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </Panel>
+            )}
+          </div>
+
+          {/* Sağ Kolon: Rezervasyon ve WhatsApp Kartı */}
+          <div className="lg:col-span-1">
+            <Panel tone="white" className="sticky top-32 shadow-xl shadow-primary/5">
+              <span className="text-xs font-bold text-primary/80 tracking-wider uppercase block mb-2">Kontenjan Durumu</span>
+              <div className="text-2xl font-headline font-bold text-primary mb-4">
+                Müsait
+              </div>
+              
+              <p className="text-sm text-on-surface-variant mb-6 leading-relaxed font-light">
+                Manevi tasarım, konaklama, transfer ve rehberlik detayları tamamen size özel organize edilmektedir. Katılım durumunuzu netleştirmek ve paket detaylarını konuşmak için bizimle iletişime geçin.
+              </p>
+
+              {pkg.price > 0 && (
+                <div className="mb-6 p-4 bg-surface-container-low rounded-xl">
+                  <PriceTag amount={pkg.price} currency={pkg.currency} label="Kişi başı paket fiyatı" />
+                </div>
+              )}
+
+              <div className="space-y-3">
+                <ButtonLink href={`/paketler/${pkg.slug}/checkout`} tone="primary" className="w-full">
+                  REZERVASYON YAP
+                </ButtonLink>
+                <ButtonLink href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(`Merhaba, "${pkg.title}" paketi hakkında bilgi almak istiyorum.`)}`} tone="whatsapp" className="w-full">
+                  WHATSAPP İLE SOR
+                </ButtonLink>
+              </div>
+            </Panel>
           </div>
         </div>
-      </section>
+      </Section>
 
-      {/* Gallery Section */}
+      {/* Galeri Bölümü */}
       {gallery.length > 0 && (
-        <section className="bg-white py-24 border-t border-outline-variant/10">
-          <div className="max-w-screen-xl mx-auto px-8">
-            <div className="text-center mb-16">
-               <span className="text-secondary font-label text-xs tracking-[0.2em] font-bold uppercase mb-4 block">Görsel Tur</span>
-               <h2 className="text-4xl font-headline font-bold text-primary mb-4">Detay Galerisi</h2>
-               <p className="text-on-surface-variant max-w-2xl mx-auto font-light text-lg">Paket dahilinde yararlanacağınız hizmetlerden ve ziyaret mekanlarından eşsiz kareler.</p>
-            </div>
-            
-            {/* Intelligent Grid Layout for 1 to 5 images */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[250px]">
-              {gallery.map((imgUrl, i) => {
-                // Creates a nice mosaic if 5 images are present
-                const isHero = i === 0 && gallery.length >= 3;
-                return (
-                  <div key={i} className={`rounded-3xl overflow-hidden shadow-md group relative ${isHero ? 'col-span-2 row-span-2' : 'col-span-1 row-span-1 border border-outline-variant/10'}`}>
-                    <img src={imgUrl} alt={`${pkg.title} Görsel ${i+1}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                    <div className="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                  </div>
-                );
-              })}
-            </div>
+        <Section tone="white">
+          <div className="text-center mb-10">
+            <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-primary/80 mb-2">Görsel Tur</p>
+            <h2 className="text-3xl font-headline font-bold text-primary mb-3">Detay Galerisi</h2>
+            <p className="text-on-surface-variant max-w-2xl mx-auto text-sm">Paket dahilinde yararlanacağınız hizmetlerden ve ziyaret mekanlarından eşsiz kareler.</p>
           </div>
-        </section>
+          
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[220px]">
+            {gallery.map((imgUrl, i) => {
+              const isHero = i === 0 && gallery.length >= 3;
+              return (
+                <div key={i} className={`rounded-2xl overflow-hidden shadow-sm group relative ${isHero ? 'col-span-2 row-span-2' : 'col-span-1 row-span-1 border border-outline-variant/10'}`}>
+                  <Image src={imgUrl} alt={`${pkg.title} Görsel ${i+1}`} fill sizes="(max-width: 768px) 50vw, 25vw" className="object-cover group-hover:scale-105 transition-transform duration-700" />
+                </div>
+              );
+            })}
+          </div>
+        </Section>
       )}
 
-      <section className="border-t border-outline-variant/10 py-16">
-        <div className="max-w-3xl mx-auto px-6 md:px-8">
-          <p className="text-secondary font-label text-xs tracking-[0.2em] font-bold uppercase mb-4">Sık sorulanlar</p>
-          <div className="divide-y divide-outline-variant/30 border-y border-outline-variant/30">
-            {faq.map((f) => (
-              <section key={f.q} className="py-5">
-                <h2 className="font-headline text-lg md:text-xl font-bold text-primary">{f.q}</h2>
-                <p className="mt-2 text-on-surface-variant leading-relaxed">{f.a}</p>
-              </section>
-            ))}
+      {/* SSS Bölümü */}
+      {faq.length > 0 && (
+        <Section tone="muted">
+          <div className="max-w-screen-md mx-auto">
+            <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-primary/80 mb-2 text-center">Sık sorulanlar</p>
+            <h2 className="text-2xl font-headline font-bold text-primary text-center mb-6">Paket Hakkında Sorular</h2>
+            <Faq items={faq} />
+            <PageTrust date={pkg.updatedAt} className="mt-8 text-center" />
           </div>
-          <PageTrust date={pkg.updatedAt} className="mt-8" />
-        </div>
-      </section>
+        </Section>
+      )}
     </main>
   );
 }

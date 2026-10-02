@@ -22,11 +22,55 @@ function buildWaUrl(lead: Lead): string {
   return `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
 }
 
+function renderMessageContent(msg: string | null) {
+  if (!msg) return <span className="text-outline italic text-xs">Mesaj yok</span>;
+  const lines = msg.split("\n");
+  return (
+    <div className="space-y-1.5 text-xs text-on-surface whitespace-pre-line bg-surface-container-low p-4 rounded-xl border border-outline-variant/15">
+      {lines.map((line, idx) => {
+        if (line.startsWith("   - ") || line.startsWith("- ")) {
+          return (
+            <div key={idx} className="pl-4 text-secondary font-medium flex items-start gap-2">
+              <span className="text-secondary font-bold">•</span>
+              <span>{line.replace(/^(\s*-\s*)/, "")}</span>
+            </div>
+          );
+        }
+        if (line.startsWith("7) Planlayıcı tahmini:") || line.toLowerCase().includes("planlayıcı tahmini:")) {
+          return (
+            <div key={idx} className="font-bold text-primary text-sm pt-1 pb-1 border-y border-outline-variant/15">
+              {line}
+            </div>
+          );
+        }
+        if (/^\d+\)/.test(line)) {
+          return (
+            <div key={idx} className="font-semibold text-on-surface pt-1">
+              {line}
+            </div>
+          );
+        }
+        return <div key={idx}>{line}</div>;
+      })}
+    </div>
+  );
+}
+
 export default function ContactLeadsPage() {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<"ALL" | "UNREAD" | "CONTACTED" | "RESOLVED">("ALL");
+  const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
+
+  const toggleExpand = (id: string) => {
+    setExpandedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
 
   const fetchLeads = useCallback(async () => {
     setLoading(true);
@@ -167,41 +211,68 @@ export default function ContactLeadsPage() {
             <tbody className="divide-y divide-outline-variant/10">
               {filtered.map((l) => {
                 const date = new Date(l.createdAt).toLocaleDateString("tr-TR", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" });
+                const isExpanded = expandedIds.has(l.id);
                 return (
-                  <tr key={l.id} className="hover:bg-primary/[0.03] transition-colors">
-                    <td className="px-4 py-3 font-bold text-on-surface">{l.name}</td>
-                    <td className="px-4 py-3 font-mono text-on-surface-variant">{l.phone}</td>
-                    <td className="px-4 py-3 text-on-surface-variant">{l.package || "Özel İletişim Formu"}</td>
-                    <td className="px-4 py-3 text-outline font-mono">{date}</td>
-                    <td className="px-4 py-3">
-                      <select
-                        value={l.status}
-                        onChange={(e) => updateStatus(l.id, e.target.value)}
-                        className="bg-surface-container-lowest border border-outline-variant/25 text-xs text-on-surface rounded-lg px-2 py-1.5 focus:outline-none focus:border-primary/40"
-                      >
-                        <option value="UNREAD">Okunmadı</option>
-                        <option value="CONTACTED">Ulaşıldı</option>
-                        <option value="RESOLVED">Çözüldü</option>
-                      </select>
-                    </td>
-                    <td className="px-4 py-3 text-right space-x-2">
-                      <a
-                        href={buildWaUrl(l)}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 bg-[#25D366] text-white hover:bg-[#1fb958] px-2.5 py-1.5 rounded-lg text-[11px] font-bold transition-all active:scale-95"
-                      >
-                        <span className="material-symbols-outlined text-[14px]">chat</span>
-                        <span>WhatsApp</span>
-                      </a>
-                      <button
-                        onClick={() => deleteLead(l.id)}
-                        className="p-1.5 text-outline hover:text-error transition-colors"
-                      >
-                        <span className="material-symbols-outlined text-[16px]">delete</span>
-                      </button>
-                    </td>
-                  </tr>
+                  <React.Fragment key={l.id}>
+                    <tr
+                      onClick={() => toggleExpand(l.id)}
+                      className="hover:bg-primary/[0.03] transition-colors cursor-pointer"
+                    >
+                      <td className="px-4 py-3 font-bold text-on-surface">
+                        <div className="flex items-center gap-1.5">
+                          <span className="material-symbols-outlined text-[16px] text-outline">
+                            {isExpanded ? "expand_less" : "expand_more"}
+                          </span>
+                          <span>{l.name}</span>
+                        </div>
+                      </td>
+                      <td className="px-4 py-3 font-mono text-on-surface-variant">{l.phone}</td>
+                      <td className="px-4 py-3">
+                        <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-bold bg-primary/10 text-primary border border-primary/20">
+                          {l.package || "Özel İletişim Formu"}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3 text-outline font-mono">{date}</td>
+                      <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}>
+                        <select
+                          value={l.status}
+                          onChange={(e) => updateStatus(l.id, e.target.value)}
+                          className="bg-surface-container-lowest border border-outline-variant/25 text-xs text-on-surface rounded-lg px-2 py-1.5 focus:outline-none focus:border-primary/40"
+                        >
+                          <option value="UNREAD">Okunmadı</option>
+                          <option value="CONTACTED">Ulaşıldı</option>
+                          <option value="RESOLVED">Çözüldü</option>
+                        </select>
+                      </td>
+                      <td className="px-4 py-3 text-right space-x-2" onClick={(e) => e.stopPropagation()}>
+                        <a
+                          href={buildWaUrl(l)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 bg-[#25D366] text-white hover:bg-[#1fb958] px-2.5 py-1.5 rounded-lg text-[11px] font-bold transition-all active:scale-95"
+                        >
+                          <span className="material-symbols-outlined text-[14px]">chat</span>
+                          <span>WhatsApp</span>
+                        </a>
+                        <button
+                          onClick={() => deleteLead(l.id)}
+                          className="p-1.5 text-outline hover:text-error transition-colors"
+                        >
+                          <span className="material-symbols-outlined text-[16px]">delete</span>
+                        </button>
+                      </td>
+                    </tr>
+                    {isExpanded && (
+                      <tr className="bg-surface-container-lowest/50">
+                        <td colSpan={6} className="px-6 py-4 border-t border-outline-variant/10">
+                          <div className="space-y-2">
+                            <div className="text-[10px] font-bold uppercase tracking-wider text-secondary">Talep Mesaj Detayı</div>
+                            {renderMessageContent(l.message)}
+                          </div>
+                        </td>
+                      </tr>
+                    )}
+                  </React.Fragment>
                 );
               })}
             </tbody>

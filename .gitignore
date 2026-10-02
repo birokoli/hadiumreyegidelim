@@ -52,3 +52,6 @@ prisma/dev.db-journal
 
 # User uploads (tracked separately, not in git)
 /public/uploads/
+
+# Yerel test
+scripts/local/.test-admin.json

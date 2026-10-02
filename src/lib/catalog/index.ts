@@ -1,10 +1,12 @@
 // Sitede gösterilen kendi fiyat kataloğumuz (Y1). Kaynak: admin → Hizmet Kütüphanesi + aylık satış fiyatları.
-// Kurallar: yalnızca isPublic + isActive kalemler; maliyet (defaultCostUsd) hiçbir zaman seçilmez.
+// Kurallar: yalnızca isPublic + isActive kalemler; maliyet (defaultCostUsd) hiçbir zaman seçilmez / dışarı verilmez.
 import { revalidatePath, revalidateTag, unstable_cache } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { ensureCatalogSchema } from "./schema";
 
 export const CATALOG_TAG = "catalog";
+
+export const DEFAULT_MARGIN: Record<string, number> = { hotel: 15, default: 10 };
 
 export type CatalogCategory = "vize" | "hotel" | "transfer" | "tur" | "flight" | "extra";
 export type PricingType = "per_person" | "per_vehicle" | "per_room" | "flat";
@@ -22,6 +24,7 @@ export type CatalogItem = {
   distanceMeters: number | null;
   pricingType: PricingType;
   vehicleType: string | null;
+  basePriceUsd: number | null; // Alış fiyatı üzerinden otomatik hesaplanan varsayılan satış fiyatı (maliyet dışarı verilmez)
   prices: CatalogPrice[];
 };
 
@@ -43,6 +46,7 @@ const MONTH_TR = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmu
 /** "2026-11" → "Kasım 2026" */
 export const monthLabel = (ym: string) => `${MONTH_TR[Number(ym.slice(5, 7)) - 1]} ${ym.slice(0, 4)}`;
 
+
 async function queryCatalog(): Promise<CatalogItem[]> {
   await ensureCatalogSchema();
   const months = monthsFrom(currentMonth(), 13);
@@ -51,28 +55,34 @@ async function queryCatalog(): Promise<CatalogItem[]> {
     orderBy: [{ category: "asc" }, { sortOrder: "asc" }, { name: "asc" }],
     select: {
       id: true, slug: true, category: true, name: true, publicDescription: true, city: true, imageUrl: true,
-      hotelStars: true, distanceMeters: true, defaultPricingType: true, defaultVehicleType: true,
+      hotelStars: true, distanceMeters: true, defaultPricingType: true, defaultVehicleType: true, defaultCostUsd: true,
       prices: { where: { month: { in: months } }, select: { month: true, variant: true, salePriceUsd: true }, orderBy: [{ month: "asc" }, { variant: "asc" }] },
     },
   });
   // Nusuk randevusu sitede satılmaz (kullanıcı kararı, 2 Ekim): yanlışlıkla "Sitede göster" işaretlense de gösterilmez
-  return rows.filter((r) => !/nusuk/i.test(r.name)).map((r) => ({
-    id: r.id,
-    slug: r.slug,
-    category: r.category as CatalogCategory,
-    name: r.name,
-    description: r.publicDescription,
-    city: r.city,
-    imageUrl: r.imageUrl,
-    hotelStars: r.hotelStars,
-    distanceMeters: r.distanceMeters,
-    pricingType: r.defaultPricingType as PricingType,
-    vehicleType: r.defaultVehicleType,
-    prices: r.prices.map((p) => ({ month: p.month, variant: p.variant, priceUsd: p.salePriceUsd })),
-  }));
+  return rows.filter((r) => !/nusuk/i.test(r.name)).map((r) => {
+    const margin = DEFAULT_MARGIN[r.category] ?? DEFAULT_MARGIN.default;
+    // Sitede tam dolar gösterilir (241,5 değil 242)
+    const basePriceUsd = r.defaultCostUsd > 0 ? Math.round(r.defaultCostUsd * (1 + margin / 100)) : null;
+    return {
+      id: r.id,
+      slug: r.slug,
+      category: r.category as CatalogCategory,
+      name: r.name,
+      description: r.publicDescription,
+      city: r.city,
+      imageUrl: r.imageUrl,
+      hotelStars: r.hotelStars,
+      distanceMeters: r.distanceMeters,
+      pricingType: r.defaultPricingType as PricingType,
+      vehicleType: r.defaultVehicleType,
+      basePriceUsd,
+      prices: r.prices.map((p) => ({ month: p.month, variant: p.variant, priceUsd: p.salePriceUsd })),
+    };
+  });
 }
 
-const readCatalog = unstable_cache(queryCatalog, ["catalog-v1"], { tags: [CATALOG_TAG], revalidate: 3600 });
+const readCatalog = unstable_cache(queryCatalog, ["catalog-v2"], { tags: [CATALOG_TAG], revalidate: 3600 });
 
 /** Herkese açık katalog; veritabanı hatasında boş liste (sayfa yine açılır) */
 export async function getCatalog(): Promise<CatalogItem[]> {
@@ -84,10 +94,11 @@ export async function getCatalog(): Promise<CatalogItem[]> {
   }
 }
 
-/** Bir kalemin o ayki en düşük fiyatı (oda tipleri arasında); fiyat yoksa null */
+/** Bir kalemin o ayki en düşük fiyatı (oda tipleri arasında); fiyat yoksa basePriceUsd veya null */
 export function priceFor(item: CatalogItem, month: string, variant?: string): number | null {
   const list = item.prices.filter((p) => p.month === month && (variant === undefined || p.variant === variant));
-  return list.length ? Math.min(...list.map((p) => p.priceUsd)) : null;
+  if (list.length) return Math.min(...list.map((p) => p.priceUsd));
+  return item.basePriceUsd ?? null;
 }
 
 /** Bu aydan itibaren fiyatı olan ilk ay ve en düşük fiyat ("… USD'den") */
@@ -95,6 +106,9 @@ export function fromPrice(item: CatalogItem): { month: string; priceUsd: number 
   for (const m of monthsFrom(currentMonth(), 13)) {
     const p = priceFor(item, m);
     if (p != null) return { month: m, priceUsd: p };
+  }
+  if (item.basePriceUsd != null) {
+    return { month: currentMonth(), priceUsd: item.basePriceUsd };
   }
   return null;
 }

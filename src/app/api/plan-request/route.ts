@@ -2,7 +2,7 @@
 import { NextResponse, after } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { rateLimit, getClientIp } from "@/lib/rate-limit";
-import { getCatalog, monthLabel, paymentSettingsFrom } from "@/lib/catalog";
+import { getCatalog, paymentSettingsFrom } from "@/lib/catalog";
 import { getSiteSettings } from "@/lib/site-settings";
 import { quotePlan, planToText, type PlanInput } from "@/lib/pricing/plan";
 import { notifyNewLead } from "@/lib/lead-notify";
@@ -14,6 +14,8 @@ const int = (v: unknown, min: number, max: number, d: number) => {
 };
 const str = (v: unknown, max = 200) => (typeof v === "string" ? v.trim().slice(0, max) : "");
 
+const YMD_REGEX = /^\d{4}-\d{2}-\d{2}$/;
+
 export async function POST(request: Request) {
   const { allowed, retryAfterMs } = rateLimit(getClientIp(request), "plan-request", 3, 10 * 60 * 1000);
   if (!allowed) return NextResponse.json({ error: "Çok fazla istek. Lütfen 10 dakika bekleyin." }, { status: 429, headers: { "Retry-After": String(Math.ceil(retryAfterMs / 1000)) } });
@@ -24,11 +26,13 @@ export async function POST(request: Request) {
   if (!name || phone.replace(/\D/g, "").length < 10) return NextResponse.json({ error: "Ad ve geçerli bir telefon gerekli." }, { status: 400 });
 
   const p = (body?.plan ?? {}) as Record<string, unknown>;
-  const month = /^\d{4}-(0[1-9]|1[0-2])$/.test(String(p.month)) ? String(p.month) : "";
-  if (!month) return NextResponse.json({ error: "Dönem seçin." }, { status: 400 });
-  const flight = (p.flight ?? {}) as Record<string, unknown>;
+  const checkIn = YMD_REGEX.test(String(p.checkIn)) ? String(p.checkIn) : "";
+  const checkOut = YMD_REGEX.test(String(p.checkOut)) ? String(p.checkOut) : "";
+  if (!checkIn || !checkOut) return NextResponse.json({ error: "Giriş ve çıkış tarihlerini seçin." }, { status: 400 });
+
   const input: PlanInput = {
-    month,
+    checkIn,
+    checkOut,
     mekkeNights: int(p.mekkeNights, 0, 30, 5),
     medineNights: int(p.medineNights, 0, 30, 4),
     adults: int(p.adults, 1, 30, 2),
@@ -36,15 +40,16 @@ export async function POST(request: Request) {
     roomType: (["2", "3", "4"].includes(String(p.roomType)) ? String(p.roomType) : "2") as PlanInput["roomType"],
     mekkeHotelId: typeof p.mekkeHotelId === "string" ? p.mekkeHotelId : null,
     medineHotelId: typeof p.medineHotelId === "string" ? p.medineHotelId : null,
-    flight: { mode: flight.mode === "kendim" ? "kendim" : "biz", itemId: typeof flight.itemId === "string" ? flight.itemId : null },
+    visa: p.visa === "kendim" ? "kendim" : "biz",
     serviceIds: Array.isArray(p.serviceIds) ? p.serviceIds.filter((x): x is string => typeof x === "string").slice(0, 40) : [],
   };
 
-  const quote = quotePlan(input, await getCatalog());
+  const catalog = await getCatalog();
+  const quote = quotePlan(input, catalog);
   const ai = detectAiSource(str(body?.referrer, 500), str(body?.utmSource, 60));
   const note = str(body?.note, 1000);
   const payment = paymentSettingsFrom(await getSiteSettings().catch(() => ({} as Record<string, string>)));
-  const message = [planToText(input, quote, monthLabel(month), payment), note && `Not: ${note}`, `Kaynak: ${ai ? `yapay zekâ (${ai})` : str(body?.utmSource, 60) || "site"}`].filter(Boolean).join("\n");
+  const message = [planToText(input, quote, catalog, payment), note && `Not: ${note}`, `Kaynak: ${ai ? `yapay zekâ (${ai})` : str(body?.utmSource, 60) || "site"}`].filter(Boolean).join("\n");
 
   try {
     const lead = await prisma.contactRequest.create({ data: { name, phone, package: ai ? `Bireysel umre planı · AI: ${ai}` : "Bireysel umre planı", message } });

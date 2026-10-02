@@ -50,6 +50,8 @@ export default function DateRangePicker({
     return new Date(base.getFullYear(), base.getMonth(), 1);
   });
   const [hover, setHover] = useState<Date | null>(null);
+  // İlk tıklama girişi seçer, ikinci tıklama çıkışı. Arada eski aralık gösterilmez.
+  const [pending, setPending] = useState<Date | null>(null);
 
   const cells = useMemo(() => {
     const first = new Date(view.getFullYear(), view.getMonth(), 1);
@@ -58,23 +60,24 @@ export default function DateRangePicker({
     return [...Array(offset).fill(null), ...Array.from({ length: count }, (_, i) => new Date(view.getFullYear(), view.getMonth(), i + 1))] as (Date | null)[];
   }, [view]);
 
-  const rangeEnd = endDate ?? (startDate && hover && hover > startDate ? hover : null);
+  const shownStart = pending ?? startDate;
+  const rangeEnd = pending ? (hover && hover > pending ? hover : null) : endDate;
   const canPrev = view > new Date(today.getFullYear(), today.getMonth(), 1);
 
   const handlePick = (d: Date) => {
-    if (!startDate || endDate || d <= startDate) {
-      // Yeni başlangıç tarihi seçildi
-      const defaultCheckout = new Date(d);
-      defaultCheckout.setDate(d.getDate() + 9);
-      onChange(formatYmd(d), formatYmd(defaultCheckout));
+    if (pending && d > pending) {
+      onChange(formatYmd(pending), formatYmd(d)); // çıkış seçildi
+      setPending(null);
     } else {
-      // Bitiş tarihi seçildi
-      onChange(formatYmd(startDate), formatYmd(d));
+      setPending(d); // giriş seçildi (ya da girişten önceki bir gün: yeni giriş)
     }
   };
 
   return (
     <div className="rounded-xl border border-outline-variant/30 bg-white p-4">
+      <p className="mb-3 text-[12px] font-semibold text-on-surface-variant" aria-live="polite">
+        {pending ? "Şimdi çıkış (dönüş) tarihini seçin." : "Önce otele giriş, sonra çıkış tarihini seçin."}
+      </p>
       <div className="flex items-center justify-between mb-3">
         <button
           type="button"
@@ -108,16 +111,16 @@ export default function DateRangePicker({
         {cells.map((d, i) => {
           if (!d) return <span key={`e${i}`} />;
           const past = d < today;
-          const isStart = sameDay(d, startDate);
+          const isStart = sameDay(d, shownStart);
           const isEnd = sameDay(d, rangeEnd);
-          const inRange = startDate && rangeEnd && d > startDate && d < rangeEnd;
+          const inRange = shownStart && rangeEnd && d > shownStart && d < rangeEnd;
 
           return (
             <span
               key={dayKey(d)}
               className={`flex justify-center ${inRange ? "bg-primary/10" : ""} ${
                 isStart && rangeEnd ? "bg-gradient-to-r from-transparent from-50% to-primary/10 to-50%" : ""
-              } ${isEnd && startDate ? "bg-gradient-to-l from-transparent from-50% to-primary/10 to-50%" : ""}`}
+              } ${isEnd && shownStart ? "bg-gradient-to-l from-transparent from-50% to-primary/10 to-50%" : ""}`}
             >
               <button
                 type="button"

@@ -16,6 +16,8 @@ export const dynamic = "force-dynamic";
 const UNIT: Record<string, string> = { per_room: "/ oda · gece", per_person: "/ kişi", per_vehicle: "/ araç", flat: "" };
 // Şehir veritabanında küçük harfle tutuluyor ("mekke")
 const CITY: Record<string, string> = { mekke: "Mekke", medine: "Medine" };
+// Planlayıcıyla aynı ayrım: kişi başı transfer kalemleri trendir
+const isTrain = (i: CatalogItem) => i.pricingType === "per_person" || /tren|haramain|haremeyn/i.test(i.name);
 const isCrib = (i: CatalogItem) => /beşi[kğ]|besi[kg]/i.test(i.name);
 
 function hotelLine(i: CatalogItem) {
@@ -82,7 +84,8 @@ export default async function ServicesPage() {
   const groups = [
     { id: "mekke", kicker: "Konaklama", title: "Mekke otelleri", items: hotels.filter((i) => i.city?.toLowerCase() === "mekke"), hotel: true },
     { id: "medine", kicker: "Konaklama", title: "Medine otelleri", items: hotels.filter((i) => i.city?.toLowerCase() === "medine"), hotel: true },
-    { id: "transfer", kicker: "Ulaşım", title: "Transfer", items: all.filter((i) => i.category === "transfer") },
+    { id: "transfer", kicker: "Ulaşım", title: "Transfer (araç)", items: all.filter((i) => i.category === "transfer" && !isTrain(i)) },
+    { id: "tren", kicker: "Ulaşım", title: "Haremeyn hızlı treni", items: all.filter((i) => i.category === "transfer" && isTrain(i)) },
     { id: "tur", kicker: "Ziyaret", title: "Turlar ve rehberlik", items: all.filter((i) => i.category === "tur") },
     { id: "ekstra", kicker: "Ek hizmetler", title: "Ekstralar", items: all.filter((i) => i.category === "extra") },
   ].filter((g) => g.items.length);

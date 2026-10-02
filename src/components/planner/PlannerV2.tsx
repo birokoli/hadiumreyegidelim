@@ -127,9 +127,12 @@ export default function PlannerV2({ catalog, whatsappNumber, payment, query = {}
   const byDistance = (a: CatalogItem, b: CatalogItem) => (a.distanceMeters ?? 1e9) - (b.distanceMeters ?? 1e9);
   const mekkeHotels = catalog.filter((c) => c.category === "hotel" && c.city === "mekke").sort(byDistance);
   const medineHotels = catalog.filter((c) => c.category === "hotel" && c.city === "medine").sort(byDistance);
-  const transfers = catalog.filter((c) => c.category === "transfer");
-  // Beşik ayrı listelenmez: bebek sayısına göre otomatik eklenir
-  const extras = catalog.filter((c) => ["tur", "extra"].includes(c.category) && !isCribItem(c));
+  // Transfer kalemleri: araç başı olanlar araç transferi, kişi başı olanlar Haremeyn hızlı treni (eski TRAIN kayıtları kişi başı aktarıldı)
+  const isTrain = (c: CatalogItem) => c.pricingType === "per_person" || /tren|haramain|haremeyn/i.test(c.name);
+  const vehicles = catalog.filter((c) => c.category === "transfer" && !isTrain(c));
+  const trains = catalog.filter((c) => c.category === "transfer" && isTrain(c));
+  // Ekstralar yerine yalnızca şehir turları (Mekke/Medine ziyaretleri) ve rehberlik; beşik bebek sayısına göre otomatik eklenir
+  const tours = catalog.filter((c) => ["tur", "extra"].includes(c.category) && !isCribItem(c) && /şehir turu|sehir turu|ziyaret|rehber|hoca|mutavv/i.test(c.name));
 
   const [input, setInput] = useState<PlanInput>(() => initialPlan(catalog, query, todayYmd));
 
@@ -170,9 +173,8 @@ export default function PlannerV2({ catalog, whatsappNumber, payment, query = {}
     });
   };
 
-  const mekkeMissing = input.mekkeNights > 0 && !input.mekkeHotelId;
-  const medineMissing = input.medineNights > 0 && !input.medineHotelId;
-  const hasHotelError = mekkeMissing || medineMissing;
+  // Yalnızca Mekke oteli zorunlu; Medine isteğe bağlı (müşteri Medine'ye gitmeyebilir)
+  const hasHotelError = input.mekkeNights > 0 && !input.mekkeHotelId;
 
   const [contact, setContact] = useState({ name: "", phone: "", note: "" });
   const [state, setState] = useState<"idle" | "sending" | "sent">("idle");
@@ -180,7 +182,7 @@ export default function PlannerV2({ catalog, whatsappNumber, payment, query = {}
 
   const send = async () => {
     setError("");
-    if (hasHotelError) return setError("Lütfen Mekke ve Medine otellerinizi seçin.");
+    if (hasHotelError) return setError("Lütfen Mekke otelinizi seçin.");
     if (!contact.name.trim() || contact.phone.replace(/\D/g, "").length < 10) return setError("Adınızı ve telefon numaranızı yazın.");
     setState("sending");
     const utm = typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("utm_source") : null;
@@ -198,14 +200,28 @@ export default function PlannerV2({ catalog, whatsappNumber, payment, query = {}
   const payRows = quote.totalUsd > 0 ? paymentOptions(quote.totalUsd, payment) : [];
 
   const hotelStep = (n: number, city: "Mekke" | "Medine", list: CatalogItem[], selected: string | null, key: "mekkeHotelId" | "medineHotelId", nights: number) => {
-    const isMissing = nights > 0 && !selected;
+    const optional = city === "Medine";
+    const isMissing = !optional && nights > 0 && !selected;
     return (
       <Step
         n={n}
-        title={`${city} oteli (Zorunlu)`}
-        hint={nights ? `${nights} gece · ${quote.rooms} oda (odada en fazla ${ROOM_CAPACITY} kişi). Fiyatlar 1 gece içindir (giriş 16:00, ertesi gün çıkış 11:00); toplam = gecelik fiyat × gece × oda.` : `${city}'de konaklama yok`}
+        title={`${city} oteli ${optional ? "(isteğe bağlı)" : "(zorunlu)"}`}
+        hint={nights ? `${nights} gece · ${quote.rooms} oda · otele giriş 16:00, çıkış 11:00` : `${city}'de konaklama yok`}
         warning={isMissing ? `Lütfen bir ${city} oteli seçin.` : undefined}
       >
+        {optional && (
+          <div className="mb-3">
+            {nights > 0 ? (
+              <button type="button" onClick={() => set({ medineNights: 0, mekkeNights: totalNights, medineHotelId: null })} className="text-[13px] font-semibold text-primary underline underline-offset-4">
+                Medine&apos;ye gitmeyeceğim (bütün geceler Mekke&apos;de)
+              </button>
+            ) : (
+              <button type="button" onClick={() => { const m = Math.ceil(totalNights * 0.55); set({ mekkeNights: m, medineNights: Math.max(0, totalNights - m) }); }} className="text-[13px] font-semibold text-primary underline underline-offset-4">
+                Medine&apos;de de kalmak istiyorum
+              </button>
+            )}
+          </div>
+        )}
         {nights > 0 && (
           <div className="space-y-2" role="radiogroup" aria-label={`${city} oteli`}>
             {list.map((h) => (
@@ -294,11 +310,11 @@ export default function PlannerV2({ catalog, whatsappNumber, payment, query = {}
           </div>
         </Step>
 
-        {/* Adım 5: Transfer */}
-        <Step n={5} title="Transfer ve Ulaşım" hint="Havalimanı karşılama, şehirler arası araç ve Haremeyn hızlı treni">
-          {transfers.length ? (
+        {/* Adım 5–7: Araç transferi, hızlı tren, şehir turu ve rehberlik */}
+        <Step n={5} title="Transfer (araç)" hint="Havalimanı karşılama ve şehirler arası özel araç; fiyat araç başıdır">
+          {vehicles.length ? (
             <div className="space-y-2">
-              {transfers.map((t) => (
+              {vehicles.map((t) => (
                 <Choice
                   key={t.id}
                   type="checkbox"
@@ -311,15 +327,13 @@ export default function PlannerV2({ catalog, whatsappNumber, payment, query = {}
               ))}
             </div>
           ) : (
-            <p className="text-[13px] text-on-surface-variant">Transfer seçenekleri teklifte eklenir.</p>
+            <p className="text-[13px] text-on-surface-variant">Araç transferi teklifte eklenir.</p>
           )}
         </Step>
-
-        {/* Adım 6: Ekstralar */}
-        <Step n={6} title="Rehberlik, Ziyaretler ve Ekstralar">
-          {extras.length ? (
+        <Step n={6} title="Haremeyn hızlı treni" hint="Mekke, Medine ve Cidde arası tren; fiyat kişi başıdır">
+          {trains.length ? (
             <div className="space-y-2">
-              {extras.map((t) => (
+              {trains.map((t) => (
                 <Choice
                   key={t.id}
                   type="checkbox"
@@ -332,7 +346,26 @@ export default function PlannerV2({ catalog, whatsappNumber, payment, query = {}
               ))}
             </div>
           ) : (
-            <p className="text-[13px] text-on-surface-variant">Özel rehberlik ve ziyaret programları teklifte eklenir.</p>
+            <p className="text-[13px] text-on-surface-variant">Tren bileti teklifte eklenir.</p>
+          )}
+        </Step>
+        <Step n={7} title="Şehir turu ve rehberlik" hint="Mekke ve Medine ziyaret turları, Türkçe rehber eşliği">
+          {tours.length ? (
+            <div className="space-y-2">
+              {tours.map((t) => (
+                <Choice
+                  key={t.id}
+                  type="checkbox"
+                  checked={input.serviceIds.includes(t.id)}
+                  onClick={() => toggle(t.id)}
+                  title={t.name}
+                  sub={t.description ?? undefined}
+                  right={<PriceNote value={unitPrice(t, input.checkIn.slice(0,7))} unit={UNIT[t.pricingType]} />}
+                />
+              ))}
+            </div>
+          ) : (
+            <p className="text-[13px] text-on-surface-variant">Şehir turu ve rehberlik teklifte eklenir.</p>
           )}
         </Step>
       </div>
@@ -346,7 +379,7 @@ export default function PlannerV2({ catalog, whatsappNumber, payment, query = {}
           
           {hasHotelError && (
             <div className="mt-3 rounded-xl border border-white/25 bg-white/10 p-2.5 text-xs font-semibold text-white">
-              Fiyatı görmek için Mekke ve Medine otelinizi seçin.
+              Fiyatı görmek için Mekke otelinizi seçin.
             </div>
           )}
 

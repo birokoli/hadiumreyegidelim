@@ -34,16 +34,47 @@ export default function TransferListPanel({ onSynced }: { onSynced?: () => void 
     if (r.error) setMsg(r.error); else { setImages(r.images); setMsg("Araç görselleri kaydedildi."); }
   };
 
+  // Telefon fotoğrafları çoğu zaman 4,5 MB'ı aşar (sunucu sınırı) ya da HEIC olur: tarayıcıda en fazla 1600 px WebP'ye küçültülür,
+  // sonra imzalı adresle doğrudan depolamaya yüklenir (ayarlar sayfasındaki medya yüklemesiyle aynı yol).
+  const shrink = async (file: File): Promise<Blob> => {
+    try {
+      const bmp = await createImageBitmap(file);
+      const scale = Math.min(1, 1600 / Math.max(bmp.width, bmp.height));
+      const canvas = document.createElement("canvas");
+      canvas.width = Math.round(bmp.width * scale);
+      canvas.height = Math.round(bmp.height * scale);
+      canvas.getContext("2d")!.drawImage(bmp, 0, 0, canvas.width, canvas.height);
+      const blob = await new Promise<Blob | null>((res) => canvas.toBlob(res, "image/webp", 0.85));
+      return blob ?? file;
+    } catch {
+      return file; // tarayıcı çözemediyse (ör. bazı HEIC) dosya olduğu gibi gönderilir
+    }
+  };
+
   const upload = async (key: string, file?: File) => {
     if (!file) return;
-    setBusy(key);
-    const fd = new FormData();
-    fd.append("file", file);
-    fd.append("headingSlug", `arac-${key}`);
-    const r = await fetch("/api/upload", { method: "POST", body: fd }).then((x) => x.json()).catch(() => ({ error: "Bağlantı hatası." }));
-    setBusy(null);
-    if (!r.success) return setMsg(`Görsel yüklenemedi: ${r.error ?? ""}`);
-    await saveImages({ ...images, [key]: r.url });
+    setBusy(key); setMsg("");
+    try {
+      const blob = await shrink(file);
+      const isWebp = blob.type === "image/webp";
+      const ext = isWebp ? "webp" : (file.name.split(".").pop() || "jpg").toLowerCase();
+      if (!isWebp && !["jpg", "jpeg", "png", "webp"].includes(ext)) throw new Error("Bu dosya türü okunamadı. JPG, PNG ya da WEBP yükleyin (iPhone'da: Ayarlar → Kamera → Biçimler → En Uyumlu).");
+      const sign = await fetch("/api/upload-sign", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ headingSlug: `arac-${key}`, ext, contentType: blob.type || file.type }) }).then((r) => r.json());
+      if (!sign.signedURL) throw new Error(sign.error || "Yükleme adresi alınamadı (oturum süresi dolmuş olabilir; sayfayı yenileyip tekrar giriş yapın).");
+      const body = new FormData();
+      body.append("cacheControl", "31536000");
+      body.append("", blob, `arac-${key}.${ext}`);
+      const put = await fetch(sign.signedURL, { method: "PUT", headers: { "x-upsert": "true" }, body });
+      if (!put.ok) {
+        const d = (await put.json().catch(() => null)) as { message?: string; error?: string } | null;
+        throw new Error(`Depolamaya yüklenemedi (${put.status})${d?.message || d?.error ? `: ${d.message || d.error}` : ""}`);
+      }
+      await saveImages({ ...images, [key]: sign.publicUrl });
+    } catch (e) {
+      setMsg(`Görsel yüklenemedi: ${(e as Error).message}`);
+    } finally {
+      setBusy(null);
+    }
   };
 
   if (!status) return null;
@@ -84,7 +115,7 @@ export default function TransferListPanel({ onSynced }: { onSynced?: () => void 
                 <p className="text-on-surface-variant">{v.note}</p>
                 <label className="mt-1 inline-block cursor-pointer font-bold text-primary underline underline-offset-2">
                   {busy === v.key ? "Yükleniyor…" : images[v.key] ? "Değiştir" : "Görsel yükle"}
-                  <input type="file" accept="image/*" className="hidden" onChange={(e) => upload(v.key, e.target.files?.[0])} />
+                  <input type="file" accept="image/*" className="hidden" onChange={(e) => { upload(v.key, e.target.files?.[0]); e.target.value = ""; }} />
                 </label>
               </div>
             </div>

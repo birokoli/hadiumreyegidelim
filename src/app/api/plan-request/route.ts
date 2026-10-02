@@ -37,6 +37,7 @@ export async function POST(request: Request) {
     medineNights: int(p.medineNights, 0, 30, 4),
     adults: int(p.adults, 1, 30, 2),
     children: int(p.children, 0, 20, 0),
+    infants: int(p.infants, 0, 10, 0),
     mekkeHotelId: typeof p.mekkeHotelId === "string" ? p.mekkeHotelId : null,
     medineHotelId: typeof p.medineHotelId === "string" ? p.medineHotelId : null,
     visa: p.visa === "kendim" ? "kendim" : "biz",

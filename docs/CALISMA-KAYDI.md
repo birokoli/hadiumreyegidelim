@@ -34,6 +34,13 @@ Antigravity her iş oturumunda bu dosyanın **en üstüne** bir kayıt ekler. Am
 
 <!-- Kayıtlar bu çizginin altına, en yeni en üstte -->
 
+## 2026-10-02 — Claude Code: bebek (0–2 yaş) ve beşik ücreti
+- Kullanıcı kuralı: bebek otele bildirilmez → **oda sayısına ve kişi başı hizmetlere sayılmaz**; **beşik ücreti** alınır.
+- Planlayıcıya "Bebek (0–2 yaş)" eklendi (adres parametresi `bebek`). Beşik ücreti = beşik kaleminin fiyatı × bebek × toplam gece (Mekke + Medine).
+- Beşik kalemi: Hizmet Kütüphanesi'nde adı "beşik/beşiği" geçen, "Sitede göster" açık kalem (kategori Ekstra, fiyatlandırma "Sabit"). Ekstralar listesinde ayrıca gösterilmez. Yoksa "teklifte".
+- **Varsayım:** ücret bebek başına gecelik. Kullanıcı "konaklama başına tek sefer" derse `quotePlan`'da `stayNights` çarpanı kaldırılır.
+
+
 ## 2026-10-02 — Claude Code: otel fiyat kuralı (kullanıcı)
 - **Otel fiyatı = 1 odanın 1 gecelik fiyatı.** Giriş 16:00, ertesi gün çıkış 11:00.
 - **Bir odada en fazla 4 kişi:** oda = ⌈kişi / 4⌉ (1–4 → 1, 5–8 → 2). Çocuklar (2–11) kişiye dahil.

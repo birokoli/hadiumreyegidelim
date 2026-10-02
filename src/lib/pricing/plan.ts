@@ -11,6 +11,7 @@ export type PlanInput = {
   medineNights: number;
   adults: number;
   children: number; // 2–11 yaş
+  infants?: number; // 0–2 yaş: otele bildirilmez, oda ve kişi başı hizmetlere sayılmaz; beşik ücreti alınır
   mekkeHotelId: string | null;
   medineHotelId: string | null;
   visa: "biz" | "kendim";
@@ -81,6 +82,9 @@ function lineFor(item: CatalogItem, input: PlanInput, people: number, rooms: num
   }
 }
 
+/** Bebek beşiği kalemi: Hizmet Kütüphanesi'nde adı "beşik" geçen kalem (sitede göster açık). Planlayıcı onu ayrıca listelemez. */
+export const isCribItem = (c: Pick<CatalogItem, "name">) => /beşi[kğ]|besi[kg]/i.test(c.name); // "beşik", "beşiği"
+
 export function quotePlan(input: PlanInput, catalog: CatalogItem[]): PlanQuote {
   const people = Math.max(1, input.adults + input.children);
   const rooms = roomsNeeded(people);
@@ -111,10 +115,24 @@ export function quotePlan(input: PlanInput, catalog: CatalogItem[]): PlanQuote {
     }
   }
 
+  // Bebek beşiği: bebek başına, konaklanan her gece (bebek otele bildirilmez, oda hesabına girmez)
+  const infants = Math.max(0, input.infants ?? 0);
+  const stayNights = Math.max(0, input.mekkeNights) + Math.max(0, input.medineNights);
+  if (infants > 0 && stayNights > 0) {
+    const crib = catalog.find(isCribItem);
+    const p = crib ? unitPrice(crib, input.checkIn.slice(0, 7)) : null;
+    lines.push({
+      itemId: crib?.id ?? "besik",
+      label: crib?.name ?? "Bebek beşiği",
+      detail: `${infants} bebek × ${stayNights} gece`,
+      totalUsd: p == null ? null : round(p * infants * stayNights),
+    });
+  }
+
   // Diğer hizmetler (transfer, tren, tur, ekstra)
   for (const id of input.serviceIds) {
     const item = byId.get(id);
-    if (item && item.category !== "vize") lines.push(lineFor(item, input, people, rooms));
+    if (item && item.category !== "vize" && !isCribItem(item)) lines.push(lineFor(item, input, people, rooms));
   }
 
   for (const l of lines) if (l.totalUsd == null) pending.push(`${l.label}: bu dönem için fiyat teklifte bildirilecek`);
@@ -149,7 +167,7 @@ export function planToText(input: PlanInput, quote: PlanQuote, catalog: CatalogI
     `1) Tarih: ${trDate(input.checkIn)} – ${trDate(input.checkOut)} (${totalNights} gece)`,
     `2) Mekke: ${input.mekkeNights} gece${mekkeHotel ? ` · ${mekkeHotel.name}` : " (otel seçilmedi)"}`,
     `3) Medine: ${input.medineNights} gece${medineHotel ? ` · ${medineHotel.name}` : " (otel seçilmedi)"}`,
-    `4) Kişi & Oda: ${input.adults} yetişkin${input.children ? ` + ${input.children} çocuk` : ""} · ${quote.rooms} oda (odada en fazla 4 kişi)`,
+    `4) Kişi & Oda: ${input.adults} yetişkin${input.children ? ` + ${input.children} çocuk` : ""}${input.infants ? ` + ${input.infants} bebek (0–2 yaş, otele bildirilmez; beşik ücreti)` : ""} · ${quote.rooms} oda (odada en fazla 4 kişi)`,
     `5) Vize: ${input.visa === "biz" ? "Vizemi siz alın (vize hizmeti istiyorum)" : "Vizem var / kendim alacağım"}`,
     "6) Seçimler & Detaylar:",
     ...quote.lines.map((l) => `   - ${l.label} · ${l.detail} · ${l.totalUsd != null ? `${l.totalUsd} USD` : "fiyat teklifte"}`),

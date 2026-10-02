@@ -7,7 +7,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import type { CatalogItem, PaymentSettings } from "@/lib/catalog";
-import { paymentOptions, quotePlan, planToText, unitPrice, ROOM_CAPACITY, type PlanInput } from "@/lib/pricing/plan";
+import { paymentOptions, quotePlan, planToText, unitPrice, isCribItem, ROOM_CAPACITY, type PlanInput } from "@/lib/pricing/plan";
 import DateRangePicker, { nightsBetweenYmd } from "./DateRangePicker";
 import WhatsAppIcon from "@/components/home/WhatsAppIcon";
 
@@ -113,6 +113,7 @@ function initialPlan(catalog: CatalogItem[], query: Record<string, string | unde
     medineNights,
     adults: n("yetiskin", 1, 30, 2),
     children: n("cocuk", 0, 20, 0),
+    infants: n("bebek", 0, 10, 0),
     mekkeHotelId: bySlug(query.mekkeotel)?.id ?? null,
     medineHotelId: bySlug(query.medineotel)?.id ?? null,
     visa: query.vize === "kendim" ? "kendim" : "biz",
@@ -127,7 +128,8 @@ export default function PlannerV2({ catalog, whatsappNumber, payment, query = {}
   const mekkeHotels = catalog.filter((c) => c.category === "hotel" && c.city === "mekke").sort(byDistance);
   const medineHotels = catalog.filter((c) => c.category === "hotel" && c.city === "medine").sort(byDistance);
   const transfers = catalog.filter((c) => c.category === "transfer");
-  const extras = catalog.filter((c) => ["tur", "extra"].includes(c.category));
+  // Beşik ayrı listelenmez: bebek sayısına göre otomatik eklenir
+  const extras = catalog.filter((c) => ["tur", "extra"].includes(c.category) && !isCribItem(c));
 
   const [input, setInput] = useState<PlanInput>(() => initialPlan(catalog, query, todayYmd));
 
@@ -143,6 +145,7 @@ export default function PlannerV2({ catalog, whatsappNumber, payment, query = {}
       medine: String(input.medineNights),
       yetiskin: String(input.adults),
       cocuk: String(input.children),
+      bebek: String(input.infants ?? 0),
       vize: input.visa,
     });
     if (input.mekkeHotelId) q.set("mekkeotel", slugOf(input.mekkeHotelId));
@@ -260,9 +263,10 @@ export default function PlannerV2({ catalog, whatsappNumber, payment, query = {}
             />
             <Stepper label="Yetişkin" value={input.adults} min={1} max={30} onChange={(v) => set({ adults: v })} />
             <Stepper label="Çocuk (2–11 yaş)" value={input.children} min={0} max={20} onChange={(v) => set({ children: v })} />
+            <Stepper label="Bebek (0–2 yaş)" value={input.infants ?? 0} min={0} max={10} onChange={(v) => set({ infants: v })} />
           </div>
 
-          <p className="mt-3 text-[12px] text-on-surface-variant">{quote.people} kişi için <b className="text-on-surface">{quote.rooms} oda</b>. Bir odada en fazla {ROOM_CAPACITY} kişi kalır (1–4 kişi 1 oda, 5–8 kişi 2 oda).</p>
+          <p className="mt-3 text-[12px] text-on-surface-variant">{quote.people} kişi için <b className="text-on-surface">{quote.rooms} oda</b>. Bir odada en fazla {ROOM_CAPACITY} kişi kalır (1–4 kişi 1 oda, 5–8 kişi 2 oda).{(input.infants ?? 0) > 0 ? " 0–2 yaş bebekler otele bildirilmez, oda sayısına girmez; bebek başına gecelik beşik ücreti eklenir." : ""}</p>
         </Step>
 
         {/* Adım 2: Mekke Oteli */}

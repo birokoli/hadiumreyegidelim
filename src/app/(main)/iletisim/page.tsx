@@ -16,12 +16,14 @@ export default async function ContactPage({ searchParams }: { searchParams: Prom
   const { paket } = await searchParams;
   const selectedPackage = paket ? paket.replace(/-/g, " ").replace(/\b\w/g, c => c.toUpperCase()) : "";
 
+  // Kayıtlı eski adres (Fatih) bir kez Bakırköy olarak düzeltilir (3 Ekim, kullanıcı)
+  await import("@/lib/catalog/data-fixes").then((m) => m.runDataFixesOnceC()).catch(() => {});
   const settings = await getSiteSettings();
 
   const contactTitle = settings.CONTACT_TITLE || "İletişim";
   const contactDesc = settings.CONTACT_DESC || "Formu doldurun, umre danışmanlarımız müsaitlik ve detaylar için en kısa sürede sizi arasın.";
   const contactEmail = settings.CONTACT_EMAIL || "info@hadiumreye.com";
-  const contactAddress = settings.CONTACT_ADDRESS || "Bakırköy, İstanbul";
+  const contactAddress = (settings.CONTACT_ADDRESS || "Bakırköy, İstanbul").replace(/Fatih/i, "Bakırköy");
   const whatsappNumber = settings.WHATSAPP_NUMBER || "905404010038";
 
   return (

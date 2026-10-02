@@ -1,6 +1,7 @@
 // Bireysel umre planı fiyat motoru (Y2). Saf fonksiyonlar: hem sunucuda hem tarayıcıda çalışır.
 // Fiyatlar yalnızca katalogdaki aylık SATIŞ fiyatlarından veya basePriceUsd'den gelir (src/lib/catalog).
 import type { CatalogItem, PaymentSettings } from "@/lib/catalog";
+import { vehicleByKey } from "@/lib/catalog/transfers";
 import { vehicleCapacity } from "@/lib/quotation-calc";
 
 
@@ -68,9 +69,12 @@ function lineFor(item: CatalogItem, input: PlanInput, people: number, rooms: num
       };
     }
     case "per_vehicle": {
-      const vehicles = Math.max(1, Math.ceil(people / vehicleCapacity(item.vehicleType ?? "sedan")));
+      // Yeni transfer listesindeki araçlar (Camry, GMC, Staria…) kendi kapasitesiyle; eski kayıtlar eski tabloyla
+      const cap = vehicleByKey(item.vehicleType)?.capacity ?? vehicleCapacity(item.vehicleType ?? "sedan");
+      const vehicles = Math.max(1, Math.ceil(people / cap));
+      const vLabel = vehicleByKey(item.vehicleType)?.label;
       const p = unitPrice(item, m);
-      return { itemId: item.id, label: item.name, detail: `${vehicles} araç`, totalUsd: p == null ? null : round(p * vehicles) };
+      return { itemId: item.id, label: item.name, detail: vLabel ? `${vehicles} × ${vLabel}` : `${vehicles} araç`, totalUsd: p == null ? null : round(p * vehicles) };
     }
     case "per_person": {
       const p = unitPrice(item, m);

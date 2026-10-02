@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { VEHICLE_TYPES } from '@/lib/quotation-calc';
+import TransferListPanel from '@/components/admin/TransferListPanel';
 
 interface ServiceItem {
   id: string;
@@ -274,6 +275,8 @@ export default function ServiceLibraryPage() {
           </ul>
         </div>
       )}
+
+      <TransferListPanel onSynced={() => { loadStatus(); window.location.reload(); }} />
 
       {/* Filters and Batch Actions */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-outline-variant/15 pb-4">

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { formatPrice } from "@/lib/format";
+import { parseTransferSlug, TRANSFER_ROUTES, TRANSFER_VEHICLES } from "@/lib/catalog/transfers";
 import { getCatalog, fromPrice, type CatalogItem } from "@/lib/catalog";
 import { Badge, ButtonLink, CardFooter, ChipLink, EmptyState, MediaCard, PageHero, Panel, PriceTag, Section, SectionHead } from "@/components/ui/kit";
 
@@ -79,7 +80,13 @@ function PriceList({ items }: { items: CatalogItem[] }) {
 }
 
 export default async function ServicesPage() {
-  const all = (await getCatalog()).filter((i) => i.category !== "flight" && !isCrib(i));
+  const catalog = (await getCatalog()).filter((i) => i.category !== "flight" && !isCrib(i));
+  // Rota × araç kalemleri ayrı bir fiyat tablosunda gösterilir
+  const routeCells = catalog.flatMap((i) => { const t = parseTransferSlug(i.slug); return t ? [{ route: t.route.key, vehicle: t.vehicle, price: fromPrice(i)?.priceUsd ?? null }] : []; });
+  const matrixVehicles = TRANSFER_VEHICLES.filter((v) => routeCells.some((c) => c.vehicle === v.key));
+  const matrixRoutes = TRANSFER_ROUTES.filter((r) => routeCells.some((c) => c.route === r.key));
+  const cell = (r: string, v: string) => routeCells.find((c) => c.route === r && c.vehicle === v)?.price ?? null;
+  const all = catalog.filter((i) => !parseTransferSlug(i.slug));
   const hotels = all.filter((i) => i.category === "hotel");
   const groups = [
     { id: "mekke", kicker: "Konaklama", title: "Mekke otelleri", items: hotels.filter((i) => i.city?.toLowerCase() === "mekke"), hotel: true },
@@ -107,15 +114,16 @@ export default async function ServicesPage() {
           </Panel>
         }
       >
-        {groups.length > 1 && (
+        {groups.length + (matrixRoutes.length ? 1 : 0) > 1 && (
           <nav aria-label="Hizmet grupları" className="mt-6 -mx-4 px-4 flex gap-2 overflow-x-auto pb-1 md:mx-0 md:px-0 md:flex-wrap md:overflow-visible">
             {groups.map((g) => <ChipLink key={g.id} href={`#${g.id}`}>{g.title}</ChipLink>)}
+            {matrixRoutes.length > 0 && <ChipLink href="#arac-transfer">Araçlı transfer</ChipLink>}
             {visa && <ChipLink href="#vize">E-vize</ChipLink>}
           </nav>
         )}
       </PageHero>
 
-      {groups.length === 0 && !visa && (
+      {groups.length === 0 && !visa && !matrixRoutes.length && (
         <Section className="pt-0 md:pt-0"><EmptyState onWhite>Hizmet listesi hazırlanıyor. Bu arada planlayıcıdan ya da WhatsApp'tan bize ulaşabilirsiniz.</EmptyState></Section>
       )}
 
@@ -127,6 +135,32 @@ export default async function ServicesPage() {
           {g.hotel && <p className="mt-4 text-[13px] text-on-surface-variant">Fiyat 1 oda, 1 gece içindir (giriş 16.00, çıkış 11.00). Bir odada en fazla 4 kişi kalır.</p>}
         </Section>
       ))}
+
+      {matrixRoutes.length > 0 && (
+        <Section id="arac-transfer" tone="white">
+          <SectionHead kicker="Ulaşım" title="Araçlı transfer ve tur fiyatları" />
+          <p className="-mt-2 mb-5 text-[14px] text-on-surface-variant max-w-3xl">Fiyatlar araç başıdır (USD), kişi sayısına göre değişmez. Camry 4, GMC ve Staria 8, HiAce 12, Coaster 25, otobüs 45 yolcuya kadar.</p>
+          <div className="overflow-x-auto rounded-2xl border border-outline-variant/20">
+            <table className="w-full min-w-[720px] text-[14px]">
+              <thead>
+                <tr className="bg-surface-container-low text-left">
+                  <th scope="col" className="px-4 py-3 font-semibold text-on-surface">Rota</th>
+                  {matrixVehicles.map((v) => <th key={v.key} scope="col" className="px-3 py-3 text-right font-semibold text-on-surface whitespace-nowrap">{v.label.replace("Toyota ", "").replace("Hyundai ", "")}</th>)}
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-outline-variant/20">
+                {matrixRoutes.map((r) => (
+                  <tr key={r.key}>
+                    <th scope="row" className="px-4 py-3 text-left font-medium text-on-surface">{r.label}{r.note && <span className="block text-[12px] font-normal text-on-surface-variant">{r.note}</span>}</th>
+                    {matrixVehicles.map((v) => { const p = cell(r.key, v.key); return <td key={v.key} className="px-3 py-3 text-right tabular-nums text-primary font-semibold whitespace-nowrap">{p ? formatPrice(p, "USD") : "–"}</td>; })}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <p className="mt-4"><ButtonLink href="/bireysel-umre" tone="secondary">Planlayıcıda araç ve rota seç</ButtonLink></p>
+        </Section>
+      )}
 
       {visa && (
         <Section id="vize" tone="white">

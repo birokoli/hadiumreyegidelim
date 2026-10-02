@@ -5,6 +5,7 @@
  * Seçimler adres çubuğuna yazılır (?giris=2026-11-12&cikis=2026-11-21&mekke=5&medine=4&yetiskin=2&cocuk=0&oda=2&mekkeotel=…&medineotel=…&vize=biz|kendim&ek=a,b)
  */
 import { useEffect, useMemo, useState } from "react";
+import { parseTransferSlug, suggestedVehicles, vehicleByKey, TRANSFER_ROUTES, type VehicleKey } from "@/lib/catalog/transfers";
 import Image from "next/image";
 import type { CatalogItem, PaymentSettings } from "@/lib/catalog";
 import { paymentOptions, quotePlan, planToText, unitPrice, isCribItem, ROOM_CAPACITY, type PlanInput } from "@/lib/pricing/plan";
@@ -123,16 +124,20 @@ function initialPlan(catalog: CatalogItem[], query: Record<string, string | unde
   };
 }
 
-export default function PlannerV2({ catalog, whatsappNumber, payment, query = {}, todayYmd }: { catalog: CatalogItem[]; months?: Month[]; whatsappNumber: string; payment: PaymentSettings; query?: Record<string, string | undefined>; todayYmd?: string }) {
+export default function PlannerV2({ catalog, whatsappNumber, payment, query = {}, todayYmd, vehicleImages = {} }: { catalog: CatalogItem[]; months?: Month[]; whatsappNumber: string; payment: PaymentSettings; query?: Record<string, string | undefined>; todayYmd?: string; vehicleImages?: Partial<Record<VehicleKey, string>> }) {
   const byDistance = (a: CatalogItem, b: CatalogItem) => (a.distanceMeters ?? 1e9) - (b.distanceMeters ?? 1e9);
   const mekkeHotels = catalog.filter((c) => c.category === "hotel" && c.city === "mekke").sort(byDistance);
   const medineHotels = catalog.filter((c) => c.category === "hotel" && c.city === "medine").sort(byDistance);
   // Transfer kalemleri: araç başı olanlar araç transferi, kişi başı olanlar Haremeyn hızlı treni (eski TRAIN kayıtları kişi başı aktarıldı)
   const isTrain = (c: CatalogItem) => c.pricingType === "per_person" || /tren|haramain|haremeyn/i.test(c.name);
-  const vehicles = catalog.filter((c) => c.category === "transfer" && !isTrain(c));
-  const trains = catalog.filter((c) => c.category === "transfer" && isTrain(c));
+  // Yeni transfer listesi: her kalem bir rota × araç (slug tr-<rota>--<araç>)
+  const routeItems = catalog.map((c) => ({ item: c, t: parseTransferSlug(c.slug) })).filter((x): x is { item: CatalogItem; t: NonNullable<ReturnType<typeof parseTransferSlug>> } => !!x.t);
+  const hasRouteList = routeItems.length > 0;
+  // Liste yüklenmediyse eski araç kalemleri gösterilir
+  const vehicles = hasRouteList ? [] : catalog.filter((c) => c.category === "transfer" && !isTrain(c) && !parseTransferSlug(c.slug));
+  const trains = catalog.filter((c) => c.category === "transfer" && isTrain(c) && !parseTransferSlug(c.slug));
   // Ekstralar yerine yalnızca şehir turları (Mekke/Medine ziyaretleri) ve rehberlik; beşik bebek sayısına göre otomatik eklenir
-  const tours = catalog.filter((c) => ["tur", "extra"].includes(c.category) && !isCribItem(c) && /şehir turu|sehir turu|ziyaret|rehber|hoca|mutavv/i.test(c.name));
+  const tours = catalog.filter((c) => ["tur", "extra"].includes(c.category) && !isCribItem(c) && !parseTransferSlug(c.slug) && (hasRouteList ? /rehber|hoca|mutavv/i : /şehir turu|sehir turu|ziyaret|rehber|hoca|mutavv/i).test(c.name));
 
   const [input, setInput] = useState<PlanInput>(() => initialPlan(catalog, query, todayYmd));
 
@@ -160,6 +165,58 @@ export default function PlannerV2({ catalog, whatsappNumber, payment, query = {}
   const quote = useMemo(() => quotePlan(input, catalog), [input, catalog]);
   const set = (patch: Partial<PlanInput>) => setInput((p) => ({ ...p, ...patch }));
   const toggle = (id: string) => set({ serviceIds: input.serviceIds.includes(id) ? input.serviceIds.filter((x) => x !== id) : [...input.serviceIds, id] });
+
+  // Araç: kişi sayısına göre en fazla iki öneri; seçilen aracın altında rotalar. Araç değişince seçili rotalar yeni araca taşınır.
+  const people = Math.max(1, input.adults + input.children);
+  const suggested = suggestedVehicles(people).filter((k) => routeItems.some((r) => r.t.vehicle === k));
+  const chosenFromPlan = routeItems.find((r) => input.serviceIds.includes(r.item.id))?.t.vehicle;
+  const [vehiclePick, setVehiclePick] = useState<VehicleKey | null>(null);
+  const activeVehicle: VehicleKey | null = (vehiclePick && suggested.includes(vehiclePick) ? vehiclePick : null) ?? (chosenFromPlan && suggested.includes(chosenFromPlan) ? chosenFromPlan : null) ?? suggested[0] ?? null;
+  const routesFor = (kind: "transfer" | "tur") => routeItems.filter((r) => r.t.vehicle === activeVehicle && r.t.route.kind === kind).sort((x, y) => TRANSFER_ROUTES.indexOf(x.t.route) - TRANSFER_ROUTES.indexOf(y.t.route));
+  // Seçili rota kalemleri etkin araçta değilse (kişi sayısı ya da araç değişti) aynı rotanın etkin araçtaki kalemine çevrilir
+  useEffect(() => {
+    if (!activeVehicle) return;
+    let changed = false;
+    const next = input.serviceIds.flatMap((id) => {
+      const r = routeItems.find((x) => x.item.id === id);
+      if (!r || r.t.vehicle === activeVehicle) return [id];
+      changed = true;
+      const same = routeItems.find((x) => x.t.route.key === r.t.route.key && x.t.vehicle === activeVehicle);
+      return same ? [same.item.id] : [];
+    });
+    if (changed) setInput((p) => ({ ...p, serviceIds: next }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeVehicle]);
+
+  const vehicleCards = (
+    <div className="grid gap-2 sm:grid-cols-2" role="radiogroup" aria-label="Araç">
+      {suggested.map((k) => {
+        const v = vehicleByKey(k)!;
+        const n = Math.ceil(people / v.capacity);
+        return (
+          <Choice key={k} checked={activeVehicle === k} onClick={() => setVehiclePick(k)} image={vehicleImages[k] ?? null} title={v.label} sub={`${v.note}${n > 1 ? ` · ${people} kişi için ${n} araç` : ""}`} />
+        );
+      })}
+    </div>
+  );
+  const routeList = (kind: "transfer" | "tur", empty: string) => {
+    const list = routesFor(kind);
+    return list.length ? (
+      <div className="mt-3 space-y-2">
+        {list.map(({ item, t }) => (
+          <Choice
+            key={item.id}
+            type="checkbox"
+            checked={input.serviceIds.includes(item.id)}
+            onClick={() => toggle(item.id)}
+            title={t.route.label}
+            sub={t.route.note}
+            right={<PriceNote value={unitPrice(item, input.checkIn.slice(0, 7))} unit="araç başı" />}
+          />
+        ))}
+      </div>
+    ) : <p className="mt-3 text-[13px] text-on-surface-variant">{empty}</p>;
+  };
 
   // Tarih aralığı değişince Mekke ve Medine gecelerini yeniden orantıla
   const handleDateChange = (newIn: string, newOut: string) => {
@@ -311,8 +368,13 @@ export default function PlannerV2({ catalog, whatsappNumber, payment, query = {}
         </Step>
 
         {/* Adım 5–7: Araç transferi, hızlı tren, şehir turu ve rehberlik */}
-        <Step n={5} title="Transfer (araç)" hint="Havalimanı karşılama ve şehirler arası özel araç; fiyat araç başıdır">
-          {vehicles.length ? (
+        <Step n={5} title="Transfer (araç)" hint={hasRouteList ? `${people} kişi için önerilen araçlar; aracı seçin, altından rotaları ekleyin. Fiyat araç başıdır.` : "Havalimanı karşılama ve şehirler arası özel araç; fiyat araç başıdır"}>
+          {hasRouteList ? (
+            <>
+              {vehicleCards}
+              {routeList("transfer", "Bu araç için rota bulunamadı.")}
+            </>
+          ) : vehicles.length ? (
             <div className="space-y-2">
               {vehicles.map((t) => (
                 <Choice
@@ -349,9 +411,10 @@ export default function PlannerV2({ catalog, whatsappNumber, payment, query = {}
             <p className="text-[13px] text-on-surface-variant">Tren bileti teklifte eklenir.</p>
           )}
         </Step>
-        <Step n={7} title="Şehir turu ve rehberlik" hint="Mekke ve Medine ziyaret turları, Türkçe rehber eşliği">
-          {tours.length ? (
-            <div className="space-y-2">
+        <Step n={7} title="Şehir turu ve rehberlik" hint={hasRouteList && activeVehicle ? `Mekke, Medine ve Taif turları ${vehicleByKey(activeVehicle)?.label} ile; Türkçe rehber eşliği` : "Mekke ve Medine ziyaret turları, Türkçe rehber eşliği"}>
+          {hasRouteList && routeList("tur", "Bu araç için tur bulunamadı.")}
+          {tours.length > 0 && (
+            <div className="mt-3 space-y-2">
               {tours.map((t) => (
                 <Choice
                   key={t.id}
@@ -364,9 +427,8 @@ export default function PlannerV2({ catalog, whatsappNumber, payment, query = {}
                 />
               ))}
             </div>
-          ) : (
-            <p className="text-[13px] text-on-surface-variant">Şehir turu ve rehberlik teklifte eklenir.</p>
           )}
+          {!hasRouteList && !tours.length && <p className="text-[13px] text-on-surface-variant">Şehir turu ve rehberlik teklifte eklenir.</p>}
         </Step>
       </div>
 

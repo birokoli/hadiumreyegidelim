@@ -7,6 +7,7 @@ import { PageTrust, webPageJsonLd } from "@/components/seo/PageTrust";
 import PlannerV2 from "@/components/planner/PlannerV2";
 import { getCatalog, monthsFrom, monthLabel, paymentSettingsFrom } from "@/lib/catalog";
 import { getSiteSettings } from "@/lib/site-settings";
+import { VEHICLE_IMAGES_SETTING_KEY, parseVehicleImages } from "@/lib/catalog/transfers";
 
 export const metadata: Metadata = {
   title: "Bireysel Umre Planlayıcı 2026: Otel, Transfer ve Vize Fiyatı",
@@ -69,7 +70,7 @@ export default async function BireyselUmrePage({ searchParams }: { searchParams:
         lead="Tarihlerinizi, Mekke ve Medine otelinizi, transferinizi ve vizenizi seçin; seçtiğiniz ayın güncel fiyatıyla toplamı görün. Planı gönderin, kesin teklifi ekibimiz iletsin."
       />
       <Container>
-        <PlannerV2 catalog={catalog} months={months} whatsappNumber={whatsappNumber} payment={paymentSettingsFrom(settings)} query={query} todayYmd={new Date().toLocaleDateString("en-CA", { timeZone: "Europe/Istanbul" })} />
+        <PlannerV2 catalog={catalog} months={months} whatsappNumber={whatsappNumber} payment={paymentSettingsFrom(settings)} query={query} todayYmd={new Date().toLocaleDateString("en-CA", { timeZone: "Europe/Istanbul" })} vehicleImages={parseVehicleImages(settings[VEHICLE_IMAGES_SETTING_KEY])} />
       </Container>
 
       <Section>

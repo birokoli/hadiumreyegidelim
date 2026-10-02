@@ -1,174 +1,142 @@
-import React from "react";
-import { prisma } from "@/lib/prisma";
-import { getSiteSettings } from "@/lib/site-settings";
-import { Metadata } from "next";
+import type { Metadata } from "next";
+import { formatPrice } from "@/lib/format";
+import { getCatalog, fromPrice, type CatalogItem } from "@/lib/catalog";
+import { Badge, ButtonLink, CardFooter, ChipLink, EmptyState, MediaCard, PageHero, Panel, PriceTag, Section, SectionHead } from "@/components/ui/kit";
 
 export const metadata: Metadata = {
-  title: "VIP Hizmetler & Transfer",
-  description: "Kutsal topraklardaki her anınızın sınır tanımayan bir hizmet anlayışıyla geçmesi için özel otel rezervasyonu, VIP transfer ve uçuş ayarlamaları.",
-  alternates: {
-    canonical: "/hizmetler"
-  }
+  title: "Umre Hizmetleri: Otel, Transfer, Tur ve Vize",
+  description: "Mekke ve Medine otelleri, havalimanı ve şehirler arası transfer, ziyaret turları ve Suudi Arabistan e-vize. Güncel aylık fiyatlarla, planlayıcıda seçip birleştirin.",
+  alternates: { canonical: "/hizmetler" },
 };
 
-export default async function ServicesPage() {
-  const services = await prisma.service.findMany({
-    orderBy: { type: 'asc' }
-  });
+export const revalidate = 300;
 
-  const settings = await getSiteSettings();
-  const services_banner_image = settings.services_banner_image || "https://lh3.googleusercontent.com/aida-public/AB6AXuCuam-SRusysTmFa8cNfGO0nrUWU2b4lhRvrL1t5uRMO09KYGq46lqmXVR1RTQwnsytK6mpj41mpYDz4mnEykVU3E4_79ZFGw1a_ajWIITp0yX5hzJZwCg4c8E7HxHm5PJe8Jj-nfYiMyZynnNE7AWzy5NoYBmvwnuf46RLKc244lqWhr8dRzr0t2K_CwE-RI3yAUKAAHlgeYna0rO0M3jgOYeUYsFay6HDarHuq5VlPkAp591b0L4AtzHAraP1GcnhRYAXT9ea8ig";
+// Fiyat birimi: oteller 1 oda / 1 gece (en fazla 4 kişi)
+const UNIT: Record<string, string> = { per_room: "/ oda · gece", per_person: "/ kişi", per_vehicle: "/ araç", flat: "" };
+const isCrib = (i: CatalogItem) => /beşi[kğ]|besi[kg]/i.test(i.name);
+
+function hotelLine(i: CatalogItem) {
+  const parts = [i.hotelStars ? `${i.hotelStars} yıldız` : null, i.distanceMeters != null ? `Harem'e ${i.distanceMeters.toLocaleString("tr-TR")} m` : null];
+  return parts.filter(Boolean).join(" · ") || i.description || undefined;
+}
+
+function Grid({ items, hotel }: { items: CatalogItem[]; hotel?: boolean }) {
+  return (
+    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
+      {items.map((i) => {
+        const p = fromPrice(i);
+        return (
+          <MediaCard
+            key={i.id}
+            href="/bireysel-umre"
+            title={i.name}
+            description={hotel ? hotelLine(i) : i.description ?? undefined}
+            image={i.imageUrl}
+            fallbackIcon={hotel ? "hotel" : i.category === "transfer" ? "directions_car" : "mosque"}
+            topLeft={hotel && i.city ? <Badge>{i.city}</Badge> : undefined}
+            footer={<CardFooter price={p?.priceUsd} suffix={UNIT[i.pricingType]} cta="Planlayıcıda seç" />}
+          />
+        );
+      })}
+    </div>
+  );
+}
+
+/** Görseli olmayan kalemler (transfer, ekstra): ad + birim fiyat, iki sütunlu sade liste */
+function PriceList({ items }: { items: CatalogItem[] }) {
+  return (
+    <Panel className="p-0 md:p-0 overflow-hidden">
+      <ul className="grid md:grid-cols-2 md:divide-x divide-outline-variant/20">
+        {[items.slice(0, Math.ceil(items.length / 2)), items.slice(Math.ceil(items.length / 2))].map((col, c) => (
+          <li key={c} className="divide-y divide-outline-variant/20">
+            {col.map((i) => {
+              const p = fromPrice(i);
+              return (
+                <div key={i.id} className="flex items-baseline justify-between gap-4 px-5 py-3.5">
+                  <span className="min-w-0">
+                    <span className="block text-[15px] font-semibold text-on-surface">{i.name}</span>
+                    {i.description && <span className="block mt-0.5 text-[13px] text-on-surface-variant line-clamp-1">{i.description}</span>}
+                  </span>
+                  {p && p.priceUsd > 0 && (
+                    <span className="shrink-0 text-right">
+                      <span className="font-headline text-lg font-bold text-primary">{formatPrice(p.priceUsd, "USD")}</span>
+                      {UNIT[i.pricingType] && <span className="ml-1 text-[12px] text-on-surface-variant">{UNIT[i.pricingType]}</span>}
+                    </span>
+                  )}
+                </div>
+              );
+            })}
+          </li>
+        ))}
+      </ul>
+    </Panel>
+  );
+}
+
+export default async function ServicesPage() {
+  const all = (await getCatalog()).filter((i) => i.category !== "flight" && !isCrib(i));
+  const hotels = all.filter((i) => i.category === "hotel");
+  const groups = [
+    { id: "mekke", kicker: "Konaklama", title: "Mekke otelleri", items: hotels.filter((i) => i.city === "Mekke"), hotel: true },
+    { id: "medine", kicker: "Konaklama", title: "Medine otelleri", items: hotels.filter((i) => i.city === "Medine"), hotel: true },
+    { id: "transfer", kicker: "Ulaşım", title: "Transfer", items: all.filter((i) => i.category === "transfer") },
+    { id: "tur", kicker: "Ziyaret", title: "Turlar ve rehberlik", items: all.filter((i) => i.category === "tur") },
+    { id: "ekstra", kicker: "Ek hizmetler", title: "Ekstralar", items: all.filter((i) => i.category === "extra") },
+  ].filter((g) => g.items.length);
+  const visa = all.find((i) => i.category === "vize");
+  const visaPrice = visa ? fromPrice(visa)?.priceUsd : null;
 
   return (
-    <main className="pt-20">
-      {/* Hero Section */}
-      <section className="relative h-[700px] md:h-[870px] flex items-center overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <img
-            alt="VIP Transfer"
-            className="w-full h-full object-cover"
-            src={services_banner_image}
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/90 via-primary/50 to-transparent"></div>
-        </div>
-        <div className="relative z-10 max-w-screen-2xl mx-auto px-8 w-full">
-          <div className="max-w-3xl">
-            <span className="inline-block bg-tertiary-fixed-dim/20 px-5 py-2 rounded-full text-tertiary-fixed-dim font-label font-bold tracking-[0.2em] mb-6 uppercase text-sm border border-tertiary-fixed-dim/30 shadow-sm backdrop-blur-sm">
-              Ayrıcalıklı Yolculuk
-            </span>
-            <h1 className="font-headline text-5xl md:text-7xl text-on-primary font-bold leading-tight mb-8 drop-shadow-lg">
-              Kişiye Özel Konfor: <br />
-              <span className="italic font-light opacity-90 drop-shadow-md">VIP Seyahat Deneyimi</span>
-            </h1>
-            <p className="text-white/85 text-xl md:text-2xl font-body leading-relaxed mb-12 max-w-2xl drop-shadow-sm">
-              Kutsal topraklardaki her anınızın huzur ve ihtişam içinde geçmesi için tasarlanmış, sınır tanımayan bir hizmet anlayışı.
-            </p>
-            <div className="flex flex-wrap gap-6">
-              <button className="bg-tertiary-fixed-dim text-on-tertiary-fixed px-10 py-5 rounded-xl font-bold text-lg hover:bg-tertiary-fixed hover:scale-[1.03] hover:shadow-2xl shadow-xl transition-all">
-                Hizmeti Özelleştir
-              </button>
-              <button className="bg-white/10 backdrop-blur-md border border-white/30 text-white px-10 py-5 rounded-xl font-bold text-lg hover:bg-white/20 hover:scale-[1.03] transition-all shadow-xl">
-                Kataloğu İncele
-              </button>
+    <main>
+      <PageHero
+        crumbs={[{ label: "Ana Sayfa", href: "/" }, { label: "Hizmetler" }]}
+        kicker="Hizmetler"
+        title="Umre hizmetleri ve güncel fiyatlar"
+        lead="Mekke ve Medine otelleri, transfer, ziyaret turları ve e-vize. Fiyatlar aylık güncellenir; hepsini planlayıcıda seçip tek fiyat görebilirsiniz."
+        aside={
+          <Panel tone="primary" className="p-6 md:p-8">
+            <h2 className="font-headline text-xl font-bold">Kendi umrenizi birleştirin</h2>
+            <p className="mt-2 text-sm text-white/80">Tarih, otel, transfer ve vizeyi seçin; oda ve gece sayısına göre fiyat anında hesaplanır.</p>
+            <ButtonLink href="/bireysel-umre" tone="light" className="mt-5 w-full">Umremi planla</ButtonLink>
+          </Panel>
+        }
+      >
+        {groups.length > 1 && (
+          <nav aria-label="Hizmet grupları" className="mt-6 -mx-4 px-4 flex gap-2 overflow-x-auto pb-1 md:mx-0 md:px-0 md:flex-wrap md:overflow-visible">
+            {groups.map((g) => <ChipLink key={g.id} href={`#${g.id}`}>{g.title}</ChipLink>)}
+            {visa && <ChipLink href="#vize">E-vize</ChipLink>}
+          </nav>
+        )}
+      </PageHero>
+
+      {groups.length === 0 && !visa && (
+        <Section className="pt-0 md:pt-0"><EmptyState onWhite>Hizmet listesi hazırlanıyor. Bu arada planlayıcıdan ya da WhatsApp'tan bize ulaşabilirsiniz.</EmptyState></Section>
+      )}
+
+      {groups.map((g, n) => (
+        <Section key={g.id} id={g.id} tone={n % 2 ? "muted" : "plain"} className={n === 0 ? "pt-0 md:pt-0" : undefined}>
+          <SectionHead kicker={g.kicker} title={g.title} />
+          {g.hotel || g.items.every((i) => i.imageUrl) ? <Grid items={g.items} hotel={g.hotel} /> : <PriceList items={g.items} />}
+          {!g.hotel && <p className="mt-4"><ButtonLink href="/bireysel-umre" tone="secondary">Planlayıcıda seç</ButtonLink></p>}
+          {g.hotel && <p className="mt-4 text-[13px] text-on-surface-variant">Fiyat 1 oda, 1 gece içindir (giriş 16.00, çıkış 11.00). Bir odada en fazla 4 kişi kalır.</p>}
+        </Section>
+      ))}
+
+      {visa && (
+        <Section id="vize" tone="white">
+          <div className="md:flex md:items-center md:justify-between gap-8">
+            <div>
+              <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-primary/80">Vize</p>
+              <h2 className="mt-2 font-headline text-2xl md:text-3xl font-bold text-primary">Suudi Arabistan e-vize</h2>
+              <p className="mt-2 text-on-surface-variant max-w-xl">Belgeleriniz tamamsa vizeniz 2 iş saati içinde çıkar. Planlayıcıda vizeyi ekleyip çıkarabilirsiniz.</p>
+            </div>
+            <div className="mt-5 md:mt-0 flex items-end gap-6 shrink-0">
+              <PriceTag amount={visaPrice} label="Kişi başı" />
+              <ButtonLink href="/umre-vizesi" tone="secondary">Vize bilgisi</ButtonLink>
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Service Details - Dynamic Services Grid */}
-      <section className="py-24 md:py-32 bg-surface">
-        <div className="max-w-screen-2xl mx-auto px-8">
-          <div className="text-center mb-16">
-            <h2 className="font-headline text-4xl md:text-5xl text-primary font-bold leading-[1.2]">
-              Tüm Ayrıcalıklı Hizmetlerimiz
-            </h2>
-            <p className="text-on-surface-variant font-body text-xl mt-4">
-              İbadetinize tam odaklanmanız için her detayı özenle düşündük.
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            {services.map(service => (
-              <div key={service.id} className="bg-surface-container-lowest rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all border border-outline-variant/10 group flex flex-col h-full hover:-translate-y-2">
-                <div className="w-16 h-16 bg-primary-container text-primary flex items-center justify-center rounded-2xl mb-6 shadow-sm group-hover:scale-110 transition-transform">
-                  <span className="material-symbols-outlined text-4xl">
-                     {service.type === 'HOTEL' ? 'hotel' : service.type === 'FLIGHT' ? 'flight' : service.type === 'TRANSFER' ? 'directions_car' : 'extension'}
-                  </span>
-                </div>
-                <h3 className="font-headline text-2xl text-primary font-bold mb-3">{service.name}</h3>
-                <p className="text-on-surface-variant leading-relaxed font-body flex-grow mb-6">
-                  {service.description}
-                </p>
-                <div className="border-t border-outline-variant/20 pt-6 mt-auto flex items-center justify-between">
-                  <span className="text-[10px] font-bold text-outline uppercase tracking-widest bg-surface-container py-1 px-3 rounded-md">{service.type}</span>
-                  <span className="text-xl font-bold text-secondary">${service.price}</span>
-                </div>
-              </div>
-            ))}
-          </div>
-          
-          {services.length === 0 && (
-             <p className="text-center text-outline italic py-20 bg-surface-container-low rounded-2xl">Şu an gösterilecek bir hizmet bulunmuyor. Lütfen admin panelinin Services kısmından yeni bir hizmet ekleyin.</p>
-          )}
-        </div>
-      </section>
-
-      {/* Trust Factor - Bento Grid */}
-      <section className="py-24 md:py-32 bg-surface-container-low">
-        <div className="max-w-screen-2xl mx-auto px-8">
-          <div className="text-center mb-20">
-            <h2 className="font-headline text-4xl md:text-5xl font-bold text-primary mb-6">Güven ve Şeffaflık</h2>
-            <p className="text-on-surface-variant text-xl max-w-2xl mx-auto font-body">
-              Sıfır bürokrasi ve tam garanti ile manevi yolculuğunuzun teminatıyız.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-            <div className="bg-surface-container-lowest p-12 rounded-3xl border-l-4 border-tertiary shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all">
-              <div className="w-20 h-20 bg-tertiary/10 rounded-2xl flex items-center justify-center text-tertiary mb-8">
-                <span className="material-symbols-outlined text-5xl" data-icon="verified_user">
-                  verified_user
-                </span>
-              </div>
-              <h3 className="font-headline text-3xl font-bold text-primary mb-4">Nusuk ve Vize Garantisi</h3>
-              <p className="text-on-surface-variant text-lg font-body leading-relaxed">
-                Resmi makamlarla olan doğrudan entegrasyonumuz sayesinde vize reddi riskini ortadan kaldırıyoruz.
-              </p>
-            </div>
-            
-            <div className="bg-surface-container-lowest p-12 rounded-3xl border-l-4 border-tertiary shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all">
-              <div className="w-20 h-20 bg-tertiary/10 rounded-2xl flex items-center justify-center text-tertiary mb-8">
-                <span className="material-symbols-outlined text-5xl" data-icon="speed">
-                  speed
-                </span>
-              </div>
-              <h3 className="font-headline text-3xl font-bold text-primary mb-4">Sıfır Bürokrasi</h3>
-              <p className="text-on-surface-variant text-lg font-body leading-relaxed">
-                Evrak işleriyle vakit kaybetmeyin. Dijital altyapımızla tüm süreci sizin adınıza yönetiyoruz.
-              </p>
-            </div>
-            
-            <div className="bg-surface-container-lowest p-12 rounded-3xl border-l-4 border-tertiary shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all">
-              <div className="w-20 h-20 bg-tertiary/10 rounded-2xl flex items-center justify-center text-tertiary mb-8">
-                <span className="material-symbols-outlined text-5xl" data-icon="auto_awesome">
-                  auto_awesome
-                </span>
-              </div>
-              <h3 className="font-headline text-3xl font-bold text-primary mb-4">Kişiye Özel Rota</h3>
-              <p className="text-on-surface-variant text-lg font-body leading-relaxed">
-                Sadece size özel duraklar ve ziyaret noktaları ile ibadetinizi kişiselleştirin.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section - Editorial Style */}
-      <section className="py-32 md:py-40 bg-primary text-on-primary relative overflow-hidden rounded-t-[3rem] shadow-[0_-20px_50px_rgba(0,0,0,0.1)]">
-        <div className="absolute top-0 right-0 w-1/3 h-full opacity-10 pointer-events-none mix-blend-overlay">
-          <span className="material-symbols-outlined text-[40rem] leading-none absolute -right-20 -top-10" data-icon="temple_hindu">
-            temple_hindu
-          </span>
-        </div>
-        
-        <div className="absolute top-0 left-0 w-1/3 h-full opacity-5 pointer-events-none mix-blend-overlay">
-          <span className="material-symbols-outlined text-[30rem] leading-none absolute -left-20 top-20" data-icon="diamond">
-            diamond
-          </span>
-        </div>
-
-        <div className="max-w-5xl mx-auto px-8 text-center relative z-10">
-          <h2 className="font-headline text-5xl md:text-7xl font-bold mb-10 leading-[1.1] drop-shadow-md">
-            Yolculuğunuz Sizin <br />
-            <span className="italic text-tertiary-fixed-dim font-light">Ruhunuz Kadar Benzersiz</span> Olsun
-          </h2>
-          <p className="text-primary-fixed text-2xl mb-14 font-body font-light max-w-3xl mx-auto opacity-90 leading-relaxed">
-            Tüm detayları sizin yerinize planlamamız için uzman danışmanlarımızla <strong className="font-bold text-white">7/24</strong> iletişime geçin.
-          </p>
-          <button className="bg-tertiary-fixed-dim text-on-tertiary-fixed px-14 py-6 rounded-2xl font-bold text-2xl hover:bg-white hover:text-primary transition-all hover:scale-105 shadow-2xl active:scale-95">
-            Hizmeti Özelleştir
-          </button>
-        </div>
-      </section>
+        </Section>
+      )}
     </main>
   );
 }

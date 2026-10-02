@@ -131,6 +131,22 @@ export function Panel({ children, className, tone = "white" }: { children: React
 
 /* ─── Küçük parçalar ───────────────────────────────────────────── */
 
+/** Konu / filtre bağlantısı (blog kategorileri, hizmet grupları). Seçili olan lacivert. */
+export function ChipLink({ href, active, children }: { href: string; active?: boolean; children: ReactNode }) {
+  return (
+    <Link
+      href={href}
+      aria-current={active ? "page" : undefined}
+      className={cx(
+        "inline-flex items-center whitespace-nowrap rounded-lg px-3.5 py-2 text-[13px] font-semibold transition-colors",
+        active ? "bg-primary text-white" : "bg-white text-primary border border-outline-variant/30 hover:border-primary/50",
+      )}
+    >
+      {children}
+    </Link>
+  );
+}
+
 export function Badge({ children, tone = "light" }: { children: ReactNode; tone?: "light" | "primary" | "gold" }) {
   const t = tone === "primary" ? "bg-primary text-white" : tone === "gold" ? "bg-[#c9a96e] text-[#001944]" : "bg-white/95 text-primary";
   return <span className={cx("inline-block text-[11px] font-bold px-2.5 py-1 rounded-lg", t)}>{children}</span>;
@@ -151,10 +167,10 @@ export function PriceTag({ amount, currency = "USD", label = "Başlangıç", suf
 }
 
 /** Kart altı: solda fiyat, sağda "İncele →" */
-export function CardFooter({ price, currency, cta = "İncele" }: { price?: number | null; currency?: string; cta?: string }) {
+export function CardFooter({ price, currency, cta = "İncele", suffix }: { price?: number | null; currency?: string; cta?: string; suffix?: string }) {
   return (
     <div className="flex items-end justify-between">
-      <PriceTag amount={price} currency={currency} />
+      <PriceTag amount={price} currency={currency} suffix={suffix} />
       <span className="ml-auto inline-flex items-center gap-1 text-[13px] font-semibold text-primary group-hover:gap-2 transition-all">{cta} <Arrow /></span>
     </div>
   );

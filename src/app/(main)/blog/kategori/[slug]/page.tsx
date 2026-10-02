@@ -1,132 +1,51 @@
-import React from 'react';
-import Link from 'next/link';
-import { prisma } from '@/lib/prisma';
-import BrandImageFallback from '@/components/ui/BrandImageFallback';
-import { notFound } from 'next/navigation';
+import { notFound } from "next/navigation";
+import { prisma } from "@/lib/prisma";
+import { PageHero } from "@/components/ui/kit";
+import { BlogGrid, BlogTopics } from "@/components/blog/BlogList";
+
+export const revalidate = 60;
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const category = await prisma.category.findUnique({ where: { slug } });
-  if (!category) return { title: 'Kategori Bulunamadı' };
-  
+  if (!category) return { title: "Kategori bulunamadı", robots: { index: false } };
   return {
-    title: `${category.name} — Blog Kategorisi`,
-    description: category.description || `${category.name} kategorisindeki ayrıcalıklı umre rehberlik yazıları.`,
-    alternates: {
-      canonical: `/blog/kategori/${slug}`
-    }
+    title: `${category.name}: Umre Rehber Yazıları`,
+    description: category.description || `${category.name} konusundaki umre rehber yazıları.`,
+    alternates: { canonical: `/blog/kategori/${slug}` },
   };
 }
 
-export const revalidate = 60;
-
-// Next 16: params bir Promise. Beklenmeden okunduğunda slug undefined kalıyor ve sayfa 500 veriyordu (2 Ekim düzeltmesi).
 export default async function CategoryPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const category = await prisma.category.findUnique({
-    where: { slug },
-    include: {
-      posts: {
-        where: { published: true },
-        orderBy: { createdAt: 'desc' },
-        include: { category: true }
-      }
-    }
-  });
-
-  if (!category) return notFound();
-
-  const allCategories = await prisma.category.findMany({
-    where: {
-      posts: { some: { published: true } }
-    },
-    orderBy: { name: 'asc' }
-  });
+  const [category, categories] = await Promise.all([
+    prisma.category.findUnique({
+      where: { slug },
+      select: {
+        name: true,
+        description: true,
+        posts: {
+          where: { published: true },
+          orderBy: { createdAt: "desc" },
+          select: { id: true, slug: true, title: true, description: true, imageUrl: true, createdAt: true, author: true, authorModel: { select: { name: true } } },
+        },
+      },
+    }),
+    prisma.category.findMany({ where: { posts: { some: { published: true } } }, orderBy: { name: "asc" }, select: { id: true, slug: true, name: true } }),
+  ]);
+  if (!category) notFound();
 
   return (
-    <main className="pt-32 pb-24 min-h-screen bg-surface relative overflow-hidden">
-      <div className="fixed top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary/5 blur-[120px] -z-10 rounded-full mix-blend-multiply pointer-events-none"></div>
-
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        <header className="mb-16 text-center max-w-3xl mx-auto">
-          <span className="font-label text-[10px] font-bold uppercase tracking-[0.2em] text-tertiary mb-6 block bg-tertiary-fixed-dim/20 w-fit mx-auto px-4 py-1.5 rounded-full">
-            KATEGORİ
-          </span>
-          <h1 className="font-headline text-5xl md:text-6xl text-primary leading-tight mb-6 font-bold tracking-tight drop-shadow-sm">
-            {category.name}
-          </h1>
-          <p className="text-on-surface-variant text-lg leading-relaxed font-body mb-10">
-            {category.description || `${category.name} kategorisindeki yazılar listeleniyor.`}
-          </p>
-
-          <div className="flex flex-wrap items-center justify-center gap-3">
-            <Link href="/blog" className="px-5 py-2 rounded-full text-xs font-bold uppercase tracking-widest bg-surface-container-high text-on-surface-variant hover:bg-primary/10 transition-colors shadow-sm">
-              Tümü
-            </Link>
-            {allCategories.map((cat: any) => (
-              <Link 
-                key={cat.id} 
-                href={`/blog/kategori/${cat.slug}`} 
-                className={`px-5 py-2 rounded-full text-xs font-bold uppercase tracking-widest shadow-sm transition-colors border ${
-                  cat.slug === slug 
-                    ? 'bg-primary text-white border-primary' 
-                    : 'bg-surface-container-high text-on-surface-variant hover:bg-primary/10 hover:text-primary border-outline-variant/20'
-                }`}
-              >
-                {cat.name}
-              </Link>
-            ))}
-          </div>
-        </header>
-
-        {category.posts.length === 0 ? (
-          <div className="text-center text-outline-variant py-20 bg-surface-container-lowest rounded-3xl border border-outline-variant/10 shadow-sm max-w-2xl mx-auto">
-            <span className="material-symbols-outlined text-6xl mb-4 text-primary/30" style={{fontVariationSettings: "'FILL' 1"}}>menu_book</span>
-            <p className="text-xl font-headline text-primary/70">Bu kategoride henüz yazı bulunmuyor.</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {category.posts.map(post => (
-              <Link href={`/blog/${post.slug}`} key={post.id} className="group h-full">
-                <article className="bg-surface-container-lowest rounded-3xl overflow-hidden border border-outline-variant/10 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-2 flex flex-col h-full bg-white relative">
-                  {post.imageUrl ? (
-                    <div className="h-60 overflow-hidden bg-surface-container relative">
-                      <img src={post.imageUrl} alt={post.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    </div>
-                  ) : (
-                    <div className="h-60 relative overflow-hidden">
-                      <BrandImageFallback icon="menu_book" iconSize={4} />
-                    </div>
-                  )}
-                  
-                  <div className="p-8 flex-1 flex flex-col">
-                    <div className="flex items-center gap-3 text-[10px] font-bold tracking-widest uppercase text-tertiary mb-4">
-                      {post.category && (
-                        <span className="bg-primary/5 text-primary px-2 py-1 rounded-md">
-                          {post.category.name}
-                        </span>
-                      )}
-                      <span>{post.author}</span>
-                      <span className="w-1.5 h-1.5 rounded-full bg-tertiary/30"></span>
-                      <span>{new Date(post.createdAt).toLocaleDateString('tr-TR')}</span>
-                    </div>
-                    <h2 className="font-headline text-2xl font-bold text-primary mb-3 leading-snug group-hover:text-secondary transition-colors line-clamp-2">
-                      {post.title}
-                    </h2>
-                    <p className="text-on-surface-variant text-sm leading-relaxed line-clamp-3 flex-1 mb-8 opacity-90">
-                      {post.description}
-                    </p>
-                    <div className="mt-auto pt-5 border-t border-outline-variant/10 flex items-center gap-2 text-[11px] font-bold uppercase tracking-widest text-primary group-hover:text-secondary transition-colors">
-                      Yazıyı Oku <span className="material-symbols-outlined text-sm">arrow_forward</span>
-                    </div>
-                  </div>
-                </article>
-              </Link>
-            ))}
-          </div>
-        )}
-      </div>
+    <main>
+      <PageHero
+        crumbs={[{ label: "Ana Sayfa", href: "/" }, { label: "Blog", href: "/blog" }, { label: category.name }]}
+        kicker={`Blog · ${category.posts.length} yazı`}
+        title={category.name}
+        lead={category.description || undefined}
+      >
+        <BlogTopics categories={categories} active={slug} />
+      </PageHero>
+      <BlogGrid posts={category.posts} />
     </main>
   );
 }

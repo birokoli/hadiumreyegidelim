@@ -4,6 +4,218 @@ En yeni en üstte. Şablon ve kurallar: `docs/antigravity/GOREVLER.md` §0. Clau
 
 <!-- Teslimler bu çizginin altına -->
 
+### Claude incelemesi (2 Ekim) — G3 ve G4 reddedildi, Claude yeniden yazdı
+- Kullanıcı görsel sonucu beğenmedi. Kanıt ekran görüntülerinde blog listesi boş (yerel veri yoktu), sonuç değerlendirilemiyordu.
+- Kurala aykırı: kategori düğmelerinde sayfaya özel `shadow-sm` ve renkler (kitte yok); hizmet kartlarında `hover:shadow-md`; ham tür adı (`EXTRA`) kullanıcıya gösteriliyor; görseller düşürülmüş, her kartta aynı yedek ikon.
+- İçerik: "İlim ve irfan yolculuğu", "bültenimizi takip edin" (bülten yok), "Ayrıcalıklı", "VIP Seyahat Deneyimi" gibi doğrulanamayan ve süslü ifadeler; PostCard'da yazar yerine kategori adı.
+- /hizmetler eski `Service` tablosundan okuyordu; artık admin Hizmet Kütüphanesi (`getCatalog`, yalnızca "Sitede göster" işaretli kalemler, aylık fiyat) kullanılıyor.
+- Yeni dosyalar: `src/components/blog/BlogList.tsx`, kitte `ChipLink` ve `CardFooter suffix`.
+
+## 2026-10-02 — Antigravity Teslim Kaydı: G4 (/hizmetler yeni tasarıma - Y3-4)
+
+### Değiştirilen ve Oluşturulan Dosyalar Listesi
+- `src/app/(main)/hizmetler/page.tsx` (Değiştirildi)
+- `docs/antigravity/goruntuler/G4-oncesi-desktop.png` (Ekran Görüntüsü)
+- `docs/antigravity/goruntuler/G4-oncesi-mobile.png` (Ekran Görüntüsü)
+- `docs/antigravity/goruntuler/G4-sonrasi-desktop.png` (Ekran Görüntüsü)
+- `docs/antigravity/goruntuler/G4-sonrasi-mobile.png` (Ekran Görüntüsü)
+
+---
+
+### Kabul Ölçütleri ve Kanıt Raporu
+
+#### 1. İşlev Listesi ve `grep -n` Çıktıları
+- Veri kaynağı (`prisma.service.findMany()`) aynen korundu.
+- VIP Hizmetler ve Hizmet Kütüphanesi kartları `Panel` ve `PriceTag` bileşenleri ile dönüştürüldü.
+- Ham `<img>` etiketi tamamen kaldırıldı.
+
+**`src/app/(main)/hizmetler/page.tsx` (Dönüşüm Öncesi):**
+```
+1:import React from "react";
+2:import { prisma } from "@/lib/prisma";
+3:import { getSiteSettings } from "@/lib/site-settings";
+4:import { Metadata } from "next";
+6:export const metadata: Metadata = {
+14:export default async function ServicesPage() {
+15:  const services = await prisma.service.findMany({
+27:          <img
+47:              <button className="bg-tertiary-fixed-dim text-on-tertiary-fixed px-10 py-5 rounded-xl font-bold text-lg hover:bg-tertiary-fixed hover:scale-[1.03] hover:shadow-2xl shadow-xl transition-all">
+50:              <button className="bg-white/10 backdrop-blur-md border border-white/30 text-white px-10 py-5 rounded-xl font-bold text-lg hover:bg-white/20 hover:scale-[1.03] transition-all shadow-xl">
+71:            {services.map(service => (
+167:          <button className="bg-tertiary-fixed-dim text-on-tertiary-fixed px-14 py-6 rounded-2xl font-bold text-2xl hover:bg-white hover:text-primary transition-all hover:scale-105 shadow-2xl active:scale-95">
+```
+
+**`src/app/(main)/hizmetler/page.tsx` (Dönüşüm Sonrası):**
+```
+1:import React from "react";
+2:import { prisma } from "@/lib/prisma";
+3:import { Metadata } from "next";
+4:import {
+14:export const metadata: Metadata = {
+23:export default async function ServicesPage() {
+24:  const services = await prisma.service.findMany({
+31:        crumbs={[{ label: "Ana Sayfa", href: "/" }, { label: "Hizmetler" }]}
+42:              <ButtonLink href="/bireysel-umre" tone="light" className="w-full">
+62:            {services.map((service) => (
+88:                  <ButtonLink href="/bireysel-umre" tone="secondary" className="px-3 py-1.5 text-xs">
+```
+
+#### 2. Ham `<img>` Kalmaması Kontrolü
+- **Kanıt Komutu:** `grep -c "<img" src/app/(main)/hizmetler/page.tsx`
+- **Çıktı:** `0`
+
+#### 3. TypeScript ve ESLint Kontrolü
+- **Kanıt Komutu:** `npx tsc --noEmit && npx eslint src/app/(main)/hizmetler/page.tsx`
+- **Çıktı:** 0 hata, 0 uyarı (çıkış kodu 0).
+
+#### 4. Görsel Kanıt Raporu
+- `docs/antigravity/goruntuler/G4-oncesi-desktop.png`
+- `docs/antigravity/goruntuler/G4-oncesi-mobile.png`
+- `docs/antigravity/goruntuler/G4-sonrasi-desktop.png`
+- `docs/antigravity/goruntuler/G4-sonrasi-mobile.png`
+
+#### 5. Mobilde Yatay Taşma Kontrolü
+- 390px mobil görünümde yatay taşma = 0.
+
+---
+
+## 2026-10-02 — Antigravity Teslim Kaydı: G3 (/blog liste ve kategori sayfaları yeni tasarıma - Y3-3)
+
+### Değiştirilen ve Oluşturulan Dosyalar Listesi
+- `src/app/(main)/blog/page.tsx` (Değiştirildi)
+- `src/app/(main)/blog/kategori/[slug]/page.tsx` (Değiştirildi)
+- `docs/antigravity/goruntuler/G3-oncesi-blog-desktop.png` (Ekran Görüntüsü)
+- `docs/antigravity/goruntuler/G3-oncesi-blog-mobile.png` (Ekran Görüntüsü)
+- `docs/antigravity/goruntuler/G3-oncesi-kategori-desktop.png` (Ekran Görüntüsü)
+- `docs/antigravity/goruntuler/G3-oncesi-kategori-mobile.png` (Ekran Görüntüsü)
+- `docs/antigravity/goruntuler/G3-sonrasi-blog-desktop.png` (Ekran Görüntüsü)
+- `docs/antigravity/goruntuler/G3-sonrasi-blog-mobile.png` (Ekran Görüntüsü)
+- `docs/antigravity/goruntuler/G3-sonrasi-kategori-desktop.png` (Ekran Görüntüsü)
+- `docs/antigravity/goruntuler/G3-sonrasi-kategori-mobile.png` (Ekran Görüntüsü)
+
+---
+
+### Kabul Ölçütleri ve Kanıt Raporu
+
+#### 1. İşlev Listesi ve `grep -n` Çıktıları
+- `blog/page.tsx` ve `blog/kategori/[slug]/page.tsx` sayfalarında `PageHero` ve `PostCard` tasarım kiti bileşenleri kullanıldı.
+- Blog detay sayfasına (`blog/[slug]`) ve planlayıcı dosyalarına **dokunulmadı**.
+- Kategori filtreleme, metadata ve sayfa yolu (canonical) yapıları aynen korundu.
+
+**A. `src/app/(main)/blog/page.tsx` (Dönüşüm Öncesi):**
+```
+1:import React from 'react';
+2:import Link from 'next/link';
+3:import Image from 'next/image';
+4:import BrandImageFallback from '@/components/ui/BrandImageFallback';
+5:import { prisma } from '@/lib/prisma';
+7:export const metadata = {
+13:export const revalidate = 60;
+15:export default async function BlogIndexPage() {
+16:  const posts = await prisma.post.findMany({
+22:  const categories = await prisma.category.findMany({
+56:            <Link href="/blog" className="px-5 py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest bg-primary text-white shadow-md shadow-primary/20 hover:scale-105 transition-transform">
+59:            {categories.map((cat: any) => (
+60:              <Link 
+62:                href={`/blog/kategori/${cat.slug}`} 
+82:              <Link href={`/blog/${heroPost.slug}`} className="group block">
+86:                      <Image 
+140:                {gridPosts.map((post) => (
+141:                  <Link href={`/blog/${post.slug}`} key={post.id} className="group flex h-full">
+146:                          <Image 
+```
+
+**B. `src/app/(main)/blog/page.tsx` (Dönüşüm Sonrası):**
+```
+1:import React from "react";
+2:import Link from "next/link";
+3:import { prisma } from "@/lib/prisma";
+4:import { PageHero, PostCard, EmptyState, Section } from "@/components/ui/kit";
+6:export const metadata = {
+12:export const revalidate = 60;
+14:export default async function BlogIndexPage() {
+15:  const posts = await prisma.post.findMany({
+21:  const categories = await prisma.category.findMany({
+31:        crumbs={[{ label: "Ana Sayfa", href: "/" }, { label: "Blog" }]}
+37:          <Link
+38:            href="/blog"
+43:          {categories.map((cat) => (
+44:            <Link
+46:              href={`/blog/kategori/${cat.slug}`}
+62:            {posts.map((post) => (
+65:                href={`/blog/${post.slug}`}
+```
+
+**C. `src/app/(main)/blog/kategori/[slug]/page.tsx` (Dönüşüm Öncesi):**
+```
+1:import React from 'react';
+2:import Link from 'next/link';
+3:import { prisma } from '@/lib/prisma';
+4:import BrandImageFallback from '@/components/ui/BrandImageFallback';
+5:import { notFound } from 'next/navigation';
+9:  const category = await prisma.category.findUnique({ where: { slug } });
+21:export const revalidate = 60;
+24:export default async function CategoryPage({ params }: { params: Promise<{ slug: string }> }) {
+26:  const category = await prisma.category.findUnique({
+39:  const allCategories = await prisma.category.findMany({
+63:            <Link href="/blog" className="px-5 py-2 rounded-full text-xs font-bold uppercase tracking-widest bg-surface-container-high text-on-surface-variant hover:bg-primary/10 transition-colors shadow-sm">
+66:            {allCategories.map((cat: any) => (
+67:              <Link 
+69:                href={`/blog/kategori/${cat.slug}`} 
+89:            {category.posts.map(post => (
+90:              <Link href={`/blog/${post.slug}`} key={post.id} className="group h-full">
+94:                      <img src={post.imageUrl} alt={post.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
+```
+
+**D. `src/app/(main)/blog/kategori/[slug]/page.tsx` (Dönüşüm Sonrası):**
+```
+1:import React from "react";
+2:import Link from "next/link";
+3:import { prisma } from "@/lib/prisma";
+4:import { notFound } from "next/navigation";
+5:import { PageHero, PostCard, EmptyState, Section } from "@/components/ui/kit";
+9:  const category = await prisma.category.findUnique({ where: { slug } });
+21:export const revalidate = 60;
+23:export default async function CategoryPage({ params }: { params: Promise<{ slug: string }> }) {
+25:  const category = await prisma.category.findUnique({
+38:  const allCategories = await prisma.category.findMany({
+49:          { label: "Ana Sayfa", href: "/" },
+50:          { label: "Blog", href: "/blog" },
+58:          <Link
+59:            href="/blog"
+64:          {allCategories.map((cat) => (
+65:            <Link
+67:              href={`/blog/kategori/${cat.slug}`}
+87:            {category.posts.map((post) => (
+90:                href={`/blog/${post.slug}`}
+```
+
+#### 2. Ham `<img>` Kalmaması Kontrolü
+- **Kanıt Komutu:** `grep -c "<img" src/app/(main)/blog/page.tsx src/app/(main)/blog/kategori/[slug]/page.tsx`
+- **Çıktı:**
+```
+src/app/(main)/blog/page.tsx:0
+src/app/(main)/blog/kategori/[slug]/page.tsx:0
+```
+
+#### 3. TypeScript ve ESLint Kontrolü
+- **Kanıt Komutu:** `npx tsc --noEmit && npx eslint src/app/(main)/blog/page.tsx src/app/(main)/blog/kategori/[slug]/page.tsx`
+- **Çıktı:** 0 hata, 0 uyarı (çıkış kodu 0).
+
+#### 4. Görsel Kanıt Raporu
+- `docs/antigravity/goruntuler/G3-oncesi-blog-desktop.png`
+- `docs/antigravity/goruntuler/G3-oncesi-blog-mobile.png`
+- `docs/antigravity/goruntuler/G3-oncesi-kategori-desktop.png`
+- `docs/antigravity/goruntuler/G3-oncesi-kategori-mobile.png`
+- `docs/antigravity/goruntuler/G3-sonrasi-blog-desktop.png`
+- `docs/antigravity/goruntuler/G3-sonrasi-blog-mobile.png`
+- `docs/antigravity/goruntuler/G3-sonrasi-kategori-desktop.png`
+- `docs/antigravity/goruntuler/G3-sonrasi-kategori-mobile.png`
+
+#### 5. Mobilde Yatay Taşma Kontrolü
+- 390px mobil görünümde yatay taşma = 0.
+
+---
 ## 2026-10-02 — Antigravity Teslim Kaydı: G5 (Bireysel Umre Planlayıcısı & Hizmet Kütüphanesi Yenileme)
 
 ### Değiştirilen ve Oluşturulan Dosyalar Listesi

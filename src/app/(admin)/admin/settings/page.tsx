@@ -32,7 +32,7 @@ const DEFAULTS = {
   CONTACT_TITLE: "İletişim & Rezervasyon",
   CONTACT_DESC: "Manevi yolculuğunuza ilk adımı birlikte atıyoruz.",
   CONTACT_EMAIL: "info@hadiumreye.com",
-  CONTACT_ADDRESS: "Fatih, İstanbul",
+  CONTACT_ADDRESS: "Bakırköy, İstanbul",
   // Social media
   SOCIAL_INSTAGRAM: "",
   SOCIAL_FACEBOOK: "",

@@ -21,7 +21,7 @@ export default async function ContactPage({ searchParams }: { searchParams: Prom
   const contactTitle = settings.CONTACT_TITLE || "İletişim";
   const contactDesc = settings.CONTACT_DESC || "Formu doldurun, umre danışmanlarımız müsaitlik ve detaylar için en kısa sürede sizi arasın.";
   const contactEmail = settings.CONTACT_EMAIL || "info@hadiumreye.com";
-  const contactAddress = settings.CONTACT_ADDRESS || "Fatih, İstanbul";
+  const contactAddress = settings.CONTACT_ADDRESS || "Bakırköy, İstanbul";
   const whatsappNumber = settings.WHATSAPP_NUMBER || "905404010038";
 
   return (

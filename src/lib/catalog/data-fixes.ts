@@ -100,3 +100,15 @@ export async function runDataFixesOnceB() {
   await prisma.setting.upsert({ where: { key: FLAG_B }, update: { value: JSON.stringify(log) }, create: { key: FLAG_B, value: JSON.stringify(log) } });
   console.log("[data-fix] 2026-10-02 B", log);
 }
+
+// Üçüncü düzeltme (3 Ekim, kullanıcı): iletişim adresi Fatih değil Bakırköy
+let ranC = false;
+export async function runDataFixesOnceC() {
+  if (ranC) return;
+  ranC = true;
+  const r = await prisma.setting.updateMany({ where: { key: "CONTACT_ADDRESS", value: { contains: "Fatih" } }, data: { value: "Bakırköy, İstanbul" } });
+  if (r.count) {
+    const { revalidateSiteSettings } = await import("@/lib/site-settings");
+    revalidateSiteSettings();
+  }
+}

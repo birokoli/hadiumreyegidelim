@@ -1,10 +1,11 @@
 import Link from "next/link";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import VisaApplicationForm from "@/components/visa/VisaApplicationForm";
 import { PageTrust, webPageJsonLd } from "@/components/seo/PageTrust";
 import { pageTitle } from "@/lib/seo/meta";
 import { SITE_URL } from "@/lib/seo/site";
 import { getSiteSettings } from "@/lib/site-settings";
+import { PageHero, Panel, Section } from "@/components/ui/kit";
 
 export const metadata: Metadata = {
   title: pageTitle("Umre Vizesi Başvurusu: Online Başvuru"),
@@ -48,66 +49,69 @@ export default async function VisaApplicationPage() {
   ];
 
   return (
-    <main className="w-full pt-28 pb-16 bg-surface">
+    <main>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <div className="max-w-screen-xl mx-auto px-5 md:px-8">
-        <nav aria-label="Sayfa yolu" className="text-[13px] text-on-surface-variant">
-          <Link href="/" className="hover:text-primary">Anasayfa</Link> / <Link href="/umre-vizesi" className="hover:text-primary">Umre vizesi</Link> / <span>Başvuru</span>
-        </nav>
-        <div className="mt-6 grid gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:items-start">
-          <div className="min-w-0">
-            <h1 className="font-headline text-3xl md:text-5xl font-bold text-primary leading-tight">Umre vizesi başvurusu</h1>
-            <p className="mt-5 text-lg leading-relaxed text-on-surface">
-              Umre vizesi başvurunuzu Hadi Umreye Gidelim&apos;e bırakabilirsiniz. Ücret kişi başı 140 USD; belgeleriniz tamamsa vize 2 iş saatinde çıkar. Formu doldurun, ekibimiz gereken belgeleri bildirsin ve Suudi Arabistan e-vizenizi sizin adınıza alsın. Umreyi kendi takviminizle planlamak isterseniz vize, uçuş ve otel aynı planda yürür.
-            </p>
 
-            <section className="mt-10">
-              <h2 className="font-headline text-2xl font-bold text-primary">Başvuru nasıl ilerler?</h2>
-              <ol className="mt-4 space-y-4">
-                {STEPS.map((s, i) => (
-                  <li key={s.t} className="flex gap-4">
-                    <span className="w-9 h-9 shrink-0 rounded-full bg-primary text-white font-bold flex items-center justify-center">{i + 1}</span>
-                    <span>
-                      <span className="block font-semibold text-on-surface">{s.t}</span>
-                      <span className="block text-[15px] text-on-surface-variant mt-0.5">{s.d}</span>
-                    </span>
-                  </li>
-                ))}
-              </ol>
-            </section>
+      <PageHero
+        crumbs={[
+          { label: "Ana Sayfa", href: "/" },
+          { label: "Umre Vizesi", href: "/umre-vizesi" },
+          { label: "Başvuru" },
+        ]}
+        kicker="Online Başvuru"
+        title="Umre vizesi başvurusu"
+        lead="Umre vizesi başvurunuzu Hadi Umreye Gidelim'e bırakabilirsiniz. Ücret kişi başı 140 USD; belgeleriniz tamamsa vize 2 iş saatinde çıkar. Formu doldurun, ekibimiz gereken belgeleri bildirsin ve Suudi Arabistan e-vizenizi sizin adınıza alsın."
+        aside={
+          <Panel tone="white" className="p-6 md:p-8">
+            <VisaApplicationForm whatsappNumber={whatsappNumber} />
+          </Panel>
+        }
+      />
 
-            <section className="mt-10">
-              <h2 className="font-headline text-2xl font-bold text-primary">Umre vizesi için hangi belgeler gerekir?</h2>
-              <ul className="mt-4 space-y-2 pl-5 list-disc marker:text-primary text-on-surface-variant">
-                {DOCS.map((d) => <li key={d}>{d}</li>)}
-              </ul>
-              <p className="mt-3 text-sm text-on-surface-variant">
-                Vize türü, geçerlilik ve kalış süresi için <Link href="/umre-vizesi" className="text-primary font-semibold underline underline-offset-4">umre vizesi rehberimize</Link> bakabilirsiniz.
-              </p>
-            </section>
+      <Section tone="white">
+        <div className="max-w-3xl space-y-10">
+          <div>
+            <h2 className="font-headline text-2xl font-bold text-primary mb-4">Başvuru nasıl ilerler?</h2>
+            <ol className="space-y-4">
+              {STEPS.map((s, i) => (
+                <li key={s.t} className="flex gap-4">
+                  <span className="w-9 h-9 shrink-0 rounded-full bg-primary text-white font-bold flex items-center justify-center">{i + 1}</span>
+                  <span>
+                    <span className="block font-semibold text-on-surface">{s.t}</span>
+                    <span className="block text-[15px] text-on-surface-variant mt-0.5">{s.d}</span>
+                  </span>
+                </li>
+              ))}
+            </ol>
           </div>
 
-          <div className="min-w-0 lg:sticky lg:top-28">
-            <VisaApplicationForm whatsappNumber={whatsappNumber} />
+          <div>
+            <h2 className="font-headline text-2xl font-bold text-primary mb-4">Umre vizesi için hangi belgeler gerekir?</h2>
+            <ul className="space-y-2 pl-5 list-disc marker:text-primary text-on-surface-variant">
+              {DOCS.map((d) => <li key={d}>{d}</li>)}
+            </ul>
+            <p className="mt-3 text-sm text-on-surface-variant">
+              Vize türü, geçerlilik ve kalış süresi için <Link href="/umre-vizesi" className="text-primary font-semibold underline underline-offset-4">umre vizesi rehberimize</Link> bakabilirsiniz.
+            </p>
+          </div>
+
+          <div>
+            <h2 className="font-headline text-2xl md:text-3xl font-bold text-primary mb-4">Sık sorulanlar</h2>
+            <div className="divide-y divide-outline-variant/30 border-y border-outline-variant/30">
+              {FAQ.map((f) => (
+                <div key={f.q} className="py-5">
+                  <h3 className="font-semibold text-lg text-on-surface">{f.q}</h3>
+                  <p className="mt-2 text-[15px] leading-relaxed text-on-surface-variant">{f.a}</p>
+                </div>
+              ))}
+            </div>
+            <p className="mt-6 text-[15px] text-on-surface-variant">
+              Vizeyle birlikte konaklama da planlamak için <Link href="/bireysel-umre" className="text-primary font-semibold underline underline-offset-4">bireysel umre tasarlayıcısını</Link> kullanabilirsiniz.
+            </p>
+            <PageTrust className="mt-8" />
           </div>
         </div>
-
-        <section className="mt-14 max-w-3xl">
-          <h2 className="font-headline text-2xl md:text-3xl font-bold text-primary">Sık sorulanlar</h2>
-          <div className="mt-4 divide-y divide-outline-variant/30 border-y border-outline-variant/30">
-            {FAQ.map((f) => (
-              <div key={f.q} className="py-5">
-                <h3 className="font-semibold text-lg text-on-surface">{f.q}</h3>
-                <p className="mt-2 text-[15px] leading-relaxed text-on-surface-variant">{f.a}</p>
-              </div>
-            ))}
-          </div>
-          <p className="mt-6 text-[15px] text-on-surface-variant">
-            Vizeyle birlikte uçuş ve otel de planlamak için <Link href="/bireysel-umre" className="text-primary font-semibold underline underline-offset-4">bireysel umre tasarlayıcısını</Link> kullanabilirsiniz.
-          </p>
-          <PageTrust className="mt-8" />
-        </section>
-      </div>
+      </Section>
     </main>
   );
 }

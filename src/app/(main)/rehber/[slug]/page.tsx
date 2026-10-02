@@ -1,8 +1,27 @@
+import type { Metadata } from "next";
 import React from "react";
 import Image from "next/image";
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const guide = await prisma.guide.findUnique({ where: { slug } });
+  if (!guide) {
+    return {
+      title: "Rehber Bulunamadı",
+      robots: { index: false, follow: true },
+    };
+  }
+  return {
+    title: `${guide.name} - Umre Rehberi`,
+    description: guide.biography ? guide.biography.slice(0, 160) : `${guide.name} rehberlik profili.`,
+    alternates: {
+      canonical: `/rehber/${slug}`,
+    },
+  };
+}
 
 export default async function GuideDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;

@@ -1,3 +1,14 @@
+import Image from "next/image";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Hendek Turu ve Gizli Duraklar",
+  description: "Klasik gezi rotalarının ötesinde, tarihi şuurun saklı kaldığı Hendek meydanını ve gizli durakları keşfedin.",
+  alternates: {
+    canonical: "/kesifler/hendek-turu",
+  },
+};
+
 import React from "react";
 
 export default function HiddenGemsSelectionPage() {
@@ -88,10 +99,11 @@ export default function HiddenGemsSelectionPage() {
                 
                 {/* Image Header */}
                 <div className="aspect-video w-full rounded-2xl overflow-hidden mb-8 relative group">
-                  <img 
+                  <Image 
                     alt="Medine battlefield landscape" 
-                    className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-105" 
-                    data-alt="Cinematic aerial view of Medina historical landscape with soft golden sunset" 
+                    className="object-cover transition-transform duration-[2s] group-hover:scale-105" 
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 50vw"
                     src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWp4fL3jsVWEMIRlagneBvGCu5oW9G5eJ3pJgU2AoD1rRQLk6vH26GrlZIXaxyZDkM5TyaWG91Lsd5Mel2Koyc5EIis9rPmOjZp7laLf5oKVGqHT0a5f7NnwduUQ3Kr62AdMQE-zF8SNGz-A1hmE__H882T9l0Quor_7-e3torsR5KH7FjVvFBkK9RnvZxO2eAumQteWbPhE-9CzCYzxGusvFxHtuG4pWkkS1RnYUqMsJlty-Fv4SZzCjIaMNrPfNIiToVmyZKGx0"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#001944]/90 via-[#001944]/20 to-transparent"></div>

@@ -55,3 +55,6 @@ prisma/dev.db-journal
 
 # Yerel test
 scripts/local/.test-admin.json
+
+# Antigravity geçici dosyaları
+/scratch/

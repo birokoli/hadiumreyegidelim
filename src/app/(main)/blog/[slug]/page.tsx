@@ -8,6 +8,7 @@ import { DEFAULT_OG_IMAGE, metaDescription, pageTitle } from "@/lib/seo/meta";
 import { OfficialInfo } from "@/components/seo/PageTrust";
 import { BlogEndCta, BlogInlineCta } from "@/components/blog/BlogBrandCta";
 import { isAllowedExternal, stripDisallowedLinks } from "@/lib/geo-blog/external-policy";
+import { fixInternalLinks } from "@/lib/geo-blog/internal-links";
 import { getSiteSettings } from "@/lib/site-settings";
 import Image from 'next/image';
 import { optimizeContentImages } from "@/lib/content-images";
@@ -153,7 +154,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   const toc = extractToc(post.content);
   // Dış link kuralı yayında da uygulanır: rakip/resmî olmayan linkler kalkar, sattığımız
   // hizmete giden dış link kendi sayfamıza çevrilir (eski yazılar dahil)
-  const contentWithIds = optimizeContentImages(cleanAndWrapTables(injectHeadingIds(stripDisallowedLinks(post.content).html)));
+  const contentWithIds = optimizeContentImages(cleanAndWrapTables(injectHeadingIds(fixInternalLinks(stripDisallowedLinks(post.content).html))));
   // Marka kutusu 3. ara başlıktan önce (yoksa içeriğin sonunda)
   const h2Positions = [...contentWithIds.matchAll(/<h2[\s>]/gi)].map((m) => m.index ?? 0);
   const splitAt = h2Positions.length >= 3 ? h2Positions[2] : contentWithIds.length;
@@ -205,9 +206,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     dateModified: post.updatedAt.toISOString(),
     author: [{
       '@type': 'Person',
-      name: post.authorModel?.name || post.author,
+      name: (post.authorModel?.name || post.author || "").trim(),
       url: post.authorModel?.linkedin || post.authorModel?.twitter || `${SITE_URL}/hakkimizda`,
-      jobTitle: post.authorModel?.expertise || undefined,
+      jobTitle: post.authorModel?.expertise ? post.authorModel.expertise.trim() : undefined,
       description: post.authorModel?.bio || undefined,
       image: post.authorModel?.image || undefined
     }]
@@ -274,7 +275,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
 
           {post.imageUrl && (
             <div className="relative w-full h-[400px] mb-10 rounded-3xl overflow-hidden shadow-[0px_32px_64px_-12px_rgba(0,55,129,0.06)] border border-outline-variant/10">
-              <Image src={post.imageUrl} alt={(post as any).imageAlt || post.title} fill priority sizes="(max-width: 768px) 100vw, 768px" className="object-cover" />
+              <Image src={post.imageUrl} alt={((post as Record<string, unknown>).imageAlt as string | undefined) || post.title} fill priority sizes="(max-width: 768px) 100vw, 768px" className="object-cover" />
             </div>
           )}
           <div className="flex flex-wrap items-center gap-4 text-xs text-outline mb-6 uppercase tracking-[0.2em] font-bold">
@@ -329,13 +330,13 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         )}
 
         {/* TL;DR Özet Kutusu */}
-        {(post as any).tldr && (
+        {((post as Record<string, unknown>).tldr as string | undefined) && (
           <div className="my-10 bg-amber-50 border border-amber-200 rounded-2xl p-6 shadow-sm">
             <div className="flex items-center gap-2 mb-3">
               <span className="material-symbols-outlined text-amber-600 text-[18px]">bolt</span>
               <span className="text-amber-700 font-bold text-[10px] uppercase tracking-widest">TL;DR — Kısa Özet</span>
             </div>
-            <p className="text-[#334155] text-base leading-relaxed whitespace-pre-wrap">{(post as any).tldr}</p>
+            <p className="text-[#334155] text-base leading-relaxed whitespace-pre-wrap">{((post as Record<string, unknown>).tldr as string | undefined)}</p>
           </div>
         )}
 

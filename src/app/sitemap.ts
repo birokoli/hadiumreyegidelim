@@ -7,6 +7,10 @@ import { SITE_URL } from '@/lib/seo/site';
 
 export const dynamic = 'force-dynamic';
 
+// sayfa içeriği gerçekten değişince elle güncellenir
+const STATIC_REVIEWED = "2026-10-02";
+const CITY_TEMPLATE_REVIEWED = "2026-10-02";
+
 // 4. Otomatik Sitemap
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = SITE_URL;
@@ -38,7 +42,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
 
-  const categoryUrls = categories.filter((c: any) => c._count.posts > 0).map((category: any) => ({
+  const categoryUrls = categories.filter((c) => c._count.posts > 0).map((category) => ({
     url: `${baseUrl}/blog/kategori/${category.slug}`,
     lastModified: category.updatedAt,
     changeFrequency: 'daily' as const,
@@ -54,76 +58,90 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 1.0, // Products are very important
   }));
 
+  const latestPostDate = posts[0]?.updatedAt ? posts[0].updatedAt.toISOString().split("T")[0] : STATIC_REVIEWED;
+
   return [
     {
       url: baseUrl,
-      lastModified: new Date(),
+      lastModified: STATIC_REVIEWED,
       changeFrequency: 'daily',
       priority: 1,
     },
     {
       url: `${baseUrl}/hakkimizda`,
-      lastModified: new Date(),
+      lastModified: STATIC_REVIEWED,
       changeFrequency: 'monthly',
       priority: 0.7,
     },
+    {
+      url: `${baseUrl}/iletisim`,
+      lastModified: STATIC_REVIEWED,
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/hizmetler`,
+      lastModified: STATIC_REVIEWED,
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
     ...["eylul-umresi", "ilk-umrem", "hanim-umresi"].map((slug) => ({
       url: `${baseUrl}/${slug}`,
-      lastModified: new Date(),
+      lastModified: STATIC_REVIEWED,
       changeFrequency: "weekly" as const,
       priority: 0.9,
     })),
     {
       url: `${baseUrl}/kvkk`,
-      lastModified: new Date(),
+      lastModified: STATIC_REVIEWED,
       changeFrequency: 'monthly',
       priority: 0.3,
     },
     {
       url: `${baseUrl}/gizlilik-politikasi`,
-      lastModified: new Date(),
+      lastModified: STATIC_REVIEWED,
       changeFrequency: 'monthly',
       priority: 0.3,
     },
     {
       url: `${baseUrl}/kullanim-sartlari`,
-      lastModified: new Date(),
+      lastModified: STATIC_REVIEWED,
       changeFrequency: 'monthly',
       priority: 0.3,
     },
     {
       url: `${baseUrl}/bireysel-umre`,
-      lastModified: new Date(),
+      lastModified: STATIC_REVIEWED,
       changeFrequency: 'weekly',
       priority: 0.9,
     },
     {
       url: `${baseUrl}/paketler`,
-      lastModified: new Date(),
+      lastModified: STATIC_REVIEWED,
       changeFrequency: 'weekly',
       priority: 0.8,
     },
     {
       url: `${baseUrl}/rehberlik`,
-      lastModified: new Date(),
+      lastModified: STATIC_REVIEWED,
       changeFrequency: 'weekly',
       priority: 0.8,
     },
     {
       url: `${baseUrl}/umre-vizesi`,
-      lastModified: new Date(),
+      lastModified: STATIC_REVIEWED,
       changeFrequency: 'weekly',
       priority: 0.9,
     },
     {
       url: `${baseUrl}/umre-vizesi/basvuru`,
-      lastModified: new Date(),
+      lastModified: STATIC_REVIEWED,
       changeFrequency: 'monthly' as const,
       priority: 0.9,
     },
     {
       url: `${baseUrl}/blog`,
-      lastModified: new Date(),
+      lastModified: latestPostDate,
       changeFrequency: 'daily',
       priority: 0.9,
     },
@@ -133,19 +151,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Rehber sayfaları (3.2): ana sayfada listelenmez, Google sitemap ve /umre-rehberi'den bulur
     {
       url: `${baseUrl}/umre-rehberi`,
-      lastModified: new Date(CONTENT_PAGES.map((p) => p.reviewed).sort().at(-1) ?? Date.now()),
+      lastModified: CONTENT_PAGES.map((p) => p.reviewed).sort().at(-1) ?? STATIC_REVIEWED,
       changeFrequency: 'weekly' as const,
       priority: 0.8,
     },
     ...CONTENT_PAGES.map((p) => ({
       url: `${baseUrl}${contentPath(p)}`,
-      lastModified: new Date(p.reviewed),
+      lastModified: p.reviewed,
       changeFrequency: 'monthly' as const,
       priority: 0.8,
     })),
     ...turkeyCities.map((city) => ({
       url: `${baseUrl}/${city.slug}-cikisli-bireysel-umre`,
-      lastModified: new Date(),
+      lastModified: CITY_TEMPLATE_REVIEWED,
       changeFrequency: 'weekly' as const,
       priority: 0.85,
     })),

@@ -1,11 +1,11 @@
 import { SITE_URL } from "@/lib/seo/site";
 import React from "react";
-import { Metadata } from "next";
-import Link from "next/link";
+import type { Metadata } from "next";
+import { ButtonLink, PageHero, Panel, Section, SectionHead } from "@/components/ui/kit";
 
 export const metadata: Metadata = {
   title: "Hakkımızda: Biz Kimiz?",
-  description: "Hadi Umreye Gidelim, kalabalık kafilelere bağlı kalmadan ailenize özel butik ve VIP bireysel umre deneyimi sunan Türkiye merkezli bir platformdur.",
+  description: "Hadi Umreye Gidelim, kalabalık kafilelere bağlı kalmadan ailenize özel bireysel umre deneyimi sunan platformdur.",
   alternates: {
     canonical: "/hakkimizda",
   },
@@ -26,53 +26,52 @@ const jsonLd = {
 
 export default function HakkimizdaPage() {
   return (
-    <main className="pt-32 pb-24 bg-surface-container-lowest min-h-screen">
+    <main>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <div className="max-w-3xl mx-auto px-8">
-        {/* Breadcrumb */}
-        <nav className="flex mb-10" aria-label="Breadcrumb">
-          <ol className="inline-flex items-center space-x-2 text-sm text-on-surface-variant">
-            <li><Link href="/" className="hover:text-primary transition-colors">Ana Sayfa</Link></li>
-            <li><span className="mx-2 text-outline">/</span></li>
-            <li className="text-primary font-medium">Hakkımızda</li>
-          </ol>
-        </nav>
+      <PageHero
+        crumbs={[{ label: "Ana Sayfa", href: "/" }, { label: "Hakkımızda" }]}
+        kicker="Biz Kimiz"
+        title="Hadi Umreye Gidelim"
+        lead="Kalabalık kafilelere ve standart programlara bağlı kalmadan, ailenize özel bireysel umre deneyimi sunan bir organizasyon platformuyuz."
+        aside={
+          <Panel tone="primary" className="p-6 md:p-8">
+            <h2 className="font-headline text-xl font-bold">Kurumsal Bilgi</h2>
+            <p className="mt-3 text-sm text-white/90 leading-relaxed">
+              Hadi Umreye Gidelim, MBD Tourism L.L.C. iştirakidir. MBD Tourism L.L.C., Dubai Ekonomi ve Turizm Departmanı (DTCM) tarafından lisanslı seyahat acentesidir. DTCM Lisans No: 1203162.
+            </p>
+            <ButtonLink href="/iletisim" tone="light" className="mt-6 w-full">
+              İletişime Geçin
+            </ButtonLink>
+          </Panel>
+        }
+      />
 
-        <header className="mb-16">
-          <span className="text-secondary font-label text-xs tracking-[0.3em] font-bold uppercase mb-4 block">Biz Kimiz</span>
-          <h1 className="font-headline text-5xl md:text-6xl text-primary font-bold mb-6 leading-tight">
-            Hadi Umreye Gidelim
-          </h1>
-          <p className="text-on-surface-variant text-lg font-light leading-relaxed">
-            Kalabalık kafilelere ve standart programlara bağlı kalmadan, ailenize özel butik ve VIP bireysel umre deneyimi sunan Türkiye merkezli bir organizasyon platformuyuz.
-          </p>
-        </header>
-
-        <section className="space-y-10 text-on-surface leading-relaxed">
+      <Section tone="white">
+        <div className="space-y-8 text-on-surface leading-relaxed max-w-3xl">
           <div>
-            <h2 className="font-headline text-2xl text-primary font-bold mb-4">Niyetimiz</h2>
-            <p>
-              Her umre yolculuğunun eşsiz ve kişisel olduğuna inanıyoruz. Diyanet turlarının kalabalık programlarından veya yüksek komisyonlu acentelerden bağımsız olarak, sizi ve ailenizi Kutsal Topraklar'a en huzurlu, en konforlu ve en manevi şekilde ulaştırmak için çalışıyoruz.
+            <SectionHead kicker="Yaklaşımımız" title="Niyetimiz" />
+            <p className="text-on-surface-variant text-base leading-relaxed">
+              Her ailenin umre ihtiyacı farklıdır. Kalabalık programlardan bağımsız olarak, sizi ve ailenizi Kutsal Topraklar'a huzurlu, konforlu ve manevi açıdan verimli şekilde ulaştırmak için çalışıyoruz.
             </p>
           </div>
 
           <div>
-            <h2 className="font-headline text-2xl text-primary font-bold mb-4">Ne Sunuyoruz</h2>
-            <ul className="space-y-3">
+            <SectionHead kicker="Hizmetlerimiz" title="Ne Sunuyoruz" />
+            <ul className="grid sm:grid-cols-2 gap-3 mt-4">
               {[
-                "Kabe manzaralı butik otel rezervasyonu",
-                "Nusuk sistemi üzerinden yasal bireysel umre vizesi",
-                "VIP özel transfer organizasyonu",
-                "Akademik ilahiyatçı rehber eşliği",
-                "Uçak biletinde en avantajlı fiyat araştırması",
-                "7/24 WhatsApp danışmanlık desteği",
+                "Mekke ve Medine otel rezervasyonu",
+                "Suudi Arabistan e-vize başvurusu",
+                "Özel transfer organizasyonu",
+                "Rehberlik desteği",
+                "Haremeyn hızlı treni bileti",
+                "WhatsApp danışmanlık desteği",
               ].map((item) => (
-                <li key={item} className="flex items-start gap-3">
-                  <span className="material-symbols-outlined text-secondary text-[18px] mt-0.5">check_circle</span>
+                <li key={item} className="flex items-center gap-2.5 bg-surface-container-low p-3.5 rounded-xl text-sm font-medium text-on-surface">
+                  <span className="material-symbols-outlined text-primary text-xl">check_circle</span>
                   <span>{item}</span>
                 </li>
               ))}
@@ -80,29 +79,22 @@ export default function HakkimizdaPage() {
           </div>
 
           <div>
-            <h2 className="font-headline text-2xl text-primary font-bold mb-4">Neden Biz?</h2>
-            <p>
-              Suudi Arabistan'ın son yıllarda uyguladığı esnek umre politikaları sayesinde, bireysel umre yapmak artık hem yasal hem de çok daha uygun maliyetli. Biz bu imkânı herkesin kolayca kullanabilmesi için teknoloji ve deneyimlerimizi bir araya getiriyoruz.
+            <SectionHead kicker="Avantajlarımız" title="Neden Biz?" />
+            <p className="text-on-surface-variant text-base leading-relaxed">
+              Suudi Arabistan'ın uyguladığı esnek umre politikaları sayesinde, bireysel umre yapmak artık hem yasal hem de çok daha erişilebilir. Biz bu imkânı herkesin kolayca kullanabilmesi için teknoloji ve deneyimlerimizi bir araya getiriyoruz.
+            </p>
+            <p className="mt-4 text-on-surface-variant text-base leading-relaxed">
+              Hadi Umreye Gidelim, MBD Tourism L.L.C. iştirakidir. MBD Tourism L.L.C., Dubai Ekonomi ve Turizm Departmanı (DTCM) tarafından lisanslı seyahat acentesidir. DTCM Lisans No: 1203162.
             </p>
           </div>
 
-          <div>
-            <h2 className="font-headline text-2xl text-primary font-bold mb-4">İletişim</h2>
-            <p>
-              Umre yolculuğunuzu planlamaya başlamak için bizimle iletişime geçebilirsiniz.
-            </p>
-            <div className="mt-6">
-              <Link
-                href="/iletisim"
-                className="inline-flex items-center gap-2 bg-primary text-white font-bold px-8 py-4 rounded-xl hover:bg-primary/90 transition-all shadow-lg shadow-primary/20"
-              >
-                Danışmanlık Al
-                <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
-              </Link>
-            </div>
+          <div className="pt-4">
+            <ButtonLink href="/iletisim" tone="primary">
+              Danışmanlık Alın
+            </ButtonLink>
           </div>
-        </section>
-      </div>
+        </div>
+      </Section>
     </main>
   );
 }

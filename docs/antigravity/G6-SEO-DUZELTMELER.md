@@ -176,7 +176,7 @@ Tablo: sayfa, performans, erişilebilirlik, SEO, LCP, CLS, TBT, en büyük 3 ön
 
 **Dosyalar:** yeni `docs/taslaklar/sehir-sayfalari.md`, isteğe bağlı betik `scripts/local/sehir-benzerlik.mts` (yalnızca okur)
 
-Bilinen sorun: il sayfaları (`src/app/(main)/[slug]/page.tsx`) `BireyselUmreClient` ile **uçuş arıyor**, `/api/flights` canlıda 503 dönüyor (uçuş API'si kaldırıldı, uçuş satmıyoruz). Bunu **düzeltme**, Claude il sayfalarını yeni planlayıcıya bağlayacak. Senden istenen:
+Bilinen sorun: il sayfaları (`src/app/(main)/[slug]/page.tsx`) `BireyselUmreClient` ile **uçuş arıyor**, `/api/flights` canlıda 503 dönüyor (uçuş API'si kaldırıldı, uçuş satmıyoruz). **Güncelleme (Claude, 2 Ekim):** il sayfaları uçuş aramasından çıkarıldı, `PageHero` + planlayıcı bağlantısına geçti ve canlıda; `/bireysel-umre` artık planlayıcı v2. `[slug]/page.tsx` dosyasına dokunma; 1. madde için güncel dosyada **kalan** uçuş/sefer/aktarma ifadelerini listele. Senden istenen:
 1. `[slug]/page.tsx` ve `BireyselUmreClient.tsx`'te uçuş/uçak/sefer/aktarma/havalimanı geçen **her** metin ve işlev: dosya:satır + metin. (Hangileri planlayıcıya geçişte kaldırılmalı/değişmeli, öneri sütunu.)
 2. Canlı sitemap'teki 81 il sayfasının metnini curl ile çek; her çift için 5 sözcüklük dizi benzerliği (Jaccard) hesapla. Tablo: her il için en benzer 3 il ve oranı; genel medyan ve en yüksek. Betik ve tam çıktı TESLIM'de.
 3. 10 öncelikli il (Denizli, Samsun, Kütahya, Tokat, Kırıkkale, Amasya, Diyarbakır, Antalya, Mersin, İstanbul) için sayfada **o ile özgü** cümleler listesi (havalimanı, mesafe, komşu iller dışında bir şey var mı).

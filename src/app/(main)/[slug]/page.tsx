@@ -3,7 +3,7 @@ import React from "react";
 import Link from "next/link";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import BireyselUmreClient from "@/components/features/BireyselUmreClient";
+import { ButtonLink, PageHero, Panel } from "@/components/ui/kit";
 import { turkeyCities, getTurkishCityBySlug, type TurkeyCity } from "@/lib/turkey-cities";
 import { cityTravelFacts, nearestCities, type Region } from "@/lib/city-geo";
 import { DEFAULT_OG_IMAGE, metaDescription, pageTitle } from "@/lib/seo/meta";
@@ -79,7 +79,7 @@ function buildCityContent(city: TurkeyCity) {
 
   const routeText = direct
     ? `${city.airportName} (${city.airportCode}) üzerinden Cidde ve Medine'ye direkt seferler bulunur; aktarma gerekmez.`
-    : `${city.airportName} (${city.airportCode}) kalkışlı yolculukta Cidde ya da Medine'ye çoğunlukla aktarmalı gidilir; direkt sefer olup olmadığını tarih seçtiğinizde uçuş listesinde görürsünüz.`;
+    : `${city.airportName} (${city.airportCode}) kalkışlı yolculukta Cidde ya da Medine'ye çoğunlukla aktarmalı gidilir; biletinizi alırken direkt sefer olup olmadığını kontrol edin.`;
 
   const faq = [
     {
@@ -92,7 +92,7 @@ function buildCityContent(city: TurkeyCity) {
     },
     {
       q: `${city.name} çıkışlı umrede vize ve rehberlik nasıl ayarlanır?`,
-      a: `${city.name} çıkışlı yolcuların umre vizesi işlemlerini biz yürütüyoruz; pasaport bilgileriniz yeterlidir. Mekke ve Medine'de ilahiyatçı rehber eşliği isteğe bağlıdır ve tasarlayıcıda rehberlik adımından seçilir.`,
+      a: `${city.name} çıkışlı yolcuların umre vizesi işlemlerini biz yürütüyoruz; pasaport bilgileriniz yeterlidir. Mekke ve Medine'de ilahiyatçı rehber eşliği isteğe bağlıdır ve planlayıcıda ekstralardan seçilir.`,
     },
   ].filter(Boolean) as { q: string; a: string }[];
 
@@ -119,8 +119,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: pageTitle(`${city.name} Çıkışlı Bireysel Umre 2026`),
     description: metaDescription(
       facts
-        ? `${city.name} çıkışlı umre: ${city.airportCode} kalkış, Cidde'ye yaklaşık ${n(facts.toJeddah)} km, direkt uçuşla yaklaşık ${facts.jeddahFlight}. Otel, uçuş ve vizeyi tek planda seçin.`
-        : `${city.name} çıkışlı umre: ${city.airportName} (${city.airportCode}) kalkışlı uçuş, otel, vize ve transferi tek planda seçin.`,
+        ? `${city.name} çıkışlı umre: ${city.airportCode} kalkış, Cidde'ye yaklaşık ${n(facts.toJeddah)} km, direkt uçuşla yaklaşık ${facts.jeddahFlight}. Otel, transfer ve vizeyi tek planda seçin.`
+        : `${city.name} çıkışlı umre: ${city.airportName} (${city.airportCode}) kalkış; otel, vize ve transferi tek planda seçin.`,
     ),
     alternates: { canonical: `${SITE_URL}/${slug}` },
   };
@@ -174,13 +174,20 @@ export default async function DynamicCityUmrahPage({ params }: Props) {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <BireyselUmreClient
-        initialDepartureCity={city.airportCode}
-        initialDepartureLabel={`${city.airportName} (${city.airportCode})`}
+      <PageHero
+        crumbs={[{ label: "Ana Sayfa", href: "/" }, { label: "Bireysel Umre", href: "/bireysel-umre" }, { label: `${city.name} çıkışlı` }]}
+        kicker={facts ? `${facts.region} · ${city.airportCode}` : city.airportCode}
         title={`${city.name} Çıkışlı Bireysel Umre`}
-        subtitle={`${city.airportName} (${city.airportCode}) kalkışlı uçuş, Mekke ve Medine otelleri, vize ve transferi ${city.name} için tek planda tasarlayın.`}
-      >
-        <section className="max-w-screen-xl mx-auto px-4 md:px-6 mt-24 relative z-10">
+        lead={`${from} umreye gidecekler için Mekke ve Medine oteli, transfer ve e-vize tek planda. Uçak biletinizi ${city.airportName} (${city.airportCode}) kalkışlı alırsınız; konaklama ve transferi tarihlerinize göre biz planlarız.`}
+        aside={
+          <Panel tone="primary" className="p-6 md:p-8">
+            <h2 className="font-headline text-xl font-bold">Fiyatı hemen görün</h2>
+            <p className="mt-2 text-sm text-white/80">Tarihlerinizi, otelinizi ve transferinizi seçin; oda ve gece sayısına göre toplam anında hesaplanır.</p>
+            <ButtonLink href="/bireysel-umre" tone="light" className="mt-5 w-full">Umremi planla</ButtonLink>
+          </Panel>
+        }
+      />
+        <section className="max-w-screen-xl mx-auto px-4 md:px-8 pb-16 relative z-10">
           <div className="bg-white p-6 md:p-10 rounded-3xl border border-outline-variant/20 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
             <header className="mb-8">
               <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-primary/80">{facts ? `${facts.region} · ${city.airportCode}` : city.airportCode}</p>
@@ -205,7 +212,7 @@ export default async function DynamicCityUmrahPage({ params }: Props) {
               <div>
                 <h3 className="font-headline text-xl text-primary font-bold mb-3">{city.name} için yolculuk planı</h3>
                 <ol className="space-y-3 list-decimal pl-5 marker:text-primary marker:font-bold">
-                  <li>Tasarlayıcıda kalkış olarak {city.airportName} ({city.airportCode}) seçili gelir; gidiş tarihini seçtiğinizde {city.airportCode} kalkışlı uçuşlar listelenir.</li>
+                  <li>Uçak biletinizi {city.airportName} ({city.airportCode}) kalkışlı alın; giriş ve çıkış tarihlerinizi <Link href="/bireysel-umre" className="text-primary font-semibold underline underline-offset-4">planlayıcıya</Link> girin.</li>
                   <li>{direct ? `${city.airportCode} kalkışında Cidde'ye ya da Medine'ye direkt uçabilirsiniz.` : `${city.airportCode} kalkışında aktarma süresi kısa olan seferi seçmek, ${city.name} ile Mekke arasındaki toplam yolculuğu kısaltır.`}</li>
                   <li>Cidde&apos;ye inerseniz program Mekke ile, Medine&apos;ye inerseniz Medine ile başlar; {city.name} dönüşünü de aynı mantıkla ters sırada planlarız.</li>
                 </ol>
@@ -257,11 +264,10 @@ export default async function DynamicCityUmrahPage({ params }: Props) {
 
             <PageTrust className="mt-8" />
             <p className="mt-2 text-xs text-on-surface-variant">
-              Mesafeler il merkezleri arası kuş uçuşu, uçuş süreleri direkt uçuş için yaklaşık hesaplardır. Fiyat ve sefer bilgisi tarih seçildiğinde güncel olarak listelenir; kesin teklif WhatsApp üzerinden iletilir.
+              Mesafeler il merkezleri arası kuş uçuşu, uçuş süreleri direkt uçuş için yaklaşık hesaplardır. Konaklama, transfer ve vize fiyatları planlayıcıda seçtiğiniz ayın güncel fiyatıyla hesaplanır; kesin teklif WhatsApp üzerinden iletilir.
             </p>
           </div>
         </section>
-      </BireyselUmreClient>
     </>
   );
 }

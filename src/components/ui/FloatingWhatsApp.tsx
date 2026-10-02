@@ -26,7 +26,7 @@ export default function FloatingWhatsApp() {
   // Profil ve Admin ekranlarında gizle (Zaten admin layoutu ayri ama profil main icinde)
   if (pathname?.startsWith("/profil") || pathname?.startsWith("/admin")) return null;
   // Planlayıcı v2'nin kendi WhatsApp düğmesi ve alt toplam çubuğu var
-  if (pathname === "/bireysel-umre/yeni") return null;
+  if (pathname === "/bireysel-umre") return null;
 
   const handleWhatsAppClick = () => {
     let contextMessage = "Merhaba, Hadi Umreye Gidelim hizmetleriniz hakkında bilgi almak istiyorum.";

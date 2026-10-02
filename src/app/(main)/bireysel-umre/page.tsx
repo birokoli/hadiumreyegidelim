@@ -1,256 +1,89 @@
+// Bireysel umre planlayıcısı (v2): kendi kataloğumuz ve aylık fiyatlarımızla. Eski adımlı tasarlayıcı ve
+// /bireysel-umre/yeni önizlemesi buraya kalıcı yönlenir (2 Ekim 2026).
+import type { Metadata } from "next";
 import { SITE_URL } from "@/lib/seo/site";
-import React from "react";
-import { Metadata } from "next";
-import BireyselUmreClient from "@/components/features/BireyselUmreClient";
-import { PageTrust } from "@/components/seo/PageTrust";
+import { Container, Faq, faqJsonLd, PageHero, Section, SectionHead, Steps } from "@/components/ui/kit";
+import { PageTrust, webPageJsonLd } from "@/components/seo/PageTrust";
+import PlannerV2 from "@/components/planner/PlannerV2";
+import { getCatalog, monthsFrom, monthLabel, paymentSettingsFrom } from "@/lib/catalog";
+import { getSiteSettings } from "@/lib/site-settings";
 
 export const metadata: Metadata = {
-  title: "Bireysel Umre Tasarlayıcı 2026",
-  description: "Bireysel umre planınızı kendiniz tasarlayın: tarih, Mekke ve Medine oteli, uçuş, vize ve transferi seçin, size özel teklifi WhatsApp'tan alın.",
-  alternates: {
-    canonical: `${SITE_URL}/bireysel-umre`,
-  },
+  title: "Bireysel Umre Planlayıcı 2026: Otel, Transfer ve Vize Fiyatı",
+  description: "Bireysel umrenizi kendiniz planlayın: tarihleri, Mekke ve Medine otelini, transferi ve e-vizeyi seçin, toplam fiyatı anında görün. Planı gönderin, kesin teklifi iletelim.",
+  alternates: { canonical: "/bireysel-umre" },
 };
 
-export default function PlannerPage() {
-  const breadcrumbSchema = {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-      {
-        "@type": "ListItem",
-        "position": 1,
-        "name": "Ana Sayfa",
-        "item": SITE_URL
-      },
-      {
-        "@type": "ListItem",
-        "position": 2,
-        "name": "Bireysel Umre Tasarlayıcı",
-        "item": `${SITE_URL}/bireysel-umre`
-      }
-    ]
-  };
+const STEPS = [
+  { title: "Tarih ve kişi", text: "Giriş-çıkış tarihlerini, Mekke ve Medine gece sayısını, yetişkin, çocuk ve bebek sayısını seçin." },
+  { title: "Otel, transfer, vize", text: "Mekke ve Medine otelinizi listeden seçin; transferi ve Suudi Arabistan e-vizesini ekleyin ya da çıkarın." },
+  { title: "Fiyatı görün, gönderin", text: "Toplam fiyat o ayın güncel fiyatlarıyla anında hesaplanır. Planı gönderin, ekibimiz kesin teklifi iletsin." },
+];
 
-  const productTourSchema = {
-    "@context": "https://schema.org",
-    "@type": "TouristTrip",
-    "name": "2026 Özel Bireysel Umre ve VIP Aile Paketleri",
-    "description": "Mekke ve Medine otel seçimi, umre vizesi, uçuş, transfer ve isteğe bağlı ilahiyatçı rehber eşliğiyle kişiye özel bireysel umre planlaması.",
-    "offers": {
-      "@type": "Offer",
-      "priceCurrency": "USD",
-      "price": "1250",
-      "priceValidUntil": "2026-12-31",
-      "availability": "https://schema.org/InStock",
-      "url": `${SITE_URL}/bireysel-umre`
-    },
-    "provider": {
-      "@type": "Organization",
-      "name": "Hadi Umreye Gidelim",
-      "url": SITE_URL
-    },
-    "touristType": ["Bireysel Umre", "VIP Aile Umresi", "Kendi Programıyla Umre"]
-  };
+// Metin ile şema aynı diziden üretilir
+const FAQ = [
+  { q: "Bireysel umre nedir?", a: "Bireysel umre, sabit tarihli bir gruba katılmadan; tarihlerinizi, Mekke ve Medine otelinizi, transferinizi ve vizenizi kendinizin seçtiği umredir. Bu sayfadaki planlayıcıda hepsini seçip toplam fiyatı görebilirsiniz." },
+  { q: "Bireysel umre fiyatı nasıl hesaplanır?", a: "Otel fiyatları 1 oda, 1 gece içindir (giriş 16.00, ertesi gün çıkış 11.00). Bir odada en fazla 4 kişi kalır: 1–4 kişi 1 oda, 5–8 kişi 2 oda. Otel tutarı gecelik fiyat × gece sayısı × oda sayısıdır. Transfer araç ya da kişi başı, vize kişi başı eklenir. Fiyatlar seçtiğiniz ayın güncel fiyatlarıdır; IBAN ve kartla ödeme tutarları ayrıca gösterilir." },
+  { q: "Umre vizesi fiyata dahil mi?", a: "İsterseniz eklenir. Suudi Arabistan e-vize kişi başı 140 USD'dir; belgeleriniz tamamsa vizeniz 2 iş saati içinde çıkar. Vizeniz varsa planlayıcıda \"Vizem var\" seçeneğini işaretlemeniz yeterli." },
+  { q: "Uçak bileti planlayıcıda var mı?", a: "Hayır. Uçak biletinizi kendiniz alırsınız; planlayıcı giriş-çıkış tarihlerinize göre konaklama, transfer, vize ve ek hizmetleri hesaplar." },
+  { q: "Bebekle gidersem oda sayısı değişir mi?", a: "Hayır. 0–2 yaş bebekler otele bildirilmez ve oda sayısına girmez; bebek başına gecelik beşik ücreti eklenir." },
+  { q: "Planı gönderdikten sonra ne oluyor?", a: "Planınız ekibimize ulaşır; otel müsaitliğini kontrol edip kesin teklifi ve ödeme bilgisini WhatsApp üzerinden iletiriz. Plan göndermek ödeme yükümlülüğü doğurmaz." },
+];
 
-  const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "Bireysel Umre yapabilmek için Suudi Vizesi nasıl alınır? (E-Vize / Nusuk)",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Suudi Arabistan'ın 1 yıllık çok girişli (Multiple Entry) Elektronik Turizm Vizesi (E-Visa) sistemi ile vizeniz dakikalar içerisinde alınır. Başvuru esnasında Umre yapacağım seçeneğini işaretlemek, size Suudi hükümeti tarafından tamamen yasal ve bağımsız bir bireysel umre yapma yetkisi verir."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "2026 Bireysel Umre fiyatları nasıl hesaplanır? Kaç USD'den başlar?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Bireysel umre fiyatları kişi başı $1.250 USD'den başlamaktadır. Tasarım aracımız sayesinde uçak bileti, Mekke ve Medine otel seviyesi (3-4-5 Yıldız), Hızlı Tren (Haramain) ve VIP Transfer parametrelerini esnekçe seçerek bütçenizi kontrol edebilirsiniz."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Mekke ve Medine'de ibadetlerim için rehber desteği alabilir miyim?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Evet! Sistemimizdeki Birebir İlahiyatçı Özel Rehber hizmeti sayesinde Mekke ve Medine'de hocamız sizi otelinizden alır, ilk tavafınızı, sa'yınızı ve Mescid-i Haram tanıtımınızı sadece ailenize özel refakat ederek tamamlar."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Diyanet turları olmadan kendi imkanlarıyla umre yapmak yasal mıdır?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Evet, tamamen yasaldır. Suudi Arabistan Krallığı'nın yeni vizyon projesi kapsamında turist vizeli veya e-vizeli tüm Müslümanlar acente bağımlılığı olmadan umre yapma hakkına sahiptir."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Mekke - Medine arası ulaşım ve VIP Transfer seçenekleri nelerdir?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Mekke ve Medine arasında Haramain Hızlı Treni (2 saat 20 dakika) veya GMC / Mercedes Vito gibi özel VIP araç transfer imkanları sunulmaktadır."
-        }
-      }
-    ]
-  };
+export default async function BireyselUmrePage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
+  const sp = await searchParams;
+  const query = Object.fromEntries(Object.entries(sp).map(([k, v]) => [k, Array.isArray(v) ? v[0] : v]));
+  const [catalog, settings] = await Promise.all([getCatalog(), getSiteSettings().catch(() => ({} as Record<string, string>))]);
+  const months = monthsFrom().map((m) => ({ value: m, label: monthLabel(m) }));
+  const whatsappNumber = (settings.WHATSAPP_NUMBER || "905404010038").replace("+", "");
+  const url = `${SITE_URL}/bireysel-umre`;
+  const jsonLd = [
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Ana Sayfa", item: SITE_URL },
+        { "@type": "ListItem", position: 2, name: "Bireysel Umre", item: url },
+      ],
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      name: "Bireysel umre planlama",
+      serviceType: "Bireysel umre: otel, transfer, vize ve rehberlik",
+      areaServed: [{ "@type": "City", name: "Mekke" }, { "@type": "City", name: "Medine" }],
+      provider: { "@type": "TravelAgency", name: "Hadi Umreye Gidelim", url: SITE_URL },
+      url,
+    },
+    faqJsonLd(FAQ),
+    webPageJsonLd({ url, name: "Bireysel Umre Planlayıcı 2026" }),
+  ];
 
   return (
-    <BireyselUmreClient title="2026 Bireysel Umre Turları ve VIP Tasarlayıcı" subtitle="Manevi rotanızı kalabalık tur şirketlerinden bağımsız, ailenize özel VIP detaylarla tasarlayın.">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productTourSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+    <main className="bg-surface pb-24 lg:pb-0">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <PageHero
+        crumbs={[{ label: "Ana Sayfa", href: "/" }, { label: "Bireysel Umre" }]}
+        kicker="Bireysel umre 2026"
+        title="Umrenizi planlayın, fiyatı hemen görün"
+        lead="Tarihlerinizi, Mekke ve Medine otelinizi, transferinizi ve vizenizi seçin; seçtiğiniz ayın güncel fiyatıyla toplamı görün. Planı gönderin, kesin teklifi ekibimiz iletsin."
+      />
+      <Container>
+        <PlannerV2 catalog={catalog} months={months} whatsappNumber={whatsappNumber} payment={paymentSettingsFrom(settings)} query={query} todayYmd={new Date().toLocaleDateString("en-CA", { timeZone: "Europe/Istanbul" })} />
+      </Container>
 
-      <section className="max-w-screen-xl mx-auto px-6 mt-32 relative z-10">
-        <div className="bg-surface-container-lowest p-8 md:p-12 rounded-3xl border border-outline-variant/15 shadow-sm">
-          <header className="mb-10 text-center">
-            <div className="inline-block px-4 py-1.5 mb-4 rounded-full bg-primary/10 text-primary font-bold text-xs tracking-widest uppercase">
-              2026 ÖZEL BİREYSEL UMRE REHBERİ
-            </div>
-            <h2 className="font-headline text-3xl md:text-5xl text-primary font-bold tracking-tight mb-4">
-              Bireysel Umre Turları ve Fiyatları 2026: Özgürlüğünüzü Keşfedin
-            </h2>
-            <p className="text-on-surface-variant font-body max-w-3xl mx-auto text-base">
-              Kalabalık 40-50 kişilik kafilelere bağlı kalmadan, kişi başı <strong>$1.250 USD'den başlayan</strong> şeffaf bütçe ile sadece ailenize özel Mekke ve Medine ibadet rehberi.
-            </p>
-          </header>
+      <Section>
+        <SectionHead kicker="Nasıl çalışır?" title="Üç adımda bireysel umre planı" />
+        <Steps items={STEPS} />
+      </Section>
 
-          <article className="prose prose-slate max-w-none text-on-surface-variant space-y-6">
-            <h2 className="font-headline text-2xl md:text-3xl text-primary mt-8 mb-4">
-              Bireysel Umre Nedir? (E-Vize ve Nusuk ile Kendi Programınızla Umre)
-            </h2>
-            <p className="mb-6 leading-relaxed">
-              <strong>Bireysel umre</strong>, Diyanet İşleri veya geleneksel tur şirketlerinin belirlediği sabit tarihlere ve kalabalık gruplara mahkum olmadan; vize, uçak bileti, Mekke oteli, Medine konaklaması ve VIP transfer süreçlerinizi tamamen kendi özel bütçenize ve zamanınıza göre tasarladığınız <strong>kişiselleştirilmiş ibadet seyahatidir</strong>. Özellikle yaşlı ebeveynleri ile seyahat eden aileler veya çocuklu aileler için grubun temposuna uymak yerine kendi ritminde ibadet etmek büyük bir lükstür.
-            </p>
-
-            {/* Inclusions & Highlights Grid for LLM Extractability */}
-            <div className="my-8 grid grid-cols-1 md:grid-cols-4 gap-4 not-prose">
-              <div className="bg-slate-50 dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800">
-                <span className="material-symbols-outlined text-primary text-3xl mb-2">badge</span>
-                <h4 className="font-bold text-sm text-slate-800 dark:text-white">24 Saatte Suudi E-Vize</h4>
-                <p className="text-xs text-slate-500 mt-1">1 Yıllık çok girişli tamamen yasal turistik umre vizesi.</p>
-              </div>
-
-              <div className="bg-slate-50 dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800">
-                <span className="material-symbols-outlined text-emerald-600 text-3xl mb-2">hotel</span>
-                <h4 className="font-bold text-sm text-slate-800 dark:text-white">Kâbe'ye Yürüme Mesafesi</h4>
-                <p className="text-xs text-slate-500 mt-1">Mescid-i Haram ve Mescid-i Nebevi’ye yürüme mesafesinde oteller.</p>
-              </div>
-
-              <div className="bg-slate-50 dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800">
-                <span className="material-symbols-outlined text-amber-600 text-3xl mb-2">school</span>
-                <h4 className="font-bold text-sm text-slate-800 dark:text-white">Birebir Özel İlahiyatçı</h4>
-                <p className="text-xs text-slate-500 mt-1">Mekke ve Medine'de ailenize özel manevi rehberlik.</p>
-              </div>
-
-              <div className="bg-slate-50 dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800">
-                <span className="material-symbols-outlined text-indigo-600 text-3xl mb-2">directions_car</span>
-                <h4 className="font-bold text-sm text-slate-800 dark:text-white">VIP Ulaşım & Hızlı Tren</h4>
-                <p className="text-xs text-slate-500 mt-1">GMC / Vito ile havalimanı ve Haramain tren transferi.</p>
-              </div>
-            </div>
-
-            <h2 className="font-headline text-2xl md:text-3xl text-primary mt-10 mb-4">
-              Bireysel umre ile tur arasında fiyat farkı nedir?
-            </h2>
-            <div className="overflow-x-auto not-prose my-6">
-              <table className="w-full text-left border-collapse bg-white dark:bg-slate-900 rounded-2xl overflow-hidden shadow-sm border border-slate-200 dark:border-slate-800">
-                <thead>
-                  <tr className="bg-primary text-white text-xs uppercase tracking-wider">
-                    <th className="p-4">Hizmet Kalemi</th>
-                    <th className="p-4">Geleneksel Tur Şirketleri</th>
-                    <th className="p-4">Hadi Umreye Gidelim (Bireysel Umre)</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-100 dark:divide-slate-800 text-sm">
-                  <tr>
-                    <td className="p-4 font-bold text-slate-800 dark:text-white">Grup Sayısı</td>
-                    <td className="p-4 text-slate-500">40 – 50 Kişilik Otobüs Grubu</td>
-                    <td className="p-4 font-bold text-emerald-600">Sadece Aileniz / Kişiye Özel</td>
-                  </tr>
-                  <tr>
-                    <td className="p-4 font-bold text-slate-800 dark:text-white">Başlangıç Fiyatı</td>
-                    <td className="p-4 text-slate-500">$1.500 - $1.800 (Yüksek Komisyon)</td>
-                    <td className="p-4 font-bold text-emerald-600">$1.250 USD / Kişi Başı</td>
-                  </tr>
-                  <tr>
-                    <td className="p-4 font-bold text-slate-800 dark:text-white">Otel Konumu</td>
-                    <td className="p-4 text-slate-500">Servisli / Uzak Oteller</td>
-                    <td className="p-4 font-bold text-emerald-600">Kâbe'ye Yürüme Sıfır Mesafede</td>
-                  </tr>
-                  <tr>
-                    <td className="p-4 font-bold text-slate-800 dark:text-white">Manevi Rehberlik</td>
-                    <td className="p-4 text-slate-500">Gruba Ortak Genel Rehber</td>
-                    <td className="p-4 font-bold text-emerald-600">Ailenize Özel İlahiyatçı Rehber</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <h2 className="font-headline text-2xl md:text-3xl text-primary mt-10 mb-4">
-              Bireysel umre hakkında sık sorulan sorular
-            </h2>
-
-            <div className="space-y-4 my-8 not-prose">
-              <details className="group bg-surface border border-outline-variant/30 rounded-2xl open:bg-primary/5 transition-colors">
-                <summary className="flex cursor-pointer items-center justify-between p-6 font-bold text-primary">
-                  Bireysel Umre yapabilmek için Suudi Vizesi nasıl alınır? (E-Vize / Nusuk)
-                  <span className="material-symbols-outlined transition duration-300 group-open:-rotate-180">expand_more</span>
-                </summary>
-                <div className="px-6 pb-6 text-slate-700 dark:text-slate-300 leading-relaxed font-medium text-sm">
-                  Suudi Arabistan'ın 1 yıllık çok girişli Elektronik Turizm Vizesi (E-Visa) sistemi ile vizeniz dakikalar içerisinde temin edilir. Başvuru esnasında "Umre yapacağım" seçeneğini işaretlemek size yasal bireysel umre hakkı kazandırır. Diyanet onayı gerekmez.
-                </div>
-              </details>
-
-              <details className="group bg-surface border border-outline-variant/30 rounded-2xl open:bg-primary/5 transition-colors">
-                <summary className="flex cursor-pointer items-center justify-between p-6 font-bold text-primary">
-                  2026 Bireysel Umre fiyatları nasıl hesaplanır? Kaç USD'den başlar?
-                  <span className="material-symbols-outlined transition duration-300 group-open:-rotate-180">expand_more</span>
-                </summary>
-                <div className="px-6 pb-6 text-slate-700 dark:text-slate-300 leading-relaxed font-medium text-sm">
-                  Bireysel umre fiyatları kişi başı <strong>$1.250 USD'den</strong> başlamaktadır. Yukarıdaki Umre Tasarlama Aracı (Konfigüratör) sayesinde uçuş, Mekke oteli, Medine oteli, Hızlı Tren ve VIP Transfer seçeneklerini belirleyip anında proforma fiyat çıkarabilirsiniz.
-                </div>
-              </details>
-
-              <details className="group bg-surface border border-outline-variant/30 rounded-2xl open:bg-primary/5 transition-colors">
-                <summary className="flex cursor-pointer items-center justify-between p-6 font-bold text-primary">
-                  Mekke ve Medine'de ibadetlerim için rehber desteği alabilir miyim?
-                  <span className="material-symbols-outlined transition duration-300 group-open:-rotate-180">expand_more</span>
-                </summary>
-                <div className="px-6 pb-6 text-slate-700 dark:text-slate-300 leading-relaxed font-medium text-sm">
-                  Evet! Özel İlahiyatçı Rehber atamamız sayesinde Mekke'de ve Medine'de hocamız sizi otelinizden alır; ilk tavafınızı, sa'yınızı ve Mescid-i Haram tanıtımınızı sadece ailenize özel refakat ederek tamamlar.
-                </div>
-              </details>
-
-              <details className="group bg-surface border border-outline-variant/30 rounded-2xl open:bg-primary/5 transition-colors">
-                <summary className="flex cursor-pointer items-center justify-between p-6 font-bold text-primary">
-                  Diyanet turları olmadan kendi imkanlarıyla umre yapmak yasal mıdır?
-                  <span className="material-symbols-outlined transition duration-300 group-open:-rotate-180">expand_more</span>
-                </summary>
-                <div className="px-6 pb-6 text-slate-700 dark:text-slate-300 leading-relaxed font-medium text-sm">
-                  Evet, tamamen yasaldır. Suudi Arabistan Krallığı'nın yeni kuralları gereğince e-vize alan tüm Müslümanlar acente veya grup bağımlılığı olmadan umre ibadetini gerçekleştirebilir.
-                </div>
-              </details>
-
-              <details className="group bg-surface border border-outline-variant/30 rounded-2xl open:bg-primary/5 transition-colors">
-                <summary className="flex cursor-pointer items-center justify-between p-6 font-bold text-primary">
-                  Mekke - Medine arası ulaşım ve VIP Transfer seçenekleri nelerdir?
-                  <span className="material-symbols-outlined transition duration-300 group-open:-rotate-180">expand_more</span>
-                </summary>
-                <div className="px-6 pb-6 text-slate-700 dark:text-slate-300 leading-relaxed font-medium text-sm">
-                  Mekke ve Medine arasında Haramain Hızlı Treni (2 saat 20 dakika) veya GMC / Mercedes Vito gibi özel VIP konforlu araç transfer imkanları sunulmaktadır.
-                </div>
-              </details>
-            </div>
-            <PageTrust className="not-prose mt-8" />
-          </article>
+      <Section tone="white">
+        <div className="max-w-screen-md mx-auto">
+          <SectionHead kicker="Sık sorulanlar" title="Bireysel umre hakkında sorular" />
+          <Faq items={FAQ} />
+          <PageTrust className="mt-6" />
         </div>
-      </section>
-    </BireyselUmreClient>
+      </Section>
+    </main>
   );
 }

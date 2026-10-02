@@ -14,6 +14,8 @@ export const dynamic = "force-dynamic";
 
 // Fiyat birimi: oteller 1 oda / 1 gece (en fazla 4 kişi)
 const UNIT: Record<string, string> = { per_room: "/ oda · gece", per_person: "/ kişi", per_vehicle: "/ araç", flat: "" };
+// Şehir veritabanında küçük harfle tutuluyor ("mekke")
+const CITY: Record<string, string> = { mekke: "Mekke", medine: "Medine" };
 const isCrib = (i: CatalogItem) => /beşi[kğ]|besi[kg]/i.test(i.name);
 
 function hotelLine(i: CatalogItem) {
@@ -34,7 +36,7 @@ function Grid({ items, hotel }: { items: CatalogItem[]; hotel?: boolean }) {
             description={hotel ? hotelLine(i) : i.description ?? undefined}
             image={i.imageUrl}
             fallbackIcon={hotel ? "hotel" : i.category === "transfer" ? "directions_car" : "mosque"}
-            topLeft={hotel && i.city ? <Badge>{i.city}</Badge> : undefined}
+            topLeft={hotel && i.city ? <Badge>{CITY[i.city.toLowerCase()] ?? i.city}</Badge> : undefined}
             footer={<CardFooter price={p?.priceUsd} suffix={UNIT[i.pricingType]} cta="Planlayıcıda seç" />}
           />
         );
@@ -78,8 +80,8 @@ export default async function ServicesPage() {
   const all = (await getCatalog()).filter((i) => i.category !== "flight" && !isCrib(i));
   const hotels = all.filter((i) => i.category === "hotel");
   const groups = [
-    { id: "mekke", kicker: "Konaklama", title: "Mekke otelleri", items: hotels.filter((i) => i.city === "Mekke"), hotel: true },
-    { id: "medine", kicker: "Konaklama", title: "Medine otelleri", items: hotels.filter((i) => i.city === "Medine"), hotel: true },
+    { id: "mekke", kicker: "Konaklama", title: "Mekke otelleri", items: hotels.filter((i) => i.city?.toLowerCase() === "mekke"), hotel: true },
+    { id: "medine", kicker: "Konaklama", title: "Medine otelleri", items: hotels.filter((i) => i.city?.toLowerCase() === "medine"), hotel: true },
     { id: "transfer", kicker: "Ulaşım", title: "Transfer", items: all.filter((i) => i.category === "transfer") },
     { id: "tur", kicker: "Ziyaret", title: "Turlar ve rehberlik", items: all.filter((i) => i.category === "tur") },
     { id: "ekstra", kicker: "Ek hizmetler", title: "Ekstralar", items: all.filter((i) => i.category === "extra") },

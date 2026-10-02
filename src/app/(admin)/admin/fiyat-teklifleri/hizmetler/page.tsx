@@ -364,7 +364,7 @@ export default function ServiceLibraryPage() {
             <tbody className="divide-y divide-outline-variant/10">
               {filtered.map((svc) => {
                 const cat = CATEGORIES.find(c => c.value === svc.category);
-                const pt = PRICING_TYPES.find(p => p.value === svc.defaultPricingType);
+                const pt = PRICING_TYPES.find(p => p.value === (svc.category === 'hotel' ? 'per_room' : svc.defaultPricingType));
                 return (
                   <tr key={svc.id} className="hover:bg-primary/[0.03] transition-colors">
                     <td className="px-4 py-3 font-bold text-on-surface">{svc.name}</td>
@@ -498,7 +498,7 @@ export default function ServiceLibraryPage() {
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="block font-bold text-on-surface-variant mb-1">Fiyatlandırma tipi</label>
-                  <select value={form.defaultPricingType} onChange={(e) => setForm({ ...form, defaultPricingType: e.target.value })} className="w-full bg-surface-container-lowest border border-outline-variant/25 rounded-lg p-2 focus:outline-none focus:border-primary/40">
+                  <select value={form.category === 'hotel' ? 'per_room' : form.defaultPricingType} disabled={form.category === 'hotel'} title={form.category === 'hotel' ? 'Otel her zaman 1 oda / 1 gece fiyatlanır' : undefined} onChange={(e) => setForm({ ...form, defaultPricingType: e.target.value })} className="w-full bg-surface-container-lowest border border-outline-variant/25 rounded-lg p-2 focus:outline-none focus:border-primary/40">
                     {PRICING_TYPES.map((p) => <option key={p.value} value={p.value}>{p.label}</option>)}
                   </select>
                 </div>

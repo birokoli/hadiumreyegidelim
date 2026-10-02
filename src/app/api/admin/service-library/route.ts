@@ -40,7 +40,8 @@ export async function POST(req: NextRequest) {
       category,
       name,
       description:          description || null,
-      defaultPricingType:   defaultPricingType ?? 'flat',
+      // Otel her zaman oda / gece fiyatlanır
+      defaultPricingType:   category === 'hotel' ? 'per_room' : (defaultPricingType ?? 'flat'),
       defaultCostUsd:       defaultCostUsd ?? 0,
       defaultVehicleType:   defaultVehicleType || null,
       defaultChildPercent:  defaultChildPercent ?? 0,

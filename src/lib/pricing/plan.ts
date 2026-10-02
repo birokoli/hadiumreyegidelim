@@ -55,7 +55,8 @@ export function unitPrice(item: CatalogItem, month: string): number | null {
 
 function lineFor(item: CatalogItem, input: PlanInput, people: number, rooms: number): PlanLine {
   const m = input.checkIn.slice(0, 7);
-  switch (item.pricingType) {
+  // Otel her zaman 1 oda × 1 gece fiyatıdır; kayıttaki fiyatlandırma tipi yanlış girilmiş olsa da (ör. "Sabit") oda × gece hesaplanır
+  switch (item.category === "hotel" ? "per_room" : item.pricingType) {
     case "per_room": {
       const nights = item.city === "medine" ? input.medineNights : input.mekkeNights;
       const p = unitPrice(item, m);

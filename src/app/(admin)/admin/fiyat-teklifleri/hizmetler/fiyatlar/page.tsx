@@ -57,7 +57,7 @@ export default function MonthlyPricesPage() {
       if (!items.length) return [];
       return [{ head: CATEGORIES[cat] ?? cat }, ...items.flatMap((s) =>
         // Otel fiyatı 1 odanın 1 gecelik fiyatı; oda tipi ayrımı yok (2 Ekim kullanıcı kuralı)
-        [{ s, variant: "", sub: UNIT[s.defaultPricingType] ?? "", first: true }],
+        [{ s, variant: "", sub: UNIT[s.category === "hotel" ? "per_room" : s.defaultPricingType] ?? "", first: true }],
       )];
     });
   }, [services, onlyPublic]);

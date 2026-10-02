@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { jwtVerify } from 'jose';
 import { getJwtKey } from '@/lib/jwt-key';
+import { SITE_URL } from '@/lib/seo/site';
 
 const ADMIN_PERMISSIONS = ['dashboard', 'orders', 'content', 'operations', 'marketing', 'settings', 'users'];
 
@@ -112,6 +113,13 @@ export async function middleware(req: NextRequest) {
         return NextResponse.redirect(new URL('/admin/login', req.url));
       }
       if (!await hasAdminPermission(req, url)) return unauthorized(req);
+      return NextResponse.next();
+    }
+    // Genel sayfalar admin alt alanında kopya olarak sunulmasın (2 Ekim SEO denetimi, Faz I5): aynı yolla ana alana 308.
+    // API, Next dosyaları ve statik dosyalar (robots.txt dahil) admin'de kalır; sitemap.xml ana alana gider.
+    const isAsset = url.startsWith('/_next/') || (/\.[a-z0-9]{2,5}$/i.test(url) && url !== '/sitemap.xml');
+    if (!url.startsWith('/api/') && !isAsset) {
+      return NextResponse.redirect(new URL(`${url}${req.nextUrl.search}`, SITE_URL), 308);
     }
     return NextResponse.next();
   }

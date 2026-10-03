@@ -20,7 +20,7 @@
 7. Tasarım: `docs/TASARIM-DILI.md`. Bileşenler yalnızca `src/components/ui/kit/index.tsx`'ten. Kiti değiştirme; eksik parça gerekiyorsa TESLIM.md'ye yaz.
 8. Yerel sunucu: `npm run dev` → http://localhost:3002. Vitrin: http://localhost:3002/kit. Yerelde veritabanı yok: paket ve blog listeleri boş gelir. Görsel kontrol için kit vitrinindeki örnek kartları kullan.
 
-**Öncelik (3 Ekim): G8 → `docs/antigravity/G8-PAKET.md`.** G7 kontrol edildi ve canlıda.
+**Öncelik (3 Ekim): G8 → `docs/antigravity/G8-PAKET.md`, ardından G9 → `docs/antigravity/G9-SAYFA-METINLERI.md`.** G7 kontrol edildi ve canlıda.
 
 ~~**Öncelik (2 Ekim gece, ikinci tur): G7 → `docs/antigravity/G7-PAKET.md`.** G6 kontrol edildi ve canlıda.
 

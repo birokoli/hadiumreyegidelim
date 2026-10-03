@@ -193,3 +193,40 @@ export async function runDataFixesOnceE() {
     revalidatePath("/blog", "layout");
   } catch { /* önbellek tazeleme düzeltmeyi engellemez */ }
 }
+
+// Altıncı düzeltme (3 Ekim, G12-4 – Claude kontrolü): kalan yasaklı ifadeler (TÜRSAB, "Harem'e sıfır", 7/24, lüks/VIP).
+// "field": "faq" kayıtları SSS'teki ilgili sorunun yanıtında düzeltilir. Bulunamayan cümle atlanıp kayda yazılır.
+const FLAG_F = "DATA_FIX_2026_10_03_F";
+let ranF = false;
+
+export async function runDataFixesOnceF() {
+  if (ranF) return;
+  ranF = true;
+  if (await prisma.setting.findUnique({ where: { key: FLAG_F } })) return;
+  const fixes = (await import("@/lib/content-fixes/blog-duzeltmeleri-2.json")).default as { slug: string; field?: "faq"; q?: string; find: string; replace: string }[];
+  const esc = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const log: { applied: string[]; skipped: string[] } = { applied: [], skipped: [] };
+  for (const f of fixes) {
+    const post = await prisma.post.findUnique({ where: { slug: f.slug }, select: { id: true, content: true, faq: true } });
+    if (!post) { log.skipped.push(`${f.slug}: yazı yok`); continue; }
+    const pattern = new RegExp(f.find.trim().split(/\s+/).map(esc).join("(?:\\s|&nbsp;|\\u00a0)+"));
+    if (f.field === "faq") {
+      let faq: { q: string; a: string }[] = [];
+      try { faq = JSON.parse(post.faq ?? "[]"); } catch { /* bozuk SSS atlanır */ }
+      const item = faq.find((x) => x.q.trim() === f.q?.trim() && pattern.test(x.a)) ?? faq.find((x) => pattern.test(x.a));
+      if (!item) { log.skipped.push(`${f.slug} (SSS): ${f.find.slice(0, 50)}`); continue; }
+      item.a = item.a.replace(pattern, f.replace);
+      await prisma.post.update({ where: { id: post.id }, data: { faq: JSON.stringify(faq) } });
+    } else {
+      if (!pattern.test(post.content)) { log.skipped.push(`${f.slug}: ${f.find.slice(0, 50)}`); continue; }
+      await prisma.post.update({ where: { id: post.id }, data: { content: post.content.replace(pattern, f.replace) } });
+    }
+    log.applied.push(`${f.slug}: ${f.find.slice(0, 50)}`);
+  }
+  await prisma.setting.upsert({ where: { key: FLAG_F }, update: { value: JSON.stringify(log) }, create: { key: FLAG_F, value: JSON.stringify(log) } });
+  console.log("[data-fix] 2026-10-03 F", log);
+  try {
+    const { revalidatePath } = await import("next/cache");
+    revalidatePath("/blog", "layout");
+  } catch { /* önbellek tazeleme düzeltmeyi engellemez */ }
+}

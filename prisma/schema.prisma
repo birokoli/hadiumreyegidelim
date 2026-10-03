@@ -870,3 +870,36 @@ model CrmActivity {
   createdBy   String   @default("Yönetici")
   createdAt   DateTime @default(now())
 }
+
+// Influencer aday havuzu (3 Ekim 2026, kullanıcı onayı). Tablo src/lib/influencer/schema.ts ile oluşturulur.
+model InfluencerProspect {
+  id               String    @id @default(cuid())
+  platform         String    // instagram | tiktok | youtube
+  handle           String
+  url              String
+  name             String?
+  bio              String?
+  followers        Int?
+  mediaCount       Int?
+  avgViews         Int?
+  avgLikes         Int?
+  avgComments      Int?
+  engagementRate   Float?
+  lastPostAt       DateTime?
+  postsLast30      Int?
+  audienceTR       Float?
+  fitScore         Int?
+  fitReasons       String[]  @default([])
+  religiousAudience Boolean?
+  stage            String    @default("bulundu") // bulundu | uygun | mesaj | yanit | anlasildi | red
+  source           String    @default("manuel")
+  note             String?
+  metricsAt        DateTime?
+  metricsError     String?
+  invitedAt        DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  @@unique([platform, handle])
+  @@index([stage])
+}

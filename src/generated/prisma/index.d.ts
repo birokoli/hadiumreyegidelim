@@ -263,6 +263,11 @@ export type CrmLead = $Result.DefaultSelection<Prisma.$CrmLeadPayload>
  * 
  */
 export type CrmActivity = $Result.DefaultSelection<Prisma.$CrmActivityPayload>
+/**
+ * Model InfluencerProspect
+ * 
+ */
+export type InfluencerProspect = $Result.DefaultSelection<Prisma.$InfluencerProspectPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -881,6 +886,16 @@ export class PrismaClient<
     * ```
     */
   get crmActivity(): Prisma.CrmActivityDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.influencerProspect`: Exposes CRUD operations for the **InfluencerProspect** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more InfluencerProspects
+    * const influencerProspects = await prisma.influencerProspect.findMany()
+    * ```
+    */
+  get influencerProspect(): Prisma.InfluencerProspectDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1371,7 +1386,8 @@ export namespace Prisma {
     ReferralQualification: 'ReferralQualification',
     AiVisibilityAudit: 'AiVisibilityAudit',
     CrmLead: 'CrmLead',
-    CrmActivity: 'CrmActivity'
+    CrmActivity: 'CrmActivity',
+    InfluencerProspect: 'InfluencerProspect'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1390,7 +1406,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "order" | "setting" | "service" | "guide" | "category" | "author" | "post" | "package" | "hotel" | "aILog" | "user" | "adminUser" | "contactRequest" | "whatsAppConversation" | "whatsAppMessage" | "postVersion" | "influencer" | "supportChat" | "supportMessage" | "share" | "customer" | "sale" | "payment" | "paymentSale" | "loyaltyAccount" | "loyaltyTransaction" | "loyaltyRedemption" | "loyaltyCatalogItem" | "loyaltyMonthlyHistory" | "loyaltyMonthlyTierRule" | "loyaltyHonorTierRule" | "linkClick" | "attributionOverride" | "campaign" | "campaignParticipant" | "campaignCodeUsage" | "companySettings" | "quotation" | "quotationItem" | "serviceLibrary" | "servicePrice" | "programConfig" | "starLedger" | "performanceScore" | "performanceEvent" | "referral" | "referralQualification" | "aiVisibilityAudit" | "crmLead" | "crmActivity"
+      modelProps: "order" | "setting" | "service" | "guide" | "category" | "author" | "post" | "package" | "hotel" | "aILog" | "user" | "adminUser" | "contactRequest" | "whatsAppConversation" | "whatsAppMessage" | "postVersion" | "influencer" | "supportChat" | "supportMessage" | "share" | "customer" | "sale" | "payment" | "paymentSale" | "loyaltyAccount" | "loyaltyTransaction" | "loyaltyRedemption" | "loyaltyCatalogItem" | "loyaltyMonthlyHistory" | "loyaltyMonthlyTierRule" | "loyaltyHonorTierRule" | "linkClick" | "attributionOverride" | "campaign" | "campaignParticipant" | "campaignCodeUsage" | "companySettings" | "quotation" | "quotationItem" | "serviceLibrary" | "servicePrice" | "programConfig" | "starLedger" | "performanceScore" | "performanceEvent" | "referral" | "referralQualification" | "aiVisibilityAudit" | "crmLead" | "crmActivity" | "influencerProspect"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -5094,6 +5110,80 @@ export namespace Prisma {
           }
         }
       }
+      InfluencerProspect: {
+        payload: Prisma.$InfluencerProspectPayload<ExtArgs>
+        fields: Prisma.InfluencerProspectFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.InfluencerProspectFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InfluencerProspectPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.InfluencerProspectFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InfluencerProspectPayload>
+          }
+          findFirst: {
+            args: Prisma.InfluencerProspectFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InfluencerProspectPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.InfluencerProspectFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InfluencerProspectPayload>
+          }
+          findMany: {
+            args: Prisma.InfluencerProspectFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InfluencerProspectPayload>[]
+          }
+          create: {
+            args: Prisma.InfluencerProspectCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InfluencerProspectPayload>
+          }
+          createMany: {
+            args: Prisma.InfluencerProspectCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.InfluencerProspectCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InfluencerProspectPayload>[]
+          }
+          delete: {
+            args: Prisma.InfluencerProspectDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InfluencerProspectPayload>
+          }
+          update: {
+            args: Prisma.InfluencerProspectUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InfluencerProspectPayload>
+          }
+          deleteMany: {
+            args: Prisma.InfluencerProspectDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.InfluencerProspectUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.InfluencerProspectUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InfluencerProspectPayload>[]
+          }
+          upsert: {
+            args: Prisma.InfluencerProspectUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$InfluencerProspectPayload>
+          }
+          aggregate: {
+            args: Prisma.InfluencerProspectAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateInfluencerProspect>
+          }
+          groupBy: {
+            args: Prisma.InfluencerProspectGroupByArgs<ExtArgs>
+            result: $Utils.Optional<InfluencerProspectGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.InfluencerProspectCountArgs<ExtArgs>
+            result: $Utils.Optional<InfluencerProspectCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -5240,6 +5330,7 @@ export namespace Prisma {
     aiVisibilityAudit?: AiVisibilityAuditOmit
     crmLead?: CrmLeadOmit
     crmActivity?: CrmActivityOmit
+    influencerProspect?: InfluencerProspectOmit
   }
 
   /* Types for Logging */
@@ -64647,6 +64738,1336 @@ export namespace Prisma {
 
 
   /**
+   * Model InfluencerProspect
+   */
+
+  export type AggregateInfluencerProspect = {
+    _count: InfluencerProspectCountAggregateOutputType | null
+    _avg: InfluencerProspectAvgAggregateOutputType | null
+    _sum: InfluencerProspectSumAggregateOutputType | null
+    _min: InfluencerProspectMinAggregateOutputType | null
+    _max: InfluencerProspectMaxAggregateOutputType | null
+  }
+
+  export type InfluencerProspectAvgAggregateOutputType = {
+    followers: number | null
+    mediaCount: number | null
+    avgViews: number | null
+    avgLikes: number | null
+    avgComments: number | null
+    engagementRate: number | null
+    postsLast30: number | null
+    audienceTR: number | null
+    fitScore: number | null
+  }
+
+  export type InfluencerProspectSumAggregateOutputType = {
+    followers: number | null
+    mediaCount: number | null
+    avgViews: number | null
+    avgLikes: number | null
+    avgComments: number | null
+    engagementRate: number | null
+    postsLast30: number | null
+    audienceTR: number | null
+    fitScore: number | null
+  }
+
+  export type InfluencerProspectMinAggregateOutputType = {
+    id: string | null
+    platform: string | null
+    handle: string | null
+    url: string | null
+    name: string | null
+    bio: string | null
+    followers: number | null
+    mediaCount: number | null
+    avgViews: number | null
+    avgLikes: number | null
+    avgComments: number | null
+    engagementRate: number | null
+    lastPostAt: Date | null
+    postsLast30: number | null
+    audienceTR: number | null
+    fitScore: number | null
+    religiousAudience: boolean | null
+    stage: string | null
+    source: string | null
+    note: string | null
+    metricsAt: Date | null
+    metricsError: string | null
+    invitedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type InfluencerProspectMaxAggregateOutputType = {
+    id: string | null
+    platform: string | null
+    handle: string | null
+    url: string | null
+    name: string | null
+    bio: string | null
+    followers: number | null
+    mediaCount: number | null
+    avgViews: number | null
+    avgLikes: number | null
+    avgComments: number | null
+    engagementRate: number | null
+    lastPostAt: Date | null
+    postsLast30: number | null
+    audienceTR: number | null
+    fitScore: number | null
+    religiousAudience: boolean | null
+    stage: string | null
+    source: string | null
+    note: string | null
+    metricsAt: Date | null
+    metricsError: string | null
+    invitedAt: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type InfluencerProspectCountAggregateOutputType = {
+    id: number
+    platform: number
+    handle: number
+    url: number
+    name: number
+    bio: number
+    followers: number
+    mediaCount: number
+    avgViews: number
+    avgLikes: number
+    avgComments: number
+    engagementRate: number
+    lastPostAt: number
+    postsLast30: number
+    audienceTR: number
+    fitScore: number
+    fitReasons: number
+    religiousAudience: number
+    stage: number
+    source: number
+    note: number
+    metricsAt: number
+    metricsError: number
+    invitedAt: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type InfluencerProspectAvgAggregateInputType = {
+    followers?: true
+    mediaCount?: true
+    avgViews?: true
+    avgLikes?: true
+    avgComments?: true
+    engagementRate?: true
+    postsLast30?: true
+    audienceTR?: true
+    fitScore?: true
+  }
+
+  export type InfluencerProspectSumAggregateInputType = {
+    followers?: true
+    mediaCount?: true
+    avgViews?: true
+    avgLikes?: true
+    avgComments?: true
+    engagementRate?: true
+    postsLast30?: true
+    audienceTR?: true
+    fitScore?: true
+  }
+
+  export type InfluencerProspectMinAggregateInputType = {
+    id?: true
+    platform?: true
+    handle?: true
+    url?: true
+    name?: true
+    bio?: true
+    followers?: true
+    mediaCount?: true
+    avgViews?: true
+    avgLikes?: true
+    avgComments?: true
+    engagementRate?: true
+    lastPostAt?: true
+    postsLast30?: true
+    audienceTR?: true
+    fitScore?: true
+    religiousAudience?: true
+    stage?: true
+    source?: true
+    note?: true
+    metricsAt?: true
+    metricsError?: true
+    invitedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type InfluencerProspectMaxAggregateInputType = {
+    id?: true
+    platform?: true
+    handle?: true
+    url?: true
+    name?: true
+    bio?: true
+    followers?: true
+    mediaCount?: true
+    avgViews?: true
+    avgLikes?: true
+    avgComments?: true
+    engagementRate?: true
+    lastPostAt?: true
+    postsLast30?: true
+    audienceTR?: true
+    fitScore?: true
+    religiousAudience?: true
+    stage?: true
+    source?: true
+    note?: true
+    metricsAt?: true
+    metricsError?: true
+    invitedAt?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type InfluencerProspectCountAggregateInputType = {
+    id?: true
+    platform?: true
+    handle?: true
+    url?: true
+    name?: true
+    bio?: true
+    followers?: true
+    mediaCount?: true
+    avgViews?: true
+    avgLikes?: true
+    avgComments?: true
+    engagementRate?: true
+    lastPostAt?: true
+    postsLast30?: true
+    audienceTR?: true
+    fitScore?: true
+    fitReasons?: true
+    religiousAudience?: true
+    stage?: true
+    source?: true
+    note?: true
+    metricsAt?: true
+    metricsError?: true
+    invitedAt?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type InfluencerProspectAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which InfluencerProspect to aggregate.
+     */
+    where?: InfluencerProspectWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of InfluencerProspects to fetch.
+     */
+    orderBy?: InfluencerProspectOrderByWithRelationInput | InfluencerProspectOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: InfluencerProspectWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` InfluencerProspects from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` InfluencerProspects.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned InfluencerProspects
+    **/
+    _count?: true | InfluencerProspectCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: InfluencerProspectAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: InfluencerProspectSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: InfluencerProspectMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: InfluencerProspectMaxAggregateInputType
+  }
+
+  export type GetInfluencerProspectAggregateType<T extends InfluencerProspectAggregateArgs> = {
+        [P in keyof T & keyof AggregateInfluencerProspect]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateInfluencerProspect[P]>
+      : GetScalarType<T[P], AggregateInfluencerProspect[P]>
+  }
+
+
+
+
+  export type InfluencerProspectGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: InfluencerProspectWhereInput
+    orderBy?: InfluencerProspectOrderByWithAggregationInput | InfluencerProspectOrderByWithAggregationInput[]
+    by: InfluencerProspectScalarFieldEnum[] | InfluencerProspectScalarFieldEnum
+    having?: InfluencerProspectScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: InfluencerProspectCountAggregateInputType | true
+    _avg?: InfluencerProspectAvgAggregateInputType
+    _sum?: InfluencerProspectSumAggregateInputType
+    _min?: InfluencerProspectMinAggregateInputType
+    _max?: InfluencerProspectMaxAggregateInputType
+  }
+
+  export type InfluencerProspectGroupByOutputType = {
+    id: string
+    platform: string
+    handle: string
+    url: string
+    name: string | null
+    bio: string | null
+    followers: number | null
+    mediaCount: number | null
+    avgViews: number | null
+    avgLikes: number | null
+    avgComments: number | null
+    engagementRate: number | null
+    lastPostAt: Date | null
+    postsLast30: number | null
+    audienceTR: number | null
+    fitScore: number | null
+    fitReasons: string[]
+    religiousAudience: boolean | null
+    stage: string
+    source: string
+    note: string | null
+    metricsAt: Date | null
+    metricsError: string | null
+    invitedAt: Date | null
+    createdAt: Date
+    updatedAt: Date
+    _count: InfluencerProspectCountAggregateOutputType | null
+    _avg: InfluencerProspectAvgAggregateOutputType | null
+    _sum: InfluencerProspectSumAggregateOutputType | null
+    _min: InfluencerProspectMinAggregateOutputType | null
+    _max: InfluencerProspectMaxAggregateOutputType | null
+  }
+
+  type GetInfluencerProspectGroupByPayload<T extends InfluencerProspectGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<InfluencerProspectGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof InfluencerProspectGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], InfluencerProspectGroupByOutputType[P]>
+            : GetScalarType<T[P], InfluencerProspectGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type InfluencerProspectSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    platform?: boolean
+    handle?: boolean
+    url?: boolean
+    name?: boolean
+    bio?: boolean
+    followers?: boolean
+    mediaCount?: boolean
+    avgViews?: boolean
+    avgLikes?: boolean
+    avgComments?: boolean
+    engagementRate?: boolean
+    lastPostAt?: boolean
+    postsLast30?: boolean
+    audienceTR?: boolean
+    fitScore?: boolean
+    fitReasons?: boolean
+    religiousAudience?: boolean
+    stage?: boolean
+    source?: boolean
+    note?: boolean
+    metricsAt?: boolean
+    metricsError?: boolean
+    invitedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["influencerProspect"]>
+
+  export type InfluencerProspectSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    platform?: boolean
+    handle?: boolean
+    url?: boolean
+    name?: boolean
+    bio?: boolean
+    followers?: boolean
+    mediaCount?: boolean
+    avgViews?: boolean
+    avgLikes?: boolean
+    avgComments?: boolean
+    engagementRate?: boolean
+    lastPostAt?: boolean
+    postsLast30?: boolean
+    audienceTR?: boolean
+    fitScore?: boolean
+    fitReasons?: boolean
+    religiousAudience?: boolean
+    stage?: boolean
+    source?: boolean
+    note?: boolean
+    metricsAt?: boolean
+    metricsError?: boolean
+    invitedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["influencerProspect"]>
+
+  export type InfluencerProspectSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    platform?: boolean
+    handle?: boolean
+    url?: boolean
+    name?: boolean
+    bio?: boolean
+    followers?: boolean
+    mediaCount?: boolean
+    avgViews?: boolean
+    avgLikes?: boolean
+    avgComments?: boolean
+    engagementRate?: boolean
+    lastPostAt?: boolean
+    postsLast30?: boolean
+    audienceTR?: boolean
+    fitScore?: boolean
+    fitReasons?: boolean
+    religiousAudience?: boolean
+    stage?: boolean
+    source?: boolean
+    note?: boolean
+    metricsAt?: boolean
+    metricsError?: boolean
+    invitedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["influencerProspect"]>
+
+  export type InfluencerProspectSelectScalar = {
+    id?: boolean
+    platform?: boolean
+    handle?: boolean
+    url?: boolean
+    name?: boolean
+    bio?: boolean
+    followers?: boolean
+    mediaCount?: boolean
+    avgViews?: boolean
+    avgLikes?: boolean
+    avgComments?: boolean
+    engagementRate?: boolean
+    lastPostAt?: boolean
+    postsLast30?: boolean
+    audienceTR?: boolean
+    fitScore?: boolean
+    fitReasons?: boolean
+    religiousAudience?: boolean
+    stage?: boolean
+    source?: boolean
+    note?: boolean
+    metricsAt?: boolean
+    metricsError?: boolean
+    invitedAt?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type InfluencerProspectOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "platform" | "handle" | "url" | "name" | "bio" | "followers" | "mediaCount" | "avgViews" | "avgLikes" | "avgComments" | "engagementRate" | "lastPostAt" | "postsLast30" | "audienceTR" | "fitScore" | "fitReasons" | "religiousAudience" | "stage" | "source" | "note" | "metricsAt" | "metricsError" | "invitedAt" | "createdAt" | "updatedAt", ExtArgs["result"]["influencerProspect"]>
+
+  export type $InfluencerProspectPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "InfluencerProspect"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      platform: string
+      handle: string
+      url: string
+      name: string | null
+      bio: string | null
+      followers: number | null
+      mediaCount: number | null
+      avgViews: number | null
+      avgLikes: number | null
+      avgComments: number | null
+      engagementRate: number | null
+      lastPostAt: Date | null
+      postsLast30: number | null
+      audienceTR: number | null
+      fitScore: number | null
+      fitReasons: string[]
+      religiousAudience: boolean | null
+      stage: string
+      source: string
+      note: string | null
+      metricsAt: Date | null
+      metricsError: string | null
+      invitedAt: Date | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["influencerProspect"]>
+    composites: {}
+  }
+
+  type InfluencerProspectGetPayload<S extends boolean | null | undefined | InfluencerProspectDefaultArgs> = $Result.GetResult<Prisma.$InfluencerProspectPayload, S>
+
+  type InfluencerProspectCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<InfluencerProspectFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: InfluencerProspectCountAggregateInputType | true
+    }
+
+  export interface InfluencerProspectDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['InfluencerProspect'], meta: { name: 'InfluencerProspect' } }
+    /**
+     * Find zero or one InfluencerProspect that matches the filter.
+     * @param {InfluencerProspectFindUniqueArgs} args - Arguments to find a InfluencerProspect
+     * @example
+     * // Get one InfluencerProspect
+     * const influencerProspect = await prisma.influencerProspect.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends InfluencerProspectFindUniqueArgs>(args: SelectSubset<T, InfluencerProspectFindUniqueArgs<ExtArgs>>): Prisma__InfluencerProspectClient<$Result.GetResult<Prisma.$InfluencerProspectPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one InfluencerProspect that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {InfluencerProspectFindUniqueOrThrowArgs} args - Arguments to find a InfluencerProspect
+     * @example
+     * // Get one InfluencerProspect
+     * const influencerProspect = await prisma.influencerProspect.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends InfluencerProspectFindUniqueOrThrowArgs>(args: SelectSubset<T, InfluencerProspectFindUniqueOrThrowArgs<ExtArgs>>): Prisma__InfluencerProspectClient<$Result.GetResult<Prisma.$InfluencerProspectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first InfluencerProspect that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InfluencerProspectFindFirstArgs} args - Arguments to find a InfluencerProspect
+     * @example
+     * // Get one InfluencerProspect
+     * const influencerProspect = await prisma.influencerProspect.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends InfluencerProspectFindFirstArgs>(args?: SelectSubset<T, InfluencerProspectFindFirstArgs<ExtArgs>>): Prisma__InfluencerProspectClient<$Result.GetResult<Prisma.$InfluencerProspectPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first InfluencerProspect that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InfluencerProspectFindFirstOrThrowArgs} args - Arguments to find a InfluencerProspect
+     * @example
+     * // Get one InfluencerProspect
+     * const influencerProspect = await prisma.influencerProspect.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends InfluencerProspectFindFirstOrThrowArgs>(args?: SelectSubset<T, InfluencerProspectFindFirstOrThrowArgs<ExtArgs>>): Prisma__InfluencerProspectClient<$Result.GetResult<Prisma.$InfluencerProspectPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more InfluencerProspects that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InfluencerProspectFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all InfluencerProspects
+     * const influencerProspects = await prisma.influencerProspect.findMany()
+     * 
+     * // Get first 10 InfluencerProspects
+     * const influencerProspects = await prisma.influencerProspect.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const influencerProspectWithIdOnly = await prisma.influencerProspect.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends InfluencerProspectFindManyArgs>(args?: SelectSubset<T, InfluencerProspectFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InfluencerProspectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a InfluencerProspect.
+     * @param {InfluencerProspectCreateArgs} args - Arguments to create a InfluencerProspect.
+     * @example
+     * // Create one InfluencerProspect
+     * const InfluencerProspect = await prisma.influencerProspect.create({
+     *   data: {
+     *     // ... data to create a InfluencerProspect
+     *   }
+     * })
+     * 
+     */
+    create<T extends InfluencerProspectCreateArgs>(args: SelectSubset<T, InfluencerProspectCreateArgs<ExtArgs>>): Prisma__InfluencerProspectClient<$Result.GetResult<Prisma.$InfluencerProspectPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many InfluencerProspects.
+     * @param {InfluencerProspectCreateManyArgs} args - Arguments to create many InfluencerProspects.
+     * @example
+     * // Create many InfluencerProspects
+     * const influencerProspect = await prisma.influencerProspect.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends InfluencerProspectCreateManyArgs>(args?: SelectSubset<T, InfluencerProspectCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many InfluencerProspects and returns the data saved in the database.
+     * @param {InfluencerProspectCreateManyAndReturnArgs} args - Arguments to create many InfluencerProspects.
+     * @example
+     * // Create many InfluencerProspects
+     * const influencerProspect = await prisma.influencerProspect.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many InfluencerProspects and only return the `id`
+     * const influencerProspectWithIdOnly = await prisma.influencerProspect.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends InfluencerProspectCreateManyAndReturnArgs>(args?: SelectSubset<T, InfluencerProspectCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InfluencerProspectPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a InfluencerProspect.
+     * @param {InfluencerProspectDeleteArgs} args - Arguments to delete one InfluencerProspect.
+     * @example
+     * // Delete one InfluencerProspect
+     * const InfluencerProspect = await prisma.influencerProspect.delete({
+     *   where: {
+     *     // ... filter to delete one InfluencerProspect
+     *   }
+     * })
+     * 
+     */
+    delete<T extends InfluencerProspectDeleteArgs>(args: SelectSubset<T, InfluencerProspectDeleteArgs<ExtArgs>>): Prisma__InfluencerProspectClient<$Result.GetResult<Prisma.$InfluencerProspectPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one InfluencerProspect.
+     * @param {InfluencerProspectUpdateArgs} args - Arguments to update one InfluencerProspect.
+     * @example
+     * // Update one InfluencerProspect
+     * const influencerProspect = await prisma.influencerProspect.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends InfluencerProspectUpdateArgs>(args: SelectSubset<T, InfluencerProspectUpdateArgs<ExtArgs>>): Prisma__InfluencerProspectClient<$Result.GetResult<Prisma.$InfluencerProspectPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more InfluencerProspects.
+     * @param {InfluencerProspectDeleteManyArgs} args - Arguments to filter InfluencerProspects to delete.
+     * @example
+     * // Delete a few InfluencerProspects
+     * const { count } = await prisma.influencerProspect.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends InfluencerProspectDeleteManyArgs>(args?: SelectSubset<T, InfluencerProspectDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more InfluencerProspects.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InfluencerProspectUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many InfluencerProspects
+     * const influencerProspect = await prisma.influencerProspect.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends InfluencerProspectUpdateManyArgs>(args: SelectSubset<T, InfluencerProspectUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more InfluencerProspects and returns the data updated in the database.
+     * @param {InfluencerProspectUpdateManyAndReturnArgs} args - Arguments to update many InfluencerProspects.
+     * @example
+     * // Update many InfluencerProspects
+     * const influencerProspect = await prisma.influencerProspect.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more InfluencerProspects and only return the `id`
+     * const influencerProspectWithIdOnly = await prisma.influencerProspect.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends InfluencerProspectUpdateManyAndReturnArgs>(args: SelectSubset<T, InfluencerProspectUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$InfluencerProspectPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one InfluencerProspect.
+     * @param {InfluencerProspectUpsertArgs} args - Arguments to update or create a InfluencerProspect.
+     * @example
+     * // Update or create a InfluencerProspect
+     * const influencerProspect = await prisma.influencerProspect.upsert({
+     *   create: {
+     *     // ... data to create a InfluencerProspect
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the InfluencerProspect we want to update
+     *   }
+     * })
+     */
+    upsert<T extends InfluencerProspectUpsertArgs>(args: SelectSubset<T, InfluencerProspectUpsertArgs<ExtArgs>>): Prisma__InfluencerProspectClient<$Result.GetResult<Prisma.$InfluencerProspectPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of InfluencerProspects.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InfluencerProspectCountArgs} args - Arguments to filter InfluencerProspects to count.
+     * @example
+     * // Count the number of InfluencerProspects
+     * const count = await prisma.influencerProspect.count({
+     *   where: {
+     *     // ... the filter for the InfluencerProspects we want to count
+     *   }
+     * })
+    **/
+    count<T extends InfluencerProspectCountArgs>(
+      args?: Subset<T, InfluencerProspectCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], InfluencerProspectCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a InfluencerProspect.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InfluencerProspectAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends InfluencerProspectAggregateArgs>(args: Subset<T, InfluencerProspectAggregateArgs>): Prisma.PrismaPromise<GetInfluencerProspectAggregateType<T>>
+
+    /**
+     * Group by InfluencerProspect.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {InfluencerProspectGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends InfluencerProspectGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: InfluencerProspectGroupByArgs['orderBy'] }
+        : { orderBy?: InfluencerProspectGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, InfluencerProspectGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetInfluencerProspectGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the InfluencerProspect model
+   */
+  readonly fields: InfluencerProspectFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for InfluencerProspect.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__InfluencerProspectClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the InfluencerProspect model
+   */
+  interface InfluencerProspectFieldRefs {
+    readonly id: FieldRef<"InfluencerProspect", 'String'>
+    readonly platform: FieldRef<"InfluencerProspect", 'String'>
+    readonly handle: FieldRef<"InfluencerProspect", 'String'>
+    readonly url: FieldRef<"InfluencerProspect", 'String'>
+    readonly name: FieldRef<"InfluencerProspect", 'String'>
+    readonly bio: FieldRef<"InfluencerProspect", 'String'>
+    readonly followers: FieldRef<"InfluencerProspect", 'Int'>
+    readonly mediaCount: FieldRef<"InfluencerProspect", 'Int'>
+    readonly avgViews: FieldRef<"InfluencerProspect", 'Int'>
+    readonly avgLikes: FieldRef<"InfluencerProspect", 'Int'>
+    readonly avgComments: FieldRef<"InfluencerProspect", 'Int'>
+    readonly engagementRate: FieldRef<"InfluencerProspect", 'Float'>
+    readonly lastPostAt: FieldRef<"InfluencerProspect", 'DateTime'>
+    readonly postsLast30: FieldRef<"InfluencerProspect", 'Int'>
+    readonly audienceTR: FieldRef<"InfluencerProspect", 'Float'>
+    readonly fitScore: FieldRef<"InfluencerProspect", 'Int'>
+    readonly fitReasons: FieldRef<"InfluencerProspect", 'String[]'>
+    readonly religiousAudience: FieldRef<"InfluencerProspect", 'Boolean'>
+    readonly stage: FieldRef<"InfluencerProspect", 'String'>
+    readonly source: FieldRef<"InfluencerProspect", 'String'>
+    readonly note: FieldRef<"InfluencerProspect", 'String'>
+    readonly metricsAt: FieldRef<"InfluencerProspect", 'DateTime'>
+    readonly metricsError: FieldRef<"InfluencerProspect", 'String'>
+    readonly invitedAt: FieldRef<"InfluencerProspect", 'DateTime'>
+    readonly createdAt: FieldRef<"InfluencerProspect", 'DateTime'>
+    readonly updatedAt: FieldRef<"InfluencerProspect", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * InfluencerProspect findUnique
+   */
+  export type InfluencerProspectFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InfluencerProspect
+     */
+    select?: InfluencerProspectSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InfluencerProspect
+     */
+    omit?: InfluencerProspectOmit<ExtArgs> | null
+    /**
+     * Filter, which InfluencerProspect to fetch.
+     */
+    where: InfluencerProspectWhereUniqueInput
+  }
+
+  /**
+   * InfluencerProspect findUniqueOrThrow
+   */
+  export type InfluencerProspectFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InfluencerProspect
+     */
+    select?: InfluencerProspectSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InfluencerProspect
+     */
+    omit?: InfluencerProspectOmit<ExtArgs> | null
+    /**
+     * Filter, which InfluencerProspect to fetch.
+     */
+    where: InfluencerProspectWhereUniqueInput
+  }
+
+  /**
+   * InfluencerProspect findFirst
+   */
+  export type InfluencerProspectFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InfluencerProspect
+     */
+    select?: InfluencerProspectSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InfluencerProspect
+     */
+    omit?: InfluencerProspectOmit<ExtArgs> | null
+    /**
+     * Filter, which InfluencerProspect to fetch.
+     */
+    where?: InfluencerProspectWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of InfluencerProspects to fetch.
+     */
+    orderBy?: InfluencerProspectOrderByWithRelationInput | InfluencerProspectOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for InfluencerProspects.
+     */
+    cursor?: InfluencerProspectWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` InfluencerProspects from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` InfluencerProspects.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of InfluencerProspects.
+     */
+    distinct?: InfluencerProspectScalarFieldEnum | InfluencerProspectScalarFieldEnum[]
+  }
+
+  /**
+   * InfluencerProspect findFirstOrThrow
+   */
+  export type InfluencerProspectFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InfluencerProspect
+     */
+    select?: InfluencerProspectSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InfluencerProspect
+     */
+    omit?: InfluencerProspectOmit<ExtArgs> | null
+    /**
+     * Filter, which InfluencerProspect to fetch.
+     */
+    where?: InfluencerProspectWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of InfluencerProspects to fetch.
+     */
+    orderBy?: InfluencerProspectOrderByWithRelationInput | InfluencerProspectOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for InfluencerProspects.
+     */
+    cursor?: InfluencerProspectWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` InfluencerProspects from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` InfluencerProspects.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of InfluencerProspects.
+     */
+    distinct?: InfluencerProspectScalarFieldEnum | InfluencerProspectScalarFieldEnum[]
+  }
+
+  /**
+   * InfluencerProspect findMany
+   */
+  export type InfluencerProspectFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InfluencerProspect
+     */
+    select?: InfluencerProspectSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InfluencerProspect
+     */
+    omit?: InfluencerProspectOmit<ExtArgs> | null
+    /**
+     * Filter, which InfluencerProspects to fetch.
+     */
+    where?: InfluencerProspectWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of InfluencerProspects to fetch.
+     */
+    orderBy?: InfluencerProspectOrderByWithRelationInput | InfluencerProspectOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing InfluencerProspects.
+     */
+    cursor?: InfluencerProspectWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` InfluencerProspects from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` InfluencerProspects.
+     */
+    skip?: number
+    distinct?: InfluencerProspectScalarFieldEnum | InfluencerProspectScalarFieldEnum[]
+  }
+
+  /**
+   * InfluencerProspect create
+   */
+  export type InfluencerProspectCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InfluencerProspect
+     */
+    select?: InfluencerProspectSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InfluencerProspect
+     */
+    omit?: InfluencerProspectOmit<ExtArgs> | null
+    /**
+     * The data needed to create a InfluencerProspect.
+     */
+    data: XOR<InfluencerProspectCreateInput, InfluencerProspectUncheckedCreateInput>
+  }
+
+  /**
+   * InfluencerProspect createMany
+   */
+  export type InfluencerProspectCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many InfluencerProspects.
+     */
+    data: InfluencerProspectCreateManyInput | InfluencerProspectCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * InfluencerProspect createManyAndReturn
+   */
+  export type InfluencerProspectCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InfluencerProspect
+     */
+    select?: InfluencerProspectSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the InfluencerProspect
+     */
+    omit?: InfluencerProspectOmit<ExtArgs> | null
+    /**
+     * The data used to create many InfluencerProspects.
+     */
+    data: InfluencerProspectCreateManyInput | InfluencerProspectCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * InfluencerProspect update
+   */
+  export type InfluencerProspectUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InfluencerProspect
+     */
+    select?: InfluencerProspectSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InfluencerProspect
+     */
+    omit?: InfluencerProspectOmit<ExtArgs> | null
+    /**
+     * The data needed to update a InfluencerProspect.
+     */
+    data: XOR<InfluencerProspectUpdateInput, InfluencerProspectUncheckedUpdateInput>
+    /**
+     * Choose, which InfluencerProspect to update.
+     */
+    where: InfluencerProspectWhereUniqueInput
+  }
+
+  /**
+   * InfluencerProspect updateMany
+   */
+  export type InfluencerProspectUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update InfluencerProspects.
+     */
+    data: XOR<InfluencerProspectUpdateManyMutationInput, InfluencerProspectUncheckedUpdateManyInput>
+    /**
+     * Filter which InfluencerProspects to update
+     */
+    where?: InfluencerProspectWhereInput
+    /**
+     * Limit how many InfluencerProspects to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * InfluencerProspect updateManyAndReturn
+   */
+  export type InfluencerProspectUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InfluencerProspect
+     */
+    select?: InfluencerProspectSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the InfluencerProspect
+     */
+    omit?: InfluencerProspectOmit<ExtArgs> | null
+    /**
+     * The data used to update InfluencerProspects.
+     */
+    data: XOR<InfluencerProspectUpdateManyMutationInput, InfluencerProspectUncheckedUpdateManyInput>
+    /**
+     * Filter which InfluencerProspects to update
+     */
+    where?: InfluencerProspectWhereInput
+    /**
+     * Limit how many InfluencerProspects to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * InfluencerProspect upsert
+   */
+  export type InfluencerProspectUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InfluencerProspect
+     */
+    select?: InfluencerProspectSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InfluencerProspect
+     */
+    omit?: InfluencerProspectOmit<ExtArgs> | null
+    /**
+     * The filter to search for the InfluencerProspect to update in case it exists.
+     */
+    where: InfluencerProspectWhereUniqueInput
+    /**
+     * In case the InfluencerProspect found by the `where` argument doesn't exist, create a new InfluencerProspect with this data.
+     */
+    create: XOR<InfluencerProspectCreateInput, InfluencerProspectUncheckedCreateInput>
+    /**
+     * In case the InfluencerProspect was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<InfluencerProspectUpdateInput, InfluencerProspectUncheckedUpdateInput>
+  }
+
+  /**
+   * InfluencerProspect delete
+   */
+  export type InfluencerProspectDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InfluencerProspect
+     */
+    select?: InfluencerProspectSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InfluencerProspect
+     */
+    omit?: InfluencerProspectOmit<ExtArgs> | null
+    /**
+     * Filter which InfluencerProspect to delete.
+     */
+    where: InfluencerProspectWhereUniqueInput
+  }
+
+  /**
+   * InfluencerProspect deleteMany
+   */
+  export type InfluencerProspectDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which InfluencerProspects to delete
+     */
+    where?: InfluencerProspectWhereInput
+    /**
+     * Limit how many InfluencerProspects to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * InfluencerProspect without action
+   */
+  export type InfluencerProspectDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the InfluencerProspect
+     */
+    select?: InfluencerProspectSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the InfluencerProspect
+     */
+    omit?: InfluencerProspectOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -65522,6 +66943,38 @@ export namespace Prisma {
   };
 
   export type CrmActivityScalarFieldEnum = (typeof CrmActivityScalarFieldEnum)[keyof typeof CrmActivityScalarFieldEnum]
+
+
+  export const InfluencerProspectScalarFieldEnum: {
+    id: 'id',
+    platform: 'platform',
+    handle: 'handle',
+    url: 'url',
+    name: 'name',
+    bio: 'bio',
+    followers: 'followers',
+    mediaCount: 'mediaCount',
+    avgViews: 'avgViews',
+    avgLikes: 'avgLikes',
+    avgComments: 'avgComments',
+    engagementRate: 'engagementRate',
+    lastPostAt: 'lastPostAt',
+    postsLast30: 'postsLast30',
+    audienceTR: 'audienceTR',
+    fitScore: 'fitScore',
+    fitReasons: 'fitReasons',
+    religiousAudience: 'religiousAudience',
+    stage: 'stage',
+    source: 'source',
+    note: 'note',
+    metricsAt: 'metricsAt',
+    metricsError: 'metricsError',
+    invitedAt: 'invitedAt',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type InfluencerProspectScalarFieldEnum = (typeof InfluencerProspectScalarFieldEnum)[keyof typeof InfluencerProspectScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -70074,6 +71527,166 @@ export namespace Prisma {
     content?: StringWithAggregatesFilter<"CrmActivity"> | string
     createdBy?: StringWithAggregatesFilter<"CrmActivity"> | string
     createdAt?: DateTimeWithAggregatesFilter<"CrmActivity"> | Date | string
+  }
+
+  export type InfluencerProspectWhereInput = {
+    AND?: InfluencerProspectWhereInput | InfluencerProspectWhereInput[]
+    OR?: InfluencerProspectWhereInput[]
+    NOT?: InfluencerProspectWhereInput | InfluencerProspectWhereInput[]
+    id?: StringFilter<"InfluencerProspect"> | string
+    platform?: StringFilter<"InfluencerProspect"> | string
+    handle?: StringFilter<"InfluencerProspect"> | string
+    url?: StringFilter<"InfluencerProspect"> | string
+    name?: StringNullableFilter<"InfluencerProspect"> | string | null
+    bio?: StringNullableFilter<"InfluencerProspect"> | string | null
+    followers?: IntNullableFilter<"InfluencerProspect"> | number | null
+    mediaCount?: IntNullableFilter<"InfluencerProspect"> | number | null
+    avgViews?: IntNullableFilter<"InfluencerProspect"> | number | null
+    avgLikes?: IntNullableFilter<"InfluencerProspect"> | number | null
+    avgComments?: IntNullableFilter<"InfluencerProspect"> | number | null
+    engagementRate?: FloatNullableFilter<"InfluencerProspect"> | number | null
+    lastPostAt?: DateTimeNullableFilter<"InfluencerProspect"> | Date | string | null
+    postsLast30?: IntNullableFilter<"InfluencerProspect"> | number | null
+    audienceTR?: FloatNullableFilter<"InfluencerProspect"> | number | null
+    fitScore?: IntNullableFilter<"InfluencerProspect"> | number | null
+    fitReasons?: StringNullableListFilter<"InfluencerProspect">
+    religiousAudience?: BoolNullableFilter<"InfluencerProspect"> | boolean | null
+    stage?: StringFilter<"InfluencerProspect"> | string
+    source?: StringFilter<"InfluencerProspect"> | string
+    note?: StringNullableFilter<"InfluencerProspect"> | string | null
+    metricsAt?: DateTimeNullableFilter<"InfluencerProspect"> | Date | string | null
+    metricsError?: StringNullableFilter<"InfluencerProspect"> | string | null
+    invitedAt?: DateTimeNullableFilter<"InfluencerProspect"> | Date | string | null
+    createdAt?: DateTimeFilter<"InfluencerProspect"> | Date | string
+    updatedAt?: DateTimeFilter<"InfluencerProspect"> | Date | string
+  }
+
+  export type InfluencerProspectOrderByWithRelationInput = {
+    id?: SortOrder
+    platform?: SortOrder
+    handle?: SortOrder
+    url?: SortOrder
+    name?: SortOrderInput | SortOrder
+    bio?: SortOrderInput | SortOrder
+    followers?: SortOrderInput | SortOrder
+    mediaCount?: SortOrderInput | SortOrder
+    avgViews?: SortOrderInput | SortOrder
+    avgLikes?: SortOrderInput | SortOrder
+    avgComments?: SortOrderInput | SortOrder
+    engagementRate?: SortOrderInput | SortOrder
+    lastPostAt?: SortOrderInput | SortOrder
+    postsLast30?: SortOrderInput | SortOrder
+    audienceTR?: SortOrderInput | SortOrder
+    fitScore?: SortOrderInput | SortOrder
+    fitReasons?: SortOrder
+    religiousAudience?: SortOrderInput | SortOrder
+    stage?: SortOrder
+    source?: SortOrder
+    note?: SortOrderInput | SortOrder
+    metricsAt?: SortOrderInput | SortOrder
+    metricsError?: SortOrderInput | SortOrder
+    invitedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type InfluencerProspectWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    platform_handle?: InfluencerProspectPlatformHandleCompoundUniqueInput
+    AND?: InfluencerProspectWhereInput | InfluencerProspectWhereInput[]
+    OR?: InfluencerProspectWhereInput[]
+    NOT?: InfluencerProspectWhereInput | InfluencerProspectWhereInput[]
+    platform?: StringFilter<"InfluencerProspect"> | string
+    handle?: StringFilter<"InfluencerProspect"> | string
+    url?: StringFilter<"InfluencerProspect"> | string
+    name?: StringNullableFilter<"InfluencerProspect"> | string | null
+    bio?: StringNullableFilter<"InfluencerProspect"> | string | null
+    followers?: IntNullableFilter<"InfluencerProspect"> | number | null
+    mediaCount?: IntNullableFilter<"InfluencerProspect"> | number | null
+    avgViews?: IntNullableFilter<"InfluencerProspect"> | number | null
+    avgLikes?: IntNullableFilter<"InfluencerProspect"> | number | null
+    avgComments?: IntNullableFilter<"InfluencerProspect"> | number | null
+    engagementRate?: FloatNullableFilter<"InfluencerProspect"> | number | null
+    lastPostAt?: DateTimeNullableFilter<"InfluencerProspect"> | Date | string | null
+    postsLast30?: IntNullableFilter<"InfluencerProspect"> | number | null
+    audienceTR?: FloatNullableFilter<"InfluencerProspect"> | number | null
+    fitScore?: IntNullableFilter<"InfluencerProspect"> | number | null
+    fitReasons?: StringNullableListFilter<"InfluencerProspect">
+    religiousAudience?: BoolNullableFilter<"InfluencerProspect"> | boolean | null
+    stage?: StringFilter<"InfluencerProspect"> | string
+    source?: StringFilter<"InfluencerProspect"> | string
+    note?: StringNullableFilter<"InfluencerProspect"> | string | null
+    metricsAt?: DateTimeNullableFilter<"InfluencerProspect"> | Date | string | null
+    metricsError?: StringNullableFilter<"InfluencerProspect"> | string | null
+    invitedAt?: DateTimeNullableFilter<"InfluencerProspect"> | Date | string | null
+    createdAt?: DateTimeFilter<"InfluencerProspect"> | Date | string
+    updatedAt?: DateTimeFilter<"InfluencerProspect"> | Date | string
+  }, "id" | "platform_handle">
+
+  export type InfluencerProspectOrderByWithAggregationInput = {
+    id?: SortOrder
+    platform?: SortOrder
+    handle?: SortOrder
+    url?: SortOrder
+    name?: SortOrderInput | SortOrder
+    bio?: SortOrderInput | SortOrder
+    followers?: SortOrderInput | SortOrder
+    mediaCount?: SortOrderInput | SortOrder
+    avgViews?: SortOrderInput | SortOrder
+    avgLikes?: SortOrderInput | SortOrder
+    avgComments?: SortOrderInput | SortOrder
+    engagementRate?: SortOrderInput | SortOrder
+    lastPostAt?: SortOrderInput | SortOrder
+    postsLast30?: SortOrderInput | SortOrder
+    audienceTR?: SortOrderInput | SortOrder
+    fitScore?: SortOrderInput | SortOrder
+    fitReasons?: SortOrder
+    religiousAudience?: SortOrderInput | SortOrder
+    stage?: SortOrder
+    source?: SortOrder
+    note?: SortOrderInput | SortOrder
+    metricsAt?: SortOrderInput | SortOrder
+    metricsError?: SortOrderInput | SortOrder
+    invitedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: InfluencerProspectCountOrderByAggregateInput
+    _avg?: InfluencerProspectAvgOrderByAggregateInput
+    _max?: InfluencerProspectMaxOrderByAggregateInput
+    _min?: InfluencerProspectMinOrderByAggregateInput
+    _sum?: InfluencerProspectSumOrderByAggregateInput
+  }
+
+  export type InfluencerProspectScalarWhereWithAggregatesInput = {
+    AND?: InfluencerProspectScalarWhereWithAggregatesInput | InfluencerProspectScalarWhereWithAggregatesInput[]
+    OR?: InfluencerProspectScalarWhereWithAggregatesInput[]
+    NOT?: InfluencerProspectScalarWhereWithAggregatesInput | InfluencerProspectScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"InfluencerProspect"> | string
+    platform?: StringWithAggregatesFilter<"InfluencerProspect"> | string
+    handle?: StringWithAggregatesFilter<"InfluencerProspect"> | string
+    url?: StringWithAggregatesFilter<"InfluencerProspect"> | string
+    name?: StringNullableWithAggregatesFilter<"InfluencerProspect"> | string | null
+    bio?: StringNullableWithAggregatesFilter<"InfluencerProspect"> | string | null
+    followers?: IntNullableWithAggregatesFilter<"InfluencerProspect"> | number | null
+    mediaCount?: IntNullableWithAggregatesFilter<"InfluencerProspect"> | number | null
+    avgViews?: IntNullableWithAggregatesFilter<"InfluencerProspect"> | number | null
+    avgLikes?: IntNullableWithAggregatesFilter<"InfluencerProspect"> | number | null
+    avgComments?: IntNullableWithAggregatesFilter<"InfluencerProspect"> | number | null
+    engagementRate?: FloatNullableWithAggregatesFilter<"InfluencerProspect"> | number | null
+    lastPostAt?: DateTimeNullableWithAggregatesFilter<"InfluencerProspect"> | Date | string | null
+    postsLast30?: IntNullableWithAggregatesFilter<"InfluencerProspect"> | number | null
+    audienceTR?: FloatNullableWithAggregatesFilter<"InfluencerProspect"> | number | null
+    fitScore?: IntNullableWithAggregatesFilter<"InfluencerProspect"> | number | null
+    fitReasons?: StringNullableListFilter<"InfluencerProspect">
+    religiousAudience?: BoolNullableWithAggregatesFilter<"InfluencerProspect"> | boolean | null
+    stage?: StringWithAggregatesFilter<"InfluencerProspect"> | string
+    source?: StringWithAggregatesFilter<"InfluencerProspect"> | string
+    note?: StringNullableWithAggregatesFilter<"InfluencerProspect"> | string | null
+    metricsAt?: DateTimeNullableWithAggregatesFilter<"InfluencerProspect"> | Date | string | null
+    metricsError?: StringNullableWithAggregatesFilter<"InfluencerProspect"> | string | null
+    invitedAt?: DateTimeNullableWithAggregatesFilter<"InfluencerProspect"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"InfluencerProspect"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"InfluencerProspect"> | Date | string
   }
 
   export type OrderCreateInput = {
@@ -75180,6 +76793,209 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type InfluencerProspectCreateInput = {
+    id?: string
+    platform: string
+    handle: string
+    url: string
+    name?: string | null
+    bio?: string | null
+    followers?: number | null
+    mediaCount?: number | null
+    avgViews?: number | null
+    avgLikes?: number | null
+    avgComments?: number | null
+    engagementRate?: number | null
+    lastPostAt?: Date | string | null
+    postsLast30?: number | null
+    audienceTR?: number | null
+    fitScore?: number | null
+    fitReasons?: InfluencerProspectCreatefitReasonsInput | string[]
+    religiousAudience?: boolean | null
+    stage?: string
+    source?: string
+    note?: string | null
+    metricsAt?: Date | string | null
+    metricsError?: string | null
+    invitedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type InfluencerProspectUncheckedCreateInput = {
+    id?: string
+    platform: string
+    handle: string
+    url: string
+    name?: string | null
+    bio?: string | null
+    followers?: number | null
+    mediaCount?: number | null
+    avgViews?: number | null
+    avgLikes?: number | null
+    avgComments?: number | null
+    engagementRate?: number | null
+    lastPostAt?: Date | string | null
+    postsLast30?: number | null
+    audienceTR?: number | null
+    fitScore?: number | null
+    fitReasons?: InfluencerProspectCreatefitReasonsInput | string[]
+    religiousAudience?: boolean | null
+    stage?: string
+    source?: string
+    note?: string | null
+    metricsAt?: Date | string | null
+    metricsError?: string | null
+    invitedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type InfluencerProspectUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    platform?: StringFieldUpdateOperationsInput | string
+    handle?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    followers?: NullableIntFieldUpdateOperationsInput | number | null
+    mediaCount?: NullableIntFieldUpdateOperationsInput | number | null
+    avgViews?: NullableIntFieldUpdateOperationsInput | number | null
+    avgLikes?: NullableIntFieldUpdateOperationsInput | number | null
+    avgComments?: NullableIntFieldUpdateOperationsInput | number | null
+    engagementRate?: NullableFloatFieldUpdateOperationsInput | number | null
+    lastPostAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    postsLast30?: NullableIntFieldUpdateOperationsInput | number | null
+    audienceTR?: NullableFloatFieldUpdateOperationsInput | number | null
+    fitScore?: NullableIntFieldUpdateOperationsInput | number | null
+    fitReasons?: InfluencerProspectUpdatefitReasonsInput | string[]
+    religiousAudience?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    stage?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    metricsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    metricsError?: NullableStringFieldUpdateOperationsInput | string | null
+    invitedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InfluencerProspectUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    platform?: StringFieldUpdateOperationsInput | string
+    handle?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    followers?: NullableIntFieldUpdateOperationsInput | number | null
+    mediaCount?: NullableIntFieldUpdateOperationsInput | number | null
+    avgViews?: NullableIntFieldUpdateOperationsInput | number | null
+    avgLikes?: NullableIntFieldUpdateOperationsInput | number | null
+    avgComments?: NullableIntFieldUpdateOperationsInput | number | null
+    engagementRate?: NullableFloatFieldUpdateOperationsInput | number | null
+    lastPostAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    postsLast30?: NullableIntFieldUpdateOperationsInput | number | null
+    audienceTR?: NullableFloatFieldUpdateOperationsInput | number | null
+    fitScore?: NullableIntFieldUpdateOperationsInput | number | null
+    fitReasons?: InfluencerProspectUpdatefitReasonsInput | string[]
+    religiousAudience?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    stage?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    metricsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    metricsError?: NullableStringFieldUpdateOperationsInput | string | null
+    invitedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InfluencerProspectCreateManyInput = {
+    id?: string
+    platform: string
+    handle: string
+    url: string
+    name?: string | null
+    bio?: string | null
+    followers?: number | null
+    mediaCount?: number | null
+    avgViews?: number | null
+    avgLikes?: number | null
+    avgComments?: number | null
+    engagementRate?: number | null
+    lastPostAt?: Date | string | null
+    postsLast30?: number | null
+    audienceTR?: number | null
+    fitScore?: number | null
+    fitReasons?: InfluencerProspectCreatefitReasonsInput | string[]
+    religiousAudience?: boolean | null
+    stage?: string
+    source?: string
+    note?: string | null
+    metricsAt?: Date | string | null
+    metricsError?: string | null
+    invitedAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type InfluencerProspectUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    platform?: StringFieldUpdateOperationsInput | string
+    handle?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    followers?: NullableIntFieldUpdateOperationsInput | number | null
+    mediaCount?: NullableIntFieldUpdateOperationsInput | number | null
+    avgViews?: NullableIntFieldUpdateOperationsInput | number | null
+    avgLikes?: NullableIntFieldUpdateOperationsInput | number | null
+    avgComments?: NullableIntFieldUpdateOperationsInput | number | null
+    engagementRate?: NullableFloatFieldUpdateOperationsInput | number | null
+    lastPostAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    postsLast30?: NullableIntFieldUpdateOperationsInput | number | null
+    audienceTR?: NullableFloatFieldUpdateOperationsInput | number | null
+    fitScore?: NullableIntFieldUpdateOperationsInput | number | null
+    fitReasons?: InfluencerProspectUpdatefitReasonsInput | string[]
+    religiousAudience?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    stage?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    metricsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    metricsError?: NullableStringFieldUpdateOperationsInput | string | null
+    invitedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type InfluencerProspectUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    platform?: StringFieldUpdateOperationsInput | string
+    handle?: StringFieldUpdateOperationsInput | string
+    url?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    bio?: NullableStringFieldUpdateOperationsInput | string | null
+    followers?: NullableIntFieldUpdateOperationsInput | number | null
+    mediaCount?: NullableIntFieldUpdateOperationsInput | number | null
+    avgViews?: NullableIntFieldUpdateOperationsInput | number | null
+    avgLikes?: NullableIntFieldUpdateOperationsInput | number | null
+    avgComments?: NullableIntFieldUpdateOperationsInput | number | null
+    engagementRate?: NullableFloatFieldUpdateOperationsInput | number | null
+    lastPostAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    postsLast30?: NullableIntFieldUpdateOperationsInput | number | null
+    audienceTR?: NullableFloatFieldUpdateOperationsInput | number | null
+    fitScore?: NullableIntFieldUpdateOperationsInput | number | null
+    fitReasons?: InfluencerProspectUpdatefitReasonsInput | string[]
+    religiousAudience?: NullableBoolFieldUpdateOperationsInput | boolean | null
+    stage?: StringFieldUpdateOperationsInput | string
+    source?: StringFieldUpdateOperationsInput | string
+    note?: NullableStringFieldUpdateOperationsInput | string | null
+    metricsAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    metricsError?: NullableStringFieldUpdateOperationsInput | string | null
+    invitedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -78391,6 +80207,141 @@ export namespace Prisma {
     createdAt?: SortOrder
   }
 
+  export type StringNullableListFilter<$PrismaModel = never> = {
+    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    has?: string | StringFieldRefInput<$PrismaModel> | null
+    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
+    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
+  }
+
+  export type BoolNullableFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableFilter<$PrismaModel> | boolean | null
+  }
+
+  export type InfluencerProspectPlatformHandleCompoundUniqueInput = {
+    platform: string
+    handle: string
+  }
+
+  export type InfluencerProspectCountOrderByAggregateInput = {
+    id?: SortOrder
+    platform?: SortOrder
+    handle?: SortOrder
+    url?: SortOrder
+    name?: SortOrder
+    bio?: SortOrder
+    followers?: SortOrder
+    mediaCount?: SortOrder
+    avgViews?: SortOrder
+    avgLikes?: SortOrder
+    avgComments?: SortOrder
+    engagementRate?: SortOrder
+    lastPostAt?: SortOrder
+    postsLast30?: SortOrder
+    audienceTR?: SortOrder
+    fitScore?: SortOrder
+    fitReasons?: SortOrder
+    religiousAudience?: SortOrder
+    stage?: SortOrder
+    source?: SortOrder
+    note?: SortOrder
+    metricsAt?: SortOrder
+    metricsError?: SortOrder
+    invitedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type InfluencerProspectAvgOrderByAggregateInput = {
+    followers?: SortOrder
+    mediaCount?: SortOrder
+    avgViews?: SortOrder
+    avgLikes?: SortOrder
+    avgComments?: SortOrder
+    engagementRate?: SortOrder
+    postsLast30?: SortOrder
+    audienceTR?: SortOrder
+    fitScore?: SortOrder
+  }
+
+  export type InfluencerProspectMaxOrderByAggregateInput = {
+    id?: SortOrder
+    platform?: SortOrder
+    handle?: SortOrder
+    url?: SortOrder
+    name?: SortOrder
+    bio?: SortOrder
+    followers?: SortOrder
+    mediaCount?: SortOrder
+    avgViews?: SortOrder
+    avgLikes?: SortOrder
+    avgComments?: SortOrder
+    engagementRate?: SortOrder
+    lastPostAt?: SortOrder
+    postsLast30?: SortOrder
+    audienceTR?: SortOrder
+    fitScore?: SortOrder
+    religiousAudience?: SortOrder
+    stage?: SortOrder
+    source?: SortOrder
+    note?: SortOrder
+    metricsAt?: SortOrder
+    metricsError?: SortOrder
+    invitedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type InfluencerProspectMinOrderByAggregateInput = {
+    id?: SortOrder
+    platform?: SortOrder
+    handle?: SortOrder
+    url?: SortOrder
+    name?: SortOrder
+    bio?: SortOrder
+    followers?: SortOrder
+    mediaCount?: SortOrder
+    avgViews?: SortOrder
+    avgLikes?: SortOrder
+    avgComments?: SortOrder
+    engagementRate?: SortOrder
+    lastPostAt?: SortOrder
+    postsLast30?: SortOrder
+    audienceTR?: SortOrder
+    fitScore?: SortOrder
+    religiousAudience?: SortOrder
+    stage?: SortOrder
+    source?: SortOrder
+    note?: SortOrder
+    metricsAt?: SortOrder
+    metricsError?: SortOrder
+    invitedAt?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type InfluencerProspectSumOrderByAggregateInput = {
+    followers?: SortOrder
+    mediaCount?: SortOrder
+    avgViews?: SortOrder
+    avgLikes?: SortOrder
+    avgComments?: SortOrder
+    engagementRate?: SortOrder
+    postsLast30?: SortOrder
+    audienceTR?: SortOrder
+    fitScore?: SortOrder
+  }
+
+  export type BoolNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableWithAggregatesFilter<$PrismaModel> | boolean | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedBoolNullableFilter<$PrismaModel>
+    _max?: NestedBoolNullableFilter<$PrismaModel>
+  }
+
   export type UserCreateNestedOneWithoutOrdersInput = {
     create?: XOR<UserCreateWithoutOrdersInput, UserUncheckedCreateWithoutOrdersInput>
     connectOrCreate?: UserCreateOrConnectWithoutOrdersInput
@@ -80391,6 +82342,19 @@ export namespace Prisma {
     update?: XOR<XOR<CrmLeadUpdateToOneWithWhereWithoutActivitiesInput, CrmLeadUpdateWithoutActivitiesInput>, CrmLeadUncheckedUpdateWithoutActivitiesInput>
   }
 
+  export type InfluencerProspectCreatefitReasonsInput = {
+    set: string[]
+  }
+
+  export type InfluencerProspectUpdatefitReasonsInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type NullableBoolFieldUpdateOperationsInput = {
+    set?: boolean | null
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -80622,6 +82586,19 @@ export namespace Prisma {
     _sum?: NestedFloatNullableFilter<$PrismaModel>
     _min?: NestedFloatNullableFilter<$PrismaModel>
     _max?: NestedFloatNullableFilter<$PrismaModel>
+  }
+
+  export type NestedBoolNullableFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableFilter<$PrismaModel> | boolean | null
+  }
+
+  export type NestedBoolNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel> | null
+    not?: NestedBoolNullableWithAggregatesFilter<$PrismaModel> | boolean | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedBoolNullableFilter<$PrismaModel>
+    _max?: NestedBoolNullableFilter<$PrismaModel>
   }
 
   export type UserCreateWithoutOrdersInput = {

@@ -4,6 +4,82 @@ En yeni en üstte. Şablon ve kurallar: `docs/antigravity/GOREVLER.md` §0. Clau
 
 <!-- Teslimler bu çizginin altına -->
 
+## 2026-10-03 — Antigravity Teslim Kaydı: G12 (Influencer Aday Havuzu, Veri Araştırması ve Blog Düzeltmeleri-2)
+
+### 1. Durum ve Değişen Dosyalar Özeti
+
+- **G12-1 (Veri Sağlayıcı Araştırması):**
+  - `docs/taslaklar/influencer-veri-saglayicilari.md` (10 sağlayıcı için resmî fiyat bağlantılı, kitle-dil, sahte takipçi ve Meta uyum karşılaştırma tablosu)
+- **G12-2 (Admin Influencer Adayları Ekranları):**
+  - `src/app/(admin)/admin/influencer-adaylari/page.tsx` (Liste ekranı: sekmeler, arama, minScore filtresi, aday ekleme ve keşif formları, puan renklendirmesi)
+  - `src/app/(admin)/admin/influencer-adaylari/[id]/page.tsx` (Detay ekranı: tüm metrikler, puan gerekçeleri, aşama düğmeleri, not düzenleme, DM şablon kutusu, davet bağlantısı üretici)
+  - `src/components/admin/AdminSidebar.tsx` (Pazarlama & Büyüme grubuna `/admin/influencer-adaylari` menü satırı eklendi)
+- **G12-3 (DM Şablonları):**
+  - `src/app/(admin)/admin/influencer-adaylari/dm.ts` (DM, E-posta ve Takip şablonları + `fillTemplate` fonksiyonu)
+  - `docs/taslaklar/influencer-dm-sablonlari.md` (Markdown taslak dokümanı)
+- **G12-4 (Blog Yasaklı İfadeleri Tamamlama):**
+  - `docs/veri/blog-duzeltmeleri-2.json` (Canlı sitede `count = 1` doğrulamalı 28 adet tam cümle değişikliği)
+
+---
+
+### 2. Tip Kontrolü ve Lint Sonuçları
+
+- **`npx tsc --noEmit` Çıktısı:** Clean (Boş çıktı / 0 hata)
+- **`npx eslint` Çıktısı:** Clean (Değiştirilen/eklenen dosyalarda 0 hata)
+
+---
+
+### 3. G12-1 Veri Sağlayıcı Karşılaştırması ve Seçim Gerekçeleri
+
+- **Hedef Kitle:** Muhafazakâr / dindar kitleye ulaşan Instagram, TikTok ve YouTube içerik üreticileri (Instagram öncelikli).
+- **DataForSEO Açıklaması:** DataForSEO'da Instagram Influencer Keşif / Kitle Analizi / Sahte Takipçi endpoint'i bulunmamaktadır.
+- **Seçim Önerileri:**
+  - **En Ucuz Başlangıç:** Apify ($5-$20/ay pay-as-you-go) + Kendi Uygunluk Puanlama Algoritmamız.
+  - **En İyi Veri:** Influencers.club (API $249/ay) veya Modash (SaaS $199/ay).
+
+---
+
+### 4. G12-2 Admin Arayüz Görsel Kanıtları
+
+- **Liste Ekranı Görseli:** `docs/antigravity/goruntuler/G12-2-influencer-adaylari-list.png`
+- **Detay Ekranı Görseli:** `docs/antigravity/goruntuler/G12-2-influencer-adaylari-detail.png`
+
+---
+
+### 5. G12-4 Blog Cümle Değişiklik Tablosu (28 Kayıt - Canlı Metinde `count = 1` Doğrulanmış)
+
+| Slug | Bulunacak Tam Cümle / Parça (`find`) | Yeni Cümle / Parça (`replace`) | Canlı Eşleşme |
+|---|---|---|---|
+| `ekonomik-umre-hangi-firma-2026` | Firmanın TÜRSAB üyeliğini, Kültür ve Turizm Bakanlığı | Firmanın resmi acente lisans belgesini, Kültür ve Turizm Bakanlığı | `1` |
+| `ekonomik-umre-hangi-firma-2026` | Acente yetkisi TÜRSAB üyelik sorgusu ve Bakanlık yönetmeliğine | Acente yetkisi resmi acente lisans sorgusu ve Bakanlık yönetmeliğine | `1` |
+| `ekonomik-umre-hangi-firma-2026` (FAQ) | TÜRSAB üyeliğini sorgulayın, firmanın geçmiş | Resmi seyahat acentesi lisans belgesini sorgulayın, firmanın geçmiş | `1` |
+| `mekke-otel-secimi-ve-konum-rehberi` | 1. Harem Sınırı (Sıfır Noktası) Otelleri Bu oteller | 1. Harem Sınırı (Yürüme Mesafesi) Otelleri Bu oteller | `1` |
+| `mekke-otel-secimi-ve-konum-rehberi` | Harem'e sıfır oteller zaman kazandırırken, Aziziye | Harem'e yürüme mesafesindeki oteller zaman kazandırırken, Aziziye | `1` |
+| `mekke-otel-secimi-ve-konum-rehberi` | Sıfır Noktası 0 - 200 metre Yaya Yüksek Kesintisiz Kabe erişimi | Yürüme Mesafesi 0 - 200 metre Yaya Yüksek Kesintisiz Kabe erişimi | `1` |
+| `mekke-otel-secimi-ve-konum-rehberi` | Harem'e ulaşım, otellerin 7/24 sunduğu ücretsiz ring servisleriyle sağlanır. | Harem'e ulaşım, otellerin gün boyunca sunduğu ücretsiz ring servisleriyle sağlanır. | `1` |
+| `2026-umre-turlari-diyanet-bireysel-fiyatlar-vip-ipuclari` | VIP Umre'nin sağladığı konforla Kabe'ye sıfır | Özel umre programının sağladığı konforla Kabe'ye yakın konumdaki | `1` |
+| `2026-umre-turlari-diyanet-bireysel-fiyatlar-vip-ipuclari` | Kabe'ye Sıfır Noktasındaki Konfor:** Mekke'de Kabe'ye | Kabe'ye Yürüme Mesafesindeki Konfor:** Mekke'de Kabe'ye | `1` |
+| `2026-umre-turlari-diyanet-bireysel-fiyatlar-vip-ipuclari` | lüks VIP paketlere kadar geniş bir yelpazede sunuluyor. | üst segment özel paketlere kadar geniş bir yelpazede sunuluyor. | `1` |
+| `2026-umre-turlari-diyanet-bireysel-fiyatlar-vip-ipuclari` | Lezzetli İkramlar:** Lüks otellerde açık büfe | Lezzetli İkramlar:** Üst segment otellerde açık büfe | `1` |
+| `2026-umre-turlari-diyanet-bireysel-fiyatlar-vip-ipuclari` | Mekke'nin o eşsiz atmosferini, Medine'nin huzur | Mekke'nin o muazzam atmosferini, Medine'nin huzur | `1` |
+| `2026-umre-turlari-diyanet-bireysel-fiyatlar-vip-ipuclari` | VIP bir deneyim mi arıyorsun, yoksa daha | Özel bir konaklama deneyimi mi arıyorsun, yoksa daha | `1` |
+| `umre-turlari-2026-fiyat-karsilastirmalari-diyanet-bireysel-vip` | Otellerin Kabe'ye sıfır konumundan, Medine'de Ravza'ya yürüme mesafesindeki huzurlu odalara kadar her detayı, bu kutsal yolculuğunda sana en doğru bilgiyi vermek için özenle seçtim. | Otellerin Kabe'ye yakın konumundan, Medine'de Ravza'ya yürüme mesafesindeki huzurlu odalara kadar her detayı, bu kutsal yolculuğunda sana en doğru bilgiyi vermek için özenle seçtim. | `1` |
+| `umre-turlari-2026-fiyat-karsilastirmalari-diyanet-bireysel-vip` | Kabe'nin o eşsiz heybetini ilk gördüğün anı, Ravza-i Mutahhara'da hissedeceğin huzuru, birebir yaşadığım tecrübelerle sana aktarmak istedim. | Kabe'nin o muazzam heybetini ilk gördüğün anı, Ravza-i Mutahhara'da hissedeceğin huzuru, birebir yaşadığım tecrübelerle sana aktarmak istedim. | `1` |
+| `umre-turlari-2026-fiyat-karsilastirmalari-diyanet-bireysel-vip` | Mekke'de Kabe'ye yürüme mesafesindeki 5 yıldızlı otellerde, odanın penceresinden Mescid-i Haram'ın o eşsiz manzarasını seyrederek konaklayabilirsin. | Mekke'de Kabe'ye yürüme mesafesindeki 5 yıldızlı otellerde, odanın penceresinden Mescid-i Haram'ın o muhteşem manzarasını seyrederek konaklayabilirsin. | `1` |
+| `umre-turlari-2026-fiyat-karsilastirmalari-diyanet-bireysel-vip` | Swissotel Makkah veya Jabal Omar Hyatt Regency Makkah gibi oteller, Kabe'ye birkaç adım mesafede lüks bir deneyim vaat ediyor. | Swissotel Makkah veya Jabal Omar Hyatt Regency Makkah gibi oteller, Kabe'ye birkaç adım mesafede üst düzey bir deneyim vadediyor. | `1` |
+| `umre-turlari-2026-fiyat-karsilastirmalari-diyanet-bireysel-vip` | Kabe veya Mescid-i Nebevî manzaralı lüks odalarda konaklama. | Kabe veya Mescid-i Nebevî manzaralı üst segment odalarda konaklama. | `1` |
+| `umre-turlari-2026-hadi-umreye-gidelim` | Hayatın koşuşturmacasından sıyrılıp ruhunuzu dinlendirmek, kalbinizi Kâbe'nin huzuruyla doldurmak isteyenler için Hadi Umreye Gidelim , eşsiz bireysel umre deneyimleri sunuyor. | Hayatın koşuşturmacasından sıyrılıp ruhunuzu dinlendirmek, kalbinizi Kâbe'nin huzuruyla doldurmak isteyenler için Hadi Umreye Gidelim, özenle planlanmış bireysel umre deneyimleri sunuyor. | `1` |
+| `umre-turlari-2026-hadi-umreye-gidelim` | Size özel bireysel umre paketlerimizi keşfedin ve ruhunuzu arındıracak bu eşsiz yolculuğa bizimle birlikte çıkın. | Size özel bireysel umre paketlerimizi keşfedin ve ruhunuzu arındıracak bu mübarek yolculuğa bizimle birlikte çıkın. | `1` |
+| `umre-turlari-2026-hadi-umreye-gidelim` | Ekonomi sınıfından lüks seçeneklere kadar geniş bir yelpazede, hayalinizdeki umreye ulaşmanız için titizlikle çalışıyoruz. | Ekonomik seçeneklerden konforlu otel tercihlerine kadar geniş bir yelpazede, hayalinizdeki umreye ulaşmanız için titizlikle çalışıyoruz. | `1` |
+| `zamzam-tower-alisveris-rehberi-tarihi-ve-mekanlar` | Burası sadece lüks otelleri barındıran bir gökdelen değil; aynı zamanda milyonlarca hacı ve umrecinin yeme-içme, alışveriş ve dinlenme ihtiyaçlarını karşılayan, adeta kendi başına bir "şehir"dir. | Burası sadece 5 yıldızlı otelleri barındıran bir gökdelen değil; aynı zamanda milyonlarca hacı ve umrecinin yeme-içme, alışveriş ve dinlenme ihtiyaçlarını karşılayan, adeta kendi başına bir "şehir"dir. | `1` |
+| `zamzam-tower-alisveris-rehberi-tarihi-ve-mekanlar` | Harem'in hemen dibinde olmanın getirdiği lüks algısı, umrecileri Zamzam Tower'daki fiyatların çok yüksek olduğu yanılgısına düşürebilir. | Harem'in hemen dibinde olmanın getirdiği üst segment algısı, umrecileri Zamzam Tower'daki fiyatların çok yüksek olduğu yanılgısına düşürebilir. | `1` |
+| `zamzam-tower-alisveris-rehberi-tarihi-ve-mekanlar` | Lüks butikler için bu doğru olsa da, kompleksin zemin/alt katlarında yer alan Bin Dawood Hipermarketi , umrecilerin cankurtaranıdır. | Üst düzey markalar için bu doğru olsa da, kompleksin zemin/alt katlarında yer alan Bin Dawood Hipermarketi, umrecilerin cankurtaranıdır. | `1` |
+| `zamzam-tower-alisveris-rehberi-tarihi-ve-mekanlar` | Bin Dawood, Türkiye'deki büyük zincir marketlerin (Migros vb.) Suudi Arabistan'daki devasa ve lüks versiyonudur. | Bin Dawood, Türkiye'deki büyük zincir marketlerin (Migros vb.) Suudi Arabistan'daki devasa ve kapsamlı versiyonudur. | `1` |
+| `zamzam-tower-alisveris-rehberi-tarihi-ve-mekanlar` | Fiyatlar devlet denetimindedir, bu nedenle "turist kazığı" yeme ihtimaliniz sıfırdır. | Fiyatlar devlet denetimindedir, bu nedenle fahiş fiyat uygulamasıyla karşılaşma riskiniz bulunmamaktadır. | `1` |
+| `zamzam-tower-alisveris-rehberi-tarihi-ve-mekanlar` | Eğer kakuleli (cardamom) otantik Arap kahvesi (Gahwa) ve yanına lüks çikolata/hurma arıyorsanız, AVM'nin 1. | Eğer kakuleli (cardamom) otantik Arap kahvesi (Gahwa) ve yanına özel çikolata/hurma arıyorsanız, AVM'nin 1. | `1` |
+| `zamzam-tower-alisveris-rehberi-tarihi-ve-mekanlar` | Zamzam Tower (Ebrac el-Beyt) içindeki işletmelerin çoğu 7/24'e yakın hizmet verir ancak farz namazları vaktinde (ezandan yaklaşık 10 dakika önce) kepenklerini kapatırlar. | Zamzam Tower (Ebrac el-Beyt) içindeki işletmelerin çoğu gün boyunca kesintisiz hizmet verir ancak farz namazları vaktinde (ezandan yaklaşık 10 dakika önce) kepenklerini kapatırlar. | `1` |
+
+
 ## 2026-10-03 — Claude incelemesi: G10 ve G11
 
 - **G10-1 kabul:** kuyruk ekranı API'yi doğru kullanıyor (refresh, pin/unpin, block/unblock, dismissUpdate). Teslim özetindeki "Taslak/Yayınlanacak/İncelemede" filtreleri kodda yok (özet abartılı).

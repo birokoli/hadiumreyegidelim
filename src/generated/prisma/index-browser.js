@@ -835,6 +835,35 @@ exports.Prisma.CrmActivityScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.InfluencerProspectScalarFieldEnum = {
+  id: 'id',
+  platform: 'platform',
+  handle: 'handle',
+  url: 'url',
+  name: 'name',
+  bio: 'bio',
+  followers: 'followers',
+  mediaCount: 'mediaCount',
+  avgViews: 'avgViews',
+  avgLikes: 'avgLikes',
+  avgComments: 'avgComments',
+  engagementRate: 'engagementRate',
+  lastPostAt: 'lastPostAt',
+  postsLast30: 'postsLast30',
+  audienceTR: 'audienceTR',
+  fitScore: 'fitScore',
+  fitReasons: 'fitReasons',
+  religiousAudience: 'religiousAudience',
+  stage: 'stage',
+  source: 'source',
+  note: 'note',
+  metricsAt: 'metricsAt',
+  metricsError: 'metricsError',
+  invitedAt: 'invitedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -901,7 +930,8 @@ exports.Prisma.ModelName = {
   ReferralQualification: 'ReferralQualification',
   AiVisibilityAudit: 'AiVisibilityAudit',
   CrmLead: 'CrmLead',
-  CrmActivity: 'CrmActivity'
+  CrmActivity: 'CrmActivity',
+  InfluencerProspect: 'InfluencerProspect'
 };
 
 /**

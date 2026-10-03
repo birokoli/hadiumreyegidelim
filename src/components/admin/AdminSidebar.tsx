@@ -50,6 +50,7 @@ const menuGroups: { title: string; links: { href: string; icon: string; label: s
     title: "Pazarlama & Büyüme",
     links: [
       { href: "/admin/influencers", icon: "person_celebrate", label: "Influencer Yönetimi", permission: "marketing" },
+      { href: "/admin/influencer-adaylari", icon: "person_search", label: "Influencer Adayları", permission: "marketing" },
       { href: "/admin/affiliate",   icon: "star",             label: "Affiliate Program", permission: "marketing" },
       { href: "/admin/campaigns",   icon: "campaign",         label: "Kampanyalar", permission: "marketing" },
       { href: "/admin/seo",         icon: "travel_explore",   label: "SEO Masası", permission: "marketing" },
@@ -190,7 +191,7 @@ export default function AdminSidebar({ logoUrl }: { logoUrl?: string }) {
                       ? pathname === link.href
                       : pathname.startsWith(link.href);
 
-                    const badgeValue = link.badgeKey ? (counts as any)[link.badgeKey] : undefined;
+                    const badgeValue = link.badgeKey ? (counts as Record<string, number>)[link.badgeKey] : undefined;
 
                     return (
                       <Link

@@ -1,0 +1,144 @@
+[
+  {
+    "slug": "ekonomik-umre-hangi-firma-2026",
+    "find": "Firmanın TÜRSAB üyeliğini, Kültür ve Turizm Bakanlığı",
+    "replace": "Firmanın resmi acente lisans belgesini, Kültür ve Turizm Bakanlığı"
+  },
+  {
+    "slug": "ekonomik-umre-hangi-firma-2026",
+    "find": "Acente yetkisi TÜRSAB üyelik sorgusu ve Bakanlık yönetmeliğine",
+    "replace": "Acente yetkisi resmi acente lisans sorgusu ve Bakanlık yönetmeliğine"
+  },
+  {
+    "slug": "ekonomik-umre-hangi-firma-2026",
+    "field": "faq",
+    "q": "Umre firmasının yetkili olduğunu nasıl anlarım?",
+    "find": "TÜRSAB üyeliğini sorgulayın, firmanın geçmiş",
+    "replace": "Resmi seyahat acentesi lisans belgesini sorgulayın, firmanın geçmiş"
+  },
+  {
+    "slug": "mekke-otel-secimi-ve-konum-rehberi",
+    "find": "1. Harem Sınırı (Sıfır Noktası) Otelleri Bu oteller",
+    "replace": "1. Harem Sınırı (Yürüme Mesafesi) Otelleri Bu oteller"
+  },
+  {
+    "slug": "mekke-otel-secimi-ve-konum-rehberi",
+    "find": "Harem'e sıfır oteller zaman kazandırırken, Aziziye",
+    "replace": "Harem'e yürüme mesafesindeki oteller zaman kazandırırken, Aziziye"
+  },
+  {
+    "slug": "mekke-otel-secimi-ve-konum-rehberi",
+    "find": "Sıfır Noktası 0 - 200 metre Yaya Yüksek Kesintisiz Kabe erişimi",
+    "replace": "Yürüme Mesafesi 0 - 200 metre Yaya Yüksek Kesintisiz Kabe erişimi"
+  },
+  {
+    "slug": "mekke-otel-secimi-ve-konum-rehberi",
+    "find": "Harem'e ulaşım, otellerin 7/24 sunduğu ücretsiz ring servisleriyle sağlanır.",
+    "replace": "Harem'e ulaşım, otellerin gün boyunca sunduğu ücretsiz ring servisleriyle sağlanır."
+  },
+  {
+    "slug": "2026-umre-turlari-diyanet-bireysel-fiyatlar-vip-ipuclari",
+    "find": "VIP Umre'nin sağladığı konforla Kabe'ye sıfır",
+    "replace": "Özel umre programının sağladığı konforla Kabe'ye yakın konumdaki"
+  },
+  {
+    "slug": "2026-umre-turlari-diyanet-bireysel-fiyatlar-vip-ipuclari",
+    "find": "Kabe'ye Sıfır Noktasındaki Konfor:** Mekke'de Kabe'ye",
+    "replace": "Kabe'ye Yürüme Mesafesindeki Konfor:** Mekke'de Kabe'ye"
+  },
+  {
+    "slug": "2026-umre-turlari-diyanet-bireysel-fiyatlar-vip-ipuclari",
+    "find": "lüks VIP paketlere kadar geniş bir yelpazede sunuluyor.",
+    "replace": "üst segment özel paketlere kadar geniş bir yelpazede sunuluyor."
+  },
+  {
+    "slug": "2026-umre-turlari-diyanet-bireysel-fiyatlar-vip-ipuclari",
+    "find": "Lezzetli İkramlar:** Lüks otellerde açık büfe",
+    "replace": "Lezzetli İkramlar:** Üst segment otellerde açık büfe"
+  },
+  {
+    "slug": "2026-umre-turlari-diyanet-bireysel-fiyatlar-vip-ipuclari",
+    "find": "Mekke'nin o eşsiz atmosferini, Medine'nin huzur",
+    "replace": "Mekke'nin o muazzam atmosferini, Medine'nin huzur"
+  },
+  {
+    "slug": "2026-umre-turlari-diyanet-bireysel-fiyatlar-vip-ipuclari",
+    "find": "VIP bir deneyim mi arıyorsun, yoksa daha",
+    "replace": "Özel bir konaklama deneyimi mi arıyorsun, yoksa daha"
+  },
+  {
+    "slug": "umre-turlari-2026-fiyat-karsilastirmalari-diyanet-bireysel-vip",
+    "find": "Otellerin Kabe'ye sıfır konumundan, Medine'de Ravza'ya yürüme mesafesindeki huzurlu odalara kadar her detayı, bu kutsal yolculuğunda sana en doğru bilgiyi vermek için özenle seçtim.",
+    "replace": "Otellerin Kabe'ye yakın konumundan, Medine'de Ravza'ya yürüme mesafesindeki huzurlu odalara kadar her detayı, bu kutsal yolculuğunda sana en doğru bilgiyi vermek için özenle seçtim."
+  },
+  {
+    "slug": "umre-turlari-2026-fiyat-karsilastirmalari-diyanet-bireysel-vip",
+    "find": "Kabe'nin o eşsiz heybetini ilk gördüğün anı, Ravza-i Mutahhara'da hissedeceğin huzuru, birebir yaşadığım tecrübelerle sana aktarmak istedim.",
+    "replace": "Kabe'nin o muazzam heybetini ilk gördüğün anı, Ravza-i Mutahhara'da hissedeceğin huzuru, birebir yaşadığım tecrübelerle sana aktarmak istedim."
+  },
+  {
+    "slug": "umre-turlari-2026-fiyat-karsilastirmalari-diyanet-bireysel-vip",
+    "find": "Mekke'de Kabe'ye yürüme mesafesindeki 5 yıldızlı otellerde, odanın penceresinden Mescid-i Haram'ın o eşsiz manzarasını seyrederek konaklayabilirsin.",
+    "replace": "Mekke'de Kabe'ye yürüme mesafesindeki 5 yıldızlı otellerde, odanın penceresinden Mescid-i Haram'ın o muhteşem manzarasını seyrederek konaklayabilirsin."
+  },
+  {
+    "slug": "umre-turlari-2026-fiyat-karsilastirmalari-diyanet-bireysel-vip",
+    "find": "Swissotel Makkah veya Jabal Omar Hyatt Regency Makkah gibi oteller, Kabe'ye birkaç adım mesafede lüks bir deneyim vaat ediyor.",
+    "replace": "Swissotel Makkah veya Jabal Omar Hyatt Regency Makkah gibi oteller, Kabe'ye birkaç adım mesafede üst düzey bir deneyim vadediyor."
+  },
+  {
+    "slug": "umre-turlari-2026-fiyat-karsilastirmalari-diyanet-bireysel-vip",
+    "find": "Kabe veya Mescid-i Nebevî manzaralı lüks odalarda konaklama.",
+    "replace": "Kabe veya Mescid-i Nebevî manzaralı üst segment odalarda konaklama."
+  },
+  {
+    "slug": "umre-turlari-2026-hadi-umreye-gidelim",
+    "find": "Hayatın koşuşturmacasından sıyrılıp ruhunuzu dinlendirmek, kalbinizi Kâbe'nin huzuruyla doldurmak isteyenler için Hadi Umreye Gidelim , eşsiz bireysel umre deneyimleri sunuyor.",
+    "replace": "Hayatın koşuşturmacasından sıyrılıp ruhunuzu dinlendirmek, kalbinizi Kâbe'nin huzuruyla doldurmak isteyenler için Hadi Umreye Gidelim, özenle planlanmış bireysel umre deneyimleri sunuyor."
+  },
+  {
+    "slug": "umre-turlari-2026-hadi-umreye-gidelim",
+    "find": "Size özel bireysel umre paketlerimizi keşfedin ve ruhunuzu arındıracak bu eşsiz yolculuğa bizimle birlikte çıkın.",
+    "replace": "Size özel bireysel umre paketlerimizi keşfedin ve ruhunuzu arındıracak bu mübarek yolculuğa bizimle birlikte çıkın."
+  },
+  {
+    "slug": "umre-turlari-2026-hadi-umreye-gidelim",
+    "find": "Ekonomi sınıfından lüks seçeneklere kadar geniş bir yelpazede, hayalinizdeki umreye ulaşmanız için titizlikle çalışıyoruz.",
+    "replace": "Ekonomik seçeneklerden konforlu otel tercihlerine kadar geniş bir yelpazede, hayalinizdeki umreye ulaşmanız için titizlikle çalışıyoruz."
+  },
+  {
+    "slug": "zamzam-tower-alisveris-rehberi-tarihi-ve-mekanlar",
+    "find": "Burası sadece lüks otelleri barındıran bir gökdelen değil; aynı zamanda milyonlarca hacı ve umrecinin yeme-içme, alışveriş ve dinlenme ihtiyaçlarını karşılayan, adeta kendi başına bir \"şehir\"dir.",
+    "replace": "Burası sadece 5 yıldızlı otelleri barındıran bir gökdelen değil; aynı zamanda milyonlarca hacı ve umrecinin yeme-içme, alışveriş ve dinlenme ihtiyaçlarını karşılayan, adeta kendi başına bir \"şehir\"dir."
+  },
+  {
+    "slug": "zamzam-tower-alisveris-rehberi-tarihi-ve-mekanlar",
+    "find": "Harem'in hemen dibinde olmanın getirdiği lüks algısı, umrecileri Zamzam Tower'daki fiyatların çok yüksek olduğu yanılgısına düşürebilir.",
+    "replace": "Harem'in hemen dibinde olmanın getirdiği üst segment algısı, umrecileri Zamzam Tower'daki fiyatların çok yüksek olduğu yanılgısına düşürebilir."
+  },
+  {
+    "slug": "zamzam-tower-alisveris-rehberi-tarihi-ve-mekanlar",
+    "find": "Lüks butikler için bu doğru olsa da, kompleksin zemin/alt katlarında yer alan Bin Dawood Hipermarketi , umrecilerin cankurtaranıdır.",
+    "replace": "Üst düzey markalar için bu doğru olsa da, kompleksin zemin/alt katlarında yer alan Bin Dawood Hipermarketi, umrecilerin cankurtaranıdır."
+  },
+  {
+    "slug": "zamzam-tower-alisveris-rehberi-tarihi-ve-mekanlar",
+    "find": "Bin Dawood, Türkiye'deki büyük zincir marketlerin (Migros vb.) Suudi Arabistan'daki devasa ve lüks versiyonudur.",
+    "replace": "Bin Dawood, Türkiye'deki büyük zincir marketlerin (Migros vb.) Suudi Arabistan'daki devasa ve kapsamlı versiyonudur."
+  },
+  {
+    "slug": "zamzam-tower-alisveris-rehberi-tarihi-ve-mekanlar",
+    "find": "Fiyatlar devlet denetimindedir, bu nedenle \"turist kazığı\" yeme ihtimaliniz sıfırdır.",
+    "replace": "Fiyatlar devlet denetimindedir, bu nedenle fahiş fiyatla karşılaşma ihtimaliniz düşüktür."
+  },
+  {
+    "slug": "zamzam-tower-alisveris-rehberi-tarihi-ve-mekanlar",
+    "find": "Eğer kakuleli (cardamom) otantik Arap kahvesi (Gahwa) ve yanına lüks çikolata/hurma arıyorsanız, AVM'nin 1.",
+    "replace": "Eğer kakuleli (cardamom) otantik Arap kahvesi (Gahwa) ve yanına özel çikolata/hurma arıyorsanız, AVM'nin 1."
+  },
+  {
+    "slug": "zamzam-tower-alisveris-rehberi-tarihi-ve-mekanlar",
+    "find": "Zamzam Tower (Ebrac el-Beyt) içindeki işletmelerin çoğu 7/24'e yakın hizmet verir ancak farz namazları vaktinde (ezandan yaklaşık 10 dakika önce) kepenklerini kapatırlar.",
+    "replace": "Zamzam Tower (Ebrac el-Beyt) içindeki işletmelerin çoğu gün boyunca hizmet verir ancak farz namazları vaktinde (ezandan yaklaşık 10 dakika önce) kepenklerini kapatırlar."
+  }
+]

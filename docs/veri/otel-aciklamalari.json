@@ -255,5 +255,54 @@
         "source": "https://maps.google.com/?q=Safwah+Al+Talayie+Makkah"
       }
     ]
+  },
+  {
+    "slug": "rotana-jabal-omar",
+    "name": "Rotana Jabal Omar Makkah",
+    "description": "Rotana Jabal Omar Makkah, Mekke'de Mescid-i Haram'ın hemen batısındaki Cebel Ömer projesi içinde yer alır ve Harem'e birkaç dakikalık yürüme mesafesindedir; otelin resmî sayfası mesafeyi yaklaşık 100 metre, rezervasyon siteleri yaklaşık 200 metre olarak verir. Birbirine bağlı üç kuleden oluşan otelde toplam 655 oda ve süit bulunur. Odaların bir kısmı kısmi ya da tam Harem manzaralıdır; aileler için birbirine geçişli süitler de vardır. Cebel Ömer bölgesinde yer aldığı için çevresinde alışveriş merkezleri, restoranlar ve marketler yürüme mesafesindedir. Harem'e yakın konumu sayesinde beş vakit namaza yürüyerek gitmek isteyen, özellikle yaşlı ya da çocuklu umreciler için pratik bir seçenektir. Oda tipleri ve manzara seçenekleri tarihe göre değiştiği için rezervasyondan önce müsaitliği teyit etmek gerekir.",
+    "facts": [
+      {
+        "text": "Harem'e yaklaşık 100 metre; birbirine bağlı üç kule, 655 oda ve süit",
+        "source": "https://www.rotana.com/rotanahotelandresorts/kingdomofsaudiarabia/makkah/rotanajabalomarmakkah"
+      },
+      {
+        "text": "Harem'e 0,20 km",
+        "source": "https://www.trip.com/hotels/makkah-hotel-detail-133214146/rotana-jabal-omar/"
+      },
+      {
+        "text": "Cebel Ömer projesinin parçası",
+        "source": "https://jabalomar.com.sa/en/rotana-jabal-omar-makkah/"
+      }
+    ]
+  },
+  {
+    "slug": "al-safwah-tower-3",
+    "name": "Al Safwah Hotel Third Tower 3",
+    "description": "Al Safwah Hotel Third Tower (Al Safwah 3. Kule), Mekke'de Mescid-i Haram'ın Kral Abdülaziz Kapısı tarafında, Harem'e yaklaşık 200 metre mesafededir. 22 katlı otelde 860 oda bulunur; odaların bir kısmı şehir, bir kısmı Mescid-i Haram manzaralıdır. Odalarda buzdolabı, su ısıtıcısı ve televizyon gibi temel donanımlar yer alır. Otel bir alışveriş merkeziyle iç içedir: mağazalara, restoranlara ve markete binadan çıkmadan ulaşılabilir. Bu özelliği, ihtiyaçlarını otel içinden karşılamak isteyen aileler ve yaşlı umreciler için kolaylık sağlar. Kral Abdülaziz Uluslararası Havalimanı'na (Cidde) uzaklığı yaklaşık 94 km'dir; otelin ücretli havalimanı servisi vardır, ancak transferinizi umre planınızla birlikte ayarlamanız daha pratiktir.",
+    "facts": [
+      {
+        "text": "Harem'e ve Kral Abdülaziz Kapısı'na yaklaşık 200 metre; 22 kat, 860 oda; ticari merkezle iç içe",
+        "source": "https://sadaa.com.sa/en/hotels/al-safwah-hotel-third-tower-3/"
+      },
+      {
+        "text": "Oda donanımı, ücretli havalimanı servisi, havalimanına 94 km",
+        "source": "https://www.booking.com/hotel/sa/al-safwah-tower-3.html"
+      }
+    ]
+  },
+  {
+    "slug": "snood-ajyad",
+    "name": "Snood Ajyad",
+    "description": "Snood Ajyad, Mekke'nin Harem'e yakın bölgelerinden Ecyad'da yer alan bir oteldir. Mescid-i Haram'a uzaklığı kaynaklara göre yaklaşık 700–800 metredir; misafir yorumlarına göre Harem'e yürüyüş 8–10 dakika sürer. Ecyad bölgesi Harem'in güney tarafında, otellerin, lokantaların ve küçük marketlerin yoğun olduğu bir bölgedir; bu sayede günlük ihtiyaçlar otelin çevresinden kolayca karşılanır. Yürüme mesafesinde olduğu için servis beklemeden namaza gitmek isteyen ve Harem'in hemen yanındaki otellere göre daha hesaplı bir konaklama arayan umreciler için uygun bir seçenektir.",
+    "facts": [
+      {
+        "text": "Ecyad bölgesinde, Harem'e yaklaşık 700–800 metre",
+        "source": "https://maysangroup.com/hotels/snood-ajyad-hotel/"
+      },
+      {
+        "text": "Misafir yorumlarına göre yaklaşık 10 dakika yürüyüş",
+        "source": "https://www.tripadvisor.com/Hotel_Review-g293993-d13084166-Reviews-Snood_Ajyad-Mecca_Makkah_Province.html"
+      }
+    ]
   }
 ]

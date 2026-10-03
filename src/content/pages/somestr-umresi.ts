@@ -1,108 +1,64 @@
 import type { ContentPage } from "./types";
 
+// 3 Ekim: Antigravity G13-3 taslağından, Claude düzeltmesiyle (MEB takvimi açıklanmış: yarıyıl 25 Ocak – 5 Şubat 2027;
+// grup sömestr paketi iddiası, doğrulanmamış iklim sayıları ve Harem zemini iddiası çıkarıldı).
 const page: ContentPage = {
   slug: "somestr-umresi",
   group: "zaman",
   keyword: "sömestr umresi",
-  title: "Sömestr Umresi: Yarıyıl Tatili Umre",
-  description: "Sömestr yarıyıl tatilinde aile ve öğrenci umresi rehberi. Okul tatili döneminde Mekke ve Medine seyahat planlaması, otel ve transfer imkânları.",
-  h1: "Sömestr umresi",
+  title: "Sömestr Umresi 2027: Tarih ve Plan",
+  description: "2027 sömestr umresi: yarıyıl tatili 25 Ocak – 5 Şubat 2027. Ocak–şubat Mekke ve Medine havası, çocukla umre, vize süreci ve planlama adımları.",
+  h1: "Sömestr umresi 2027",
   lead:
-    "Sömestr umresi, okulların yarıyıl tatiline girmesiyle birlikte öğrencilerin ve ailelerin dersleri ile işlerini aksatmadan değerlendirebilecekleri en popüler kış umre seyahatidir. Ocak ve Şubat aylarına denk gelen bu tatil dönemi, çocukların ve gençlerin manevi gelişimini destekleyen bereketli bir yolculuk sunar. Kendi tatil takviminizi bireysel planlama ile rahatça oluşturabilirsiniz.",
+    "Sömestr umresi, okulların yarıyıl tatilinde yapılan umredir. Millî Eğitim Bakanlığı'nın 2026–2027 çalışma takvimine göre yarıyıl tatili 25 Ocak 2027 Pazartesi başlar, 5 Şubat 2027 Cuma biter; hafta sonlarıyla birlikte yaklaşık iki hafta eder. Mekke ve Medine'de havanın serin olduğu bu dönem, çocuklu aileler için umreye en uygun zamanlardan biridir.",
   sections: [
     {
-      h2: "Sömestr tatilinde umre seyahatinin avantajları nelerdir?",
+      h2: "2027 sömestr tatili hangi tarihlerde?",
       paragraphs: [
-        "Sömestr tatili, öğrencilerin okul takviminden geri kalmadan aileleriyle birlikte Kutsal Topraklara gitmelerini sağlayan mükemmel bir zaman dilimidir.",
-        "Gençlerin küçük yaşlarda Mekke ve Medine'nin manevi atmosferini solumaları, ibadet bilincini kazanmalarına katkı sunar.",
-        "Ayrıca Ocak ve Şubat aylarındaki serin iklim koşulları, çocukların sıcaktan olumsuz etkilenmeden ibadet etmelerini kolaylaştırır.",
-        "Sömestr umresi, aile bağlarını manevi bir iklimde güçlendiren ve çocuklara ibadet şuuru aşılayan unutulmaz bir seyahat deneyimidir. Tüm aile fertlerinin bir arada dualara katılması yolculuğun bereketini pekiktirir. Tatil sürecini ibadetle geçirmek ruhu tazeler.",
+        "Millî Eğitim Bakanlığı'nın 2026–2027 eğitim-öğretim yılı çalışma takvimine göre birinci dönem 22 Ocak 2027 Cuma günü sona erer. Yarıyıl tatili 25 Ocak 2027 Pazartesi günü başlar ve 5 Şubat 2027 Cuma günü biter; ikinci dönem 8 Şubat 2027 Pazartesi başlar.",
+        "Karne günü olan 22 Ocak akşamı ya da 23 Ocak sabahı uçarak 6 Şubat'ta dönmek, tatilin tamamını umreye ayırmanızı sağlar. Bu tarihlerde uçak bileti ve otel talebi yükseldiği için planı ekim–kasım aylarında yapmak fiyat ve oda seçeneği açısından avantaj sağlar.",
       ],
     },
     {
-      h2: "Sömestr umresinde otel ve ulaşım planlaması nasıl yapılmalı?",
+      h2: "Ocak ve şubatta Mekke ve Medine'de hava nasıl?",
       paragraphs: [
-        "Okul tatili dönemi olması sebebiyle sömestr aylarında Kutsal Beldelere Türkiye'den ve dünyadan yoğun bir talep oluşur.",
-        "Bu yoğunluk nedeniyle otel konaklamalarının Harem avlusuna yürüme mesafesinde seçilmesi çocuklu ailelerin Harem'e gidiş gelişlerini pratik hale getirir.",
-        "Havalimanı transferlerinde özel klimalı araçların tercih edilmesi ailelerin zaman kazanmasını sağlar. Resmî seyahat duyurularına [resmî dinî kaynaklardan](https://www.diyanet.gov.tr/) ulaşabilirsiniz.",
-        "Önceden planlanan otel ve transfer hizmetleri seyahat konforunu artırır. Ulaşım kolaylığı çocukların dinç kalmasına zemin hazırlar. Erken rezervasyon imkanlarından yararlanabilirsiniz.",
-      ],
-      table: {
-        head: ["Kriter", "Açıklama", "Fayda"],
-        rows: [
-          ["İklim Durumu", "Mevsim şartlarına uygun hava dengesi", "Açık havada rahat ibadet"],
-          ["Yoğunluk", "Döneme özgü ziyaretçi hareketliliği", "Ferah hareket ve tavaf alanı"],
-          ["Ulaşım", "Özel VIP araç ve hızlı tren", "Konforlu seyahat geçişleri"],
-          ["Rehberlik", "Kişiye ve aileye özel rehber", "Doğru ve huzurlu ibadet adımları"],
-        ],
-      },
-    },
-    {
-      h2: "Çocuklu aileler için sömestr umresi tavsiyeleri nelerdir?",
-      paragraphs: [
-        "Sömestr seyahatinde çocukların fiziksel kapasitelerine uygun esnek bir ibadet ve dinlenme programı uygulanmalıdır.",
-        "Tavaf ve sa'y esnasında çocukların yorulmaması için ibadet adımları aşamalı olarak tamamlanmalıdır.",
-        "Serin kış akşamlarına karşı çocukların valizlerine uygun hırka ve pamuklu kıyafetler konulmalıdır.",
-        "Mescid-i Haram içinde çocukların su ve atıştırmalık ihtiyaçları önceden planlanmalıdır. Ailelerin birbiriyle uyumlu hareket etmesi seyahati keyifli kılar.",
+        "Ocak ve şubat, Suudi Arabistan'da kış aylarıdır. Mekke'de gündüzler ılıktır; tavaf ve sa'y yazın olduğu gibi bunaltıcı sıcakta geçmez. Medine, Mekke'ye göre belirgin biçimde daha serindir ve özellikle sabah namazı ile yatsı vakitlerinde avluda üşüyebilirsiniz.",
+        "Çocuklar için ince ama katmanlı giyim, Medine için hırka ya da hafif mont almak yeterlidir. Kış dönemi aynı zamanda dünyanın pek çok ülkesinden umrecinin geldiği bir dönemdir; cuma günleri ve yatsıdan sonra tavaf alanı kalabalıklaşır. Çocuklu aileler tavafı üst katlarda ya da gece yarısından sonraki sakin saatlerde yapmayı tercih edebilir.",
       ],
     },
     {
-      h2: "Sömestr döneminde bireysel umre ile aileye özel program",
+      h2: "Çocukla sömestr umresinde nelere dikkat edilmeli?",
       paragraphs: [
-        "Bireysel umre planlaması sayesinde sömestr tatilinizi tamamen kendi ailenizin tercih ettiği tarihler arasında kurgulayabilirsiniz. Özel programınızı [Hadi Umreye Gidelim tasarlayıcısından](/bireysel-umre) tarihlerini seçerek hemen oluşturabilirsiniz.",
-        "Diğer kış dönemi sayfalarımız için [ocak umresi](/ocak-umresi) ve [şubat umresi](/subat-umresi) rehberlerimizi, konaklama alternatifleri için [paketler sayfamızı](/paketler) inceleyebilir; ilk adımlar için [öğrenci umresi](/ogrenci-umresi) ve [aile umresi](/aile-umresi) yazılarımızı okuyabilirsiniz.",
-        "Bireysel umre seçeneği, grup bağımlılığı olmadan ailenize özel ilahiyatçı rehber ile seyahat etme imkânı sunar.",
-        "Sömestr tatilinde manevi yenilenme yaşamak yeni eğitim dönemine motivasyon katar. Aile fertlerinin ortak duası seyahatin bereketini katlar.",
+        "Küçük çocukla umre doğru hazırlıkla rahat geçer. Kalabalıkta kaybolma ihtimaline karşı çocuğun bileğine anne-baba adı, otel adı ve telefon numarası yazılı bir bileklik takın. Uzun yürüyüşler için kaymaz tabanlı çorap ve rahat ayakkabı, yanınıza da çocuk ateş düşürücüsü ve temel ilaçları alın.",
       ],
       bullets: [
-        "Sömestr tatili tarihleriniz netleşir netleşmez bilet ve otel rezervasyonunuzu yapın",
-        "Çocuklu aileler için Harem'e sıfır veya düz ayak otelleri tercih edin",
-        "İbadetleri çocukları yormadan aşamalı ve dinlenerek gerçekleştirin",
-        "Ailenize özel VIP araç transferi ile seyahat konforunuzu yükseltin"
-],
-    },
-    {
-      h2: "Özel seyahat takvimi ile umre yapmanın püf noktaları nelerdir?",
-      paragraphs: [
-        "Mevsimsel avantajları ve iklim koşullarını en iyi şekilde değerlendirmek için seyahat tarihlerinizi kendi kişisel ve ailevi programınıza göre esnek tutmanız büyük fayda sağlar. Kutsal Topraklarda geçireceğiniz zaman dilimini önceden kurgulamak huzurlu bir seyahat sunar.",
-        "Özellikle uçak biletlerinizi ve konaklama yapacağınız otelleri önceden planlayarak hem bütçenizi koruyabilir hem de Harem-i Şerif'e en yakın mesafedeki tesislerde kalabilirsiniz.",
-        "Mekke ve Medine seyahatiniz boyunca manevi rehberlik hizmeti alarak ibadet adımlarını ve tarihi mekan ziyaretlerini usulüne uygun şekilde yerine getirebilirsiniz.",
-        "Bireysel seyahat esnekliği sayesinde Kutsal Beldelerde dilediğiniz saat kadar kalabilir, ibadetlerinizi yorulmadan ve büyük bir huzur içinde tamamlayabilirsiniz. Kendi ritminizde gerçekleşen bir umre seyahati manevi dünyanızı zenginleştirir ve unutulmaz hatıralar biriktirmenize imkân tanır.",
+        "Erkek çocuklar için küçük boy ihram, kız çocuklar için pamuklu ve terletmeyen kıyafet hazırlayın.",
+        "Katlanabilir, hafif bir puset taşıma yükünü azaltır; Harem'in hangi alanlarında puset kullanılabildiğini görevlilere sorun.",
+        "Harem'e yürüme mesafesinde ya da düzenli servisi olan bir otel, çocukla gidiş gelişi kolaylaştırır.",
       ],
     },
     {
-      h2: "somestr-umresi ile ilgili temel kavramlar",
-      paragraphs: ["sömestr umresi sürecinde bilmeniz gereken temel kavramlar:"],
-      table: {
-        head: ["Kavram", "Açıklama"],
-        rows: [
-          ["Mevsimlik İklim", "İlgili dönemin Mekke ve Medine hava özellikleri"],
-          ["Esnek Takvim", "Kendi seyahat tarihlerinizi özgürce belirleme"],
-          ["Harem Ulaşımı", "Yürüyüş veya servisli otel bağlantıları"],
-          ["Özel Rehberlik", "İbadet süresince size eşlik eden manevi rehber"],
-        ],
-      },
+      h2: "Sömestr umresi nasıl planlanır?",
+      paragraphs: [
+        "Tarihlerinize, otel tercihinize ve Mekke–Medine gün sayısına göre programı kendiniz kurmak için [bireysel umre tasarlayıcısını](/bireysel-umre) kullanabilirsiniz; seçtiğiniz ayın fiyatlarıyla toplamı hemen görürsünüz. Hazır programları ve kişi başı başlangıç fiyatlarını görmek için [umre paketleri](/paketler) sayfasına bakabilirsiniz.",
+      ],
+    },
+    {
+      h2: "Sömestr umresi için vize nasıl alınır?",
+      paragraphs: [
+        "Otel rezervasyonunuzu, gidiş-dönüş uçak biletinizi, her yolcunun pasaportunun ön yüzünü ve birer biyometrik fotoğrafı WhatsApp'tan bize gönderirsiniz. Kişi başı 140 USD ödemenin ardından vizeniz 2 saat içinde hadiumreyegidelim.com tarafından size iletilir. Bebekler dahil her yolcunun vizesi olmalıdır; pasaportun seyahat tarihinden itibaren en az 6 ay geçerli olması gerekir. Ayrıntılar [umre vizesi](/umre-vizesi) sayfasında.",
+      ],
     },
   ],
   faq: [
-    {
-        "q": "Sömestr umresi ne kadar sürer?",
-        "a": "Sömestr tatili süresine uyumlu olarak genellikle 7 ila 14 gün arasında değişen esnek programlar tercih edilmektedir."
-    },
-    {
-        "q": "Sömestr umresinde hava soğuk olur mu?",
-        "a": "Ocak ve şubat, yılın en serin aylarıdır: Mekke'de gündüz ortalaması yaklaşık 31–32 °C, Medine'de 24–27 °C; geceler Medine'de serindir."
-    },
-    {
-        "q": "Sömestr tatilinde Umre vizesi almak kolay mıdır?",
-        "a": "Evet. Elektronik umre vizeleri Suudi Arabistan portalı üzerinden kısa sürede onaylanmaktadır."
-    },
-    {
-        "q": "Sömestr umresinde ailemize özel rehber veriliyor mu?",
-        "a": "Evet. Hadi Umreye Gidelim tasarlayıcısı üzerinden sadece ailenize rehberlik edecek ilahiyatçı seçebilirsiniz."
-    }
-],
-  sources: [{ text: "sömestr umresi ve resmî seyahat bilgilendirmesi", href: "https://www.diyanet.gov.tr/" }],
+    { q: "2027 sömestr tatili ne zaman?", a: "MEB 2026–2027 çalışma takvimine göre yarıyıl tatili 25 Ocak 2027 Pazartesi başlar, 5 Şubat 2027 Cuma biter. Birinci dönem 22 Ocak 2027 Cuma günü sona erer." },
+    { q: "Sömestr umresi için ne zaman rezervasyon yapılmalı?", a: "Sömestr yoğun bir dönem olduğu için uçak bileti ve otelin ekim–kasım aylarında, yani en az iki üç ay önceden ayarlanması önerilir." },
+    { q: "Ocak–şubatta Mekke ve Medine'de hava nasıl olur?", a: "Mekke'de gündüzler ılık geçer; Medine daha serindir. Sabah ve gece saatleri için hırka ya da hafif mont almak yeterlidir." },
+    { q: "Çocuklar ve bebekler için vize gerekir mi?", a: "Evet. Bebekler dahil her yolcunun ayrı vizesi olmalıdır. Vize için her yolcunun pasaport ön yüzü ve biyometrik fotoğrafı gerekir." },
+    { q: "Vize için hangi belgeler gerekiyor?", a: "Otel rezervasyonu, gidiş-dönüş uçak bileti, her yolcunun pasaportunun ön yüzü ve biyometrik fotoğrafı. Kişi başı 140 USD ödenir, vize 2 saat içinde iletilir." },
+    { q: "Sömestr umresi kaç gün sürer?", a: "Yarıyıl tatili hafta sonlarıyla yaklaşık 16 gündür; aileler çoğunlukla 10–14 günlük programları tercih eder. Gün sayısını bireysel umre tasarlayıcısında kendiniz belirleyebilirsiniz." },
+  ],
+  sources: [{ text: "umre ve hac bilgilendirmeleri", href: "https://www.diyanet.gov.tr/" }],
   related: [
     "/bireysel-umre",
     "/paketler",
@@ -111,7 +67,7 @@ const page: ContentPage = {
     "/aile-umresi",
     "/ogrenci-umresi"
 ],
-  reviewed: "2026-09-30",
+  reviewed: "2026-10-03",
 };
 
 export default page;

@@ -4,6 +4,44 @@ En yeni en üstte. Şablon ve kurallar: `docs/antigravity/GOREVLER.md` §0. Clau
 
 <!-- Teslimler bu çizginin altına -->
 
+## 2026-10-03 — Antigravity Teslim Kaydı: G13 (Otel Açıklamaları, Link İş Listesi ve Sömestr Umresi Taslağı)
+
+### 1. Durum ve Değişen Dosyalar Özeti
+
+- **G13-1 (Otel Açıklamaları):**
+  - `docs/veri/otel-aciklamalari.json`
+  - Yerel PGlite veritabanında yayımlı olan **14 otelin tümü** için (slug ile) sade, 120-200 kelime arası Türkçe açıklamalar ve resmî/Booking kaynak bağlantılı somut olgular (`facts`) oluşturuldu.
+  - Veritabanında 4 yıldız kayıtlı olan ancak resmî sitesinde/Booking'de 5 yıldız ilan edilen **Anjum Hotel Makkah**, **Sheraton Makkah** ve **Le Meridien Makkah** için `conflict` alanı eklendi.
+  - Yasaklı ifadeler sıfırlandı (%100 uyum).
+
+- **G13-2 (Link İş Listesi):**
+  - `docs/taslaklar/link-is-listesi.md`
+  - Harita ve yerel işletme profilleri (Google Business, Bing Places, Apple Business Connect, Yandex Haritalar, Foursquare), turizm rehberleri (`turizmrehber.com.tr`, `nerdeler.com.tr`, `travelagents10.com`), advertorial koşulları (`ankaraguncel.com.tr` ile zorunlu `rel="sponsored"` uyarısı), 7 sosyal medya platformuna özel biyografi metinleri ve iş ortakları için geri bağlantı (backlink) rica mesajları (WhatsApp & E-posta) hazırlandı.
+  - Bütün kayıtlarda sabit NAP bilgisi kullanıldı: `Hadi Umreye Gidelim`, `Bakırköy, İstanbul`, `https://hadiumreyegidelim.com`, `+90 540 401 00 38`, `MBD Tourism L.L.C.` (DTCM lisans no 1203162).
+
+- **G13-3 (Sömestr Umresi Sayfa Taslağı):**
+  - `docs/taslaklar/somestr-umresi.md`
+  - "sömestr umresi" hedef anahtar kelimesiyle 978 kelimelik SEO uyumlu sayfa taslağı hazırlandı.
+  - SEO Başlığı (<60 karakter) ve Meta Açıklaması (<155 karakter) eklendi.
+  - MEB resmî duyuru takvimi durumu ("MEB henüz açıklamadı" ifadesi ve `https://www.meb.gov.tr` bağlantısıyla), WeatherSpark kaynaklı ocak-şubat Mekke/Medine iklimi, çocukla umre tavsiyeleri, `/bireysel-umre` ve `/paketler` bağlantılı planlama adımları, harfi harfine zorunlu vize süreci açıklaması ("Müşteri otel rezervasyonu, gidiş-dönüş uçak bileti, her yolcu için pasaportun ön yüzü ve biyometrik fotoğrafı WhatsApp'tan gönderir; kişi başı 140 USD ödenir; vize 2 saat içinde hadiumreyegidelim.com tarafından iletilir.") ve 7 soruluk SSS bölümü içerir.
+
+---
+
+### 2. Tip Kontrolü ve Kanıtlar
+
+- **Veritabanı Yayımlı Otel Sayısı Sorgusu ve Çıktısı:**
+  ```bash
+  DATABASE_URL="postgresql://postgres:postgres@127.0.0.1:5432/postgres?sslmode=disable&pgbouncer=true" npx -y tsx scripts/local/query_hotels.mts
+  ```
+  *Çıktı:* `TOTAL_PUBLISHED_HOTELS: 14` (14 otel kaydı `docs/veri/otel-aciklamalari.json` dosyasına eksiksiz yazıldı).
+
+- **`npx tsc --noEmit` Çıktısı:**
+  ```text
+  Exit Code: 0 (Clean / Boş çıktı / 0 Hata)
+  ```
+
+---
+
 ## 2026-10-03 — Antigravity Teslim Kaydı: G12 (Influencer Aday Havuzu, Veri Araştırması ve Blog Düzeltmeleri-2)
 
 ### 1. Durum ve Değişen Dosyalar Özeti

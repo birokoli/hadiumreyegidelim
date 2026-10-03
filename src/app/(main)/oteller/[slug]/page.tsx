@@ -9,6 +9,10 @@ import { packagePreset } from "@/lib/pricing/package";
 import { prisma } from "@/lib/prisma";
 import { SITE_URL } from "@/lib/seo/site";
 import { PageHero, Section } from "@/components/ui/kit";
+// Uzun açıklamalar (Antigravity G13-1, kaynaklı; anahtar slug ya da kayıt kimliği). Kısa açıklama katalogda kalır.
+import LONG from "@/lib/content-fixes/otel-aciklamalari.json";
+
+const longText = (h: CatalogItem) => (LONG as Record<string, { description: string }>)[h.slug ?? ""]?.description ?? (LONG as Record<string, { description: string }>)[h.id]?.description ?? null;
 
 export const revalidate = 3600;
 
@@ -56,7 +60,7 @@ export default async function HotelPage({ params }: { params: Promise<{ slug: st
     name: h.name,
     url: `${SITE_URL}/oteller/${slug}`,
     ...(h.imageUrl ? { image: h.imageUrl } : {}),
-    ...(h.description ? { description: h.description } : {}),
+    ...(longText(h) ?? h.description ? { description: longText(h) ?? h.description } : {}),
     address: { "@type": "PostalAddress", addressLocality: city, addressCountry: "SA" },
     ...(h.hotelStars ? { starRating: { "@type": "Rating", ratingValue: h.hotelStars } } : {}),
   };
@@ -78,7 +82,8 @@ export default async function HotelPage({ params }: { params: Promise<{ slug: st
                 <Image src={h.imageUrl} alt={h.name} fill sizes="(max-width: 1024px) 100vw, 60vw" className="object-cover" priority />
               </div>
             )}
-            {h.description && <p className="text-base leading-relaxed text-on-surface whitespace-pre-line">{h.description}</p>}
+            {h.description && <p className="text-base font-semibold text-on-surface">{h.description}</p>}
+            {longText(h) && <p className="text-base leading-relaxed text-on-surface">{longText(h)}</p>}
             <dl className="grid grid-cols-2 gap-3 sm:grid-cols-3">
               {[
                 ["Şehir", city],

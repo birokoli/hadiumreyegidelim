@@ -1,4 +1,5 @@
 import { getPageTexts } from "@/lib/page-texts";
+import { packageDisplayPrices } from "@/lib/pricing/package-server";
 import { SITE_URL } from "@/lib/seo/site";
 import React from "react";
 import Link from "next/link";
@@ -65,7 +66,7 @@ const QUICK_LINKS: { href: string; label: string; icon: React.ReactNode }[] = [
 export default async function Home() {
   const t = await getPageTexts("anasayfa");
   // Veritabanına ulaşılamazsa sayfa yine açılsın (boş paket/blog listesiyle)
-  const [latestBlogs, featuredPackages, settings] = await Promise.all([
+  const [latestBlogs, rawFeatured, settings] = await Promise.all([
     prisma.post.findMany({
       where: { published: true },
       orderBy: { createdAt: 'desc' },
@@ -82,6 +83,7 @@ export default async function Home() {
     console.error("Ana sayfa verisi alınamadı:", e);
     return [[], [], {} as Record<string, string>] as const;
   });
+  const featuredPackages = await packageDisplayPrices([...rawFeatured]).catch(() => [...rawFeatured]);
   const eylulCampaign = parseEylulCampaign(settings[EYLUL_CAMPAIGN_SETTING_KEY]);
   const ilkUmremCampaign = parseEylulCampaign(settings[ILK_UMREM_CAMPAIGN_SETTING_KEY], DEFAULT_ILK_UMREM_CAMPAIGN);
   const hanimCampaign = parseEylulCampaign(settings[HANIM_UMRESI_CAMPAIGN_SETTING_KEY], DEFAULT_HANIM_UMRESI_CAMPAIGN);

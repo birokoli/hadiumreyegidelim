@@ -1,4 +1,6 @@
 import { SITE_URL } from "@/lib/seo/site";
+import { getPackagePricing } from "@/lib/pricing/package-server";
+import PackageHotelPicker from "@/components/packages/PackageHotelPicker";
 import React from 'react';
 export const revalidate = 300;
 import { prisma } from '@/lib/prisma';
@@ -55,6 +57,10 @@ export default async function PackageDetailPage({ params }: { params: Promise<{ 
     notFound();
   }
 
+  // Şablonlu paket (ör. 10 gün Mekke): fiyat otele ve kişi sayısına göre hesaplanır; gösterilen "başlayan" fiyattır
+  const pricing = await getPackagePricing(pkg.slug).catch(() => null);
+  const price = pricing?.fromPrice ?? pkg.price;
+
   let includes: string[] = [];
   let mainDesc = pkg.description;
   let itinerary: any[] = [];
@@ -87,11 +93,11 @@ export default async function PackageDetailPage({ params }: { params: Promise<{ 
       '@type': 'Brand',
       name: "Hadi Umreye Gidelim"
     },
-    ...(pkg.price > 0
+    ...(price > 0
       ? {
           offers: {
             '@type': 'Offer',
-            price: String(pkg.price),
+            price: String(price),
             priceCurrency: pkg.currency || 'USD',
             availability: 'https://schema.org/InStock',
             url: `${SITE_URL}/paketler/${pkg.slug}`,
@@ -138,7 +144,7 @@ export default async function PackageDetailPage({ params }: { params: Promise<{ 
         lead={
           <div className="flex flex-wrap items-center gap-3 mt-2">
             {pkg.duration && <Badge tone="primary">{pkg.duration}</Badge>}
-            {pkg.price > 0 && <PriceTag amount={pkg.price} currency={pkg.currency} label="Başlangıç" />}
+            {price > 0 && <PriceTag amount={price} currency={pkg.currency} label="Başlangıç" />}
           </div>
         }
         aside={
@@ -190,6 +196,9 @@ export default async function PackageDetailPage({ params }: { params: Promise<{ 
               </Panel>
             )}
 
+            {pricing && (
+              <PackageHotelPicker title={pkg.title} preset={pricing.preset} catalog={pricing.catalog} month={pricing.month} monthLabel={pricing.monthLabel} packagePercent={pricing.packagePercent} whatsappNumber={whatsappNumber} />
+            )}
             {includes.length > 0 && (
               <Panel tone="white">
                 <h3 className="text-xl font-headline font-bold text-primary mb-6 flex items-center gap-2">
@@ -220,16 +229,18 @@ export default async function PackageDetailPage({ params }: { params: Promise<{ 
                 Manevi tasarım, konaklama, transfer ve rehberlik detayları tamamen size özel organize edilmektedir. Katılım durumunuzu netleştirmek ve paket detaylarını konuşmak için bizimle iletişime geçin.
               </p>
 
-              {pkg.price > 0 && (
+              {price > 0 && (
                 <div className="mb-6 p-4 bg-surface-container-low rounded-xl">
-                  <PriceTag amount={pkg.price} currency={pkg.currency} label="Kişi başı paket fiyatı" />
+                  <PriceTag amount={price} currency={pkg.currency} label={pricing ? "Kişi başı, 2 kişi · başlayan" : "Kişi başı paket fiyatı"} />
                 </div>
               )}
 
               <div className="space-y-3">
-                <ButtonLink href={`/paketler/${pkg.slug}/checkout`} tone="primary" className="w-full">
-                  REZERVASYON YAP
-                </ButtonLink>
+                {!pricing && (
+                  <ButtonLink href={`/paketler/${pkg.slug}/checkout`} tone="primary" className="w-full">
+                    REZERVASYON YAP
+                  </ButtonLink>
+                )}
                 <ButtonLink href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(`Merhaba, "${pkg.title}" paketi hakkında bilgi almak istiyorum.`)}`} tone="whatsapp" className="w-full">
                   WHATSAPP İLE SOR
                 </ButtonLink>

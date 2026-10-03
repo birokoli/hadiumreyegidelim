@@ -6,6 +6,9 @@ import { ensureCatalogSchema } from "./schema";
 
 export const CATALOG_TAG = "catalog";
 
+/** Otel gecelik oda taban fiyatı (kullanıcı kararı, 3 Ekim): 90 SAR ≈ 24 USD; altında otel fiyatı gösterilmez */
+export const HOTEL_FLOOR_USD = 24;
+
 export const DEFAULT_MARGIN: Record<string, number> = { hotel: 15, default: 10 };
 
 export type CatalogCategory = "vize" | "hotel" | "transfer" | "tur" | "flight" | "extra";
@@ -79,8 +82,8 @@ export async function queryCatalog(): Promise<CatalogItem[]> {
       distanceMeters: r.distanceMeters,
       pricingType: r.defaultPricingType as PricingType,
       vehicleType: r.defaultVehicleType,
-      basePriceUsd,
-      prices: r.prices.map((p) => ({ month: p.month, variant: p.variant, priceUsd: p.salePriceUsd })),
+      basePriceUsd: basePriceUsd != null && r.category === "hotel" ? Math.max(HOTEL_FLOOR_USD, basePriceUsd) : basePriceUsd,
+      prices: r.prices.map((p) => ({ month: p.month, variant: p.variant, priceUsd: r.category === "hotel" ? Math.max(HOTEL_FLOOR_USD, p.salePriceUsd) : p.salePriceUsd })),
     };
   });
 }
@@ -128,9 +131,9 @@ export function revalidateCatalog() {
 
 // ─── Ödeme seçenekleri ve kur (admin → Aylık Satış Fiyatları → Ödeme ve kur) ───
 
-export type PaymentSettings = { usdTry: number | null; rateDate: string | null; ibanPercent: number; cardPercent: number };
+export type PaymentSettings = { usdTry: number | null; rateDate: string | null; ibanPercent: number; cardPercent: number; packagePercent: number };
 
-export const PAYMENT_KEYS = { usdTry: "PRICING_USD_TRY", rateDate: "PRICING_RATE_DATE", ibanPercent: "PRICING_IBAN_PERCENT", cardPercent: "PRICING_CARD_PERCENT" } as const;
+export const PAYMENT_KEYS = { usdTry: "PRICING_USD_TRY", rateDate: "PRICING_RATE_DATE", ibanPercent: "PRICING_IBAN_PERCENT", cardPercent: "PRICING_CARD_PERCENT", packagePercent: "PRICING_PACKAGE_PERCENT" } as const;
 
 /** Site ayarlarından ödeme farkları ve dolar kuru. Varsayılan: IBAN +%20, kart +%26 (fiyat motoruyla aynı). */
 export function paymentSettingsFrom(settings: Record<string, string | undefined>): PaymentSettings {
@@ -140,5 +143,7 @@ export function paymentSettingsFrom(settings: Record<string, string | undefined>
     rateDate: settings[PAYMENT_KEYS.rateDate] || null,
     ibanPercent: num(settings[PAYMENT_KEYS.ibanPercent], 20) ?? 20,
     cardPercent: num(settings[PAYMENT_KEYS.cardPercent], 26) ?? 26,
+    // Paket hizmet payı: otel + araç + tur satış toplamının üstüne (3 Ekim; varsayılan 349 $ Mehd paketini korur)
+    packagePercent: num(settings[PAYMENT_KEYS.packagePercent], 75) ?? 75,
   };
 }

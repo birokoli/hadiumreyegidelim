@@ -65,7 +65,7 @@ export async function PUT(req: Request) {
 export async function POST(req: Request) {
   const denied = await guard();
   if (denied) return denied;
-  const body = (await req.json().catch(() => null)) as { action?: string; from?: string; to?: string; month?: string; percent?: number; margin?: number; category?: string; overwrite?: boolean; usdTry?: number; rateDate?: string; ibanPercent?: number; cardPercent?: number } | null;
+  const body = (await req.json().catch(() => null)) as { action?: string; from?: string; to?: string; month?: string; percent?: number; margin?: number; category?: string; overwrite?: boolean; usdTry?: number; rateDate?: string; ibanPercent?: number; cardPercent?: number; packagePercent?: number } | null;
 
   if (body?.action === "payment") {
     const entries: [string, string][] = [
@@ -73,6 +73,7 @@ export async function POST(req: Request) {
       [PAYMENT_KEYS.rateDate, typeof body.rateDate === "string" ? body.rateDate.slice(0, 10) : ""],
       [PAYMENT_KEYS.ibanPercent, String(Math.max(0, Math.min(100, Number(body.ibanPercent) || 0)))],
       [PAYMENT_KEYS.cardPercent, String(Math.max(0, Math.min(100, Number(body.cardPercent) || 0)))],
+      ...(body.packagePercent != null ? [[PAYMENT_KEYS.packagePercent, String(Math.max(0, Math.min(300, Number(body.packagePercent) || 0)))] as [string, string]] : []),
     ];
     await prisma.$transaction(entries.map(([key, value]) => prisma.setting.upsert({ where: { key }, update: { value }, create: { key, value } })));
     revalidateSiteSettings();

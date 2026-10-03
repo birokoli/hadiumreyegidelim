@@ -1,4 +1,5 @@
 import { SITE_URL } from "@/lib/seo/site";
+import { packageDisplayPrices } from "@/lib/pricing/package-server";
 import React from "react";
 export const revalidate = 300;
 import { prisma } from "@/lib/prisma";
@@ -26,10 +27,11 @@ export const metadata: Metadata = {
 
 export default async function PackagesPage() {
   const t = await getPageTexts("paketler");
-  const packages = await prisma.package.findMany({
+  // Şablonlu paketlerde gösterilen fiyat otel ve araç fiyatlarından hesaplanan "başlayan" fiyattır
+  const packages = await packageDisplayPrices(await prisma.package.findMany({
     where: { published: true },
     orderBy: { createdAt: 'desc' }
-  }).catch(() => []);
+  }).catch(() => []));
 
   // SSS, yayındaki paketlerin gerçek verisinden üretilir (süre aralığı, ortak hizmetler)
   const days = packages.map((p) => parseInt(String(p.duration).match(/\d+/)?.[0] ?? "", 10)).filter((n) => Number.isFinite(n) && n > 0);

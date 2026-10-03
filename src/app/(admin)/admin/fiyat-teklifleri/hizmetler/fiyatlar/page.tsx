@@ -24,9 +24,9 @@ export default function MonthlyPricesPage() {
   const [busy, setBusy] = useState(false);
   const [copy, setCopy] = useState({ from: "", to: "", percent: 5, category: "", overwrite: false });
   const [fill, setFill] = useState({ month: "", margin: 10, category: "", overwrite: false });
-  const [pay, setPay] = useState({ usdTry: "", rateDate: "", ibanPercent: "20", cardPercent: "26" });
+  const [pay, setPay] = useState({ usdTry: "", rateDate: "", ibanPercent: "20", cardPercent: "26", packagePercent: "75" });
 
-  type Loaded = { s: { error?: string; services?: Service[] }; p: { error?: string; months?: string[]; prices?: Price[]; payment?: { usdTry: number | null; rateDate: string | null; ibanPercent: number; cardPercent: number } } };
+  type Loaded = { s: { error?: string; services?: Service[] }; p: { error?: string; months?: string[]; prices?: Price[]; payment?: { usdTry: number | null; rateDate: string | null; ibanPercent: number; cardPercent: number; packagePercent: number } } };
   const fetchAll = async (): Promise<Loaded> => {
     const [s, p] = await Promise.all([fetch("/api/admin/service-library").then((r) => r.json()), fetch("/api/admin/service-prices?n=12").then((r) => r.json())]);
     return { s, p };
@@ -41,7 +41,7 @@ export default function MonthlyPricesPage() {
     setDirty(new Set());
     setCopy((c) => ({ ...c, from: c.from || p.months?.[0] || "", to: c.to || p.months?.[1] || "" }));
     setFill((c) => ({ ...c, month: c.month || p.months?.[0] || "" }));
-    if (p.payment) setPay({ usdTry: p.payment.usdTry ? String(p.payment.usdTry) : "", rateDate: p.payment.rateDate ?? "", ibanPercent: String(p.payment.ibanPercent), cardPercent: String(p.payment.cardPercent) });
+    if (p.payment) setPay({ usdTry: p.payment.usdTry ? String(p.payment.usdTry) : "", rateDate: p.payment.rateDate ?? "", ibanPercent: String(p.payment.ibanPercent), cardPercent: String(p.payment.cardPercent), packagePercent: String(p.payment.packagePercent ?? 75) });
   };
   const load = () => fetchAll().then(apply);
   useEffect(() => {
@@ -103,7 +103,7 @@ export default function MonthlyPricesPage() {
     if (dirty.size && !confirm("Kaydedilmemiş değişiklikler var; önce kaydedin. Yine de devam edilsin mi?")) return;
     post({ action: "fromCost", ...fill, category: fill.category || undefined }, (r) => `${label(fill.month)}: ${r.filled} fiyat maliyetten hesaplandı (maliyet × ${1 + fill.margin / 100})${r.skipped ? `, ${r.skipped} dolu hücre korundu` : ""}. Yalnızca "Sitede göster" işaretli ve maliyeti girilmiş hizmetler.`);
   };
-  const savePay = () => post({ action: "payment", usdTry: Number(pay.usdTry.replace(",", ".")) || 0, rateDate: pay.rateDate, ibanPercent: Number(pay.ibanPercent), cardPercent: Number(pay.cardPercent) }, () => "Ödeme farkları ve kur kaydedildi; planlayıcı bunlarla hesaplar.");
+  const savePay = () => post({ action: "payment", usdTry: Number(pay.usdTry.replace(",", ".")) || 0, rateDate: pay.rateDate, ibanPercent: Number(pay.ibanPercent), cardPercent: Number(pay.cardPercent), packagePercent: Number(pay.packagePercent) }, () => "Ödeme farkları ve kur kaydedildi; planlayıcı bunlarla hesaplar.");
 
   const cell = "w-20 rounded-md border border-outline-variant/30 bg-white px-2 py-1 text-right font-mono text-xs focus:border-primary/50 focus:outline-none";
   const sel = "rounded-lg border border-outline-variant/30 bg-white px-2 py-1.5 text-xs";
@@ -147,6 +147,7 @@ export default function MonthlyPricesPage() {
           <label>Kur tarihi <input type="date" value={pay.rateDate} onChange={(e) => setPay({ ...pay, rateDate: e.target.value })} className={sel} /></label>
           <label>IBAN farkı % <input type="number" value={pay.ibanPercent} onChange={(e) => setPay({ ...pay, ibanPercent: e.target.value })} className={`${sel} w-14`} /></label>
           <label>Kart farkı % <input type="number" value={pay.cardPercent} onChange={(e) => setPay({ ...pay, cardPercent: e.target.value })} className={`${sel} w-14`} /></label>
+          <label title="Paket fiyatı = (otel + araç + tur satış fiyatları) × (1 + pay)">Paket payı % <input type="number" value={pay.packagePercent} onChange={(e) => setPay({ ...pay, packagePercent: e.target.value })} className={`${sel} w-16`} /></label>
           <button onClick={savePay} disabled={busy} className="rounded-lg bg-primary px-3 py-1.5 font-bold text-white disabled:opacity-50">Kaydet</button>
         </div>
       </div>

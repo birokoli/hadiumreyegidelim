@@ -159,3 +159,37 @@ export async function runDataFixesOnceD() {
   await prisma.setting.upsert({ where: { key: FLAG_D }, update: { value: JSON.stringify(log) }, create: { key: FLAG_D, value: JSON.stringify(log) } });
   console.log("[data-fix] 2026-10-03 D", log);
 }
+
+// Beşinci düzeltme (3 Ekim, G11 – Claude kontrolü): blog yasaklı ifadeleri (tam cümle) ve vize yazısının yeniden yazımı.
+// Bulunamayan cümle atlanır ve kayda yazılır; veritabanındaki &nbsp;'ler boşluk sayılarak eşleştirilir.
+const FLAG_E = "DATA_FIX_2026_10_03_E";
+let ranE = false;
+
+export async function runDataFixesOnceE() {
+  if (ranE) return;
+  ranE = true;
+  if (await prisma.setting.findUnique({ where: { key: FLAG_E } })) return;
+  const fixes = (await import("@/lib/content-fixes/blog-duzeltmeleri.json")).default as { slug: string; find: string; replace: string }[];
+  const vize = (await import("@/lib/content-fixes/vize-yazisi.json")).default as { slug: string; title: string; description: string; content: string; faq: { q: string; a: string }[] };
+  const esc = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const log: { applied: string[]; skipped: string[]; vize?: string } = { applied: [], skipped: [] };
+  for (const f of fixes) {
+    const post = await prisma.post.findUnique({ where: { slug: f.slug }, select: { id: true, content: true } });
+    if (!post) { log.skipped.push(`${f.slug}: yazı yok`); continue; }
+    const pattern = new RegExp(f.find.trim().split(/\s+/).map(esc).join("(?:\\s|&nbsp;|\\u00a0)+"));
+    if (!pattern.test(post.content)) { log.skipped.push(`${f.slug}: ${f.find.slice(0, 50)}`); continue; }
+    await prisma.post.update({ where: { id: post.id }, data: { content: post.content.replace(pattern, f.replace) } });
+    log.applied.push(`${f.slug}: ${f.find.slice(0, 50)}`);
+  }
+  const post = await prisma.post.findUnique({ where: { slug: vize.slug }, select: { id: true } });
+  if (post) {
+    await prisma.post.update({ where: { id: post.id }, data: { title: vize.title, metaTitle: vize.title, description: vize.description, content: vize.content, faq: JSON.stringify(vize.faq) } });
+    log.vize = "güncellendi";
+  } else log.vize = "yazı bulunamadı";
+  await prisma.setting.upsert({ where: { key: FLAG_E }, update: { value: JSON.stringify(log) }, create: { key: FLAG_E, value: JSON.stringify(log) } });
+  console.log("[data-fix] 2026-10-03 E", log);
+  try {
+    const { revalidatePath } = await import("next/cache");
+    revalidatePath("/blog", "layout");
+  } catch { /* önbellek tazeleme düzeltmeyi engellemez */ }
+}

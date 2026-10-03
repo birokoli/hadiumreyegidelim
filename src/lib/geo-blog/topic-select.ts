@@ -76,7 +76,9 @@ export async function pickTopics(n = 1): Promise<TopicCandidate[]> {
   }
   const maxTotal = Math.max(1, ...totalByCluster.values());
 
-  const seeds: BlogOpportunity[] = CLUSTERS.flatMap((c) => c.seeds.map((s) => ({ topic: s, source: "prompt" as const, score: 55, reason: `${c.label} kümesi tohum konusu.` })));
+  // Tohum konunun kümesi tanımlandığı kümedir (sözlük eşleşmesine bırakılmaz)
+  const seedCluster = new Map<string, string>();
+  const seeds: BlogOpportunity[] = CLUSTERS.flatMap((c) => c.seeds.map((s) => { seedCluster.set(s.trim(), c.id); return { topic: s, source: "prompt" as const, score: 55, reason: `${c.label} kümesi tohum konusu.` }; }));
   const pins: BlogOpportunity[] = pinned.map((t) => ({ topic: t, source: "prompt" as const, score: 200, reason: "Admin'de öne alındı." }));
   const all = [...pins, ...base, ...gsc.topics, ...seeds];
 
@@ -94,7 +96,8 @@ export async function pickTopics(n = 1): Promise<TopicCandidate[]> {
     if (w.size < 2 || seenTopics.some((s) => similarity(w, s) >= 0.8)) continue;
     seenTopics.push(w);
     if (blockedW.some((b) => similarity(w, b) >= 0.8)) continue;
-    const cluster = clusterOf(topic);
+    const seeded = seedCluster.get(topic);
+    const cluster = seeded ? CLUSTERS.find((c) => c.id === seeded)! : clusterOf(topic);
     if (!cluster) continue;
     if (reservedHead(topic)) continue; // baş arama: satış sayfasının
     if ([...gsc.top10].some((q) => similarity(w, words(q)) >= 0.8)) continue; // zaten ilk 10'dayız

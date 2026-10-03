@@ -10,6 +10,7 @@ export const SEO_CHAPTERS = [
   { href: "/admin/seo/rakipler", n: "05", label: "Rakipler" },
   { href: "/admin/seo/programatik", n: "06", label: "Programatik" },
   { href: "/admin/seo/search-console", n: "07", label: "Search Console" },
+  { href: "/admin/seo/aciklar", n: "08", label: "Açıklar" },
 ];
 
 export default function SeoNav() {

@@ -10,6 +10,7 @@ export const SEO_KEYS = {
   auditFixed: "SEO_AUDIT_FIXED",
   tracked: "SEO_TRACKED_KEYWORDS",
   competitors: "SEO_COMPETITORS",
+  gaps: "SEO_GAPS",
 } as const;
 
 export async function readJson<T>(key: string, fallback: T): Promise<T> {

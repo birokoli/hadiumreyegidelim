@@ -112,3 +112,50 @@ export async function runDataFixesOnceC() {
     revalidateSiteSettings();
   }
 }
+
+// Dördüncü düzeltme (3 Ekim, kullanıcı): anlaşmalı Mekke otelleri (PDF "Otel Fiyat", B2C = satış, 1–4 kişilik oda/gece, yemek hariç)
+// ve 10 günlük Mekke paketleri. SAR → USD sabit kur 3,75. Hicri ay miladi ayın ortasında başlıyorsa yüksek olan alınır;
+// Ramazan ve fiyatı 0 olan dönemler fiyatsız (planlayıcıda "teklifte").
+const FLAG_D = "DATA_FIX_2026_10_03_D";
+let ranD = false;
+const SAR_USD = 3.75;
+const usd = (sar: number) => Math.round((sar / SAR_USD) * 100) / 100;
+
+const NEW_HOTELS: { slug: string; name: string; desc: string; stars: number | null; sar: Record<string, number> }[] = [
+  { slug: "mehd-al-resaleh-1-2", name: "Mehd Al Resaleh 1 & 2", desc: "Harem'e ücretsiz servis", stars: null, sar: { "2026-10": 61.88, "2026-11": 61.88, "2026-12": 78.75, "2027-01": 78.75 } },
+  { slug: "mehd-al-resaleh-3", name: "Mehd Al Resaleh 3", desc: "Harem'e yürüme mesafesi (yaklaşık 15 dakika)", stars: null, sar: { "2026-10": 78.75, "2026-11": 84.38, "2026-12": 112.5, "2027-01": 112.5 } },
+  { slug: "holiday-inn-makkah-al-aziziah", name: "Holiday Inn Makkah Al Aziziah", desc: "Harem'e ücretsiz servis", stars: 5, sar: { "2026-10": 146.25, "2026-11": 146.25 } },
+  // Alış 75 SAR + %15 = 86,25 SAR; yemek (35 SAR + %15) ayrıca, planlayıcıya eklenmedi
+  { slug: "safwah-al-talayie", name: "Safwah Al Talayie", desc: "Harem'e ücretsiz servis", stars: null, sar: Object.fromEntries(["2026-10", "2026-11", "2026-12", "2027-01", "2027-04", "2027-05", "2027-06", "2027-07", "2027-08", "2027-09"].map((m) => [m, 86.25])) },
+];
+
+const PKG_INCLUDES = ["Mekke'de 9 gece konaklama", "Havalimanında karşılama", "Cidde ↔ Mekke transferleri (özel araç)", "Mekke ziyaret turu: Cebel-i Nur, Sevr, Arafat, Mina"];
+const NEW_PACKAGES = [
+  { slug: "10-gunluk-bireysel-umre-mekke-mehd-al-resaleh", title: "10 Günlük Bireysel Umre · Mekke · Mehd Al Resaleh", price: 349, hotel: "Mehd Al Resaleh 1 & 2 (Harem'e ücretsiz servis)", popular: true },
+  { slug: "10-gunluk-bireysel-umre-mekke-mehd-al-resaleh-3", title: "10 Günlük Bireysel Umre · Mekke · Mehd Al Resaleh 3", price: 399, hotel: "Mehd Al Resaleh 3 (Harem'e yürüme mesafesi)", popular: false },
+  { slug: "10-gunluk-bireysel-umre-mekke-holiday-inn", title: "10 Günlük Bireysel Umre · Mekke · Holiday Inn", price: 600, hotel: "Holiday Inn Makkah Al Aziziah, 5 yıldız (Harem'e ücretsiz servis)", popular: false },
+];
+
+export async function runDataFixesOnceD() {
+  if (ranD) return;
+  ranD = true;
+  if (await prisma.setting.findUnique({ where: { key: FLAG_D } })) return;
+  const log: Record<string, number> = { hotels: 0, prices: 0, packages: 0 };
+  for (const h of NEW_HOTELS) {
+    const data = { category: "hotel", name: h.name, city: "mekke", publicDescription: h.desc, hotelStars: h.stars, defaultPricingType: "per_room", defaultCostUsd: 0, isActive: true, isPublic: true };
+    const row = await prisma.serviceLibrary.upsert({ where: { slug: h.slug }, update: data, create: { ...data, slug: h.slug } });
+    log.hotels++;
+    const months = Object.keys(h.sar);
+    await prisma.servicePrice.deleteMany({ where: { serviceId: row.id, month: { in: months } } });
+    await prisma.servicePrice.createMany({ data: months.map((month) => ({ serviceId: row.id, month, variant: "", salePriceUsd: usd(h.sar[month]), note: `B2C ${h.sar[month]} SAR / oda / gece` })) });
+    log.prices += months.length;
+  }
+  for (const p of NEW_PACKAGES) {
+    const description = `Yalnızca Mekke odaklı 10 günlük bireysel umre: ${p.hotel}. Fiyat kişi başıdır, en az 2 kişi. Uçak bileti ve e-vize fiyata dahil değildir; güncel kurla toplam maliyeti WhatsApp'tan iletiyoruz. Medine ziyareti dahil değildir.`;
+    const data = { title: p.title, description, price: p.price, currency: "USD", duration: "10 Gün", includes: JSON.stringify(PKG_INCLUDES), isPopular: p.popular, published: true, imageUrl: "/images/hero-kabe.jpg" };
+    await prisma.package.upsert({ where: { slug: p.slug }, update: data, create: { ...data, slug: p.slug, gallery: "[]" } });
+    log.packages++;
+  }
+  await prisma.setting.upsert({ where: { key: FLAG_D }, update: { value: JSON.stringify(log) }, create: { key: FLAG_D, value: JSON.stringify(log) } });
+  console.log("[data-fix] 2026-10-03 D", log);
+}

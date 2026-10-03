@@ -98,13 +98,21 @@ export default function ServiceLibraryPage() {
     setLoading(false);
   }
 
+  // Otel sayfası uzun açıklaması (/oteller/[slug]); Setting'te ayrı tutulur
+  const [longText, setLongText] = useState<string | null>(null);
+
   function openNew() {
+    setLongText(null);
     setEditId(null);
     setForm({ ...BLANK });
     setModalOpen(true);
   }
 
   function openEdit(svc: ServiceItem) {
+    setLongText(null);
+    if (svc.category === 'hotel') {
+      fetch(`/api/admin/service-library/hotel-text?id=${svc.id}`).then((r) => r.json()).then((d) => setLongText(typeof d.text === 'string' ? d.text : '')).catch(() => setLongText(''));
+    }
     setEditId(svc.id);
     setForm({
       category: svc.category,
@@ -133,6 +141,10 @@ export default function ServiceLibraryPage() {
     const url = editId ? `/api/admin/service-library/${editId}` : '/api/admin/service-library';
     const method = editId ? 'PUT' : 'POST';
     const res = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(form) });
+    if (res.ok && editId && form.category === 'hotel' && longText !== null) {
+      const r2 = await fetch('/api/admin/service-library/hotel-text', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: editId, text: longText }) });
+      if (!r2.ok) alert('Otel kaydedildi ama otel sayfası açıklaması kaydedilemedi.');
+    }
     if (res.ok) { await load(); setModalOpen(false); }
     setSaving(false);
   }
@@ -476,6 +488,16 @@ export default function ServiceLibraryPage() {
                       <label className="block font-bold text-on-surface-variant mb-1">Sitedeki açıklama (müşteri görür; "en ucuz", "sıfır", "garanti" yazmayın)</label>
                       <textarea rows={3} value={form.publicDescription} onChange={(e) => setForm({ ...form, publicDescription: e.target.value })} className="w-full bg-surface-container-lowest border border-outline-variant/25 rounded-lg p-2 focus:outline-none focus:border-primary/40" />
                     </div>
+                    {form.category === 'hotel' && editId && (
+                      <div className="col-span-2">
+                        <label className="block font-bold text-on-surface-variant mb-1">Otel sayfası açıklaması (/oteller sayfasında görünen uzun metin; boş bırakılırsa gösterilmez)</label>
+                        {longText === null ? (
+                          <p className="text-on-surface-variant">Yükleniyor…</p>
+                        ) : (
+                          <textarea rows={8} value={longText} onChange={(e) => setLongText(e.target.value)} className="w-full bg-surface-container-lowest border border-outline-variant/25 rounded-lg p-2 focus:outline-none focus:border-primary/40" />
+                        )}
+                      </div>
+                    )}
                   </div>
                 )}
               </div>

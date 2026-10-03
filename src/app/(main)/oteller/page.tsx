@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 import { fromPrice, getCatalog } from "@/lib/catalog";
 import { SITE_URL } from "@/lib/seo/site";
+import { getPageTexts } from "@/lib/page-texts";
 import { Badge, CardFooter, EmptyState, MediaCard, PageHero, Section } from "@/components/ui/kit";
 
 export const revalidate = 3600;
@@ -16,6 +17,7 @@ const CITY: Record<string, string> = { mekke: "Mekke", medine: "Medine" };
 const dist = (m: number | null) => (m == null ? null : m < 1000 ? `Harem'e ${m} m` : `Harem'e ${(m / 1000).toLocaleString("tr-TR", { maximumFractionDigits: 1 })} km`);
 
 export default async function HotelsPage() {
+  const t = await getPageTexts("oteller");
   const hotels = (await getCatalog()).filter((c) => c.category === "hotel" && c.slug);
   const cities = [...new Set(hotels.map((h) => (h.city ?? "").toLowerCase()))].sort((a, b) => (a === "mekke" ? -1 : b === "mekke" ? 1 : a.localeCompare(b)));
 
@@ -31,13 +33,13 @@ export default async function HotelsPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <PageHero
         crumbs={[{ label: "Anasayfa", href: "/" }, { label: "Oteller" }]}
-        kicker="Umre otelleri"
-        title="Mekke ve Medine otelleri"
-        lead="Yıldızı, Harem'e mesafesi ve oda başı gecelik başlangıç fiyatıyla otellerimiz. Bir otele tıklayıp ayrıntılarını görün ya da umre planınıza ekleyin."
+        kicker={t("kicker")}
+        title={t("title")}
+        lead={t("lead")}
       />
       <Section tone="muted">
         {hotels.length === 0 ? (
-          <EmptyState onWhite>Şu an yayında otel bulunmuyor.</EmptyState>
+          <EmptyState onWhite>{t("empty_state")}</EmptyState>
         ) : (
           <div className="space-y-14">
             {cities.map((city) => {
@@ -67,7 +69,7 @@ export default async function HotelsPage() {
                 </div>
               );
             })}
-            <p className="text-center text-[13px] text-on-surface-variant">Fiyatlar oda başı gecelik başlangıç fiyatıdır; odada en fazla 4 kişi kalabilir. Kesin fiyat tarih ve müsaitliğe göre belirlenir.</p>
+            <p className="text-center text-[13px] text-on-surface-variant">{t("footnote")}</p>
           </div>
         )}
       </Section>

@@ -80,6 +80,18 @@ export const PAGE_TEXTS: PageTextDef[] = [
     ],
   },
   {
+    id: "oteller",
+    label: "Oteller",
+    path: "/oteller",
+    fields: [
+      { key: "kicker", label: "Üst etiket", default: "Umre otelleri" },
+      { key: "title", label: "Başlık (H1)", default: "Mekke ve Medine otelleri" },
+      { key: "lead", label: "Giriş", multiline: true, default: "Yıldızı, Harem'e mesafesi ve oda başı gecelik başlangıç fiyatıyla otellerimiz. Bir otele tıklayıp ayrıntılarını görün ya da umre planınıza ekleyin." },
+      { key: "footnote", label: "Alt not", multiline: true, default: "Fiyatlar oda başı gecelik başlangıç fiyatıdır; odada en fazla 4 kişi kalabilir. Kesin fiyat tarih ve müsaitliğe göre belirlenir.", help: "Otellerin kendisi (ad, yıldız, mesafe, görsel, fiyat, otel sayfası açıklaması) admin → Hizmet Kütüphanesi'nden düzenlenir." },
+      { key: "empty_state", label: "Boş durum mesajı", default: "Şu an yayında otel bulunmuyor." },
+    ],
+  },
+  {
     id: "blog",
     label: "Blog",
     path: "/blog",

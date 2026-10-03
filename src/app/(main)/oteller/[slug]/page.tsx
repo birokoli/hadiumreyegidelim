@@ -9,22 +9,7 @@ import { packagePreset } from "@/lib/pricing/package";
 import { prisma } from "@/lib/prisma";
 import { SITE_URL } from "@/lib/seo/site";
 import { PageHero, Section } from "@/components/ui/kit";
-// Uzun açıklamalar (Antigravity G13-1, kaynaklı; anahtar slug ya da kayıt kimliği). Kısa açıklama katalogda kalır.
-import LONG from "@/lib/content-fixes/otel-aciklamalari.json";
-
-// Yerel veritabanı canlıdan eski olduğu için bazı kayıtlar kimlikle değil adla eşleşir (ör. "Fairmont Makkah" ↔ "Makkah Clock Royal Tower A Fairmont Hotel")
-const norm = (x: string) => x.toLocaleLowerCase("tr-TR").normalize("NFD").replace(/[^a-z0-9 ]/g, " ").split(/\s+/).filter((w) => w.length > 2 && w !== "hotel" && w !== "the");
-const LONG_MAP = LONG as Record<string, { name: string; description: string }>;
-function longText(h: CatalogItem): string | null {
-  const direct = LONG_MAP[h.slug ?? ""] ?? LONG_MAP[h.id];
-  if (direct) return direct.description;
-  const want = norm(h.name);
-  const hit = Object.values(LONG_MAP).find((v) => {
-    const have = new Set(norm(`${v.name} ${v.description.split(",")[0]}`));
-    return want.length > 0 && want.every((w) => have.has(w));
-  });
-  return hit?.description ?? null;
-}
+import { hotelLongText } from "@/lib/catalog/hotel-texts";
 
 export const revalidate = 3600;
 
@@ -62,6 +47,7 @@ export default async function HotelPage({ params }: { params: Promise<{ slug: st
   const city = cityName(h.city);
   const dist = distanceText(h.distanceMeters);
   const price = fromPrice(h);
+  const long = await hotelLongText(h);
   const packages = (await prisma.package.findMany({ where: { published: true }, select: { slug: true, title: true, duration: true } }).catch(() => [])).filter(
     (p) => packagePreset(p.slug)?.city === h.city?.toLowerCase(),
   );
@@ -72,7 +58,7 @@ export default async function HotelPage({ params }: { params: Promise<{ slug: st
     name: h.name,
     url: `${SITE_URL}/oteller/${slug}`,
     ...(h.imageUrl ? { image: h.imageUrl } : {}),
-    ...(longText(h) ?? h.description ? { description: longText(h) ?? h.description } : {}),
+    ...(long ?? h.description ? { description: long ?? h.description } : {}),
     address: { "@type": "PostalAddress", addressLocality: city, addressCountry: "SA" },
     ...(h.hotelStars ? { starRating: { "@type": "Rating", ratingValue: h.hotelStars } } : {}),
   };
@@ -95,7 +81,7 @@ export default async function HotelPage({ params }: { params: Promise<{ slug: st
               </div>
             )}
             {h.description && <p className="text-base font-semibold text-on-surface">{h.description}</p>}
-            {longText(h) && <p className="text-base leading-relaxed text-on-surface">{longText(h)}</p>}
+            {long && <p className="text-base leading-relaxed text-on-surface whitespace-pre-line">{long}</p>}
             <dl className="grid grid-cols-2 gap-3 sm:grid-cols-3">
               {[
                 ["Şehir", city],

@@ -140,6 +140,10 @@ const BLOG_CONTENT_CLASS = `blog-content
             [&_strong]:font-bold [&_strong]:text-primary
             [&_hr]:border-0 [&_hr]:border-t [&_hr]:border-slate-200 [&_hr]:my-12`;
 
+// Editöre başka yerden yapıştırılan metinlerde bütün boşluklar &nbsp; (bölünmez) geliyor; tarayıcı satırı
+// boşlukta bölemeyince kelimeyi harfinden kesiyor. Kelime arası bölünmez boşluklar normal boşluğa çevrilir.
+const normalizeSpaces = (html: string) => html.replace(/(&nbsp;|\u00a0)+/g, " ");
+
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const post = await prisma.post.findUnique({
@@ -154,7 +158,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   const toc = extractToc(post.content);
   // Dış link kuralı yayında da uygulanır: rakip/resmî olmayan linkler kalkar, sattığımız
   // hizmete giden dış link kendi sayfamıza çevrilir (eski yazılar dahil)
-  const contentWithIds = optimizeContentImages(cleanAndWrapTables(injectHeadingIds(fixInternalLinks(stripDisallowedLinks(post.content).html))));
+  const contentWithIds = optimizeContentImages(cleanAndWrapTables(injectHeadingIds(normalizeSpaces(fixInternalLinks(stripDisallowedLinks(post.content).html)))));
   // Marka kutusu 3. ara başlıktan önce (yoksa içeriğin sonunda)
   const h2Positions = [...contentWithIds.matchAll(/<h2[\s>]/gi)].map((m) => m.index ?? 0);
   const splitAt = h2Positions.length >= 3 ? h2Positions[2] : contentWithIds.length;

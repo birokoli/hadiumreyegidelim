@@ -5,7 +5,10 @@ import { ensureProspectSchema } from "@/lib/influencer/schema";
 import { fetchIgMetrics, metaConfigured } from "@/lib/influencer/meta";
 import { scoreProspect } from "@/lib/influencer/score";
 import { dfsPost, isDataforseoConfigured } from "@/lib/seo/dataforseo";
-import { DFS_LANGUAGE_CODE, DFS_LOCATION_CODE, SITE_URL } from "@/lib/seo/site";
+import { DFS_LANGUAGE_CODE, DFS_LOCATION_CODE } from "@/lib/seo/site";
+
+// Influencer başvurusu pazarlama alt alan adında (kullanıcı, 3 Ekim)
+const MARKETING_URL = "https://marketing.hadiumreyegidelim.com";
 
 export const PLATFORMS = ["instagram", "tiktok", "youtube"] as const;
 export type Platform = (typeof PLATFORMS)[number];
@@ -192,7 +195,7 @@ export async function createInvite(id: string) {
     data: { invitedAt: new Date(), stage: "mesaj" },
   });
   const params = new URLSearchParams({ davet: p.id, [p.platform]: p.handle });
-  return { item: toDto(p), inviteUrl: `${SITE_URL}/influencer/apply?${params}` };
+  return { item: toDto(p), inviteUrl: `${MARKETING_URL}/influencer/apply?${params}` };
 }
 
 /** Haftalık: 7 günden eski (ya da hiç ölçülmemiş) Instagram adaylarını yeniler. */

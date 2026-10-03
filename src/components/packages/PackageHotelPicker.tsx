@@ -63,6 +63,13 @@ export default function PackageHotelPicker({ title, preset, catalog, month, mont
         })}
       </div>
 
+      <p className="mt-3 text-[12px] text-on-surface-variant">
+        Otel ayrıntıları:{" "}
+        {hotels.filter(({ h }) => h.slug).map(({ h }, i) => (
+          <span key={h.id}>{i > 0 && " · "}<a href={`/oteller/${h.slug}`} className="underline hover:text-primary">{h.name}</a></span>
+        ))}
+      </p>
+
       {current && (
         <div className="mt-5 rounded-xl bg-surface-container-low p-4 text-[13px] text-on-surface-variant">
           <p>

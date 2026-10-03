@@ -22,6 +22,9 @@ const nextConfig: NextConfig = {
       { source: '/blog/umre-turlari-2026-bireysel-umre', destination: '/blog/2026-umre-turlari-diyanet-bireysel-fiyatlar-vip-ipuclari', permanent: true },
       { source: '/blog/2026-umre-turlari-hadi-umreye-gidelim-manevi-yenilenme', destination: '/blog/2026-umre-turlari-diyanet-bireysel-fiyatlar-vip-ipuclari', permanent: true },
       { source: '/blog/ayak-tabanlarinin-su-toplamamasi-icin-harem-e-ozel-ayakkabi-corap-onerileri-2026', destination: '/blog/mescidi-haram-ziyaret-rehberi', permanent: true },
+      // 3 Ekim (Açıklar analizi): aynı "Diyanet umre fiyatları" aramalarında yarışan iki yazı en güçlü yazıya birleştirildi
+      { source: '/blog/umre-turlari-2026-bireysel-diyanet-fiyat-karsilastirma', destination: '/blog/2026-umre-turlari-diyanet-bireysel-fiyatlar-vip-ipuclari', permanent: true },
+      { source: '/blog/umre-turlari-2026-fiyat-karsilastirmalari-diyanet-bireysel-vip', destination: '/blog/2026-umre-turlari-diyanet-bireysel-fiyatlar-vip-ipuclari', permanent: true },
       // G6-3: Kırık iç bağlantı kalıcı yönlendirmeleri (Faz I3)
       { source: "/blog/mescid-i-haram-ziyareti", destination: "/blog/mescidi-haram-ziyaret-rehberi", permanent: true },
       { source: "/blog/nusuk-uygulamasi-kullanimi", destination: "/blog/nusuk-uygulamasi-nasil-kullanilir", permanent: true },

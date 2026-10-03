@@ -230,3 +230,39 @@ export async function runDataFixesOnceF() {
     revalidatePath("/blog", "layout");
   } catch { /* önbellek tazeleme düzeltmeyi engellemez */ }
 }
+
+// Yedinci düzeltme (3 Ekim, Açıklar analizi + kullanıcı kararı):
+// - Fiyatı 0 olan, şablonsuz paketler yayından kaldırılır (silinmez).
+// - "Diyanet umre fiyatları" aramalarında yarışan iki yazı yayından kalkar (next.config'te ana yazıya 301).
+// - Ana yazının başına /paketler bağlantılı tek paragraf eklenir.
+const FLAG_G = "DATA_FIX_2026_10_03_G";
+let ranG = false;
+const MERGED_POSTS = ["umre-turlari-2026-bireysel-diyanet-fiyat-karsilastirma", "umre-turlari-2026-fiyat-karsilastirmalari-diyanet-bireysel-vip"];
+const MAIN_PRICE_POST = "2026-umre-turlari-diyanet-bireysel-fiyatlar-vip-ipuclari";
+
+export async function runDataFixesOnceG() {
+  if (ranG) return;
+  ranG = true;
+  if (await prisma.setting.findUnique({ where: { key: FLAG_G } })) return;
+  const { packagePreset } = await import("@/lib/pricing/package");
+  const log: Record<string, unknown> = {};
+  const zero = (await prisma.package.findMany({ where: { published: true, price: { lte: 0 } }, select: { id: true, slug: true } })).filter((p) => !packagePreset(p.slug));
+  if (zero.length) await prisma.package.updateMany({ where: { id: { in: zero.map((p) => p.id) } }, data: { published: false } });
+  log.unpublishedPackages = zero.map((p) => p.slug);
+  const merged = await prisma.post.updateMany({ where: { slug: { in: MERGED_POSTS } }, data: { published: false } });
+  log.unpublishedPosts = merged.count;
+  const main = await prisma.post.findUnique({ where: { slug: MAIN_PRICE_POST }, select: { id: true, content: true } });
+  if (main && !main.content.includes('href="/paketler"')) {
+    const lead = `<p><strong>Güncel fiyatlar:</strong> Paketlerimizin kişi başı başlangıç fiyatlarını ve otel seçeneklerini <a href="/paketler">Umre Paketleri ve Fiyatları</a> sayfasında görebilirsiniz; fiyat seçtiğiniz otele ve kişi sayısına göre anında hesaplanır.</p>\n`;
+    await prisma.post.update({ where: { id: main.id }, data: { content: lead + main.content } });
+    log.mainPost = "bağlantı eklendi";
+  } else log.mainPost = main ? "zaten var" : "yazı yok";
+  await prisma.setting.upsert({ where: { key: FLAG_G }, update: { value: JSON.stringify(log) }, create: { key: FLAG_G, value: JSON.stringify(log) } });
+  console.log("[data-fix] 2026-10-03 G", log);
+  try {
+    const { revalidatePath } = await import("next/cache");
+    revalidatePath("/blog", "layout");
+    revalidatePath("/paketler", "layout");
+    revalidatePath("/");
+  } catch { /* önbellek tazeleme düzeltmeyi engellemez */ }
+}

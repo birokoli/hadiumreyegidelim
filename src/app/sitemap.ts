@@ -1,3 +1,4 @@
+import { getCatalog } from "@/lib/catalog";
 import { MetadataRoute } from 'next';
 import { prisma } from '@/lib/prisma';
 import { turkeyCities } from '@/lib/turkey-cities';
@@ -57,6 +58,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     changeFrequency: 'weekly' as const,
     priority: 1.0, // Products are very important
   }));
+
+  // Otel sayfaları (3 Ekim): menüde yok, Google site haritasından bulur
+  const hotelUrls = (await getCatalog())
+    .filter((c) => c.category === "hotel" && c.slug)
+    .map((h) => ({ url: `${baseUrl}/oteller/${h.slug}`, changeFrequency: "monthly" as const, priority: 0.6 }));
 
   const latestPostDate = posts[0]?.updatedAt ? posts[0].updatedAt.toISOString().split("T")[0] : STATIC_REVIEWED;
 
@@ -147,6 +153,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     ...categoryUrls,
     ...blogUrls,
+    ...hotelUrls,
     ...packageUrls,
     // Rehber sayfaları (3.2): ana sayfada listelenmez, Google sitemap ve /umre-rehberi'den bulur
     {

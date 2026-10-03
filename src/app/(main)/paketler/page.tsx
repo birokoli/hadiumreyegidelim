@@ -18,8 +18,9 @@ import {
 } from "@/components/ui/kit";
 
 export const metadata: Metadata = {
-  title: "Umre Paketleri 2026: Ekonomik ve VIP",
-  description: "Manevi yolculuğunuzu konfor ve huzur içinde geçirebilmeniz için her detayı düşünülmüş, VIP transferli ve özel rehberli Umre tur seçenekleri.",
+  // 3 Ekim (Açıklar analizi): "umre fiyatları 2026" aramasında Google fiyatlı paket listesi gösteriyor
+  title: "Umre Fiyatları 2026: Umre Paketleri ve Başlangıç Fiyatları",
+  description: "2026 umre paketleri ve kişi başı başlangıç fiyatları. Fiyat seçtiğiniz otele, kişi sayısına ve tarihe göre anında hesaplanır; otel ve transferler dahildir.",
   alternates: {
     canonical: "/paketler"
   }
@@ -42,7 +43,13 @@ export default async function PackagesPage() {
     } catch {}
   }
   const common = [...includeCounts.entries()].filter(([, c]) => c >= Math.ceil(packages.length / 2)).sort((a, b) => b[1] - a[1]).slice(0, 6).map(([k]) => k);
+  const priced = packages.filter((p) => p.price > 0).sort((a, b) => a.price - b.price);
+  const usd = (n: number) => `${Math.round(n).toLocaleString("tr-TR")} $`;
   const faq = [
+    priced.length > 0 && {
+      q: "Umre fiyatları 2026'da ne kadar?",
+      a: `Yayındaki paketlerimizde kişi başı fiyatlar ${usd(priced[0].price)}'dan başlıyor. Fiyat sabit değildir: seçtiğiniz otele, odadaki kişi sayısına ve seyahat ayına göre paket sayfasında anında hesaplanır. Uçak bileti fiyata dahil değildir, umre vizesi ayrıca alınır.`,
+    },
     days.length > 0 && {
       q: "Umre paketleri kaç gün sürer?",
       a: `Şu anda yayında ${packages.length} paket var; süreler ${Math.min(...days)} gün ile ${Math.max(...days)} gün arasında değişir. Her paketin günlük programı kendi sayfasında yer alır.`,
@@ -59,7 +66,7 @@ export default async function PackagesPage() {
 
   const jsonLd = [
     faqJsonLd(faq),
-    webPageJsonLd({ url: `${SITE_URL}/paketler`, name: "Umre Paketleri 2026" }),
+    webPageJsonLd({ url: `${SITE_URL}/paketler`, name: "Umre Fiyatları 2026 ve Umre Paketleri" }),
   ];
 
   const popularPackageId = packages.find((p) => p.isPopular)?.id;
@@ -97,6 +104,33 @@ export default async function PackagesPage() {
                 footer={<CardFooter price={pkg.price} currency={pkg.currency} cta="Turu İncele" />}
               />
             ))}
+          </div>
+        )}
+
+        {priced.length > 0 && (
+          <div className="max-w-screen-md mx-auto mt-16 md:mt-20">
+            <h2 className="font-headline text-xl md:text-2xl font-bold text-primary text-center mb-2">Umre fiyatları 2026: paketlere göre başlangıç fiyatları</h2>
+            <p className="text-center text-sm text-on-surface-variant mb-6">Kişi başı, 2 kişilik oda için en uygun otelle hesaplanan fiyat. Paketi açıp otelinizi ve kişi sayınızı seçince fiyat güncellenir.</p>
+            <div className="overflow-x-auto rounded-2xl border border-outline-variant/20 bg-white">
+              <table className="w-full text-left text-sm">
+                <thead>
+                  <tr className="border-b border-outline-variant/20 text-[12px] uppercase tracking-wider text-on-surface-variant">
+                    <th className="px-4 py-3 font-semibold">Paket</th>
+                    <th className="px-4 py-3 font-semibold">Süre</th>
+                    <th className="px-4 py-3 font-semibold text-right">Kişi başı</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {priced.map((p) => (
+                    <tr key={p.id} className="border-b border-outline-variant/10 last:border-0">
+                      <td className="px-4 py-3"><a href={`/paketler/${p.slug}`} className="font-semibold text-primary hover:underline">{p.title}</a></td>
+                      <td className="px-4 py-3 text-on-surface-variant">{p.duration}</td>
+                      <td className="px-4 py-3 text-right font-bold text-primary whitespace-nowrap">{usd(p.price)}&apos;dan</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         )}
 

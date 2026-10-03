@@ -148,7 +148,9 @@
 
 /* ─── Blog İçerik Alanı ─── */
 .blog-content {
-  word-break: break-word;
+  /* Türkçe imla: kelime harfinden bölünmez (Safari break-word'ü her harfte kesiyordu); yalnızca satıra sığmayan uzun adres kırılır */
+  word-break: normal;
+  hyphens: manual;
   overflow-wrap: break-word;
 }
 
@@ -205,7 +207,7 @@
   line-height: 1.6 !important;
   border: none !important;
   border-right: 1px solid #f1f5f9 !important;
-  word-break: break-word;
+  word-break: normal;
   overflow-wrap: break-word;
 }
 
@@ -215,7 +217,7 @@
 
 /* ─── Quill Editör Word-Wrap Düzeltmesi ─── */
 .ql-editor {
-  word-break: break-word !important;
+  word-break: normal !important;
   overflow-wrap: break-word !important;
   white-space: pre-wrap !important;
 }
@@ -225,7 +227,7 @@
 .ql-editor h1,
 .ql-editor h2,
 .ql-editor h3 {
-  word-break: break-word !important;
+  word-break: normal !important;
   overflow-wrap: break-word !important;
   white-space: normal !important;
 }
@@ -243,7 +245,7 @@
   border: 1px solid #c3c6d4;
   padding: 8px 12px;
   min-width: 80px;
-  word-break: break-word;
+  word-break: normal;
 }
 
 .ql-editor table th {

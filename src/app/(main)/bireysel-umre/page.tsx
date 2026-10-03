@@ -11,8 +11,8 @@ import { VEHICLE_IMAGES_SETTING_KEY, parseVehicleImages } from "@/lib/catalog/tr
 import { getPageTexts } from "@/lib/page-texts";
 
 export const metadata: Metadata = {
-  title: "Bireysel Umre Planlayıcı 2026: Otel, Transfer ve Vize Fiyatı",
-  description: "Bireysel umrenizi kendiniz planlayın: tarihleri, Mekke ve Medine otelini, transferi ve e-vizeyi seçin, toplam fiyatı anında görün. Planı gönderin, kesin teklifi iletelim.",
+  title: "Bireysel Umre 2026: Planla, Fiyatı Gör",
+  description: "Tarihleri, Mekke ve Medine otelini, transferi ve e-vizeyi seçin; bireysel umre fiyatını anında görün. Planı gönderin, kesin teklifi iletelim.",
   alternates: { canonical: "/bireysel-umre" },
 };
 

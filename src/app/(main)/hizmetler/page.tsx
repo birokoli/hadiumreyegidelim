@@ -6,8 +6,8 @@ import { getPageTexts } from "@/lib/page-texts";
 import { Badge, ButtonLink, CardFooter, ChipLink, EmptyState, MediaCard, PageHero, Panel, PriceTag, Section, SectionHead } from "@/components/ui/kit";
 
 export const metadata: Metadata = {
-  title: "Umre Hizmetleri: Otel, Transfer, Tur ve Vize",
-  description: "Mekke ve Medine otelleri, havalimanı ve şehirler arası transfer, ziyaret turları ve Suudi Arabistan e-vize. Güncel aylık fiyatlarla, planlayıcıda seçip birleştirin.",
+  title: "Umre Hizmetleri ve Güncel Fiyatlar",
+  description: "Mekke otelleri, araçlı transfer, Haremeyn treni, ziyaret turları ve Suudi Arabistan e-vize: güncel aylık fiyatlar, planlayıcıda seçip birleştirin.",
   alternates: { canonical: "/hizmetler" },
 };
 

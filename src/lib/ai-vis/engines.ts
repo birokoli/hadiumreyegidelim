@@ -77,7 +77,8 @@ async function runScraper(engine: "chatgpt" | "gemini", prompt: string): Promise
       ? "/v3/ai_optimization/chat_gpt/llm_scraper/live/advanced"
       : "/v3/ai_optimization/gemini/llm_scraper/live/advanced";
   const { value, note } = await withLocation((loc) =>
-    dfsPost<ScraperResult>(path, [{ keyword: prompt, ...loc, ...(engine === "chatgpt" ? { force_web_search: true } : {}) }]),
+    // Web aramalı ChatGPT yanıtı 60 sn'yi aşabiliyor (1 Ekim: 3 zaman aşımı); ChatGPT için 120 sn
+    dfsPost<ScraperResult>(path, [{ keyword: prompt, ...loc, ...(engine === "chatgpt" ? { force_web_search: true } : {}) }], { timeoutMs: engine === "chatgpt" ? 120_000 : undefined }),
   );
   const r = value.result;
   const text =

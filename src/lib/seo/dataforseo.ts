@@ -55,7 +55,7 @@ function explainTaskError(code: number, message: string) {
   return `DataForSEO: ${message} (${code})`;
 }
 
-export async function dfsPost<T>(path: string, body: unknown[]): Promise<{ result: T | null; cost: number }> {
+export async function dfsPost<T>(path: string, body: unknown[], opts: { timeoutMs?: number } = {}): Promise<{ result: T | null; cost: number }> {
   const auth = authHeader();
   if (!auth) throw new DataforseoError("DataForSEO bağlı değil.", 412);
 
@@ -68,7 +68,7 @@ export async function dfsPost<T>(path: string, body: unknown[]): Promise<{ resul
       method: "POST",
       headers: { Authorization: auth, "Content-Type": "application/json" },
       body: JSON.stringify(body),
-      signal: AbortSignal.timeout(TIMEOUT_MS),
+      signal: AbortSignal.timeout(opts.timeoutMs ?? TIMEOUT_MS),
       cache: "no-store",
     });
 

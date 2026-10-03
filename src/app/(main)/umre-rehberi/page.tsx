@@ -7,7 +7,7 @@ import { LastUpdated } from "@/components/seo/PageTrust";
 import { getPageTexts } from "@/lib/page-texts";
 
 export const metadata: Metadata = {
-  title: "Umre Rehberi: Terimler ve Karşılaştırmalar",
+  title: "Umre Rehberi: Terimler ve Kıyaslar",
   description: "İhram, tavaf, sa'y gibi umre terimlerinin anlamları; bireysel umre, dönem ve kişiye göre umre planlama rehberleri. Hadi Umreye Gidelim'in umre rehberi.",
   alternates: { canonical: `${SITE_URL}/umre-rehberi` },
 };

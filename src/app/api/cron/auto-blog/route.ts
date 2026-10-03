@@ -4,9 +4,11 @@ import { isAutoBlogEnabled, runAutoBlog, runningJob } from "@/lib/geo-blog/auto"
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 300;
+// Kullanıcı kararı (3 Ekim): günde 3 taslak, üçü farklı konu kümesinden (vercel.json: 06, 10, 14 UTC)
+const DAILY_DRAFTS = 3;
 
 /**
- * Vercel Cron (vercel.json: 06:00 ve 08:00 UTC). Her çalıştırmanın sonucu "Yapay Zeka (AI)"
+ * Vercel Cron (vercel.json: 06:00, 10:00 ve 14:00 UTC). Her çalıştırmanın sonucu "Yapay Zeka (AI)"
  * sayfasındaki kayıtlarda görünür; atlanan çalıştırmalar da nedeniyle kaydedilir.
  */
 export async function GET(request: Request) {
@@ -28,7 +30,7 @@ export async function GET(request: Request) {
     const todayStart = new Date();
     todayStart.setUTCHours(0, 0, 0, 0);
     const today = await prisma.post.count({ where: { createdAt: { gte: todayStart } } }).catch(() => 0);
-    if (today > 0) return skip(`Bugün zaten ${today} yazı/taslak oluşturuldu (günde bir otomatik yazı).`);
+    if (today >= DAILY_DRAFTS) return skip(`Bugün zaten ${today} yazı/taslak oluşturuldu (günde ${DAILY_DRAFTS} otomatik taslak).`);
   }
 
   const running = await runningJob();

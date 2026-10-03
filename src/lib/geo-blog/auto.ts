@@ -3,7 +3,7 @@
 // GEO_BLOG_AUTOPUBLISH açıksa ve kalite kapısı geçtiyse yapılır.
 
 import { prisma } from "@/lib/prisma";
-import { getBlogOpportunities } from "@/lib/geo-blog/opportunities";
+import { pickTopics } from "@/lib/geo-blog/topic-select";
 import { generateBlogDraft } from "@/lib/geo-blog/pipeline";
 import { publishPost } from "@/lib/geo-blog/publish";
 
@@ -29,16 +29,21 @@ export async function runningJob() {
   return prisma.aILog.findFirst({ where: { status: { notIn: ["COMPLETED", "FAILED"] } }, orderBy: { createdAt: "desc" } }).catch(() => null);
 }
 
+/** Blog motoru v2 (docs/BLOG-MOTORU.md): küme dönüşü + yamyamlık kontrolü + Search Console talebi */
 export async function pickTopic() {
-  const opportunities = await getBlogOpportunities().catch(() => []);
-  return opportunities[0]?.topic?.trim() || FALLBACK_TOPIC;
+  const picked = await pickTopics(1).catch((e) => {
+    console.error("[auto-blog] konu seçilemedi", e);
+    return [];
+  });
+  return picked[0]?.topic || FALLBACK_TOPIC;
 }
 
-export async function runAutoBlog(options: { logId?: string; topic?: string } = {}) {
+export async function runAutoBlog(options: { logId?: string; topic?: string; allowAutoPublish?: boolean } = {}) {
   const topic = options.topic ?? (await pickTopic());
   const result = await generateBlogDraft(topic, undefined, { logId: options.logId });
   let published = false;
-  if (result.gateReport.passed && (await isAutoPublishEnabled())) {
+  // Kullanıcı kararı (3 Ekim): otomatik yazılar taslak kalır, yayını admin onaylar
+  if (options.allowAutoPublish && result.gateReport.passed && (await isAutoPublishEnabled())) {
     await publishPost(result.postId);
     published = true;
     if (result.logId) {

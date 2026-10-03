@@ -77,13 +77,23 @@ LİNKLER
 - Kurum adlarını kaynak göstermek için cümleye yazma ("Diyanet'e göre", "Nusuk'ta belirtildiği gibi" yok); bilgiyi doğrudan ver, linki ilgili kelimeye koy.
 - Başka hiçbir acente, tur şirketi ya da rakip firma adı, markası veya sitesi yazıda geçmez.
 - "TÜRSAB" ve "diyanetsiz" kelimeleri hiçbir biçimde (başlık, metin, SSS, anahtar kelime) geçmez. Onun yerine "bireysel umre", "kendi programıyla umre" de.
-- SATTIĞIMIZ HİZMETLER dış siteye asla linklenmez, müşteri kendi sayfamıza gider: vize → /umre-vizesi, paket ve fiyat → /paketler, rehberlik → /rehberlik, transfer ve tren → /hizmetler, otel, konaklama ve uçuş → /bireysel-umre. Vize portalı, otel, uçuş veya rezervasyon sitesi önerme; "vizenizi … üzerinden alabilirsiniz" gibi dış yönlendirme yok.
+- SATTIĞIMIZ HİZMETLER dış siteye asla linklenmez, müşteri kendi sayfamıza gider: vize → /umre-vizesi, paket ve fiyat → /paketler, rehberlik → /rehberlik, transfer ve tren → /hizmetler, otel ve konaklama → /bireysel-umre. Uçak bileti ve Nusuk randevusu SATMIYORUZ: bunlar için yönlendirme ya da satış cümlesi yazma. Vize portalı, otel, uçuş veya rezervasyon sitesi önerme; "vizenizi … üzerinden alabilirsiniz" gibi dış yönlendirme yok.
 - Dış link yalnızca bilgi içindir (ibadet kuralları, sağlık şartları, giriş kuralları, Ravza randevusu gibi); satış yaptığımız bir işlem için değil.
 
 ÜSLUP (no-ai-slop)
 - Kısa ve net cümleler; cevap önce, açıklama sonra.
 - Yasak: "günümüz dünyasında", "şüphesiz", "kuşkusuz", "sonuç olarak", "özetle", "unutulmaz bir deneyim", "eşsiz", "adeta", "son derece önemli", "hayati önem", "bu yazımızda", "merak ediyorsanız doğru yerdesiniz", "hadi gelin", emoji.
 - "Bu X değil, Y" kalıbı, retorik sorular ve dramatik tek kelimelik cümleler yok.
+- İnsan editör gibi yaz: cümle uzunluğu değişsin (kısa ve orta karışık), paragraf başları farklı kelimelerle başlasın, her bölüm aynı kalıpla (tanım → liste → özet) kurulmasın. Somut ayrıntı ver (hangi kapı, hangi saat aralığı, hangi belge), genel geçer cümle kurma.
+- Aynı bilgiyi farklı bölümlerde tekrar etme; giriş paragrafında "bu rehberde şunları anlatacağız" türü içerik listesi yok.
+
+SİTE GERÇEKLERİ (bunlar dışında rakam yok)
+- Suudi Arabistan e-vize: kişi başı 140 USD; belgeler tamamsa 2 iş saatinde çıkar (Hadi Umreye Gidelim üzerinden, /umre-vizesi).
+- Otel fiyatı 1 oda, 1 gece içindir (giriş 16.00, çıkış 11.00); bir odada en fazla 4 kişi kalır.
+- Transfer fiyatı araç başıdır; Haremeyn treni Ekonomi ve Business olarak satılır (/hizmetler).
+
+ARAMA HEDEFİ (yamyamlık yok)
+- Bu yazı baş aramaları ("umre", "bireysel umre", "umre vizesi", "umre fiyatları", "Mekke otelleri", "Kâbe'ye yakın oteller") HEDEFLEMEZ; bunlar satış sayfalarımızındır. Başlık ve odak kelime, verilen konunun uzun kuyruk sorusudur; baş aramayı geçen yerde ilgili satış sayfasına link ver.
 
 faq: 4-6 soru; cevaplar 2-3 cümle ve içerikle çelişmesin.`;
 

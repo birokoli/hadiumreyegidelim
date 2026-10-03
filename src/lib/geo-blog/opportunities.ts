@@ -14,7 +14,7 @@ export type BlogOpportunity = {
 };
 
 const STOP = new Set(["ve", "ile", "için", "bir", "bu", "mi", "mı", "mu", "mü", "ne", "nasıl", "nedir", "hangi", "en", "da", "de", "2025", "2026", "2027"]);
-const words = (s: string) =>
+export const words = (s: string) =>
   new Set(
     s
       .toLocaleLowerCase("tr")
@@ -23,7 +23,7 @@ const words = (s: string) =>
       .filter((w) => w.length > 2 && !STOP.has(w)),
   );
 
-function similarity(a: Set<string>, b: Set<string>) {
+export function similarity(a: Set<string>, b: Set<string>) {
   if (!a.size || !b.size) return 0;
   let inter = 0;
   for (const w of a) if (b.has(w)) inter++;

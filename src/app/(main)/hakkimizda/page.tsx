@@ -1,4 +1,5 @@
 import { SITE_URL } from "@/lib/seo/site";
+import { getPageTexts } from "@/lib/page-texts";
 import React from "react";
 import type { Metadata } from "next";
 import { ButtonLink, PageHero, Panel, Section, SectionHead } from "@/components/ui/kit";
@@ -24,7 +25,9 @@ const jsonLd = {
   },
 };
 
-export default function HakkimizdaPage() {
+export default async function HakkimizdaPage() {
+  // Metinler admin → Sayfa Metinleri → Hakkımızda
+  const t = await getPageTexts("hakkimizda");
   return (
     <main>
       <script
@@ -34,9 +37,9 @@ export default function HakkimizdaPage() {
 
       <PageHero
         crumbs={[{ label: "Ana Sayfa", href: "/" }, { label: "Hakkımızda" }]}
-        kicker="Biz Kimiz"
-        title="Hadi Umreye Gidelim"
-        lead="Kalabalık kafilelere ve standart programlara bağlı kalmadan, ailenize özel bireysel umre deneyimi sunan bir organizasyon platformuyuz."
+        kicker={t("kicker")}
+        title={t("title")}
+        lead={t("lead")}
         aside={
           <Panel tone="primary" className="p-6 md:p-8">
             <h2 className="font-headline text-xl font-bold">Kurumsal Bilgi</h2>

@@ -1,6 +1,7 @@
 import React from "react";
 import type { Metadata } from "next";
 import ContactFormClient from "@/components/features/ContactFormClient";
+import { getPageTexts } from "@/lib/page-texts";
 import { getSiteSettings } from "@/lib/site-settings";
 import { ButtonLink, PageHero, Panel, Section } from "@/components/ui/kit";
 
@@ -9,10 +10,14 @@ export const metadata: Metadata = {
   description: "Manevi yolculuğunuza ilk adımı birlikte atıyoruz. Umre danışmanlarımızla hemen iletişime geçin, umre planınızı oluşturalım.",
   alternates: {
     canonical: "/iletisim"
+  },
+  openGraph: {
+    images: ["/images/hero-kabe.jpg"]
   }
 };
 
 export default async function ContactPage({ searchParams }: { searchParams: Promise<{ paket?: string }> }) {
+  const t = await getPageTexts("iletisim");
   const { paket } = await searchParams;
   const selectedPackage = paket ? paket.replace(/-/g, " ").replace(/\b\w/g, c => c.toUpperCase()) : "";
 
@@ -29,8 +34,8 @@ export default async function ContactPage({ searchParams }: { searchParams: Prom
   return (
     <main>
       <PageHero
-        crumbs={[{ label: "Ana Sayfa", href: "/" }, { label: "İletişim" }]}
-        kicker="İletişim"
+        crumbs={[{ label: "Ana Sayfa", href: "/" }, { label: t("kicker") }]}
+        kicker={t("kicker")}
         title={contactTitle}
         lead={contactDesc}
         aside={
@@ -45,25 +50,25 @@ export default async function ContactPage({ searchParams }: { searchParams: Prom
           <Panel tone="white" className="flex flex-col items-center text-center p-6">
             <span className="material-symbols-outlined text-3xl text-primary mb-3">call</span>
             <p className="font-headline font-bold text-primary text-lg">+{whatsappNumber}</p>
-            <p className="text-xs text-on-surface-variant font-medium mt-1 mb-4">Çağrı Merkezi & WhatsApp</p>
+            <p className="text-xs text-on-surface-variant font-medium mt-1 mb-4">{t("call_center_label")}</p>
             <ButtonLink href={`https://wa.me/${whatsappNumber}`} tone="whatsapp" className="w-full mt-auto">
-              WhatsApp'tan Yazın
+              {t("call_center_btn")}
             </ButtonLink>
           </Panel>
 
           <Panel tone="white" className="flex flex-col items-center text-center p-6">
             <span className="material-symbols-outlined text-3xl text-primary mb-3">mail</span>
             <p className="font-headline font-bold text-primary text-lg">{contactEmail}</p>
-            <p className="text-xs text-on-surface-variant font-medium mt-1 mb-4">E-posta İletişimi</p>
+            <p className="text-xs text-on-surface-variant font-medium mt-1 mb-4">{t("email_label")}</p>
             <ButtonLink href={`mailto:${contactEmail}`} tone="secondary" className="w-full mt-auto">
-              E-posta Gönderin
+              {t("email_btn")}
             </ButtonLink>
           </Panel>
 
           <Panel tone="white" className="flex flex-col items-center text-center p-6">
             <span className="material-symbols-outlined text-3xl text-primary mb-3">location_on</span>
             <p className="font-headline font-bold text-primary text-lg">{contactAddress}</p>
-            <p className="text-xs text-on-surface-variant font-medium mt-1 mb-4">Merkez Ofis</p>
+            <p className="text-xs text-on-surface-variant font-medium mt-1 mb-4">{t("office_label")}</p>
             <ButtonLink href="/hakkimizda" tone="secondary" className="w-full mt-auto">
               Hakkımızda
             </ButtonLink>

@@ -3,6 +3,7 @@ import React from "react";
 import type { Metadata } from "next";
 import { PageTrust, webPageJsonLd } from "@/components/seo/PageTrust";
 import { ButtonLink, Faq, faqJsonLd, PageHero, Panel, Section, SectionHead } from "@/components/ui/kit";
+import { getPageTexts } from "@/lib/page-texts";
 
 export const metadata: Metadata = {
   title: { absolute: "Bireysel Umre Vizesi Nasıl Alınır? Suudi Arabistan E-Vize" },
@@ -41,23 +42,24 @@ const visaJsonLd = [
   webPageJsonLd({ url: `${SITE_URL}/umre-vizesi`, name: "Bireysel Umre Vizesi Nasıl Alınır?" }),
 ];
 
-export default function UmreVizesiPage() {
+export default async function UmreVizesiPage() {
+  const t = await getPageTexts("umre-vizesi");
   return (
     <main>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(visaJsonLd) }} />
 
       <PageHero
         crumbs={[{ label: "Ana Sayfa", href: "/" }, { label: "Umre Vizesi" }]}
-        kicker="Vize İşlemleri"
-        title="Bireysel Umre Vizesi Nedir?"
-        lead="Kalabalık gruplara ve katı kurallara bağlı kalmak zorunda değilsiniz. Kendi ailenizle, bağımsız bir umre deneyimi için gereken vize süreci oldukça kolaydır."
+        kicker={t("kicker")}
+        title={t("title")}
+        lead={t("lead")}
         aside={
           <Panel tone="primary" className="p-6 md:p-8">
-            <h2 className="font-headline text-xl font-bold">Vize Hizmeti</h2>
+            <h2 className="font-headline text-xl font-bold">{t("aside_title")}</h2>
             <p className="mt-2 text-2xl font-bold text-white">140 USD <span className="text-sm font-normal text-white/80">/ kişi başı</span></p>
-            <p className="mt-2 text-sm text-white/80">Belgeleriniz tamamsa vizeniz 2 iş saati içinde hazır olur.</p>
+            <p className="mt-2 text-sm text-white/80">{t("aside_note")}</p>
             <ButtonLink href="/umre-vizesi/basvuru" tone="light" className="mt-6 w-full">
-              Online Vize Başvurusu Yap
+              {t("aside_cta")}
             </ButtonLink>
           </Panel>
         }

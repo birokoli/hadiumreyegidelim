@@ -52,3 +52,18 @@ Birleştirmeye göre daha yavaş ve garantisi daha az bir yol: altı sayfa ayrı
 - **Antigravity:** her yazı için ayrı taslak, `docs/taslaklar/ayristirma/<adres>.md`. İçinde yeni başlık, açıklama (120–158), H1, kalacak/çıkacak bölümler, yeni bölümlerin metni ve iç bağlantılar. Önce ana yazı, sonra diğerleri.
 - **Kullanıcı:** taslakları onaylar. Uygulama admin → Blog İçerikleri'nden yapılır (yazılar veritabanında).
 - **Claude:** kategori sayfasının merkez sayfa olarak çalıştığını kontrol eder; uygulamadan sonra denetim ve ölçüm yapar.
+
+
+## G8-5 Uygulama Durumu (3 Ekim 2026)
+
+Altı yazı için niyet ayrıştırma ve yeni giriş paragrafı değişiklikleri  dosyasına işlendi. Canlı sitedeki ()  çıktıları üzerinde  ile her  parçası aranmış ve hepsinin tam 1 kez geçtiği doğrulanmıştır.
+
+
+## G8-5 Uygulama Durumu (3 Ekim 2026)
+
+Altı yazı için niyet ayrıştırma ve yeni giriş paragrafı değişiklikleri  dosyasına işlendi. Canlı sitedeki  çıktıları üzerinde  ile her  parçası aranmış ve hepsinin tam 1 kez geçtiği doğrulanmıştır.
+
+
+## G8-5 Uygulama Durumu (3 Ekim 2026)
+
+Altı yazı için niyet ayrıştırma ve yeni giriş paragrafı değişiklikleri `docs/veri/ayristirma.json` dosyasına işlendi. Canlı sitedeki `curl` çıktıları üzerinde `grep -c -F` ile her `find` parçası aranmış ve hepsinin tam 1 kez geçtiği doğrulanmıştır.

@@ -4,6 +4,7 @@ import React from "react";
 import SeoCitiesFooter from "./SeoCitiesFooter";
 import { getSiteSettings } from "@/lib/site-settings";
 import { SOCIAL_BRANDS, SOCIAL_KEYS, SocialIcon } from "@/components/icons/SocialIcons";
+import { getPageTexts } from "@/lib/page-texts";
 
 function sanitizeUrl(url: string): string {
   if (!url) return url;
@@ -25,6 +26,7 @@ async function getSocialLinks() {
 
 
 export default async function Footer({ logoUrl }: { logoUrl?: string }) {
+  const t = await getPageTexts("footer");
   const socialLinks = await getSocialLinks();
   const activeSocials = SOCIAL_KEYS.filter((key) => socialLinks[key]);
 
@@ -39,7 +41,7 @@ export default async function Footer({ logoUrl }: { logoUrl?: string }) {
                 <Image src={logoUrl || "/logo.png"} alt="Hadi Umreye" width={240} height={80} className="h-16 w-auto object-contain" />
               </div>
               <p className="font-label text-xs uppercase tracking-widest text-on-surface-variant">
-                © {new Date().getFullYear()} Hadi Umreye Gidelim - Bireysel ve VIP Umre
+                © {new Date().getFullYear()} {t("copyright")}
               </p>
             </div>
             <div className="flex flex-wrap gap-x-12 gap-y-6">
@@ -103,7 +105,7 @@ export default async function Footer({ logoUrl }: { logoUrl?: string }) {
           </div>
           {/* Kurum bilgisi: küçük ama görünür (gizli metin arama motorlarınca cezalandırılır); şemadaki parentOrganization ile aynı */}
           <p className="mt-4 text-[10px] leading-relaxed text-on-surface-variant/60 max-w-3xl">
-            Hadi Umreye Gidelim, MBD Tourism L.L.C. iştirakidir. MBD Tourism L.L.C., Dubai Ekonomi ve Turizm Departmanı (DTCM) tarafından lisanslı seyahat acentesidir. DTCM Lisans No: 1203162.
+            {t("company_note")}
           </p>
         </div>
       </footer>

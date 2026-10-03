@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { PageHero } from "@/components/ui/kit";
+import { getPageTexts } from "@/lib/page-texts";
 import { BlogGrid, BlogTopics } from "@/components/blog/BlogList";
 
 export const metadata = {
@@ -11,6 +12,7 @@ export const metadata = {
 export const revalidate = 60;
 
 export default async function BlogIndexPage() {
+  const t = await getPageTexts("blog");
   const [posts, categories] = await Promise.all([
     prisma.post.findMany({
       where: { published: true },
@@ -24,9 +26,9 @@ export default async function BlogIndexPage() {
     <main>
       <PageHero
         crumbs={[{ label: "Ana Sayfa", href: "/" }, { label: "Blog" }]}
-        kicker="Blog"
-        title="Umre rehber yazıları"
-        lead="Vize, otel seçimi, Haremeyn treni, Mekke ve Medine'de ziyaret yerleri: bireysel umreye hazırlanırken en çok sorulan konular."
+        kicker={t("kicker")}
+        title={t("title")}
+        lead={t("lead")}
       >
         <BlogTopics categories={categories} />
       </PageHero>

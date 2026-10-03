@@ -14,7 +14,7 @@ async function getCampaign() {
 
 export async function generateMetadata(): Promise<Metadata> {
   const { campaign } = await getCampaign();
-  return { title: pageTitle(campaign.seoTitle), description: metaDescription(campaign.seoDescription), alternates: { canonical: "/eylul-umresi" } };
+  return { title: pageTitle(campaign.seoTitle), description: metaDescription(campaign.seoDescription), alternates: { canonical: "/eylul-umresi" }, openGraph: { images: ["/images/hero-kabe.jpg"] } };
 }
 
 export default async function Page() {

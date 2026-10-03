@@ -1,0 +1,282 @@
+[
+  {
+    "slug": "ekonomik-umre-hangi-firma-2026",
+    "find": "nasıl anlarım?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"TÜRSAB üyeliğini sorgulayın, firmanın geçmiş organizasyon de",
+    "replace": "nasıl anlarım?\",\"acceptedAnswer\":{\"@type\":\"Answer\",\"text\":\"seyahat acentesi lisansı üyeliğini sorgulayın, firmanın geçmiş organizasyon de",
+    "reason": "TÜRSAB / rakip kurum adı kaldırıldı.",
+    "count": 1
+  },
+  {
+    "slug": "ekonomik-umre-hangi-firma-2026",
+    "find": "Ekonomik&nbsp;ve&nbsp;lüks&nbsp;paketler&nbsp;arasındaki&nbsp;fark&nbsp;otel&nbsp;",
+    "replace": "Ekonomik&nbsp;ve&nbsp;konforlu&nbsp;paketler&nbsp;arasındaki&nbsp;fark&nbsp;otel&nbsp;",
+    "reason": "Lüks kelimesi konforlu ile değiştirildi.",
+    "count": 1
+  },
+  {
+    "slug": "mekke-muzeleri-ve-kulturel-ziyaret-yerleri",
+    "find": "Beyt&nbsp;(Saat&nbsp;Kulesi),&nbsp;aslında&nbsp;sadece&nbsp;lüks&nbsp;otelleri&nbsp;ve&nbsp;alışveriş&nbsp;merkezlerini&",
+    "replace": "Beyt&nbsp;(Saat&nbsp;Kulesi),&nbsp;aslında&nbsp;sadece&nbsp;konforlu&nbsp;otelleri&nbsp;ve&nbsp;alışveriş&nbsp;merkezlerini&",
+    "reason": "Lüks kelimesi konforlu ile değiştirildi.",
+    "count": 1
+  },
+  {
+    "slug": "zamzam-tower-alisveris-rehberi-tarihi-ve-mekanlar",
+    "find": "&nbsp;kompleksidir.&nbsp;Burası&nbsp;sadece&nbsp;lüks&nbsp;otelleri&nbsp;barındıran&nbsp;bir&nbsp;gökdelen&nb",
+    "replace": "&nbsp;kompleksidir.&nbsp;Burası&nbsp;sadece&nbsp;konforlu&nbsp;otelleri&nbsp;barındıran&nbsp;bir&nbsp;gökdelen&nb",
+    "reason": "Lüks kelimesi konforlu ile değiştirildi.",
+    "count": 1
+  },
+  {
+    "slug": "zamzam-tower-alisveris-rehberi-tarihi-ve-mekanlar",
+    "find": ";yüksek&nbsp;olduğu&nbsp;yanılgısına&nbsp;düşürebilir.&nbsp;Lüks&nbsp;butikler&nbsp;için&nbsp;bu&nbsp;doğru&nbsp;olsa&nb",
+    "replace": ";yüksek&nbsp;olduğu&nbsp;yanılgısına&nbsp;düşürebilir.&nbsp;konforlu&nbsp;butikler&nbsp;için&nbsp;bu&nbsp;doğru&nbsp;olsa&nb",
+    "reason": "Lüks kelimesi konforlu ile değiştirildi.",
+    "count": 1
+  },
+  {
+    "slug": "zamzam-tower-alisveris-rehberi-tarihi-ve-mekanlar",
+    "find": "ot;turist&nbsp;kazığı&quot;&nbsp;yeme&nbsp;ihtimaliniz&nbsp;sıfırdır.",
+    "replace": "ot;turist&nbsp;kazığı&quot;&nbsp;yeme&nbsp;ihtimaliniz&nbsp;yürüme mesafesindedır.",
+    "reason": "Sıfır konum vaadi yürüme mesafesinde ile değiştirildi.",
+    "count": 1
+  },
+  {
+    "slug": "bebekle-umre-kolay-mi-2026-kurallar-ve-ipuclari",
+    "find": "niyle&nbsp;etraftaki&nbsp;teyzelerin&nbsp;bebeğinizi&nbsp;sevip&nbsp;oyaladığına&nbsp;sıkça&nbsp;şahit&nbsp;olursunuz.",
+    "replace": "niyle&nbsp;etraftaki&nbsp;teyzelerin&nbsp;bebeğinizi&nbsp;seÖzel&nbsp;oyaladığına&nbsp;sıkça&nbsp;şahit&nbsp;olursunuz.",
+    "reason": "VIP ifadesi Özel ile değiştirildi.",
+    "count": 1
+  },
+  {
+    "slug": "nusuk-uygulamasi-nasil-kullanilir",
+    "find": "7/24&nbsp;çalışan&nbsp;takip&nbsp;sistemimizle&nbsp;uygun&nb",
+    "replace": "kesintisiz&nbsp;çalışan&nbsp;takip&nbsp;sistemimizle&nbsp;uygun&nb",
+    "reason": "7/24 abartılı ifade kesintisiz ile değiştirildi.",
+    "count": 1
+  },
+  {
+    "slug": "nusuk-uygulamasi-nasil-kullanilir",
+    "find": "ğun az olduğu gece saatlerinde denemek bazen çözüm olsa da, garantili bir sonuç vermeyebilir.\"}},{\"@type\":\"Question\",\"na",
+    "replace": "ğun az olduğu gece saatlerinde denemek bazen çözüm olsa da, kolay bir sonuç vermeyebilir.\"}},{\"@type\":\"Question\",\"na",
+    "reason": "Garanti vaadi kaldırıldı.",
+    "count": 1
+  },
+  {
+    "slug": "mekke-otel-secimi-ve-konum-rehberi",
+    "find": "img alt=\"Kabe manzaralı lüks bir Mekke otel odası ve Mescid-i Haram manzarası\" decod",
+    "replace": "img alt=\"Kabe manzaralı konforlu bir Mekke otel odası ve Mescid-i Haram manzarası\" decod",
+    "reason": "Lüks kelimesi konforlu ile değiştirildi.",
+    "count": 1
+  },
+  {
+    "slug": "mekke-otel-secimi-ve-konum-rehberi",
+    "find": "a href=\"#1-harem-sınırı-sıfır-noktası-otelleri\" class=\"text-sm text-slate-600 hover:",
+    "replace": "a href=\"#1-harem-sınırı-yürüme mesafesinde-noktası-otelleri\" class=\"text-sm text-slate-600 hover:",
+    "reason": "Sıfır konum vaadi yürüme mesafesinde ile değiştirildi.",
+    "count": 1
+  },
+  {
+    "slug": "mekke-otel-secimi-ve-konum-rehberi",
+    "find": "lgelerden&nbsp;Harem&#39;e&nbsp;ulaşım,&nbsp;otellerin&nbsp;7/24&nbsp;sunduğu&nbsp;ücretsiz&nbsp;ring&nbsp;servisleriyle",
+    "replace": "lgelerden&nbsp;Harem&#39;e&nbsp;ulaşım,&nbsp;otellerin&nbsp;kesintisiz&nbsp;sunduğu&nbsp;ücretsiz&nbsp;ring&nbsp;servisleriyle",
+    "reason": "7/24 abartılı ifade kesintisiz ile değiştirildi.",
+    "count": 1
+  },
+  {
+    "slug": "haremeyn-hizli-tren-rehberi",
+    "find": "lAddress\",\"addressCountry\":\"TR\"},\"description\":\"Bireysel ve VIP umre planlama: Mekke ve Medine otelleri, transfer, tren,",
+    "replace": "lAddress\",\"addressCountry\":\"TR\"},\"description\":\"Bireysel ve Özel umre planlama: Mekke ve Medine otelleri, transfer, tren,",
+    "reason": "VIP ifadesi Özel ile değiştirildi.",
+    "count": 1
+  },
+  {
+    "slug": "2026-bireysel-umre-rehberi-nusuk-vize-surecleri",
+    "find": "7/24&nbsp;Kesintisiz&nbsp;Kişisel&nbsp;Saha&nbsp;Danışmanı",
+    "replace": "kesintisiz&nbsp;Kesintisiz&nbsp;Kişisel&nbsp;Saha&nbsp;Danışmanı",
+    "reason": "7/24 abartılı ifade kesintisiz ile değiştirildi.",
+    "count": 1
+  },
+  {
+    "slug": "2026-bireysel-umre-rehberi-nusuk-vize-surecleri",
+    "find": "lAddress\",\"addressCountry\":\"TR\"},\"description\":\"Bireysel ve VIP umre planlama: Mekke ve Medine otelleri, transfer, tren,",
+    "replace": "lAddress\",\"addressCountry\":\"TR\"},\"description\":\"Bireysel ve Özel umre planlama: Mekke ve Medine otelleri, transfer, tren,",
+    "reason": "VIP ifadesi Özel ile değiştirildi.",
+    "count": 1
+  },
+  {
+    "slug": "bireysel-umre-vizesi-nasil-alinir",
+    "find": "sp;Gidelim&nbsp;olarak&nbsp;vize&nbsp;danışmanlığından&nbsp;lüks&nbsp;otel&nbsp;rezervasyonuna,&nbsp;VIP&nbsp;transferde",
+    "replace": "sp;Gidelim&nbsp;olarak&nbsp;vize&nbsp;danışmanlığından&nbsp;konforlu&nbsp;otel&nbsp;rezervasyonuna,&nbsp;VIP&nbsp;transferde",
+    "reason": "Lüks kelimesi konforlu ile değiştirildi.",
+    "count": 1
+  },
+  {
+    "slug": "bireysel-umre-vizesi-nasil-alinir",
+    "find": "lAddress\",\"addressCountry\":\"TR\"},\"description\":\"Bireysel ve VIP umre planlama: Mekke ve Medine otelleri, transfer, tren,",
+    "replace": "lAddress\",\"addressCountry\":\"TR\"},\"description\":\"Bireysel ve Özel umre planlama: Mekke ve Medine otelleri, transfer, tren,",
+    "reason": "VIP ifadesi Özel ile değiştirildi.",
+    "count": 1
+  },
+  {
+    "slug": "2026-umre-fiyatlari-rehberi",
+    "find": "ine underline-offset-2\">3. Yakın Mesafe Lüks Konaklama</span></a></li><li class=\"pl-",
+    "replace": "ine underline-offset-2\">3. Yakın Mesafe konforlu Konaklama</span></a></li><li class=\"pl-",
+    "reason": "Lüks kelimesi konforlu ile değiştirildi.",
+    "count": 1
+  },
+  {
+    "slug": "2026-umre-fiyatlari-rehberi",
+    "find": "lAddress\",\"addressCountry\":\"TR\"},\"description\":\"Bireysel ve VIP umre planlama: Mekke ve Medine otelleri, transfer, tren,",
+    "replace": "lAddress\",\"addressCountry\":\"TR\"},\"description\":\"Bireysel ve Özel umre planlama: Mekke ve Medine otelleri, transfer, tren,",
+    "reason": "VIP ifadesi Özel ile değiştirildi.",
+    "count": 1
+  },
+  {
+    "slug": "14-gunluk-bireysel-umre-2026",
+    "find": "lAddress\",\"addressCountry\":\"TR\"},\"description\":\"Bireysel ve VIP umre planlama: Mekke ve Medine otelleri, transfer, tren,",
+    "replace": "lAddress\",\"addressCountry\":\"TR\"},\"description\":\"Bireysel ve Özel umre planlama: Mekke ve Medine otelleri, transfer, tren,",
+    "reason": "VIP ifadesi Özel ile değiştirildi.",
+    "count": 1
+  },
+  {
+    "slug": "14-gunluk-bireysel-umre-2026",
+    "find": "Lüks&nbsp;(USD)",
+    "replace": "konforlu&nbsp;(USD)",
+    "reason": "Lüks kelimesi konforlu ile değiştirildi.",
+    "count": 1
+  },
+  {
+    "slug": "10-gunluk-bireysel-umre-programi",
+    "find": "p;için,&nbsp;bütçenize&nbsp;göre&nbsp;bölge&nbsp;seçme&nbsp;lüksünüz&nbsp;de&nbsp;var.&nbsp;İşte&nbsp;5&nbsp;ana&nbsp;bö",
+    "replace": "p;için,&nbsp;bütçenize&nbsp;göre&nbsp;bölge&nbsp;seçme&nbsp;konforluünüz&nbsp;de&nbsp;var.&nbsp;İşte&nbsp;5&nbsp;ana&nbsp;bö",
+    "reason": "Lüks kelimesi konforlu ile değiştirildi.",
+    "count": 1
+  },
+  {
+    "slug": "7-gunluk-bireysel-umre-programi-2026",
+    "find": "lAddress\",\"addressCountry\":\"TR\"},\"description\":\"Bireysel ve VIP umre planlama: Mekke ve Medine otelleri, transfer, tren,",
+    "replace": "lAddress\",\"addressCountry\":\"TR\"},\"description\":\"Bireysel ve Özel umre planlama: Mekke ve Medine otelleri, transfer, tren,",
+    "reason": "VIP ifadesi Özel ile değiştirildi.",
+    "count": 1
+  },
+  {
+    "slug": "7-gunluk-bireysel-umre-programi-2026",
+    "find": "ntenjan dolmadan alır\\n✅ Nusuk Ravza randevunuzu sizin için garantiler\\n✅ Özel manevi rehber atar\\n✅ Tüm bunları tek pro",
+    "replace": "ntenjan dolmadan alır\\n✅ Nusuk Ravza randevunuzu sizin için güvenceler\\n✅ Özel manevi rehber atar\\n✅ Tüm bunları tek pro",
+    "reason": "Garanti vaadi kaldırıldı.",
+    "count": 1
+  },
+  {
+    "slug": "umre-turlari-2026-fiyat-karsilastirmalari-diyanet-bireysel-vip",
+    "find": "iyat-karsilastirmalari-diyanet-bireysel-vip\"/><meta property=\"og:title\" content=\"20",
+    "replace": "iyat-karsilastirmalari-diyanet-bireysel-Özel\"/><meta property=\"og:title\" content=\"20",
+    "reason": "VIP ifadesi Özel ile değiştirildi.",
+    "count": 1
+  },
+  {
+    "slug": "umre-turlari-2026-fiyat-karsilastirmalari-diyanet-bireysel-vip",
+    "find": "m tecrübelerle sana aktarmak istedim. Otellerin Kabe&#39;ye sıfır konumundan, Medine&#39;de Ravza&#39;ya yürüme mesafesi",
+    "replace": "m tecrübelerle sana aktarmak istedim. Otellerin Kabe&#39;ye yürüme mesafesinde konumundan, Medine&#39;de Ravza&#39;ya yürüme mesafesi",
+    "reason": "Sıfır konum vaadi yürüme mesafesinde ile değiştirildi.",
+    "count": 1
+  },
+  {
+    "slug": "umre-turlari-2026-bireysel-diyanet-fiyat-karsilastirma",
+    "find": "ords\" content=\"umre turlari 2026,bireysel umre,umre turları,vip umre,diyanet umre,umre fiyatları 2026\"/",
+    "replace": "ords\" content=\"umre turlari 2026,bireysel umre,umre turları,Özel umre,diyanet umre,umre fiyatları 2026\"/",
+    "reason": "VIP ifadesi Özel ile değiştirildi.",
+    "count": 1
+  },
+  {
+    "slug": "umre-turlari-2026-bireysel-diyanet-fiyat-karsilastirma",
+    "find": "a href=\"#vip-umre-deneyimi-kabeye-sıfır-lüks-ve-sınırsız-huzur\" class=\"text-sm text-slate-600",
+    "replace": "a href=\"#vip-umre-deneyimi-kabeye-yürüme mesafesinde-lüks-ve-sınırsız-huzur\" class=\"text-sm text-slate-600",
+    "reason": "Sıfır konum vaadi yürüme mesafesinde ile değiştirildi.",
+    "count": 1
+  },
+  {
+    "slug": "umre-turlari-2026-bireysel-diyanet-fiyat-karsilastirma",
+    "find": "a href=\"#vip-umre-deneyimi-kabeye-sıfır-lüks-ve-sınırsız-huzur\" class=\"text-sm text-slate-600 hover:",
+    "replace": "a href=\"#vip-umre-deneyimi-kabeye-sıfır-konforlu-ve-sınırsız-huzur\" class=\"text-sm text-slate-600 hover:",
+    "reason": "Lüks kelimesi konforlu ile değiştirildi.",
+    "count": 1
+  },
+  {
+    "slug": "umre-turlari-2026-bireysel-diyanet-fiyat-karsilastirma",
+    "find": "mları arasındaki farkları, fiyatları ve VIP seçenekleri samimi bir\"/><meta name=\"ke",
+    "replace": "mları arasındaki farkları, fiyatları ve Özel seçenekleri samimi bir\"/><meta name=\"ke",
+    "reason": "VIP ifadesi Özel ile değiştirildi.",
+    "count": 1
+  },
+  {
+    "slug": "umre-turlari-2026-bireysel-diyanet-fiyat-karsilastirma",
+    "find": "VIP Umre Deneyimi: Kabe&#x27;ye Sıfır Lüks ve Sınırsız Huzur",
+    "replace": "VIP Umre Deneyimi: Kabe&#x27;ye Sıfır konforlu ve Sınırsız Huzur",
+    "reason": "Lüks kelimesi konforlu ile değiştirildi.",
+    "count": 1
+  },
+  {
+    "slug": "2026-umre-turlari-diyanet-bireysel-fiyatlar-vip-ipuclari",
+    "find": "arı: Diyanet mi, Bireysel mi? Fiyatlar, VIP</title><meta name=\"description\" content",
+    "replace": "arı: Diyanet mi, Bireysel mi? Fiyatlar, Özel</title><meta name=\"description\" content",
+    "reason": "VIP ifadesi Özel ile değiştirildi.",
+    "count": 1
+  },
+  {
+    "slug": "2026-umre-turlari-diyanet-bireysel-fiyatlar-vip-ipuclari",
+    "find": "-umre-turlari-diyanet-bireysel-fiyatlar-vip-ipuclari\"/><meta property=\"og:title\" co",
+    "replace": "-umre-turlari-diyanet-bireysel-fiyatlar-Özel-ipuclari\"/><meta property=\"og:title\" co",
+    "reason": "VIP ifadesi Özel ile değiştirildi.",
+    "count": 1
+  },
+  {
+    "slug": "2026-umre-turlari-diyanet-bireysel-fiyatlar-vip-ipuclari",
+    "find": "yi bilirim. VIP Umre&#39;nin sağladığı konforla Kabe&#39;ye sıfır noktasındaki odanızdan inip saniyeler içinde Mescid-i",
+    "replace": "yi bilirim. VIP Umre&#39;nin sağladığı konforla Kabe&#39;ye yürüme mesafesinde noktasındaki odanızdan inip saniyeler içinde Mescid-i",
+    "reason": "Sıfır konum vaadi yürüme mesafesinde ile değiştirildi.",
+    "count": 1
+  },
+  {
+    "slug": "2026-umre-turlari-diyanet-bireysel-fiyatlar-vip-ipuclari",
+    "find": "azanır.</li>\n<li>**Lezzetli İkramlar:** Lüks otellerde açık büfe kahvaltı ve akşam y",
+    "replace": "azanır.</li>\n<li>**Lezzetli İkramlar:** konforlu otellerde açık büfe kahvaltı ve akşam y",
+    "reason": "Lüks kelimesi konforlu ile değiştirildi.",
+    "count": 1
+  },
+  {
+    "slug": "umre-turlari-2026-hadi-umreye-gidelim",
+    "find": "&nbsp;sunuyoruz.&nbsp;Ekonomi&nbsp;sınıfından&nbsp;lüks&nbsp;seçeneklere&nbsp;kadar&nbsp;geniş&nbsp;bir&nbsp;ye",
+    "replace": "&nbsp;sunuyoruz.&nbsp;Ekonomi&nbsp;sınıfından&nbsp;konforlu&nbsp;seçeneklere&nbsp;kadar&nbsp;geniş&nbsp;bir&nbsp;ye",
+    "reason": "Lüks kelimesi konforlu ile değiştirildi.",
+    "count": 1
+  },
+  {
+    "slug": "umre-turlari-2026-hadi-umreye-gidelim",
+    "find": "Lüks&nbsp;Umre&nbsp;Paketleri:",
+    "replace": "konforlu&nbsp;Umre&nbsp;Paketleri:",
+    "reason": "Lüks kelimesi konforlu ile değiştirildi.",
+    "count": 1
+  },
+  {
+    "slug": "umre-turlari-2026-hadi-umreye-gidelim",
+    "find": "sp;faydalanmak&nbsp;ve&nbsp;istediğiniz&nbsp;tarihleri&nbsp;garantilemek&nbsp;için&nbsp;vakit&nbsp;kaybetmeden&nbsp;bizi",
+    "replace": "sp;faydalanmak&nbsp;ve&nbsp;istediğiniz&nbsp;tarihleri&nbsp;güvencelemek&nbsp;için&nbsp;vakit&nbsp;kaybetmeden&nbsp;bizi",
+    "reason": "Garanti vaadi kaldırıldı.",
+    "count": 1
+  },
+  {
+    "slug": "bireysel-umre-vize-maliyet-rehberi",
+    "find": "lAddress\",\"addressCountry\":\"TR\"},\"description\":\"Bireysel ve VIP umre planlama: Mekke ve Medine otelleri, transfer, tren,",
+    "replace": "lAddress\",\"addressCountry\":\"TR\"},\"description\":\"Bireysel ve Özel umre planlama: Mekke ve Medine otelleri, transfer, tren,",
+    "reason": "VIP ifadesi Özel ile değiştirildi.",
+    "count": 1
+  },
+  {
+    "slug": "bireysel-umre-vize-maliyet-rehberi",
+    "find": ".&nbsp;Yerel&nbsp;restoranlarda&nbsp;yemek&nbsp;yemek,&nbsp;lüks&nbsp;restoranlara&nbsp;göre&nbsp;çok&nbsp;daha&nbsp;eko",
+    "replace": ".&nbsp;Yerel&nbsp;restoranlarda&nbsp;yemek&nbsp;yemek,&nbsp;konforlu&nbsp;restoranlara&nbsp;göre&nbsp;çok&nbsp;daha&nbsp;eko",
+    "reason": "Lüks kelimesi konforlu ile değiştirildi.",
+    "count": 1
+  }
+]

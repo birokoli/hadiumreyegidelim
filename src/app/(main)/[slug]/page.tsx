@@ -13,6 +13,7 @@ import { getLiveContentPage, getLiveContentPages } from "@/content/pages/store";
 import { pageTitles } from "@/content/pages/titles";
 import { getSiteSettings } from "@/lib/site-settings";
 import { PageTrust, webPageJsonLd } from "@/components/seo/PageTrust";
+import { getPageTexts } from "@/lib/page-texts";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -127,6 +128,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function DynamicCityUmrahPage({ params }: Props) {
+  const t = await getPageTexts("il-sayfasi");
   const { slug } = await params;
   const content = await rootContentPage(slug);
   if (content) {
@@ -177,13 +179,13 @@ export default async function DynamicCityUmrahPage({ params }: Props) {
       <PageHero
         crumbs={[{ label: "Ana Sayfa", href: "/" }, { label: "Bireysel Umre", href: "/bireysel-umre" }, { label: `${city.name} çıkışlı` }]}
         kicker={facts ? `${facts.region} · ${city.airportCode}` : city.airportCode}
-        title={`${city.name} Çıkışlı Bireysel Umre`}
-        lead={`${from} umreye gidecekler için Mekke ve Medine oteli, transfer ve e-vize tek planda. Uçak biletinizi ${city.airportName} (${city.airportCode}) kalkışlı alırsınız; konaklama ve transferi tarihlerinize göre biz planlarız.`}
+        title={t("title").replaceAll("{il}", city.name)}
+        lead={t("lead").replaceAll("{from}", from).replaceAll("{airportName}", city.airportName).replaceAll("{airportCode}", city.airportCode)}
         aside={
           <Panel tone="primary" className="p-6 md:p-8">
-            <h2 className="font-headline text-xl font-bold">Fiyatı hemen görün</h2>
-            <p className="mt-2 text-sm text-white/80">Tarihlerinizi, otelinizi ve transferinizi seçin; oda ve gece sayısına göre toplam anında hesaplanır.</p>
-            <ButtonLink href="/bireysel-umre" tone="light" className="mt-5 w-full">Umremi planla</ButtonLink>
+            <h2 className="font-headline text-xl font-bold">{t("aside_title")}</h2>
+            <p className="mt-2 text-sm text-white/80">{t("aside_lead")}</p>
+            <ButtonLink href="/bireysel-umre" tone="light" className="mt-5 w-full">{t("aside_cta")}</ButtonLink>
           </Panel>
         }
       />

@@ -10,6 +10,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/hakkimizda",
   },
+  openGraph: {
+    images: ["/images/hero-kabe.jpg"],
+  },
 };
 
 const jsonLd = {
@@ -42,12 +45,12 @@ export default async function HakkimizdaPage() {
         lead={t("lead")}
         aside={
           <Panel tone="primary" className="p-6 md:p-8">
-            <h2 className="font-headline text-xl font-bold">Kurumsal Bilgi</h2>
+            <h2 className="font-headline text-xl font-bold">{t("aside_title")}</h2>
             <p className="mt-3 text-sm text-white/90 leading-relaxed">
               Hadi Umreye Gidelim, MBD Tourism L.L.C. iştirakidir. MBD Tourism L.L.C., Dubai Ekonomi ve Turizm Departmanı (DTCM) tarafından lisanslı seyahat acentesidir. DTCM Lisans No: 1203162.
             </p>
             <ButtonLink href="/iletisim" tone="light" className="mt-6 w-full">
-              İletişime Geçin
+              {t("aside_cta")}
             </ButtonLink>
           </Panel>
         }
@@ -56,14 +59,14 @@ export default async function HakkimizdaPage() {
       <Section tone="white">
         <div className="space-y-8 text-on-surface leading-relaxed max-w-3xl">
           <div>
-            <SectionHead kicker="Yaklaşımımız" title="Niyetimiz" />
+            <SectionHead kicker={t("niyet_kicker")} title={t("niyet_title")} />
             <p className="text-on-surface-variant text-base leading-relaxed">
-              Her ailenin umre ihtiyacı farklıdır. Kalabalık programlardan bağımsız olarak, sizi ve ailenizi Kutsal Topraklar'a huzurlu, konforlu ve manevi açıdan verimli şekilde ulaştırmak için çalışıyoruz.
+              {t("niyet_desc")}
             </p>
           </div>
 
           <div>
-            <SectionHead kicker="Hizmetlerimiz" title="Ne Sunuyoruz" />
+            <SectionHead kicker={t("hizmet_kicker")} title={t("hizmet_title")} />
             <ul className="grid sm:grid-cols-2 gap-3 mt-4">
               {[
                 "Mekke ve Medine otel rezervasyonu",
@@ -82,9 +85,9 @@ export default async function HakkimizdaPage() {
           </div>
 
           <div>
-            <SectionHead kicker="Avantajlarımız" title="Neden Biz?" />
+            <SectionHead kicker={t("neden_kicker")} title={t("neden_title")} />
             <p className="text-on-surface-variant text-base leading-relaxed">
-              Suudi Arabistan'ın uyguladığı esnek umre politikaları sayesinde, bireysel umre yapmak artık hem yasal hem de çok daha erişilebilir. Biz bu imkânı herkesin kolayca kullanabilmesi için teknoloji ve deneyimlerimizi bir araya getiriyoruz.
+              {t("neden_desc1")}
             </p>
             <p className="mt-4 text-on-surface-variant text-base leading-relaxed">
               Hadi Umreye Gidelim, MBD Tourism L.L.C. iştirakidir. MBD Tourism L.L.C., Dubai Ekonomi ve Turizm Departmanı (DTCM) tarafından lisanslı seyahat acentesidir. DTCM Lisans No: 1203162.
@@ -93,7 +96,7 @@ export default async function HakkimizdaPage() {
 
           <div className="pt-4">
             <ButtonLink href="/iletisim" tone="primary">
-              Danışmanlık Alın
+              {t("cta")}
             </ButtonLink>
           </div>
         </div>

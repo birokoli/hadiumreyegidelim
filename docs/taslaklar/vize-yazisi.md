@@ -52,3 +52,18 @@ Mevcut içerikteki `visa.visitsaudi.com` kırık bağlantıları Claude tarafın
 ---
 
 **Durum (Claude, 1 Ekim):** Süre ve ücret kullanıcıdan geldi ve yukarıya işlendi (kişi başı 140 USD, belgeler tamamsa 2 iş saati); aynı bilgiler `/umre-vizesi` ve `/umre-vizesi/basvuru`'da canlı. Taslak uygulamaya hazır; yazı veritabanında olduğu için admin → Blog İçerikleri'nden uygulanır. **Not:** Bu dosya bir kez baştan yazılırken inceleme notları ve kullanıcı bilgisi silinmişti; dosyaya ekleme yapılır, baştan yazılmaz.
+
+
+---
+
+## 6. G8-2 Güncellemesi (3 Ekim 2026)
+
+- **Başlık (Title):** `Umre Vizesi 2026: Nasıl Alınır, Kaç Günde Çıkar, Ücreti Ne?` (**57 karakter**, max 60).
+- **Açıklama (Description):** `2026 Umre vizesi rehberi: Suudi Arabistan turist e-vizesi alma adımları, 140 USD vize ücreti, 2 iş saatinde e-vize çıkarma ve gerekli belgelerin tamamı.` (**144 karakter**, 120–158).
+- **Veri Dosyası:** `docs/veri/vize-yazisi.json` oluşturuldu.
+- **İçerik Şartları:**
+  1. İlk paragrafta doğrudan cevap + 140 USD + 2 iş saati + `/umre-vizesi/basvuru` bağlantısı.
+  2. 3 adet soru biçiminde H2 başlık.
+  3. Resmî kaynak bağlantısı: `visa.visitsaudi.com`.
+  4. Sonda `/bireysel-umre` ve `/umre-vizesi` bağlantıları.
+  5. Sadece izin verilen HTML etiketleri (görsel ve inline stil yok).

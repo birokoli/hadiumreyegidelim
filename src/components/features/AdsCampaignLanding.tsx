@@ -104,7 +104,7 @@ export default function AdsCampaignLanding({ campaign, whatsappNumber }: { campa
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {packages.map((item) => (
-              <div key={item.days} className="bg-white rounded-2xl p-6 border border-secondary/10 shadow-sm hover:-translate-y-0.5 hover:shadow-md transition-all">
+              <div key={item.days} className="bg-surface-container-lowest rounded-2xl p-6 border border-outline-variant/30 shadow-sm hover:-translate-y-0.5 hover:shadow-md transition-all">
                 <h3 className="font-headline text-xl text-primary font-bold mb-5">{item.days}</h3>
                 <div className="space-y-3 text-sm">
                   <div className="flex items-center justify-between gap-4"><span className="text-on-surface-variant">{campaign.roomDoubleLabel}</span><strong className="text-secondary text-lg">{item.double}</strong></div>
@@ -132,7 +132,7 @@ export default function AdsCampaignLanding({ campaign, whatsappNumber }: { campa
           </div>
           <div className="max-w-2xl mx-auto space-y-3">
             {childPrices.map((item) => (
-              <div key={item.label} className="bg-white rounded-xl px-6 py-4 border border-outline-variant/20 shadow-sm flex items-center gap-4">
+              <div key={item.label} className="bg-surface-container-lowest rounded-2xl p-5 border border-outline-variant/30 shadow-sm flex items-center gap-4">
                 <span className="material-symbols-outlined text-outline text-[22px]">{item.icon}</span>
                 <p className="text-on-surface-variant text-sm flex-1">{item.label}</p>
                 <span className="text-lg text-secondary font-bold shrink-0">{item.price}</span>
@@ -150,7 +150,7 @@ export default function AdsCampaignLanding({ campaign, whatsappNumber }: { campa
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {campaign.includedItems.map((item) => (
-              <div key={item.label} className="bg-white rounded-2xl p-6 border border-secondary/10 shadow-sm flex items-start gap-4 hover:-translate-y-0.5 hover:shadow-md transition-all">
+              <div key={item.label} className="bg-surface-container-lowest rounded-2xl p-6 border border-outline-variant/30 shadow-sm flex items-start gap-4 hover:-translate-y-0.5 hover:shadow-md transition-all">
                 <div className="shrink-0 w-11 h-11 rounded-xl bg-secondary/10 flex items-center justify-center text-secondary">
                   <span className="material-symbols-outlined text-[22px]" style={{ fontVariationSettings: "'FILL' 1" }}>{item.icon}</span>
                 </div>
@@ -191,7 +191,7 @@ export default function AdsCampaignLanding({ campaign, whatsappNumber }: { campa
           </div>
           <div className="space-y-5">
             {campaign.faqs.map((faq) => (
-              <div key={faq.q} className="bg-white rounded-2xl p-6 shadow-sm border border-outline-variant/20 hover:shadow-md transition-shadow">
+              <div key={faq.q} className="bg-surface-container-lowest rounded-2xl p-6 shadow-sm border border-outline-variant/30 hover:shadow-md transition-shadow">
                 <h2 className="font-bold text-base text-primary mb-3 flex items-start gap-2">
                   <span className="material-symbols-outlined text-secondary text-[20px] mt-0.5 shrink-0" style={{ fontVariationSettings: "'FILL' 1" }}>help</span>
                   {faq.q}

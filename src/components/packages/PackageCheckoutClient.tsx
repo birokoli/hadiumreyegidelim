@@ -4,7 +4,7 @@ import React, { useRef, useState } from "react";
 import { toJpeg } from "html-to-image";
 import Link from "next/link";
 
-export default function PackageCheckoutClient({ pkg }: { pkg: any }) {
+export default function PackageCheckoutClient({ pkg }: { pkg: { title: string; slug: string; price: number; duration: string; imageUrl?: string | null } }) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [pax, setPax] = useState(1);
@@ -13,7 +13,7 @@ export default function PackageCheckoutClient({ pkg }: { pkg: any }) {
   React.useEffect(() => {
     fetch('/api/settings').then(res => res.json()).then(data => {
       if (Array.isArray(data)) {
-        const wa = data.find((s: any) => s.key === 'whatsappNumber');
+        const wa = data.find((s: { key: string; value: string }) => s.key === 'whatsappNumber');
         if (wa && wa.value) {
           setWhatsappNumber(wa.value.replace('+', ''));
         }
@@ -21,9 +21,7 @@ export default function PackageCheckoutClient({ pkg }: { pkg: any }) {
     }).catch(e => console.error(e));
   }, []);
 
-  const total = pkg.price * pax;
-  const formattedTotal = new Intl.NumberFormat("tr-TR", { minimumFractionDigits: 0 }).format(total);
-  const todayDate = new Date().toLocaleDateString('tr-TR', { day: '2-digit', month: 'short', year: 'numeric' });
+      const todayDate = new Date().toLocaleDateString('tr-TR', { day: '2-digit', month: 'short', year: 'numeric' });
 
   const handleWhatsAppShare = async () => {
     if (!cardRef.current) return;
@@ -78,7 +76,7 @@ export default function PackageCheckoutClient({ pkg }: { pkg: any }) {
         </div>
 
         {/* Pax Selector */}
-        <div className="bg-white rounded-3xl p-6 shadow-sm border border-outline-variant/10 w-full mb-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+        <div className="bg-surface-container-lowest rounded-2xl p-6 shadow-sm border border-outline-variant/30 w-full mb-8 flex flex-col sm:flex-row items-center justify-between gap-6">
            <div className="flex items-center gap-4">
              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary">
                <span className="material-symbols-outlined">group</span>
@@ -111,7 +109,7 @@ export default function PackageCheckoutClient({ pkg }: { pkg: any }) {
         {/* The Receipt Ticket (Digital Boarding Pass) */}
         <div 
           ref={cardRef} 
-          className="w-full bg-white rounded-[2rem] shadow-[0px_4px_40px_rgba(0,0,0,0.06)] border border-outline-variant/20 relative overflow-hidden"
+          className="w-full bg-surface-container-lowest rounded-2xl shadow-md border border-outline-variant/30 relative overflow-hidden"
         >
           {/* Ticket Header */}
           <div className="bg-[#002B66] text-white p-8 relative overflow-hidden">

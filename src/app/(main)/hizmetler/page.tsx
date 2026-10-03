@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { formatPrice } from "@/lib/format";
 import { parseTransferSlug, TRANSFER_ROUTES, TRANSFER_VEHICLES } from "@/lib/catalog/transfers";
 import { getCatalog, fromPrice, type CatalogItem } from "@/lib/catalog";
+import { getPageTexts } from "@/lib/page-texts";
 import { Badge, ButtonLink, CardFooter, ChipLink, EmptyState, MediaCard, PageHero, Panel, PriceTag, Section, SectionHead } from "@/components/ui/kit";
 
 export const metadata: Metadata = {
@@ -80,6 +81,7 @@ function PriceList({ items }: { items: CatalogItem[] }) {
 }
 
 export default async function ServicesPage() {
+  const t = await getPageTexts("hizmetler");
   const catalog = (await getCatalog()).filter((i) => i.category !== "flight" && !isCrib(i));
   // Rota × araç kalemleri ayrı bir fiyat tablosunda gösterilir
   const routeCells = catalog.flatMap((i) => { const t = parseTransferSlug(i.slug); return t ? [{ route: t.route.key, vehicle: t.vehicle, price: fromPrice(i)?.priceUsd ?? null }] : []; });
@@ -103,14 +105,14 @@ export default async function ServicesPage() {
     <main>
       <PageHero
         crumbs={[{ label: "Ana Sayfa", href: "/" }, { label: "Hizmetler" }]}
-        kicker="Hizmetler"
-        title="Umre hizmetleri ve güncel fiyatlar"
-        lead="Mekke ve Medine otelleri, transfer, ziyaret turları ve e-vize. Fiyatlar aylık güncellenir; hepsini planlayıcıda seçip tek fiyat görebilirsiniz."
+        kicker={t("kicker")}
+        title={t("title")}
+        lead={t("lead")}
         aside={
           <Panel tone="primary" className="p-6 md:p-8">
-            <h2 className="font-headline text-xl font-bold">Kendi umrenizi birleştirin</h2>
-            <p className="mt-2 text-sm text-white/80">Tarih, otel, transfer ve vizeyi seçin; oda ve gece sayısına göre fiyat anında hesaplanır.</p>
-            <ButtonLink href="/bireysel-umre" tone="light" className="mt-5 w-full">Umremi planla</ButtonLink>
+            <h2 className="font-headline text-xl font-bold">{t("aside_title")}</h2>
+            <p className="mt-2 text-sm text-white/80">{t("aside_lead")}</p>
+            <ButtonLink href="/bireysel-umre" tone="light" className="mt-5 w-full">{t("aside_cta")}</ButtonLink>
           </Panel>
         }
       >

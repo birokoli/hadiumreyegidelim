@@ -6,6 +6,7 @@ import { pageTitle } from "@/lib/seo/meta";
 import { SITE_URL } from "@/lib/seo/site";
 import { getSiteSettings } from "@/lib/site-settings";
 import { PageHero, Panel, Section } from "@/components/ui/kit";
+import { getPageTexts } from "@/lib/page-texts";
 
 export const metadata: Metadata = {
   title: pageTitle("Umre Vizesi Başvurusu: Online Başvuru"),
@@ -35,6 +36,7 @@ const FAQ = [
 ];
 
 export default async function VisaApplicationPage() {
+  const t = await getPageTexts("umre-vizesi-basvuru");
   const whatsappNumber = ((await getSiteSettings()).WHATSAPP_NUMBER || "905404010038").replace("+", "");
   const url = `${SITE_URL}/umre-vizesi/basvuru`;
   const jsonLd = [
@@ -58,9 +60,9 @@ export default async function VisaApplicationPage() {
           { label: "Umre Vizesi", href: "/umre-vizesi" },
           { label: "Başvuru" },
         ]}
-        kicker="Online Başvuru"
-        title="Umre vizesi başvurusu"
-        lead="Umre vizesi başvurunuzu Hadi Umreye Gidelim'e bırakabilirsiniz. Ücret kişi başı 140 USD; belgeleriniz tamamsa vize 2 iş saatinde çıkar. Formu doldurun, ekibimiz gereken belgeleri bildirsin ve Suudi Arabistan e-vizenizi sizin adınıza alsın."
+        kicker={t("kicker")}
+        title={t("title")}
+        lead={t("lead")}
         aside={
           <Panel tone="white" className="p-6 md:p-8">
             <VisaApplicationForm whatsappNumber={whatsappNumber} />
@@ -71,7 +73,7 @@ export default async function VisaApplicationPage() {
       <Section tone="white">
         <div className="max-w-3xl space-y-10">
           <div>
-            <h2 className="font-headline text-2xl font-bold text-primary mb-4">Başvuru nasıl ilerler?</h2>
+            <h2 className="font-headline text-2xl font-bold text-primary mb-4">{t("steps_title")}</h2>
             <ol className="space-y-4">
               {STEPS.map((s, i) => (
                 <li key={s.t} className="flex gap-4">
@@ -86,7 +88,7 @@ export default async function VisaApplicationPage() {
           </div>
 
           <div>
-            <h2 className="font-headline text-2xl font-bold text-primary mb-4">Umre vizesi için hangi belgeler gerekir?</h2>
+            <h2 className="font-headline text-2xl font-bold text-primary mb-4">{t("docs_title")}</h2>
             <ul className="space-y-2 pl-5 list-disc marker:text-primary text-on-surface-variant">
               {DOCS.map((d) => <li key={d}>{d}</li>)}
             </ul>
@@ -96,7 +98,7 @@ export default async function VisaApplicationPage() {
           </div>
 
           <div>
-            <h2 className="font-headline text-2xl md:text-3xl font-bold text-primary mb-4">Sık sorulanlar</h2>
+            <h2 className="font-headline text-2xl md:text-3xl font-bold text-primary mb-4">{t("faq_title")}</h2>
             <div className="divide-y divide-outline-variant/30 border-y border-outline-variant/30">
               {FAQ.map((f) => (
                 <div key={f.q} className="py-5">

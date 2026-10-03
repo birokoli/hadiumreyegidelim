@@ -1,3 +1,4 @@
+import { getPageTexts } from "@/lib/page-texts";
 import { SITE_URL } from "@/lib/seo/site";
 import React from "react";
 import Link from "next/link";
@@ -62,6 +63,7 @@ const QUICK_LINKS: { href: string; label: string; icon: React.ReactNode }[] = [
 
 
 export default async function Home() {
+  const t = await getPageTexts("anasayfa");
   // Veritabanına ulaşılamazsa sayfa yine açılsın (boş paket/blog listesiyle)
   const [latestBlogs, featuredPackages, settings] = await Promise.all([
     prisma.post.findMany({
@@ -124,7 +126,7 @@ export default async function Home() {
         </div>
         <div className="relative w-full max-w-screen-xl mx-auto px-4 md:px-8">
           <h1 className="font-headline text-white font-bold tracking-tight max-w-3xl">
-            <span className="block font-body text-[12px] md:text-[13px] font-semibold tracking-[0.2em] uppercase text-white/75 mb-3">Bireysel Umre 2026</span>
+            <span className="block font-body text-[12px] md:text-[13px] font-semibold tracking-[0.2em] uppercase text-white/75 mb-3">{t("kicker")}</span>
             <span className="block text-3xl sm:text-4xl md:text-5xl leading-[1.12] text-balance">{home_banner_title}</span>
           </h1>
           <p className="mt-3 text-base md:text-lg text-white/85 max-w-2xl">{home_banner_subtitle}</p>

@@ -4,6 +4,7 @@ import { Metadata } from "next";
 import { contentPath } from "@/content/pages";
 import { getLiveContentPages } from "@/content/pages/store";
 import { LastUpdated } from "@/components/seo/PageTrust";
+import { getPageTexts } from "@/lib/page-texts";
 
 export const metadata: Metadata = {
   title: "Umre Rehberi: Terimler ve Karşılaştırmalar",
@@ -20,14 +21,15 @@ const GROUPS = [
 
 /** Rehber sayfalarının merkezi (ana sayfada listelenmez; Google bu sayfadan ve sitemap'ten bulur) */
 export default async function UmreRehberiHub() {
+  const t = await getPageTexts("umre-rehberi");
   const CONTENT_PAGES = await getLiveContentPages();
   const latest = CONTENT_PAGES.map((p) => p.reviewed).sort().at(-1);
   return (
     <main className="w-full pt-28 pb-16 bg-surface">
       <div className="max-w-3xl mx-auto px-5 md:px-6">
-        <h1 className="font-headline text-3xl md:text-5xl font-bold text-primary">Umre rehberi</h1>
+        <h1 className="font-headline text-3xl md:text-5xl font-bold text-primary">{t("title")}</h1>
         <p className="mt-5 text-lg leading-relaxed text-on-surface">
-          Umre ibadetinin adımlarını, sık geçen terimleri ve umreyi kime ve hangi döneme göre nasıl planlayacağınızı anlatan rehber sayfaları. Bireysel umrenizi planlamak için <Link href="/bireysel-umre" className="font-semibold text-primary underline underline-offset-4">tasarlayıcıyı</Link> kullanabilirsiniz.
+          {t("lead").split("tasarlayıcıyı")[0]}<Link href="/bireysel-umre" className="font-semibold text-primary underline underline-offset-4">tasarlayıcıyı</Link>{t("lead").split("tasarlayıcıyı")[1] || " kullanabilirsiniz."}
         </p>
         {latest && <LastUpdated date={latest} className="mt-3" />}
         {GROUPS.map((g) => {

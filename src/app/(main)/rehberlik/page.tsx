@@ -2,6 +2,7 @@ import React from "react";
 import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
 import { ButtonLink, EmptyState, MediaCard, PageHero, Panel, Section, SectionHead } from "@/components/ui/kit";
+import { getPageTexts } from "@/lib/page-texts";
 
 export const metadata: Metadata = {
   title: "Umre Rehberliği: Mekke ve Medine",
@@ -14,6 +15,7 @@ export const metadata: Metadata = {
 export const revalidate = 300;
 
 export default async function RehberlikHubPage() {
+  const t = await getPageTexts("rehberlik");
   const guides = await prisma.guide.findMany({
     orderBy: { createdAt: "desc" },
   });
@@ -22,24 +24,24 @@ export default async function RehberlikHubPage() {
     <main>
       <PageHero
         crumbs={[{ label: "Ana Sayfa", href: "/" }, { label: "Rehberlik" }]}
-        kicker="Türkçe Rehberlik"
-        title="Umre Rehberliği: Mekke ve Medine"
-        lead="Mekke ve Medine'deki ibadet ve ziyaretlerinizde Türkçe rehber eşliği; rehberliği planlayıcıda ekleyebilirsiniz."
+        kicker={t("kicker")}
+        title={t("title")}
+        lead={t("lead")}
         aside={
           <Panel tone="primary" className="p-6 md:p-8">
-            <h2 className="font-headline text-xl font-bold">Özel Rehberiniz Olsun</h2>
+            <h2 className="font-headline text-xl font-bold">{t("aside_title")}</h2>
             <p className="mt-2 text-sm text-white/80 leading-relaxed">
-              Mekke ve Medine ziyaretlerinizde ailenize özel rehberlik hizmetini planlayıcıda seçebilirsiniz.
+              {t("aside_desc")}
             </p>
             <ButtonLink href="/bireysel-umre" tone="light" className="mt-6 w-full">
-              Umremi Planla
+              {t("aside_cta")}
             </ButtonLink>
           </Panel>
         }
       />
 
       <Section tone="white">
-        <SectionHead kicker="Rehber Kadromuz" title="Rehberlerimiz" />
+        <SectionHead kicker={t("team_kicker")} title={t("team_title")} />
         
         {guides.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -75,7 +77,7 @@ export default async function RehberlikHubPage() {
       </Section>
 
       <Section tone="muted">
-        <SectionHead kicker="Kutsal Mekânlar" title="Ziyaret Durakları" />
+        <SectionHead kicker={t("spots_kicker")} title={t("spots_title")} />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <Panel tone="white" className="p-6 flex flex-col">
             <h3 className="font-headline text-lg font-bold text-primary mb-2">Şafak Vakti Kuba</h3>

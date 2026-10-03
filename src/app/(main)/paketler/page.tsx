@@ -3,6 +3,7 @@ import React from "react";
 export const revalidate = 300;
 import { prisma } from "@/lib/prisma";
 import { Metadata } from "next";
+import { getPageTexts } from "@/lib/page-texts";
 import { PageTrust, webPageJsonLd } from "@/components/seo/PageTrust";
 import {
   Badge,
@@ -24,6 +25,7 @@ export const metadata: Metadata = {
 };
 
 export default async function PackagesPage() {
+  const t = await getPageTexts("paketler");
   const packages = await prisma.package.findMany({
     where: { published: true },
     orderBy: { createdAt: 'desc' }
@@ -65,19 +67,19 @@ export default async function PackagesPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <PageHero
         crumbs={[{ label: "Anasayfa", href: "/" }, { label: "Umre Paketleri" }]}
-        kicker="Size Özel Tasarlandı"
-        title="Ayrıcalıklı Umre Paketleri"
-        lead="Manevi yolculuğunuzu konfor ve huzur içinde geçirebilmeniz için her detayı düşünülmüş, özenle hazırlanmış tur seçenekleri."
+        kicker={t("kicker")}
+        title={t("title")}
+        lead={t("lead")}
       />
 
       <Section tone="muted">
         <div className="text-center mb-10 md:mb-12">
-          <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-primary/80 mb-2">Müsait Turlarımız</p>
-          <p className="text-on-surface-variant max-w-2xl mx-auto text-sm md:text-base">Vize, konaklama, transfer ve manevi rehberlik dahil tüm süreçleri sizin yerinize yönetiyoruz.</p>
+          <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-primary/80 mb-2">{t("tours_kicker")}</p>
+          <p className="text-on-surface-variant max-w-2xl mx-auto text-sm md:text-base">{t("tours_lead")}</p>
         </div>
 
         {packages.length === 0 ? (
-          <EmptyState onWhite>Şu an için yayında olan bir umre paketi bulunmuyor. Tur planlamalarımız devam etmektedir, lütfen daha sonra tekrar kontrol edin.</EmptyState>
+          <EmptyState onWhite>{t("empty_state")}</EmptyState>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {packages.map((pkg) => (

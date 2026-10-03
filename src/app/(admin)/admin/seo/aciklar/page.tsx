@@ -11,7 +11,11 @@ import type { GapSnapshot } from "@/lib/seo/gaps";
 type Data = { snapshot: GapSnapshot | null; competitors: string[] };
 
 const path = (url: string) => url.replace(/^https?:\/\/(www\.)?[^/]+/, "") || "/";
-const day = (iso: string | null) => (iso ? new Date(iso).toLocaleDateString("tr-TR") : "-");
+// DataForSEO tarihi "2026-09-14 10:22:33 +00:00" biçiminde; Safari bunu ayrıştıramıyor, yalnızca gün alınır
+const day = (v: string | null) => {
+  const m = v?.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  return m ? `${m[3]}.${m[2]}.${m[1]}` : "-";
+};
 
 function Spam({ v }: { v: number | null }) {
   if (v == null) return <span>-</span>;

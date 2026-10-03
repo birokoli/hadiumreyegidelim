@@ -7,7 +7,9 @@ import { prisma } from "@/lib/prisma";
 
 const SPEND_KEY = "ANTHROPIC_SPEND";
 const BUDGET_KEY = "AI_MONTHLY_BUDGET_USD";
-export const DEFAULT_MONTHLY_BUDGET = 15;
+export const DEFAULT_MONTHLY_BUDGET = 20;
+// Kullanıcı isteği (3 Ekim 2026): sınır 15 $ → 20 $. Kayıtlı sınır 20'nin altındaysa bir kez 20 yapılır.
+const BUMP_FLAG = "AI_BUDGET_BUMP_2026_10_03";
 
 // Liste fiyatları (USD / 1M token) ve web araması (USD / arama)
 const PRICES: Record<string, { input: number; output: number }> = {
@@ -53,7 +55,15 @@ async function readSpend(): Promise<Spend> {
   return { month: month(), usd: 0, calls: 0, byFeature: {} };
 }
 
+async function bumpOnce() {
+  if (await prisma.setting.findUnique({ where: { key: BUMP_FLAG } }).catch(() => null)) return;
+  const row = await prisma.setting.findUnique({ where: { key: BUDGET_KEY } }).catch(() => null);
+  if (row && Number(row.value) < DEFAULT_MONTHLY_BUDGET) await setMonthlyBudget(DEFAULT_MONTHLY_BUDGET);
+  await prisma.setting.upsert({ where: { key: BUMP_FLAG }, update: {}, create: { key: BUMP_FLAG, value: new Date().toISOString() } });
+}
+
 export async function getBudget() {
+  await bumpOnce().catch(() => {});
   const [spend, row] = await Promise.all([readSpend(), prisma.setting.findUnique({ where: { key: BUDGET_KEY } }).catch(() => null)]);
   const limit = row ? Number(row.value) : DEFAULT_MONTHLY_BUDGET;
   return { ...spend, limit: Number.isFinite(limit) && limit >= 0 ? limit : DEFAULT_MONTHLY_BUDGET };

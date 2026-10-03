@@ -81,7 +81,7 @@ export default async function HotelPage({ params }: { params: Promise<{ slug: st
     <main id="main-content">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <PageHero
-        crumbs={[{ label: "Anasayfa", href: "/" }, { label: "Umre Paketleri", href: "/paketler" }, { label: h.name }]}
+        crumbs={[{ label: "Anasayfa", href: "/" }, { label: "Oteller", href: "/oteller" }, { label: h.name }]}
         kicker={`${city} oteli`}
         title={h.name}
         lead={[h.hotelStars ? `${h.hotelStars} yıldızlı` : "", dist ? `Harem'e ${dist}` : "", city].filter(Boolean).join(" · ")}

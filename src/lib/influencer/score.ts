@@ -3,13 +3,23 @@
 import { callClaude, extractJson } from "@/lib/geo-blog/claude";
 import type { IgMetrics } from "@/lib/influencer/meta";
 
-type AudienceJudgement = { religiousAudience: boolean | null; turkishAudience: boolean | null; topicFit: number; reasons: string[] };
+export type AccountType = "influencer" | "isletme" | "din_adami" | "sayfa" | "diger";
+type AudienceJudgement = { accountType: AccountType; religiousAudience: boolean | null; turkishAudience: boolean | null; topicFit: number; reasons: string[] };
+
+const NOT_INFLUENCER: Record<Exclude<AccountType, "influencer">, string> = {
+  isletme: "Acente, firma ya da kurumsal hesap: influencer değil.",
+  din_adami: "Klasik hoca/vaaz hesabı: influencer gibi içerik üretmiyor.",
+  sayfa: "Fan, alıntı ya da haber sayfası: kişisel influencer değil.",
+  diger: "Kişisel influencer hesabı olduğu anlaşılamadı.",
+};
+export const MIN_FOLLOWERS = 20000;
 
 const SCHEMA = {
   type: "object",
   additionalProperties: false,
-  required: ["religiousAudience", "turkishAudience", "topicFit", "reasons"],
+  required: ["accountType", "religiousAudience", "turkishAudience", "topicFit", "reasons"],
   properties: {
+    accountType: { type: "string", enum: ["influencer", "isletme", "din_adami", "sayfa", "diger"] },
     religiousAudience: { type: ["boolean", "null"] },
     turkishAudience: { type: ["boolean", "null"] },
     topicFit: { type: "integer" },
@@ -25,7 +35,8 @@ async function judgeAudience(m: IgMetrics): Promise<AudienceJudgement | null> {
     maxTokens: 2000,
     schema: SCHEMA,
     system:
-      "Bir umre seyahat sitesi için Instagram içerik üreticilerini değerlendiriyorsun. Yalnızca verilen biyografi ve paylaşım metinlerine dayan; tahmin yürütme, bilmediğini null bırak. " +
+      "Bir umre seyahat sitesi için deneyimli bir influencer pazarlamacısı gibi Instagram hesaplarını değerlendiriyorsun. Yalnızca verilen biyografi ve paylaşım metinlerine dayan; tahmin yürütme, bilmediğini null bırak. " +
+      "accountType: influencer = kişisel marka kuran içerik üreticisi (yaşam tarzı, tesettür modası, aile/anne, gezi, manevi motivasyon vb.); isletme = turizm acentesi, umre/hac firması, otel, mağaza, dernek/vakıf, kurum; din_adami = yalnızca vaaz/sohbet kesitleri paylaşan klasik hoca/imam; sayfa = fan, alıntı, derleme, haber sayfası; diger = anlaşılamayan. " +
       "religiousAudience: içerik dindar/muhafazakâr bir kitleye mi hitap ediyor (dini sohbet, Kur'an, siyer, hac/umre, İslami yaşam, helal seyahat, dini aile içeriği). Kıyafet tek başına ölçüt değildir. " +
       "turkishAudience: paylaşımlar ağırlıkla Türkçe mi. topicFit 0-100: umre/dini seyahat tanıtımına içerik uyumu. " +
       "reasons: en fazla 4 kısa Türkçe gerekçe, her biri metinde görülen somut bir işarete dayansın.",
@@ -34,7 +45,7 @@ async function judgeAudience(m: IgMetrics): Promise<AudienceJudgement | null> {
   return extractJson<AudienceJudgement>(text);
 }
 
-export type FitResult = { fitScore: number; fitReasons: string[]; religiousAudience: boolean | null };
+export type FitResult = { fitScore: number; fitReasons: string[]; religiousAudience: boolean | null; accountType: AccountType | null };
 
 export async function scoreProspect(m: IgMetrics): Promise<FitResult> {
   const reasons: string[] = [];
@@ -54,15 +65,21 @@ export async function scoreProspect(m: IgMetrics): Promise<FitResult> {
     reasons.push(`Etkileşim oranı %${m.engagementRate.toLocaleString("tr-TR")}.`);
   }
 
-  // Büyüklük (10): mikro/orta hesaplar komisyon modeline en uygun
-  if (m.followers != null) score += m.followers >= 10000 && m.followers <= 500000 ? 10 : m.followers > 500000 ? 6 : m.followers >= 3000 ? 5 : 0;
+  // Büyüklük (10): 30 bin – 1 milyon en uygun; 20 binin altı influencer sayılmaz
+  if (m.followers != null) {
+    score += m.followers >= 30000 && m.followers <= 1000000 ? 10 : m.followers > 1000000 ? 7 : m.followers >= MIN_FOLLOWERS ? 5 : 0;
+    reasons.push(`${m.followers.toLocaleString("tr-TR")} takipçi.`);
+  }
 
   // Kitle ve konu (45): Claude
   let religiousAudience: boolean | null = null;
+  let accountType: AccountType | null = null;
   try {
     const j = await judgeAudience(m);
     if (j) {
       religiousAudience = j.religiousAudience;
+      accountType = j.accountType;
+      if (j.accountType !== "influencer") reasons.unshift(NOT_INFLUENCER[j.accountType] ?? NOT_INFLUENCER.diger);
       if (j.turkishAudience === false) reasons.push("Paylaşımlar ağırlıkla Türkçe değil.");
       score += j.religiousAudience ? 20 : 0;
       score += j.turkishAudience ? 10 : 0;
@@ -73,8 +90,13 @@ export async function scoreProspect(m: IgMetrics): Promise<FitResult> {
     reasons.push(`Kitle değerlendirmesi yapılamadı: ${e instanceof Error ? e.message : String(e)}`);
   }
 
-  // Aktif olmayan hesap üst sınır
+  // Üst sınırlar: aktif olmayan 35; influencer olmayan (acente, hoca, sayfa) ve 20 binin altı 15
   if (days != null && days > 30) score = Math.min(score, 35);
+  if (accountType && accountType !== "influencer") score = Math.min(score, 15);
+  if (m.followers != null && m.followers < MIN_FOLLOWERS) {
+    score = Math.min(score, 15);
+    reasons.unshift(`Takipçi ${MIN_FOLLOWERS.toLocaleString("tr-TR")}'in altında: influencer ölçeğinde değil.`);
+  }
   // audienceTR (kitlenin Türkiye payı) Meta tarafından verilmiyor; influencer kendi istatistiğinden girilir
-  return { fitScore: Math.max(0, Math.min(100, score)), fitReasons: reasons, religiousAudience };
+  return { fitScore: Math.max(0, Math.min(100, score)), fitReasons: reasons, religiousAudience, accountType };
 }

@@ -40,7 +40,7 @@ async function post<T = Record<string, unknown>>(body: Record<string, unknown>):
 }
 
 const STAGES: { key: Prospect["stage"] | "all"; label: string }[] = [
-  { key: "all", label: "Tümü" },
+  { key: "all", label: "Aktif adaylar" },
   { key: "bulundu", label: "Bulundu" },
   { key: "uygun", label: "Uygun" },
   { key: "mesaj", label: "Mesaj Gönderildi" },
@@ -66,7 +66,9 @@ export default function InfluencerAdaylariAdmin() {
 
   const [discoverQuery, setDiscoverQuery] = useState("");
   const [discoverPlatform, setDiscoverPlatform] = useState<Prospect["platform"]>("instagram");
+  const [discoverMode, setDiscoverMode] = useState<"ai" | "google">("ai");
   const [discoverLoading, setDiscoverLoading] = useState(false);
+  const [rescoring, setRescoring] = useState(false);
   const [statusNotice, setStatusNotice] = useState("");
   const [metaStatus, setMetaStatus] = useState<{ ok: boolean; text: string } | null>(null);
 
@@ -130,8 +132,13 @@ export default function InfluencerAdaylariAdmin() {
     setStatusNotice("");
     setErrorMsg("");
     try {
-      const d = await post<{ found: number; added: number; enriched: number }>({ action: "discover", query: discoverQuery.trim(), platform: discoverPlatform });
-      setStatusNotice(`"${discoverQuery.trim()}": ${d.found} hesap bulundu, ${d.added} yeni aday eklendi, ${d.enriched} tanesi hemen ölçüldü. Kalanlar günlük yenilemede ölçülür.`);
+      const d = await post<{ found: number; alreadyKnown: number; added: number; tooSmall: number; unreadable: number; scored: number }>({ action: "discover", query: discoverQuery.trim(), platform: discoverPlatform, mode: discoverMode });
+      const parts = [`${d.found} hesap önerildi`, `${d.added} yeni aday eklendi`];
+      if (d.alreadyKnown) parts.push(`${d.alreadyKnown} zaten listede`);
+      if (d.tooSmall) parts.push(`${d.tooSmall} tanesi 20 bin takipçinin altında olduğu için elendi`);
+      if (d.unreadable) parts.push(`${d.unreadable} tanesi okunamadı (kişisel hesap ya da kullanıcı adı yanlış)`);
+      if (d.scored) parts.push(`${d.scored} tanesi puanlandı, kalanlar günlük yenilemede puanlanır`);
+      setStatusNotice(`"${discoverQuery.trim()}": ${parts.join(", ")}.`);
       await loadProspects();
     } catch (err) {
       setErrorMsg(err instanceof Error ? err.message : String(err));
@@ -140,8 +147,22 @@ export default function InfluencerAdaylariAdmin() {
     }
   };
 
+  const handleRescore = async () => {
+    setRescoring(true);
+    setErrorMsg("");
+    try {
+      const d = await post<{ refreshed: number }>({ action: "rescore" });
+      setStatusNotice(`${d.refreshed} aday yeniden ölçüldü ve puanlandı. Influencer olmayan (acente, hoca, sayfa) ve 20 binin altındaki keşif adayları "Reddedildi"ye alındı. Kalanlar için tekrar basabilirsiniz.`);
+      await loadProspects();
+    } catch (err) {
+      setErrorMsg(err instanceof Error ? err.message : String(err));
+    } finally {
+      setRescoring(false);
+    }
+  };
+
   const filteredItems = items.filter(item => {
-    if (activeStage !== "all" && item.stage !== activeStage) return false;
+    if (activeStage === "all" ? item.stage === "red" : item.stage !== activeStage) return false;
     if (minScore > 0 && (item.fitScore || 0) < minScore) return false;
     if (searchQuery.trim()) {
       const q = searchQuery.toLocaleLowerCase("tr-TR");
@@ -152,7 +173,7 @@ export default function InfluencerAdaylariAdmin() {
   });
 
   const getStageCounts = (stageKey: Prospect["stage"] | "all") => {
-    if (stageKey === "all") return items.length;
+    if (stageKey === "all") return items.filter(i => i.stage !== "red").length;
     return items.filter(i => i.stage === stageKey).length;
   };
 
@@ -204,6 +225,10 @@ export default function InfluencerAdaylariAdmin() {
           <button onClick={testMeta} className="px-3 py-2 rounded-xl border border-outline-variant/30 text-xs font-semibold text-primary hover:bg-surface-container-low inline-flex items-center gap-1.5">
             <span className="material-symbols-outlined text-[16px]">link</span>
             Instagram bağlantısını test et
+          </button>
+          <button onClick={handleRescore} disabled={rescoring} className="px-3 py-2 rounded-xl border border-outline-variant/30 text-xs font-semibold text-on-surface-variant hover:bg-surface-container-low inline-flex items-center gap-1.5 disabled:opacity-50">
+            <span className="material-symbols-outlined text-[16px]">refresh</span>
+            {rescoring ? "Puanlanıyor…" : "Mevcut adayları yeniden puanla"}
           </button>
           {metaStatus && <span className={`text-[11px] ${metaStatus.ok ? "text-on-surface-variant" : "text-error"}`}>{metaStatus.text}</span>}
         </div>
@@ -302,12 +327,23 @@ export default function InfluencerAdaylariAdmin() {
               <label className="block text-[11px] font-semibold text-outline mb-1">Keşif Sorgusu / Hedef Kelime (*)</label>
               <input
                 type="text"
-                placeholder="Örn: umre helal seyahat islami yaşam sohbet"
+                placeholder="Örn: tesettür modası yapan, aile ve gezi içerikli kadın influencerlar"
                 value={discoverQuery}
                 onChange={e => setDiscoverQuery(e.target.value)}
                 className="w-full bg-surface-container-low text-xs text-on-surface rounded-xl px-3 py-2 border border-outline-variant/30 focus:outline-none focus:border-primary"
                 required
               />
+            </div>
+            <div>
+              <label className="block text-[11px] font-semibold text-outline mb-1">Yöntem</label>
+              <select
+                value={discoverMode}
+                onChange={e => setDiscoverMode(e.target.value as "ai" | "google")}
+                className="w-full bg-surface-container-low text-xs text-on-surface rounded-xl px-3 py-2 border border-outline-variant/30 focus:outline-none focus:border-primary"
+              >
+                <option value="ai">Influencer araştırması (önerilen)</option>
+                <option value="google">Google profil taraması</option>
+              </select>
             </div>
             <div>
               <label className="block text-[11px] font-semibold text-outline mb-1">Hedef Platform</label>
@@ -322,7 +358,7 @@ export default function InfluencerAdaylariAdmin() {
               </select>
             </div>
             <p className="text-[11px] text-outline leading-relaxed">
-              Google'da bu platformun profil sayfaları aranır (DataForSEO, arama başına birkaç sent). Bulunan Instagram hesaplarının ilk 6'sı hemen ölçülüp puanlanır; yalnızca işletme ve içerik üreticisi hesapları okunabilir.
+              Influencer araştırması: Claude bir influencer pazarlamacısı gibi web'de araştırıp en fazla 25 hesap önerir (acente, firma, klasik hoca ve sayfa hesapları hariç). Her öneri Instagram'dan gerçek sayılarla doğrulanır; 20 binin altındaki ve okunamayan hesaplar eklenmez. 1–2 dakika sürer, Claude bütçesinden araştırma başına yaklaşık 0,5–1 $ harcar.
             </p>
             <button
               type="submit"

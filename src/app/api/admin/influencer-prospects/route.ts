@@ -2,7 +2,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAdminSession } from "@/lib/admin-auth";
 import { testMetaConnection } from "@/lib/influencer/meta";
-import { PLATFORMS, STAGES, addProspect, createInvite, discoverProspects, getProspect, listProspects, refreshProspect, setNote, setStage, type Platform, type Stage } from "@/lib/influencer/prospects";
+import { PLATFORMS, STAGES, addProspect, rescoreBatch, createInvite, discoverProspects, getProspect, listProspects, refreshProspect, setNote, setStage, type Platform, type Stage } from "@/lib/influencer/prospects";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 300;
@@ -41,8 +41,10 @@ export async function POST(req: NextRequest) {
       case "discover": {
         const q = typeof b.query === "string" ? b.query.trim() : "";
         if (q.length < 3) return fail("Arama metni en az 3 karakter olmalı.");
-        return NextResponse.json({ ok: true, ...(await discoverProspects(q, platform)) });
+        return NextResponse.json({ ok: true, ...(await discoverProspects(q, platform, b.mode === "google" ? "google" : "ai")) });
       }
+      case "rescore":
+        return NextResponse.json({ ok: true, refreshed: await rescoreBatch() });
       case "score":
         if (!id) return fail("id gerekli.");
         return NextResponse.json({ ok: true, item: await refreshProspect(id) });

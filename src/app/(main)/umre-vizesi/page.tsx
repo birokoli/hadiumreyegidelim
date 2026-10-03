@@ -107,16 +107,24 @@ export default function UmreVizesiPage() {
 
             <Panel tone="muted" className="p-6">
               <h3 className="font-headline text-lg font-bold text-primary mb-3">Nasıl Alınır?</h3>
-              <ul className="space-y-2.5 text-sm text-on-surface-variant">
-                <li className="flex items-start gap-2">
-                  <span className="material-symbols-outlined text-primary text-base mt-0.5">arrow_right</span>
-                  Süreç tamamen elektroniktir (E-Visa). Pasaport bir yere gönderilmez.
+              <ol className="space-y-3 text-sm text-on-surface-variant">
+                <li className="flex items-start gap-3">
+                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary text-[12px] font-bold text-white">1</span>
+                  <span>Otel rezervasyonunuzu ve gidiş-dönüş uçak biletinizi WhatsApp&apos;tan bize gönderin.</span>
                 </li>
-                <li className="flex items-start gap-2">
-                  <span className="material-symbols-outlined text-primary text-base mt-0.5">arrow_right</span>
-                  Geçerli Schengen, ABD veya İngiltere vizesi olanlar kapıda vize alabilir.
+                <li className="flex items-start gap-3">
+                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary text-[12px] font-bold text-white">2</span>
+                  <span>Pasaportunuzun ön yüzünün fotoğrafını ve her yolcu için birer biyometrik fotoğraf gönderin.</span>
                 </li>
-              </ul>
+                <li className="flex items-start gap-3">
+                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary text-[12px] font-bold text-white">3</span>
+                  <span>Vize ücretini ödeyin (kişi başı 140 USD).</span>
+                </li>
+                <li className="flex items-start gap-3">
+                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary text-[12px] font-bold text-white">4</span>
+                  <span>Belgeleriniz tamamsa vizeniz 2 saat içinde Hadi Umreye Gidelim tarafından size iletilir.</span>
+                </li>
+              </ol>
             </Panel>
           </div>
 

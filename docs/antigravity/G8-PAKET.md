@@ -34,6 +34,7 @@ Uzun bir paket. Sırayla git; her madde bağımsız, biri takılırsa TESLIM'e y
 
 Yazı: `/blog/bireysel-umre-vizesi-nasil-alinir` (1.899 gösterim, sıra 9,9, tıklama oranı %1,7). Mevcut taslağı (`docs/taslaklar/vize-yazisi.md`) canlı yazıyla birleştir ve şu yapıda **tam gövde HTML'i** hazırla:
 - İlk paragraf: soruya doğrudan cevap (Suudi Arabistan e-vize; kişi başı 140 USD; belgeler tamamsa 2 iş saati; `/umre-vizesi/basvuru` bağlantısı).
+- **Süreç (kullanıcı bilgisi, 3 Ekim) — yazıda aynen bu anlatılır:** müşteri otel rezervasyonunu, gidiş-dönüş uçak biletini, pasaportunun ön yüzünün fotoğrafını ve her yolcu için birer biyometrik fotoğrafı WhatsApp'tan gönderir, ücreti öder; belgeler tamamsa vize 2 saat içinde Hadi Umreye Gidelim tarafından iletilir. "Kapıda vize", "Schengen/ABD vizesiyle" gibi başka yol yazılmaz.
 - H2'lerin en az üçü soru biçiminde ("Umre vizesi kaç günde çıkar?", "Umre vizesi ne kadar?", "Hangi belgeler gerekir?" gibi).
 - Mevcut yazıdaki doğru bilgiler korunur; kaynaksız iddia kaldırılır. Resmî kaynak bağlantısı yalnızca `visa.visitsaudi.com` ve resmî bakanlık sayfaları.
 - Sonda `/bireysel-umre` ve `/umre-vizesi` bağlantıları.

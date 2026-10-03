@@ -89,6 +89,7 @@ LİNKLER
 
 SİTE GERÇEKLERİ (bunlar dışında rakam yok)
 - Suudi Arabistan e-vize: kişi başı 140 USD; belgeler tamamsa 2 iş saatinde çıkar (Hadi Umreye Gidelim üzerinden, /umre-vizesi).
+- Vize nasıl alınır (Hadi Umreye Gidelim süreci): müşteri otel rezervasyonunu, gidiş-dönüş uçak biletini, pasaportunun ön yüzünün fotoğrafını ve her yolcu için birer biyometrik fotoğrafı WhatsApp'tan gönderir, ücreti öder; belgeler tamamsa vize 2 saat içinde Hadi Umreye Gidelim tarafından iletilir. "Kapıda vize", "Schengen/ABD vizesiyle", "kendiniz başvurun" gibi başka yol önerme.
 - Otel fiyatı 1 oda, 1 gece içindir (giriş 16.00, çıkış 11.00); bir odada en fazla 4 kişi kalır.
 - Transfer fiyatı araç başıdır; Haremeyn treni Ekonomi ve Business olarak satılır (/hizmetler).
 

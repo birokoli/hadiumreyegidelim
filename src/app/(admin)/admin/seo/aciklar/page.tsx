@@ -196,7 +196,7 @@ export default function GapsPage() {
 
           <Section title="Link açığı: rakiplere verip bize vermeyenler" aside="Kaç rakibe link verdiğine, sonra güce göre">
             <p className="mb-4 max-w-[760px] text-[14px] text-[var(--seo-ink-2)]">
-              Birden çok rakibe link veren site, konu alanımızda link veriyor demektir; ilk iletişim listesi buradan çıkar. Spam puanı 60 ve üzeri olanlar listeye alınmadı.
+              Birden çok rakibe link veren site, konu alanımızda link veriyor demektir; ilk iletişim listesi buradan çıkar. Spam puanı 40 ve üzeri olanlar ve her siteyi otomatik listeleyen “SEO checker / backlink” siteleri listeye alınmadı. Değişiklik bir sonraki analizde görünür.
             </p>
             {snap.linkGap.length === 0 ? (
               <p className="text-[var(--seo-ink-2)]">Açık bulunamadı.</p>

@@ -19,6 +19,8 @@ export type GapSnapshot = {
 };
 
 const host = (d: string) => d.replace(/^www\./, "");
+// Her siteyi otomatik listeleyen "SEO checker / backlink" siteleri: gerçek link fırsatı değil (3 Ekim, ilk analiz)
+const SEO_TOOL_SITE = /seo|backlink|checker|dapa|\bda[-.]|dadr|drchecker|rank|traffic|anchorurl|shrink|indexer|webstat|siteprice|worth|whois|similar/i;
 
 export async function referringDomains(target: string, limit = 300) {
   const { result, cost } = await dfsPost<{ items?: { domain?: string; rank?: number; backlinks?: number; backlinks_spam_score?: number; first_seen?: string }[] }>(
@@ -114,7 +116,7 @@ export async function buildGapSnapshot(ourDomain: string, competitors: string[])
     }
   }
   const linkGap = [...gap.values()]
-    .filter((g) => (g.spam ?? 0) < 60)
+    .filter((g) => (g.spam ?? 0) < 40 && !SEO_TOOL_SITE.test(g.domain))
     .sort((a, b) => b.linksTo.length - a.linksTo.length || (b.rank ?? 0) - (a.rank ?? 0))
     .slice(0, 300);
 

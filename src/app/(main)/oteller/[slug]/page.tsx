@@ -12,7 +12,19 @@ import { PageHero, Section } from "@/components/ui/kit";
 // Uzun açıklamalar (Antigravity G13-1, kaynaklı; anahtar slug ya da kayıt kimliği). Kısa açıklama katalogda kalır.
 import LONG from "@/lib/content-fixes/otel-aciklamalari.json";
 
-const longText = (h: CatalogItem) => (LONG as Record<string, { description: string }>)[h.slug ?? ""]?.description ?? (LONG as Record<string, { description: string }>)[h.id]?.description ?? null;
+// Yerel veritabanı canlıdan eski olduğu için bazı kayıtlar kimlikle değil adla eşleşir (ör. "Fairmont Makkah" ↔ "Makkah Clock Royal Tower A Fairmont Hotel")
+const norm = (x: string) => x.toLocaleLowerCase("tr-TR").normalize("NFD").replace(/[^a-z0-9 ]/g, " ").split(/\s+/).filter((w) => w.length > 2 && w !== "hotel" && w !== "the");
+const LONG_MAP = LONG as Record<string, { name: string; description: string }>;
+function longText(h: CatalogItem): string | null {
+  const direct = LONG_MAP[h.slug ?? ""] ?? LONG_MAP[h.id];
+  if (direct) return direct.description;
+  const want = norm(h.name);
+  const hit = Object.values(LONG_MAP).find((v) => {
+    const have = new Set(norm(`${v.name} ${v.description.split(",")[0]}`));
+    return want.length > 0 && want.every((w) => have.has(w));
+  });
+  return hit?.description ?? null;
+}
 
 export const revalidate = 3600;
 

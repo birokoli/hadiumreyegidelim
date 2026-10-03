@@ -79,8 +79,9 @@ export async function dfsPost<T>(path: string, body: unknown[], opts: { timeoutM
     const json = (await res.json().catch(() => null)) as Envelope<T> | null;
     const task = json?.tasks?.[0];
 
-    if (task && (task.status_code === 20000 || task.status_code === 40102)) {
-      // 40102 = "no search results": hata değil, boş sonuç
+    if (task && (task.status_code === 20000 || task.status_code === 40102 || (task.status_code === 40106 && task.result?.[0]))) {
+      // 40102 = "no search results": hata değil, boş sonuç. 40106 = kısmi sonuç (bazı sayfalar alınamadı,
+      // ücretlendirilmez): gelen sonuç kullanılır.
       return { result: task.result?.[0] ?? null, cost: task.cost ?? json?.cost ?? 0 };
     }
 

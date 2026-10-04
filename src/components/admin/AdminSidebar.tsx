@@ -51,6 +51,7 @@ const menuGroups: { title: string; links: { href: string; icon: string; label: s
     links: [
       { href: "/admin/influencers", icon: "person_celebrate", label: "Influencer Yönetimi", permission: "marketing" },
       { href: "/admin/influencer-adaylari", icon: "person_search", label: "Influencer Adayları", permission: "marketing" },
+      { href: "/admin/yorumlar", icon: "reviews", label: "Yorumlar", permission: "marketing" },
       { href: "/admin/affiliate",   icon: "star",             label: "Affiliate Program", permission: "marketing" },
       { href: "/admin/campaigns",   icon: "campaign",         label: "Kampanyalar", permission: "marketing" },
       { href: "/admin/seo",         icon: "travel_explore",   label: "SEO Masası", permission: "marketing" },

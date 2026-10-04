@@ -63,7 +63,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const hotelUrls: { url: string; changeFrequency: "weekly" | "monthly"; priority: number }[] = (await getCatalog())
     .filter((c) => c.category === "hotel" && c.slug)
     .map((h) => ({ url: `${baseUrl}/oteller/${h.slug}`, changeFrequency: "monthly" as const, priority: 0.6 }));
-  if (hotelUrls.length) hotelUrls.unshift({ url: `${baseUrl}/oteller`, changeFrequency: "weekly" as const, priority: 0.7 });
+  hotelUrls.push({ url: `${baseUrl}/yorumlar`, changeFrequency: "weekly" as const, priority: 0.6 });
+  if (hotelUrls.length > 1) hotelUrls.unshift({ url: `${baseUrl}/oteller`, changeFrequency: "weekly" as const, priority: 0.7 });
 
   const latestPostDate = posts[0]?.updatedAt ? posts[0].updatedAt.toISOString().split("T")[0] : STATIC_REVIEWED;
 

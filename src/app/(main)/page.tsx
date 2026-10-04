@@ -13,6 +13,8 @@ import { getSiteSettings } from "@/lib/site-settings";
 import { Metadata } from "next";
 import { DEFAULT_HANIM_UMRESI_CAMPAIGN, DEFAULT_ILK_UMREM_CAMPAIGN, EYLUL_CAMPAIGN_SETTING_KEY, HANIM_UMRESI_CAMPAIGN_SETTING_KEY, ILK_UMREM_CAMPAIGN_SETTING_KEY, isHomeCardLive, parseEylulCampaign } from "@/lib/eylul-campaign";
 import { PageTrust, webPageJsonLd } from "@/components/seo/PageTrust";
+import { getApprovedReviews } from "@/lib/reviews";
+import ReviewCard from "@/components/reviews/ReviewCard";
 
 export const metadata: Metadata = {
   title: { absolute: "Bireysel Umre 2026 | Hadi Umreye Gidelim" },
@@ -64,7 +66,7 @@ const QUICK_LINKS: { href: string; label: string; icon: React.ReactNode }[] = [
 
 
 export default async function Home() {
-  const t = await getPageTexts("anasayfa");
+  const [t, reviewTexts, reviews] = await Promise.all([getPageTexts("anasayfa"), getPageTexts("yorumlar"), getApprovedReviews()]);
   // Veritabanına ulaşılamazsa sayfa yine açılsın (boş paket/blog listesiyle)
   const [latestBlogs, rawFeatured, settings] = await Promise.all([
     prisma.post.findMany({
@@ -230,6 +232,16 @@ export default async function Home() {
           </Link>
         ))}
       </section>
+
+      {/* ─── Yorumlar (admin → Yorumlar; metinler Sayfa Metinleri → Yorumlar) ─── */}
+      {reviews.length > 0 && (
+        <section className="w-full max-w-screen-xl mx-auto px-4 md:px-8 pb-12 md:pb-16">
+          <SectionHead kicker={reviewTexts("kicker")} title={reviewTexts("title")} href="/yorumlar" linkLabel={reviewTexts("link")} />
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
+            {reviews.slice(0, 6).map((r) => <ReviewCard key={r.id} r={r} clamp />)}
+          </div>
+        </section>
+      )}
 
       {/* ─── Blog ──────────────────────────────────────────── */}
       <section className="w-full bg-surface-container-low">

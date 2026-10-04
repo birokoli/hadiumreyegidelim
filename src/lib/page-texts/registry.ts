@@ -80,6 +80,17 @@ export const PAGE_TEXTS: PageTextDef[] = [
     ],
   },
   {
+    id: "yorumlar",
+    label: "Yorumlar",
+    path: "/yorumlar",
+    fields: [
+      { key: "kicker", label: "Üst etiket", default: "Umrecilerimiz anlatıyor" },
+      { key: "title", label: "Başlık", default: "Umreye bizimle gidenler ne diyor?" },
+      { key: "lead", label: "Giriş (/yorumlar sayfası)", multiline: true, default: "Umresini bizimle planlayan misafirlerimizin yorumları. Yorumlar onaydan geçer; düşük puanlı yorumlar da yayımlanır, yalnızca hakaret ve kişisel bilgi içerenler çıkarılır.", help: "Ana sayfada en yeni 6 yorum gösterilir. Yorumlar admin → Yorumlar'dan yönetilir." },
+      { key: "link", label: "Ana sayfa bağlantı metni", default: "Tüm yorumlar" },
+    ],
+  },
+  {
     id: "oteller",
     label: "Oteller",
     path: "/oteller",

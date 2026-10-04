@@ -864,6 +864,27 @@ exports.Prisma.InfluencerProspectScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.ReviewScalarFieldEnum = {
+  id: 'id',
+  token: 'token',
+  customerName: 'customerName',
+  displayName: 'displayName',
+  city: 'city',
+  umreMonth: 'umreMonth',
+  rating: 'rating',
+  text: 'text',
+  photoUrl: 'photoUrl',
+  status: 'status',
+  source: 'source',
+  reply: 'reply',
+  consent: 'consent',
+  invitedAt: 'invitedAt',
+  submittedAt: 'submittedAt',
+  approvedAt: 'approvedAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -931,7 +952,8 @@ exports.Prisma.ModelName = {
   AiVisibilityAudit: 'AiVisibilityAudit',
   CrmLead: 'CrmLead',
   CrmActivity: 'CrmActivity',
-  InfluencerProspect: 'InfluencerProspect'
+  InfluencerProspect: 'InfluencerProspect',
+  Review: 'Review'
 };
 
 /**

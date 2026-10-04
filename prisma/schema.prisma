@@ -903,3 +903,27 @@ model InfluencerProspect {
   @@unique([platform, handle])
   @@index([stage])
 }
+
+// Müşteri yorumları (4 Ekim 2026, kullanıcı onayı). Tablo src/lib/reviews/schema.ts ile oluşturulur.
+model Review {
+  id           String    @id @default(cuid())
+  token        String?   @unique   // kişiye özel yorum bağlantısı (manuel girilenlerde yok)
+  customerName String               // admin'de görünen tam ad
+  displayName  String?              // sitede görünen ("Ayşe Y.")
+  city         String?
+  umreMonth    String?              // "Eylül 2026"
+  rating       Int?
+  text         String?
+  photoUrl     String?
+  status       String    @default("invited") // invited | pending | approved | rejected
+  source       String    @default("link")    // link | manuel
+  reply        String?
+  consent      Boolean   @default(false)
+  invitedAt    DateTime  @default(now())
+  submittedAt  DateTime?
+  approvedAt   DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  @@index([status])
+}

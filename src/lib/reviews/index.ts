@@ -104,7 +104,8 @@ const toPublic = (r: Awaited<ReturnType<typeof prisma.review.findFirst>>): Publi
   text: r!.text ?? "",
   photoUrl: r!.photoUrl,
   reply: r!.reply,
-  verified: r!.source === "link",
+  // Elle eklenenler de doğrulanmış sayılır (kullanıcı, 5 Ekim): admin eklerken gerçek müşteri olduğunu onaylar
+  verified: true,
   date: (r!.submittedAt ?? r!.createdAt).toISOString(),
 });
 

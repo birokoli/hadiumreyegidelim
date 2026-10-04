@@ -184,7 +184,10 @@ export default function ReviewsAdmin() {
             )}
             {uploading && <span>Yükleniyor…</span>}
           </div>
-          <p className="text-[11px] text-outline">Yalnızca müşteriden gerçekten gelmiş yorumları ekleyin ve yayımlanması için müşterinin onayını alın. Elle girilenlerde "Doğrulanmış müşteri" etiketi görünmez.</p>
+          <label className="flex items-start gap-2 text-[11px] text-on-surface-variant">
+            <input type="checkbox" required className="mt-0.5" />
+            <span>Bu yorum gerçekten bizimle umreye gitmiş bir müşterimizden geldi ve sitede yayımlanması için onayını aldım. (Sitede &quot;Doğrulanmış müşteri&quot; etiketiyle görünür.)</span>
+          </label>
           <button className="w-full py-2.5 bg-primary text-white rounded-xl text-xs font-bold">Yorumu ekle</button>
         </form>
       </div>

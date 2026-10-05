@@ -266,3 +266,35 @@ export async function runDataFixesOnceG() {
     revalidatePath("/");
   } catch { /* önbellek tazeleme düzeltmeyi engellemez */ }
 }
+
+// Sekizinci düzeltme (6 Ekim, kullanıcı): blog kategorileri oluşturulur, yazılar konularına göre toplanır.
+// Eski kategoriler silinmez; yazısı kalmayan kategori sitede zaten listelenmez.
+const FLAG_H = "DATA_FIX_2026_10_06_H";
+let ranH = false;
+
+export async function runDataFixesOnceH() {
+  if (ranH) return;
+  ranH = true;
+  if (await prisma.setting.findUnique({ where: { key: FLAG_H } })) return;
+  const { BLOG_CATEGORIES, POST_CATEGORY, guessCategory } = await import("@/lib/geo-blog/categories");
+  const ids: Record<string, string> = {};
+  for (const c of BLOG_CATEGORIES) {
+    const row = await prisma.category.upsert({ where: { slug: c.slug }, update: { name: c.name, description: c.description }, create: { slug: c.slug, name: c.name, description: c.description } });
+    ids[c.slug] = row.id;
+  }
+  const posts = await prisma.post.findMany({ select: { id: true, slug: true, title: true } });
+  const log: Record<string, string[]> = { atanan: [], tahmin: [], kategorisiz: [] };
+  for (const p of posts) {
+    const fixed = POST_CATEGORY[p.slug];
+    const slug = fixed ?? guessCategory(p.title);
+    if (!slug) { log.kategorisiz.push(p.slug); continue; }
+    await prisma.post.update({ where: { id: p.id }, data: { categoryId: ids[slug] } });
+    (fixed ? log.atanan : log.tahmin).push(`${p.slug} → ${slug}`);
+  }
+  await prisma.setting.upsert({ where: { key: FLAG_H }, update: { value: JSON.stringify(log) }, create: { key: FLAG_H, value: JSON.stringify(log) } });
+  console.log("[data-fix] 2026-10-06 H", log);
+  try {
+    const { revalidatePath } = await import("next/cache");
+    revalidatePath("/blog", "layout");
+  } catch { /* önbellek tazeleme düzeltmeyi engellemez */ }
+}

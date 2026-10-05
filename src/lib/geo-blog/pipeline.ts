@@ -95,6 +95,14 @@ export async function generateBlogDraft(topic: string, onProgress?: GenerateProg
         focusKeyword: clean,
         seoScore: gateReport.score,
         references: references || null,
+        // Kategori: konu kümesinden, yoksa başlıktan (src/lib/geo-blog/categories.ts)
+        ...(await (async () => {
+          const { categoryForCluster, guessCategory } = await import("@/lib/geo-blog/categories");
+          const { clusterOf } = await import("@/lib/geo-blog/clusters");
+          const slug = categoryForCluster(clusterOf(`${topic} ${article.title}`)?.id) ?? guessCategory(article.title);
+          const cat = slug ? await prisma.category.findUnique({ where: { slug }, select: { id: true } }) : null;
+          return cat ? { categoryId: cat.id } : {};
+        })()),
         published: false,
         ...(author ? { authorId: author.id, author: author.name } : { author: "Hadi Umreye Gidelim Editörü" }),
       },

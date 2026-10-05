@@ -3,6 +3,13 @@ import { prisma } from "@/lib/prisma";
 import { PageHero } from "@/components/ui/kit";
 import { BlogGrid, BlogTopics } from "@/components/blog/BlogList";
 
+// Next 16: boş generateStaticParams olmadan dinamik yol her istekte yeniden oluşturulur (no-store); boş liste
+// sayfayı ilk istekte üretip önbelleğe alır (ISR). 6 Ekim denetimi: blog sayfaları 1,6–4,3 sn.
+export async function generateStaticParams() {
+  return [];
+}
+
+
 export const revalidate = 60;
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {

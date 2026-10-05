@@ -8,8 +8,16 @@ import { fromPrice, getCatalog, monthLabel, type CatalogItem } from "@/lib/catal
 import { packagePreset } from "@/lib/pricing/package";
 import { prisma } from "@/lib/prisma";
 import { SITE_URL } from "@/lib/seo/site";
+import { pageTitle } from "@/lib/seo/meta";
 import { PageHero, Section } from "@/components/ui/kit";
 import { hotelLongText } from "@/lib/catalog/hotel-texts";
+
+// Next 16: boş generateStaticParams olmadan dinamik yol her istekte yeniden oluşturulur (no-store); boş liste
+// sayfayı ilk istekte üretip önbelleğe alır (ISR). 6 Ekim denetimi: blog sayfaları 1,6–4,3 sn.
+export async function generateStaticParams() {
+  return [];
+}
+
 
 export const revalidate = 3600;
 
@@ -33,10 +41,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const city = cityName(h.city);
   const dist = distanceText(h.distanceMeters);
   return {
-    title: `${h.name} ${city}: Konum, Harem'e Mesafe ve Fiyat`,
+    title: pageTitle(`${h.name}: Konum ve Fiyat`),
     description: `${h.name} (${city}${h.hotelStars ? `, ${h.hotelStars} yıldız` : ""})${dist ? `: Harem'e ${dist}` : ""}. Umre paketlerinde bu oteli seçip kişi başı fiyatı anında görün.`,
     alternates: { canonical: `/oteller/${slug}` },
-    openGraph: h.imageUrl ? { images: [{ url: h.imageUrl }] } : undefined,
+    openGraph: { images: [{ url: h.imageUrl ?? "/images/hero-kabe.jpg" }] },
   };
 }
 

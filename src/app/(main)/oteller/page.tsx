@@ -8,9 +8,10 @@ import { Badge, CardFooter, EmptyState, MediaCard, PageHero, Section } from "@/c
 export const revalidate = 3600;
 
 export const metadata: Metadata = {
-  title: "Mekke ve Medine Otelleri: Harem'e Mesafe ve Fiyat",
+  title: "Umre Otelleri: Harem'e Mesafe ve Fiyat",
   description: "Umre için Mekke ve Medine otelleri: yıldız, Harem'e mesafe ve oda başı gecelik başlangıç fiyatı. Oteli seçin, umre planınızı fiyatıyla görün.",
   alternates: { canonical: "/oteller" },
+  openGraph: { images: [{ url: "/images/hero-kabe.jpg" }] },
 };
 
 const CITY: Record<string, string> = { mekke: "Mekke", medine: "Medine" };

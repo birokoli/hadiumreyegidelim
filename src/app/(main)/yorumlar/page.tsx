@@ -6,7 +6,7 @@ import ReviewCard from "@/components/reviews/ReviewCard";
 
 export const revalidate = 3600;
 export const metadata: Metadata = {
-  title: "Umre Yorumları: Bizimle Gidenler Anlatıyor",
+  title: "Umre Yorumları: Sizden Gelenler",
   description: "Umresini Hadi Umreye Gidelim ile planlayan misafirlerimizin yorumları: otel, transfer, vize süreci ve ekibimiz hakkında gerçek deneyimler.",
   alternates: { canonical: "/yorumlar" },
 };

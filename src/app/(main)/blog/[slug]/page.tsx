@@ -13,6 +13,13 @@ import { getSiteSettings } from "@/lib/site-settings";
 import Image from 'next/image';
 import { optimizeContentImages } from "@/lib/content-images";
 
+// Next 16: boş generateStaticParams olmadan dinamik yol her istekte yeniden oluşturulur (no-store); boş liste
+// sayfayı ilk istekte üretip önbelleğe alır (ISR). 6 Ekim denetimi: blog sayfaları 1,6–4,3 sn.
+export async function generateStaticParams() {
+  return [];
+}
+
+
 export const revalidate = 300;
 
 // 1. Dinamik Meta Etiketleri Altyapısı (Open Graph & Twitter)

@@ -19,7 +19,7 @@ import {
 
 export const metadata: Metadata = {
   // 3 Ekim (Açıklar analizi): "umre fiyatları 2026" aramasında Google fiyatlı paket listesi gösteriyor
-  title: "Umre Fiyatları 2026: Umre Paketleri ve Başlangıç Fiyatları",
+  title: "Umre Fiyatları 2026 ve Umre Paketleri",
   description: "2026 umre paketleri ve kişi başı başlangıç fiyatları. Fiyat seçtiğiniz otele, kişi sayısına ve tarihe göre anında hesaplanır; otel ve transferler dahildir.",
   alternates: {
     canonical: "/paketler"

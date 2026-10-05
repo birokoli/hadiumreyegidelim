@@ -51,6 +51,10 @@ export default function ReviewsAdmin() {
   const [m, setM] = useState({ customerName: "", displayName: "", city: "", umreMonth: "", rating: "", text: "", date: "", photoUrl: "" });
   const [uploading, setUploading] = useState(false);
   const [replies, setReplies] = useState<Record<string, string>>({});
+  // Paylaşım görseli (story / gönderi PNG)
+  const [share, setShare] = useState<{ r: Review; tema: "koyu" | "acik"; format: "story" | "post"; arka: "kabe" | "foto" } | null>(null);
+  const imgUrl = (x: NonNullable<typeof share>, indir = false) =>
+    `${API}/${x.r.id}/image?tema=${x.tema}&format=${x.format}&arka=${x.arka}${indir ? "&indir=1" : ""}`;
 
   const load = useCallback(async () => {
     try {
@@ -229,7 +233,10 @@ export default function ReviewsAdmin() {
                       <input value={replies[r.id] ?? r.reply ?? ""} onChange={(e) => setReplies({ ...replies, [r.id]: e.target.value })} placeholder="Cevabımız (isteğe bağlı, sitede yorumun altında görünür)" className={input} />
                       <button onClick={() => act({ action: "update", id: r.id, reply: replies[r.id] ?? r.reply ?? "" }, "Cevap kaydedildi.")} className="px-3 py-1.5 rounded-lg border border-outline-variant/30 font-semibold text-primary whitespace-nowrap">Cevabı kaydet</button>
                     </div>
-                    <div className="flex gap-2">
+                    <div className="flex flex-wrap gap-2">
+                      <button onClick={() => setShare({ r, tema: "koyu", format: "story", arka: "kabe" })} className="px-3 py-1.5 rounded-lg border border-primary/40 font-semibold text-primary inline-flex items-center gap-1">
+                        <span className="material-symbols-outlined text-[16px]">photo_library</span>Paylaşım görseli
+                      </button>
                       {r.status !== "approved" && <button onClick={() => act({ action: "update", id: r.id, status: "approved" }, "Yorum yayında.")} className="px-3 py-1.5 rounded-lg bg-primary text-white font-semibold">Yayımla</button>}
                       {r.status !== "rejected" && <button onClick={() => act({ action: "update", id: r.id, status: "rejected" }, "Yorum reddedildi.")} className="px-3 py-1.5 rounded-lg border border-outline-variant/30 font-semibold text-on-surface-variant">{r.status === "approved" ? "Yayından kaldır" : "Reddet"}</button>}
                     </div>
@@ -240,6 +247,40 @@ export default function ReviewsAdmin() {
           </div>
         )}
       </div>
+      {share && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" onClick={() => setShare(null)}>
+          <div className="flex max-h-[95vh] w-full max-w-3xl flex-col gap-4 overflow-auto rounded-2xl bg-surface-container-lowest p-5 md:flex-row" onClick={(e) => e.stopPropagation()}>
+            <div className="flex shrink-0 justify-center md:w-[300px]">
+              { }
+              <img key={imgUrl(share)} src={imgUrl(share)} alt="Paylaşım görseli önizlemesi" className="max-h-[70vh] w-auto rounded-xl border border-outline-variant/20 bg-surface-container-low" />
+            </div>
+            <div className="flex-1 space-y-4 text-xs">
+              <h3 className="font-headline text-base font-bold text-on-surface">Paylaşım görseli · {share.r.displayName || share.r.customerName}</h3>
+              {(
+                [
+                  ["Boyut", "format", [["story", "Story (1080×1920)"], ["post", "Gönderi (1080×1350)"]]],
+                  ["Tema", "tema", [["koyu", "Koyu (Kâbe fotoğraflı)"], ["acik", "Açık (krem)"]]],
+                  ...(share.r.photoUrl && share.tema === "koyu" ? [["Arka plan", "arka", [["kabe", "Kâbe fotoğrafı"], ["foto", "Müşterinin fotoğrafı"]]]] : []),
+                ] as [string, "format" | "tema" | "arka", [string, string][]][]
+              ).map(([label, key, opts]) => (
+                <div key={key}>
+                  <p className="mb-1.5 font-bold text-on-surface-variant">{label}</p>
+                  <div className="flex flex-wrap gap-1.5">
+                    {opts.map(([v, l]) => (
+                      <button key={v} onClick={() => setShare({ ...share, [key]: v } as typeof share)} className={`rounded-lg px-3 py-1.5 font-semibold ${share[key] === v ? "bg-primary text-white" : "border border-outline-variant/30 text-on-surface-variant"}`}>{l}</button>
+                    ))}
+                  </div>
+                </div>
+              ))}
+              <p className="text-outline">Uzun yorumlar görselde kısaltılır. Yorumu düzenlemek isterseniz önce metni düzeltip sonra görseli oluşturun.</p>
+              <div className="flex gap-2 pt-2">
+                <a href={imgUrl(share, true)} className="rounded-xl bg-primary px-4 py-2.5 font-bold text-white">PNG indir</a>
+                <button onClick={() => setShare(null)} className="rounded-xl border border-outline-variant/30 px-4 py-2.5 font-semibold text-on-surface-variant">Kapat</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

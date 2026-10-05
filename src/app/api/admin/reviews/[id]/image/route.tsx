@@ -14,7 +14,6 @@ export const runtime = "nodejs";
 const NAVY = "#203c76";
 const DEEP = "#0f1f45";
 const GOLD = "#d4af6a";
-const CREAM = "#f7f3ea";
 
 const pub = (p: string) => path.join(process.cwd(), "public", p);
 let assets: Promise<{ regular: Buffer; medium: Buffer; bold: Buffer; kabe: string; logoNavy: string; logoWhite: string }> | null = null;
@@ -46,17 +45,25 @@ function loadAssets() {
 // Poppins'te ★ ✓ “ işaretleri yok; SVG olarak çizilir
 const svg = (body: string, vb: string) => `data:image/svg+xml;base64,${Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}">${body}</svg>`).toString("base64")}`;
 const starSvg = (fill: string) => svg(`<path fill="${fill}" d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z"/>`, "0 0 24 24");
-const checkSvg = svg(`<path fill="none" stroke="${GOLD}" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" d="M5 12.5l4.5 4.5L19 7.5"/>`, "0 0 24 24");
-const quoteSvg = svg(`<path fill="${GOLD}" d="M10 8C6 8 3 11.2 3 15.3V24h8.5v-8.4H7.4c0-2.6 1.4-4.2 3.6-4.6zm15 0c-4 0-7 3.2-7 7.3V24h8.5v-8.4h-4.1c0-2.6 1.4-4.2 3.6-4.6z"/>`, "0 6 32 20");
+const checkSvg = svg(`<path fill="none" stroke="#16a34a" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" d="M5 12.5l4.5 4.5L19 7.5"/>`, "0 0 24 24");
+const verifiedSvg = svg(`<circle cx="12" cy="12" r="11" fill="#1d9bf0"/><path fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" d="M7 12.4l3.3 3.3L17 9"/>`, "0 0 24 24");
 
 /** Metin uzunluğuna göre yazı boyutu; çok uzun metin kısaltılır */
-function fit(text: string, story: boolean) {
-  const max = story ? 620 : 420;
+function fit(text: string, story: boolean, withPhoto: boolean) {
+  const max = story ? (withPhoto ? 380 : 560) : withPhoto ? 200 : 360;
   const t = text.length > max ? `${text.slice(0, max).replace(/\s+\S*$/, "")}…` : text;
   const n = t.length;
-  const size = story ? (n < 110 ? 64 : n < 200 ? 54 : n < 320 ? 46 : n < 450 ? 40 : 36) : n < 110 ? 54 : n < 200 ? 46 : n < 300 ? 40 : 34;
+  const size = story ? (n < 120 ? 50 : n < 220 ? 44 : n < 360 ? 39 : 35) : n < 120 ? 42 : n < 220 ? 37 : 33;
   return { t, size };
 }
+
+const initials = (name: string) =>
+  name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((w) => w[0]!.toLocaleUpperCase("tr-TR"))
+    .join("");
 
 export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -69,65 +76,89 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
   const W = 1080;
   const H = story ? 1920 : 1350;
   const dark = sp.get("tema") !== "acik";
-  const usePhoto = sp.get("arka") === "foto" && !!r.photoUrl;
+  // Müşteri fotoğrafı varsa kartın içinde gösterilir; "arka=foto" ise arka plan da o olur
+  const photoBg = sp.get("arka") === "foto" && !!r.photoUrl;
+  const photoInCard = !!r.photoUrl && !photoBg;
   const a = await loadAssets();
-  const { t, size } = fit(r.text.replace(/\s+/g, " ").trim(), story);
+  const { t, size } = fit(r.text.replace(/\s+/g, " ").trim(), story, photoInCard);
   const name = r.displayName || shortName(r.customerName);
-  const meta = [r.city, r.umreMonth].filter(Boolean).join(" · ");
-  const ink = dark ? "#ffffff" : NAVY;
-  const soft = dark ? "rgba(255,255,255,0.78)" : "rgba(32,60,118,0.75)";
-  const pad = 90;
-
-  const stars = r.rating ? (
-    <div style={{ display: "flex", gap: 12, marginTop: 30 }}>
-      {Array.from({ length: 5 }, (_, i) => (
-         
-        <img key={i} src={starSvg(i < r.rating! ? GOLD : dark ? "rgba(255,255,255,0.25)" : "rgba(32,60,118,0.18)")} alt="" width={56} height={56} />
-      ))}
-    </div>
-  ) : null;
+  const meta = [r.city, r.umreMonth ? `${r.umreMonth} umresi` : null].filter(Boolean).join(" · ");
+  const cardW = 920;
+  const fg = dark ? "#ffffff" : NAVY;
+  const fgSoft = dark ? "rgba(255,255,255,0.7)" : "rgba(32,60,118,0.6)";
 
   const node = (
-    <div style={{ width: W, height: H, display: "flex", position: "relative", fontFamily: "Poppins", backgroundColor: dark ? DEEP : CREAM }}>
-      {dark && (
-         
-        <img src={usePhoto ? r.photoUrl! : a.kabe} alt="" width={W} height={H} style={{ position: "absolute", top: 0, left: 0, width: W, height: H, objectFit: "cover" }} />
-      )}
-      {dark && (
-        <div style={{ position: "absolute", top: 0, left: 0, width: W, height: H, display: "flex", backgroundImage: `linear-gradient(180deg, rgba(15,31,69,0.55) 0%, rgba(15,31,69,0.82) 38%, rgba(15,31,69,0.94) 100%)` }} />
-      )}
-      {!dark && (
-        <div style={{ position: "absolute", top: 40, left: 40, width: W - 80, height: H - 80, display: "flex", border: `3px solid ${GOLD}`, borderRadius: 48 }} />
+    <div style={{ width: W, height: H, display: "flex", position: "relative", fontFamily: "Poppins", backgroundColor: dark ? DEEP : "#eef2f8" }}>
+      {/* Arka plan */}
+      {dark ? (
+        <>
+          <img src={photoBg ? r.photoUrl! : a.kabe} alt="" width={W} height={H} style={{ position: "absolute", top: 0, left: 0, width: W, height: H, objectFit: "cover" }} />
+          <div style={{ position: "absolute", top: 0, left: 0, width: W, height: H, display: "flex", backgroundImage: "linear-gradient(180deg, rgba(10,22,52,0.70) 0%, rgba(10,22,52,0.86) 45%, rgba(10,22,52,0.96) 100%)" }} />
+        </>
+      ) : (
+        <>
+          <div style={{ position: "absolute", top: -260, right: -260, width: 760, height: 760, borderRadius: 999, display: "flex", backgroundImage: "radial-gradient(circle, rgba(212,175,106,0.35) 0%, rgba(212,175,106,0) 70%)" }} />
+          <div style={{ position: "absolute", bottom: -300, left: -300, width: 860, height: 860, borderRadius: 999, display: "flex", backgroundImage: "radial-gradient(circle, rgba(32,60,118,0.22) 0%, rgba(32,60,118,0) 70%)" }} />
+        </>
       )}
 
-      <div style={{ position: "relative", display: "flex", flexDirection: "column", width: W, height: H, padding: `${story ? 150 : 100}px ${pad}px ${story ? 140 : 90}px` }}>
-        {/* Üst: logo + başlık */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-          { }
-          <img src={dark ? a.logoWhite : a.logoNavy} alt="" width={story ? 300 : 240} height={story ? 222 : 178} />
-          <div style={{ display: "flex", marginTop: story ? 44 : 28, fontSize: story ? 30 : 26, fontWeight: 500, letterSpacing: 6, color: GOLD }}>UMRECİLERİMİZİN YORUMLARI</div>
+      <div style={{ position: "relative", display: "flex", flexDirection: "column", width: W, height: H, padding: story ? "120px 80px 100px" : "72px 80px 64px" }}>
+        {/* Üst etiket */}
+        <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 24px", borderRadius: 999, border: `2px solid ${dark ? "rgba(255,255,255,0.22)" : "rgba(32,60,118,0.15)"}`, backgroundColor: dark ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.7)" }}>
+            <div style={{ display: "flex", width: 14, height: 14, borderRadius: 999, backgroundColor: GOLD }} />
+            <span style={{ fontSize: 26, fontWeight: 500, letterSpacing: 2, color: fg }}>MİSAFİR YORUMU</span>
+          </div>
         </div>
+        <div style={{ display: "flex", marginTop: story ? 28 : 18, fontSize: story ? 64 : 50, lineHeight: 1.12, fontWeight: 700, color: fg, maxWidth: 900 }}>Umreye bizimle gidenler anlatıyor</div>
 
-        {/* Orta: yorum */}
-        <div style={{ display: "flex", flexDirection: "column", flexGrow: 1, justifyContent: "center", alignItems: "center", paddingTop: story ? 0 : 20 }}>
-          { }
-          <img src={quoteSvg} alt="" width={story ? 120 : 96} height={story ? 75 : 60} />
-          {stars}
-          <div style={{ display: "flex", marginTop: 36, fontSize: size, lineHeight: 1.38, fontWeight: 500, color: ink, textAlign: "center" }}>{t}</div>
-          <div style={{ display: "flex", width: 120, height: 4, backgroundColor: GOLD, borderRadius: 2, marginTop: 56 }} />
-          <div style={{ display: "flex", marginTop: 34, fontSize: 44, fontWeight: 700, color: ink }}>{name}</div>
-          {meta && <div style={{ display: "flex", marginTop: 6, fontSize: 32, color: soft }}>{meta}</div>}
-          <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 24, padding: "10px 26px", borderRadius: 999, fontSize: 26, fontWeight: 500, color: dark ? "#ffffff" : NAVY, backgroundColor: dark ? "rgba(255,255,255,0.12)" : "rgba(32,60,118,0.08)", border: `2px solid ${dark ? "rgba(255,255,255,0.25)" : "rgba(32,60,118,0.2)"}` }}>
-            { }
-            <img src={checkSvg} alt="" width={30} height={30} />
-            Doğrulanmış müşteri
+        {/* Yorum kartı */}
+        <div style={{ display: "flex", flexGrow: 1, alignItems: "center", justifyContent: "center" }}>
+          <div style={{ display: "flex", flexDirection: "column", width: cardW, padding: story ? 60 : 48, borderRadius: 44, backgroundColor: "#ffffff", boxShadow: dark ? "0 40px 90px rgba(0,0,0,0.35)" : "0 30px 80px rgba(32,60,118,0.16)" }}>
+            {/* Kişi satırı */}
+            <div style={{ display: "flex", alignItems: "center", gap: 24 }}>
+              <div style={{ display: "flex", width: 104, height: 104, borderRadius: 999, alignItems: "center", justifyContent: "center", backgroundImage: `linear-gradient(135deg, ${NAVY} 0%, #3a5ea8 100%)`, color: "#ffffff", fontSize: 40, fontWeight: 700 }}>{initials(name)}</div>
+              <div style={{ display: "flex", flexDirection: "column", flexGrow: 1 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                  <span style={{ fontSize: 40, fontWeight: 700, color: "#111827" }}>{name}</span>
+                  <img src={verifiedSvg} alt="" width={38} height={38} />
+                </div>
+                {meta && <span style={{ fontSize: 27, color: "#6b7280", marginTop: 2 }}>{meta}</span>}
+              </div>
+            </div>
+
+            {/* Yıldızlar */}
+            {r.rating ? (
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 34 }}>
+                {Array.from({ length: 5 }, (_, i) => (
+                  <img key={i} src={starSvg(i < r.rating! ? GOLD : "#e5e7eb")} alt="" width={46} height={46} />
+                ))}
+                <span style={{ marginLeft: 12, fontSize: 28, fontWeight: 500, color: "#6b7280" }}>{r.rating}/5</span>
+              </div>
+            ) : null}
+
+            {/* Metin */}
+            <div style={{ display: "flex", marginTop: 26, fontSize: size, lineHeight: 1.45, color: "#1f2937" }}>{t}</div>
+
+            {photoInCard && (
+              <img src={r.photoUrl!} alt="" width={cardW - (story ? 120 : 96)} height={story ? 460 : 300} style={{ marginTop: 32, borderRadius: 28, objectFit: "cover" }} />
+            )}
+
+            {/* Kart altı */}
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 34, paddingTop: 26, borderTop: "2px solid #f1f2f4" }}>
+              <img src={checkSvg} alt="" width={30} height={30} />
+              <span style={{ fontSize: 25, color: "#6b7280" }}>Doğrulanmış müşteri · hadiumreyegidelim.com</span>
+            </div>
           </div>
         </div>
 
-        {/* Alt */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 18 }}>
-          <div style={{ display: "flex", padding: "18px 44px", borderRadius: 999, backgroundColor: GOLD, color: DEEP, fontSize: 32, fontWeight: 700 }}>Umrenizi birlikte planlayalım</div>
-          <div style={{ display: "flex", fontSize: 30, fontWeight: 500, color: soft }}>hadiumreyegidelim.com</div>
+        {/* Alt: logo sol, çağrı sağ */}
+        <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between" }}>
+          <img src={dark ? a.logoWhite : a.logoNavy} alt="" width={story ? 230 : 190} height={story ? 170 : 141} />
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 10 }}>
+            <span style={{ fontSize: 26, color: fgSoft }}>Siz de umrenizi planlayın</span>
+            <div style={{ display: "flex", padding: "16px 32px", borderRadius: 999, backgroundColor: GOLD, color: DEEP, fontSize: 28, fontWeight: 700 }}>hadiumreyegidelim.com</div>
+          </div>
         </div>
       </div>
     </div>

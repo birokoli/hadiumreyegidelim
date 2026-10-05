@@ -259,7 +259,7 @@ export default function ReviewsAdmin() {
               {(
                 [
                   ["Boyut", "format", [["story", "Story (1080×1920)"], ["post", "Gönderi (1080×1350)"]]],
-                  ["Tema", "tema", [["koyu", "Koyu (Kâbe fotoğraflı)"], ["acik", "Açık (krem)"]]],
+                  ["Tema", "tema", [["koyu", "Koyu (Kâbe fotoğraflı)"], ["acik", "Açık"]]],
                   ...(share.r.photoUrl && share.tema === "koyu" ? [["Arka plan", "arka", [["kabe", "Kâbe fotoğrafı"], ["foto", "Müşterinin fotoğrafı"]]]] : []),
                 ] as [string, "format" | "tema" | "arka", [string, string][]][]
               ).map(([label, key, opts]) => (

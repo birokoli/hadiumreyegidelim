@@ -148,6 +148,22 @@ export default function ContentPage() {
     published: true,
     scheduledAt: "" as string,
   });
+  // Kişisel deneyim: yazarın notlarını paragrafa çevirir (bilgi eklemez)
+  const [polishing, setPolishing] = useState(false);
+  const polishExperience = async () => {
+    setPolishing(true);
+    try {
+      const res = await fetch("/api/admin/blog-experience", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ notes: newPost.personalExperience, title: newPost.title }) });
+      const d = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(d.error || "Düzenlenemedi.");
+      setNewPost((prev) => ({ ...prev, personalExperience: d.text }));
+    } catch (e) {
+      alert(e instanceof Error ? e.message : String(e));
+    } finally {
+      setPolishing(false);
+    }
+  };
+
 
   const [publishMode, setPublishMode] = useState<'immediate' | 'scheduled'>('immediate');
   const [showDatePicker, setShowDatePicker] = useState(false);
@@ -929,18 +945,20 @@ export default function ContentPage() {
                     <div className="space-y-2">
                        <label className="text-[10px] font-bold text-[#003781] uppercase tracking-widest flex items-center justify-between">
                          <span className="flex items-center gap-1"><span className="material-symbols-outlined text-[14px]">volunteer_activism</span> Kişisel Deneyim / Görüş</span>
-                         <span className="text-secondary/60 lowercase italic font-normal tracking-normal flex items-center gap-1"><span className="material-symbols-outlined text-[12px]">auto_awesome</span> ai otomatik doldurur</span>
+                         <button type="button" disabled={polishing} onClick={polishExperience} className="text-secondary lowercase font-semibold tracking-normal flex items-center gap-1 hover:underline disabled:opacity-50" title="Kısa notlarınızı düzgün bir paragrafa çevirir; notlarda olmayan bilgi eklemez">
+                           <span className="material-symbols-outlined text-[12px]">auto_awesome</span> {polishing ? "düzenleniyor…" : "notlarımdan düzenle"}
+                         </button>
                        </label>
-                       <textarea required className="w-full bg-[#f4f7fb] border border-[#003781]/20 rounded-xl p-4 text-sm text-[#334155] min-h-[120px] focus:ring-[#003781] focus:border-[#003781] outline-none" 
-                         value={newPost.personalExperience} onChange={e => setNewPost(prev => ({...prev, personalExperience: e.target.value}))} placeholder="Google'a 'Bunu gerçekten yaşadım' sinyali vermek için 2-3 cümlelik gerçek bir hikaye/tecrübe yazın..." />
+                       <textarea className="w-full bg-[#f4f7fb] border border-[#003781]/20 rounded-xl p-4 text-sm text-[#334155] min-h-[120px] focus:ring-[#003781] focus:border-[#003781] outline-none" 
+                         value={newPost.personalExperience} onChange={e => setNewPost(prev => ({...prev, personalExperience: e.target.value}))} placeholder="Gerçekten yaşadığınız bir şey: kısa notlar yazıp 'notlarımdan düzenle'ye basabilirsiniz (ör. gece 2 tavaf, mataf boştu, tekerlekli sandalye 2. katta). Boş bırakılırsa sitede kutu görünmez." />
                     </div>
                     <div className="space-y-2">
                        <label className="text-[10px] font-bold text-[#003781] uppercase tracking-widest flex items-center justify-between">
                          <span className="flex items-center gap-1"><span className="material-symbols-outlined text-[14px]">menu_book</span> Kaynaklar / Referanslar</span>
-                         <span className="text-secondary/60 lowercase italic font-normal tracking-normal flex items-center gap-1"><span className="material-symbols-outlined text-[12px]">auto_awesome</span> ai otomatik doldurur</span>
+                         <span className="text-secondary/60 lowercase italic font-normal tracking-normal flex items-center gap-1"><span className="material-symbols-outlined text-[12px]">auto_awesome</span> blog motoru doldurur</span>
                        </label>
                        <textarea className="w-full bg-[#f4f7fb] border border-[#003781]/20 rounded-xl p-4 text-sm text-[#334155] min-h-[100px] focus:ring-[#003781] focus:border-[#003781] outline-none" 
-                         value={newPost.references} onChange={e => setNewPost(prev => ({...prev, references: e.target.value}))} placeholder="Wikipedia, Diyanet, Resmi Kurum linkleri vb. (Güvenilirlik sinyali)" />
+                         value={newPost.references} onChange={e => setNewPost(prev => ({...prev, references: e.target.value}))} placeholder="Her satıra bir resmî kaynak bağlantısı. Sitede yalnızca diyanet.gov.tr, nusuk.sa ve .gov.sa bağlantıları gösterilir." />
                     </div>
                   </div>
                   

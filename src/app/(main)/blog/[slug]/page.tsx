@@ -215,6 +215,10 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     image: post.imageUrl ? [post.imageUrl] : [],
     datePublished: post.createdAt.toISOString(),
     dateModified: post.updatedAt.toISOString(),
+    // Resmî kaynaklar (Kaynakça) yapısal veride de: AI motorları ve Google için güven sinyali
+    ...(officialReferences.length ? { citation: officialReferences.map((line) => ({ '@type': 'CreativeWork', url: line.match(/https?:\/\/\S+/)![0], name: line.replace(/https?:\/\/\S+/, '').replace(/[-–:|]\s*$/, '').trim() || undefined })) } : {}),
+    // Yazarın kişisel deneyimi: yazının yazarına bağlı, kısa özet olarak
+    ...(post.personalExperience ? { backstory: post.personalExperience.replace(/[#*_>`]/g, '').replace(/\s+/g, ' ').trim().slice(0, 500) } : {}),
     author: [{
       '@type': 'Person',
       name: (post.authorModel?.name || post.author || "").trim(),
@@ -356,7 +360,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           <div className="my-10 bg-[#f8fafc] border-l-4 border-secondary p-8 rounded-r-3xl shadow-sm relative">
             <div className="flex items-center gap-2 mb-4">
                <span className="material-symbols-outlined text-secondary text-[18px]" aria-hidden="true">verified_user</span>
-               <span className="text-secondary font-bold text-[10px] uppercase tracking-widest font-headline">Yazarın Kişisel Deneyimi</span>
+               <span className="text-secondary font-bold text-[10px] uppercase tracking-widest font-headline">Yazarın Kişisel Deneyimi{(post.authorModel?.name || post.author) ? ` · ${(post.authorModel?.name || post.author).trim()}` : ""}</span>
             </div>
             <div
               className="text-[#334155] text-base leading-relaxed relative z-10 font-body [&>h2]:font-bold [&>h2]:text-lg [&>h2]:text-primary [&>h2]:mt-4 [&>h2]:mb-2 [&>h3]:font-bold [&>h3]:text-base [&>h3]:text-secondary [&>h3]:mt-3 [&>h3]:mb-1 [&>p]:mb-3 [&>ul]:list-disc [&>ul]:pl-5 [&>ul]:mb-3 [&>ul>li]:mb-1"

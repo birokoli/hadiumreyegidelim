@@ -50,10 +50,10 @@ const verifiedSvg = svg(`<circle cx="12" cy="12" r="11" fill="#1d9bf0"/><path fi
 
 /** Metin uzunluğuna göre yazı boyutu; çok uzun metin kısaltılır */
 function fit(text: string, story: boolean, withPhoto: boolean) {
-  const max = story ? (withPhoto ? 380 : 560) : withPhoto ? 200 : 360;
+  const max = story ? (withPhoto ? 300 : 480) : withPhoto ? 200 : 360;
   const t = text.length > max ? `${text.slice(0, max).replace(/\s+\S*$/, "")}…` : text;
   const n = t.length;
-  const size = story ? (n < 120 ? 50 : n < 220 ? 44 : n < 360 ? 39 : 35) : n < 120 ? 42 : n < 220 ? 37 : 33;
+  const size = story ? (n < 120 ? 48 : n < 220 ? 42 : n < 360 ? 37 : 33) : n < 120 ? 42 : n < 220 ? 37 : 33;
   return { t, size };
 }
 
@@ -102,15 +102,13 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
         </>
       )}
 
-      <div style={{ position: "relative", display: "flex", flexDirection: "column", width: W, height: H, padding: story ? "120px 80px 100px" : "72px 80px 64px" }}>
-        {/* Üst etiket */}
-        <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 24px", borderRadius: 999, border: `2px solid ${dark ? "rgba(255,255,255,0.22)" : "rgba(32,60,118,0.15)"}`, backgroundColor: dark ? "rgba(255,255,255,0.08)" : "rgba(255,255,255,0.7)" }}>
-            <div style={{ display: "flex", width: 14, height: 14, borderRadius: 999, backgroundColor: GOLD }} />
-            <span style={{ fontSize: 26, fontWeight: 500, letterSpacing: 2, color: fg }}>MİSAFİR YORUMU</span>
-          </div>
+      <div style={{ position: "relative", display: "flex", flexDirection: "column", width: W, height: H, padding: story ? "250px 80px 300px" : "72px 80px 64px" }}>
+        {/* Üst başlık: Instagram'daki yerleşik ifade, sade */}
+        <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
+          <div style={{ display: "flex", width: 56, height: 4, borderRadius: 2, backgroundColor: GOLD }} />
+          <span style={{ fontSize: story ? 30 : 26, fontWeight: 500, color: fgSoft }}>hadiumreyegidelim.com</span>
         </div>
-        <div style={{ display: "flex", marginTop: story ? 28 : 18, fontSize: story ? 64 : 50, lineHeight: 1.12, fontWeight: 700, color: fg, maxWidth: 900 }}>Umreye bizimle gidenler anlatıyor</div>
+        <div style={{ display: "flex", marginTop: story ? 18 : 12, fontSize: story ? 84 : 64, lineHeight: 1.05, fontWeight: 700, color: fg }}>Sizden gelenler</div>
 
         {/* Yorum kartı */}
         <div style={{ display: "flex", flexGrow: 1, alignItems: "center", justifyContent: "center" }}>
@@ -141,7 +139,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
             <div style={{ display: "flex", marginTop: 26, fontSize: size, lineHeight: 1.45, color: "#1f2937" }}>{t}</div>
 
             {photoInCard && (
-              <img src={r.photoUrl!} alt="" width={cardW - (story ? 120 : 96)} height={story ? 460 : 300} style={{ marginTop: 32, borderRadius: 28, objectFit: "cover" }} />
+              <img src={r.photoUrl!} alt="" width={cardW - (story ? 120 : 96)} height={story ? 380 : 300} style={{ marginTop: 32, borderRadius: 28, objectFit: "cover" }} />
             )}
 
             {/* Kart altı */}
@@ -154,10 +152,10 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
 
         {/* Alt: logo sol, çağrı sağ */}
         <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between" }}>
-          <img src={dark ? a.logoWhite : a.logoNavy} alt="" width={story ? 230 : 190} height={story ? 170 : 141} />
+          <img src={dark ? a.logoWhite : a.logoNavy} alt="" width={story ? 160 : 150} height={story ? 118 : 111} />
           <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 10 }}>
-            <span style={{ fontSize: 26, color: fgSoft }}>Siz de umrenizi planlayın</span>
-            <div style={{ display: "flex", padding: "16px 32px", borderRadius: 999, backgroundColor: GOLD, color: DEEP, fontSize: 28, fontWeight: 700 }}>hadiumreyegidelim.com</div>
+            <span style={{ fontSize: 24, color: fgSoft }}>Umrenizi birlikte planlayalım</span>
+            <div style={{ display: "flex", padding: "14px 28px", borderRadius: 999, backgroundColor: GOLD, color: DEEP, fontSize: 26, fontWeight: 700 }}>WhatsApp&apos;tan yazın</div>
           </div>
         </div>
       </div>

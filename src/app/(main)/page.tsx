@@ -15,6 +15,12 @@ import { DEFAULT_HANIM_UMRESI_CAMPAIGN, DEFAULT_ILK_UMREM_CAMPAIGN, EYLUL_CAMPAI
 import { PageTrust, webPageJsonLd } from "@/components/seo/PageTrust";
 import { getApprovedReviews } from "@/lib/reviews";
 import ReviewCard from "@/components/reviews/ReviewCard";
+import Accent from "@/components/home/Accent";
+import NiyetBand from "@/components/home/NiyetBand";
+import { cairo, ruqaa } from "@/components/home/fonts";
+
+// Başlıkta *vurgu* yoksa son kelime serif italik vurgulanır (MBD ritmi); admin metninde *…* ile seçilebilir
+const accented = (title: string) => (title.includes("*") ? title : title.replace(/(\S+)\s*$/, "*$1*"));
 
 export const metadata: Metadata = {
   title: { absolute: "Bireysel Umre 2026 | Hadi Umreye Gidelim" },
@@ -116,7 +122,7 @@ export default async function Home() {
   ];
 
   return (
-    <main id="main-content">
+    <main id="main-content" className={`home-v2 ${cairo.variable} ${ruqaa.variable}`}>
       {/* ─── Hero + planlayıcı ─────────────────────────────── */}
       <section className="relative z-20 w-full pt-28 pb-16 md:pt-32 md:pb-12 md:min-h-[620px] md:flex md:flex-col md:justify-end">
         <div className="absolute inset-0 overflow-hidden">
@@ -125,13 +131,14 @@ export default async function Home() {
             // Döngü video yalnızca geniş ekranda ve sayfa yüklendikten sonra; altta kapak görseli kalır
             <HeroVideo src={heroVideo} poster={`/_next/image?url=${encodeURIComponent(home_banner_image)}&w=1920&q=75`} />
           )}
-          <div className="absolute inset-0 bg-[#001944]/55" />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#001944]/40 via-transparent to-[#001944]/70" />
+          <div className="absolute inset-0 bg-[#12295a]/55" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#12295a]/40 via-transparent to-[#12295a]/75" />
         </div>
-        <div className="relative w-full max-w-screen-xl mx-auto px-4 md:px-8">
+        <div className="on-dark relative w-full max-w-screen-xl mx-auto px-4 md:px-8">
+          <p aria-hidden className="hat text-[var(--h-sand)] text-2xl md:text-3xl mb-2 text-left" style={{ direction: "rtl", unicodeBidi: "plaintext" }}>لَبَّيْكَ اللَّهُمَّ لَبَّيْكَ</p>
           <h1 className="font-headline text-white font-bold tracking-tight max-w-3xl">
             <span className="block font-body text-[12px] md:text-[13px] font-semibold tracking-[0.2em] uppercase text-white/75 mb-3">{t("kicker")}</span>
-            <span className="block text-3xl sm:text-4xl md:text-5xl leading-[1.12] text-balance">{home_banner_title}</span>
+            <span className="block text-3xl sm:text-4xl md:text-[56px] leading-[1.08] text-balance"><Accent text={accented(home_banner_title)} /></span>
           </h1>
           <p className="mt-3 text-base md:text-lg text-white/85 max-w-2xl">{home_banner_subtitle}</p>
           <div className="mt-7 md:mt-9">
@@ -174,7 +181,7 @@ export default async function Home() {
 
       {/* ─── Paketler ──────────────────────────────────────── */}
       <section className="w-full max-w-screen-xl mx-auto px-4 md:px-8 py-12 md:py-16">
-        <SectionHead kicker={homeToursKicker} title={homeToursTitle} href="/paketler" linkLabel="Tüm paketler" />
+        <SectionHead kicker={homeToursKicker} title={<Accent text={accented(homeToursTitle)} />} href="/paketler" linkLabel="Tüm paketler" />
         {featuredPackages.length === 0 ? (
           <EmptyState>Bu sezonun paketleri güncelleniyor.</EmptyState>
         ) : (
@@ -198,11 +205,11 @@ export default async function Home() {
       </section>
 
       {/* ─── Nasıl çalışır ─────────────────────────────────── */}
-      <section className="w-full bg-white border-y border-outline-variant/20">
+      <section className="w-full bg-warm">
         <div className="max-w-screen-xl mx-auto px-4 md:px-8 py-10 md:py-12 grid md:grid-cols-[0.8fr_2fr] gap-8 items-center">
           <div>
             <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-primary/80">{homeStepsKicker}</p>
-            <h2 className="mt-1.5 font-headline text-2xl md:text-[28px] leading-tight text-primary font-bold">{homeStepsTitle}</h2>
+            <h2 className="mt-1.5 font-headline text-2xl md:text-[32px] leading-tight text-primary font-bold"><Accent text={accented(homeStepsTitle)} /></h2>
           </div>
           <Steps items={steps} />
         </div>
@@ -210,9 +217,12 @@ export default async function Home() {
 
       {/* ─── Umre adımları ─────────────────────────────────── */}
       <section className="w-full max-w-screen-xl mx-auto px-4 md:px-8 py-12 md:py-16">
-        <SectionHead kicker="Adım adım" title="Umre nasıl yapılır?" href="/ilk-umrem" linkLabel="İlk umrem rehberi" />
+        <SectionHead kicker="Adım adım" title={<Accent text="Umre *nasıl yapılır?*" />} href="/ilk-umrem" linkLabel="İlk umrem rehberi" />
         <UmrahSteps />
       </section>
+
+      {/* ─── Koyu bant: planlayıcıya çağrı ───────────────────── */}
+      <NiyetBand />
 
       {/* ─── Kampanyalar ───────────────────────────────────── */}
       <section className="w-full max-w-screen-xl mx-auto px-4 md:px-8 pb-12 md:pb-16 grid md:grid-cols-2 gap-4 md:gap-5">
@@ -235,18 +245,20 @@ export default async function Home() {
 
       {/* ─── Yorumlar (admin → Yorumlar; metinler Sayfa Metinleri → Yorumlar) ─── */}
       {reviews.length > 0 && (
-        <section className="w-full max-w-screen-xl mx-auto px-4 md:px-8 pb-12 md:pb-16">
-          <SectionHead kicker={reviewTexts("kicker")} title={reviewTexts("title")} href="/yorumlar" linkLabel={reviewTexts("link")} />
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
-            {reviews.slice(0, 6).map((r) => <ReviewCard key={r.id} r={r} clamp />)}
+        <section className="w-full bg-soft">
+          <div className="max-w-screen-xl mx-auto px-4 md:px-8 py-12 md:py-16">
+            <SectionHead kicker={reviewTexts("kicker")} title={<Accent text={accented(reviewTexts("title"))} />} href="/yorumlar" linkLabel={reviewTexts("link")} />
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
+              {reviews.slice(0, 6).map((r) => <ReviewCard key={r.id} r={r} clamp />)}
+            </div>
           </div>
         </section>
       )}
 
       {/* ─── Blog ──────────────────────────────────────────── */}
-      <section className="w-full bg-surface-container-low">
+      <section className="w-full bg-sky">
         <div className="max-w-screen-xl mx-auto px-4 md:px-8 py-12 md:py-16">
-          <SectionHead kicker={homeBlogKicker} title={homeBlogTitle} href="/blog" linkLabel="Tüm yazılar" />
+          <SectionHead kicker={homeBlogKicker} title={<Accent text={accented(homeBlogTitle)} />} href="/blog" linkLabel="Tüm yazılar" />
           {latestBlogs.length === 0 ? (
             <EmptyState onWhite>Henüz yayınlanmış yazı yok.</EmptyState>
           ) : (
@@ -261,7 +273,7 @@ export default async function Home() {
 
       {/* ─── SSS ───────────────────────────────────────────── */}
       <section className="w-full max-w-screen-md mx-auto px-4 md:px-8 py-12 md:py-16">
-        <h2 className="font-headline text-2xl md:text-3xl font-bold text-primary text-center">{homeFaqTitle}</h2>
+        <h2 className="font-headline text-2xl md:text-3xl font-bold text-primary text-center"><Accent text={accented(homeFaqTitle)} /></h2>
         <p className="mt-2 text-sm text-on-surface-variant text-center">{homeFaqDesc}</p>
         <div className="mt-7"><Faq items={HOME_FAQ} /></div>
         <PageTrust className="mt-6 text-center" />

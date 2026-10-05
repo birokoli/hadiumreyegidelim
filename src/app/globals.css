@@ -394,3 +394,33 @@
     animation: admin-scrim-in 150ms ease-out both;
   }
 }
+
+/* ─── Ana sayfa v2 (6 Ekim, kullanıcı) ─────────────────────────────────────
+   Beyaz tema + Pantone desteği (%10–17,5 alan): 11-4001 Brilliant White, 7687 C, 2127 C, 6234 C.
+   Yazı: Cairo; vurgu: Noto Serif italik; hat: Aref Ruqaa. Kapsam yalnızca .home-v2 */
+.home-v2 {
+  --h-white: #edf1fe;   /* 11-4001 TCX Brilliant White */
+  --h-blue: #1d428a;    /* 7687 C */
+  --h-blue-deep: #12295a;
+  --h-sky: #b8c9e3;     /* 2127 C */
+  --h-sand: #f2dda6;    /* 6234 C */
+  --font-headline: var(--font-cairo), "Cairo", system-ui, sans-serif;
+  --font-body: var(--font-cairo), "Cairo", system-ui, sans-serif;
+  --font-label: var(--font-cairo), "Cairo", system-ui, sans-serif;
+  font-family: var(--font-body);
+}
+.home-v2 h1, .home-v2 h2, .home-v2 h3 { letter-spacing: -0.015em; }
+.home-v2 h1 em, .home-v2 h2 em {
+  font-family: "Noto Serif", Georgia, serif;
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--h-blue);
+}
+.home-v2 .on-dark h1 em, .home-v2 .on-dark h2 em { color: var(--h-sand); }
+.home-v2 .hat { font-family: var(--font-hat), "Aref Ruqaa", serif; direction: rtl; }
+/* Sıcak geçişli zemin (MBD "Sen ne yaşamak istersin?" bölümünün karşılığı) */
+.home-v2 .bg-warm { background: linear-gradient(125deg, #f8eccb 0%, #fbf6ea 38%, var(--h-white) 78%, #f6f8ff 100%); }
+.home-v2 .bg-soft { background: var(--h-white); }
+.home-v2 .bg-sky { background: linear-gradient(180deg, color-mix(in srgb, var(--h-sky) 45%, white) 0%, var(--h-white) 100%); }
+.home-v2 .bg-deep { background: linear-gradient(135deg, var(--h-blue-deep) 0%, var(--h-blue) 100%); }

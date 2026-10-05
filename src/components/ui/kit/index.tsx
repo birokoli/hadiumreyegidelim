@@ -40,7 +40,7 @@ export function Section({ children, tone = "plain", className, id }: { children:
 }
 
 /** Küçük büyük harfli üst etiket + başlık + sağda isteğe bağlı bağlantı */
-export function SectionHead({ kicker, title, href, linkLabel, as = "h2" }: { kicker?: string; title: string; href?: string; linkLabel?: string; as?: "h1" | "h2" }) {
+export function SectionHead({ kicker, title, href, linkLabel, as = "h2" }: { kicker?: string; title: ReactNode; href?: string; linkLabel?: string; as?: "h1" | "h2" }) {
   const H = as;
   return (
     <div className="flex items-end justify-between gap-4 mb-6 md:mb-8">

@@ -143,12 +143,96 @@ export const PAGE_TEXTS: PageTextDef[] = [
     label: "İletişim",
     path: "/iletisim",
     fields: [
-      { key: "kicker", label: "Üst etiket", default: "İletişim" },
+      { key: "kicker", label: "Üst etiket", default: "Destek ve iletişim" },
+      { key: "hero_title", label: "Başlık (H1)", default: "Birlikte çözelim." },
+      { key: "hero_lead", label: "Giriş", multiline: true, default: "Umre planı, vize, ödeme ya da mevcut rezervasyonunuz. Sorunuzu doğru konu başlığıyla iletin, ekibimiz size dönsün." },
+      { key: "form_title", label: "Form başlığı", default: "Bize yazın" },
+      { key: "form_lead", label: "Form açıklaması", multiline: true, default: "Umre planı, vize ya da mevcut rezervasyonunuzla ilgili her soru buradan bize ulaşır. Talebiniz kayıt altına alınır ve size bir takip numarası verilir." },
       { key: "call_center_label", label: "Çağrı Merkezi Etiketi", default: "Çağrı Merkezi & WhatsApp" },
       { key: "call_center_btn", label: "Çağrı Merkezi Düğmesi", default: "WhatsApp'tan Yazın" },
       { key: "email_label", label: "E-posta Etiketi", default: "E-posta İletişimi" },
       { key: "email_btn", label: "E-posta Düğmesi", default: "E-posta Gönderin" },
       { key: "office_label", label: "Merkez Ofis Etiketi", default: "Merkez Ofis" },
+    ],
+  },
+  {
+    id: "sss",
+    label: "Sıkça Sorulan Sorular",
+    path: "/sss",
+    fields: [
+      { key: "kicker", label: "Üst etiket", default: "Sıkça sorulan sorular" },
+      { key: "title", label: "Başlık (H1)", default: "Aklınızdaki sorular." },
+      { key: "lead", label: "Giriş", multiline: true, default: "Umre planlama, vize, ödeme ve rezervasyon süreçleriyle ilgili en çok sorulan soruların cevapları." },
+      {
+        key: "items",
+        label: "Sorular",
+        multiline: true,
+        help: "Her soru bir blok: ilk satır 'Kategori | Soru', alt satırlar cevap; bloklar arasında boş satır. Kategoriler: Umre planlama, Vize, Ödeme ve iptal, Hadi Umreye Gidelim.",
+        default: `Umre planlama | Hangi hizmetleri veriyorsunuz?
+Bireysel umre planlaması yapıyoruz: Mekke ve Medine otelleri, havalimanı ve şehirler arası transferler, Haremeyn hızlı treni, rehberlik ve umre vizesi. Uçak biletini siz alırsınız; seçtiğiniz tarihlere göre planı biz kurarız.
+
+Umre planlama | Nasıl rezervasyon yapabilirim?
+Bireysel umre tasarlayıcısında tarihlerinizi, otelinizi ve transferinizi seçip toplam fiyatı görebilir ya da hazır paketlerden birini inceleyebilirsiniz. Planınızı gönderdiğinizde müsaitliği kontrol edip kesin teklifi WhatsApp'tan iletiyoruz.
+
+Umre planlama | Uçak bileti fiyata dahil mi?
+Hayır. Uçak biletini kendiniz alırsınız; otel, transfer ve diğer hizmetler seçtiğiniz uçuş tarihlerine göre planlanır. Vize başvurusu için gidiş-dönüş biletiniz gereklidir.
+
+Umre planlama | Grup ya da aile için özel program hazırlıyor musunuz?
+Evet. Kişi sayınızı, tarihlerinizi ve otel tercihlerinizi grup talepleri sayfasından iletin; oda dağılımı, transfer ve rehberlik dahil programı birlikte planlayalım.
+
+Vize | Umre vizesi nasıl alınır?
+Otel rezervasyonunuzu, gidiş-dönüş uçak biletinizi, her yolcunun pasaportunun ön yüzünü ve birer biyometrik fotoğrafı WhatsApp'tan bize gönderirsiniz. Kişi başı 140 USD ödemenin ardından vizeniz 2 saat içinde hadiumreyegidelim.com tarafından iletilir.
+
+Vize | Pasaportumun geçerlilik süresi ne kadar olmalı?
+Pasaportunuzun seyahat tarihinden itibaren en az 6 ay geçerli olması gerekir. Bebekler ve çocuklar dahil her yolcunun ayrı vizesi olmalıdır.
+
+Vize | Ravza randevusunu siz mi alıyorsunuz?
+Hayır. Ravza ziyareti randevusu Suudi Arabistan'ın resmî Nusuk uygulamasından kişisel olarak alınır. Uygulamanın nasıl kullanılacağını blogumuzdaki Nusuk rehberinde adım adım anlattık.
+
+Ödeme ve iptal | Fiyatlar hangi para biriminde?
+Fiyatlarımız ABD doları (USD) üzerinden verilir. Türk lirası ile ödemede güncel kur üzerinden hesaplanan tutar teklifte ayrıca yazılır.
+
+Ödeme ve iptal | Hangi ödeme yöntemlerini kabul ediyorsunuz?
+Banka havalesi / EFT ve kredi kartı ile ödeme yapabilirsiniz. Ödeme bilgileri ve tutar, onayladığınız teklifle birlikte iletilir.
+
+Ödeme ve iptal | Rezervasyonumu iptal edebilir ya da tarihini değiştirebilir miyim?
+İptal ve değişiklik koşulları otele, transfere ve tarihe göre değişir. Bir değişiklik ihtiyacınız olduğunda talep numaranız ya da adınızla destek formundan veya WhatsApp'tan bize yazın; koşulları sizin rezervasyonunuza göre yazılı olarak iletelim.
+
+Hadi Umreye Gidelim | Seyahat sırasında bir sorun yaşarsam kime ulaşırım?
+WhatsApp hattımızdan bize yazabilirsiniz. Transfer, otel ya da program değişikliği gibi konularda ekibimiz sizinle iletişimde kalır.
+
+Hadi Umreye Gidelim | Hadi Umreye Gidelim hangi kurum bünyesinde?
+Hadi Umreye Gidelim, MBD Tourism L.L.C. bünyesinde hizmet verir (DTCM lisans no 1203162). İstanbul iletişim adresimiz Bakırköy'dedir.`,
+      },
+    ],
+  },
+  {
+    id: "grup-talepleri",
+    label: "Grup Talepleri",
+    path: "/grup-talepleri",
+    fields: [
+      { key: "kicker", label: "Üst etiket", default: "Grup talepleri" },
+      { key: "title", label: "Başlık (H1)", default: "Birlikte gidilen umre, birlikte planlanır." },
+      { key: "lead", label: "Giriş", multiline: true, default: "Ailenizle ya da grubunuzla umreye mi gidiyorsunuz? Kişi sayınızı ve tarihlerinizi iletin, programı birlikte kuralım." },
+      { key: "card1_title", label: "Kart 1 · Başlık", default: "Konaklama ve ulaşım" },
+      { key: "card1_text", label: "Kart 1 · Metin", multiline: true, default: "Oda dağılımı, Mekke–Medine otelleri, havalimanı transferleri ve Haremeyn treni grubunuza göre planlanır." },
+      { key: "card2_title", label: "Kart 2 · Başlık", default: "Aile ve grup" },
+      { key: "card2_text", label: "Kart 2 · Metin", multiline: true, default: "Yaşlı, çocuklu ya da tekerlekli sandalye kullanan yolcularınız için otel konumu ve transfer ona göre seçilir." },
+      { key: "card3_title", label: "Kart 3 · Başlık", default: "Rehberlik ve ziyaretler" },
+      { key: "card3_text", label: "Kart 3 · Metin", multiline: true, default: "Mekke ve Medine ziyaretleri, şehir turları ve Türkçe rehberlik programınıza eklenebilir." },
+      { key: "extra_label", label: "Formdaki ek alan", default: "Kişi sayısı ve tarih aralığı" },
+    ],
+  },
+  {
+    id: "isletme-kaydi",
+    label: "İşletme Kaydı",
+    path: "/isletme-kaydi",
+    fields: [
+      { key: "kicker", label: "Üst etiket", default: "İşletmenizi kaydedin" },
+      { key: "title", label: "Başlık (H1)", default: "İşletmenizle umrecilere ulaşın." },
+      { key: "lead", label: "Giriş", multiline: true, default: "Mekke ve Medine'de otel, transfer, rehberlik ya da ziyaret hizmeti veriyorsanız hizmetlerinizi ve iş birliği beklentinizi bizimle paylaşın." },
+      { key: "types", label: "Kimler başvurabilir (her satır bir madde)", multiline: true, default: "Oteller\nTransfer firmaları\nTürkçe rehberler ve rehberlik ofisleri\nZiyaret, tur ve deneyim sağlayıcıları\nUmre öncesi eğitim ve seminer veren kurumlar" },
+      { key: "extra_label", label: "Formdaki ek alan", default: "İşletme adı ve web sitesi" },
     ],
   },
   {

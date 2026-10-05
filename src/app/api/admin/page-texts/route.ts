@@ -29,7 +29,7 @@ export async function PUT(req: NextRequest) {
   const clean: Record<string, string> = {};
   for (const f of def.fields) {
     const v = body.values?.[f.key];
-    if (typeof v === "string" && v.trim() && v.trim() !== f.default) clean[f.key] = v.trim().slice(0, 5000);
+    if (typeof v === "string" && v.trim() && v.trim() !== f.default) clean[f.key] = v.trim().slice(0, 20000); // SSS listesi uzun olabilir
   }
   const key = pageTextsSettingKey(def.id);
   const value = JSON.stringify(clean);

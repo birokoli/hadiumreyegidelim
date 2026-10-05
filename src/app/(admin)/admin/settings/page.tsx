@@ -31,7 +31,7 @@ const DEFAULTS = {
   WHATSAPP_CTA: "WHATSAPP DANIŞMANLIK",
   CONTACT_TITLE: "İletişim & Rezervasyon",
   CONTACT_DESC: "Manevi yolculuğunuza ilk adımı birlikte atıyoruz.",
-  CONTACT_EMAIL: "info@hadiumreye.com",
+  CONTACT_EMAIL: "info@hadiumreyegidelim.com",
   CONTACT_ADDRESS: "Bakırköy, İstanbul",
   // Social media
   SOCIAL_INSTAGRAM: "",

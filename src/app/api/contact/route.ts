@@ -2,6 +2,7 @@ import { NextResponse, after } from 'next/server';
 import { notifyNewLead } from '@/lib/lead-notify';
 import { prisma } from '@/lib/prisma';
 import { rateLimit, getClientIp } from '@/lib/rate-limit';
+import { ticketOf } from '@/lib/help';
 
 export async function POST(request: Request) {
   const ip = getClientIp(request);
@@ -15,7 +16,9 @@ export async function POST(request: Request) {
 
   try {
     const body = await request.json();
-    const { name, phone, package: selectedPackage, message } = body;
+    const { name, phone, package: selectedPackage, message, subject, email, website } = body;
+    // Bot tuzağı (yardım merkezi formu): doluysa sessizce kabul edilmiş gibi dön
+    if (website) return NextResponse.json({ success: true, ticket: "HUG-000000" });
 
     if (!name || !phone) {
       return NextResponse.json(
@@ -28,16 +31,16 @@ export async function POST(request: Request) {
       data: {
         name,
         phone,
-        package: selectedPackage || null,
-        message: message || null,
+        package: selectedPackage || subject || null,
+        message: [email ? `E-posta: ${email}` : "", message || ""].filter(Boolean).join("\n") || null,
       },
     });
 
     // Yöneticiye WhatsApp bildirimi yanıtı bekletmeden gönderilir
     after(() => notifyNewLead(newContact));
 
-    return NextResponse.json({ success: true });
-  } catch (error: any) {
+    return NextResponse.json({ success: true, ticket: ticketOf(newContact.id) });
+  } catch (error) {
     console.error('Contact API Error:', error);
     return NextResponse.json(
       { error: 'Sunucu hatası. Talebiniz alınamadı.' },

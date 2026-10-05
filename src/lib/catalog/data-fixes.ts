@@ -298,3 +298,21 @@ export async function runDataFixesOnceH() {
     revalidatePath("/blog", "layout");
   } catch { /* önbellek tazeleme düzeltmeyi engellemez */ }
 }
+
+// Dokuzuncu düzeltme (6 Ekim, kullanıcı): iletişim e-postası info@hadiumreyegidelim.com
+const FLAG_I = "DATA_FIX_2026_10_06_I";
+let ranI = false;
+
+export async function runDataFixesOnceI() {
+  if (ranI) return;
+  ranI = true;
+  if (await prisma.setting.findUnique({ where: { key: FLAG_I } })) return;
+  const row = await prisma.setting.findUnique({ where: { key: "CONTACT_EMAIL" } });
+  const before = row?.value ?? null;
+  await prisma.setting.upsert({ where: { key: "CONTACT_EMAIL" }, update: { value: "info@hadiumreyegidelim.com" }, create: { key: "CONTACT_EMAIL", value: "info@hadiumreyegidelim.com" } });
+  await prisma.setting.upsert({ where: { key: FLAG_I }, update: { value: JSON.stringify({ before }) }, create: { key: FLAG_I, value: JSON.stringify({ before }) } });
+  try {
+    const { revalidateSiteSettings } = await import("@/lib/site-settings");
+    revalidateSiteSettings();
+  } catch { /* önbellek tazeleme düzeltmeyi engellemez */ }
+}

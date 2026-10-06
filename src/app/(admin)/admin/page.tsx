@@ -3,6 +3,7 @@ export const dynamic = 'force-dynamic';
 import React from 'react';
 import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
+import TodayPanel from '@/components/admin/TodayPanel';
 
 export default async function AdminDashboardPage() {
   const [totalPackages, totalPosts, unreadLeads, totalLeads, recentLeads] = await Promise.all([
@@ -85,6 +86,9 @@ export default async function AdminDashboardPage() {
         </div>
       </div>
 
+      {/* Bugün: bekleyen işler */}
+      <TodayPanel />
+
       {/* Metric Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {stats.map((s) => {
@@ -128,7 +132,7 @@ export default async function AdminDashboardPage() {
           </div>
         ) : (
           <div className="divide-y divide-outline-variant/10">
-            {recentLeads.map((lead: any) => {
+            {recentLeads.map((lead) => {
               let phone = lead.phone.replace(/[^0-9]/g, '');
               if (phone.startsWith('0')) phone = '9' + phone;
               if (!phone.startsWith('90')) phone = '90' + phone;

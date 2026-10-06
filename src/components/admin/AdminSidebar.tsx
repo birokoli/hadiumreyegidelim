@@ -19,7 +19,6 @@ const menuGroups: { title: string; links: { href: string; icon: string; label: s
     title: "Satış & CRM",
     links: [
       { href: "/admin/crm",                       icon: "view_kanban",    label: "CRM Komuta Merkezi", permission: "orders"   },
-      { href: "/admin/fiyat-teklifleri/hesaplayici", icon: "calculate",     label: "Excel Fiyat Motoru", permission: "orders"   },
       { href: "/admin/orders",                    icon: "receipt_long",   label: "Talepler / Siparişler", permission: "orders" },
       { href: "/admin/contact",                   icon: "chat",           label: "WhatsApp & İletişim", permission: "orders", badgeKey: "unreadLeads" },
       { href: "/admin/fiyat-teklifleri",           icon: "request_quote",  label: "Fiyat Teklifleri", permission: "orders"     },
@@ -80,6 +79,23 @@ export default function AdminSidebar({ logoUrl }: { logoUrl?: string }) {
   const [isSuperAdmin, setIsSuperAdmin] = useState(true);
   const [counts, setCounts] = useState<{ unreadLeads?: number; totalPackages?: number; totalPosts?: number }>({});
   const [filterQuery, setFilterQuery] = useState("");
+  // Gruplar açılıp kapanır (6 Ekim, kullanıcı: "admin çok yoğun"); seçim tarayıcıda hatırlanır.
+  // Varsayılan açık: günlük kullanılanlar. Aktif sayfanın grubu her zaman açık.
+  const DEFAULT_OPEN = ["Genel Bakış", "Satış & CRM", "İçerik Stüdyosu"];
+  const [openGroups, setOpenGroups] = useState<string[]>(DEFAULT_OPEN);
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("admin-open-groups");
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- tarayıcıda kayıtlı tercih ilk yüklemede okunur
+      if (saved) setOpenGroups(JSON.parse(saved));
+    } catch { /* kayıt yoksa varsayılan */ }
+  }, []);
+  const toggleGroup = (title: string) =>
+    setOpenGroups((prev) => {
+      const next = prev.includes(title) ? prev.filter((t) => t !== title) : [...prev, title];
+      try { localStorage.setItem("admin-open-groups", JSON.stringify(next)); } catch { /* yok sayılır */ }
+      return next;
+    });
 
   useEffect(() => {
     fetch("/api/admin/me")
@@ -174,20 +190,33 @@ export default function AdminSidebar({ logoUrl }: { logoUrl?: string }) {
         </div>
 
         {/* Navigation List */}
-        <nav className="flex-1 px-3 py-4 space-y-6">
+        <nav className="flex-1 px-3 py-4 space-y-4">
           {menuGroups.map((group, idx) => {
             const filteredLinks = group.links
               .filter(link => canSee(link.permission))
               .filter(link => link.label.toLowerCase().includes(filterQuery.toLowerCase()));
 
             if (filteredLinks.length === 0) return null;
+            const hasActive = filteredLinks.some((l) => (l.exact ? pathname === l.href : pathname.startsWith(l.href)));
+            const isOpen = Boolean(filterQuery) || hasActive || openGroups.includes(group.title);
+            const groupBadge = filteredLinks.reduce((sum, l) => sum + (l.badgeKey === "unreadLeads" ? (counts.unreadLeads ?? 0) : 0), 0);
 
             return (
               <div key={idx}>
-                <h4 className="text-[10.5px] font-bold tracking-[0.12em] text-outline uppercase px-3 mb-2">
-                  {group.title}
-                </h4>
-                <div className="space-y-0.5">
+                <button
+                  type="button"
+                  onClick={() => toggleGroup(group.title)}
+                  aria-expanded={isOpen}
+                  className="w-full flex items-center justify-between text-[10.5px] font-bold tracking-[0.12em] text-outline uppercase px-3 mb-2 hover:text-primary transition-colors"
+                >
+                  <span className="flex items-center gap-2">
+                    {group.title}
+                    {!isOpen && groupBadge > 0 && <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-secondary text-white normal-case tracking-normal">{groupBadge}</span>}
+                    {!isOpen && <span className="normal-case tracking-normal font-medium text-outline/70">· {filteredLinks.length}</span>}
+                  </span>
+                  <span className={`material-symbols-outlined text-[16px] transition-transform ${isOpen ? "rotate-180" : ""}`}>expand_more</span>
+                </button>
+                {isOpen && <div className="space-y-0.5">
                   {filteredLinks.map(link => {
                     const isActive = link.exact
                       ? pathname === link.href
@@ -232,7 +261,7 @@ export default function AdminSidebar({ logoUrl }: { logoUrl?: string }) {
                       </Link>
                     );
                   })}
-                </div>
+                </div>}
               </div>
             );
           })}

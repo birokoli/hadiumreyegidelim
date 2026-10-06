@@ -355,3 +355,26 @@ export async function runDataFixesOnceJ() {
     revalidateSiteSettings();
   } catch { /* önbellek tazeleme düzeltmeyi engellemez */ }
 }
+
+// On birinci düzeltme (6 Ekim, kullanıcı onayı): AI cevaplarında kaynak gösterilen ama bizde olmayan konular
+// blog motorunda öne alınır (docs/taslaklar/icerik-acigi-ai.md §2). Taslak olarak yazılır, yayın onayı kullanıcıda.
+const FLAG_K = "DATA_FIX_2026_10_06_K";
+let ranK = false;
+export async function runDataFixesOnceK() {
+  if (ranK) return;
+  ranK = true;
+  if (await prisma.setting.findUnique({ where: { key: FLAG_K } })) return;
+  const topics = [
+    "Umre kaç gün olmalı? 7, 10, 14 ve 15 günlük programların farkı",
+    "Mahremsiz umre: kadınlar tek başına umreye gidebilir mi? 2026 kuralları",
+    "Umre için gerekli belgeler listesi 2026",
+    "Diyanet umre kaydı 2026 nasıl yapılır? Bireysel umreden farkı",
+    "Umre firması seçerken nelere bakılmalı? Kontrol listesi",
+  ];
+  const row = await prisma.setting.findUnique({ where: { key: "BLOG_TOPIC_PIN" } });
+  let pins: string[] = [];
+  try { pins = row ? JSON.parse(row.value) : []; } catch { pins = []; }
+  const next = [...pins, ...topics.filter((t) => !pins.includes(t))];
+  await prisma.setting.upsert({ where: { key: "BLOG_TOPIC_PIN" }, update: { value: JSON.stringify(next) }, create: { key: "BLOG_TOPIC_PIN", value: JSON.stringify(next) } });
+  await prisma.setting.upsert({ where: { key: FLAG_K }, update: { value: String(next.length) }, create: { key: FLAG_K, value: String(next.length) } });
+}

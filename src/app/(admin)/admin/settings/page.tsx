@@ -4,6 +4,8 @@ import { SOCIAL_BRANDS, SocialIcon, type SocialKey } from "@/components/icons/So
 
 import React, { useState, useEffect } from "react";
 
+import HubTabs from "@/components/admin/HubTabs";
+
 const DEFAULTS = {
   home_banner_image: "",
   HOME_HERO_VIDEO: "",
@@ -182,6 +184,7 @@ export default function SettingsPage() {
 
   return (
     <div className="pt-20 p-6 lg:p-10 min-h-screen bg-surface">
+      <HubTabs hub="sistem" />
       <header className="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
         <div>
           <span className="text-tertiary font-label text-xs tracking-[0.2em] uppercase mb-2 block">Dinamik İçerik CMS</span>

@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState, useCallback } from 'react';
 
+import HubTabs from "@/components/admin/HubTabs";
+
 interface Message {
   id: string;
   senderType: 'influencer' | 'admin';
@@ -112,6 +114,7 @@ export default function AdminSupportPage() {
 
   return (
     <div className="flex h-[calc(100vh-80px)] overflow-hidden">
+      <HubTabs hub="sohbet" />
 
       {/* ── SOL: SOHBET LİSTESİ ── */}
       <div className={`${selectedId ? 'hidden lg:flex' : 'flex'} flex-col w-full lg:w-[340px] bg-white border-r border-outline-variant/15 shrink-0`}>

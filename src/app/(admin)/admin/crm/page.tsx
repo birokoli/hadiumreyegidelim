@@ -3,6 +3,8 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 
+import HubTabs from "@/components/admin/HubTabs";
+
 type LeadStage = "NEW" | "IN_DISCUSSION" | "QUOTATION_SENT" | "WON" | "LOST";
 
 const STAGES: { key: LeadStage; label: string; color: string; bg: string; border: string; icon: string }[] = [
@@ -155,6 +157,7 @@ export default function CrmPage() {
 
   return (
     <div className="p-6 lg:p-8 space-y-8 max-w-7xl mx-auto min-h-screen bg-surface text-on-surface">
+      <HubTabs hub="satis" />
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-outline-variant/15">
         <div>

@@ -4,6 +4,8 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { DEFAULT_EYLUL_CAMPAIGN, DEFAULT_HANIM_UMRESI_CAMPAIGN, DEFAULT_ILK_UMREM_CAMPAIGN, EylulCampaignConfig, isHomeCardLive } from "@/lib/eylul-campaign";
 
+import HubTabs from "@/components/admin/HubTabs";
+
 type AdsConfig = { ad1: EylulCampaignConfig; ad2: EylulCampaignConfig; ad3: EylulCampaignConfig };
 
 const inputClass = "w-full rounded-lg border border-outline-variant/25 bg-surface-container-lowest px-3 py-2 text-xs text-on-surface outline-none focus:border-primary/40";
@@ -12,6 +14,7 @@ const labelClass = "mb-1 block text-[10px] font-bold uppercase tracking-wider te
 function Field({ label, value, onChange, rows, type = "text", required = false }: { label: string; value: string; onChange: (value: string) => void; rows?: number; type?: string; required?: boolean }) {
   return (
     <label>
+      <HubTabs hub="site" />
       <span className={labelClass}>{label}</span>
       {rows ? (
         <textarea className={inputClass} rows={rows} value={value} onChange={(e) => onChange(e.target.value)} required={required} />

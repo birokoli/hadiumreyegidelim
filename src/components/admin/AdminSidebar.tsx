@@ -8,7 +8,17 @@ import { useAdminContext } from "./AdminContext";
 
 type AdminPermission = "dashboard" | "orders" | "content" | "operations" | "marketing" | "settings" | "users";
 
-const menuGroups: { title: string; links: { href: string; icon: string; label: string; exact?: boolean; permission?: AdminPermission; badgeKey?: string }[] }[] = [
+interface SidebarLink {
+  href: string;
+  icon: string;
+  label: string;
+  exact?: boolean;
+  match?: string[];
+  permission?: AdminPermission;
+  badgeKey?: string;
+}
+
+const menuGroups: { title: string; links: SidebarLink[] }[] = [
   {
     title: "Genel Bakış",
     links: [
@@ -16,58 +26,88 @@ const menuGroups: { title: string; links: { href: string; icon: string; label: s
     ],
   },
   {
-    title: "Satış & CRM",
+    title: "Satış",
     links: [
-      { href: "/admin/crm",                       icon: "view_kanban",    label: "CRM Komuta Merkezi", permission: "orders"   },
-      { href: "/admin/orders",                    icon: "receipt_long",   label: "Talepler / Siparişler", permission: "orders" },
-      { href: "/admin/contact",                   icon: "chat",           label: "WhatsApp & İletişim", permission: "orders", badgeKey: "unreadLeads" },
-      { href: "/admin/fiyat-teklifleri",           icon: "request_quote",  label: "Fiyat Teklifleri", permission: "orders"     },
-      { href: "/admin/fiyat-teklifleri/hizmetler", icon: "library_books",  label: "Hizmet Kütüphanesi", exact: true, permission: "orders"   },
-      { href: "/admin/fiyat-teklifleri/hizmetler/fiyatlar", icon: "calendar_month", label: "Aylık Satış Fiyatları", permission: "orders" },
+      {
+        href: "/admin/contact",
+        icon: "inbox",
+        label: "Gelen Kutusu",
+        match: ["/admin/contact", "/admin/orders", "/admin/crm", "/admin/fiyat-teklifleri"],
+        permission: "orders",
+        badgeKey: "unreadLeads",
+      },
+      {
+        href: "/admin/packages",
+        icon: "inventory_2",
+        label: "Ürün ve Fiyat",
+        match: ["/admin/packages", "/admin/fiyat-teklifleri/hizmetler", "/admin/fiyat-teklifleri/hizmetler/fiyatlar", "/admin/services", "/admin/guides"],
+        permission: "operations",
+        badgeKey: "totalPackages",
+      },
     ],
   },
   {
-    title: "Operasyon",
+    title: "İçerik",
     links: [
-      { href: "/admin/packages", icon: "inventory_2", label: "Lüks Paketler", permission: "operations", badgeKey: "totalPackages" },
-      { href: "/admin/services", icon: "mosque",      label: "Ek Hizmetler", permission: "operations"   },
-      { href: "/admin/guides",   icon: "person_pin",  label: "Yerel Rehberler", permission: "operations" },
+      {
+        href: "/admin/content",
+        icon: "article",
+        label: "Blog",
+        match: ["/admin/content", "/admin/blog-kuyrugu", "/admin/categories", "/admin/authors"],
+        permission: "content",
+        badgeKey: "totalPosts",
+      },
+      {
+        href: "/admin/sayfa-metinleri",
+        icon: "edit_note",
+        label: "Site Metinleri",
+        match: ["/admin/sayfa-metinleri", "/admin/yardim-merkezi", "/admin/content/rehber", "/admin/eylul-umresi"],
+        permission: "content",
+      },
+      {
+        href: "/admin/yorumlar",
+        icon: "reviews",
+        label: "Yorumlar",
+        permission: "marketing",
+      },
     ],
   },
   {
-    title: "İçerik Stüdyosu",
+    title: "Büyüme",
     links: [
-      { href: "/admin/content",    icon: "article",  label: "Blog İçerikleri", exact: true, permission: "content", badgeKey: "totalPosts" },
-      { href: "/admin/blog-kuyrugu", icon: "queue", label: "Blog Konu Kuyruğu", permission: "content" },
-      { href: "/admin/yardim-merkezi", icon: "help_center", label: "Yardım Merkezi", permission: "content" },
-      { href: "/admin/sayfa-metinleri", icon: "edit_note", label: "Sayfa Metinleri", permission: "content" },
-      { href: "/admin/content/rehber", icon: "menu_book", label: "Rehber Sayfaları", permission: "content" },
-      { href: "/admin/categories", icon: "category", label: "Kategoriler", permission: "content"     },
-      { href: "/admin/authors",    icon: "badge",    label: "Yazarlar", permission: "content"        },
-    ],
-  },
-  {
-    title: "Pazarlama & Büyüme",
-    links: [
-      { href: "/admin/influencers", icon: "person_celebrate", label: "Influencer Yönetimi", permission: "marketing" },
-      { href: "/admin/influencer-adaylari", icon: "person_search", label: "Influencer Adayları", permission: "marketing" },
-      { href: "/admin/yorumlar", icon: "reviews", label: "Yorumlar", permission: "marketing" },
-      { href: "/admin/affiliate",   icon: "star",             label: "Affiliate Program", permission: "marketing" },
-      { href: "/admin/campaigns",   icon: "campaign",         label: "Kampanyalar", permission: "marketing" },
-      { href: "/admin/seo",         icon: "travel_explore",   label: "SEO Masası", permission: "marketing" },
-      { href: "/admin/eylul-umresi", icon: "ads_click",        label: "ADS Sayfası", permission: "marketing" },
-      { href: "/admin/support",     icon: "support_agent",    label: "Canlı Destek", permission: "marketing" },
-      { href: "/admin/whatsapp-ai", icon: "smart_toy",        label: "WhatsApp AI", permission: "marketing" },
+      {
+        href: "/admin/influencer-adaylari",
+        icon: "person_celebrate",
+        label: "Influencer",
+        match: ["/admin/influencer-adaylari", "/admin/influencers", "/admin/affiliate", "/admin/campaigns"],
+        permission: "marketing",
+      },
+      {
+        href: "/admin/seo",
+        icon: "travel_explore",
+        label: "Görünürlük",
+        match: ["/admin/seo", "/admin/ai-visibility", "/admin/analytics"],
+        permission: "marketing",
+      },
+      {
+        href: "/admin/support",
+        icon: "forum",
+        label: "Sohbetler",
+        match: ["/admin/support", "/admin/whatsapp-ai"],
+        permission: "marketing",
+      },
     ],
   },
   {
     title: "Sistem",
     links: [
-      { href: "/admin/analytics", icon: "analytics",     label: "Analytics", permission: "dashboard"       },
-      { href: "/admin/media",     icon: "photo_library", label: "Medya Galerisi", permission: "content"  },
-      { href: "/admin/ai-visibility", icon: "search_hands_free", label: "AI Görünürlük", permission: "dashboard" },
-      { href: "/admin/users",     icon: "manage_accounts", label: "Kullanıcılar", permission: "users" },
-      { href: "/admin/settings",  icon: "settings",      label: "Ayarlar", permission: "settings" },
+      {
+        href: "/admin/settings",
+        icon: "settings",
+        label: "Ayarlar",
+        match: ["/admin/settings", "/admin/users", "/admin/media"],
+        permission: "settings",
+      },
     ],
   },
 ];
@@ -79,10 +119,9 @@ export default function AdminSidebar({ logoUrl }: { logoUrl?: string }) {
   const [isSuperAdmin, setIsSuperAdmin] = useState(true);
   const [counts, setCounts] = useState<{ unreadLeads?: number; totalPackages?: number; totalPosts?: number }>({});
   const [filterQuery, setFilterQuery] = useState("");
-  // Gruplar açılıp kapanır (6 Ekim, kullanıcı: "admin çok yoğun"); seçim tarayıcıda hatırlanır.
-  // Varsayılan açık: günlük kullanılanlar. Aktif sayfanın grubu her zaman açık.
-  const DEFAULT_OPEN = ["Genel Bakış", "Satış & CRM", "İçerik Stüdyosu"];
+  const DEFAULT_OPEN = ["Genel Bakış", "Satış", "İçerik"];
   const [openGroups, setOpenGroups] = useState<string[]>(DEFAULT_OPEN);
+
   useEffect(() => {
     try {
       const saved = localStorage.getItem("admin-open-groups");
@@ -90,6 +129,7 @@ export default function AdminSidebar({ logoUrl }: { logoUrl?: string }) {
       if (saved) setOpenGroups(JSON.parse(saved));
     } catch { /* kayıt yoksa varsayılan */ }
   }, []);
+
   const toggleGroup = (title: string) =>
     setOpenGroups((prev) => {
       const next = prev.includes(title) ? prev.filter((t) => t !== title) : [...prev, title];
@@ -131,6 +171,21 @@ export default function AdminSidebar({ logoUrl }: { logoUrl?: string }) {
   useEffect(() => {
     setSidebarOpen(false);
   }, [pathname, setSidebarOpen]);
+
+  // En uzun eşleşen yol kazanır: /admin/content/rehber "Site Metinleri"ne, /admin/fiyat-teklifleri/hizmetler
+  // "Ürün ve Fiyat"a ait olur (kısa önekleri olan Blog / Gelen Kutusu aynı anda aktif görünmez)
+  const matchLength = (link: SidebarLink) => {
+    const paths = link.match && link.match.length > 0 ? link.match : [link.href];
+    let best = -1;
+    for (const m of paths) {
+      const hit = pathname === m || (!link.exact && m !== "/admin" && pathname.startsWith(m + "/"));
+      if (hit) best = Math.max(best, m.length);
+    }
+    return best;
+  };
+  const allLinks = menuGroups.flatMap((g) => g.links);
+  const bestLength = Math.max(-1, ...allLinks.map(matchLength));
+  const isLinkActive = (link: SidebarLink) => bestLength >= 0 && matchLength(link) === bestLength;
 
   return (
     <>
@@ -197,7 +252,7 @@ export default function AdminSidebar({ logoUrl }: { logoUrl?: string }) {
               .filter(link => link.label.toLowerCase().includes(filterQuery.toLowerCase()));
 
             if (filteredLinks.length === 0) return null;
-            const hasActive = filteredLinks.some((l) => (l.exact ? pathname === l.href : pathname.startsWith(l.href)));
+            const hasActive = filteredLinks.some((l) => isLinkActive(l));
             const isOpen = Boolean(filterQuery) || hasActive || openGroups.includes(group.title);
             const groupBadge = filteredLinks.reduce((sum, l) => sum + (l.badgeKey === "unreadLeads" ? (counts.unreadLeads ?? 0) : 0), 0);
 
@@ -218,10 +273,7 @@ export default function AdminSidebar({ logoUrl }: { logoUrl?: string }) {
                 </button>
                 {isOpen && <div className="space-y-0.5">
                   {filteredLinks.map(link => {
-                    const isActive = link.exact
-                      ? pathname === link.href
-                      : pathname.startsWith(link.href);
-
+                    const isActive = isLinkActive(link);
                     const badgeValue = link.badgeKey ? (counts as Record<string, number>)[link.badgeKey] : undefined;
 
                     return (

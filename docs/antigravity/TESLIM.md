@@ -4,6 +4,60 @@ En yeni en üstte. Şablon ve kurallar: `docs/antigravity/GOREVLER.md` §0. Clau
 
 <!-- Teslimler bu çizginin altına -->
 
+## 2026-10-06 — Antigravity Teslim Kaydı: G15 (Admin Sadeleştirme: Sekmeli Merkezler ve Menü Yapılandırması)
+
+### 1. Durum ve Değişen Dosyalar Özeti
+
+- **G15-1 (Ortak Sekme Çubuğu Bileşeni):**
+  - `src/components/admin/HubTabs.tsx`: `"use client"` istemci bileşeni eklendi. `HUBS` nesnesi ile 8 merkez (Satış, Ürün ve Fiyat, Blog, Site Metinleri, Influencer, Görünürlük, Sohbetler, Sistem) tanımlandı. Aktif sekme `usePathname` ile belirleniyor; mobilde yatay kaydırılabilir, aktif sekmede `bg-primary text-white`, `exact` bayrağı desteğiyle hassas eşleşme sunuyor.
+
+- **G15-2 (Sayfalara Sekme Çubuğu Entegrasyonu):**
+  - Sayfa iç işleyişine, veri çekme/API/form mantığına dokunulmadan 29 ilgili sayfa ve düzen (`layout.tsx` / `page.tsx`) dosyasının en üstüne `<HubTabs hub="..." />` bileşeni eklendi:
+    - **Satış (`satis`):** `/admin/contact`, `/admin/orders`, `/admin/crm`, `/admin/fiyat-teklifleri`
+    - **Ürün ve Fiyat (`urun`):** `/admin/packages`, `/admin/fiyat-teklifleri/hizmetler`, `/admin/fiyat-teklifleri/hizmetler/fiyatlar`, `/admin/services`, `/admin/guides`
+    - **Blog (`blog`):** `/admin/content`, `/admin/blog-kuyrugu`, `/admin/categories`, `/admin/authors`
+    - **Site Metinleri (`site`):** `/admin/sayfa-metinleri`, `/admin/yardim-merkezi`, `/admin/content/rehber`, `/admin/eylul-umresi`
+    - **Influencer (`influencer`):** `/admin/influencer-adaylari`, `/admin/influencers`, `/admin/affiliate`, `/admin/campaigns`
+    - **Görünürlük (`gorunurluk`):** `/admin/seo` (layout en üstü), `/admin/ai-visibility` (layout en üstü), `/admin/analytics`
+    - **Sohbetler (`sohbet`):** `/admin/support`, `/admin/whatsapp-ai`
+    - **Sistem (`sistem`):** `/admin/settings`, `/admin/users`, `/admin/media`
+
+- **G15-3 (Menü Sadeleştirmesi ve Aktiflik Eşleşmesi):**
+  - `src/components/admin/AdminSidebar.tsx`: Menü link sayısı 32 satırdan 10 ana merkez satırına düşürüldü.
+  - Her merkez linki için `match?: string[]` dizisi tanımlandı; merkezin herhangi bir alt sekmesindeyken (ör. `/admin/categories` altındayken "Blog" ana menüsü) sol menünün aktif görünmesi sağlandı.
+  - Açılır grup davranışı ve varsayılan açık gruplar (`DEFAULT_OPEN`: Genel Bakış, Satış, İçerik) korundu.
+
+---
+
+### 2. Tip Kontrolü, Linter ve Ekran Görüntüleri
+
+- **`npx tsc --noEmit` Çıktısı:**
+  ```text
+  Exit Code: 0 (Clean / 0 Hata)
+  ```
+
+- **`npx eslint` Çıktısı (G15 Bileşenleri):**
+  ```bash
+  npx eslint src/components/admin/HubTabs.tsx src/components/admin/AdminSidebar.tsx
+  ```
+  ```text
+  Exit Code: 0 (Clean / 0 Hata / 0 Uyarı)
+  ```
+
+- **Yerel Ekran Görüntüleri:**
+  - Sol Menü (Sadeleştirilmiş ~10 Satır): `docs/antigravity/goruntuler/G15-1-menu.png`
+  - Satış Merkezi (`/admin/contact`): `docs/antigravity/goruntuler/G15-2-satis.png`
+  - Ürün ve Fiyat Merkezi (`/admin/packages`): `docs/antigravity/goruntuler/G15-3-urun.png`
+  - Blog Merkezi (`/admin/content`): `docs/antigravity/goruntuler/G15-4-blog.png`
+  - Site Metinleri Merkezi (`/admin/sayfa-metinleri`): `docs/antigravity/goruntuler/G15-5-site.png`
+  - Influencer Merkezi (`/admin/influencer-adaylari`): `docs/antigravity/goruntuler/G15-6-influencer.png`
+  - Görünürlük Merkezi (`/admin/seo` Layout Üstü): `docs/antigravity/goruntuler/G15-7-gorunurluk.png`
+  - Sohbetler Merkezi (`/admin/support`): `docs/antigravity/goruntuler/G15-8-sohbet.png`
+  - Sistem Merkezi (`/admin/settings`): `docs/antigravity/goruntuler/G15-9-sistem.png`
+  - Alt Sayfada Menü Aktifliği (`/admin/categories` altındayken sol menüde "Blog" aktif): `docs/antigravity/goruntuler/G15-10-subpage-active.png`
+
+---
+
 ## 2026-10-06 — Antigravity Teslim Kaydı: G14 (Admin Yardım Merkezi ve Talepler Yönetimi)
 
 ### 1. Durum ve Değişen Dosyalar Özeti

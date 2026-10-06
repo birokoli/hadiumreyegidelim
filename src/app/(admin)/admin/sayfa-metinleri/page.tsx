@@ -2,6 +2,8 @@
 // Sayfa Metinleri: sitedeki sabit metinler (başlık, giriş, SSS, düğme yazıları…) sayfa sayfa düzenlenir.
 import { useEffect, useMemo, useState } from "react";
 
+import HubTabs from "@/components/admin/HubTabs";
+
 type Field = { key: string; label: string; default: string; multiline?: boolean; help?: string };
 type Page = { id: string; label: string; path: string; fields: Field[] };
 
@@ -55,6 +57,7 @@ export default function PageTextsAdmin() {
 
   return (
     <div className="space-y-6">
+      <HubTabs hub="site" />
       <div>
         <h1 className="font-headline text-2xl font-bold text-primary">Sayfa Metinleri</h1>
         <p className="mt-1 text-sm text-on-surface-variant">Sitedeki sayfaların başlık, giriş, SSS ve düğme yazıları. Bir alanı boşaltırsanız koddaki varsayılan metin geri gelir.</p>

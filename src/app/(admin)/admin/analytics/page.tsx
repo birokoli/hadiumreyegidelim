@@ -4,9 +4,12 @@ import React from 'react';
 import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
 
+import HubTabs from "@/components/admin/HubTabs";
+
 function StatCard({ label, value, icon, color, bg, sub }: any) {
   return (
     <div className="bg-surface-container-lowest rounded-2xl border border-outline-variant/15 shadow-sm p-5 flex items-center gap-4">
+      <HubTabs hub="gorunurluk" />
       <div className={`w-12 h-12 rounded-xl ${bg} flex items-center justify-center shrink-0`}>
         <span className={`material-symbols-outlined text-[24px] ${color}`} style={{ fontVariationSettings: "'FILL' 1" }}>{icon}</span>
       </div>

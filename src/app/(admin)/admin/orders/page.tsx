@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 
+import HubTabs from "@/components/admin/HubTabs";
+
 const STATUS_STYLES: Record<string, string> = {
   PENDING: "bg-[#b8862f]/10 text-[#b8862f] border-[#b8862f]/25",
   CONFIRMED: "bg-primary/10 text-primary border-primary/25",
@@ -87,6 +89,7 @@ export default function OrdersPage() {
 
   return (
     <div className="p-6 lg:p-8 max-w-7xl mx-auto space-y-8 min-h-screen bg-surface text-on-surface">
+      <HubTabs hub="satis" />
       {/* Header Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-outline-variant/15">
         <div>

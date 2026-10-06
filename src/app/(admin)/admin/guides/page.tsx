@@ -1,6 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
 
+import HubTabs from "@/components/admin/HubTabs";
+
 const emptyGuide = {
   name: "", title: "", price: 0, image: "", slug: "",
   biography: "", quote: "", youtubeUrl: "", expertise: "",
@@ -104,6 +106,7 @@ export default function GuidesPage() {
 
   return (
     <div className="pt-28 px-6 lg:px-12 pb-20 bg-surface min-h-screen">
+      <HubTabs hub="urun" />
       {/* Header */}
       <section className="mb-10 flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4">
         <div className="max-w-2xl">

@@ -2,6 +2,8 @@
 
 import React, { useEffect, useMemo, useState } from "react";
 
+import HubTabs from "@/components/admin/HubTabs";
+
 type AdminUser = {
   id: string;
   name: string;
@@ -188,6 +190,7 @@ export default function AdminUsersPage() {
 
   return (
     <div className="pt-20 p-6 lg:p-10 min-h-screen bg-surface">
+      <HubTabs hub="sistem" />
       <header className="mb-8 flex flex-col xl:flex-row justify-between items-start xl:items-end gap-5">
         <div>
           <span className="text-tertiary font-label text-xs tracking-[0.2em] uppercase mb-2 block">

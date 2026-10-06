@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
+import HubTabs from "@/components/admin/HubTabs";
+
 interface QuotationItem {
   saleTotalUsd: number;
 }
@@ -76,6 +78,7 @@ export default function QuotationsListPage() {
 
   return (
     <div className="p-6 lg:p-8 max-w-7xl mx-auto space-y-8 min-h-screen bg-surface text-on-surface">
+      <HubTabs hub="satis" />
       {/* Header Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-outline-variant/15">
         <div>

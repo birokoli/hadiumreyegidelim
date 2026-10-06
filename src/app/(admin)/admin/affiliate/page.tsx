@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react';
 
+import HubTabs from "@/components/admin/HubTabs";
+
 interface ProgramConfig {
   id: number;
   baseThreshold: number;
@@ -131,6 +133,7 @@ export default function AdminAffiliatePage() {
 
   return (
     <div className="p-6 lg:p-8 max-w-5xl mx-auto space-y-8">
+      <HubTabs hub="influencer" />
       <div>
         <h1 className="font-headline text-2xl font-bold text-primary">Affiliate Program Yönetimi</h1>
         <p className="text-sm text-on-surface-variant mt-0.5">Program konfigürasyonu, skor hesaplama ve yıldız düzeltmeleri</p>

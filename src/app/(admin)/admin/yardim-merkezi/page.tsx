@@ -7,6 +7,8 @@ import { parseFaq, serializeFaq } from "@/lib/page-texts/faq";
 import type { FaqItem } from "@/components/help/FaqBrowser";
 import { PAGE_TEXTS } from "@/lib/page-texts/registry";
 
+import HubTabs from "@/components/admin/HubTabs";
+
 type Lead = {
   id: string;
   name: string;
@@ -256,6 +258,7 @@ export default function YardimMerkeziAdminPage() {
 
   return (
     <div className="p-6 lg:p-8 max-w-7xl mx-auto space-y-10 min-h-screen bg-surface text-on-surface">
+      <HubTabs hub="site" />
       {/* Header Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-outline-variant/15">
         <div>

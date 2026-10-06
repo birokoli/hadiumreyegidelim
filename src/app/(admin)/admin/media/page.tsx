@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
 
+import HubTabs from "@/components/admin/HubTabs";
+
 type MediaFile = {
   id: string;
   name: string;
@@ -123,6 +125,7 @@ export default function MediaPage() {
 
   return (
     <div className="p-6 lg:p-8 min-h-screen bg-surface">
+      <HubTabs hub="sistem" />
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>

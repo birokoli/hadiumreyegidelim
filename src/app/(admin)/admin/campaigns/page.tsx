@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react';
 
+import HubTabs from "@/components/admin/HubTabs";
+
 const typeLabels: Record<string, { label: string; icon: string; color: string }> = {
   package:  { label: 'Paket',    icon: 'inventory_2',    color: 'bg-primary/[0.08] text-primary' },
   transfer: { label: 'Transfer', icon: 'directions_car', color: 'bg-orange-50 text-orange-600' },
@@ -71,6 +73,7 @@ export default function AdminCampaignsPage() {
 
   return (
     <div className="p-6 lg:p-8 max-w-6xl mx-auto space-y-6">
+      <HubTabs hub="influencer" />
       <div className="flex items-center justify-between">
         <div>
           <h1 className="font-headline text-2xl font-bold text-primary">Kampanyalar</h1>

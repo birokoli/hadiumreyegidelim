@@ -3,6 +3,8 @@
 import React, { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 
+import HubTabs from "@/components/admin/HubTabs";
+
 export interface Prospect {
   id: string;
   platform: "instagram" | "tiktok" | "youtube";
@@ -205,6 +207,7 @@ export default function InfluencerAdaylariAdmin() {
 
   return (
     <div className="space-y-8 p-6 lg:p-8 max-w-7xl mx-auto">
+      <HubTabs hub="influencer" />
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-outline-variant/15 pb-6">
         <div>

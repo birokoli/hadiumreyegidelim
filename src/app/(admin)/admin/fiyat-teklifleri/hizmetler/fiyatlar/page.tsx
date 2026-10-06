@@ -4,6 +4,8 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 
+import HubTabs from "@/components/admin/HubTabs";
+
 type Service = { id: string; name: string; category: string; defaultPricingType: string; isPublic?: boolean; city?: string | null };
 type Price = { serviceId: string; month: string; variant: string; salePriceUsd: number };
 
@@ -110,6 +112,7 @@ export default function MonthlyPricesPage() {
 
   return (
     <div className="p-6 lg:p-8 max-w-[1400px] mx-auto space-y-6 min-h-screen bg-surface text-on-surface">
+      <HubTabs hub="urun" />
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pb-5 border-b border-outline-variant/15">
         <div>
           <Link href="/admin/fiyat-teklifleri/hizmetler" className="text-[11px] font-semibold text-on-surface-variant hover:text-primary">← Hizmet Kütüphanesi</Link>

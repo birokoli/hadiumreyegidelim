@@ -1,6 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
 
+import HubTabs from "@/components/admin/HubTabs";
+
 export default function CategoriesPage() {
   const [categories, setCategories] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -79,6 +81,7 @@ export default function CategoriesPage() {
 
   return (
     <div className="p-6 lg:p-8 max-w-7xl mx-auto space-y-8 min-h-screen bg-surface text-on-surface">
+      <HubTabs hub="blog" />
       {/* Header Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-outline-variant/15">
         <div>

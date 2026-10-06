@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
+import HubTabs from "@/components/admin/HubTabs";
+
 type QueueItem = {
   topic: string;
   clusterId?: string;
@@ -77,6 +79,7 @@ export default function BlogKuyruguAdmin() {
   if (loading) {
     return (
       <div className="space-y-6">
+      <HubTabs hub="blog" />
         <div>
           <h1 className="font-headline text-2xl font-bold text-primary">Blog Konu Kuyruğu</h1>
           <p className="mt-1 text-sm text-on-surface-variant">Yükleniyor…</p>

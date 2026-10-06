@@ -4,6 +4,8 @@ import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
 import AdminInfluencerActions from '@/components/admin/AdminInfluencerActions';
 
+import HubTabs from "@/components/admin/HubTabs";
+
 const tierConfig: Record<string, { label: string; color: string }> = {
   eci:     { label: 'Elçi',    color: 'bg-[#b8862f]/10 text-[#b8862f] border-[#b8862f]/25' },
   rehber:  { label: 'Rehber',  color: 'bg-primary/[0.08] text-primary border-primary/20' },
@@ -28,6 +30,7 @@ export default async function AdminInfluencersPage() {
 
   return (
     <div className="p-6 lg:p-8 max-w-7xl mx-auto space-y-6">
+      <HubTabs hub="influencer" />
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>

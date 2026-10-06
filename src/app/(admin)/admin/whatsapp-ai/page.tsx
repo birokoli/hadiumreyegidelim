@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import { DEFAULT_WHATSAPP_AI_CONFIG, type WhatsAppAIConfig } from "@/lib/whatsapp-ai";
 
+import HubTabs from "@/components/admin/HubTabs";
+
 type DashboardData = {
   config: WhatsAppAIConfig;
   stats: { conversations: number; totalMessages: number; aiMessages: number; handoffCount: number };
@@ -289,6 +291,7 @@ export default function WhatsAppAIPage() {
                 const matchedExample = lastInbound ? config.trainingExamples.find(ex => ex.customerMessage.toLowerCase().includes(lastInbound.content.toLowerCase().slice(0, 15))) : null;
                 return (
                   <div className="rounded-xl border border-blue-200 bg-white p-3.5 text-xs shadow-sm space-y-2">
+      <HubTabs hub="sohbet" />
                     <div className="flex items-center justify-between font-bold text-blue-900 border-b border-slate-100 pb-2">
                       <span className="flex items-center gap-1.5"><span className="material-symbols-outlined text-sm text-blue-600">analytics</span> Gelen Soru & Eğitim Entegrasyon Analizi</span>
                       <span className="rounded bg-blue-50 px-2 py-0.5 text-[10px] text-blue-700 font-mono">Ollama 4'lü Zincir Aktif</span>

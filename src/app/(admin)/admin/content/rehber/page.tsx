@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+import HubTabs from "@/components/admin/HubTabs";
+
 type Row = { slug: string; group: string; path: string; h1: string; keyword: string; reviewed: string; edited: boolean; savedAt: string | null; savedBy: string | null; codeNewer: boolean };
 
 const GROUPS: { id: string; title: string }[] = [
@@ -27,6 +29,7 @@ export default function RehberSayfalariPage() {
 
   return (
     <div className="p-6 lg:p-8 max-w-6xl mx-auto space-y-8 min-h-screen bg-surface text-on-surface">
+      <HubTabs hub="site" />
       <div className="pb-6 border-b border-outline-variant/15">
         <span className="text-[10px] font-bold tracking-widest text-secondary uppercase">İçerik Stüdyosu</span>
         <h1 className="font-headline text-2xl font-bold tracking-tight text-primary mt-1">Rehber Sayfaları</h1>

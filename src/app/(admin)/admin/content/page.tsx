@@ -7,6 +7,8 @@ import { marked } from "marked";
 import { useAdminContext } from "@/components/admin/AdminContext";
 import BlogEngine from "@/components/admin/content/BlogEngine";
 
+import HubTabs from "@/components/admin/HubTabs";
+
 // Rich text editörü Server-Side Rendering'de hata vermemesi için Next/Dynamic ile sarmalıyoruz
 const ReactQuill = dynamic(() => import("react-quill-new"), { 
   ssr: false, 
@@ -78,6 +80,7 @@ const MediaUploader = ({ title, slug, onUploadComplete, currentUrl }: { title: s
 
   return (
     <div className="border border-outline-variant/30 rounded-2xl p-6 bg-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:border-primary/40 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all flex flex-col h-full">
+      <HubTabs hub="blog" />
       <div className="flex justify-between items-start mb-4 gap-4">
         <h4 className="font-headline font-bold text-primary text-[13px] leading-tight flex-1 line-clamp-3">{title}</h4>
         {currentUrl && <span className="bg-secondary/10 text-secondary text-[9px] font-bold uppercase tracking-widest px-3 py-1 rounded-full whitespace-nowrap">Hazır</span>}

@@ -4,6 +4,8 @@ import React, { useState, useEffect, useCallback, useMemo, Suspense } from "reac
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { SUBJECTS, ticketOf } from "@/lib/help";
 
+import HubTabs from "@/components/admin/HubTabs";
+
 type Lead = {
   id: string;
   name: string;
@@ -37,6 +39,7 @@ function renderMessageContent(msg: string | null) {
   const lines = msg.split("\n");
   return (
     <div className="space-y-1.5 text-xs text-on-surface whitespace-pre-line bg-surface-container-low p-4 rounded-xl border border-outline-variant/15">
+      <HubTabs hub="satis" />
       {lines.map((line, idx) => {
         if (line.startsWith("   - ") || line.startsWith("- ")) {
           return (

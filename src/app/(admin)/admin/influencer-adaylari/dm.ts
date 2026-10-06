@@ -9,7 +9,7 @@ export interface DmTemplate {
 // Şablonlar (6 Ekim): Mayıs 2026'daki ilk davet "yüksek kazanç / yeni nesil program" diliyle ve toplantı şartıyla
 // gönderilmiş, çoğu red almıştı. Yeni dil: kişiye özel bir gözlem, kim olduğumuzun kanıtı (19,5 bin takipçi,
 // doğrulanmış yorumlar), sade teklif, yük getirmeyen tek adım. {komisyon} ve {indirim} gönderilmeden önce elle yazılır;
-// {hitap} ve {gozlem} "Hesabı incele ve doldur" ile hesabın paylaşımlarından doldurulur (prospects.ts → draftMessage);
+// {hitap}, {gozlem} ve {nedenSiz} "Hesabı incele ve doldur" ile hesabın paylaşımlarından doldurulur (prospects.ts → draftMessage);
 // [köşeli parantezli] imza satırları elle yazılır.
 export const DM_TEMPLATES: DmTemplate[] = [
   {
@@ -18,42 +18,46 @@ export const DM_TEMPLATES: DmTemplate[] = [
     channel: "instagram_dm",
     content: `Selamün aleyküm {hitap},
 
-Hadi Umreye Gidelim adına yazıyorum. {gozlem}
+Ben [Adınız], Hadi Umreye Gidelim'den yazıyorum. {gozlem} {nedenSiz}
 
-Sizi iş ortaklığı programımıza davet etmek isteriz. Program kapsamında takipçilerinize özel {indirim} indirim kodu tanımlanır; kodunuzla tamamlanan her umre kaydı için {komisyon} komisyon hakkı kazanırsınız. Belirli bir paylaşım sayısı veya takvim talep etmiyoruz.
+Sizi iş ortaklığı programımıza davet etmek istiyoruz. Amacımız, umreye niyet eden takipçilerinizin bu yolculuğa kendi tarihine ve bütçesine uygun şekilde, güvenle çıkmasına birlikte vesile olmak.
 
-Ayrıntıları iletebilmemiz için e-posta adresinizi paylaşabilir ya da programı aşağıdaki bağlantıdan inceleyebilirsiniz:
+• Takipçileriniz size özel kodla umrelerinde {indirim} indirim alır.
+• Kodunuzla gelen her umre kaydından {komisyon} kazanırsınız; dilerseniz bu kazancı kendi umreniz için kullanabilirsiniz.
+• Paylaşım sayısı ya da takvim şartı yoktur; paylaşımlarınız için görselleri biz hazırlarız.
+
+Uygun görürseniz ayrıntıları size kısaca anlatmak isteriz. Programın sayfası:
 {davet}
 
-Saygılarımızla,
-Hadi Umreye Gidelim`
+Hayırlı günler dileriz,
+[Adınız] · Hadi Umreye Gidelim`
   },
   {
     id: "email_long",
     name: "E-posta (iş birliği teklifi)",
     channel: "email",
-    subject: "Hadi Umreye Gidelim – İş Ortaklığı Teklifi",
+    subject: "Hadi Umreye Gidelim İş Ortaklığı Daveti",
     content: `Sayın {hitap},
 
 Selamün aleyküm.
 
-Hadi Umreye Gidelim adına size ulaşıyorum. {gozlem} Takipçilerinizle kurduğunuz güvene dayalı iletişimin, umre yolculuğuna hazırlanan kişiler için değerli bir rehberlik sunduğunu düşünüyoruz.
+Ben [Ad Soyad], Hadi Umreye Gidelim'de [unvan] olarak görev yapıyorum. {gozlem} {nedenSiz}
 
-Hadi Umreye Gidelim, umre yolculuğunu misafirlerinin tarih ve bütçe tercihlerine göre planlayan bir bireysel umre organizasyonudur. Vize, konaklama, transfer ve rehberlik hizmetlerini tek bir süreç içinde sunmaktayız. Instagram'da 19.500 kişilik bir topluluğa ulaşıyor, misafirlerimizin değerlendirmelerini doğrulanmış olarak web sitemizde yayımlıyoruz (hadiumreyegidelim.com/yorumlar).
+Bu nedenle sizi Hadi Umreye Gidelim iş ortaklığı programına davet etmek istiyoruz. Amacımız, umreye niyet eden takipçilerinizin bu yolculuğa kendi tarihine ve bütçesine uygun şekilde, güvenle çıkmasına birlikte vesile olmak.
 
-Bu çerçevede sizi iş ortaklığı programımıza davet etmek isteriz. Program kapsamında:
+Hadi Umreye Gidelim, umreyi kişinin kendi tarihine ve bütçesine göre planlayan bir bireysel umre organizasyonudur; vize, konaklama, transfer ve rehberlik hizmetlerini tek bir süreçte sunar. Instagram'da 19.500 kişilik bir topluluğumuz var ve misafirlerimizin yorumlarını doğrulanmış olarak yayımlıyoruz: hadiumreyegidelim.com/yorumlar
 
-• Takipçilerinize özel {indirim} indirim sağlayan kişisel bir kod tanımlanır.
-• Kodunuz veya bağlantınız aracılığıyla tamamlanan her umre kaydı için {komisyon} oranında komisyon hakkı kazanırsınız.
-• Yönlendirmelerinizi, kayıtları ve kazançlarınızı size özel panel üzerinden anlık olarak takip edebilirsiniz.
-• Kazançlarınızı nakit olarak çekebilir ya da kendi umre yolculuğunuzda kullanabilirsiniz.
+Program kapsamında:
+• Takipçileriniz, size özel kodla umrelerinde {indirim} indirim alır.
+• Kodunuzla tamamlanan her umre kaydından {komisyon} komisyon kazanırsınız.
+• Kazancınızı nakit olarak çekebilir ya da kendi umreniz için kullanabilirsiniz.
+• Yönlendirmelerinizi, kayıtları ve kazancınızı size özel panelden anlık olarak izlersiniz.
+• Belirli bir paylaşım sayısı ya da yayın takvimi şartı yoktur; paylaşımlarınız için görselleri biz hazırlarız.
 
-İş birliği süresince belirli bir paylaşım sayısı veya yayın takvimi talep etmiyoruz. İçeriklerinizde kullanabileceğiniz görsel materyaller tarafımızca hazırlanarak tarafınıza iletilecektir.
-
-Teklifimizi değerlendirmeniz hâlinde programın ayrıntılarını yazılı olarak iletebilir ya da size uygun bir zamanda kısa bir görüşme planlayabiliriz. Başvurunuzu aşağıdaki bağlantı üzerinden de iletebilirsiniz:
+Uygun görürseniz programın ayrıntılarını yazılı olarak iletebilir ya da size uygun bir zamanda kısa bir görüşme planlayabiliriz. Programın başvuru sayfası:
 {davet}
 
-Değerlendirmeniz için şimdiden teşekkür eder, çalışmalarınızda başarılar dileriz.
+Değerlendirmeniz için şimdiden teşekkür eder, hayırlı çalışmalar dileriz.
 
 Saygılarımla,
 
@@ -67,29 +71,29 @@ hadiumreyegidelim.com`
     id: "followup_5days",
     name: "Takip (5–7 gün sonra, tek sefer)",
     channel: "followup",
-    content: `Sayın {hitap},
+    content: `Selamün aleyküm {hitap},
 
-Selamün aleyküm.
+Geçen hafta size iş ortaklığı davetimizi iletmiştik; yoğunluk arasında gözden kaçmış olabileceğini düşünerek kısaca hatırlatmak istedim. Takipçilerinizin umresine birlikte vesile olabilirsek çok seviniriz.
 
-Geçtiğimiz hafta tarafınıza ilettiğimiz iş ortaklığı teklifimizi hatırlatmak isteriz. Program kapsamında takipçilerinize özel {indirim} indirim kodu tanımlanmakta, kodunuzla tamamlanan her umre kaydı için {komisyon} komisyon hakkı kazanmaktasınız.
-
-Teklifimizi değerlendirme fırsatınız olduysa dönüşünüzü memnuniyetle bekleriz. Programın ayrıntılarına aşağıdaki bağlantıdan ulaşabilirsiniz:
+Şu an uygun değilse bunu bildirmeniz de bizim için yeterli. Programın sayfası:
 {davet}
 
-Saygılarımızla,
-Hadi Umreye Gidelim`
+Hayırlı günler dileriz,
+[Adınız] · Hadi Umreye Gidelim`
   }
 ];
 
-export const GOZLEM_YER_TUTUCU = "[İçeriğine dair tek cümlelik özel gözlem — \"Hesabı incele ve doldur\" ile doldurulur.]";
+export const GOZLEM_YER_TUTUCU = "[Paylaşımlarına dair tek cümle — \"Hesabı incele ve doldur\" ile doldurulur.]";
+export const NEDEN_YER_TUTUCU = "[Neden ona yazdığımız, tek cümle — \"Hesabı incele ve doldur\" ile doldurulur.]";
 
 export function fillTemplate(
   templateContent: string,
-  params: { ad?: string; hitap?: string; gozlem?: string; platform?: string; komisyon?: string; indirim?: string; davet?: string }
+  params: { ad?: string; hitap?: string; gozlem?: string; nedenSiz?: string; platform?: string; komisyon?: string; indirim?: string; davet?: string }
 ): string {
   return templateContent
     .replaceAll("{hitap}", params.hitap || params.ad || "Değerli İçerik Üreticisi")
     .replaceAll("{gozlem}", params.gozlem || GOZLEM_YER_TUTUCU)
+    .replaceAll("{nedenSiz}", params.nedenSiz || NEDEN_YER_TUTUCU)
     .replaceAll("{ad}", params.ad || "Değerli İçerik Üreticisi")
     .replaceAll("{platform}", params.platform || "Instagram")
     .replaceAll("{komisyon}", params.komisyon || "{komisyon}")

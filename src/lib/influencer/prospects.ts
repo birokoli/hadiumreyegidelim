@@ -323,10 +323,11 @@ export async function cleanupList() {
 }
 
 /** Kişiye özel ilk mesaj: adayın son paylaşımlarına değinen kısa, sıcak, saygılı bir DM taslağı */
-export type DmFields = { hitap: string; gozlem: string; email: string | null; not: string | null };
+export type DmFields = { hitap: string; gozlem: string; nedenSiz: string; email: string | null; not: string | null };
 
-/** Hazır mesajın kişiye özel alanları (6 Ekim): ana metin admin'deki şablondur ve değişmez; Claude yalnızca hitabı ve
- *  hesabın gerçek paylaşımlarına dayanan gözlem cümlesini yazar. E-posta biyografiden düzenli ifadeyle alınır. */
+/** Hazır mesajın kişiye özel alanları (6 Ekim): ana metin admin'deki şablondur ve değişmez; Claude yalnızca hitabı,
+ *  hesabın gerçek paylaşımlarına dayanan gözlem cümlesini ve "neden size yazıyoruz" cümlesini yazar.
+ *  İlk deneme ("A. Ebrar Mudul", "Kâbe'nin sokakları") kullanıcıyı memnun etmedi: hitap kuralı ve düz dil şartı sıkılaştırıldı. */
 export async function draftMessage(id: string): Promise<DmFields> {
   await ensureProspectSchema();
   const p = await prisma.influencerProspect.findUnique({ where: { id } });
@@ -337,18 +338,31 @@ export async function draftMessage(id: string): Promise<DmFields> {
   const { text } = await callClaude({
     feature: "other",
     effort: "medium",
-    maxTokens: 2000,
-    system:
-      "Hadi Umreye Gidelim (bireysel umre organizasyonu) adına bir içerik üreticisine kurumsal bir iş ortaklığı mektubu gönderilecek. Mektubun ana metni hazır; sen yalnızca iki kişiye özel alanı dolduruyorsun.\n\n" +
-      "1) hitap: Kişinin adı soyadı, Türkçe büyük-küçük harf kurallarıyla (ör. \"Beyza Betül Hanım\", \"Ahmet Yılmaz Bey\"). Hanım/Bey'i yalnızca içerikten cinsiyet açıkça anlaşılıyorsa ekle; anlaşılmıyorsa yalnızca ad soyad yaz. Görünen ad bir marka/sayfa adıysa ya da gerçek ad belli değilse kullanıcı adından ad uydurma, görünen adı olduğu gibi yaz. \"Sayın\" kelimesini yazma, mektupta zaten var.\n" +
-      "2) gozlem: Mektupta \"Hadi Umreye Gidelim adına size ulaşıyorum.\" cümlesinden hemen sonra gelecek 1-2 cümle. Verilen paylaşım metinlerinden BİRİNE ya da belirgin bir içerik temasına somut biçimde değin (ör. \"Medine'de sabah namazı sonrası paylaştığınız Mescid-i Nebevi görüntülerini ve yolculuğa dair notlarınızı ilgiyle takip ettik.\"). Yalnızca verilen metinlerde olanı yaz; uydurma, abartma. Kurumsal ve saygılı dil, \"siz\" hitabı; gündelik ifade, ünlem, emoji, iltifat yağmuru yok. Sonraki cümle \"Takipçilerinizle kurduğunuz güvene dayalı iletişimin...\" diye başladığı için onu tekrar etme.\n" +
-      "3) not: Mesajı gönderen kişi için kısa uyarı (ör. hesap bir işletme gibi görünüyor, son paylaşım çok eski, içerik umreyle ilgisiz). Uyarı yoksa null.\n\n" +
-      'Yalnızca JSON döndür: {"hitap":"...","gozlem":"...","not":null}',
+    maxTokens: 2500,
+    system: `Hadi Umreye Gidelim (bireysel umre organizasyonu) bir içerik üreticisini iş ortaklığı programına davet ediyor. Davet metni hazır; sen yalnızca üç kişiye özel alanı dolduruyorsun. Metin şöyle akıyor:
+"Selamün aleyküm {hitap}, Ben [ad], Hadi Umreye Gidelim'den yazıyorum. {gozlem} {nedenSiz} Sizi iş ortaklığı programımıza davet etmek istiyoruz. Amacımız, umreye niyet eden takipçilerinizin bu yolculuğa ... güvenle çıkmasına birlikte vesile olmak. ..."
+
+1) hitap — Türk iş yazışması usulü: yalnızca ilk ad(lar) + Hanım/Bey. Örnek: "Beyza Betül Hanım", "Ebrar Hanım", "Ahmet Bey". Soyadı YAZMA. Baş harf kısaltmalarını (A., M.) ATLA. Ad küçük harfle ya da süslü yazılmışsa düzelt (ör. "ebrar_mdl" → "Ebrar"). Cinsiyet içerikten (tesettür, "hanımlar", kendinden bahsediş, görünen ad) anlaşılmıyorsa Hanım/Bey ekleme, yalnızca adı yaz. Gerçek ad hiç yoksa görünen adı olduğu gibi yaz. "Sayın" yazma.
+
+2) gozlem — TEK cümle, en fazla 30 kelime. Verilen paylaşımlardan BİRİNİN konusunu sade ve somut biçimde söyle; kişinin gerçekten paylaştığını okuduğumuzu göstersin. İyi örnek: "Medine'de Mescid-i Nebevi'de Kur'an okurken yaşadıklarınızı anlattığınız paylaşımınızı okuduk." / "Tesettür kombinlerinizi umre hazırlığı için uyarladığınız videonuzu izledik."
+Yasak: mecaz ve şiirsel dil ("özlem dolu", "yüreğe dokunan", "Kâbe'nin sokakları"), "dikkatimizi çekti", "ilgiyle takip ediyoruz", "çok beğendik", abartılı iltifat, ünlem, emoji. Yer adlarını doğru kullan (Kâbe bir yapıdır, sokağı yoktur; Mekke, Medine, Mescid-i Haram, Mescid-i Nebevi, Ravza, Uhud). Paylaşımlarda olmayan hiçbir şeyi yazma.
+
+3) nedenSiz — TEK cümle, en fazla 30 kelime: neden özellikle bu kişiye yazdığımız; içeriğiyle kitlesinin umreye ilgisini bağla. Örnek: "Umreye hazırlanan takipçilerinize kendi deneyiminizle yol gösterdiğinizi görüyoruz; bu yolculukta onlara sizin kadar içtenlikle eşlik edebilecek az kişi var." Kurumsal ama sıcak; satıcı dili ("fırsat", "kazanç", "iş birliği yapalım") yok.
+
+4) not — mesajı gönderecek kişiye kısa uyarı (hesap işletme/sayfa gibi, son paylaşım çok eski, içerik umreyle ilgisiz, cinsiyet belirsiz olduğu için Hanım/Bey eklenmedi gibi). Yoksa null.
+
+Yalnızca JSON döndür: {"hitap":"...","gozlem":"...","nedenSiz":"...","not":null}`,
     prompt: `Görünen ad: ${p.name ?? "-"}\nKullanıcı adı: @${p.handle}\nBiyografi: ${p.bio ?? "-"}\nTakipçi: ${p.followers ?? "-"}\nSon paylaşım metinleri:\n${captions.slice(0, 12).map((c, i) => `${i + 1}. ${c.replace(/\s+/g, " ").slice(0, 350)}`).join("\n") || "- (okunamadı)"}`,
   });
-  const j = extractJson<{ hitap?: string; gozlem?: string; not?: string | null }>(text);
-  if (!j?.gozlem) throw new Error("Hesap okunamadı ya da yanıt çözülemedi; tekrar deneyin.");
-  return { hitap: (j.hitap || p.name || p.handle).replace(/^Sayın\s+/i, "").trim(), gozlem: j.gozlem.trim(), email, not: j.not?.trim() || null };
+  const j = extractJson<{ hitap?: string; gozlem?: string; nedenSiz?: string; not?: string | null }>(text);
+  if (!j?.gozlem || !j?.nedenSiz) throw new Error("Hesap okunamadı ya da yanıt çözülemedi; tekrar deneyin.");
+  return {
+    hitap: (j.hitap || p.name || p.handle).replace(/^Sayın\s+/i, "").trim(),
+    gozlem: j.gozlem.trim(),
+    nedenSiz: j.nedenSiz.trim(),
+    email,
+    not: j.not?.trim() || null,
+  };
 }
 
 export async function setStage(id: string, stage: Stage) {

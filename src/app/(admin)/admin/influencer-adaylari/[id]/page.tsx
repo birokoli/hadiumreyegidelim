@@ -99,7 +99,7 @@ export default function InfluencerAdayDetayPage({ params }: { params: Promise<{ 
   const [similarBusy, setSimilarBusy] = useState(false);
   const [draftBusy, setDraftBusy] = useState(false);
   const [customDm, setCustomDm] = useState("");
-  const [fields, setFields] = useState<{ hitap: string; gozlem: string; email: string | null; not: string | null } | null>(null);
+  const [fields, setFields] = useState<{ hitap: string; gozlem: string; nedenSiz: string; email: string | null; not: string | null } | null>(null);
   const [indirim, setIndirim] = useState("");
   const [komisyon, setKomisyon] = useState("");
   const [similar, setSimilar] = useState<{ postsRead: number; mentions: number; usedResearch?: boolean; results: { handle: string; status: string; followers?: number | null; note?: string }[] } | null>(null);
@@ -125,7 +125,7 @@ export default function InfluencerAdayDetayPage({ params }: { params: Promise<{ 
       const res = await fetch(API, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "draft", id: prospect.id }) });
       const d = await res.json().catch(() => ({}));
       if (!res.ok || d.ok === false) throw new Error(d.error || "Hesap incelenemedi.");
-      setFields({ hitap: d.hitap, gozlem: d.gozlem, email: d.email ?? null, not: d.not ?? null });
+      setFields({ hitap: d.hitap, gozlem: d.gozlem, nedenSiz: d.nedenSiz, email: d.email ?? null, not: d.not ?? null });
       setCustomDm("");
       showToast("Kişiye özel alanlar dolduruldu; göndermeden önce okuyun.");
     } catch (e) {
@@ -157,6 +157,7 @@ export default function InfluencerAdayDetayPage({ params }: { params: Promise<{ 
         ad: prospect.name || prospect.handle,
         hitap: fields?.hitap,
         gozlem: fields?.gozlem,
+        nedenSiz: fields?.nedenSiz,
         indirim,
         platform: prospect.platform === "instagram" ? "Instagram" : prospect.platform === "tiktok" ? "TikTok" : "YouTube",
         komisyon,
@@ -423,7 +424,7 @@ export default function InfluencerAdayDetayPage({ params }: { params: Promise<{ 
                 <span className="material-symbols-outlined text-[16px]">manage_search</span>
                 {draftBusy ? "Hesap inceleniyor…" : fields ? "Yeniden incele" : "Hesabı incele ve doldur"}
               </button>
-              <p className="mb-3 text-[11px] text-outline leading-relaxed">Ana metin seçili şablondur. Hesabın biyografisi ve son paylaşımları okunur; yalnızca hitap ve kişiye özel gözlem cümlesi doldurulur.</p>
+              <p className="mb-3 text-[11px] text-outline leading-relaxed">Ana metin seçili şablondur. Hesabın biyografisi ve son paylaşımları okunur; yalnızca hitap, paylaşımlarına dair cümle ve "neden size yazıyoruz" cümlesi doldurulur.</p>
               {fields?.not && <p className="mb-3 p-2.5 rounded-xl bg-amber-50 text-amber-800 text-[11px] leading-relaxed">{fields.not}</p>}
               {fields?.email && (
                 <p className="mb-3 text-[11px] text-on-surface">Biyografideki e-posta: <button onClick={() => copyToClipboard(fields.email!, "E-posta")} className="font-bold text-primary underline">{fields.email}</button></p>

@@ -109,7 +109,7 @@ export default async function PackagesPage() {
 
         {priced.length > 0 && (
           <div className="max-w-screen-md mx-auto mt-16 md:mt-20">
-            <h2 className="font-headline text-xl md:text-2xl font-bold text-primary text-center mb-2">Umre fiyatları 2026: paketlere göre başlangıç fiyatları</h2>
+            <h2 className="font-headline text-xl md:text-2xl font-bold text-primary text-center mb-2">Umre fiyatları 2026&apos;da ne kadar?</h2>
             <p className="text-center text-sm text-on-surface-variant mb-6">Kişi başı, 2 kişilik oda için en uygun otelle hesaplanan fiyat. Paketi açıp otelinizi ve kişi sayınızı seçince fiyat güncellenir.</p>
             <div className="overflow-x-auto rounded-2xl border border-outline-variant/20 bg-white">
               <table className="w-full text-left text-sm">
@@ -136,7 +136,7 @@ export default async function PackagesPage() {
 
         {faq.length > 0 && (
           <div className="max-w-screen-md mx-auto mt-16 md:mt-20">
-            <h2 className="font-headline text-xl md:text-2xl font-bold text-primary text-center mb-6">Sık sorulanlar</h2>
+            <h2 className="font-headline text-xl md:text-2xl font-bold text-primary text-center mb-6">Umre paketleri hakkında sık sorulanlar</h2>
             <Faq items={faq} />
             <PageTrust className="mt-8 text-center" />
           </div>

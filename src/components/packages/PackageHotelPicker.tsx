@@ -31,7 +31,7 @@ export default function PackageHotelPicker({ title, preset, catalog, month, mont
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-primary/80">Otelinizi seçin</p>
-          <h2 className="mt-1 font-headline text-xl md:text-2xl font-bold text-primary">Fiyat kişi sayısına ve otele göre</h2>
+          <h2 className="mt-1 font-headline text-xl md:text-2xl font-bold text-primary">Fiyat kişi sayısına ve otele göre nasıl değişir?</h2>
           <p className="mt-1 text-[13px] text-on-surface-variant">{monthLabel} fiyatları · {preset.nights} gece · odada en fazla 4 kişi</p>
         </div>
         <div className="flex items-center gap-3">

@@ -178,7 +178,7 @@ export default async function PackageDetailPage({ params }: { params: Promise<{ 
           {/* Sol Kolon: Bilgiler, Harita, Dahil Hizmetler */}
           <div className="lg:col-span-2 space-y-8">
             <Panel tone="white">
-              <h2 className="text-2xl font-headline font-bold text-primary mb-4">Paket Bilgileri</h2>
+              <h2 className="text-2xl font-headline font-bold text-primary mb-4">Bu umre paketinde neler var?</h2>
               <div className="text-on-surface-variant font-light leading-relaxed text-base whitespace-pre-wrap">
                 {mainDesc}
               </div>
@@ -285,7 +285,7 @@ export default async function PackageDetailPage({ params }: { params: Promise<{ 
         <Section tone="muted">
           <div className="max-w-screen-md mx-auto">
             <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-primary/80 mb-2 text-center">Sık sorulanlar</p>
-            <h2 className="text-2xl font-headline font-bold text-primary text-center mb-6">Paket Hakkında Sorular</h2>
+            <h2 className="text-2xl font-headline font-bold text-primary text-center mb-6">Bu paket hakkında sık sorulanlar</h2>
             <Faq items={faq} />
             <PageTrust date={pkg.updatedAt} className="mt-8 text-center" />
           </div>

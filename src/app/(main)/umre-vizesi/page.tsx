@@ -78,7 +78,7 @@ export default async function UmreVizesiPage() {
       <Section tone="white">
         <div className="max-w-3xl space-y-10">
           <div>
-            <SectionHead kicker="Vize Türü" title="Resmi Vize Statüsü" />
+            <SectionHead kicker="Vize Türü" title="Umre için hangi vize gerekir?" />
             <div className="prose prose-lg prose-slate text-on-surface-variant leading-relaxed space-y-4">
               <p>
                 Resmi olarak ayrı bir vize türü yoktur. Suudi Arabistan'ın sunduğu <strong>Suudi Arabistan E-Turizm Vizesi</strong> (Elektronik Turistik Vize) başvurusu sırasında <em>"Umre de yapmak istiyorum"</em> seçeneğini işaretlemek yeterlidir.
@@ -109,7 +109,7 @@ export default async function UmreVizesiPage() {
             </Panel>
 
             <Panel tone="muted" className="p-6">
-              <h3 className="font-headline text-lg font-bold text-primary mb-3">Nasıl Alınır?</h3>
+              <h3 className="font-headline text-lg font-bold text-primary mb-3">Umre vizesi nasıl alınır?</h3>
               <ol className="space-y-3 text-sm text-on-surface-variant">
                 <li className="flex items-start gap-3">
                   <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary text-[12px] font-bold text-white">1</span>
@@ -132,7 +132,7 @@ export default async function UmreVizesiPage() {
           </div>
 
           <div>
-            <SectionHead kicker="Yasal Bilgi" title="Vize İşlemleri Hakkında" />
+            <SectionHead kicker="Yasal Bilgi" title="Bireysel umre için ayrıca onay gerekir mi?" />
             <p className="text-on-surface-variant leading-relaxed">
               Bireysel Umre, kişisel seyahatinizdir. Uçak biletinizi alıp E-Turizm Vizenizle yola çıktığınızda ek onay ihtiyacınız yoktur. Bizler bu süreçte sadece vize başvurunuzu hızlıca sonuçlandırmanız ve konaklama/transferinizi kolayca planlamanız için danışmanlık hizmeti sunuyoruz.
             </p>

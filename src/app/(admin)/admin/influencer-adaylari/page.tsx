@@ -134,10 +134,11 @@ export default function InfluencerAdaylariAdmin() {
     setStatusNotice("");
     setErrorMsg("");
     try {
-      const d = await post<{ found: number; alreadyKnown: number; added: number; tooSmall: number; unreadable: number; scored: number }>({ action: "discover", query: discoverQuery.trim(), platform: discoverPlatform, mode: discoverMode });
+      const d = await post<{ found: number; alreadyKnown: number; added: number; tooSmall: number; unreadable: number; scored: number; similar?: number }>({ action: "discover", query: discoverQuery.trim(), platform: discoverPlatform, mode: discoverMode });
       const parts = [`${d.found} hesap önerildi`, `${d.added} yeni aday eklendi`];
       if (d.alreadyKnown) parts.push(`${d.alreadyKnown} zaten listede`);
-      if (d.tooSmall) parts.push(`${d.tooSmall} tanesi 20 bin takipçinin altında olduğu için elendi`);
+      if (d.tooSmall) parts.push(`${d.tooSmall} tanesi 10–60 bin aralığı dışında olduğu için elendi`);
+      if (d.similar) parts.push(`uygun adayların etiketlediği hesaplardan ${d.similar} yeni aday daha eklendi`);
       if (d.unreadable) parts.push(`${d.unreadable} tanesi okunamadı (kişisel hesap ya da kullanıcı adı yanlış)`);
       if (d.scored) parts.push(`${d.scored} tanesi puanlandı, kalanlar günlük yenilemede puanlanır`);
       setStatusNotice(`"${discoverQuery.trim()}": ${parts.join(", ")}.`);
@@ -149,12 +150,27 @@ export default function InfluencerAdaylariAdmin() {
     }
   };
 
+  const [cleaning, setCleaning] = useState(false);
+  const handleCleanup = async () => {
+    setCleaning(true);
+    setErrorMsg("");
+    try {
+      const d = await post<{ checked: number; outOfRange: number; agency: number }>({ action: "cleanup" });
+      setStatusNotice(`${d.checked} aday tarandı: ${d.agency} acente/kurum hesabı ve ${d.outOfRange} hedef dışı (10–60 bin aralığı dışında) hesap "Reddedildi"ye alındı.`);
+      await loadProspects();
+    } catch (err) {
+      setErrorMsg(err instanceof Error ? err.message : String(err));
+    } finally {
+      setCleaning(false);
+    }
+  };
+
   const handleRescore = async () => {
     setRescoring(true);
     setErrorMsg("");
     try {
       const d = await post<{ refreshed: number }>({ action: "rescore" });
-      setStatusNotice(`${d.refreshed} aday yeniden ölçüldü ve puanlandı. Influencer olmayan (acente, hoca, sayfa) ve 20 binin altındaki keşif adayları "Reddedildi"ye alındı. Kalanlar için tekrar basabilirsiniz.`);
+      setStatusNotice(`${d.refreshed} aday yeniden ölçüldü ve puanlandı. Influencer olmayan (acente, hoca, sayfa) ve 10–60 bin aralığı dışındaki keşif adayları "Reddedildi"ye alındı. Kalanlar için tekrar basabilirsiniz.`);
       await loadProspects();
     } catch (err) {
       setErrorMsg(err instanceof Error ? err.message : String(err));
@@ -228,6 +244,10 @@ export default function InfluencerAdaylariAdmin() {
           <button onClick={testMeta} className="px-3 py-2 rounded-xl border border-outline-variant/30 text-xs font-semibold text-primary hover:bg-surface-container-low inline-flex items-center gap-1.5">
             <span className="material-symbols-outlined text-[16px]">link</span>
             Instagram bağlantısını test et
+          </button>
+          <button onClick={handleCleanup} disabled={cleaning} className="px-3 py-2 rounded-xl bg-primary text-white text-xs font-semibold inline-flex items-center gap-1.5 disabled:opacity-50">
+            <span className="material-symbols-outlined text-[16px]">cleaning_services</span>
+            {cleaning ? "Temizleniyor…" : "Listeyi temizle (10–50 bin hedef)"}
           </button>
           <button onClick={handleRescore} disabled={rescoring} className="px-3 py-2 rounded-xl border border-outline-variant/30 text-xs font-semibold text-on-surface-variant hover:bg-surface-container-low inline-flex items-center gap-1.5 disabled:opacity-50">
             <span className="material-symbols-outlined text-[16px]">refresh</span>
@@ -361,7 +381,7 @@ export default function InfluencerAdaylariAdmin() {
               </select>
             </div>
             <p className="text-[11px] text-outline leading-relaxed">
-              Influencer araştırması: Claude bir influencer pazarlamacısı gibi web'de araştırıp en fazla 25 hesap önerir (acente, firma, klasik hoca ve sayfa hesapları hariç). Her öneri Instagram'dan gerçek sayılarla doğrulanır; 20 binin altındaki ve okunamayan hesaplar eklenmez. 1–2 dakika sürer, Claude bütçesinden araştırma başına yaklaşık 0,5–1 $ harcar.
+              Influencer araştırması: Claude bir influencer pazarlamacısı gibi web'de araştırıp en fazla 25 hesap önerir (acente, firma, klasik hoca ve sayfa hesapları hariç). Hedef 10–50 bin takipçili mikro influencer. Her öneri Instagram'dan gerçek sayılarla doğrulanır; aralık dışı ve okunamayan hesaplar eklenmez. Uygun çıkanların paylaşımlarında etiketlediği hesaplar da otomatik denenir. 1–2 dakika sürer, Claude bütçesinden araştırma başına yaklaşık 0,5–1 $ harcar.
             </p>
             <button
               type="submit"

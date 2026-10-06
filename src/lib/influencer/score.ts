@@ -12,7 +12,10 @@ const NOT_INFLUENCER: Record<Exclude<AccountType, "influencer">, string> = {
   sayfa: "Fan, alıntı ya da haber sayfası: kişisel influencer değil.",
   diger: "Kişisel influencer hesabı olduğu anlaşılamadı.",
 };
-export const MIN_FOLLOWERS = 20000;
+// Hedef (kullanıcı, 6 Ekim): 10–50 bin takipçili mikro influencer; 60 bine kadar tolerans
+export const MIN_FOLLOWERS = 10000;
+export const MAX_FOLLOWERS = 60000;
+export const inRange = (f: number | null | undefined) => f != null && f >= MIN_FOLLOWERS && f <= MAX_FOLLOWERS;
 
 const SCHEMA = {
   type: "object",
@@ -67,7 +70,7 @@ export async function scoreProspect(m: IgMetrics): Promise<FitResult> {
 
   // Büyüklük (10): 30 bin – 1 milyon en uygun; 20 binin altı influencer sayılmaz
   if (m.followers != null) {
-    score += m.followers >= 30000 && m.followers <= 1000000 ? 10 : m.followers > 1000000 ? 7 : m.followers >= MIN_FOLLOWERS ? 5 : 0;
+    score += m.followers >= MIN_FOLLOWERS && m.followers <= 50000 ? 15 : m.followers <= MAX_FOLLOWERS && m.followers > 50000 ? 8 : 0;
     reasons.push(`${m.followers.toLocaleString("tr-TR")} takipçi.`);
   }
 
@@ -90,12 +93,16 @@ export async function scoreProspect(m: IgMetrics): Promise<FitResult> {
     reasons.push(`Kitle değerlendirmesi yapılamadı: ${e instanceof Error ? e.message : String(e)}`);
   }
 
-  // Üst sınırlar: aktif olmayan 35; influencer olmayan (acente, hoca, sayfa) ve 20 binin altı 15
+  // Üst sınırlar: aktif olmayan 35; influencer olmayan (acente, hoca, sayfa) ve 10 binin altı 15; 60 binin üstü 20
   if (days != null && days > 30) score = Math.min(score, 35);
   if (accountType && accountType !== "influencer") score = Math.min(score, 15);
   if (m.followers != null && m.followers < MIN_FOLLOWERS) {
     score = Math.min(score, 15);
     reasons.unshift(`Takipçi ${MIN_FOLLOWERS.toLocaleString("tr-TR")}'in altında: influencer ölçeğinde değil.`);
+  }
+  if (m.followers != null && m.followers > MAX_FOLLOWERS) {
+    score = Math.min(score, 20);
+    reasons.unshift(`Hedef dışı: ${m.followers.toLocaleString("tr-TR")} takipçi (hedef 10–50 bin mikro influencer).`);
   }
   // audienceTR (kitlenin Türkiye payı) Meta tarafından verilmiyor; influencer kendi istatistiğinden girilir
   return { fitScore: Math.max(0, Math.min(100, score)), fitReasons: reasons, religiousAudience, accountType };

@@ -95,6 +95,40 @@ export default function InfluencerAdayDetayPage({ params }: { params: Promise<{ 
     setSavingNote(false);
   };
 
+  // Kartopu ve kişiye özel mesaj (6 Ekim)
+  const [similarBusy, setSimilarBusy] = useState(false);
+  const [draftBusy, setDraftBusy] = useState(false);
+  const [customDm, setCustomDm] = useState("");
+  const handleSimilar = async () => {
+    if (!prospect) return;
+    setSimilarBusy(true);
+    try {
+      const res = await fetch(API, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "similar", id: prospect.id }) });
+      const d = await res.json().catch(() => ({}));
+      if (!res.ok || d.ok === false) throw new Error(d.error || "Bulunamadı.");
+      showToast(`${d.checked} etiketlenen hesap denendi, ${d.added} yeni aday eklendi.`);
+    } catch (e) {
+      showToast(e instanceof Error ? e.message : String(e), true);
+    } finally {
+      setSimilarBusy(false);
+    }
+  };
+  const handleDraft = async () => {
+    if (!prospect) return;
+    setDraftBusy(true);
+    try {
+      const res = await fetch(API, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "draft", id: prospect.id }) });
+      const d = await res.json().catch(() => ({}));
+      if (!res.ok || d.ok === false) throw new Error(d.error || "Mesaj yazılamadı.");
+      setCustomDm(String(d.text).replaceAll("{davet}", inviteUrl || "{davet}"));
+      showToast("Kişiye özel mesaj hazır; göndermeden önce okuyun.");
+    } catch (e) {
+      showToast(e instanceof Error ? e.message : String(e), true);
+    } finally {
+      setDraftBusy(false);
+    }
+  };
+
   const handleRefresh = async () => {
     if (!prospect) return;
     setRefreshing(true);
@@ -254,6 +288,10 @@ export default function InfluencerAdayDetayPage({ params }: { params: Promise<{ 
             <h3 className="font-headline font-bold text-base text-on-surface border-b border-outline-variant/10 pb-3 flex items-center gap-2">
               <span className="material-symbols-outlined text-primary text-[20px]">analytics</span>
               Hesap Metrikleri & Kitle Analizi
+              <button onClick={handleSimilar} disabled={similarBusy} className="px-3 py-1.5 rounded-xl border border-outline-variant/30 text-xs font-semibold text-primary hover:bg-surface-container-low inline-flex items-center gap-1 disabled:opacity-50" title="Paylaşımlarında etiketlediği hesaplardan 10–50 bin aralığındakileri ekler">
+                <span className="material-symbols-outlined text-[16px]">group_add</span>
+                {similarBusy ? "Aranıyor…" : "Benzerlerini bul"}
+              </button>
               <button onClick={handleRefresh} disabled={refreshing} className="ml-auto px-3 py-1.5 rounded-xl border border-outline-variant/30 text-xs font-semibold text-primary hover:bg-surface-container-low inline-flex items-center gap-1 disabled:opacity-50">
                 <span className="material-symbols-outlined text-[16px]">refresh</span>
                 {refreshing ? "Ölçülüyor…" : "Yeniden ölç ve puanla"}
@@ -351,6 +389,11 @@ export default function InfluencerAdayDetayPage({ params }: { params: Promise<{ 
             </div>
 
             <div>
+              <button onClick={handleDraft} disabled={draftBusy} className="mb-3 w-full py-2.5 bg-primary text-white rounded-xl text-xs font-bold inline-flex items-center justify-center gap-1.5 disabled:opacity-50">
+                <span className="material-symbols-outlined text-[16px]">edit_note</span>
+                {draftBusy ? "Paylaşımları okunuyor…" : customDm ? "Yeniden yaz" : "Kişiye özel mesaj yaz"}
+              </button>
+              {customDm && <button onClick={() => setCustomDm("")} className="mb-3 text-[11px] text-outline underline">Şablona dön</button>}
               <label className="block text-[11px] font-semibold text-outline mb-1">Şablon Seçimi</label>
               <select
                 value={selectedTemplateId}
@@ -372,13 +415,14 @@ export default function InfluencerAdayDetayPage({ params }: { params: Promise<{ 
 
             <div className="relative">
               <textarea
-                readOnly
                 rows={12}
-                value={filledDmContent}
+                value={customDm || filledDmContent}
+                readOnly={!customDm}
+                onChange={(e) => setCustomDm(e.target.value)}
                 className="w-full bg-surface-container-low text-xs text-on-surface rounded-xl p-3.5 border border-outline-variant/20 font-mono leading-relaxed focus:outline-none"
               />
               <button
-                onClick={() => copyToClipboard(filledDmContent, "DM Metni")}
+                onClick={() => copyToClipboard(customDm || filledDmContent, "DM Metni")}
                 className="absolute top-3 right-3 px-2.5 py-1.5 bg-primary text-white rounded-xl text-[11px] font-bold shadow-sm hover:bg-primary-container transition-all active:scale-95 flex items-center gap-1"
               >
                 <span className="material-symbols-outlined text-[14px]">content_copy</span>

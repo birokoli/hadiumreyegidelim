@@ -13,14 +13,13 @@ export const DM_TEMPLATES: DmTemplate[] = [
     channel: "instagram_dm",
     content: `Selamün aleyküm {ad},
 
-{platform} üzerindeki paylaşımlarınızı ve takipçilerinizle kurduğunuz samimi bağı takdirle takip ediyoruz. Hadi Umreye Gidelim olarak, muhafazakâr ve dindar kitlemize özel, şeffaf ve güvenilir umre seyahat çözümleri sunuyoruz.
+Paylaşımlarınızı bir süredir takip ediyoruz; takipçilerinizle kurduğunuz samimi bağ çok hoşumuza gidiyor.
 
-Topluluğunuza özel tanımlayacağımız indirim kuponu ve gerçekleştireceğiniz her yönlendirme için {komisyon} komisyon modeli ile bir iş birliği başlatmak isteriz.
+Biz Hadi Umreye Gidelim'iz; insanların umresini kendi tarihleri ve otelleriyle planlamasına yardım ediyoruz. Sizinle bir iş birliği yapmak isteriz: takipçilerinize özel bir indirim kodu, gelen her umre için de size {komisyon} komisyon.
 
-Detayları incelemek ve iş birliği davetimizi kabul etmek için aşağıdaki bağlantıyı kullanabilirsiniz:
-{davet}
+Uygun olursanız detayları konuşmayı çok isteriz. Bakmak isterseniz: {davet}
 
-Hayırlı günler dileriz.`
+Hayırlı günler 🌿`
   },
   {
     id: "email_long",

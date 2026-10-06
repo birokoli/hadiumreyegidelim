@@ -1,5 +1,6 @@
 // Yorum kartı (ana sayfa ve /yorumlar). Yıldız şeması bilerek verilmez (bkz. src/lib/reviews/index.ts).
 import Image from "next/image";
+import HugIcon from "@/components/icons/HugIcon";
 import type { PublicReview } from "@/lib/reviews";
 
 export function Stars({ n }: { n: number | null }) {
@@ -17,7 +18,7 @@ export default function ReviewCard({ r, clamp = false }: { r: PublicReview; clam
     <article className="flex h-full flex-col rounded-2xl border border-outline-variant/20 bg-white p-5">
       <div className="flex items-center justify-between gap-3">
         <Stars n={r.rating} />
-        {r.verified && <span className="rounded-full bg-primary/[0.06] px-2.5 py-0.5 text-[11px] font-semibold text-primary">Doğrulanmış müşteri</span>}
+        {r.verified && <span className="inline-flex items-center gap-1 rounded-full bg-primary/[0.06] py-0.5 pl-1.5 pr-2.5 text-[11px] font-semibold text-primary"><HugIcon name="guven" size={14} />Doğrulanmış müşteri</span>}
       </div>
       <p className={`mt-3 whitespace-pre-line text-[15px] leading-relaxed text-on-surface ${clamp ? "line-clamp-6" : ""}`}>{r.text}</p>
       {r.photoUrl && (

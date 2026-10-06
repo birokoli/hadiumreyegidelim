@@ -64,6 +64,9 @@ export default async function Footer({ logoUrl }: { logoUrl?: string }) {
               <Link className="font-label text-xs uppercase font-bold tracking-widest text-on-surface-variant hover:text-primary transition-all" href="/iletisim">
                 İletişim
               </Link>
+              <Link className="font-label text-xs uppercase font-bold tracking-widest text-on-surface-variant hover:text-primary transition-all" href="/hadi-umreye-gidelim-guvenilir-mi">
+                Güvenilir mi?
+              </Link>
             </div>
             <div className="flex gap-3 flex-wrap">
               {activeSocials.length > 0 ? (

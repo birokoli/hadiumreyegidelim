@@ -156,6 +156,38 @@ export const PAGE_TEXTS: PageTextDef[] = [
     ],
   },
   {
+    id: "guvenilir",
+    label: "Güvenilir mi?",
+    path: "/hadi-umreye-gidelim-guvenilir-mi",
+    fields: [
+      { key: "title", label: "Başlık (H1)", default: "Hadi Umreye Gidelim güvenilir mi?" },
+      { key: "lead", label: "Giriş (doğrudan cevap)", multiline: true, default: "Hadi Umreye Gidelim, MBD Tourism L.L.C. bünyesinde hizmet veren bir bireysel umre planlama hizmetidir (DTCM lisans no 1203162). Fiyatlarımız sitede açıktır, vize sürecimiz yazılıdır, misafir yorumlarımız doğrulanmış müşterilerden gelir. Bu sayfada nasıl çalıştığımızı, ödemeyi nasıl aldığımızı ve neleri yapmadığımızı tek tek anlatıyoruz." },
+      {
+        key: "items",
+        label: "Sorular ve cevaplar",
+        multiline: true,
+        help: "SSS ile aynı biçim: ilk satır 'Kategori | Soru' (kategori burada önemsiz), alt satırlar cevap, bloklar arasında boş satır.",
+        default: `Kurum | Hadi Umreye Gidelim kimdir?
+Bireysel umre planlayan bir hizmetiz: Mekke ve Medine otelleri, havalimanı ve şehirler arası transferler, Haremeyn hızlı treni, rehberlik ve umre vizesi. MBD Tourism L.L.C. bünyesinde, Dubai Turizm Dairesi (DTCM) lisansıyla (no 1203162) çalışıyoruz; İstanbul iletişim adresimiz Bakırköy'dedir.
+
+Fiyat | Fiyatlarınız neden sitede açık?
+Bireysel umre tasarlayıcısında ve paket sayfalarında otel, transfer ve hizmetlerin güncel fiyatları görünür; seçtiğiniz tarih, otel ve kişi sayısına göre toplam anında hesaplanır. Kesin fiyat, müsaitlik kontrolünden sonra size yazılı olarak iletilir.
+
+Ödeme | Ödemeyi ne zaman ve nasıl yapıyorum?
+Ödeme, size iletilen teklifi onayladıktan sonra yapılır. Banka havalesi / EFT ve kredi kartı ile ödeyebilirsiniz; tutar ve ödeme bilgileri teklifte yazılıdır.
+
+Vize | Umre vizesi süreci nasıl işliyor?
+Otel rezervasyonunuzu, gidiş-dönüş uçak biletinizi, her yolcunun pasaportunun ön yüzünü ve biyometrik fotoğrafını WhatsApp'tan gönderirsiniz. Kişi başı 140 USD ödemenin ardından vizeniz 2 saat içinde size iletilir.
+
+Sınırlar | Neleri yapmıyoruz?
+Uçak bileti satmıyoruz; uçuşunuzu kendiniz alırsınız. Ravza ziyareti için Nusuk randevusunu almıyoruz; bu randevu resmî Nusuk uygulamasından kişisel olarak alınır. Otel müsaitliği ya da fiyat konusunda yazılı teyit olmadan söz vermiyoruz.
+
+Destek | Seyahat sırasında bir sorun olursa ne olur?
+WhatsApp hattımızdan bize ulaşırsınız; transfer, otel ya da program değişikliği gibi konularda ekibimiz sizinle iletişimde kalır. Talepleriniz bir takip numarasıyla kayıt altına alınır.`,
+      },
+    ],
+  },
+  {
     id: "sss",
     label: "Sıkça Sorulan Sorular",
     path: "/sss",

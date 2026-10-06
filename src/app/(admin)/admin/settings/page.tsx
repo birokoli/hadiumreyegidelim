@@ -10,7 +10,7 @@ const DEFAULTS = {
   home_banner_image: "",
   HOME_HERO_VIDEO: "",
   HERO_TITLE: "Ruhunuzun Ritmini Kalabalıklara Teslim Etmeyin.",
-  HERO_DESC: "Ailenize ve Size Özel Butik Umre Deneyimi.",
+  HERO_DESC: "Bireysel umrenizi planlayın: tarihinizi, Mekke ve Medine otelinizi seçin, kişi başı fiyatı hemen görün. Umre vizesi 2 saatte, otel ve transfer bizden.",
   HOME_TOURS_KICKER: "Kişiselleştirilmiş Lüks Turlar",
   HOME_TOURS_TITLE: "Müsait & VIP Paketlerimiz",
   HOME_STEPS_KICKER: "Adım Adım Yolculuk",

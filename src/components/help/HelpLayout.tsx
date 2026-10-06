@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
 import { Breadcrumb, Container } from "@/components/ui/kit";
 
 const NAV: { group: string; items: { href: string; label: string }[] }[] = [
-  { group: "Kurumsal", items: [{ href: "/hakkimizda", label: "Hakkımızda" }, { href: "/yorumlar", label: "Misafir yorumları" }] },
+  { group: "Kurumsal", items: [{ href: "/hakkimizda", label: "Hakkımızda" }, { href: "/hadi-umreye-gidelim-guvenilir-mi", label: "Güvenilir mi?" }, { href: "/yorumlar", label: "Misafir yorumları" }] },
   {
     group: "Yardım ve iletişim",
     items: [

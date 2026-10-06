@@ -316,3 +316,42 @@ export async function runDataFixesOnceI() {
     revalidateSiteSettings();
   } catch { /* önbellek tazeleme düzeltmeyi engellemez */ }
 }
+
+// Onuncu düzeltme (6 Ekim, kullanıcı onayı): ana sayfa alt başlığı bilgi veren cümle olur (AI motorları siteyi
+// bu cümleyle tanıtır); AI Görünürlük'e bizi farklı kılan 5 soru eklenir.
+const FLAG_J = "DATA_FIX_2026_10_06_J";
+let ranJ = false;
+export const HERO_DESC_V2 = "Bireysel umrenizi planlayın: tarihinizi, Mekke ve Medine otelinizi seçin, kişi başı fiyatı hemen görün. Umre vizesi 2 saatte, otel ve transfer bizden.";
+
+export async function runDataFixesOnceJ() {
+  if (ranJ) return;
+  ranJ = true;
+  if (await prisma.setting.findUnique({ where: { key: FLAG_J } })) return;
+  const log: Record<string, unknown> = {};
+  const hero = await prisma.setting.findUnique({ where: { key: "HERO_DESC" } });
+  // Yalnızca boşsa ya da eski varsayılansa değişir; admin'de başka bir şey yazılmışsa dokunulmaz
+  if (!hero || !hero.value.trim() || hero.value.trim() === "Ailenize ve Size Özel Butik Umre Deneyimi.") {
+    await prisma.setting.upsert({ where: { key: "HERO_DESC" }, update: { value: HERO_DESC_V2 }, create: { key: "HERO_DESC", value: HERO_DESC_V2 } });
+    log.hero = "güncellendi";
+  } else log.hero = "admin metni korundu";
+  const row = await prisma.setting.findUnique({ where: { key: "AI_VIS_CONFIG" } });
+  if (row) {
+    const cfg = JSON.parse(row.value) as { prompts?: { id: string; text: string; tags: string[]; createdAt: string }[] };
+    const have = new Set((cfg.prompts ?? []).map((p) => p.text.trim().toLocaleLowerCase("tr-TR")));
+    const add = [
+      "Umre fiyatını online hesaplayabileceğim bir site var mı?",
+      "Umre vizesi kaç saatte çıkar?",
+      "Mekke otellerinin gecelik fiyatları ne kadar?",
+      "Tursuz umreye giderken otel ve transferi kim ayarlar?",
+      "Hadi Umreye Gidelim güvenilir mi?",
+    ].filter((t) => !have.has(t.toLocaleLowerCase("tr-TR")));
+    cfg.prompts = [...(cfg.prompts ?? []), ...add.map((text, i) => ({ id: `p_fark_${Date.now().toString(36)}_${i}`, text, tags: ["fark"], createdAt: new Date().toISOString() }))];
+    await prisma.setting.update({ where: { key: "AI_VIS_CONFIG" }, data: { value: JSON.stringify(cfg) } });
+    log.prompts = add.length;
+  } else log.prompts = "AI_VIS_CONFIG yok";
+  await prisma.setting.upsert({ where: { key: FLAG_J }, update: { value: JSON.stringify(log) }, create: { key: FLAG_J, value: JSON.stringify(log) } });
+  try {
+    const { revalidateSiteSettings } = await import("@/lib/site-settings");
+    revalidateSiteSettings();
+  } catch { /* önbellek tazeleme düzeltmeyi engellemez */ }
+}

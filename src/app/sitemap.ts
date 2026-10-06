@@ -64,6 +64,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     .filter((c) => c.category === "hotel" && c.slug)
     .map((h) => ({ url: `${baseUrl}/oteller/${h.slug}`, changeFrequency: "monthly" as const, priority: 0.6 }));
   hotelUrls.push({ url: `${baseUrl}/yorumlar`, changeFrequency: "weekly" as const, priority: 0.6 });
+  hotelUrls.push({ url: `${baseUrl}/hadi-umreye-gidelim-guvenilir-mi`, changeFrequency: "monthly" as const, priority: 0.7 });
+  // Yardım merkezi (6 Ekim)
+  for (const p of ["/sss", "/grup-talepleri", "/isletme-kaydi"]) hotelUrls.push({ url: `${baseUrl}${p}`, changeFrequency: "monthly" as const, priority: 0.6 });
   if (hotelUrls.length > 1) hotelUrls.unshift({ url: `${baseUrl}/oteller`, changeFrequency: "weekly" as const, priority: 0.7 });
 
   const latestPostDate = posts[0]?.updatedAt ? posts[0].updatedAt.toISOString().split("T")[0] : STATIC_REVIEWED;

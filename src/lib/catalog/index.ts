@@ -54,7 +54,7 @@ export const monthLabel = (ym: string) => `${MONTH_TR[Number(ym.slice(5, 7)) - 1
 export async function queryCatalog(): Promise<CatalogItem[]> {
   await ensureCatalogSchema();
   // Tek seferlik veri düzeltmesi (2 Ekim); hata olursa katalog yine okunur
-  await import("./data-fixes").then(async (m) => { await m.runDataFixesOnce(); await m.runDataFixesOnceB(); await m.runDataFixesOnceC(); await m.runDataFixesOnceD(); await m.runDataFixesOnceE(); await m.runDataFixesOnceF(); await m.runDataFixesOnceG(); await m.runDataFixesOnceH(); await m.runDataFixesOnceI(); }).catch((e) => console.error("[data-fix]", e));
+  await import("./data-fixes").then(async (m) => { await m.runDataFixesOnce(); await m.runDataFixesOnceB(); await m.runDataFixesOnceC(); await m.runDataFixesOnceD(); await m.runDataFixesOnceE(); await m.runDataFixesOnceF(); await m.runDataFixesOnceG(); await m.runDataFixesOnceH(); await m.runDataFixesOnceI(); await m.runDataFixesOnceJ(); }).catch((e) => console.error("[data-fix]", e));
   const months = monthsFrom(currentMonth(), 13);
   const rows = await prisma.serviceLibrary.findMany({
     where: { isPublic: true, isActive: true },
@@ -88,7 +88,7 @@ export async function queryCatalog(): Promise<CatalogItem[]> {
   });
 }
 
-const readCatalog = unstable_cache(queryCatalog, ["catalog-v8"], { tags: [CATALOG_TAG], revalidate: 3600 });
+const readCatalog = unstable_cache(queryCatalog, ["catalog-v9"], { tags: [CATALOG_TAG], revalidate: 3600 });
 
 /** Herkese açık katalog; veritabanı hatasında boş liste (sayfa yine açılır) */
 export async function getCatalog(): Promise<CatalogItem[]> {

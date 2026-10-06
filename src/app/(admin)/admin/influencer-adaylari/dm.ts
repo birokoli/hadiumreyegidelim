@@ -15,52 +15,68 @@ export const DM_TEMPLATES: DmTemplate[] = [
     id: "instagram_dm_short",
     name: "Instagram DM (ilk temas)",
     channel: "instagram_dm",
-    content: `Selamün aleyküm {ad} 🌿
+    content: `Selamün aleyküm {ad},
 
-[İçeriğinden somut bir şey: "Medine'de sabah namazı sonrası paylaştığınız video" gibi] çok güzeldi, bu yüzden yazıyoruz.
+Hadi Umreye Gidelim adına yazıyorum. [İçeriğine dair tek cümlelik özel gözlem.]
 
-Biz Hadi Umreye Gidelim'iz; umreyi kişinin kendi tarihine ve bütçesine göre planlayan bireysel umre ekibiyiz. Sizinle bir ortaklık kurmak isteriz: takipçilerinize özel {indirim} indirim kodu, kodunuzla gelen her umre kaydından size {komisyon}. Paylaşım sayısı ya da takvim şartı yok.
+Sizi iş ortaklığı programımıza davet etmek isteriz. Program kapsamında takipçilerinize özel {indirim} indirim kodu tanımlanır; kodunuzla tamamlanan her umre kaydı için {komisyon} komisyon hakkı kazanırsınız. Belirli bir paylaşım sayısı veya takvim talep etmiyoruz.
 
-Uygunsa e-postanızı yazın, detayları oradan gönderelim. Ya da doğrudan bakabilirsiniz: {davet}`
+Ayrıntıları iletebilmemiz için e-posta adresinizi paylaşabilir ya da programı aşağıdaki bağlantıdan inceleyebilirsiniz:
+{davet}
+
+Saygılarımızla,
+Hadi Umreye Gidelim`
   },
   {
     id: "email_long",
     name: "E-posta (iş birliği teklifi)",
     channel: "email",
-    subject: "Umre içerikleriniz için bir ortaklık önerisi",
-    content: `Selamün aleyküm {ad},
+    subject: "Hadi Umreye Gidelim – İş Ortaklığı Teklifi",
+    content: `Sayın {ad},
 
-Hadi Umreye Gidelim'den yazıyorum. [İçeriğinden somut bir gözlem, tek cümle.] Takipçilerinizle kurduğunuz bu bağ, size yazmamızın sebebi.
+Selamün aleyküm.
 
-Kısaca biz: insanların umresini kendi tarihine ve bütçesine göre planlayan bireysel umre ekibiyiz. Vize, otel, transfer ve rehberliği tek elden ayarlıyoruz. Instagram'da 19.500 kişilik bir topluluğumuz var; misafirlerimizin yorumlarını sitemizde doğrulanmış olarak yayınlıyoruz: hadiumreyegidelim.com/yorumlar
+Hadi Umreye Gidelim adına size ulaşıyorum. [İçeriğine dair tek cümlelik özel gözlem.] Takipçilerinizle kurduğunuz güvene dayalı iletişimin, umre yolculuğuna hazırlanan kişiler için değerli bir rehberlik sunduğunu düşünüyoruz.
 
-Önerimiz basit bir ortaklık:
-• Takipçilerinize özel {indirim} indirim kodu
-• Kodunuz ya da bağlantınızla gelen her umre kaydından {komisyon} komisyon
-• Tıklamaları, kayıtları ve kazancınızı kendi panelinizden anlık görürsünüz
-• Kazancınızı nakit alabilir ya da kendi umreniz için kullanabilirsiniz
+Hadi Umreye Gidelim, umre yolculuğunu misafirlerinin tarih ve bütçe tercihlerine göre planlayan bir bireysel umre organizasyonudur. Vize, konaklama, transfer ve rehberlik hizmetlerini tek bir süreç içinde sunmaktayız. Instagram'da 19.500 kişilik bir topluluğa ulaşıyor, misafirlerimizin değerlendirmelerini doğrulanmış olarak web sitemizde yayımlıyoruz (hadiumreyegidelim.com/yorumlar).
 
-Sizden belirli sayıda paylaşım ya da sabit bir takvim istemiyoruz. Umreyi zaten konuştuğunuz anlarda kodunuzu paylaşmanız yeterli; hikâyelerinizde kullanabileceğiniz hazır görselleri de biz hazırlıyoruz.
+Bu çerçevede sizi iş ortaklığı programımıza davet etmek isteriz. Program kapsamında:
 
-İlginizi çekerse bu e-postaya kısa bir cevap yeterli; detayları yazışarak ya da istersiniz 15 dakikalık bir görüşmeyle anlatırız. Başvuru bağlantınız da hazır:
+• Takipçilerinize özel {indirim} indirim sağlayan kişisel bir kod tanımlanır.
+• Kodunuz veya bağlantınız aracılığıyla tamamlanan her umre kaydı için {komisyon} oranında komisyon hakkı kazanırsınız.
+• Yönlendirmelerinizi, kayıtları ve kazançlarınızı size özel panel üzerinden anlık olarak takip edebilirsiniz.
+• Kazançlarınızı nakit olarak çekebilir ya da kendi umre yolculuğunuzda kullanabilirsiniz.
+
+İş birliği süresince belirli bir paylaşım sayısı veya yayın takvimi talep etmiyoruz. İçeriklerinizde kullanabileceğiniz görsel materyaller tarafımızca hazırlanarak tarafınıza iletilecektir.
+
+Teklifimizi değerlendirmeniz hâlinde programın ayrıntılarını yazılı olarak iletebilir ya da size uygun bir zamanda kısa bir görüşme planlayabiliriz. Başvurunuzu aşağıdaki bağlantı üzerinden de iletebilirsiniz:
 {davet}
 
-Hayırlı çalışmalar dilerim,
+Değerlendirmeniz için şimdiden teşekkür eder, çalışmalarınızda başarılar dileriz.
+
+Saygılarımla,
+
 [Ad Soyad]
+[Unvan]
 Hadi Umreye Gidelim
-info@hadiumreyegidelim.com · [WhatsApp numarası]`
+info@hadiumreyegidelim.com | [Telefon]
+hadiumreyegidelim.com`
   },
   {
     id: "followup_5days",
     name: "Takip (5–7 gün sonra, tek sefer)",
     channel: "followup",
-    content: `Selamün aleyküm {ad},
+    content: `Sayın {ad},
 
-Geçen hafta gönderdiğim ortaklık önerisi araya kaçmış olabilir diye kısaca yazıyorum. Özeti: takipçilerinize özel {indirim} indirim kodu, kodunuzla gelen her umre kaydından {komisyon} komisyon, paylaşım şartı yok.
+Selamün aleyküm.
 
-Şu an uygun değilse hiç sorun değil, bir cevap yazmanız bile yeter. Bakmak isterseniz: {davet}
+Geçtiğimiz hafta tarafınıza ilettiğimiz iş ortaklığı teklifimizi hatırlatmak isteriz. Program kapsamında takipçilerinize özel {indirim} indirim kodu tanımlanmakta, kodunuzla tamamlanan her umre kaydı için {komisyon} komisyon hakkı kazanmaktasınız.
 
-Hayırlı günler dilerim.`
+Teklifimizi değerlendirme fırsatınız olduysa dönüşünüzü memnuniyetle bekleriz. Programın ayrıntılarına aşağıdaki bağlantıdan ulaşabilirsiniz:
+{davet}
+
+Saygılarımızla,
+Hadi Umreye Gidelim`
   }
 ];
 

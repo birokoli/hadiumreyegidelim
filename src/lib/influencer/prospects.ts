@@ -5,7 +5,7 @@ import { ensureProspectSchema } from "@/lib/influencer/schema";
 import { fetchIgMetrics, metaConfigured, type IgMetrics } from "@/lib/influencer/meta";
 import { researchInfluencers } from "@/lib/influencer/research";
 import { inRange, MAX_FOLLOWERS, MIN_FOLLOWERS, scoreProspect } from "@/lib/influencer/score";
-import { callClaude } from "@/lib/geo-blog/claude";
+import { callClaude, extractJson } from "@/lib/geo-blog/claude";
 import { dfsPost, isDataforseoConfigured } from "@/lib/seo/dataforseo";
 import { DFS_LANGUAGE_CODE, DFS_LOCATION_CODE } from "@/lib/seo/site";
 
@@ -323,25 +323,32 @@ export async function cleanupList() {
 }
 
 /** Kişiye özel ilk mesaj: adayın son paylaşımlarına değinen kısa, sıcak, saygılı bir DM taslağı */
-export async function draftMessage(id: string) {
+export type DmFields = { hitap: string; gozlem: string; email: string | null; not: string | null };
+
+/** Hazır mesajın kişiye özel alanları (6 Ekim): ana metin admin'deki şablondur ve değişmez; Claude yalnızca hitabı ve
+ *  hesabın gerçek paylaşımlarına dayanan gözlem cümlesini yazar. E-posta biyografiden düzenli ifadeyle alınır. */
+export async function draftMessage(id: string): Promise<DmFields> {
   await ensureProspectSchema();
   const p = await prisma.influencerProspect.findUnique({ where: { id } });
   if (!p) throw new Error("Aday bulunamadı.");
   let captions: string[] = [];
   if (p.platform === "instagram" && metaConfigured()) captions = (await fetchIgMetrics(p.handle).catch(() => null))?.captions ?? [];
+  const email = (p.bio ?? "").match(/[\w.+-]+@[\w-]+\.[\w.]+/)?.[0] ?? null;
   const { text } = await callClaude({
     feature: "other",
-    effort: "low",
-    maxTokens: 1500,
+    effort: "medium",
+    maxTokens: 2000,
     system:
-      "Hadi Umreye Gidelim adına bir Instagram içerik üreticisine ilk DM'i yazıyorsun. Hadi Umreye Gidelim bireysel umre planlar: Mekke-Medine otelleri, transfer, rehberlik; umre vizesi 2 saatte. " +
-      "Kurallar: Türkçe, samimi ama saygılı, kısa (en fazla 550 karakter), 'Selamün aleyküm' ile başla, kişinin adını kullan (yalnız ilk adı; Hanım/Bey yazma). " +
-      "Paylaşımlarından BİRİNE somut ve içten bir şekilde değin (uydurma; yalnız verilen metinlerden). Kendimizi tek cümleyle tanıt. " +
-      "Teklif: kendisi ve takipçileri için iş birliği; takipçilerine özel indirim kodu ve gelen her umre için komisyon (oranı yazma, {komisyon} yer tutucusu kullan). " +
-      "Sonunda baskı yapmadan uygun olup olmadığını sor. Abartı, 'fırsat', 'kaçırmayın', 'garanti', emoji yağmuru yok (en fazla 1 emoji). Sadece mesaj metnini döndür.",
-    prompt: `Ad: ${p.name ?? p.handle}\nKullanıcı adı: @${p.handle}\nBiyografi: ${p.bio ?? "-"}\nTakipçi: ${p.followers ?? "-"}\nSon paylaşım metinleri:\n${captions.slice(0, 8).map((c, i) => `${i + 1}. ${c.replace(/\s+/g, " ").slice(0, 300)}`).join("\n") || "-"}`,
+      "Hadi Umreye Gidelim (bireysel umre organizasyonu) adına bir içerik üreticisine kurumsal bir iş ortaklığı mektubu gönderilecek. Mektubun ana metni hazır; sen yalnızca iki kişiye özel alanı dolduruyorsun.\n\n" +
+      "1) hitap: Kişinin adı soyadı, Türkçe büyük-küçük harf kurallarıyla (ör. \"Beyza Betül Hanım\", \"Ahmet Yılmaz Bey\"). Hanım/Bey'i yalnızca içerikten cinsiyet açıkça anlaşılıyorsa ekle; anlaşılmıyorsa yalnızca ad soyad yaz. Görünen ad bir marka/sayfa adıysa ya da gerçek ad belli değilse kullanıcı adından ad uydurma, görünen adı olduğu gibi yaz. \"Sayın\" kelimesini yazma, mektupta zaten var.\n" +
+      "2) gozlem: Mektupta \"Hadi Umreye Gidelim adına size ulaşıyorum.\" cümlesinden hemen sonra gelecek 1-2 cümle. Verilen paylaşım metinlerinden BİRİNE ya da belirgin bir içerik temasına somut biçimde değin (ör. \"Medine'de sabah namazı sonrası paylaştığınız Mescid-i Nebevi görüntülerini ve yolculuğa dair notlarınızı ilgiyle takip ettik.\"). Yalnızca verilen metinlerde olanı yaz; uydurma, abartma. Kurumsal ve saygılı dil, \"siz\" hitabı; gündelik ifade, ünlem, emoji, iltifat yağmuru yok. Sonraki cümle \"Takipçilerinizle kurduğunuz güvene dayalı iletişimin...\" diye başladığı için onu tekrar etme.\n" +
+      "3) not: Mesajı gönderen kişi için kısa uyarı (ör. hesap bir işletme gibi görünüyor, son paylaşım çok eski, içerik umreyle ilgisiz). Uyarı yoksa null.\n\n" +
+      'Yalnızca JSON döndür: {"hitap":"...","gozlem":"...","not":null}',
+    prompt: `Görünen ad: ${p.name ?? "-"}\nKullanıcı adı: @${p.handle}\nBiyografi: ${p.bio ?? "-"}\nTakipçi: ${p.followers ?? "-"}\nSon paylaşım metinleri:\n${captions.slice(0, 12).map((c, i) => `${i + 1}. ${c.replace(/\s+/g, " ").slice(0, 350)}`).join("\n") || "- (okunamadı)"}`,
   });
-  return text.trim();
+  const j = extractJson<{ hitap?: string; gozlem?: string; not?: string | null }>(text);
+  if (!j?.gozlem) throw new Error("Hesap okunamadı ya da yanıt çözülemedi; tekrar deneyin.");
+  return { hitap: (j.hitap || p.name || p.handle).replace(/^Sayın\s+/i, "").trim(), gozlem: j.gozlem.trim(), email, not: j.not?.trim() || null };
 }
 
 export async function setStage(id: string, stage: Stage) {

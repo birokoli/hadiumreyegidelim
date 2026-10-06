@@ -50,7 +50,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ ok: true, ...(await findSimilar(id)) });
       case "draft":
         if (!id) return fail("id gerekli.");
-        return NextResponse.json({ ok: true, text: await draftMessage(id) });
+        return NextResponse.json({ ok: true, ...(await draftMessage(id)) });
       case "rescore":
         return NextResponse.json({ ok: true, refreshed: await rescoreBatch() });
       case "score":

@@ -34,7 +34,7 @@ export default function InfluencerAdayDetayPage({ params }: { params: Promise<{ 
   const [audienceText, setAudienceText] = useState("");
   const [savingNote, setSavingNote] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
-  const [selectedTemplateId, setSelectedTemplateId] = useState("instagram_dm_short");
+  const [selectedTemplateId, setSelectedTemplateId] = useState("email_long");
   const [inviteUrl, setInviteUrl] = useState("");
   const [generatingInvite, setGeneratingInvite] = useState(false);
   const [toastMsg, setToastMsg] = useState("");
@@ -99,6 +99,9 @@ export default function InfluencerAdayDetayPage({ params }: { params: Promise<{ 
   const [similarBusy, setSimilarBusy] = useState(false);
   const [draftBusy, setDraftBusy] = useState(false);
   const [customDm, setCustomDm] = useState("");
+  const [fields, setFields] = useState<{ hitap: string; gozlem: string; email: string | null; not: string | null } | null>(null);
+  const [indirim, setIndirim] = useState("");
+  const [komisyon, setKomisyon] = useState("");
   const [similar, setSimilar] = useState<{ postsRead: number; mentions: number; usedResearch?: boolean; results: { handle: string; status: string; followers?: number | null; note?: string }[] } | null>(null);
   const handleSimilar = async () => {
     if (!prospect) return;
@@ -121,9 +124,10 @@ export default function InfluencerAdayDetayPage({ params }: { params: Promise<{ 
     try {
       const res = await fetch(API, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "draft", id: prospect.id }) });
       const d = await res.json().catch(() => ({}));
-      if (!res.ok || d.ok === false) throw new Error(d.error || "Mesaj yazılamadı.");
-      setCustomDm(String(d.text).replaceAll("{davet}", inviteUrl || "{davet}"));
-      showToast("Kişiye özel mesaj hazır; göndermeden önce okuyun.");
+      if (!res.ok || d.ok === false) throw new Error(d.error || "Hesap incelenemedi.");
+      setFields({ hitap: d.hitap, gozlem: d.gozlem, email: d.email ?? null, not: d.not ?? null });
+      setCustomDm("");
+      showToast("Kişiye özel alanlar dolduruldu; göndermeden önce okuyun.");
     } catch (e) {
       showToast(e instanceof Error ? e.message : String(e), true);
     } finally {
@@ -151,8 +155,11 @@ export default function InfluencerAdayDetayPage({ params }: { params: Promise<{ 
   const filledDmContent = prospect
     ? fillTemplate(activeTemplate.content, {
         ad: prospect.name || prospect.handle,
+        hitap: fields?.hitap,
+        gozlem: fields?.gozlem,
+        indirim,
         platform: prospect.platform === "instagram" ? "Instagram" : prospect.platform === "tiktok" ? "TikTok" : "YouTube",
-        komisyon: "{komisyon}",
+        komisyon,
         davet: inviteUrl || "{davet}"
       })
     : "";
@@ -412,15 +419,28 @@ export default function InfluencerAdayDetayPage({ params }: { params: Promise<{ 
             </div>
 
             <div>
-              <button onClick={handleDraft} disabled={draftBusy} className="mb-3 w-full py-2.5 bg-primary text-white rounded-xl text-xs font-bold inline-flex items-center justify-center gap-1.5 disabled:opacity-50">
-                <span className="material-symbols-outlined text-[16px]">edit_note</span>
-                {draftBusy ? "Paylaşımları okunuyor…" : customDm ? "Yeniden yaz" : "Kişiye özel mesaj yaz"}
+              <button onClick={handleDraft} disabled={draftBusy} className="mb-2 w-full py-2.5 bg-primary text-white rounded-xl text-xs font-bold inline-flex items-center justify-center gap-1.5 disabled:opacity-50">
+                <span className="material-symbols-outlined text-[16px]">manage_search</span>
+                {draftBusy ? "Hesap inceleniyor…" : fields ? "Yeniden incele" : "Hesabı incele ve doldur"}
               </button>
-              {customDm && <button onClick={() => setCustomDm("")} className="mb-3 text-[11px] text-outline underline">Şablona dön</button>}
+              <p className="mb-3 text-[11px] text-outline leading-relaxed">Ana metin seçili şablondur. Hesabın biyografisi ve son paylaşımları okunur; yalnızca hitap ve kişiye özel gözlem cümlesi doldurulur.</p>
+              {fields?.not && <p className="mb-3 p-2.5 rounded-xl bg-amber-50 text-amber-800 text-[11px] leading-relaxed">{fields.not}</p>}
+              {fields?.email && (
+                <p className="mb-3 text-[11px] text-on-surface">Biyografideki e-posta: <button onClick={() => copyToClipboard(fields.email!, "E-posta")} className="font-bold text-primary underline">{fields.email}</button></p>
+              )}
+              <div className="mb-3 grid grid-cols-2 gap-2">
+                <label className="text-[11px] font-semibold text-outline">Takipçi indirimi
+                  <input value={indirim} onChange={(e) => { setIndirim(e.target.value); setCustomDm(""); }} placeholder="ör. %5" className="mt-1 w-full bg-surface-container-low text-xs text-on-surface rounded-xl px-3 py-2 border border-outline-variant/30 focus:outline-none focus:border-primary" />
+                </label>
+                <label className="text-[11px] font-semibold text-outline">Komisyon
+                  <input value={komisyon} onChange={(e) => { setKomisyon(e.target.value); setCustomDm(""); }} placeholder="ör. %5" className="mt-1 w-full bg-surface-container-low text-xs text-on-surface rounded-xl px-3 py-2 border border-outline-variant/30 focus:outline-none focus:border-primary" />
+                </label>
+              </div>
+              {customDm && <button onClick={() => setCustomDm("")} className="mb-3 text-[11px] text-outline underline">Elle yaptığım değişiklikleri geri al</button>}
               <label className="block text-[11px] font-semibold text-outline mb-1">Şablon Seçimi</label>
               <select
                 value={selectedTemplateId}
-                onChange={e => setSelectedTemplateId(e.target.value)}
+                onChange={e => { setSelectedTemplateId(e.target.value); setCustomDm(""); }}
                 className="w-full bg-surface-container-low text-xs text-on-surface rounded-xl px-3 py-2 border border-outline-variant/30 focus:outline-none focus:border-primary"
               >
                 {DM_TEMPLATES.map(t => (
@@ -438,9 +458,8 @@ export default function InfluencerAdayDetayPage({ params }: { params: Promise<{ 
 
             <div className="relative">
               <textarea
-                rows={12}
+                rows={18}
                 value={customDm || filledDmContent}
-                readOnly={!customDm}
                 onChange={(e) => setCustomDm(e.target.value)}
                 className="w-full bg-surface-container-low text-xs text-on-surface rounded-xl p-3.5 border border-outline-variant/20 font-mono leading-relaxed focus:outline-none"
               />
@@ -462,7 +481,7 @@ export default function InfluencerAdayDetayPage({ params }: { params: Promise<{ 
             </div>
 
             <p className="text-[11px] text-outline leading-relaxed">
-              Influencer başvuru sayfasına adaya özel bağlantı oluşturur ve adayı "Mesaj Gönderildi" aşamasına alır. Komisyon oranını mesajda {"{komisyon}"} yerine siz yazın.
+              Influencer başvuru sayfasına adaya özel bağlantı oluşturur ve adayı "Mesaj Gönderildi" aşamasına alır. Bağlantı oluşturulunca mesajdaki {"{davet}"} yerine kendiliğinden yazılır.
             </p>
 
             {inviteUrl ? (

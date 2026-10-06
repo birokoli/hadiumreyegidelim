@@ -93,7 +93,8 @@ Antigravity'nin tekrarlayan hataları (her teslimde kontrol et): uydurma/örnek 
 - **Hedef:** 10–50 bin takipçili mikro influencer; dindar/muhafazakâr kitle (tesettür, aile, helal seyahat, umre vlog). Acente, kurum, dernek, haber sayfası, klasik hoca hesabı değil.
 - Instagram verisi Meta Business Discovery ile gerçek sayılardan gelir (IG iş hesabı 17841438462611612; token Vercel'de META_ACCESS_TOKEN). Claude yalnızca kullanıcı adı önerir, sayılarına güvenilmez.
 - Puanlama: hesap türü Claude'la belirlenir; influencer değilse, 10 binin altıysa, 60 binin üstüyse veya pasifse puan tavanlanır.
-- Keşif modları (AI / Google), "Benzerlerini bul" (etiketlenen hesaplardan kartopu; 3'ten az sonuçta Claude araştırması), "Listeyi temizle", "Yeniden puanla", "Kişiye özel mesaj yaz" (≤550 karakter, `{komisyon}` yer tutucusu).
+- Keşif modları (AI / Google), "Benzerlerini bul" (etiketlenen hesaplardan kartopu; 3'ten az sonuçta Claude araştırması), "Listeyi temizle", "Yeniden puanla".
+- Hazır mesaj: ana metin `dm.ts`'deki kurumsal e-posta şablonu (varsayılan) ve değişmez. "Hesabı incele ve doldur" biyografi + son 12 paylaşımı okur; Claude yalnızca `{hitap}` (Hanım/Bey yalnız cinsiyet açıksa) ve `{gozlem}` cümlesini yazar, uyarı notu verir; biyografideki e-posta gösterilir. `{indirim}` ve `{komisyon}` sayfadaki alanlardan, `{davet}` bağlantı oluşturulunca dolar.
 - Davet bağlantısı: `https://marketing.hadiumreyegidelim.com/influencer/apply?davet=…`
 - Mesaj şablonları: `src/app/(admin)/admin/influencer-adaylari/dm.ts`.
 

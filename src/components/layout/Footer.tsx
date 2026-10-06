@@ -1,4 +1,5 @@
 import Link from "next/link";
+import HugIcon from "@/components/icons/HugIcon";
 import Image from "next/image";
 import React from "react";
 import SeoCitiesFooter from "./SeoCitiesFooter";
@@ -86,7 +87,7 @@ export default async function Footer({ logoUrl }: { logoUrl?: string }) {
                     <span className="material-symbols-outlined text-xl">share</span>
                   </button>
                   <button className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-primary shadow-sm hover:scale-110 active:scale-95 transition-transform border border-outline-variant/30">
-                    <span className="material-symbols-outlined text-xl">mail</span>
+                    <HugIcon name="eposta" size={20} className="text-primary" />
                   </button>
                 </>
               )}

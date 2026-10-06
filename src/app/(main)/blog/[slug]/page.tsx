@@ -1,4 +1,5 @@
 import { SITE_URL } from "@/lib/seo/site";
+import HugIcon from "@/components/icons/HugIcon";
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
@@ -308,7 +309,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               </span>
             )}
             <span className="flex items-center gap-1 bg-slate-100 text-slate-600 px-3 py-1.5 rounded-full normal-case font-medium">
-              <span className="material-symbols-outlined text-[14px]">schedule</span>
+              <HugIcon name="takvim" size={14} className="text-outline-variant inline-block align-middle" />
               {readTime} dk okuma
             </span>
             <span className="w-1.5 h-1.5 bg-outline-variant rounded-full"></span>
@@ -359,7 +360,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         {personalExperienceHtml && (
           <div className="my-10 bg-[#f8fafc] border-l-4 border-secondary p-8 rounded-r-3xl shadow-sm relative">
             <div className="flex items-center gap-2 mb-4">
-               <span className="material-symbols-outlined text-secondary text-[18px]" aria-hidden="true">verified_user</span>
+               <HugIcon name="guven" size={18} className="text-secondary" />
                <span className="text-secondary font-bold text-[10px] uppercase tracking-widest font-headline">Yazarın Kişisel Deneyimi{(post.authorModel?.name || post.author) ? ` · ${(post.authorModel?.name || post.author).trim()}` : ""}</span>
             </div>
             <div
@@ -380,7 +381,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       {officialReferences.length > 0 && (
         <div className="max-w-3xl mx-auto px-6 mt-16 pt-10 border-t border-outline-variant/20">
           <h3 className="font-headline text-2xl text-primary font-bold tracking-tight mb-6 flex items-center gap-2">
-            <span className="material-symbols-outlined text-secondary">menu_book</span> Resmî kaynaklar
+            <HugIcon name="rehber" size={24} className="text-secondary" /> Resmî kaynaklar
           </h3>
           <div className="bg-surface-container-low p-6 rounded-2xl border border-outline-variant/10 text-sm text-on-surface-variant leading-relaxed break-words whitespace-pre-wrap">
             {officialReferences.join("\n")}
@@ -392,7 +393,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       {faqItems.length > 0 && (
         <section className="max-w-3xl mx-auto px-6 mt-16 pt-10 border-t border-outline-variant/20">
           <h2 className="font-headline text-3xl text-primary font-bold tracking-tight mb-8 flex items-center gap-3">
-            <span className="material-symbols-outlined text-secondary text-3xl">quiz</span>
+            <HugIcon name="bilgi" size={30} className="text-secondary" />
             Sıkça Sorulan Sorular
           </h2>
           <div className="space-y-4">
@@ -461,7 +462,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
       {relatedPosts.length > 0 && (
         <section className="max-w-3xl mx-auto px-6 mt-16 pt-10 border-t border-outline-variant/20">
           <h2 className="font-headline text-2xl text-primary font-bold mb-8 flex items-center gap-2">
-            <span className="material-symbols-outlined text-secondary">auto_stories</span>
+            <HugIcon name="rehber" size={24} className="text-secondary" />
             İlgili Yazılar
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">

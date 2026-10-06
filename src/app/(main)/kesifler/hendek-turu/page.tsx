@@ -1,4 +1,5 @@
 import Image from "next/image";
+import HugIcon from "@/components/icons/HugIcon";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -40,7 +41,7 @@ export default function HiddenGemsSelectionPage() {
             <aside className="lg:col-span-3 lg:sticky lg:top-32 space-y-3 mb-10 lg:mb-0">
               <div className="flex items-center space-x-4 p-5 rounded-2xl bg-surface-container-lowest opacity-60 hover:opacity-100 transition-all cursor-pointer border border-transparent hover:border-outline-variant/30">
                 <div className="w-10 h-10 rounded-full bg-outline/10 flex items-center justify-center text-outline">
-                  <span className="material-symbols-outlined" data-icon="flight">flight</span>
+                  <HugIcon name="ucak" size={24} />
                 </div>
                 <div className="flex flex-col">
                   <span className="text-[10px] font-bold uppercase tracking-widest text-outline">ADIM 01</span>
@@ -50,7 +51,7 @@ export default function HiddenGemsSelectionPage() {
               
               <div className="flex items-center space-x-4 p-5 rounded-2xl bg-surface-container-lowest opacity-60 hover:opacity-100 transition-all cursor-pointer border border-transparent hover:border-outline-variant/30">
                 <div className="w-10 h-10 rounded-full bg-outline/10 flex items-center justify-center text-outline">
-                  <span className="material-symbols-outlined" data-icon="hotel">hotel</span>
+                  <HugIcon name="otel" size={24} />
                 </div>
                 <div className="flex flex-col">
                   <span className="text-[10px] font-bold uppercase tracking-widest text-outline">ADIM 02</span>
@@ -60,7 +61,7 @@ export default function HiddenGemsSelectionPage() {
               
               <div className="flex items-center space-x-4 p-5 rounded-2xl bg-surface-container-lowest opacity-60 hover:opacity-100 transition-all cursor-pointer border border-transparent hover:border-outline-variant/30">
                 <div className="w-10 h-10 rounded-full bg-outline/10 flex items-center justify-center text-outline">
-                  <span className="material-symbols-outlined" data-icon="directions_car">directions_car</span>
+                  <HugIcon name="transfer" size={24} />
                 </div>
                 <div className="flex flex-col">
                   <span className="text-[10px] font-bold uppercase tracking-widest text-outline">ADIM 03</span>
@@ -117,7 +118,7 @@ export default function HiddenGemsSelectionPage() {
                 {/* Analysis Info */}
                 <div className="mb-10 row-span-2">
                   <h3 className="font-headline text-2xl font-bold text-primary mb-4 flex items-center">
-                    <span className="material-symbols-outlined mr-2 text-tertiary" style={{ fontVariationSettings: "'FILL' 1" }}>stars</span>
+                    <HugIcon name="yorum" size={24} className="text-tertiary mr-2" />
                     Jeostratejik Analiz
                   </h3>
                   <div className="space-y-4 text-on-surface-variant leading-relaxed text-sm font-body bg-surface p-6 rounded-2xl border border-outline-variant/10">
@@ -179,7 +180,7 @@ export default function HiddenGemsSelectionPage() {
                       <p className="text-on-primary-container text-sm font-light">Sınırlı kontenjan ile butik rehberlik.</p>
                     </div>
                     <button className="bg-tertiary-fixed text-on-tertiary-fixed font-bold px-6 py-3 rounded-xl flex items-center justify-center gap-2 transition-transform hover:scale-105 shadow-md shrink-0 w-full md:w-auto">
-                      <span className="material-symbols-outlined text-xl">add_task</span>
+                      <HugIcon name="onay" size={20} />
                       Planıma Ekle
                     </button>
                   </div>
@@ -205,7 +206,7 @@ export default function HiddenGemsSelectionPage() {
                 <div className="absolute top-0 right-0 w-32 h-32 bg-primary/40 rounded-full blur-2xl -translate-y-10 translate-x-10 group-hover:bg-primary/60 transition-colors"></div>
                 
                 <h4 className="text-xs font-bold uppercase tracking-widest text-primary-fixed-dim/70 mb-10 flex items-center border-b border-white/10 pb-4">
-                  <span className="material-symbols-outlined mr-3 text-lg" data-icon="receipt_long">receipt_long</span>
+                  <HugIcon name="vize" size={20} className="mr-3" />
                   Maliyet Özeti
                 </h4>
                 
@@ -236,7 +237,7 @@ export default function HiddenGemsSelectionPage() {
                 <div className="space-y-4 relative z-10">
                   <button className="flex justify-center items-center gap-2 w-full bg-tertiary-fixed text-on-tertiary-fixed py-5 rounded-xl font-bold text-sm tracking-widest transition-colors shadow-lg active:scale-95 uppercase">
                     Seyahati Onayla
-                    <span className="material-symbols-outlined text-lg">verified</span>
+                    <HugIcon name="guven" size={20} />
                   </button>
                 </div>
               </div>
@@ -244,7 +245,7 @@ export default function HiddenGemsSelectionPage() {
               {/* Selections Section with Real Data from HTML */}
               <div className="bg-surface-container-lowest p-8 rounded-3xl border border-outline-variant/15 shadow-sm space-y-4">
                 <h5 className="font-headline text-lg font-bold text-primary mb-6 flex items-center border-b border-outline-variant/20 pb-4">
-                  <span className="material-symbols-outlined mr-3 text-secondary" data-icon="auto_stories">auto_stories</span>
+                  <HugIcon name="rehber" size={20} className="mr-3 text-secondary" />
                   Seçimleriniz
                 </h5>
                 
@@ -254,7 +255,7 @@ export default function HiddenGemsSelectionPage() {
                     <span className="block text-[10px] uppercase tracking-widest text-outline mb-1 font-bold">Niyet & Kişi</span>
                     <p className="font-body font-bold text-on-surface text-sm">Bireysel Umre, 2 Yetişkin</p>
                   </div>
-                  <span className="material-symbols-outlined text-secondary text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>check_circle</span>
+                  <HugIcon name="onay" size={14} className="text-secondary" />
                 </div>
 
                 {/* 01 Flight Confirmed */}
@@ -263,7 +264,7 @@ export default function HiddenGemsSelectionPage() {
                     <span className="block text-[10px] uppercase tracking-widest text-outline mb-1 font-bold">Uçuş</span>
                     <p className="font-body font-bold text-on-surface text-sm">THY Premium, İst-Cidde</p>
                   </div>
-                  <span className="material-symbols-outlined text-secondary text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>check_circle</span>
+                  <HugIcon name="onay" size={14} className="text-secondary" />
                 </div>
 
                 {/* 02 Hotel Confirmed */}
@@ -272,7 +273,7 @@ export default function HiddenGemsSelectionPage() {
                     <span className="block text-[10px] uppercase tracking-widest text-outline mb-1 font-bold">Konaklama</span>
                     <p className="font-body font-bold text-on-surface text-sm">Raffles Makkah</p>
                   </div>
-                  <span className="material-symbols-outlined text-secondary text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>check_circle</span>
+                  <HugIcon name="onay" size={14} className="text-secondary" />
                 </div>
 
                 {/* 05 Hidden Gems DYNAMIC (Active state) */}

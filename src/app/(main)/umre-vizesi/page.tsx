@@ -1,4 +1,5 @@
 import { SITE_URL } from "@/lib/seo/site";
+import HugIcon from "@/components/icons/HugIcon";
 import React from "react";
 import type { Metadata } from "next";
 import { PageTrust, webPageJsonLd } from "@/components/seo/PageTrust";
@@ -93,15 +94,15 @@ export default async function UmreVizesiPage() {
               <h3 className="font-headline text-lg font-bold text-primary mb-3">Avantajları</h3>
               <ul className="space-y-2.5 text-sm text-on-surface-variant">
                 <li className="flex items-start gap-2">
-                  <span className="material-symbols-outlined text-primary text-base mt-0.5">check</span>
+                  <HugIcon name="onay" size={16} className="text-primary mt-0.5" />
                   Genellikle 1 yıllık ve "Çok Girişli" verilir.
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="material-symbols-outlined text-primary text-base mt-0.5">check</span>
+                  <HugIcon name="onay" size={16} className="text-primary mt-0.5" />
                   Mekke, Medine ve tüm şehirleri gezme hakkı tanır.
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="material-symbols-outlined text-primary text-base mt-0.5">check</span>
+                  <HugIcon name="onay" size={16} className="text-primary mt-0.5" />
                   Gruplarla aynı otelde kalmak zorunda değilsiniz.
                 </li>
               </ul>

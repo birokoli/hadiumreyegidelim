@@ -57,15 +57,17 @@ const homeFaqJsonLd = faqJsonLd(HOME_FAQ);
 
 
 /** Hızlı erişim sekmeleri (ikonlar satır içi SVG: simge yazı tipine bağlı değil) */
-const QUICK_LINKS: { href: string; label: string; icon: React.ReactNode }[] = [
-  { href: "/paketler", label: "Umre paketleri", icon: <><rect x="3" y="7" width="18" height="13" rx="2" /><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 12h18" /></> },
-  { href: "/bireysel-umre", label: "Bireysel umre", icon: <><circle cx="12" cy="8" r="4" /><path d="M4 21a8 8 0 0 1 16 0" /></> },
-  { href: "/umre-vizesi", label: "Umre vizesi", icon: <><rect x="5" y="3" width="14" height="18" rx="2" /><circle cx="12" cy="10" r="3" /><path d="M9 17h6" /></> },
-  { href: "/bireysel-umre", label: "Otel ve konaklama", icon: <><path d="M4 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16M16 9h2a2 2 0 0 1 2 2v10M8 7h4M8 11h4M8 15h4M3 21h18" /></> },
-  { href: "/hizmetler", label: "Transfer ve tren", icon: <><path d="M5 17h14v-5l-2-5H7l-2 5v5zM5 12h14" /><circle cx="7.5" cy="17.5" r="1.5" /><circle cx="16.5" cy="17.5" r="1.5" /></> },
-  { href: "/rehberlik", label: "Rehberlik", icon: <><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2V5z" /><path d="M4 19a2 2 0 0 1 2-2h13" /></> },
-  { href: "/ilk-umrem", label: "İlk umrem", icon: <path d="M12 3l2.6 5.6 6.1.7-4.5 4.2 1.2 6L12 16.6l-5.4 2.9 1.2-6-4.5-4.2 6.1-.7z" /> },
-  { href: "/hanim-umresi", label: "Hanım umresi", icon: <path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z" /> },
+import HugIcon, { type HugIconName } from "@/components/icons/HugIcon";
+
+const QUICK_LINKS: { href: string; label: string; icon: HugIconName }[] = [
+  { href: "/paketler", label: "Umre paketleri", icon: "paket" },
+  { href: "/bireysel-umre", label: "Bireysel umre", icon: "bireysel" },
+  { href: "/umre-vizesi", label: "Umre vizesi", icon: "vize" },
+  { href: "/bireysel-umre", label: "Otel ve konaklama", icon: "otel" },
+  { href: "/hizmetler", label: "Transfer ve tren", icon: "transfer" },
+  { href: "/rehberlik", label: "Rehberlik", icon: "rehber" },
+  { href: "/ilk-umrem", label: "İlk umrem", icon: "ilk" },
+  { href: "/hanim-umresi", label: "Hanım umresi", icon: "hanim" },
 ];
 
 
@@ -153,7 +155,7 @@ export default async function Home() {
           {QUICK_LINKS.map((q) => (
             <li key={q.label} className="shrink-0">
               <Link href={q.href} className="group flex flex-col items-center gap-1.5 px-4 md:px-5 py-4 text-on-surface-variant hover:text-primary transition-colors">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="w-6 h-6 transition-transform group-hover:-translate-y-0.5">{q.icon}</svg>
+                <HugIcon name={q.icon} size={30} className="text-primary transition-transform group-hover:-translate-y-0.5" />
                 <span className="text-[12px] font-semibold whitespace-nowrap">{q.label}</span>
               </Link>
             </li>

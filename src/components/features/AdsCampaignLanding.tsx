@@ -1,4 +1,5 @@
 import React from "react";
+import HugIcon from "@/components/icons/HugIcon";
 import type { EylulCampaignConfig } from "@/lib/eylul-campaign";
 import { PageTrust } from "@/components/seo/PageTrust";
 import FullIconFont from "@/components/ui/FullIconFont";
@@ -58,7 +59,7 @@ export default function AdsCampaignLanding({ campaign, whatsappNumber }: { campa
           </p>
 
           <a href={heroWa} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 bg-[#25D366] text-white px-10 py-5 rounded-2xl font-bold tracking-widest text-sm uppercase shadow-2xl hover:bg-[#128C7E] active:scale-95 transition-all">
-            <span className="material-symbols-outlined text-[22px]" style={{ fontVariationSettings: "'FILL' 1" }}>chat</span>
+            <HugIcon name="mesaj" size={22} />
             {campaign.heroButton}
           </a>
 
@@ -72,7 +73,7 @@ export default function AdsCampaignLanding({ campaign, whatsappNumber }: { campa
         <div className="max-w-screen-xl mx-auto px-6 md:px-8">
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-12 text-white text-center">
             <div className="flex items-center gap-3">
-              <span className="material-symbols-outlined text-[#c9a96e] text-2xl" style={{ fontVariationSettings: "'FILL' 1" }}>flight_takeoff</span>
+              <HugIcon name="ucak" size={24} className="text-[#c9a96e]" />
               <div className="text-left">
                 <p className="text-[10px] uppercase tracking-widest text-white/60 font-bold">{campaign.departureOneLabel}</p>
                 <p className="font-bold text-sm">{campaign.departureOne}</p>
@@ -80,7 +81,7 @@ export default function AdsCampaignLanding({ campaign, whatsappNumber }: { campa
             </div>
             <div className="hidden sm:block w-px h-10 bg-white/20" />
             <div className="flex items-center gap-3">
-              <span className="material-symbols-outlined text-[#c9a96e] text-2xl" style={{ fontVariationSettings: "'FILL' 1" }}>flight_takeoff</span>
+              <HugIcon name="ucak" size={24} className="text-[#c9a96e]" />
               <div className="text-left">
                 <p className="text-[10px] uppercase tracking-widest text-white/60 font-bold">{campaign.departureTwoLabel}</p>
                 <p className="font-bold text-sm">{campaign.departureTwo}</p>
@@ -88,7 +89,7 @@ export default function AdsCampaignLanding({ campaign, whatsappNumber }: { campa
             </div>
             <div className="hidden sm:block w-px h-10 bg-white/20" />
             <a href={heroWa} target="_blank" rel="noopener noreferrer" className="shrink-0 bg-[#25D366] text-white font-bold text-xs uppercase tracking-widest px-6 py-3 rounded-xl hover:bg-[#128C7E] transition-colors shadow-lg flex items-center gap-2">
-              <span className="material-symbols-outlined text-[16px]" style={{ fontVariationSettings: "'FILL' 1" }}>chat</span>
+              <HugIcon name="mesaj" size={16} />
               {campaign.reserveButton}
             </a>
           </div>
@@ -117,7 +118,7 @@ export default function AdsCampaignLanding({ campaign, whatsappNumber }: { campa
 
           <div className="mt-10 text-center">
             <a href={heroWa} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 bg-[#25D366] text-white px-8 py-4 rounded-2xl font-bold tracking-widest text-sm uppercase shadow-xl hover:bg-[#128C7E] transition-all">
-              <span className="material-symbols-outlined text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>chat</span>
+              <HugIcon name="mesaj" size={20} />
               {campaign.packagesButton}
             </a>
           </div>
@@ -166,18 +167,18 @@ export default function AdsCampaignLanding({ campaign, whatsappNumber }: { campa
 
       <section className="py-16 bg-primary/5 border-y border-primary/10">
         <div className="max-w-screen-md mx-auto px-6 md:px-8 text-center">
-          <span className="material-symbols-outlined text-primary text-5xl mb-4 block" style={{ fontVariationSettings: "'FILL' 1" }}>info</span>
+          <HugIcon name="bilgi" size={48} className="text-primary mb-4 block" />
           <h2 className="font-headline text-2xl md:text-3xl text-primary font-bold mb-4">{campaign.notesTitle}</h2>
           <div className="space-y-3 text-on-surface-variant text-sm leading-relaxed max-w-lg mx-auto">
             {campaign.notes.map((note) => (
               <p key={note} className="flex items-start gap-2">
-                <span className="material-symbols-outlined text-secondary text-[18px] mt-0.5 shrink-0" style={{ fontVariationSettings: "'FILL' 1" }}>check_circle</span>
+                <HugIcon name="onay" size={18} className="text-secondary mt-0.5 shrink-0" />
                 {note}
               </p>
             ))}
           </div>
           <a href={heroWa} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 bg-[#25D366] text-white px-8 py-4 rounded-2xl font-bold tracking-widest text-sm uppercase shadow-xl hover:bg-[#128C7E] transition-all mt-8">
-            <span className="material-symbols-outlined text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>chat</span>
+            <HugIcon name="mesaj" size={20} />
             {campaign.notesButton}
           </a>
         </div>
@@ -193,7 +194,7 @@ export default function AdsCampaignLanding({ campaign, whatsappNumber }: { campa
             {campaign.faqs.map((faq) => (
               <div key={faq.q} className="bg-surface-container-lowest rounded-2xl p-6 shadow-sm border border-outline-variant/30 hover:shadow-md transition-shadow">
                 <h2 className="font-bold text-base text-primary mb-3 flex items-start gap-2">
-                  <span className="material-symbols-outlined text-secondary text-[20px] mt-0.5 shrink-0" style={{ fontVariationSettings: "'FILL' 1" }}>help</span>
+                  <HugIcon name="bilgi" size={20} className="text-secondary mt-0.5 shrink-0" />
                   {faq.q}
                 </h2>
                 <p className="text-on-surface-variant text-sm leading-relaxed pl-7">{faq.a}</p>
@@ -202,7 +203,7 @@ export default function AdsCampaignLanding({ campaign, whatsappNumber }: { campa
           </div>
           <div className="mt-10 text-center">
             <a href={heroWa} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 bg-[#25D366] text-white px-8 py-4 rounded-2xl font-bold tracking-widest text-sm uppercase shadow-xl hover:bg-[#128C7E] transition-all">
-              <span className="material-symbols-outlined text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>chat</span>
+              <HugIcon name="mesaj" size={20} />
               {campaign.faqButton}
             </a>
           </div>
@@ -219,7 +220,7 @@ export default function AdsCampaignLanding({ campaign, whatsappNumber }: { campa
           <p className="text-white/80 text-lg mb-2 max-w-xl mx-auto">{campaign.footerDescription}</p>
           <p className="text-white/50 text-xs tracking-widest uppercase mb-10">{campaign.footerNote}</p>
           <a href={heroWa} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-3 bg-[#25D366] text-white px-12 py-5 rounded-2xl font-bold tracking-widest text-sm uppercase shadow-2xl hover:bg-[#128C7E] active:scale-95 transition-all">
-            <span className="material-symbols-outlined text-[22px]" style={{ fontVariationSettings: "'FILL' 1" }}>chat</span>
+            <HugIcon name="mesaj" size={22} />
             {campaign.footerButton}
           </a>
         </div>

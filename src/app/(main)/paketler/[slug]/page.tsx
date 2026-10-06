@@ -1,4 +1,5 @@
 import { SITE_URL } from "@/lib/seo/site";
+import HugIcon from "@/components/icons/HugIcon";
 import { getPackagePricing } from "@/lib/pricing/package-server";
 import PackageHotelPicker from "@/components/packages/PackageHotelPicker";
 import React from 'react';
@@ -70,7 +71,7 @@ export default async function PackageDetailPage({ params }: { params: Promise<{ 
 
   let includes: string[] = [];
   let mainDesc = pkg.description;
-  let itinerary: any[] = [];
+  let itinerary: { day?: number; title?: string; desc?: string; description?: string }[] = [];
   
   if (pkg.description && pkg.description.includes('|||ITINERARY|||')) {
     const parts = pkg.description.split('|||ITINERARY|||');
@@ -209,13 +210,13 @@ export default async function PackageDetailPage({ params }: { params: Promise<{ 
             {includes.length > 0 && (
               <Panel tone="white">
                 <h3 className="text-xl font-headline font-bold text-primary mb-6 flex items-center gap-2">
-                  <span className="material-symbols-outlined text-secondary text-2xl">verified</span>
+                  <HugIcon name="guven" size={24} className="text-secondary" />
                   Fiyata Dahil Olan Hizmetler
                 </h3>
                 <ul className="grid grid-cols-1 md:grid-cols-2 gap-y-3 gap-x-6">
                   {includes.map((item, i) => (
                     <li key={i} className="flex items-start gap-2.5 text-sm text-primary font-medium">
-                      <span className="material-symbols-outlined text-secondary text-base shrink-0 mt-0.5">check_circle</span>
+                      <HugIcon name="onay" size={16} className="text-secondary shrink-0 mt-0.5" />
                       <span className="leading-snug">{item}</span>
                     </li>
                   ))}

@@ -1,4 +1,5 @@
 import { SITE_URL } from "@/lib/seo/site";
+import HugIcon from "@/components/icons/HugIcon";
 import { getPageTexts } from "@/lib/page-texts";
 import React from "react";
 import type { Metadata } from "next";
@@ -77,7 +78,7 @@ export default async function HakkimizdaPage() {
                 "WhatsApp danışmanlık desteği",
               ].map((item) => (
                 <li key={item} className="flex items-center gap-2.5 bg-surface-container-low p-3.5 rounded-xl text-sm font-medium text-on-surface">
-                  <span className="material-symbols-outlined text-primary text-xl">check_circle</span>
+                  <HugIcon name="onay" size={20} className="text-primary" />
                   <span>{item}</span>
                 </li>
               ))}

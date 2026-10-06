@@ -4,6 +4,60 @@ En yeni en üstte. Şablon ve kurallar: `docs/antigravity/GOREVLER.md` §0. Clau
 
 <!-- Teslimler bu çizginin altına -->
 
+## 2026-10-06 — Antigravity Teslim Kaydı: G16 (Marka İkon Setine Geçiş - Herkese Açık Site)
+
+### 1. Durum ve Değişen Dosyalar Özeti
+
+- **İkon Seti Dönüşümü (`HugIcon` Entegrasyonu):**
+  - Herkese açık sitenin (`src/app/(main)/**` ve `src/components/{home,planner,packages,help,reviews,blog,features,ui,content,seo,layout}/**`) tüm Material Symbols ve elle çizilmiş inline SVG ikonu `src/components/icons/HugIcon.tsx` bileşeniyle (`<HugIcon name="..." size={N} className="..." />`) değiştirildi. Admin paneli (`/admin`) kapsam dışı bırakıldı.
+  - **Ana Sayfa Hızlı Erişim Şeridi (`src/app/(main)/page.tsx`):** `QUICK_LINKS` dizisindeki elle çizilmiş SVG'ler `paket`, `bireysel`, `vize`, `otel`, `transfer`, `rehber`, `ilk`, `hanim` `HugIcon` isimlerine çevrildi.
+  - **Dönüştürülen Ana Sayfalar ve Bileşenler:**
+    - `src/components/layout/Navbar.tsx`: `account_circle` → `<HugIcon name="bireysel" size={28} />`
+    - `src/components/layout/Footer.tsx`: `mail` → `<HugIcon name="eposta" size={20} />`
+    - `src/app/(main)/iletisim/page.tsx`: `arrow_forward` → `<HugIcon name="ok" size={18} />`
+    - `src/components/help/SupportForm.tsx`: `check_circle` → `<HugIcon name="onay" size={48} />`, `arrow_forward` → `<HugIcon name="ok" size={18} />`
+    - `src/app/(main)/bireysel-umre/page.tsx`: `check_circle` → `<HugIcon name="onay" size={18} />`, `info` → `<HugIcon name="bilgi" size={18} />`
+    - `src/app/(main)/paketler/[slug]/page.tsx`: `verified` → `<HugIcon name="guven" size={24} />`, `check_circle` → `<HugIcon name="onay" size={16} />`
+    - `src/components/packages/PackageCheckoutClient.tsx`: `group` → `<HugIcon name="aile" size={24} />`, `airlines` → `<HugIcon name="ucak" size={40} />`
+    - `src/app/(main)/hakkimizda/page.tsx`: `check_circle` → `<HugIcon name="onay" size={20} />`
+    - `src/app/(main)/umre-vizesi/page.tsx`: `check` → `<HugIcon name="onay" size={16} />`
+    - `src/app/(main)/blog/[slug]/page.tsx`: `schedule` → `takvim`, `verified_user` → `guven`, `menu_book` / `auto_stories` → `rehber`, `quiz` → `bilgi`
+    - `src/app/(main)/rehber/[slug]/page.tsx`: `verified` → `guven`, `calendar_add_on` → `takvim`, `library_books` → `rehber`, `arrow_forward` → `ok`
+    - `src/app/(main)/isletme-kaydi/page.tsx`: `check_circle` → `onay`
+    - `src/app/(main)/kesifler/hendek-turu/page.tsx`: `flight` → `ucak`, `hotel` → `otel`, `directions_car` → `transfer`, `stars` → `yorum`, `receipt_long` → `vize`, `verified` → `guven`, `auto_stories` → `rehber`
+    - `src/components/features/AdsCampaignLanding.tsx`: `chat` → `mesaj`, `flight_takeoff` → `ucak`, `info` / `help` → `bilgi`, `check_circle` → `onay`
+    - `src/components/help/FaqBrowser.tsx`: `search` → `ara`
+    - `src/components/home/NiyetBand.tsx`: `arrow_forward` → `ok`
+    - `src/components/ui/BrandImageFallback.tsx`: `mosque` → `medine`, `menu_book` → `rehber`, `hotel`/`apartment` → `otel`, `flight` → `ucak`, `luggage` → `paket`, `verified` → `guven`, `star` → `yorum`
+  - **Korunan Arayüz Kontrolleri (Kural Gereği Dokunulmadı):** `close`, `menu`, `add`, `remove`, `expand_more`/`less`, `chevron_left`, `arrow_back`, `progress_activity`, `play_arrow`, `logout`, `toc`, `image`, `camera_enhance`, `content_copy`.
+
+---
+
+### 2. Tip Kontrolü, Linter ve Ekran Görüntüleri
+
+- **`npx tsc --noEmit` Çıktısı:**
+  ```text
+  Exit Code: 0 (Clean / 0 Hata)
+  ```
+
+- **`npx eslint` Çıktısı (Değiştirilen Dosyalar):**
+  ```bash
+  npx eslint src/app/(main)/bireysel-umre/page.tsx src/app/(main)/hakkimizda/page.tsx src/app/(main)/iletisim/page.tsx src/app/(main)/isletme-kaydi/page.tsx src/app/(main)/kesifler/hendek-turu/page.tsx src/app/(main)/page.tsx src/app/(main)/paketler/[slug]/page.tsx src/app/(main)/rehber/[slug]/page.tsx src/app/(main)/umre-vizesi/page.tsx src/components/features/AdsCampaignLanding.tsx src/components/help/FaqBrowser.tsx src/components/help/SupportForm.tsx src/components/home/NiyetBand.tsx src/components/layout/Footer.tsx src/components/layout/Navbar.tsx src/components/packages/PackageCheckoutClient.tsx src/components/ui/BrandImageFallback.tsx
+  ```
+  ```text
+  Exit Code: 0 (Clean / 0 Hata / 0 Uyarı)
+  ```
+
+- **Önce / Sonra Yerel Ekran Görüntüleri:**
+  - Ana Sayfa: `docs/antigravity/goruntuler/G16-1-anasayfa-oncesi.png` vs `docs/antigravity/goruntuler/G16-1-anasayfa-sonrasi.png`
+  - Bireysel Umre: `docs/antigravity/goruntuler/G16-2-bireysel-umre-oncesi.png` vs `docs/antigravity/goruntuler/G16-2-bireysel-umre-sonrasi.png`
+  - Paket Sayfası: `docs/antigravity/goruntuler/G16-3-paket-sayfasi-oncesi.png` vs `docs/antigravity/goruntuler/G16-3-paket-sayfasi-sonrasi.png`
+  - İletişim Sayfası: `docs/antigravity/goruntuler/G16-4-iletisim-oncesi.png` vs `docs/antigravity/goruntuler/G16-4-iletisim-sonrasi.png`
+  - SSS Sayfası: `docs/antigravity/goruntuler/G16-5-sss-oncesi.png` vs `docs/antigravity/goruntuler/G16-5-sss-sonrasi.png`
+  - Otel Sayfası: `docs/antigravity/goruntuler/G16-6-otel-sayfasi-oncesi.png` vs `docs/antigravity/goruntuler/G16-6-otel-sayfasi-sonrasi.png`
+
+---
+
 ## 2026-10-06 — Antigravity Teslim Kaydı: G15 (Admin Sadeleştirme: Sekmeli Merkezler ve Menü Yapılandırması)
 
 ### 1. Durum ve Değişen Dosyalar Özeti

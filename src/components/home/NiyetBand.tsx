@@ -1,5 +1,6 @@
 // Ana sayfa koyu bant (MBD "Bir yer adı değil, bir hayal yaz." bölümünün karşılığı): 7687 C zemin, hat filigranı.
 import Link from "next/link";
+import HugIcon from "@/components/icons/HugIcon";
 
 export default function NiyetBand() {
   return (
@@ -15,7 +16,7 @@ export default function NiyetBand() {
         <p className="relative mt-5 max-w-xl text-base md:text-lg text-white/80">Tarihinizi, Mekke ve Medine otelinizi, transferinizi seçin; umrenizin fiyatını hemen görün. Gerisini birlikte tamamlayalım.</p>
         <div className="relative mt-8 flex flex-wrap items-center gap-3">
           <Link href="/bireysel-umre" className="inline-flex items-center gap-2 rounded-full bg-[var(--h-sand)] px-6 py-3.5 font-bold text-[var(--h-blue-deep)] transition-transform hover:-translate-y-0.5">
-            Umremi planla <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+            Umremi planla <HugIcon name="ok" size={18} />
           </Link>
           <Link href="/paketler" className="inline-flex items-center gap-2 rounded-full border border-white/30 px-6 py-3.5 font-semibold text-white hover:bg-white/10">Hazır paketler</Link>
         </div>

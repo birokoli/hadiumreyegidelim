@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import HugIcon from "@/components/icons/HugIcon";
 import Link from "next/link";
 import HelpLayout from "@/components/help/HelpLayout";
 import FormBlock from "@/components/help/FormBlock";
@@ -27,7 +28,7 @@ export default async function ContactPage({ searchParams }: { searchParams: Prom
       lead={t("hero_lead")}
       cta={
         <Link href="#form" className="inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 font-semibold text-primary">
-          Mesajınızı yazın <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+          Mesajınızı yazın <HugIcon name="ok" size={18} />
         </Link>
       }
     >

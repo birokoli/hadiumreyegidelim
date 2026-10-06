@@ -1,6 +1,7 @@
 // Bireysel umre planlayıcısı (v2): kendi kataloğumuz ve aylık fiyatlarımızla. Eski adımlı tasarlayıcı ve
 // /bireysel-umre/yeni önizlemesi buraya kalıcı yönlenir (2 Ekim 2026).
 import type { Metadata } from "next";
+import HugIcon from "@/components/icons/HugIcon";
 import { SITE_URL } from "@/lib/seo/site";
 import { ButtonLink, Container, Faq, faqJsonLd, PageHero, Panel, Section, SectionHead, Steps } from "@/components/ui/kit";
 import { PageTrust, webPageJsonLd } from "@/components/seo/PageTrust";
@@ -113,7 +114,7 @@ export default async function BireyselUmrePage({ searchParams }: { searchParams:
             <ul className="space-y-3">
               {COMPARISON.bireysel.items.map((item, i) => (
                 <li key={i} className="flex items-start gap-2.5 text-sm text-white/95 leading-relaxed">
-                  <span className="material-symbols-outlined text-amber-300 text-lg shrink-0 mt-0.5">check_circle</span>
+                  <HugIcon name="onay" size={18} className="text-amber-300 shrink-0 mt-0.5" />
                   <span>{item}</span>
                 </li>
               ))}
@@ -125,7 +126,7 @@ export default async function BireyselUmrePage({ searchParams }: { searchParams:
             <ul className="space-y-3">
               {COMPARISON.grup.items.map((item, i) => (
                 <li key={i} className="flex items-start gap-2.5 text-sm text-on-surface-variant leading-relaxed">
-                  <span className="material-symbols-outlined text-outline text-lg shrink-0 mt-0.5">info</span>
+                  <HugIcon name="bilgi" size={18} className="text-outline shrink-0 mt-0.5" />
                   <span>{item}</span>
                 </li>
               ))}

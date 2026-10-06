@@ -1,4 +1,5 @@
 "use client";
+import HugIcon from "@/components/icons/HugIcon";
 import { useMemo, useState } from "react";
 
 export type FaqItem = { cat: string; q: string; a: string };
@@ -15,7 +16,7 @@ export default function FaqBrowser({ items }: { items: FaqItem[] }) {
       <label className="block max-w-xl">
         <span className="mb-1.5 block text-sm font-semibold text-on-surface">Sorular içinde ara</span>
         <span className="relative block">
-          <span className="material-symbols-outlined pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+          <HugIcon name="ara" size={20} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" />
           <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Örn. vize, ödeme, iptal" className="w-full rounded-xl border border-outline-variant/40 py-3 pl-11 pr-10 focus:border-primary focus:outline-none" />
           {q && <button type="button" aria-label="Aramayı temizle" onClick={() => setQ("")} className="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant"><span className="material-symbols-outlined">close</span></button>}
         </span>

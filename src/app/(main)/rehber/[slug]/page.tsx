@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
+import HugIcon from "@/components/icons/HugIcon";
 import React from "react";
-import Image from "next/image";
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import Link from "next/link";
@@ -75,7 +75,7 @@ export default async function GuideDetailPage({ params }: { params: Promise<{ sl
             <div className="flex flex-wrap gap-4 mb-8">
               {expertiseList.map((exp: string, idx: number) => (
                 <span key={idx} className="px-4 py-2 bg-secondary-container text-on-secondary-container rounded-full text-sm font-medium flex items-center gap-2">
-                  <span className="material-symbols-outlined text-[18px]">verified</span> {exp}
+                  <HugIcon name="guven" size={18} className="text-primary" /> {exp}
                 </span>
               ))}
             </div>
@@ -88,7 +88,7 @@ export default async function GuideDetailPage({ params }: { params: Promise<{ sl
               </p>
             )}
             <Link href="/bireysel-umre" className="inline-flex bg-primary text-on-primary px-10 py-4 rounded-xl font-semibold shadow-lg shadow-primary/20 hover:shadow-xl hover:-translate-y-1 transition-all items-center gap-3">
-              <span className="material-symbols-outlined">calendar_add_on</span>
+              <HugIcon name="takvim" size={24} className="text-primary" />
                 Planıma Ekle
             </Link>
           </div>
@@ -117,7 +117,7 @@ export default async function GuideDetailPage({ params }: { params: Promise<{ sl
           {publicationList.length > 0 && (
             <div className="bg-surface-container-low p-8 rounded-2xl">
               <h3 className="font-headline text-xl text-primary mb-6 flex items-center gap-3">
-                <span className="material-symbols-outlined text-tertiary">library_books</span>
+                <HugIcon name="rehber" size={24} className="text-tertiary" />
                   Akademik Yayınlar
               </h3>
               <ul className="space-y-6">
@@ -187,7 +187,7 @@ export default async function GuideDetailPage({ params }: { params: Promise<{ sl
         </div>
         <Link href="/bireysel-umre" className="relative z-10 bg-tertiary-fixed-dim text-tertiary-fixed px-10 py-4 rounded-xl font-bold flex items-center gap-2 hover:bg-white hover:text-primary transition-all shadow-xl" style={{ color: "#261900" }}>
           Bilgi Al ve Rezervasyon
-          <span className="material-symbols-outlined">arrow_forward</span>
+          <HugIcon name="ok" size={24} />
         </Link>
         <div className="absolute -right-20 -bottom-20 w-80 h-80 bg-white/5 rounded-full blur-3xl"></div>
       </section>

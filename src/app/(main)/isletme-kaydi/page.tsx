@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import HugIcon from "@/components/icons/HugIcon";
 import HelpLayout from "@/components/help/HelpLayout";
 import FormBlock from "@/components/help/FormBlock";
 import { getPageTexts } from "@/lib/page-texts";
@@ -21,7 +22,7 @@ export default async function BusinessPage() {
           <ul className="mt-5 grid gap-3 sm:grid-cols-2">
             {types.map((x) => (
               <li key={x} className="flex items-start gap-3 rounded-xl bg-surface-container-low p-4 text-on-surface">
-                <span className="material-symbols-outlined text-[20px] text-primary">check_circle</span>
+                <HugIcon name="onay" size={20} className="text-primary" />
                 {x}
               </li>
             ))}

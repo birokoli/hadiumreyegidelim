@@ -1,5 +1,6 @@
 "use client";
 
+import HugIcon from "@/components/icons/HugIcon";
 import React, { useRef, useState } from "react";
 import { toJpeg } from "html-to-image";
 import Link from "next/link";
@@ -79,7 +80,7 @@ export default function PackageCheckoutClient({ pkg }: { pkg: { title: string; s
         <div className="bg-surface-container-lowest rounded-2xl p-6 shadow-sm border border-outline-variant/30 w-full mb-8 flex flex-col sm:flex-row items-center justify-between gap-6">
            <div className="flex items-center gap-4">
              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center text-primary">
-               <span className="material-symbols-outlined">group</span>
+               <HugIcon name="aile" size={24} />
              </div>
              <div>
                <h3 className="font-bold text-primary font-headline text-lg">Katılımcı Sayısı</h3>
@@ -120,7 +121,7 @@ export default function PackageCheckoutClient({ pkg }: { pkg: { title: string; s
                  <h2 className="font-headline text-2xl font-bold">Huzura İlk Adım</h2>
                </div>
                <div className="text-right">
-                  <span className="material-symbols-outlined text-[40px] opacity-20">airlines</span>
+                  <HugIcon name="ucak" size={40} className="opacity-20" />
                </div>
             </div>
           </div>

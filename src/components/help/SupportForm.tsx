@@ -1,4 +1,5 @@
 "use client";
+import HugIcon from "@/components/icons/HugIcon";
 // Destek formu: talep ContactRequest'e kaydedilir (admin → Talepler) ve yöneticiye WhatsApp bildirimi gider.
 import { useState } from "react";
 import { SUBJECTS } from "@/lib/help";
@@ -36,7 +37,7 @@ export default function SupportForm({ defaultSubject = "", whatsappNumber, extra
   if (ticket)
     return (
       <div className="rounded-2xl border border-outline-variant/20 bg-white p-8 text-center">
-        <span className="material-symbols-outlined text-5xl text-[#15803d]">check_circle</span>
+        <HugIcon name="onay" size={48} className="text-[#15803d]" />
         <h3 className="mt-3 font-headline text-2xl font-bold text-primary">Talebiniz alındı</h3>
         <p className="mt-2 text-on-surface-variant">Takip numaranız: <b className="font-mono text-on-surface">{ticket}</b></p>
         <p className="mt-1 text-sm text-on-surface-variant">Ekibimiz verdiğiniz numaradan size dönüş yapacak. Acil durumlarda WhatsApp&apos;tan bu numarayla yazabilirsiniz.</p>
@@ -80,7 +81,7 @@ export default function SupportForm({ defaultSubject = "", whatsappNumber, extra
       <input tabIndex={-1} autoComplete="off" aria-hidden value={f.website} onChange={(e) => setF({ ...f, website: e.target.value })} className="hidden" name="website" />
       {error && <p className="text-sm font-semibold text-error">{error} Dilerseniz <a className="underline" href={`https://wa.me/${whatsappNumber}`}>WhatsApp&apos;tan</a> yazın.</p>}
       <button disabled={busy} className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 font-bold text-white disabled:opacity-50">
-        {busy ? "Gönderiliyor…" : "Talebi gönder"} <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+        {busy ? "Gönderiliyor…" : "Talebi gönder"} <HugIcon name="ok" size={18} />
       </button>
       <p className="text-[13px] text-on-surface-variant">Talebiniz kayıt altına alınır ve size bir takip numarası verilir. Kayıt sırasında bir sorun olursa ekranda açıkça yazar; o durumda bize telefon ya da WhatsApp&apos;tan ulaşabilirsiniz.</p>
     </form>

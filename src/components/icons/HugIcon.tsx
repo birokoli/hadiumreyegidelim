@@ -1,4 +1,5 @@
-// Hadi Umreye Gidelim ikon seti (6 Ekim): Recraft V4.1 Pro Vector ile üretildi, Claude tek renge çevirip kırptı.
+// Hadi Umreye Gidelim ikon seti (6 Ekim): Recraft V4.1 Pro Vector ile üretildi; Claude tek renge çevirdi, kırptı ve
+// bütün çizgileri aynı kalınlığa getirdi (1024 px'te ~40 px: raster + mesafe dönüşümü + potrace ile yeniden vektör).
 // Dosyalar public/ikon/<ad>.svg; renk CSS maskesiyle yazı rengini (currentColor) alır, JS yükü yok.
 import type { CSSProperties } from "react";
 

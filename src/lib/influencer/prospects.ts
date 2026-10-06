@@ -258,23 +258,34 @@ function mentionsOf(m: IgMetrics): string[] {
 }
 
 /** Etiketlenen hesapları doğrular; 10–60 bin ve okunabilir olanları ekler (puanlama günlük yenilemede ya da ilk 3'ü hemen) */
-async function addMentioned(m: IgMetrics, source: string, known?: Set<string>) {
+export type SimilarResult = { handle: string; status: "eklendi" | "zaten listede" | "okunamadı" | "aralık dışı" | "acente/kurum"; followers?: number | null; note?: string };
+
+async function addMentioned(m: IgMetrics, source: string, known?: Set<string>, extra: string[] = []) {
   const existing = known ?? new Set((await prisma.influencerProspect.findMany({ where: { platform: "instagram" }, select: { handle: true } })).map((e) => e.handle));
-  const cands = mentionsOf(m).filter((h) => !existing.has(h));
+  const all = [...new Set([...mentionsOf(m), ...extra])];
+  const results: SimilarResult[] = all.filter((h) => existing.has(h)).map((h) => ({ handle: h, status: "zaten listede" as const }));
+  const cands = all.filter((h) => !existing.has(h));
   cands.forEach((h) => existing.add(h));
   const verified = await inBatches(cands, 5, async (h) => {
     try {
-      return { h, m: await fetchIgMetrics(h) };
-    } catch {
-      return { h, m: null };
+      return { h, m: await fetchIgMetrics(h), err: "" };
+    } catch (e) {
+      return { h, m: null, err: e instanceof Error ? e.message : String(e) };
     }
   });
-  const ok = verified.filter((v) => v.m && inRange(v.m.followers) && !AGENCY_RE.test(`${v.m.name ?? ""} ${v.m.bio ?? ""}`)) as { h: string; m: IgMetrics }[];
+  const ok: { h: string; m: IgMetrics }[] = [];
+  for (const v of verified) {
+    if (!v.m) results.push({ handle: v.h, status: "okunamadı", note: /#110|cannot be found|2207013|Invalid user/i.test(v.err) ? "kişisel hesap ya da yok" : v.err.slice(0, 80) });
+    else if (AGENCY_RE.test(`${v.m.name ?? ""} ${v.m.bio ?? ""}`)) results.push({ handle: v.h, status: "acente/kurum", followers: v.m.followers });
+    else if (!inRange(v.m.followers)) results.push({ handle: v.h, status: "aralık dışı", followers: v.m.followers });
+    else ok.push({ h: v.h, m: v.m });
+  }
   const rows = await inBatches(ok, 5, ({ h, m: mm }) =>
     prisma.influencerProspect.create({ data: { platform: "instagram", handle: h, url: PROFILE_URL.instagram(h), source: source.slice(0, 120), ...metricsData(mm), name: mm.name ?? null } }),
   );
+  for (const o of ok) results.push({ handle: o.h, status: "eklendi", followers: o.m.followers });
   await inBatches(rows.slice(0, 3).map((r, i) => ({ r, mm: ok[i].m })), 3, ({ r, mm }) => saveScore(r, mm).catch(() => null));
-  return { checked: cands.length, added: rows.length };
+  return { checked: cands.length, added: rows.length, postsRead: m.captions.length, mentions: all.length, results };
 }
 
 /** Admin "Benzerlerini bul": adayın paylaşımlarında etiketlediği hesaplardan yeni adaylar */
@@ -284,7 +295,17 @@ export async function findSimilar(id: string) {
   if (!p || p.platform !== "instagram") throw new Error("Yalnızca Instagram adaylarında çalışır.");
   if (!metaConfigured()) throw new Error("Meta bağlantısı tanımlı değil.");
   const m = await fetchIgMetrics(p.handle);
-  return addMentioned(m, `bahsetti: @${p.handle}`);
+  // Paylaşım metinlerinde 3'ten az etiket varsa: Claude aynı kitleye hitap eden mikro hesapları web'de arar
+  let extra: string[] = [];
+  let usedResearch = false;
+  if (mentionsOf(m).length < 3) {
+    const existing = (await prisma.influencerProspect.findMany({ where: { platform: "instagram" }, select: { handle: true } })).map((e) => e.handle);
+    const brief = `@${m.handle} (${m.name ?? ""}) hesabına BENZER, aynı kitleye hitap eden 10–50 bin takipçili Türk mikro influencerlar. Hesabın biyografisi: ${(m.bio ?? "-").slice(0, 200)}. Son paylaşım konuları: ${m.captions.slice(0, 5).map((c) => c.replace(/\s+/g, " ").slice(0, 100)).join(" | ")}`;
+    extra = (await researchInfluencers(brief, existing, 15)).map((c) => normalizeHandle("instagram", c.handle)).filter((h): h is string => Boolean(h));
+    usedResearch = true;
+  }
+  const r = await addMentioned(m, `benzeri: @${p.handle}`, undefined, extra);
+  return { ...r, usedResearch };
 }
 
 /** Admin "Listeyi temizle": API'ye gitmeden, hedef aralık dışındakileri ve acente görünümlüleri "red"e alır */

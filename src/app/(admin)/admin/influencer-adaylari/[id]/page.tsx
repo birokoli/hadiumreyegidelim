@@ -99,6 +99,7 @@ export default function InfluencerAdayDetayPage({ params }: { params: Promise<{ 
   const [similarBusy, setSimilarBusy] = useState(false);
   const [draftBusy, setDraftBusy] = useState(false);
   const [customDm, setCustomDm] = useState("");
+  const [similar, setSimilar] = useState<{ postsRead: number; mentions: number; usedResearch?: boolean; results: { handle: string; status: string; followers?: number | null; note?: string }[] } | null>(null);
   const handleSimilar = async () => {
     if (!prospect) return;
     setSimilarBusy(true);
@@ -106,7 +107,8 @@ export default function InfluencerAdayDetayPage({ params }: { params: Promise<{ 
       const res = await fetch(API, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "similar", id: prospect.id }) });
       const d = await res.json().catch(() => ({}));
       if (!res.ok || d.ok === false) throw new Error(d.error || "Bulunamadı.");
-      showToast(`${d.checked} etiketlenen hesap denendi, ${d.added} yeni aday eklendi.`);
+      setSimilar({ postsRead: d.postsRead ?? 0, mentions: d.mentions ?? 0, usedResearch: d.usedResearch, results: d.results ?? [] });
+      showToast(`${d.mentions ?? 0} etiket bulundu, ${d.added} yeni aday eklendi.`);
     } catch (e) {
       showToast(e instanceof Error ? e.message : String(e), true);
     } finally {
@@ -304,6 +306,27 @@ export default function InfluencerAdayDetayPage({ params }: { params: Promise<{ 
               {prospect.avgLikes != null && ` · ort. ${prospect.avgLikes.toLocaleString("tr-TR")} beğeni, ${prospect.avgComments?.toLocaleString("tr-TR") ?? "-"} yorum`}
             </p>
             {prospect.bio && <p className="text-xs text-on-surface-variant whitespace-pre-line">{prospect.bio}</p>}
+            {similar && (
+              <div className="rounded-xl border border-outline-variant/20 bg-surface-container-low/60 p-3 text-xs space-y-2">
+                <p className="font-semibold text-on-surface">
+                  {similar.usedResearch
+                    ? `Paylaşım metinlerinde yeterli etiket yoktu; Claude aynı kitleye hitap eden hesapları araştırdı. Toplam ${similar.mentions} hesap denendi.`
+                    : `Son ${similar.postsRead} paylaşımın metninde ${similar.mentions} @etiket bulundu.`}
+                </p>
+                {similar.results.length > 0 && (
+                  <ul className="divide-y divide-outline-variant/10">
+                    {similar.results.map((r) => (
+                      <li key={r.handle} className="flex items-center justify-between gap-2 py-1.5">
+                        <a href={`https://www.instagram.com/${r.handle}/`} target="_blank" rel="noreferrer" className="font-mono text-primary hover:underline">@{r.handle}</a>
+                        <span className={r.status === "eklendi" ? "font-bold text-primary" : "text-outline"}>
+                          {r.status}{r.followers != null ? ` · ${r.followers.toLocaleString("tr-TR")} takipçi` : ""}{r.note ? ` · ${r.note}` : ""}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            )}
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               <div className="p-3.5 bg-surface-container-low rounded-2xl border border-outline-variant/10">

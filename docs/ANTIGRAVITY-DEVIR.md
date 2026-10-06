@@ -2,6 +2,8 @@
 
 Son güncelleme: 30 Eylül 2026 (Claude Code). Bu belge, Claude Code'un yaptığı işleri, değişmez kuralları, çalışma yöntemini ve sıradaki işleri anlatır. **Önce bunu, sonra `docs/YOL-HARITASI.md`'yi ve `AGENTS.md`'yi oku.**
 
+> **6 Ekim 2026:** Güncel kaynak `docs/KAYNAK.md`. Bu belgeyle çelişen bir şey varsa (ör. renkler artık Pantone paleti) KAYNAK geçerlidir.
+
 ---
 
 

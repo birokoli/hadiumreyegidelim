@@ -6,57 +6,61 @@ export interface DmTemplate {
   content: string;
 }
 
+// Şablonlar (6 Ekim): Mayıs 2026'daki ilk davet "yüksek kazanç / yeni nesil program" diliyle ve toplantı şartıyla
+// gönderilmiş, çoğu red almıştı. Yeni dil: kişiye özel bir gözlem, kim olduğumuzun kanıtı (19,5 bin takipçi,
+// doğrulanmış yorumlar), sade teklif, yük getirmeyen tek adım. {komisyon} ve {indirim} gönderilmeden önce elle yazılır;
+// [köşeli parantezli] satırlar kişiye göre doldurulur.
 export const DM_TEMPLATES: DmTemplate[] = [
   {
     id: "instagram_dm_short",
-    name: "Instagram DM (Kısa & Samimi)",
+    name: "Instagram DM (ilk temas)",
     channel: "instagram_dm",
-    content: `Selamün aleyküm {ad},
+    content: `Selamün aleyküm {ad} 🌿
 
-Paylaşımlarınızı bir süredir takip ediyoruz; takipçilerinizle kurduğunuz samimi bağ çok hoşumuza gidiyor.
+[İçeriğinden somut bir şey: "Medine'de sabah namazı sonrası paylaştığınız video" gibi] çok güzeldi, bu yüzden yazıyoruz.
 
-Biz Hadi Umreye Gidelim'iz; insanların umresini kendi tarihleri ve otelleriyle planlamasına yardım ediyoruz. Sizinle bir iş birliği yapmak isteriz: takipçilerinize özel bir indirim kodu, gelen her umre için de size {komisyon} komisyon.
+Biz Hadi Umreye Gidelim'iz; umreyi kişinin kendi tarihine ve bütçesine göre planlayan bireysel umre ekibiyiz. Sizinle bir ortaklık kurmak isteriz: takipçilerinize özel {indirim} indirim kodu, kodunuzla gelen her umre kaydından size {komisyon}. Paylaşım sayısı ya da takvim şartı yok.
 
-Uygun olursanız detayları konuşmayı çok isteriz. Bakmak isterseniz: {davet}
-
-Hayırlı günler 🌿`
+Uygunsa e-postanızı yazın, detayları oradan gönderelim. Ya da doğrudan bakabilirsiniz: {davet}`
   },
   {
     id: "email_long",
-    name: "E-posta Daveti (Detaylı & Kurumsal)",
+    name: "E-posta (iş birliği teklifi)",
     channel: "email",
-    subject: "Hadi Umreye Gidelim — Özel İş Birliği Daveti",
-    content: `Sayın {ad},
+    subject: "Umre içerikleriniz için bir ortaklık önerisi",
+    content: `Selamün aleyküm {ad},
 
-Selamün aleyküm.
+Hadi Umreye Gidelim'den yazıyorum. [İçeriğinden somut bir gözlem, tek cümle.] Takipçilerinizle kurduğunuz bu bağ, size yazmamızın sebebi.
 
-{platform} platformunda gerçekleştirdiğiniz nitelikli ve samimi içerikleri ilgiyle takip ediyoruz. Kutsal topraklara özlem duyan muhafazakâr ve dindar misafirlerimiz için hazırladığımız bireysel ve esnek umre seyahati çözümlerimizi daha geniş kitlelere duyurmak amacıyla sizinle çalışmak isteriz.
+Kısaca biz: insanların umresini kendi tarihine ve bütçesine göre planlayan bireysel umre ekibiyiz. Vize, otel, transfer ve rehberliği tek elden ayarlıyoruz. Instagram'da 19.500 kişilik bir topluluğumuz var; misafirlerimizin yorumlarını sitemizde doğrulanmış olarak yayınlıyoruz: hadiumreyegidelim.com/yorumlar
 
-İş Birliği Detayları:
-• Takipçilerinize özel indirim sağlayan kişiselleştirilmiş kupon kodu.
-• Sizin yönlendirmenizle tamamlanan her umre rezervasyonu için {komisyon} tutarında komisyon ödemesi.
-• Şeffaf takip paneli ve düzenli ödeme imkanı.
+Önerimiz basit bir ortaklık:
+• Takipçilerinize özel {indirim} indirim kodu
+• Kodunuz ya da bağlantınızla gelen her umre kaydından {komisyon} komisyon
+• Tıklamaları, kayıtları ve kazancınızı kendi panelinizden anlık görürsünüz
+• Kazancınızı nakit alabilir ya da kendi umreniz için kullanabilirsiniz
 
-Daveti kabul etmek ve panelinize erişmek için aşağıdaki kişisel bağlantınızı kullanabilirsiniz:
+Sizden belirli sayıda paylaşım ya da sabit bir takvim istemiyoruz. Umreyi zaten konuştuğunuz anlarda kodunuzu paylaşmanız yeterli; hikâyelerinizde kullanabileceğiniz hazır görselleri de biz hazırlıyoruz.
+
+İlginizi çekerse bu e-postaya kısa bir cevap yeterli; detayları yazışarak ya da istersiniz 15 dakikalık bir görüşmeyle anlatırız. Başvuru bağlantınız da hazır:
 {davet}
 
-Sormak istediğiniz tüm sorular için bu e-postaya yanıt verebilirsiniz.
-
-Selam ve hürmetlerimizle,
-Hadi Umreye Gidelim Ekibi`
+Hayırlı çalışmalar dilerim,
+[Ad Soyad]
+Hadi Umreye Gidelim
+info@hadiumreyegidelim.com · [WhatsApp numarası]`
   },
   {
     id: "followup_5days",
-    name: "Takip Mesajı (5 Gün Sonra Hatırlatma)",
+    name: "Takip (5–7 gün sonra, tek sefer)",
     channel: "followup",
     content: `Selamün aleyküm {ad},
 
-Geçtiğimiz günlerde ilettiğimiz umre seyahati iş birliği davetimizi hatırlatmak istedik. Takipçi kitlenize özel tanımladığımız {komisyon} komisyon oranlı iş birliği fırsatımız hâlen geçerlidir.
+Geçen hafta gönderdiğim ortaklık önerisi araya kaçmış olabilir diye kısaca yazıyorum. Özeti: takipçilerinize özel {indirim} indirim kodu, kodunuzla gelen her umre kaydından {komisyon} komisyon, paylaşım şartı yok.
 
-Detaylı bilgi ve davet bağlantınız:
-{davet}
+Şu an uygun değilse hiç sorun değil, bir cevap yazmanız bile yeter. Bakmak isterseniz: {davet}
 
-Zaman ayırdığınız için teşekkür eder, hayırlı çalışmalar dileriz.`
+Hayırlı günler dilerim.`
   }
 ];
 

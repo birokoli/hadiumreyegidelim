@@ -1,6 +1,8 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useMemo, Suspense } from "react";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import { SUBJECTS, ticketOf } from "@/lib/help";
 
 type Lead = {
   id: string;
@@ -16,9 +18,17 @@ function buildWaUrl(lead: Lead): string {
   let phone = lead.phone.replace(/[^0-9]/g, "");
   if (phone.startsWith("0")) phone = "9" + phone;
   if (!phone.startsWith("90")) phone = "90" + phone;
-  const msg = lead.package
-    ? `Merhaba ${lead.name.split(" ")[0]} Bey/Hanım, Hadi Umreye Gidelim platformundan oluşturduğunuz "${lead.package}" talebi üzerine size ulaşıyoruz. Yardımcı olmamı ister misiniz?`
-    : `Merhaba ${lead.name.split(" ")[0]} Bey/Hanım, Hadi Umreye Gidelim platformundan oluşturduğunuz talep üzerine size ulaşıyoruz.`;
+  const firstName = lead.name.split(" ")[0];
+
+  let msg = `Merhaba ${firstName} Bey/Hanım, Hadi Umreye Gidelim platformundan oluşturduğunuz talep üzerine size ulaşıyoruz.`;
+  if (lead.package === "Grup talebi") {
+    msg = `Merhaba ${firstName} Bey/Hanım, Hadi Umreye Gidelim platformundan oluşturduğunuz grup talebiniz üzerine size ulaşıyoruz. Yardımcı olmamı ister misiniz?`;
+  } else if (lead.package === "İşletme kaydı / iş ortaklığı") {
+    msg = `Merhaba ${firstName} Bey/Hanım, Hadi Umreye Gidelim platformundan oluşturduğunuz işletme kaydı / iş ortaklığı talebiniz üzerine size ulaşıyoruz. Yardımcı olmamı ister misiniz?`;
+  } else if (lead.package) {
+    msg = `Merhaba ${firstName} Bey/Hanım, Hadi Umreye Gidelim platformundan oluşturduğunuz "${lead.package}" talebi üzerine size ulaşıyoruz. Yardımcı olmamı ister misiniz?`;
+  }
+
   return `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
 }
 
@@ -57,11 +67,37 @@ function renderMessageContent(msg: string | null) {
 }
 
 export default function ContactLeadsPage() {
+  return (
+    <Suspense fallback={<div className="p-8 max-w-7xl mx-auto min-h-screen bg-surface text-on-surface-variant text-xs">Yükleniyor...</div>}>
+      <ContactLeadsContent />
+    </Suspense>
+  );
+}
+
+function ContactLeadsContent() {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
   const [leads, setLeads] = useState<Lead[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<"ALL" | "UNREAD" | "CONTACTED" | "RESOLVED">("ALL");
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
+
+  // URL'den konu filtresini okuma
+  const konuParam = searchParams.get("konu") || "ALL";
+
+  const handleKonuChange = (newKonu: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (newKonu === "ALL") {
+      params.delete("konu");
+    } else {
+      params.set("konu", newKonu);
+    }
+    const query = params.toString();
+    router.replace(query ? `${pathname}?${query}` : pathname);
+  };
 
   const toggleExpand = (id: string) => {
     setExpandedIds((prev) => {
@@ -105,14 +141,42 @@ export default function ContactLeadsPage() {
     } catch {}
   };
 
-  const filtered = leads.filter(l => {
-    if (statusFilter !== "ALL" && l.status !== statusFilter) return false;
-    if (search) {
-      const q = search.toLowerCase();
-      return l.name.toLowerCase().includes(q) || l.phone.includes(q) || (l.package && l.package.toLowerCase().includes(q));
-    }
-    return true;
-  });
+  const filtered = useMemo(() => {
+    return leads.filter((l) => {
+      // 1. Durum Filtresi
+      if (statusFilter !== "ALL" && l.status !== statusFilter) return false;
+
+      // 2. Konu Filtresi
+      if (konuParam !== "ALL") {
+        if (konuParam === "Diğer") {
+          const isKnownSubject = l.package && (SUBJECTS as readonly string[]).includes(l.package);
+          if (isKnownSubject && l.package !== "Diğer") return false;
+        } else if (l.package !== konuParam) {
+          return false;
+        }
+      }
+
+      // 3. Arama Filtresi (İsim, Telefon, Paket/Konu, Takip Numarası)
+      if (search) {
+        const q = search.toLowerCase();
+        const ticket = ticketOf(l.id).toLowerCase();
+        const rawId = l.id.toLowerCase();
+        const name = l.name.toLowerCase();
+        const phone = l.phone;
+        const pkg = (l.package || "").toLowerCase();
+
+        return (
+          name.includes(q) ||
+          phone.includes(q) ||
+          pkg.includes(q) ||
+          ticket.includes(q) ||
+          rawId.includes(q)
+        );
+      }
+
+      return true;
+    });
+  }, [leads, statusFilter, konuParam, search]);
 
   const unreadCount = leads.filter(l => l.status === "UNREAD").length;
   const contactedCount = leads.filter(l => l.status === "CONTACTED").length;
@@ -127,7 +191,7 @@ export default function ContactLeadsPage() {
         <div>
           <span className="text-[10px] font-bold tracking-widest text-secondary uppercase">Satış & CRM</span>
           <h1 className="font-headline text-2xl font-bold tracking-tight text-primary mt-1">İletişim Talepleri & WhatsApp</h1>
-          <p className="text-xs text-on-surface-variant mt-0.5">WhatsApp ve iletişim formu üzerinden gelen müşteri potansiyelleri.</p>
+          <p className="text-xs text-on-surface-variant mt-0.5">WhatsApp ve iletişim formu üzerinden gelen müşteri talepleri ve takip numaraları.</p>
         </div>
       </div>
 
@@ -158,35 +222,67 @@ export default function ContactLeadsPage() {
         </div>
       </div>
 
-      {/* Filter and Search Bar */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-outline-variant/15 pb-4">
-        <div className="flex items-center gap-1.5 w-full sm:w-auto">
-          {(["ALL", "UNREAD", "CONTACTED", "RESOLVED"] as const).map((st) => (
-            <button
-              key={st}
-              onClick={() => setStatusFilter(st)}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-bold border transition-all ${
-                statusFilter === st
-                  ? "bg-primary text-white border-primary shadow-sm"
-                  : "bg-surface-container-lowest text-on-surface-variant border-outline-variant/25 hover:border-primary/40"
-              }`}
-            >
-              {st === "ALL" ? "Tümü" : st === "UNREAD" ? "Okunmadı" : st === "CONTACTED" ? "Ulaşıldı" : "Çözüldü"}
-            </button>
-          ))}
+      {/* Status & Subject Filters */}
+      <div className="space-y-4 border-b border-outline-variant/15 pb-4">
+        {/* Status Tabs */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="flex items-center gap-1.5 w-full sm:w-auto overflow-x-auto pb-1 sm:pb-0">
+            {(["ALL", "UNREAD", "CONTACTED", "RESOLVED"] as const).map((st) => (
+              <button
+                key={st}
+                onClick={() => setStatusFilter(st)}
+                className={`px-3.5 py-1.5 rounded-xl text-xs font-bold border transition-all whitespace-nowrap ${
+                  statusFilter === st
+                    ? "bg-primary text-white border-primary shadow-sm"
+                    : "bg-surface-container-lowest text-on-surface-variant border-outline-variant/25 hover:border-primary/40"
+                }`}
+              >
+                {st === "ALL" ? "Tümü" : st === "UNREAD" ? "Okunmadı" : st === "CONTACTED" ? "Ulaşıldı" : "Çözüldü"}
+              </button>
+            ))}
+          </div>
+
+          {/* Search Box */}
+          <div className="relative w-full sm:w-72">
+            <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[16px]">
+              search
+            </span>
+            <input
+              type="text"
+              placeholder="İsim, telefon, konu veya takip no (HUG-...)"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="w-full bg-surface-container-lowest text-xs text-on-surface rounded-xl pl-9 pr-3 py-2 border border-outline-variant/25 focus:outline-none focus:border-primary/40"
+            />
+          </div>
         </div>
 
-        <div className="relative w-full sm:w-64">
-          <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[16px]">
-            search
-          </span>
-          <input
-            type="text"
-            placeholder="İsim, telefon veya paket ara..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-surface-container-lowest text-xs text-on-surface rounded-xl pl-9 pr-3 py-2 border border-outline-variant/25 focus:outline-none focus:border-primary/40"
-          />
+        {/* Subject Filter Bar */}
+        <div className="flex items-center gap-2 overflow-x-auto pt-2 pb-1">
+          <span className="text-[10px] font-bold uppercase tracking-wider text-outline shrink-0 mr-1">Konu Filtresi:</span>
+          <button
+            onClick={() => handleKonuChange("ALL")}
+            className={`px-3 py-1 rounded-lg text-xs font-medium transition-all whitespace-nowrap border ${
+              konuParam === "ALL"
+                ? "bg-secondary text-white border-secondary font-bold shadow-sm"
+                : "bg-surface-container-low text-on-surface-variant border-outline-variant/20 hover:border-secondary/40"
+            }`}
+          >
+            Tüm Konular
+          </button>
+          {SUBJECTS.map((sub) => (
+            <button
+              key={sub}
+              onClick={() => handleKonuChange(sub)}
+              className={`px-3 py-1 rounded-lg text-xs font-medium transition-all whitespace-nowrap border ${
+                konuParam === sub
+                  ? "bg-secondary text-white border-secondary font-bold shadow-sm"
+                  : "bg-surface-container-low text-on-surface-variant border-outline-variant/20 hover:border-secondary/40"
+              }`}
+            >
+              {sub}
+            </button>
+          ))}
         </div>
       </div>
 
@@ -200,9 +296,9 @@ export default function ContactLeadsPage() {
           <table className="w-full text-left text-xs">
             <thead className="bg-surface-container-low border-b border-outline-variant/15 text-on-surface-variant uppercase tracking-wider font-bold text-[10px]">
               <tr>
-                <th className="px-4 py-3">Müşteri</th>
+                <th className="px-4 py-3">Takip No & Müşteri</th>
                 <th className="px-4 py-3">Telefon</th>
-                <th className="px-4 py-3">İlgilendiği Paket</th>
+                <th className="px-4 py-3">Konu / Paket</th>
                 <th className="px-4 py-3">Tarih</th>
                 <th className="px-4 py-3">Durum</th>
                 <th className="px-4 py-3 text-right">İşlem</th>
@@ -212,6 +308,8 @@ export default function ContactLeadsPage() {
               {filtered.map((l) => {
                 const date = new Date(l.createdAt).toLocaleDateString("tr-TR", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" });
                 const isExpanded = expandedIds.has(l.id);
+                const isSubjectBadge = l.package && (SUBJECTS as readonly string[]).includes(l.package);
+
                 return (
                   <React.Fragment key={l.id}>
                     <tr
@@ -219,18 +317,29 @@ export default function ContactLeadsPage() {
                       className="hover:bg-primary/[0.03] transition-colors cursor-pointer"
                     >
                       <td className="px-4 py-3 font-bold text-on-surface">
-                        <div className="flex items-center gap-1.5">
+                        <div className="flex items-center gap-2">
                           <span className="material-symbols-outlined text-[16px] text-outline">
                             {isExpanded ? "expand_less" : "expand_more"}
                           </span>
-                          <span>{l.name}</span>
+                          <div>
+                            <div className="font-bold text-on-surface">{l.name}</div>
+                            <div className="text-[10px] font-mono text-secondary font-bold tracking-tight">
+                              {ticketOf(l.id)}
+                            </div>
+                          </div>
                         </div>
                       </td>
                       <td className="px-4 py-3 font-mono text-on-surface-variant">{l.phone}</td>
                       <td className="px-4 py-3">
-                        <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-bold bg-primary/10 text-primary border border-primary/20">
-                          {l.package || "Özel İletişim Formu"}
-                        </span>
+                        {isSubjectBadge ? (
+                          <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-bold bg-secondary/10 text-secondary border border-secondary/20">
+                            {l.package}
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-bold bg-primary/10 text-primary border border-primary/20">
+                            {l.package || "Özel İletişim Formu"}
+                          </span>
+                        )}
                       </td>
                       <td className="px-4 py-3 text-outline font-mono">{date}</td>
                       <td className="px-4 py-3" onClick={(e) => e.stopPropagation()}>
@@ -266,7 +375,11 @@ export default function ContactLeadsPage() {
                       <tr className="bg-surface-container-lowest/50">
                         <td colSpan={6} className="px-6 py-4 border-t border-outline-variant/10">
                           <div className="space-y-2">
-                            <div className="text-[10px] font-bold uppercase tracking-wider text-secondary">Talep Mesaj Detayı</div>
+                            <div className="flex items-center justify-between">
+                              <div className="text-[10px] font-bold uppercase tracking-wider text-secondary">
+                                Talep Mesaj Detayı ({ticketOf(l.id)})
+                              </div>
+                            </div>
                             {renderMessageContent(l.message)}
                           </div>
                         </td>

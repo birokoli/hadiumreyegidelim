@@ -4,6 +4,50 @@ En yeni en üstte. Şablon ve kurallar: `docs/antigravity/GOREVLER.md` §0. Clau
 
 <!-- Teslimler bu çizginin altına -->
 
+## 2026-10-06 — Antigravity Teslim Kaydı: G14 (Admin Yardım Merkezi ve Talepler Yönetimi)
+
+### 1. Durum ve Değişen Dosyalar Özeti
+
+- **G14-1 (Admin Yardım Merkezi Paneli):**
+  - `src/components/admin/AdminSidebar.tsx`: İçerik Stüdyosu grubuna `help_center` ikonlu `/admin/yardim-merkezi` bağlantısı eklendi (Erişim Yetkisi: `content`).
+  - `src/app/(admin)/admin/yardim-merkezi/page.tsx`:
+    - SSS Düzenleyici: `/api/admin/page-texts` API'si entegre edildi, `parseFaq` ve `serializeFaq` ile soru/cevap düzenleme, kategori filtresi, arama, sıralama (Yukarı/Aşağı), silme onayı, yeni soru ekleme, kaydedilmemiş değişiklik uyarısı (`isDirty`) ve durum bildirim paneli sunuldu.
+    - Sayfa Kartları: `/sss`, `/iletisim`, `/grup-talepleri`, `/isletme-kaydi` sayfalarının bağlantıları ve metin düzenleme yönlendirmeleri eklendi.
+    - Talep Özet Paneli: Son 30 günlük iletişim ve özel talepler konu bazında (`SUBJECTS` sırası ile) sayılarak doğrudan `/admin/contact?konu=<konu>` filtreli bağlantıları sağlandı.
+  - `docs/antigravity/goruntuler/G14-1-yardim-merkezi.png`: Yerel dev sunucuda screenshot alındı.
+
+- **G14-2 (Admin Talepler / İletişim Ekranı İyileştirmeleri):**
+  - `src/app/(admin)/admin/contact/page.tsx`:
+    - Talep Numarası: Her talebe `HUG-` ön takılı benzersiz bilet numarası (`ticketOf(lead.id)`) ve konu etiketi rozeti (`SUBJECTS`) eklendi.
+    - Konu Filtresi: `?konu=` URL parametresi ile senkronize konu filtre sekmeleri oluşturuldu.
+    - Arama Geliştirmesi: Arama çubuğu bilet numarası (`HUG-...`) ve lead ID aramasını destekleyecek şekilde güncellendi.
+    - WhatsApp Bağlantısı: "Grup talebi" ve "İşletme kaydı / iş ortaklığı" talepleri için kişiselleştirilmiş WhatsApp yanıt bağlantısı (`buildWaUrl`) eklendi.
+    - Deopt Önleme: İstemci bileşeni `<Suspense>` ile sarmalandı.
+  - `docs/antigravity/goruntuler/G14-2-talepler.png`: Yerel dev sunucuda screenshot alındı.
+
+---
+
+### 2. Tip Kontrolü, Linter ve Ekran Görüntüleri
+
+- **`npx tsc --noEmit` Çıktısı:**
+  ```text
+  Exit Code: 0 (Clean / 0 Hata)
+  ```
+
+- **`npx eslint` Çıktısı:**
+  ```text
+  src/app/(admin)/admin/yardim-merkezi/page.tsx: 0 error, 0 warning
+  src/components/admin/AdminSidebar.tsx: 0 error, 0 warning
+  src/app/(admin)/admin/contact/page.tsx: 0 error, 0 warning
+  Exit Code: 0 (Clean / 0 Hata)
+  ```
+
+- **Ekran Görüntüleri:**
+  - `docs/antigravity/goruntuler/G14-1-yardim-merkezi.png`
+  - `docs/antigravity/goruntuler/G14-2-talepler.png`
+
+---
+
 ## 2026-10-03 — Antigravity Teslim Kaydı: G13 (Otel Açıklamaları, Link İş Listesi ve Sömestr Umresi Taslağı)
 
 ### 1. Durum ve Değişen Dosyalar Özeti

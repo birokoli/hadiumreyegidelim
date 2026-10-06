@@ -40,6 +40,7 @@ const menuGroups: { title: string; links: { href: string; icon: string; label: s
     links: [
       { href: "/admin/content",    icon: "article",  label: "Blog İçerikleri", exact: true, permission: "content", badgeKey: "totalPosts" },
       { href: "/admin/blog-kuyrugu", icon: "queue", label: "Blog Konu Kuyruğu", permission: "content" },
+      { href: "/admin/yardim-merkezi", icon: "help_center", label: "Yardım Merkezi", permission: "content" },
       { href: "/admin/sayfa-metinleri", icon: "edit_note", label: "Sayfa Metinleri", permission: "content" },
       { href: "/admin/content/rehber", icon: "menu_book", label: "Rehber Sayfaları", permission: "content" },
       { href: "/admin/categories", icon: "category", label: "Kategoriler", permission: "content"     },

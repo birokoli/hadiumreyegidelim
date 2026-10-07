@@ -137,7 +137,7 @@ const hhmm = (t?: { hour?: number; minute?: number } | null) => (t?.hour == null
 export async function fetchGoogleHotel(name: string): Promise<{ slug: string; ok: boolean; reason?: string; cost: number }> {
   const slug = slugify(name);
   let cost = 0;
-  const s = await dfsPost<{ items?: SearchItem[] }>("/business_data/google/hotel_searches/live", [
+  const s = await dfsPost<{ items?: SearchItem[] }>("/v3/business_data/google/hotel_searches/live", [
     { keyword: `${name} Mecca`, location_code: SA, language_code: "en", currency: "USD" },
   ]);
   cost += s.cost;
@@ -152,7 +152,7 @@ export async function fetchGoogleHotel(name: string): Promise<{ slug: string; ok
   let info: InfoItem | null = null;
   for (const language_code of ["tr", "en"]) {
     try {
-      const r = await dfsPost<InfoItem & { items?: InfoItem[] }>("/business_data/google/hotel_info/live/advanced", [
+      const r = await dfsPost<InfoItem & { items?: InfoItem[] }>("/v3/business_data/google/hotel_info/live/advanced", [
         { hotel_identifier: best.i.hotel_identifier, location_code: SA, language_code, currency: "USD" },
       ]);
       cost += r.cost;

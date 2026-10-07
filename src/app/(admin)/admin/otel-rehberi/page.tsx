@@ -91,7 +91,12 @@ export default function OtelRehberiPage() {
 
       <div className="flex flex-wrap items-center gap-3">
         <button
-          onClick={() => post({ action: "fetch" }, "fetch", (d) => `${(d.results as unknown[]).length} otel işlendi, maliyet ${d.cost} $. Kalan: ${d.remaining}.`)}
+          onClick={() => post({ action: "fetch" }, "fetch", (d) => {
+            const res = d.results as { slug: string; ok: boolean; reason?: string }[];
+            const okN = res.filter((x) => x.ok).length;
+            const errs = [...new Set(res.filter((x) => !x.ok).map((x) => x.reason))].slice(0, 2).join(" | ");
+            return `${res.length} otel denendi, ${okN} tanesi çekildi, maliyet ${d.cost} $. Kalan: ${d.remaining}.${errs ? ` Hata: ${errs}` : ""}`;
+          })}
           disabled={!!busy || fetched >= 91}
           className="rounded-xl bg-primary px-4 py-2.5 text-sm font-bold text-white disabled:opacity-50"
         >

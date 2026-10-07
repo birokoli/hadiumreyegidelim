@@ -27,9 +27,13 @@ Kullanıcı şu bölgelerden toplam ~50 otel istiyor: **Ajyad, Cebel Ömer, Cerv
 
 Bölgesi Ajyad, Cebel Ömer, Cerval, Mescid-i Cin, Mahbes veya Nüzha olan her otel için (G13-1 biçimi):
 ```json
-{ "slug": "anjum-hotel-makkah", "name": "Anjum Hotel Makkah", "stars": 5, "district": "Cerval", "description": "...", "roomTypes": ["..."], "meals": ["Oda kahvaltı", "..."], "shuttle": "var | yok | bilinmiyor", "walkMinutes": null, "facts": [{ "text": "...", "source": "https://..." }] }
+{ "slug": "anjum-hotel-makkah", "name": "Anjum Hotel Makkah", "stars": 5, "district": "Cerval", "description": "...", "roomTypes": ["..."], "meals": ["Oda kahvaltı", "..."], "shuttle": "var | yok | bilinmiyor", "walkMinutes": null, "faq": [{ "q": "...", "a": "..." }], "facts": [{ "text": "...", "source": "https://..." }] }
 ```
 - `description`: 120–200 kelime, Türkçe, sade; bölge, Harem'e ulaşım (yürüyüş ya da servis), oda tipleri, yemek seçenekleri, umreciler için pratik bilgi. Satış dili yok.
+  - **İlk cümle tek başına alıntılanabilir bir tanım olsun** (yapay zekâ aramaları bunu alır): "[Otel adı], Mekke'nin [bölge] bölgesinde, Mescid-i Haram'a [yürüyüşle yaklaşık X dakika / servisle ulaşılan] [N] yıldızlı bir oteldir." Bilinmeyen kısmı yazma, cümleyi kısalt.
+  - Otelin adı metinde en az 2 kez, bölge adı en az 1 kez geçsin. Paximum'daki ad ile yaygın Türkçe aramayı da bir kez an (ör. "Anjum Hotel Makkah (Anjum Otel Mekke)").
+  - Sayılar somut olsun ("yaklaşık 9 dakika", "4 kişilik oda"); "yakın", "konforlu", "ideal" gibi boş sıfatlar yok.
+- `faq`: 3–5 soru-cevap. Sorular insanların gerçekten aradığı biçimde: "[Otel] Harem'e kaç dakika?", "[Otel]'in Harem'e servisi var mı?", "[Otel]'de kahvaltı dahil mi?", "[Otel] hangi bölgede?", "[Otel]'de kaç kişilik oda var?". Cevap ilk cümlede doğrudan (evet/hayır ya da sayı), en fazla 2 cümle, yalnızca `facts`'teki kaynaklı bilgiyle. Kaynağı olmayan soru eklenmez. Fiyat sorusu yok.
 - `stars`, `roomTypes`, `meals`, `shuttle`: otelin resmî sitesinden ya da zincirin sayfasından; her biri `facts` içinde kaynaklı. Kaynak yoksa alanı boş bırak.
 - `walkMinutes`: yalnızca Google Haritalar yürüme rotasından (Harem'in en yakın kapısına); rota ekran görüntüsü yolu `facts`'e. Doğrulamadıysan `null`.
 - Fotoğraf indirme, kopyalama yok (telif). Görsel işini Claude ayrıca çözecek.

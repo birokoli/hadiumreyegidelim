@@ -39,9 +39,15 @@ export default async function DirectoryHotelPage({ h }: { h: DirectoryHotel }) {
     ...(h.stars ? { starRating: { "@type": "Rating", ratingValue: h.stars } } : {}),
   };
 
+  const faq = h.faq ?? [];
+  const faqLd = faq.length
+    ? { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faq.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) }
+    : null;
+
   return (
     <main id="main-content">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      {faqLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqLd) }} />}
       <PageHero
         crumbs={[{ label: "Anasayfa", href: "/" }, { label: "Oteller", href: "/oteller" }, { label: h.name }]}
         kicker={`${city} · ${district}`}
@@ -52,7 +58,10 @@ export default async function DirectoryHotelPage({ h }: { h: DirectoryHotel }) {
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
           <div className="space-y-6">
             {h.description ? (
-              <p className="text-base leading-relaxed text-on-surface whitespace-pre-line">{h.description}</p>
+              <div>
+                <h2 className="mb-3 font-headline text-xl font-bold text-primary">{h.name} nerede, Harem&apos;e ne kadar uzak?</h2>
+                <p className="text-base leading-relaxed text-on-surface whitespace-pre-line">{h.description}</p>
+              </div>
             ) : (
               <p className="rounded-xl border border-dashed border-outline-variant/50 bg-white p-4 text-[14px] text-on-surface-variant">
                 Otel açıklaması hazırlanıyor (yalnızca yerelde görünür; açıklaması olmayan otel canlıda yayınlanmaz).
@@ -75,6 +84,17 @@ export default async function DirectoryHotelPage({ h }: { h: DirectoryHotel }) {
                   ))}
                 </ul>
               </div>
+            )}
+            {faq.length > 0 && (
+              <section className="space-y-4">
+                <h2 className="font-headline text-xl font-bold text-primary">{h.name} hakkında sık sorulanlar</h2>
+                {faq.map((f) => (
+                  <div key={f.q} className="rounded-2xl border border-outline-variant/20 bg-white p-5">
+                    <h3 className="font-semibold text-on-surface">{f.q}</h3>
+                    <p className="mt-1.5 text-[15px] leading-relaxed text-on-surface-variant">{f.a}</p>
+                  </div>
+                ))}
+              </section>
             )}
             <div className="overflow-hidden rounded-2xl border border-outline-variant/20 bg-white">
               <iframe title={`${h.name} konumu`} src={mapSrc} className="h-72 w-full" loading="lazy" />

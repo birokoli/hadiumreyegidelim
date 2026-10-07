@@ -18,6 +18,7 @@ export type DirectoryHotel = {
   meals: string[];
   shuttle: "var" | "yok" | null;
   walkMinutes: number | null;
+  faq?: { q: string; a: string }[];
   sources: { text: string; source: string }[];
 };
 

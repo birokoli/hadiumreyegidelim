@@ -104,6 +104,13 @@ export default function OtelRehberiPage() {
         >
           {busy === "fetch" ? "Google verisi çekiliyor…" : "Google verisini çek (8 otel)"}
         </button>
+        <button
+          onClick={() => post({ action: "about" }, "about", (d) => `${d.checked} otel kontrol edildi, ${d.filled} tanesine İngilizce tanıtım eklendi, maliyet ${d.cost} $.`)}
+          disabled={!!busy}
+          className="rounded-xl border border-outline-variant/40 px-4 py-2.5 text-sm font-bold text-primary disabled:opacity-50"
+        >
+          {busy === "about" ? "Tanıtımlar tamamlanıyor…" : "Eksik tanıtımları tamamla (8 otel)"}
+        </button>
         <select value={filter} onChange={(e) => setFilter(e.target.value as "hedef" | "hepsi")} className="rounded-xl border border-outline-variant/30 bg-surface-container-low px-3 py-2 text-sm">
           <option value="hedef">Hedef bölgeler</option>
           <option value="hepsi">Bütün oteller</option>

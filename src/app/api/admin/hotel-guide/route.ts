@@ -2,7 +2,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAdminSession } from "@/lib/admin-auth";
 import { directoryHotels, DISTRICTS } from "@/lib/catalog/hotel-directory";
-import { fetchGoogleBatch, hotelGuideData, setApproved, writeHotelContent } from "@/lib/hotels/google-data";
+import { fetchGoogleBatch, fillMissingAbout, hotelGuideData, setApproved, writeHotelContent } from "@/lib/hotels/google-data";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 300;
@@ -38,6 +38,8 @@ export async function POST(req: NextRequest) {
     switch (body.action) {
       case "fetch":
         return NextResponse.json({ ok: true, ...(await fetchGoogleBatch(8)) });
+      case "about":
+        return NextResponse.json({ ok: true, ...(await fillMissingAbout(8)) });
       case "write": {
         const hotels = await directoryHotels({ all: true });
         const targets = body.slug ? hotels.filter((h) => h.slug === body.slug) : [];

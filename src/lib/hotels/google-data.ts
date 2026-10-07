@@ -156,8 +156,14 @@ export async function fetchGoogleHotel(name: string): Promise<{ slug: string; ok
         { hotel_identifier: best.i.hotel_identifier, location_code: SA, language_code, currency: "USD" },
       ], { timeoutMs: 60_000 });
       cost += r.cost;
-      info = r.result?.items?.[0] ?? r.result ?? null;
-      if (info?.title) break;
+      const got: InfoItem | null = r.result?.items?.[0] ?? r.result ?? null;
+      if (!info?.title) info = got;
+      else if (!info.about?.description && got?.about?.description) {
+        const cur: InfoItem = info;
+        info = { ...cur, about: { ...(cur.about ?? {}), description: got.about.description } };
+      }
+      // Türkçe kayıtta tanıtım yoksa İngilizcesini de dene (tanıtım çoğu otelde yalnızca İngilizce)
+      if (info?.title && info.about?.description) break;
     } catch {
       /* dil desteklenmiyorsa İngilizce dene */
     }
@@ -212,6 +218,31 @@ export async function fetchGoogleBatch(limit = 8) {
   }
   revalidateTag(HOTEL_GUIDE_TAG, { expire: 0 });
   return { results, cost: Math.round(cost * 10000) / 10000, remaining: PAXIMUM_NAMES.filter((n) => !google[slugify(n)]).length - todo.length };
+}
+
+/** Google verisi olup tanıtımı boş olan otellere İngilizce tanıtımı ekler */
+export async function fillMissingAbout(limit = 8) {
+  const { google } = await hotelGuideData(true);
+  const todo = Object.entries(google).filter(([, g]) => g.identifier && !g.about && !(g as GoogleHotel & { aboutChecked?: boolean }).aboutChecked).slice(0, limit);
+  let cost = 0;
+  let filled = 0;
+  await Promise.all(
+    todo.map(async ([slug, g]) => {
+      try {
+        const r = await dfsPost<InfoItem & { items?: InfoItem[] }>("/v3/business_data/google/hotel_info/live/advanced", [
+          { hotel_identifier: g.identifier, location_code: SA, language_code: "en", currency: "USD" },
+        ], { timeoutMs: 60_000 });
+        cost += r.cost;
+        const about = (r.result?.items?.[0] ?? r.result)?.about?.description ?? null;
+        if (about) filled++;
+        await save(`HOTEL_G:${slug}`, { ...g, about, aboutChecked: true });
+      } catch {
+        /* sonraki denemede tekrar */
+      }
+    }),
+  );
+  revalidateTag(HOTEL_GUIDE_TAG, { expire: 0 });
+  return { checked: todo.length, filled, cost: Math.round(cost * 10000) / 10000 };
 }
 
 // ── Metin ─────────────────────────────────────────────────────────────

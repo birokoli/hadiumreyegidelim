@@ -4,6 +4,7 @@ import { SITE_URL } from "@/lib/seo/site";
 import { getSiteSettings } from "@/lib/site-settings";
 import { DISTRICTS, kaabaText, nearbyHotels, type DirectoryHotel } from "@/lib/catalog/hotel-directory";
 import { ButtonLink, PageHero, Section } from "@/components/ui/kit";
+import HotelMap from "@/components/hotels/HotelMap";
 
 const CITY = { mekke: "Mekke", medine: "Medine" } as const;
 
@@ -15,9 +16,6 @@ export default async function DirectoryHotelPage({ h }: { h: DirectoryHotel }) {
   const message = `Merhaba, ${h.name} (${city}) için fiyat almak istiyorum.\nTarih: \nKişi sayısı: \nOda tipi: `;
   const waHref = `https://wa.me/${wa}?text=${encodeURIComponent(message)}`;
   const nearby = nearbyHotels(h);
-  const d = 0.006;
-  const mapSrc = `https://www.openstreetmap.org/export/embed.html?bbox=${h.lon - d},${h.lat - d},${h.lon + d},${h.lat + d}&layer=mapnik&marker=${h.lat},${h.lon}`;
-  const mapsLink = `https://www.google.com/maps/search/?api=1&query=${h.lat},${h.lon}`;
 
   const facts: [string, string | null][] = [
     ["Bölge", `${district}, ${city}`],
@@ -96,13 +94,7 @@ export default async function DirectoryHotelPage({ h }: { h: DirectoryHotel }) {
                 ))}
               </section>
             )}
-            <div className="overflow-hidden rounded-2xl border border-outline-variant/20 bg-white">
-              <iframe title={`${h.name} konumu`} src={mapSrc} className="h-72 w-full" loading="lazy" />
-              <div className="flex items-center justify-between px-4 py-3 text-[13px]">
-                <span className="text-on-surface-variant">Harita: OpenStreetMap</span>
-                <a href={mapsLink} target="_blank" rel="noopener noreferrer" className="font-semibold text-primary hover:underline">Google Haritalar&apos;da aç</a>
-              </div>
-            </div>
+            <HotelMap name={h.name} lat={h.lat} lon={h.lon} city={h.city} distanceLabel={kaaba} />
           </div>
           <aside className="space-y-4">
             <div className="rounded-2xl border border-outline-variant/20 bg-white p-5 lg:sticky lg:top-24">

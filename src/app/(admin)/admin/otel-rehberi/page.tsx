@@ -48,12 +48,14 @@ export default function OtelRehberiPage() {
     try {
       const r = await fetch(API, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
       const d = await r.json().catch(() => ({}));
+      if (r.status === 504) throw new Error("Sunucu süresi doldu; çekilen oteller kaydedildi. Sayfayı yenileyip devam edin.");
       if (!r.ok || d.ok === false) throw new Error(d.error || "İşlem başarısız.");
       setMsg({ ok: true, text: okText(d) });
       await load();
       return d;
     } catch (e) {
       setMsg({ ok: false, text: e instanceof Error ? e.message : String(e) });
+      await load();
     } finally {
       setBusy(null);
     }

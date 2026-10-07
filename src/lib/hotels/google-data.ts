@@ -139,7 +139,7 @@ export async function fetchGoogleHotel(name: string): Promise<{ slug: string; ok
   let cost = 0;
   const s = await dfsPost<{ items?: SearchItem[] }>("/v3/business_data/google/hotel_searches/live", [
     { keyword: `${name} Mecca`, location_code: SA, language_code: "en", currency: "USD" },
-  ]);
+  ], { timeoutMs: 45_000 });
   cost += s.cost;
   const candidates = (s.result?.items ?? [])
     .filter((i) => i.hotel_identifier && i.title)
@@ -154,7 +154,7 @@ export async function fetchGoogleHotel(name: string): Promise<{ slug: string; ok
     try {
       const r = await dfsPost<InfoItem & { items?: InfoItem[] }>("/v3/business_data/google/hotel_info/live/advanced", [
         { hotel_identifier: best.i.hotel_identifier, location_code: SA, language_code, currency: "USD" },
-      ]);
+      ], { timeoutMs: 60_000 });
       cost += r.cost;
       info = r.result?.items?.[0] ?? r.result ?? null;
       if (info?.title) break;
@@ -195,15 +195,20 @@ export async function fetchGoogleBatch(limit = 8) {
   const todo = PAXIMUM_NAMES.filter((n) => !google[slugify(n)]).slice(0, limit);
   const results: { slug: string; ok: boolean; reason?: string }[] = [];
   let cost = 0;
-  for (const n of todo) {
-    try {
-      const r = await fetchGoogleHotel(n);
-      cost += r.cost;
-      results.push({ slug: r.slug, ok: r.ok, reason: r.reason });
-      if (!r.ok) await save(`HOTEL_G:${r.slug}`, { identifier: "", title: "", failed: r.reason, fetchedAt: new Date().toISOString() });
-    } catch (e) {
-      results.push({ slug: slugify(n), ok: false, reason: e instanceof Error ? e.message : String(e) });
-    }
+  // 4'er otel paralel; her otel bitince kaydedilir (süre aşımında bile ilerleme kalır)
+  for (let i = 0; i < todo.length; i += 4) {
+    await Promise.all(
+      todo.slice(i, i + 4).map(async (n) => {
+        try {
+          const r = await fetchGoogleHotel(n);
+          cost += r.cost;
+          results.push({ slug: r.slug, ok: r.ok, reason: r.reason });
+          if (!r.ok) await save(`HOTEL_G:${r.slug}`, { identifier: "", title: "", failed: r.reason, fetchedAt: new Date().toISOString() });
+        } catch (e) {
+          results.push({ slug: slugify(n), ok: false, reason: e instanceof Error ? e.message : String(e) });
+        }
+      }),
+    );
   }
   revalidateTag(HOTEL_GUIDE_TAG, { expire: 0 });
   return { results, cost: Math.round(cost * 10000) / 10000, remaining: PAXIMUM_NAMES.filter((n) => !google[slugify(n)]).length - todo.length };

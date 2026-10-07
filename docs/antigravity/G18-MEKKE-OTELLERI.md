@@ -11,7 +11,7 @@ Girdi: `docs/veri/mekke-otelleri-paximum.md` (Claude'un OSM'den doğruladığı 
 
 Belgedeki "Konumu doğrulanamayanlar" listesindeki her otel için:
 ```json
-{ "name": "Paximum'daki ad", "officialName": "...", "lat": 21.0, "lon": 39.0, "district": "Ajyad | Mahbes | Mescid-i Cin | Cebel Ömer | Cerval | Misfele | Aziziye | diğer", "kaabaMeters": 0, "source": "https://www.google.com/maps/place/... ya da otelin resmî sitesi" }
+{ "name": "Paximum'daki ad", "officialName": "...", "lat": 21.0, "lon": 39.0, "district": "Ajyad | Cebel Ömer | Cerval | Mescid-i Cin | Mahbes | Nüzha | Misfele | Aziziye | diğer", "kaabaMeters": 0, "source": "https://www.google.com/maps/place/... ya da otelin resmî sitesi" }
 ```
 - Koordinatı Google Haritalar'daki otel kaydından al (kaydın bağlantısı `source`). Otel bulunamazsa `"lat": null` ve `"note": "bulunamadı"`; tahmin yazma.
 - `kaabaMeters`: Kâbe (21.42250, 39.82620) ile kuş uçuşu mesafe, haversine ile hesapla. Hesap betiğini ve çıktısını kanıta koy.
@@ -20,12 +20,12 @@ Belgedeki "Konumu doğrulanamayanlar" listesindeki her otel için:
 ## G18-2 · Bölgelerde Paximum listesinde olmayan oteller (aday listesi)
 **Dosya:** aynı JSON'a `"candidates": [...]` dizisi
 
-Kullanıcı Ajyad, Mescid-i Cin ve Mahbes bölgelerinden toplam 50 otel istiyor. Paximum listesindeki bu bölge otelleri yetmezse, Google Haritalar'da bu bölgelerdeki **puanı ve yorumu olan** otellerden aday ekle (aynı alanlar + `"inPaximum": false`). Kullanıcı bunları Paximum'da arayıp satılabilir olduğunu teyit edecek; teyit edilmeyen otel sayfaya girmez.
+Kullanıcı şu bölgelerden toplam ~50 otel istiyor: **Ajyad, Cebel Ömer, Cerval, Mescid-i Cin, Mahbes, Nüzha**. Nüzha (An-Nuzhah): Kâbe'nin batısında, araçla 8–11 dk; Google Haritalar'da "An Nuzhah, Makkah" olarak bul, sınırını kanıta ekran görüntüsüyle koy. Bölge başına en az 4 otel hedefle (Mescid-i Cin, Mahbes, Nüzha listede zayıf). Paximum listesindeki bu bölge otelleri yetmezse, Google Haritalar'da bu bölgelerdeki **puanı ve yorumu olan** otellerden aday ekle (aynı alanlar + `"inPaximum": false`). Kullanıcı bunları Paximum'da arayıp satılabilir olduğunu teyit edecek; teyit edilmeyen otel sayfaya girmez.
 
 ## G18-3 · Otel sayfa içerikleri (yalnızca bölgedeki oteller)
 **Dosya:** yeni `docs/veri/mekke-otel-icerikleri.json`
 
-Bölgesi Ajyad, Mahbes, Mescid-i Cin, Cebel Ömer veya Cerval olan her otel için (G13-1 biçimi):
+Bölgesi Ajyad, Cebel Ömer, Cerval, Mescid-i Cin, Mahbes veya Nüzha olan her otel için (G13-1 biçimi):
 ```json
 { "slug": "anjum-hotel-makkah", "name": "Anjum Hotel Makkah", "stars": 5, "district": "Cerval", "description": "...", "roomTypes": ["..."], "meals": ["Oda kahvaltı", "..."], "shuttle": "var | yok | bilinmiyor", "walkMinutes": null, "facts": [{ "text": "...", "source": "https://..." }] }
 ```

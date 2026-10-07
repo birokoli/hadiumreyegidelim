@@ -10,8 +10,10 @@ Bölge karşılıkları (OSM):
 - **Ajyad:** Harem'in güneyi; Saat Kulesi (Abraj Al Bait) dahil. Mescid-i Haram'a 0,4–0,9 km.
 - **Mahbes (Mahbesü'l-Cin):** Harem'e ~2,2 km. OSM'de çevresi "Er-Ravabi" ve Aziziye sınırı.
 - **Mescid-i Cin:** Harem'in kuzeyinde, ~1,25 km (Süleymaniye). Doğrulanmış listede bu bölgeden otel yok; G18'de aranacak.
-- **"Nüzha":** OSM'de Mekke içinde bu adla bir mahalle bulunamadı (Cidde ve Taif'te var). Kullanıcıdan teyit bekleniyor.
-- **Cebel Ömer (Jarham) ve Cerval (Jarwal):** kullanıcının saydığı bölgelerde değil ama Harem'e 0,5–1,3 km; dahil edilip edilmeyeceği kullanıcıya soruldu.
+- **Nüzha (An-Nuzhah):** kullanıcının tarifi (7 Ekim): Kâbe'nin batısında, yürüme mesafesinde değil, araçla 8–11 dk. OSM'de sınırı kayıtlı değil; otelleri G18'de Google Haritalar'dan bulunacak.
+- **Cebel Ömer (Jarham) ve Cerval (Jarwal):** kullanıcı onayıyla dahil (7 Ekim).
+
+**Kapsam (kullanıcı kararı, 7 Ekim):** Ajyad, Cebel Ömer, Cerval, Mescid-i Cin, Mahbes ve Nüzha; toplam ~50 otel. Bu bölgelerde gerekli görülen (yorumu çok, umrecilerin tercih ettiği) Paximum dışı oteller aday olarak eklenebilir; kullanıcı Paximum'da teyit eder.
 
 ## Konumu doğrulanan oteller (43)
 

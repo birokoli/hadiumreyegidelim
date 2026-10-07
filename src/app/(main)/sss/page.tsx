@@ -8,7 +8,7 @@ import { faqJsonLd } from "@/components/ui/kit";
 
 export const revalidate = 300;
 export const metadata: Metadata = {
-  title: "Sıkça Sorulan Sorular: Umre, Vize ve Ödeme",
+  title: "Sıkça Sorulan Sorular: Umre ve Vize",
   description: "Umre planlama, umre vizesi, ödeme, iptal ve rezervasyon süreçleriyle ilgili en çok sorulan soruların cevapları.",
   alternates: { canonical: "/sss" },
 };

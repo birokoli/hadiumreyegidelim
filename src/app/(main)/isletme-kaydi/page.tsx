@@ -6,7 +6,7 @@ import { getPageTexts } from "@/lib/page-texts";
 
 export const revalidate = 300;
 export const metadata: Metadata = {
-  title: "İşletmenizi Kaydedin: Umre İş Ortaklığı",
+  title: "İşletme Kaydı ve İş Ortaklığı",
   description: "Mekke ve Medine'de otel, transfer, rehberlik ya da ziyaret hizmeti veriyorsanız hizmetlerinizi ve iş birliği beklentinizi bizimle paylaşın.",
   alternates: { canonical: "/isletme-kaydi" },
 };

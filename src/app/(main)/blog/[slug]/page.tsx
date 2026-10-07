@@ -14,10 +14,16 @@ import { getSiteSettings } from "@/lib/site-settings";
 import Image from 'next/image';
 import { optimizeContentImages } from "@/lib/content-images";
 
-// Next 16: boş generateStaticParams olmadan dinamik yol her istekte yeniden oluşturulur (no-store); boş liste
-// sayfayı ilk istekte üretip önbelleğe alır (ISR). 6 Ekim denetimi: blog sayfaları 1,6–4,3 sn.
+// Next 16: generateStaticParams olmadan dinamik yol her istekte yeniden oluşturulur (no-store). 7 Ekim: boş liste
+// yayından sonraki ilk ziyareti yavaş bırakıyordu (soğuk başlangıç 2–4 sn); yayındaki yazılar artık build'de üretilir.
+// Veritabanına ulaşılamazsa boş liste döner, sayfalar ilk istekte üretilir (build düşmez).
 export async function generateStaticParams() {
-  return [];
+  try {
+    const posts = await prisma.post.findMany({ where: { published: true }, select: { slug: true } });
+    return posts.map((p) => ({ slug: p.slug }));
+  } catch {
+    return [];
+  }
 }
 
 

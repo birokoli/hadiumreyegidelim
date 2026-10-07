@@ -7,7 +7,7 @@ import { BLOG_CATEGORIES } from "@/lib/geo-blog/categories";
 // Next 16: boş generateStaticParams olmadan dinamik yol her istekte yeniden oluşturulur (no-store); boş liste
 // sayfayı ilk istekte üretip önbelleğe alır (ISR). 6 Ekim denetimi: blog sayfaları 1,6–4,3 sn.
 export async function generateStaticParams() {
-  return [];
+  return BLOG_CATEGORIES.map((c) => ({ slug: c.slug }));
 }
 
 

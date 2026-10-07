@@ -1,16 +1,17 @@
 // Blog kategorileri (6 Ekim, kullanıcı): vize, bireysel umre, ibadet (ihram/tavaf/sa'y), siyer vb.
 // Blog motorunun konu kümeleri (clusters.ts) bu kategorilere bağlanır; yeni taslak kendi kategorisine düşer.
-export type BlogCategoryDef = { slug: string; name: string; description: string; clusters: string[] };
+// seoTitle: marka ekiyle 60 karakteri geçmesin (site denetimi, 7 Ekim); description 70–160 karakter.
+export type BlogCategoryDef = { slug: string; name: string; seoTitle: string; description: string; clusters: string[] };
 
 export const BLOG_CATEGORIES: BlogCategoryDef[] = [
-  { slug: "umre-vizesi", name: "Umre Vizesi ve Nusuk", description: "Umre vizesi nasıl alınır, ücreti ne kadar, Nusuk uygulaması ve Ravza randevusu.", clusters: ["vize"] },
-  { slug: "bireysel-umre", name: "Bireysel Umre", description: "Tursuz, kendi programınızla umre: gün gün programlar, planlama ve hazırlık.", clusters: ["donem", "hazirlik"] },
-  { slug: "umre-fiyatlari", name: "Umre Fiyatları ve Turlar", description: "2026 umre fiyatları, tur ve bireysel umre karşılaştırmaları, bütçe planlama.", clusters: ["fiyat"] },
-  { slug: "ibadet-rehberi", name: "İhram, Tavaf ve Sa'y", description: "Umre ibadeti adım adım: ihram, tavaf, sa'y, traş ve ihram yasakları.", clusters: ["ibadet"] },
-  { slug: "mekke-medine", name: "Mekke ve Medine", description: "Mescid-i Haram, Mescid-i Nebevi, ziyaret yerleri, müzeler ve alışveriş.", clusters: ["ziyaret"] },
-  { slug: "siyer", name: "Siyer ve Tarih", description: "Peygamberimizin hayatı, sahabeler ve Mekke–Medine'deki tarihi mekânlar.", clusters: [] },
-  { slug: "otel-ve-ulasim", name: "Otel ve Ulaşım", description: "Mekke ve Medine otelleri, transferler ve Haremeyn hızlı treni.", clusters: ["konaklama", "ulasim"] },
-  { slug: "aile-ve-ozel-durumlar", name: "Aile, Bebek ve Özel Durumlar", description: "Bebekle, çocukla, yaşlı ve engelli yakınla umre; özel durumlar.", clusters: ["ozel"] },
+  { slug: "umre-vizesi", name: "Umre Vizesi ve Nusuk", seoTitle: "Umre Vizesi ve Nusuk Rehberi", description: "Umre vizesi nasıl alınır, ücreti ne kadar, Nusuk uygulaması ve Ravza randevusu.", clusters: ["vize"] },
+  { slug: "bireysel-umre", name: "Bireysel Umre", seoTitle: "Bireysel Umre Rehberi", description: "Tursuz, kendi programınızla umre: gün gün programlar, planlama ve hazırlık.", clusters: ["donem", "hazirlik"] },
+  { slug: "umre-fiyatlari", name: "Umre Fiyatları ve Turlar", seoTitle: "Umre Fiyatları ve Turlar 2026", description: "2026 umre fiyatları, tur ve bireysel umre karşılaştırmaları, bütçe planlama.", clusters: ["fiyat"] },
+  { slug: "ibadet-rehberi", name: "İhram, Tavaf ve Sa'y", seoTitle: "İhram, Tavaf ve Sa'y Rehberi", description: "Umre ibadeti adım adım: ihrama girmek, tavaf, sa'y, tıraş ve ihram yasakları; ilk umresini yapacaklar için.", clusters: ["ibadet"] },
+  { slug: "mekke-medine", name: "Mekke ve Medine", seoTitle: "Mekke ve Medine Rehberi", description: "Mescid-i Haram, Mescid-i Nebevi, ziyaret yerleri, müzeler ve alışveriş.", clusters: ["ziyaret"] },
+  { slug: "siyer", name: "Siyer ve Tarih", seoTitle: "Siyer ve Tarih Yazıları", description: "Peygamberimizin hayatı, sahabeler ve Mekke–Medine'deki tarihi mekânlar.", clusters: [] },
+  { slug: "otel-ve-ulasim", name: "Otel ve Ulaşım", seoTitle: "Mekke ve Medine Otel, Ulaşım", description: "Mekke ve Medine otelleri, Harem'e mesafe, havalimanı transferleri ve Haremeyn hızlı treni rehberi.", clusters: ["konaklama", "ulasim"] },
+  { slug: "aile-ve-ozel-durumlar", name: "Aile, Bebek ve Özel Durumlar", seoTitle: "Bebekle, Çocukla ve Yaşlıyla Umre", description: "Bebekle, çocukla, yaşlı ya da engelli bir yakınla umre: kurallar, hazırlık ve yolculukta dikkat edilecekler.", clusters: ["ozel"] },
 ];
 
 /** Konu kümesi → kategori slug'ı */

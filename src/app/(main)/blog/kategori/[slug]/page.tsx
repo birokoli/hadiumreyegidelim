@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { PageHero } from "@/components/ui/kit";
 import { BlogGrid, BlogTopics } from "@/components/blog/BlogList";
+import { BLOG_CATEGORIES } from "@/lib/geo-blog/categories";
 
 // Next 16: boş generateStaticParams olmadan dinamik yol her istekte yeniden oluşturulur (no-store); boş liste
 // sayfayı ilk istekte üretip önbelleğe alır (ISR). 6 Ekim denetimi: blog sayfaları 1,6–4,3 sn.
@@ -16,9 +17,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const category = await prisma.category.findUnique({ where: { slug } });
   if (!category) return { title: "Kategori bulunamadı", robots: { index: false } };
+  const def = BLOG_CATEGORIES.find((c) => c.slug === slug);
   return {
-    title: `${category.name}: Umre Rehber Yazıları`,
-    description: category.description || `${category.name} konusundaki umre rehber yazıları.`,
+    title: def?.seoTitle ?? `${category.name}: Umre Yazıları`,
+    description: def?.description || category.description || `${category.name} konusundaki umre rehber yazıları.`,
     alternates: { canonical: `/blog/kategori/${slug}` },
   };
 }

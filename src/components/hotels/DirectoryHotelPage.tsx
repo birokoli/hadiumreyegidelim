@@ -15,7 +15,7 @@ export default async function DirectoryHotelPage({ h }: { h: DirectoryHotel }) {
   const wa = ((await getSiteSettings()).WHATSAPP_NUMBER || "905404010038").replace(/\D/g, "");
   const message = `Merhaba, ${h.name} (${city}) için fiyat almak istiyorum.\nTarih: \nKişi sayısı: \nOda tipi: `;
   const waHref = `https://wa.me/${wa}?text=${encodeURIComponent(message)}`;
-  const nearby = nearbyHotels(h);
+  const nearby = await nearbyHotels(h);
 
   const facts: [string, string | null][] = [
     ["Bölge", `${district}, ${city}`],
@@ -24,6 +24,7 @@ export default async function DirectoryHotelPage({ h }: { h: DirectoryHotel }) {
     ["Harem'e yürüyüş", h.walkMinutes ? `yaklaşık ${h.walkMinutes} dk` : null],
     ["Harem servisi", h.shuttle === "var" ? "Var" : h.shuttle === "yok" ? "Yok" : null],
     ["Yemek seçenekleri", h.meals.length ? h.meals.join(", ") : null],
+    ["Giriş / çıkış", h.checkIn || h.checkOut ? `${h.checkIn ?? "—"} / ${h.checkOut ?? "—"}` : null],
   ];
 
   const jsonLd = {

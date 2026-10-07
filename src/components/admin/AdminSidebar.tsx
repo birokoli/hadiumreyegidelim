@@ -40,7 +40,7 @@ const menuGroups: { title: string; links: SidebarLink[] }[] = [
         href: "/admin/packages",
         icon: "inventory_2",
         label: "Ürün ve Fiyat",
-        match: ["/admin/packages", "/admin/fiyat-teklifleri/hizmetler", "/admin/fiyat-teklifleri/hizmetler/fiyatlar", "/admin/services", "/admin/guides"],
+        match: ["/admin/packages", "/admin/fiyat-teklifleri/hizmetler", "/admin/fiyat-teklifleri/hizmetler/fiyatlar", "/admin/services", "/admin/guides", "/admin/otel-rehberi"],
         permission: "operations",
         badgeKey: "totalPackages",
       },

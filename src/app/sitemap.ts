@@ -66,7 +66,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     .map((h) => ({ url: `${baseUrl}/oteller/${h.slug}`, changeFrequency: "monthly" as const, priority: 0.6 }));
   // Fiyatsız otel rehberi (7 Ekim): yalnızca açıklaması olanlar (directoryHotels canlıda bunları döndürür)
   const catalogSlugs = new Set(hotelUrls.map((u) => u.url));
-  for (const d of directoryHotels()) {
+  for (const d of await directoryHotels().catch(() => [])) {
     const url = `${baseUrl}/oteller/${d.slug}`;
     if (!catalogSlugs.has(url)) hotelUrls.push({ url, changeFrequency: "monthly" as const, priority: 0.5 });
   }

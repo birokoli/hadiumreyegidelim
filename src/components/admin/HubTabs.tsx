@@ -33,6 +33,7 @@ export const HUBS: Record<HubKey, TabItem[]> = {
     { label: "Aylık fiyatlar", href: "/admin/fiyat-teklifleri/hizmetler/fiyatlar" },
     { label: "Ek hizmetler", href: "/admin/services" },
     { label: "Rehberler", href: "/admin/guides" },
+    { label: "Otel Rehberi", href: "/admin/otel-rehberi" },
   ],
   blog: [
     { label: "Yazılar", href: "/admin/content", exact: true },

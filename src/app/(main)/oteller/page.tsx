@@ -23,7 +23,7 @@ export default async function HotelsPage() {
   const hotels = (await getCatalog()).filter((c) => c.category === "hotel" && c.slug);
   // Fiyatsız rehber otelleri (7 Ekim): katalogda olmayanlar, bölgeye göre
   const catalogSlugs = new Set(hotels.map((h) => h.slug));
-  const directory = directoryHotels().filter((d) => !catalogSlugs.has(d.slug)).sort((a, b) => (a.kaabaMeters ?? 99999) - (b.kaabaMeters ?? 99999));
+  const directory = (await directoryHotels()).filter((d) => !catalogSlugs.has(d.slug)).sort((a, b) => (a.kaabaMeters ?? 99999) - (b.kaabaMeters ?? 99999));
   const districts = Object.keys(DISTRICTS).filter((k) => directory.some((d) => d.district === k));
   const cities = [...new Set(hotels.map((h) => (h.city ?? "").toLowerCase()))].sort((a, b) => (a === "mekke" ? -1 : b === "mekke" ? 1 : a.localeCompare(b)));
 

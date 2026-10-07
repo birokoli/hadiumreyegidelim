@@ -1,3 +1,4 @@
+import { directoryHotels } from "@/lib/catalog/hotel-directory";
 import { getCatalog } from "@/lib/catalog";
 import { MetadataRoute } from 'next';
 import { prisma } from '@/lib/prisma';
@@ -63,6 +64,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const hotelUrls: { url: string; changeFrequency: "weekly" | "monthly"; priority: number }[] = (await getCatalog())
     .filter((c) => c.category === "hotel" && c.slug)
     .map((h) => ({ url: `${baseUrl}/oteller/${h.slug}`, changeFrequency: "monthly" as const, priority: 0.6 }));
+  // Fiyatsız otel rehberi (7 Ekim): yalnızca açıklaması olanlar (directoryHotels canlıda bunları döndürür)
+  const catalogSlugs = new Set(hotelUrls.map((u) => u.url));
+  for (const d of directoryHotels()) {
+    const url = `${baseUrl}/oteller/${d.slug}`;
+    if (!catalogSlugs.has(url)) hotelUrls.push({ url, changeFrequency: "monthly" as const, priority: 0.5 });
+  }
   hotelUrls.push({ url: `${baseUrl}/yorumlar`, changeFrequency: "weekly" as const, priority: 0.6 });
   hotelUrls.push({ url: `${baseUrl}/hadi-umreye-gidelim-guvenilir-mi`, changeFrequency: "monthly" as const, priority: 0.7 });
   // Yardım merkezi (6 Ekim)

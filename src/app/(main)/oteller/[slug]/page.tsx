@@ -11,11 +11,13 @@ import { SITE_URL } from "@/lib/seo/site";
 import { pageTitle } from "@/lib/seo/meta";
 import { PageHero, Section } from "@/components/ui/kit";
 import { hotelLongText } from "@/lib/catalog/hotel-texts";
+import { directoryHotels, findDirectoryHotel, kaabaText, DISTRICTS } from "@/lib/catalog/hotel-directory";
+import DirectoryHotelPage from "@/components/hotels/DirectoryHotelPage";
 
 // Next 16: boş generateStaticParams olmadan dinamik yol her istekte yeniden oluşturulur (no-store); boş liste
 // sayfayı ilk istekte üretip önbelleğe alır (ISR). 6 Ekim denetimi: blog sayfaları 1,6–4,3 sn.
 export async function generateStaticParams() {
-  return [];
+  return directoryHotels().map((h) => ({ slug: h.slug }));
 }
 
 
@@ -37,7 +39,17 @@ function distanceText(m: number | null) {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const h = await findHotel(slug);
-  if (!h) return { title: "Otel bulunamadı", robots: { index: false } };
+  if (!h) {
+    const d = findDirectoryHotel(slug);
+    if (!d) return { title: "Otel bulunamadı", robots: { index: false } };
+    const k = kaabaText(d.kaabaMeters);
+    return {
+      title: pageTitle(`${d.name}: Konum ve Harem'e Mesafe`),
+      description: `${d.name}, Mekke ${DISTRICTS[d.district] ?? d.district} bölgesinde${d.stars ? `, ${d.stars} yıldızlı` : ""}${k ? `; Kâbe'ye kuş uçuşu ${k}` : ""}. Konum, oda ve yemek bilgisi; tarihinize göre fiyatı WhatsApp'tan sorun.`,
+      alternates: { canonical: `/oteller/${slug}` },
+      ...(d.description ? {} : { robots: { index: false } }),
+    };
+  }
   const city = cityName(h.city);
   const dist = distanceText(h.distanceMeters);
   return {
@@ -51,7 +63,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 export default async function HotelPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const h = await findHotel(slug);
-  if (!h) notFound();
+  if (!h) {
+    const d = findDirectoryHotel(slug);
+    if (!d) notFound();
+    return <DirectoryHotelPage h={d} />;
+  }
   const city = cityName(h.city);
   const dist = distanceText(h.distanceMeters);
   const price = fromPrice(h);

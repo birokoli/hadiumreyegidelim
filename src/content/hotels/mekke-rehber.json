@@ -1,0 +1,614 @@
+{
+ "_note": "Paximum'dan satılan Mekke otelleri (fiyatsız sayfalar). Konum OSM, 7 Ekim; içerik G18 sonrası Claude kontrolüyle eklenir. Açıklaması (description) olmayan otel canlıda yayınlanmaz.",
+ "hotels": [
+  {
+   "slug": "al-marwa-rayhaan-by-rotana",
+   "name": "Al Marwa Rayhaan by Rotana",
+   "city": "mekke",
+   "district": "ajyad",
+   "lat": 21.41916,
+   "lon": 39.8261,
+   "kaabaMeters": 371,
+   "stars": null,
+   "description": null,
+   "roomTypes": [],
+   "meals": [],
+   "shuttle": null,
+   "walkMinutes": null,
+   "sources": [
+    {
+     "text": "Konum",
+     "source": "OpenStreetMap"
+    }
+   ]
+  },
+  {
+   "slug": "raffles-makkah-palace",
+   "name": "Raffles Makkah Palace",
+   "city": "mekke",
+   "district": "ajyad",
+   "lat": 21.41922,
+   "lon": 39.82498,
+   "kaabaMeters": 386,
+   "stars": null,
+   "description": null,
+   "roomTypes": [],
+   "meals": [],
+   "shuttle": null,
+   "walkMinutes": null,
+   "sources": [
+    {
+     "text": "Konum",
+     "source": "OpenStreetMap"
+    }
+   ]
+  },
+  {
+   "slug": "le-meridien-makkah",
+   "name": "Le Méridien Makkah",
+   "city": "mekke",
+   "district": "ajyad",
+   "lat": 21.42025,
+   "lon": 39.82918,
+   "kaabaMeters": 398,
+   "stars": null,
+   "description": null,
+   "roomTypes": [],
+   "meals": [],
+   "shuttle": null,
+   "walkMinutes": null,
+   "sources": [
+    {
+     "text": "Konum",
+     "source": "OpenStreetMap"
+    }
+   ]
+  },
+  {
+   "slug": "elaf-kinda-hotel",
+   "name": "Elaf Kinda Hotel",
+   "city": "mekke",
+   "district": "ajyad",
+   "lat": 21.41878,
+   "lon": 39.82429,
+   "kaabaMeters": 458,
+   "stars": null,
+   "description": null,
+   "roomTypes": [],
+   "meals": [],
+   "shuttle": null,
+   "walkMinutes": null,
+   "sources": [
+    {
+     "text": "Konum",
+     "source": "OpenStreetMap"
+    }
+   ]
+  },
+  {
+   "slug": "swissotel-makkah",
+   "name": "Swissotel Makkah",
+   "city": "mekke",
+   "district": "ajyad",
+   "lat": 21.41838,
+   "lon": 39.82681,
+   "kaabaMeters": 462,
+   "stars": null,
+   "description": null,
+   "roomTypes": [],
+   "meals": [],
+   "shuttle": null,
+   "walkMinutes": null,
+   "sources": [
+    {
+     "text": "Konum",
+     "source": "OpenStreetMap"
+    }
+   ]
+  },
+  {
+   "slug": "movenpick-hotel-residences-hajar-tower-makkah",
+   "name": "Mövenpick Hotel & Residences Hajar Tower Makkah",
+   "city": "mekke",
+   "district": "ajyad",
+   "lat": 21.4183,
+   "lon": 39.82627,
+   "kaabaMeters": 467,
+   "stars": null,
+   "description": null,
+   "roomTypes": [],
+   "meals": [],
+   "shuttle": null,
+   "walkMinutes": null,
+   "sources": [
+    {
+     "text": "Konum",
+     "source": "OpenStreetMap"
+    }
+   ]
+  },
+  {
+   "slug": "m-hotel-makkah-by-millennium",
+   "name": "M Hotel Makkah by Millennium",
+   "city": "mekke",
+   "district": "ajyad",
+   "lat": 21.41901,
+   "lon": 39.82355,
+   "kaabaMeters": 475,
+   "stars": null,
+   "description": null,
+   "roomTypes": [],
+   "meals": [],
+   "shuttle": null,
+   "walkMinutes": null,
+   "sources": [
+    {
+     "text": "Konum",
+     "source": "OpenStreetMap"
+    }
+   ]
+  },
+  {
+   "slug": "swissotel-al-maqam-makkah",
+   "name": "Swissotel Al Maqam Makkah",
+   "city": "mekke",
+   "district": "ajyad",
+   "lat": 21.41847,
+   "lon": 39.82441,
+   "kaabaMeters": 484,
+   "stars": null,
+   "description": null,
+   "roomTypes": [],
+   "meals": [],
+   "shuttle": null,
+   "walkMinutes": null,
+   "sources": [
+    {
+     "text": "Konum",
+     "source": "OpenStreetMap"
+    }
+   ]
+  },
+  {
+   "slug": "jabal-omar-hyatt-regency-makkah",
+   "name": "Jabal Omar Hyatt Regency Makkah",
+   "city": "mekke",
+   "district": "cebel-omer",
+   "lat": 21.42082,
+   "lon": 39.82176,
+   "kaabaMeters": 496,
+   "stars": null,
+   "description": null,
+   "roomTypes": [],
+   "meals": [],
+   "shuttle": null,
+   "walkMinutes": null,
+   "sources": [
+    {
+     "text": "Konum",
+     "source": "OpenStreetMap"
+    }
+   ]
+  },
+  {
+   "slug": "hilton-suites-jabal-omar-makkah",
+   "name": "Hilton Suites Jabal Omar Makkah",
+   "city": "mekke",
+   "district": "cebel-omer",
+   "lat": 21.42094,
+   "lon": 39.82161,
+   "kaabaMeters": 506,
+   "stars": null,
+   "description": null,
+   "roomTypes": [],
+   "meals": [],
+   "shuttle": null,
+   "walkMinutes": null,
+   "sources": [
+    {
+     "text": "Konum",
+     "source": "OpenStreetMap"
+    }
+   ]
+  },
+  {
+   "slug": "conrad-jabal-omar-makkah",
+   "name": "Conrad Jabal Omar Makkah",
+   "city": "mekke",
+   "district": "cebel-omer",
+   "lat": 21.41934,
+   "lon": 39.82212,
+   "kaabaMeters": 550,
+   "stars": null,
+   "description": null,
+   "roomTypes": [],
+   "meals": [],
+   "shuttle": null,
+   "walkMinutes": null,
+   "sources": [
+    {
+     "text": "Konum",
+     "source": "OpenStreetMap"
+    }
+   ]
+  },
+  {
+   "slug": "makarem-ajyad-makkah-hotel",
+   "name": "Makarem Ajyad Makkah Hotel",
+   "city": "mekke",
+   "district": "ajyad",
+   "lat": 21.41746,
+   "lon": 39.82858,
+   "kaabaMeters": 612,
+   "stars": null,
+   "description": null,
+   "roomTypes": [],
+   "meals": [],
+   "shuttle": null,
+   "walkMinutes": null,
+   "sources": [
+    {
+     "text": "Konum",
+     "source": "OpenStreetMap"
+    }
+   ]
+  },
+  {
+   "slug": "hilton-hotel-convention-jabal-omar-makkah",
+   "name": "Hilton Hotel & Convention Jabal Omar Makkah",
+   "city": "mekke",
+   "district": "cebel-omer",
+   "lat": 21.42277,
+   "lon": 39.81983,
+   "kaabaMeters": 660,
+   "stars": null,
+   "description": null,
+   "roomTypes": [],
+   "meals": [],
+   "shuttle": null,
+   "walkMinutes": null,
+   "sources": [
+    {
+     "text": "Konum",
+     "source": "OpenStreetMap"
+    }
+   ]
+  },
+  {
+   "slug": "anjum-hotel-makkah",
+   "name": "Anjum Hotel Makkah",
+   "city": "mekke",
+   "district": "cerval",
+   "lat": 21.42459,
+   "lon": 39.81957,
+   "kaabaMeters": 724,
+   "stars": null,
+   "description": null,
+   "roomTypes": [],
+   "meals": [],
+   "shuttle": null,
+   "walkMinutes": null,
+   "sources": [
+    {
+     "text": "Konum",
+     "source": "OpenStreetMap"
+    }
+   ]
+  },
+  {
+   "slug": "jabal-omar-marriott-hotel-makkah",
+   "name": "Jabal Omar Marriott Hotel Makkah",
+   "city": "mekke",
+   "district": "cebel-omer",
+   "lat": 21.42343,
+   "lon": 39.81898,
+   "kaabaMeters": 754,
+   "stars": null,
+   "description": null,
+   "roomTypes": [],
+   "meals": [],
+   "shuttle": null,
+   "walkMinutes": null,
+   "sources": [
+    {
+     "text": "Konum",
+     "source": "OpenStreetMap"
+    }
+   ]
+  },
+  {
+   "slug": "sheraton-makkah-jabal-al-kaaba-hotel",
+   "name": "Sheraton Makkah Jabal Al Kaaba Hotel",
+   "city": "mekke",
+   "district": "cerval",
+   "lat": 21.42564,
+   "lon": 39.81945,
+   "kaabaMeters": 781,
+   "stars": null,
+   "description": null,
+   "roomTypes": [],
+   "meals": [],
+   "shuttle": null,
+   "walkMinutes": null,
+   "sources": [
+    {
+     "text": "Konum",
+     "source": "OpenStreetMap"
+    }
+   ]
+  },
+  {
+   "slug": "address-jabal-omar-makkah",
+   "name": "Address Jabal Omar Makkah",
+   "city": "mekke",
+   "district": "cebel-omer",
+   "lat": 21.42215,
+   "lon": 39.81858,
+   "kaabaMeters": 790,
+   "stars": null,
+   "description": null,
+   "roomTypes": [],
+   "meals": [],
+   "shuttle": null,
+   "walkMinutes": null,
+   "sources": [
+    {
+     "text": "Konum",
+     "source": "OpenStreetMap"
+    }
+   ]
+  },
+  {
+   "slug": "doubletree-by-hilton-makkah-jabal-omar",
+   "name": "DoubleTree by Hilton Makkah Jabal Omar",
+   "city": "mekke",
+   "district": "cebel-omer",
+   "lat": 21.42323,
+   "lon": 39.81786,
+   "kaabaMeters": 867,
+   "stars": null,
+   "description": null,
+   "roomTypes": [],
+   "meals": [],
+   "shuttle": null,
+   "walkMinutes": null,
+   "sources": [
+    {
+     "text": "Konum",
+     "source": "OpenStreetMap"
+    }
+   ]
+  },
+  {
+   "slug": "al-shohada-hotel",
+   "name": "Al Shohada Hotel",
+   "city": "mekke",
+   "district": "ajyad",
+   "lat": 21.41485,
+   "lon": 39.82818,
+   "kaabaMeters": 875,
+   "stars": null,
+   "description": null,
+   "roomTypes": [],
+   "meals": [],
+   "shuttle": null,
+   "walkMinutes": null,
+   "sources": [
+    {
+     "text": "Konum",
+     "source": "OpenStreetMap"
+    }
+   ]
+  },
+  {
+   "slug": "al-ebaa-hotel",
+   "name": "Al Ebaa Hotel",
+   "city": "mekke",
+   "district": "cerval",
+   "lat": 21.42454,
+   "lon": 39.81661,
+   "kaabaMeters": 1019,
+   "stars": null,
+   "description": null,
+   "roomTypes": [],
+   "meals": [],
+   "shuttle": null,
+   "walkMinutes": null,
+   "sources": [
+    {
+     "text": "Konum",
+     "source": "OpenStreetMap"
+    }
+   ]
+  },
+  {
+   "slug": "dhiafat-al-raja-hotel",
+   "name": "Dhiafat Al Raja Hotel",
+   "city": "mekke",
+   "district": "cebel-omer",
+   "lat": 21.41251,
+   "lon": 39.82112,
+   "kaabaMeters": 1229,
+   "stars": null,
+   "description": null,
+   "roomTypes": [],
+   "meals": [],
+   "shuttle": null,
+   "walkMinutes": null,
+   "sources": [
+    {
+     "text": "Konum",
+     "source": "OpenStreetMap"
+    }
+   ]
+  },
+  {
+   "slug": "ramada-by-wyndham-makkah-zad-al-tayseer",
+   "name": "Ramada by Wyndham Makkah Zad Al Tayseer",
+   "city": "mekke",
+   "district": "cerval",
+   "lat": 21.42761,
+   "lon": 39.81454,
+   "kaabaMeters": 1334,
+   "stars": null,
+   "description": null,
+   "roomTypes": [],
+   "meals": [],
+   "shuttle": null,
+   "walkMinutes": null,
+   "sources": [
+    {
+     "text": "Konum",
+     "source": "OpenStreetMap"
+    }
+   ]
+  },
+  {
+   "slug": "nawazi-towers-hotel",
+   "name": "Nawazi Towers Hotel",
+   "city": "mekke",
+   "district": "mahbes",
+   "lat": 21.41044,
+   "lon": 39.82934,
+   "kaabaMeters": 1379,
+   "stars": null,
+   "description": null,
+   "roomTypes": [],
+   "meals": [],
+   "shuttle": null,
+   "walkMinutes": null,
+   "sources": [
+    {
+     "text": "Konum",
+     "source": "OpenStreetMap"
+    }
+   ]
+  },
+  {
+   "slug": "batoul-ajyad-hotel",
+   "name": "Batoul Ajyad Hotel",
+   "city": "mekke",
+   "district": "mahbes",
+   "lat": 21.40736,
+   "lon": 39.82938,
+   "kaabaMeters": 1715,
+   "stars": null,
+   "description": null,
+   "roomTypes": [],
+   "meals": [],
+   "shuttle": null,
+   "walkMinutes": null,
+   "sources": [
+    {
+     "text": "Konum",
+     "source": "OpenStreetMap"
+    }
+   ]
+  },
+  {
+   "slug": "voco-makkah",
+   "name": "Voco Makkah",
+   "city": "mekke",
+   "district": "cebel-omer",
+   "lat": 21.40919,
+   "lon": 39.81757,
+   "kaabaMeters": 1729,
+   "stars": null,
+   "description": null,
+   "roomTypes": [],
+   "meals": [],
+   "shuttle": null,
+   "walkMinutes": null,
+   "sources": [
+    {
+     "text": "Konum",
+     "source": "OpenStreetMap"
+    }
+   ]
+  },
+  {
+   "slug": "courtyard-by-marriott-makkah",
+   "name": "Courtyard By Marriott Makkah",
+   "city": "mekke",
+   "district": "mahbes",
+   "lat": 21.40421,
+   "lon": 39.83078,
+   "kaabaMeters": 2088,
+   "stars": null,
+   "description": null,
+   "roomTypes": [],
+   "meals": [],
+   "shuttle": null,
+   "walkMinutes": null,
+   "sources": [
+    {
+     "text": "Konum",
+     "source": "OpenStreetMap"
+    }
+   ]
+  },
+  {
+   "slug": "saja-hotels-makkah",
+   "name": "Saja Hotels Makkah",
+   "city": "mekke",
+   "district": "misfele",
+   "lat": 21.40357,
+   "lon": 39.82619,
+   "kaabaMeters": 2105,
+   "stars": null,
+   "description": null,
+   "roomTypes": [],
+   "meals": [],
+   "shuttle": null,
+   "walkMinutes": null,
+   "sources": [
+    {
+     "text": "Konum",
+     "source": "OpenStreetMap"
+    }
+   ]
+  },
+  {
+   "slug": "le-meridien-towers-makkah",
+   "name": "Le Méridien Towers Makkah",
+   "city": "mekke",
+   "district": "mahbes",
+   "lat": 21.4028,
+   "lon": 39.82655,
+   "kaabaMeters": 2191,
+   "stars": null,
+   "description": null,
+   "roomTypes": [],
+   "meals": [],
+   "shuttle": null,
+   "walkMinutes": null,
+   "sources": [
+    {
+     "text": "Konum",
+     "source": "OpenStreetMap"
+    }
+   ]
+  },
+  {
+   "slug": "makarem-umm-al-qura-hotel",
+   "name": "Makarem Umm Al Qura Hotel",
+   "city": "mekke",
+   "district": "mahbes",
+   "lat": 21.40251,
+   "lon": 39.83091,
+   "kaabaMeters": 2276,
+   "stars": null,
+   "description": null,
+   "roomTypes": [],
+   "meals": [],
+   "shuttle": null,
+   "walkMinutes": null,
+   "sources": [
+    {
+     "text": "Konum",
+     "source": "OpenStreetMap"
+    }
+   ]
+  }
+ ]
+}

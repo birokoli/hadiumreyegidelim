@@ -64,6 +64,8 @@ Antigravity'nin tekrarlayan hataları (her teslimde kontrol et): uydurma/örnek 
 - `/oteller` (kartlar) ve `/oteller/[slug]`. Uzun açıklamalar `src/lib/catalog/hotel-texts.ts` (Setting HOTEL_LONG_DESCRIPTIONS + `src/lib/content-fixes/otel-aciklamalari.json`). Admin → Hizmet Kütüphanesi.
 - Açık: Anjum, Sheraton, Le Méridien yıldız sayıları kullanıcı tarafından düzeltilecek.
 
+- **Fiyatsız otel rehberi (7 Ekim):** Mekke'deki bütün oteller satılıyor; anlaşmalılar katalogda (fiyatlı), diğerleri MBD'nin Paximum hesabından (fiyat gösterilmez, API yok; MBD adına talep edilemez). Veri `src/content/hotels/mekke-rehber.json`, kod `src/lib/catalog/hotel-directory.ts` + `src/components/hotels/DirectoryHotelPage.tsx`. Sayfa: konum (OSM), bölge, Kâbe'ye kuş uçuşu, harita, "Bu otelin fiyatını sorun" (WhatsApp hazır mesaj), yakındaki oteller. **Açıklaması olmayan otel canlıda görünmez** (yerelde görünür). Bölgeler: Ajyad, Cebel Ömer, Cerval, Mescid-i Cin, Mahbes, Nüzha (+ Misfele). İçerik G18'den gelir, Claude kontrol eder. Liste: `docs/veri/mekke-otelleri-paximum.md`.
+
 ### 4.6 Blog
 - 8 kategori (`src/lib/geo-blog/categories.ts`), motor yeni yazıya kategori atar.
 - Birleştirilen Diyanet yazıları `next.config.ts`'de yönlendirildi.

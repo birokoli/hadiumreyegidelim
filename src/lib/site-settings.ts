@@ -8,7 +8,7 @@ import { prisma } from "@/lib/prisma";
 export const SITE_SETTINGS_TAG = "site-settings";
 
 // Ayarlar tablosunda admin araçlarının büyük JSON verileri de duruyor; siteye taşınmaz
-const PRIVATE_PREFIXES = ["SEO_", "AI_VIS_", "ANTHROPIC_", "ADMIN_", "AI_MONTHLY", "AUTO_BLOG", "GEO_BLOG", "WHATSAPP_AI", "WHATSAPP_BOT", "JWT", "CRON", "CONTENT_PAGE", "HOTEL_G:", "HOTEL_C:"];
+const PRIVATE_PREFIXES = ["SEO_", "AI_VIS_", "ANTHROPIC_", "ADMIN_", "AI_MONTHLY", "AUTO_BLOG", "GEO_BLOG", "WHATSAPP_AI", "WHATSAPP_BOT", "JWT", "CRON", "CONTENT_PAGE", "HOTEL_G:", "HOTEL_C:", "HOTEL_O:"];
 // Vercel önbellek girdisi en fazla 2 MB; tek değer 20 KB'ı geçerse siteye taşınmaz
 export const MAX_VALUE_LENGTH = 20_000;
 

@@ -55,47 +55,54 @@ const CENTROIDS: { key: string; lat: number; lon: number; re: RegExp }[] = [
   { key: "cebel-omer", lat: 21.4197, lon: 39.8217, re: /jabal omar|jarham|جبل عمر/i },
   { key: "cerval", lat: 21.4278, lon: 39.8142, re: /jarwal|جرول/i },
   { key: "mescid-i-cin", lat: 21.4335, lon: 39.829, re: /jinn mosque|masjid al.?jinn|sulaymaniyah|al hujun|al ma.?abda/i },
-  { key: "mahbes", lat: 21.423, lon: 39.8471, re: /mahbas|rawabi/i },
+  { key: "mahbes", lat: 21.4084, lon: 39.8344, re: /mahbas|rawabi/i },
+  { key: "utaybiye", lat: 21.4513, lon: 39.816, re: /utaybiy|utaibiy|العتيبية/i },
   { key: "misfele", lat: 21.405, lon: 39.8223, re: /misfalah|المسفلة/i },
   { key: "nuzha", lat: 21.4363, lon: 39.7957, re: /nuzha|nozha|النزهة/i },
   { key: "aziziye", lat: 21.4, lon: 39.8626, re: /aziziy|العزيزية/i },
 ];
 export const TARGET_DISTRICTS = new Set(["ajyad", "cebel-omer", "cerval", "mescid-i-cin", "mahbes", "nuzha", "misfele"]);
 
-export function classifyDistrict(lat: number, lon: number, neighborhood?: string | null) {
+/** Otomatik bölge tahmini (8 Ekim düzeltmesi: Aziziye otelleri Mahbes'e düşüyordu). Kesin karar admin'deki elle seçimdir. */
+export function classifyDistrict(lat: number, lon: number, neighborhood?: string | null, nameHint?: string | null) {
+  if (/aziz/i.test(`${nameHint ?? ""} ${neighborhood ?? ""}`)) return "aziziye";
   if (neighborhood) for (const c of CENTROIDS) if (c.re.test(neighborhood)) return c.key;
-  if (kaabaMeters(lat, lon) > 6000) return "diger";
+  const d = kaabaMeters(lat, lon);
+  // Hedef bölgelerin en uzağı Nüzha (batı, ~3,5 km); batıda değilse 2,6 km ötesi hedef dışı
+  if (d > 2600) return lon < 39.805 && d < 5000 ? "nuzha" : "diger";
   let best = CENTROIDS[0];
   let bestD = Infinity;
   for (const c of CENTROIDS) {
-    const d = Math.hypot((lat - c.lat) * 111, (lon - c.lon) * 103.5);
-    if (d < bestD) [best, bestD] = [c, d];
+    const dd = Math.hypot((lat - c.lat) * 111, (lon - c.lon) * 103.5);
+    if (dd < bestD) [best, bestD] = [c, dd];
   }
   return best.key;
 }
 
 // ── Okuma ─────────────────────────────────────────────────────────────
 async function readAll() {
-  const rows = await prisma.setting.findMany({ where: { OR: [{ key: { startsWith: "HOTEL_G:" } }, { key: { startsWith: "HOTEL_C:" } }] } });
+  const rows = await prisma.setting.findMany({ where: { OR: [{ key: { startsWith: "HOTEL_G:" } }, { key: { startsWith: "HOTEL_C:" } }, { key: { startsWith: "HOTEL_O:" } }] } });
   const google: Record<string, GoogleHotel> = {};
   const content: Record<string, HotelContent> = {};
+  const overrides: Record<string, { district?: string }> = {};
   for (const r of rows) {
     try {
       if (r.key.startsWith("HOTEL_G:")) google[r.key.slice(8)] = JSON.parse(r.value);
+      else if (r.key.startsWith("HOTEL_O:")) overrides[r.key.slice(8)] = JSON.parse(r.value);
       else content[r.key.slice(8)] = JSON.parse(r.value);
     } catch {
       /* bozuk kayıt atlanır */
     }
   }
-  return { google, content };
+  return { google, content, overrides };
 }
-const readCached = unstable_cache(readAll, ["hotel-guide-v1"], { tags: [HOTEL_GUIDE_TAG], revalidate: 3600 });
+const readCached = unstable_cache(readAll, ["hotel-guide-v2"], { tags: [HOTEL_GUIDE_TAG], revalidate: 3600 });
 
 export async function hotelGuideData(fresh = false) {
   try {
     return fresh ? await readAll() : await readCached();
   } catch {
-    return { google: {}, content: {} } as Awaited<ReturnType<typeof readAll>>;
+    return { google: {}, content: {}, overrides: {} } as Awaited<ReturnType<typeof readAll>>;
   }
 }
 
@@ -134,16 +141,16 @@ type InfoItem = {
 const hhmm = (t?: { hour?: number; minute?: number } | null) => (t?.hour == null ? null : `${String(t.hour).padStart(2, "0")}:${String(t.minute ?? 0).padStart(2, "0")}`);
 
 /** Bir otelin Google kaydını bulur ve ayrıntısını çeker. Eşleşme zayıfsa kaydetmez. */
-export async function fetchGoogleHotel(name: string): Promise<{ slug: string; ok: boolean; reason?: string; cost: number }> {
+export async function fetchGoogleHotel(name: string, keyword?: string): Promise<{ slug: string; ok: boolean; reason?: string; cost: number }> {
   const slug = slugify(name);
   let cost = 0;
   const s = await dfsPost<{ items?: SearchItem[] }>("/v3/business_data/google/hotel_searches/live", [
-    { keyword: `${name} Mecca`, location_code: SA, language_code: "en", currency: "USD" },
+    { keyword: keyword ? `${keyword} Mecca` : `${name} Mecca`, location_code: SA, language_code: "en", currency: "USD" },
   ], { timeoutMs: 45_000 });
   cost += s.cost;
   const candidates = (s.result?.items ?? [])
     .filter((i) => i.hotel_identifier && i.title)
-    .map((i) => ({ i, score: similarity(name, i.title!), d: i.location?.latitude ? kaabaMeters(i.location.latitude, i.location.longitude!) : null }))
+    .map((i) => ({ i, score: Math.max(similarity(name, i.title!), keyword ? similarity(keyword, i.title!) : 0), d: i.location?.latitude ? kaabaMeters(i.location.latitude, i.location.longitude!) : null }))
     .filter((c) => c.d == null || c.d < 12000)
     .sort((a, b) => b.score - a.score);
   const best = candidates[0];
@@ -287,6 +294,13 @@ export async function writeHotelContent(slug: string, district: string, displayN
   await save(`HOTEL_C:${slug}`, c);
   revalidateTag(HOTEL_GUIDE_TAG, { expire: 0 });
   return c;
+}
+
+/** Elle bölge seçimi ("" = otomatik) */
+export async function setDistrict(slug: string, district: string) {
+  if (district) await save(`HOTEL_O:${slug}`, { district });
+  else await prisma.setting.deleteMany({ where: { key: `HOTEL_O:${slug}` } });
+  revalidateTag(HOTEL_GUIDE_TAG, { expire: 0 });
 }
 
 export async function setApproved(slug: string, approved: boolean, edits?: { description?: string }) {

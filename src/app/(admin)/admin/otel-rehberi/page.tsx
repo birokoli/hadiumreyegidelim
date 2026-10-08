@@ -11,18 +11,31 @@ type Row = {
   districtLabel: string;
   kaabaMeters: number | null;
   stars: number | null;
-  google: { title: string; matchScore: number; about: boolean; amenities: number } | null;
+  google: { title: string; matchScore: number; about: boolean; amenities: number; neighborhood?: string | null } | null;
   content: { description: string; faq: { q: string; a: string }[]; note: string | null; approved: boolean } | null;
   published: boolean;
 };
 
 const TARGET = new Set(["ajyad", "cebel-omer", "cerval", "mescid-i-cin", "mahbes", "nuzha", "misfele"]);
+const DISTRICT_OPTIONS: [string, string][] = [
+  ["ajyad", "Ajyad"],
+  ["cebel-omer", "Cebel Ömer"],
+  ["cerval", "Cerval"],
+  ["mescid-i-cin", "Mescid-i Cin"],
+  ["mahbes", "Mahbes"],
+  ["nuzha", "Nüzha"],
+  ["misfele", "Misfele"],
+  ["aziziye", "Aziziye (hedef dışı)"],
+  ["utaybiye", "Utaybiye (hedef dışı)"],
+  ["diger", "Diğer (hedef dışı)"],
+];
 const API = "/api/admin/hotel-guide";
 const km = (m: number | null) => (m == null ? "—" : m < 1000 ? `${Math.round(m / 10) * 10} m` : `${(m / 1000).toFixed(1).replace(".", ",")} km`);
 
 export default function OtelRehberiPage() {
   const [rows, setRows] = useState<Row[]>([]);
-  const [failed, setFailed] = useState<{ slug: string; reason: string }[]>([]);
+  const [failed, setFailed] = useState<{ slug: string; name: string; reason: string }[]>([]);
+  const [retryKw, setRetryKw] = useState<Record<string, string>>({});
   const [fetched, setFetched] = useState(0);
   const [busy, setBusy] = useState<string | null>(null);
   const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);
@@ -138,7 +151,19 @@ export default function OtelRehberiPage() {
                     {r.name}
                     {r.stars ? <span className="ml-1 text-xs font-normal text-on-surface-variant">· {r.stars}★</span> : null}
                   </td>
-                  <td className="px-4 py-3">{r.districtLabel}</td>
+                  <td className="px-4 py-3">
+                    <select
+                      value={r.district}
+                      onChange={(e) => post({ action: "district", slug: r.slug, district: e.target.value }, `d-${r.slug}`, () => `${r.name}: bölge güncellendi.`)}
+                      disabled={!!busy}
+                      className={`rounded-lg border px-2 py-1 text-xs ${TARGET.has(r.district) ? "border-outline-variant/30 bg-white" : "border-amber-300 bg-amber-50"}`}
+                    >
+                      {DISTRICT_OPTIONS.map(([k, v]) => (
+                        <option key={k} value={k}>{v}</option>
+                      ))}
+                    </select>
+                    {r.google?.neighborhood && <p className="mt-1 text-[11px] text-on-surface-variant">Google: {r.google.neighborhood}</p>}
+                  </td>
                   <td className="px-4 py-3">{km(r.kaabaMeters)}</td>
                   <td className="px-4 py-3 text-xs">
                     {r.google ? (
@@ -213,7 +238,23 @@ export default function OtelRehberiPage() {
           <summary className="cursor-pointer font-semibold">Google&apos;da eşleşmeyen oteller ({failed.length})</summary>
           <ul className="mt-2 space-y-1 text-xs text-on-surface-variant">
             {failed.map((f) => (
-              <li key={f.slug}>{f.slug}: {f.reason}</li>
+              <li key={f.slug} className="flex flex-wrap items-center gap-2 py-1">
+                <span className="font-semibold text-on-surface">{f.name}</span>
+                <span>{f.reason}</span>
+                <input
+                  value={retryKw[f.slug] ?? ""}
+                  onChange={(e) => setRetryKw({ ...retryKw, [f.slug]: e.target.value })}
+                  placeholder="Google'daki adı (ör. Mövenpick Hotel Makkah)"
+                  className="w-72 rounded-lg border border-outline-variant/30 bg-white px-2 py-1 text-xs"
+                />
+                <button
+                  onClick={() => post({ action: "retry", slug: f.slug, keyword: retryKw[f.slug] }, `r-${f.slug}`, () => `${f.name} bulundu ve kaydedildi.`)}
+                  disabled={!!busy || !retryKw[f.slug]}
+                  className="rounded-lg bg-primary px-2 py-1 text-xs font-bold text-white disabled:opacity-50"
+                >
+                  {busy === `r-${f.slug}` ? "Aranıyor…" : "Bu adla ara"}
+                </button>
+              </li>
             ))}
           </ul>
         </details>

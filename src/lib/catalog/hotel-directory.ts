@@ -36,6 +36,7 @@ export const DISTRICTS: Record<string, string> = {
   nuzha: "Nüzha",
   misfele: "Misfele",
   aziziye: "Aziziye",
+  utaybiye: "Utaybiye",
   diger: "Mekke",
 };
 
@@ -54,7 +55,7 @@ const BASE = new Map((base as { hotels: BaseRow[] }).hotels.map((h) => [h.slug, 
 
 /** Rehberdeki oteller. Canlıda yalnızca yayınlananlar; `all` ile (admin, yerel) hepsi. */
 export async function directoryHotels({ all = process.env.NODE_ENV !== "production" } = {}): Promise<DirectoryHotel[]> {
-  const { google, content } = await hotelGuideData();
+  const { google, content, overrides } = await hotelGuideData();
   const out: DirectoryHotel[] = [];
   for (const name of PAXIMUM_NAMES) {
     if (IN_CATALOG.has(name)) continue;
@@ -64,7 +65,7 @@ export async function directoryHotels({ all = process.env.NODE_ENV !== "producti
     const lat = b?.lat ?? g?.lat;
     const lon = b?.lon ?? g?.lon;
     if (lat == null || lon == null) continue;
-    const district = b?.district ?? classifyDistrict(lat, lon, g?.neighborhood);
+    const district = overrides[slug]?.district ?? b?.district ?? classifyDistrict(lat, lon, g?.neighborhood, `${name} ${g?.title ?? ""}`);
     const c = content[slug];
     const published = !!c?.approved && TARGET_DISTRICTS.has(district);
     if (!published && !all) continue;

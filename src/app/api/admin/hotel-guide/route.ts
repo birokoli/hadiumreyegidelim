@@ -2,7 +2,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAdminSession } from "@/lib/admin-auth";
 import { directoryHotels, DISTRICTS } from "@/lib/catalog/hotel-directory";
-import { fetchGoogleBatch, fillMissingAbout, hotelGuideData, setApproved, writeHotelContent } from "@/lib/hotels/google-data";
+import { fetchGoogleBatch, fetchGoogleHotel, fillMissingAbout, setDistrict, PAXIMUM_NAMES, slugify, hotelGuideData, setApproved, writeHotelContent } from "@/lib/hotels/google-data";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 300;
@@ -12,7 +12,7 @@ const fail = (error: string, status = 400) => NextResponse.json({ ok: false, err
 export async function GET() {
   if (!(await getAdminSession())) return fail("Yetkisiz.", 401);
   const [{ google, content }, hotels] = await Promise.all([hotelGuideData(true), directoryHotels({ all: true })]);
-  const failed = Object.entries(google).filter(([, g]) => !g.identifier).map(([slug, g]) => ({ slug, reason: (g as unknown as { failed?: string }).failed ?? "eşleşmedi" }));
+  const failed = Object.entries(google).filter(([, g]) => !g.identifier).map(([slug, g]) => ({ slug, name: PAXIMUM_NAMES.find((n) => slugify(n) === slug) ?? slug, reason: (g as unknown as { failed?: string }).failed ?? "eşleşmedi" }));
   return NextResponse.json({
     ok: true,
     hotels: hotels.map((h) => ({
@@ -22,7 +22,7 @@ export async function GET() {
       districtLabel: DISTRICTS[h.district] ?? h.district,
       kaabaMeters: h.kaabaMeters,
       stars: h.stars,
-      google: google[h.slug]?.identifier ? { title: google[h.slug].title, matchScore: google[h.slug].matchScore, about: !!google[h.slug].about, amenities: google[h.slug].amenities.length } : null,
+      google: google[h.slug]?.identifier ? { title: google[h.slug].title, matchScore: google[h.slug].matchScore, about: !!google[h.slug].about, amenities: google[h.slug].amenities.length, neighborhood: google[h.slug].neighborhood } : null,
       content: content[h.slug] ?? null,
       published: h.published,
     })),
@@ -38,6 +38,16 @@ export async function POST(req: NextRequest) {
     switch (body.action) {
       case "fetch":
         return NextResponse.json({ ok: true, ...(await fetchGoogleBatch(8)) });
+      case "district":
+        if (!body.slug) return fail("slug gerekli.");
+        await setDistrict(body.slug, String(body.district ?? ""));
+        return NextResponse.json({ ok: true });
+      case "retry": {
+        const name = PAXIMUM_NAMES.find((n) => slugify(n) === body.slug);
+        if (!name) return fail("Otel bulunamadı.");
+        const r = await fetchGoogleHotel(name, String(body.keyword ?? "").trim() || undefined);
+        return NextResponse.json({ ok: r.ok, error: r.reason, cost: r.cost });
+      }
       case "about":
         return NextResponse.json({ ok: true, ...(await fillMissingAbout(8)) });
       case "write": {

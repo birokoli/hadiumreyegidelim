@@ -118,7 +118,9 @@ function mdToHtml(md: string) {
   return out.join("\n") + "\n";
 }
 
-const h2 = (needle: string) => new RegExp(`<h2[^>]*>(?:(?!</h2>)[\\s\\S])*${needle}(?:(?!</h2>)[\\s\\S])*</h2>`, "i");
+// Yazı motoru kelime aralarına &nbsp; koyabiliyor: aranan ifadedeki her boşluk normal boşluk / &nbsp; / U+00A0 kabul eder.
+const ws = (t: string) => t.split(" ").map((w) => w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("(?:\\s|&nbsp;|\\u00a0)+");
+const h2 = (needle: string) => new RegExp(`<h2[^>]*>(?:(?!</h2>)[\\s\\S])*${ws(needle)}(?:(?!</h2>)[\\s\\S])*</h2>`, "i");
 
 /** HTML içeriğe bölümleri ekler (saf fonksiyon). */
 export function applyTavafSectionsHtml(content: string): { content: string; skipped: string[] } {
@@ -141,4 +143,21 @@ export function applyTavafSectionsHtml(content: string): { content: string; skip
   put("çıkmadan önce neleri", UMRE_DUALARI, "umre duaları", "Kendi programınızla");
   put("Kendi programınızla", KITAPCIK, "kitapçık");
   return { content: c, skipped };
+}
+
+
+/** N düzeltmesi: M bölümleri (başlıklar &nbsp; yüzünden eşleşmeyince) yazının sonuna art arda ekledi. Sondaki
+ *  "Tavafa nasıl niyet edilir?" başlığından itibaren kesilir ve bölümler doğru başlıkların önüne yeniden konur. */
+export function relocateTavafSections(content: string): { content: string; skipped: string[] } {
+  const marker = "<h2>Tavafa nasıl niyet edilir?</h2>";
+  const i = content.lastIndexOf(marker);
+  if (i < 0) return { content, skipped: ["taşınacak blok yok"] };
+  const before = content.slice(0, i).trimEnd() + "\n";
+  // Kesilen kısım yalnızca bizim eklediğimiz bölümler olmalı; başka başlık varsa dokunma
+  const tail = content.slice(i);
+  const ours = ["Tavafa nasıl niyet edilir?", "Tavaf nasıl yapılır? Adım adım", "Tavaf namazı nasıl kılınır?", "Umrede okunan diğer dualar", "Her şavt için ayrı dualar: Tavaf El Kitabı (ücretsiz PDF)"];
+  const tailH2 = [...tail.matchAll(/<h2[^>]*>([\s\S]*?)<\/h2>/g)].map((m) => m[1]);
+  if (tailH2.some((t) => !ours.includes(t))) return { content, skipped: ["sondaki kısımda yabancı başlık var, dokunulmadı: " + tailH2.join(" | ")] };
+  const r = applyTavafSectionsHtml(before);
+  return { content: r.content, skipped: ["sondaki bölümler taşındı", ...r.skipped] };
 }

@@ -433,3 +433,24 @@ export async function runDataFixesOnceM() {
   await prisma.setting.upsert({ where: { key: FLAG_M }, update: { value: JSON.stringify(log) }, create: { key: FLAG_M, value: JSON.stringify(log) } });
   console.log("[data-fix] 2026-10-11 M", log);
 }
+
+// On dördüncü düzeltme (11 Ekim): M'de başlıklar &nbsp; yüzünden eşleşmedi, bölümler yazının sonuna düştü. N onları
+// doğru başlıkların önüne taşır (tavaf-yazisi.ts → relocateTavafSections; sondaki kısımda yabancı başlık varsa dokunmaz).
+const FLAG_N = "DATA_FIX_2026_10_11_N";
+let ranN = false;
+export async function runDataFixesOnceN() {
+  if (ranN) return;
+  ranN = true;
+  if (await prisma.setting.findUnique({ where: { key: FLAG_N } })) return;
+  const t = await import("@/lib/content-fixes/tavaf-yazisi");
+  const post = await prisma.post.findUnique({ where: { slug: t.TAVAF_SLUG }, select: { id: true, content: true } });
+  const log: { skipped: string[] } = { skipped: [] };
+  if (!post) log.skipped.push("yazı yok");
+  else {
+    const { content, skipped } = t.relocateTavafSections(post.content);
+    log.skipped.push(...skipped);
+    if (content !== post.content) await prisma.post.update({ where: { id: post.id }, data: { content } });
+  }
+  await prisma.setting.upsert({ where: { key: FLAG_N }, update: { value: JSON.stringify(log) }, create: { key: FLAG_N, value: JSON.stringify(log) } });
+  console.log("[data-fix] 2026-10-11 N", log);
+}

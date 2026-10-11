@@ -164,19 +164,23 @@ export default async function Home() {
       </nav>
 
       {/* ─── Ücretsiz Tavaf El Kitabı (11 Ekim): Eylül kampanyası bitince bu alanda; kampanya yayındaysa onun yerine o görünür ─── */}
-      {!isHomeCardLive(eylulCampaign) && <section className="w-full max-w-screen-xl mx-auto px-4 md:px-8 pt-10 md:pt-12">
-        <Link href="/tavaf-kitapcigi" data-press className="bg-deep on-dark group relative flex flex-col md:flex-row md:items-center gap-6 overflow-hidden rounded-3xl p-6 md:p-9 text-white">
-          <span aria-hidden className="hat pointer-events-none absolute -left-4 -bottom-10 select-none text-[8rem] leading-none text-white/[0.05] md:text-[11rem]">طواف</span>
-          <div className="relative flex-1 min-w-0">
+      {!isHomeCardLive(eylulCampaign) && <section className="w-full max-w-screen-xl mx-auto px-4 md:px-8 pt-10 md:pt-16 md:pb-6">
+        {/* Bant ince; kitap bandın üstüne ve altına taşar ve yavaşça süzülür (11 Ekim, kullanıcı) */}
+        <style>{`@keyframes kitap-suzul{0%,100%{transform:translateY(-50%) rotate(-5deg)}50%{transform:translateY(calc(-50% - 10px)) rotate(-2deg)}}.kitap-suzul{transform:translateY(-50%) rotate(-5deg);transform-origin:50% 60%;animation:kitap-suzul 6s ease-in-out infinite}.group:hover .kitap-suzul{animation-play-state:paused}@media (prefers-reduced-motion:reduce){.kitap-suzul{animation:none}}`}</style>
+        <Link href="/tavaf-kitapcigi" data-press className="group relative block rounded-3xl text-white">
+          <div aria-hidden className="bg-deep absolute inset-0 overflow-hidden rounded-3xl">
+            <span className="hat pointer-events-none absolute -left-4 -bottom-12 select-none text-[7rem] leading-none text-white/[0.05] md:text-[9rem]">طواف</span>
+          </div>
+          <div className="on-dark relative px-6 py-6 md:py-6 md:pl-9 md:pr-72">
             <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-[var(--h-sand)]">Ücretsiz · PDF · 19 sayfa</p>
-            <h2 className="mt-2 font-headline text-2xl md:text-[34px] leading-tight font-bold"><Accent text="Tavafta ne okuyacağınızı *bilerek* dönün" /></h2>
-            <p className="mt-2 text-sm md:text-base text-white/80 max-w-xl">Tavaf El Kitabı: yedi şavtın her biri için okunuşu ve anlamıyla dualar; Kur&apos;an&apos;dan, hadislerden ve münâcât geleneğinden.</p>
-            <span className="mt-5 inline-flex items-center gap-2 rounded-xl bg-[var(--h-sand)] px-5 py-3 text-sm font-bold text-[var(--h-blue-deep)] transition group-hover:brightness-95">
+            <h2 className="mt-1.5 font-headline text-2xl md:text-[30px] leading-tight font-bold"><Accent text="Tavafta ne okuyacağınızı *bilerek* dönün" /></h2>
+            <p className="mt-1.5 text-sm md:text-[15px] text-white/80 max-w-2xl">Tavaf El Kitabı: yedi şavtın her biri için okunuşu ve anlamıyla dualar; Kur&apos;an&apos;dan, hadislerden ve münâcât geleneğinden.</p>
+            <span className="mt-4 inline-flex items-center gap-2 rounded-xl bg-[var(--h-sand)] px-5 py-2.5 text-sm font-bold text-[var(--h-blue-deep)] transition group-hover:brightness-95">
               Kitapçığı ücretsiz indir <Arrow />
             </span>
           </div>
-          <div className="relative hidden md:block w-44 shrink-0">
-            <Image src="/indir/tavaf-el-kitabi-kapak.png" alt="Tavaf El Kitabı kapağı" width={320} height={452} className="w-full -rotate-3 rounded-lg shadow-2xl ring-1 ring-white/10 transition-transform duration-500 group-hover:rotate-0" />
+          <div className="kitap-suzul pointer-events-none absolute right-10 top-1/2 hidden h-[calc(100%+72px)] aspect-[640/905] md:block lg:right-16">
+            <Image src="/indir/tavaf-el-kitabi-kapak.png" alt="Tavaf El Kitabı kapağı" fill sizes="220px" className="rounded-lg object-cover shadow-[0_24px_50px_-12px_rgba(18,41,90,0.55)] ring-1 ring-white/10" />
           </div>
         </Link>
       </section>}

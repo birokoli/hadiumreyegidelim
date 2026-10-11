@@ -322,7 +322,7 @@ export default function UmrePlanner({ whatsappNumber }: { whatsappNumber: string
       <p className="mt-3 text-[13px] text-white/80 flex flex-wrap items-center gap-x-4 gap-y-1">
         <span>Seçimleriniz WhatsApp mesajına hazır olarak eklenir.</span>
         <Link href="/bireysel-umre" className="font-semibold text-white underline underline-offset-4 decoration-white/40 hover:decoration-white">
-          Otel ve uçuşu kendim seçeceğim
+          Oteli ve tarihleri kendim seçeceğim
         </Link>
       </p>
     </div>

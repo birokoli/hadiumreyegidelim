@@ -424,3 +424,4 @@
 .home-v2 .bg-soft { background: var(--h-white); }
 .home-v2 .bg-sky { background: linear-gradient(180deg, color-mix(in srgb, var(--h-sky) 45%, white) 0%, var(--h-white) 100%); }
 .home-v2 .bg-deep { background: linear-gradient(135deg, var(--h-blue-deep) 0%, var(--h-blue) 100%); }
+

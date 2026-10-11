@@ -454,3 +454,28 @@ export async function runDataFixesOnceN() {
   await prisma.setting.upsert({ where: { key: FLAG_N }, update: { value: JSON.stringify(log) }, create: { key: FLAG_N, value: JSON.stringify(log) } });
   console.log("[data-fix] 2026-10-11 N", log);
 }
+
+// On beşinci düzeltme (11 Ekim): ana sayfa paket başlığı admin ayarında "Lüks / VIP" olarak kayıtlı (yasaklı ifade).
+// Yalnızca eski varsayılan metinle duruyorsa değiştirilir; kullanıcı başka bir metin yazdıysa dokunulmaz.
+const FLAG_O = "DATA_FIX_2026_10_11_O";
+let ranO = false;
+export async function runDataFixesOnceO() {
+  if (ranO) return;
+  ranO = true;
+  if (await prisma.setting.findUnique({ where: { key: FLAG_O } })) return;
+  const pairs: [string, string, string][] = [
+    ["HOME_TOURS_KICKER", "Kişiselleştirilmiş Lüks Turlar", "Hazır programlar"],
+    ["HOME_TOURS_TITLE", "Müsait & VIP Paketlerimiz", "Umre *paketlerimiz*"],
+  ];
+  const log: string[] = [];
+  for (const [key, from, to] of pairs) {
+    const row = await prisma.setting.findUnique({ where: { key } });
+    if (row?.value.trim() === from) { await prisma.setting.update({ where: { key }, data: { value: to } }); log.push(`${key} güncellendi`); }
+    else log.push(`${key}: ${row ? "farklı metin, dokunulmadı" : "kayıt yok"}`);
+  }
+  await prisma.setting.upsert({ where: { key: FLAG_O }, update: { value: JSON.stringify(log) }, create: { key: FLAG_O, value: JSON.stringify(log) } });
+  try {
+    const { revalidateSiteSettings } = await import("@/lib/site-settings");
+    revalidateSiteSettings();
+  } catch { /* önbellek tazeleme düzeltmeyi engellemez */ }
+}

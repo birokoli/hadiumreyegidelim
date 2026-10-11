@@ -92,3 +92,53 @@ export function applyTavafSections(content: string): { content: string; skipped:
   if (!insertBefore("Kendi programınızla umre nasıl planlanır?", KITAPCIK, "kitapçık")) c = c.trimEnd() + "\n\n" + KITAPCIK;
   return { content: c, skipped };
 }
+
+
+// ── HTML sürümü (11 Ekim, düzeltme M) ──────────────────────────────────────────
+// Yazı veritabanında Markdown değil HTML olarak duruyor; L düzeltmesi başlıkları bulamayıp kitapçık bölümünü sona ham
+// Markdown olarak ekledi. M: o eki kaldırır, bölümleri HTML olarak doğru başlıkların önüne koyar.
+export const BROKEN_TAIL = "\n\n" + KITAPCIK;
+
+function mdToHtml(md: string) {
+  const inline = (t: string) =>
+    t.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>").replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+  const out: string[] = [];
+  let list: "ol" | "ul" | null = null;
+  const close = () => { if (list) { out.push(`</${list}>`); list = null; } };
+  for (const raw of md.split("\n")) {
+    const line = raw.trim();
+    if (!line) { close(); continue; }
+    let m;
+    if ((m = /^##\s+(.+)$/.exec(line))) { close(); out.push(`<h2>${inline(m[1])}</h2>`); }
+    else if ((m = /^\d+\.\s+(.+)$/.exec(line))) { if (list !== "ol") { close(); out.push("<ol>"); list = "ol"; } out.push(`<li>${inline(m[1])}</li>`); }
+    else if ((m = /^-\s+(.+)$/.exec(line))) { if (list !== "ul") { close(); out.push("<ul>"); list = "ul"; } out.push(`<li>${inline(m[1])}</li>`); }
+    else { close(); out.push(`<p>${inline(line)}</p>`); }
+  }
+  close();
+  return out.join("\n") + "\n";
+}
+
+const h2 = (needle: string) => new RegExp(`<h2[^>]*>(?:(?!</h2>)[\\s\\S])*${needle}(?:(?!</h2>)[\\s\\S])*</h2>`, "i");
+
+/** HTML içeriğe bölümleri ekler (saf fonksiyon). */
+export function applyTavafSectionsHtml(content: string): { content: string; skipped: string[] } {
+  const skipped: string[] = [];
+  let c = content;
+  if (c.endsWith(BROKEN_TAIL)) c = c.slice(0, -BROKEN_TAIL.length);
+  else if (c.includes("## Her şavt için ayrı dualar")) {
+    c = c.slice(0, c.indexOf("\n\n## Her şavt için ayrı dualar"));
+    skipped.push("ham ek tam eşleşmedi, başlıktan kesildi");
+  }
+  if (c.includes("<h2>Tavafa nasıl niyet edilir?</h2>")) return { content: c, skipped: [...skipped, "zaten eklenmiş"] };
+  const put = (needle: string, md: string, label: string, fallback?: string) => {
+    let m = h2(needle).exec(c);
+    if (!m && fallback) m = h2(fallback).exec(c);
+    if (!m) { skipped.push(`${label}: başlık yok`); c = c.trimEnd() + "\n" + mdToHtml(md); return; }
+    c = c.slice(0, m.index) + mdToHtml(md) + c.slice(m.index);
+  };
+  put("istilam ederken", NIYET_VE_ADIMLAR, "niyet+adımlar");
+  put("namazından sonra hangi dua", NAMAZ, "namaz", "çıkmadan önce neleri");
+  put("çıkmadan önce neleri", UMRE_DUALARI, "umre duaları", "Kendi programınızla");
+  put("Kendi programınızla", KITAPCIK, "kitapçık");
+  return { content: c, skipped };
+}

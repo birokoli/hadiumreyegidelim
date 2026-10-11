@@ -412,3 +412,24 @@ export async function runDataFixesOnceL() {
     revalidatePath(`/blog/${t.TAVAF_SLUG}`);
   } catch { /* önbellek tazeleme düzeltmeyi engellemez */ }
 }
+
+// On üçüncü düzeltme (11 Ekim): L, HTML içerikte başlıkları bulamayıp kitapçık bölümünü sona ham Markdown ekledi.
+// M bu eki kaldırır ve bölümleri HTML olarak doğru yerlere koyar (tavaf-yazisi.ts → applyTavafSectionsHtml).
+const FLAG_M = "DATA_FIX_2026_10_11_M";
+let ranM = false;
+export async function runDataFixesOnceM() {
+  if (ranM) return;
+  ranM = true;
+  if (await prisma.setting.findUnique({ where: { key: FLAG_M } })) return;
+  const t = await import("@/lib/content-fixes/tavaf-yazisi");
+  const post = await prisma.post.findUnique({ where: { slug: t.TAVAF_SLUG }, select: { id: true, content: true } });
+  const log: { skipped: string[] } = { skipped: [] };
+  if (!post) log.skipped.push("yazı yok");
+  else {
+    const { content, skipped } = t.applyTavafSectionsHtml(post.content);
+    log.skipped.push(...skipped);
+    if (content !== post.content) await prisma.post.update({ where: { id: post.id }, data: { content } });
+  }
+  await prisma.setting.upsert({ where: { key: FLAG_M }, update: { value: JSON.stringify(log) }, create: { key: FLAG_M, value: JSON.stringify(log) } });
+  console.log("[data-fix] 2026-10-11 M", log);
+}

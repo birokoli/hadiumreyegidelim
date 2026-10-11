@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     template: "%s | Hadi Umreye Gidelim",
     default: "Hadi Umreye Gidelim | Umrenizi Kolayca Planlayın",
   },
-  description: "Bireysel ve VIP umre: otelinizi, transferinizi ve tarihlerinizi kendiniz seçin, fiyatı anında görün. Suudi Arabistan e-vize ve Türkçe rehberlik.",
+  description: "Bireysel umre: otelinizi, transferinizi ve tarihlerinizi kendiniz seçin, fiyatı anında görün. Suudi Arabistan e-vize ve Türkçe rehberlik.",
   keywords: ["bireysel umre", "bireysel umre vizesi", "bireysel umre nasıl yapılır", "bireysel umre vizesi nasıl alınır", "umre fiyatları 2026", "özel umre", "kendi imkanlarıyla umre", "vip umre"],
   icons: {
     // Küçük dosyalar: eskiden 110 KB'lık logo.png her sayfada sekme simgesi olarak iniyordu
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: "Bireysel Umre Rehberi | Suudi Arabistan e-Vize & Özel Fiyatlar 2026",
-    description: "Bireysel ve VIP umre: otelinizi, transferinizi ve tarihlerinizi kendiniz seçin, fiyatı anında görün. Suudi Arabistan e-vize ve Türkçe rehberlik.",
+    description: "Bireysel umre: otelinizi, transferinizi ve tarihlerinizi kendiniz seçin, fiyatı anında görün. Suudi Arabistan e-vize ve Türkçe rehberlik.",
     url: SITE_URL,
     siteName: "Hadi Umreye Gidelim",
     images: [
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
         url: 'https://images.unsplash.com/photo-1565552645632-d725f8bfc19a?q=80&w=2600&auto=format&fit=crop',
         width: 1200,
         height: 630,
-        alt: 'Bireysel VIP Umre Deneyimi ve Rehberlik',
+        alt: 'Bireysel umre: Mekke ve Medine',
       },
     ],
     locale: 'tr_TR',
@@ -89,7 +89,7 @@ export default async function RootLayout({
         "@type": "PostalAddress",
         "addressCountry": "TR"
       },
-      "description": "Bireysel ve VIP umre planlama: Mekke ve Medine otelleri, transfer, tren, rehberlik ve Suudi Arabistan e-vize.",
+      "description": "Bireysel umre planlama: Mekke ve Medine otelleri, transfer, tren, rehberlik ve Suudi Arabistan e-vize.",
       // Bağlı olduğumuz lisanslı acente (alt bilgide de küçük yazıyla görünür)
       "parentOrganization": {
         "@type": "TravelAgency",

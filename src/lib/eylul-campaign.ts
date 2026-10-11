@@ -191,7 +191,7 @@ export const DEFAULT_ILK_UMREM_CAMPAIGN: EylulCampaignConfig = {
   faqs: [
     { q: "İlk kez umreye gideceğim, rehberlik sağlanıyor mu?", a: "Evet. Hazırlık sürecinden ibadetlerin tamamlanmasına kadar adım adım rehberlik sağlanır." },
     { q: "Program tarihleri nasıl öğrenilir?", a: "Güncel müsait tarihler ve program seçenekleri için WhatsApp üzerinden bilgi alabilirsiniz." },
-    { q: "Vize ve uçak işlemlerinde destek var mı?", a: "Seçtiğiniz programın kapsamına göre vize, uçuş ve konaklama süreçlerinde ekibimiz yardımcı olur." },
+    { q: "Vize ve uçak işlemlerinde destek var mı?", a: "Vize ve konaklama işlemlerini biz yürütürüz. Uçak biletini siz alırsınız; tarihlerinize göre transfer ve otel planını biz kurarız." },
   ],
   footerTitle: "İlk Manevi Yolculuğunuzu Birlikte Planlayalım",
   footerDescription: "İlk umrenizde ihtiyaç duyacağınız rehberlik ve program detayları için bize ulaşın.",

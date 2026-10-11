@@ -378,3 +378,37 @@ export async function runDataFixesOnceK() {
   await prisma.setting.upsert({ where: { key: "BLOG_TOPIC_PIN" }, update: { value: JSON.stringify(next) }, create: { key: "BLOG_TOPIC_PIN", value: JSON.stringify(next) } });
   await prisma.setting.upsert({ where: { key: FLAG_K }, update: { value: String(next.length) }, create: { key: FLAG_K, value: String(next.length) } });
 }
+
+// On ikinci düzeltme (11 Ekim, kullanıcı: tavaf kitapçığı + tam SEO): "Tavaf Duaları" yazısına niyet, adım adım tavaf,
+// tavaf namazı, umre duaları ve kitapçık bölümleri; 3 SSS; meta açıklama ve anahtar kelimeler; kişisel deneyim
+// kutusundaki kitapçık eleştirisi yumuşatılır. Ayrıntı: src/lib/content-fixes/tavaf-yazisi.ts
+const FLAG_L = "DATA_FIX_2026_10_11_L";
+let ranL = false;
+export async function runDataFixesOnceL() {
+  if (ranL) return;
+  ranL = true;
+  if (await prisma.setting.findUnique({ where: { key: FLAG_L } })) return;
+  const t = await import("@/lib/content-fixes/tavaf-yazisi");
+  const post = await prisma.post.findUnique({ where: { slug: t.TAVAF_SLUG }, select: { id: true, content: true, faq: true, personalExperience: true } });
+  const log: { skipped: string[]; faq: number } = { skipped: [], faq: 0 };
+  if (!post) log.skipped.push("yazı yok");
+  else {
+    const { content, skipped } = t.applyTavafSections(post.content);
+    log.skipped.push(...skipped);
+    let faq: { q: string; a: string }[] = [];
+    try { faq = JSON.parse(post.faq ?? "[]"); } catch { faq = []; }
+    for (const f of t.TAVAF_FAQ_ADD) if (!faq.some((x) => x.q === f.q)) { faq.push(f); log.faq++; }
+    const pe = post.personalExperience?.includes(t.PE_FIND) ? post.personalExperience.replace(t.PE_FIND, t.PE_REPLACE) : post.personalExperience;
+    if (pe === post.personalExperience) log.skipped.push("kişisel deneyim cümlesi bulunamadı");
+    await prisma.post.update({
+      where: { id: post.id },
+      data: { content, faq: JSON.stringify(faq), personalExperience: pe, description: t.TAVAF_DESCRIPTION, keywords: t.TAVAF_KEYWORDS, focusKeyword: "tavaf duaları" },
+    });
+  }
+  await prisma.setting.upsert({ where: { key: FLAG_L }, update: { value: JSON.stringify(log) }, create: { key: FLAG_L, value: JSON.stringify(log) } });
+  console.log("[data-fix] 2026-10-11 L", log);
+  try {
+    const { revalidatePath } = await import("next/cache");
+    revalidatePath(`/blog/${t.TAVAF_SLUG}`);
+  } catch { /* önbellek tazeleme düzeltmeyi engellemez */ }
+}

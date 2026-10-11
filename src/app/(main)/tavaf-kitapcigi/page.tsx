@@ -12,13 +12,14 @@ import { SITE_URL } from "@/lib/seo/site";
 import HugIcon, { type HugIconName } from "@/components/icons/HugIcon";
 import Accent from "@/components/home/Accent";
 import { cairo, ruqaa } from "@/components/home/fonts";
+import { Faq, faqJsonLd } from "@/components/ui/kit";
 
 export const revalidate = 3600;
 
 const PDF = "/indir/tavaf-el-kitabi-2026.pdf";
 
 export const metadata: Metadata = {
-  title: pageTitle("Tavaf Duaları: 7 Şavt İçin Tavaf El Kitabı (PDF)"),
+  title: pageTitle("Tavaf Duaları PDF: Ücretsiz El Kitabı"),
   description: "Her şavt için 12–15 dakikalık, okunuşu ve anlamıyla tavaf duaları: Kur'an'dan, hadislerden ve münâcât geleneğinden. Ücretsiz PDF'i indirin.",
   alternates: { canonical: "/tavaf-kitapcigi" },
   openGraph: { images: [{ url: "/indir/tavaf-el-kitabi-kapak.png" }] },
@@ -52,6 +53,17 @@ const ROTA: { ikon: HugIconName; baslik: string; alt: string; biz: boolean }[] =
   { ikon: "ucak", baslik: "Dönüş", alt: "Otelden havalimanına transfer", biz: true },
 ];
 
+// Soru-cevap (11 Ekim): "tavaf duaları", "tavafa nasıl niyet edilir", "tavaf nasıl yapılır", "umre duaları" aramaları ve
+// yapay zekâ cevapları için. Ayrıntılı anlatım blog yazısında; burada kısa, alıntılanabilir cevaplar.
+const SSS: { q: string; a: string }[] = [
+  { q: "Tavaf duaları nelerdir?", a: "Tavafta okunması sünnet olan iki dua vardır: her şavtın başında Hacerülesved hizasında \"Bismillâhi Allâhu ekber\" diyerek yapılan istilam ve Rükn-i Yemânî ile Hacerülesved arasında okunan \"Rabbenâ âtinâ fi'd-dünyâ haseneten ve fi'l-âhireti haseneten ve kınâ azâbe'n-nâr\" (Bakara, 201). Bunların dışında zikir, salavat, Kur'an ve kendi dilinizle dua serbesttir." },
+  { q: "Tavafta her şavtta farklı dua okumak zorunlu mu?", a: "Hayır. Şavtlara özel farz ya da sünnet bir dua yoktur. Tavaf El Kitabı, kalbinizi her şavtta bir niyete toplamanız için duaları tevhid, tövbe, aile, rızık, hidayet, şifa ve kabul başlıklarıyla sıralar." },
+  { q: "Tavafa nasıl niyet edilir?", a: "Niyet kalben yapılır, dil ile söylemek güzeldir. Umre tavafı için \"Allah'ım! Senin rızan için umre tavafı yapmak istiyorum. Onu bana kolaylaştır ve kabul eyle.\" denebilir; niyetin Arapça olması gerekmez." },
+  { q: "Tavaf nasıl yapılır?", a: "Abdestli olarak Hacerülesved hizasında niyet edilir, istilam yapılır ve Kâbe sol tarafta kalacak şekilde, Hicr bölümünün dışından yedi şavt dönülür. İhramlı erkekler tavaf boyunca sağ omzu açık bırakır (ızdıba) ve ilk üç şavtta çabuk yürür (remel). Tavaftan sonra iki rekat tavaf namazı kılınır." },
+  { q: "Umre duaları nelerdir?", a: "İhrama girerken ve tavafa kadar telbiye, tavafta istilam tekbiri ve Rabbenâ âtinâ, sa'ye başlarken Safâ'da \"İnne's-Safâ ve'l-Merve min şeâirillâh\" okunur. Zemzem içerken ve Mültezem'de dilediğiniz duayı edebilirsiniz." },
+  { q: "Tavaf El Kitabı ücretsiz mi?", a: "Evet. 19 sayfalık PDF'i bu sayfanın sonundan kayıt olmadan indirebilir, umreye gidecek yakınlarınızla paylaşabilirsiniz." },
+];
+
 const SECIM: string[] = ["Gidiş ve dönüş tarihiniz", "Mekke ve Medine'de kaç gece kalacağınız", "Otel tercihiniz (Harem'e yakın ya da servisli)", "Önce Mekke mi, Medine mi", "Rehberlik ve ziyaret isteyip istemediğiniz"];
 const AYAR: string[] = ["Umre vizesi", "Mekke ve Medine otelleri", "Havalimanı ve şehirler arası transferler", "Haremeyn hızlı treni", "Ziyaret turları ve rehberlik"];
 
@@ -78,6 +90,7 @@ export default async function TavafKitapcigiPage() {
   return (
     <main id="main-content" className={`home-v2 ${cairo.variable} ${ruqaa.variable}`}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd(SSS)) }} />
 
       {/* Hero */}
       <section className="bg-deep on-dark relative overflow-hidden pt-32 pb-20 md:pt-40 md:pb-28 text-white">
@@ -237,6 +250,20 @@ export default async function TavafKitapcigiPage() {
               <HugIcon name="mesaj" size={18} /> WhatsApp&apos;tan sorun
             </a>
           </div>
+        </div>
+      </section>
+
+      {/* Soru-cevap */}
+      <section className="bg-white py-20 md:py-24">
+        <div className="mx-auto max-w-3xl px-5 md:px-8">
+          <p className="text-[11px] font-bold uppercase tracking-[0.28em] text-[var(--h-blue)]/70">Sık sorulanlar</p>
+          <h2 className="mt-3 text-3xl font-bold text-[var(--h-blue)] md:text-4xl">
+            <Accent text="Tavaf ve umre duaları hakkında *sorular*" />
+          </h2>
+          <div className="mt-8"><Faq items={SSS} /></div>
+          <p className="mt-6 text-sm text-on-surface-variant">
+            Ayrıntılı anlatım için: <Link href="/blog/tavaf-sirasinda-okunacak-dualar" className="font-semibold text-[var(--h-blue)] underline-offset-4 hover:underline">Tavaf duaları, tavaf niyeti ve tavaf nasıl yapılır</Link> · <Link href="/umre-rehberi/tavaf-nedir" className="font-semibold text-[var(--h-blue)] underline-offset-4 hover:underline">Tavaf nedir?</Link>
+          </p>
         </div>
       </section>
 

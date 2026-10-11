@@ -310,7 +310,7 @@ Hadi Umreye Gidelim, MBD Tourism L.L.C. bünyesinde hizmet verir (DTCM lisans no
     label: "Alt Bilgi (Footer)",
     path: "layout",
     fields: [
-      { key: "copyright", label: "Telif Notu", default: "Hadi Umreye Gidelim - Bireysel ve VIP Umre" },
+      { key: "copyright", label: "Telif Notu", default: "Hadi Umreye Gidelim - Bireysel Umre" },
       { key: "company_note", label: "Kurumsal Lisans Notu", multiline: true, default: "Hadi Umreye Gidelim, MBD Tourism L.L.C. iştirakidir. MBD Tourism L.L.C., Dubai Ekonomi ve Turizm Departmanı (DTCM) tarafından lisanslı seyahat acentesidir. DTCM Lisans No: 1203162." },
     ],
   },

@@ -11,7 +11,7 @@ export function BlogInlineCta({ whatsappNumber, topic }: { whatsappNumber: strin
       <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-primary/70">Hadi Umreye Gidelim</p>
       <p className="mt-2 font-headline text-xl md:text-2xl font-bold text-primary">Bireysel umrenizi kendiniz planlayın</p>
       <p className="mt-2 text-[15px] leading-relaxed text-on-surface-variant">
-        Tarihi, oteli ve Mekke–Medine gün sayısını siz seçin; vize, uçuş ve transferle birlikte size özel teklifi biz hazırlayalım.
+        Tarihi, oteli ve Mekke–Medine gün sayısını siz seçin; vize, otel ve transferle birlikte size özel teklifi biz hazırlayalım.
       </p>
       <div className="mt-5 flex flex-wrap gap-3">
         <Link href="/bireysel-umre" className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-bold text-white no-underline hover:bg-primary/90">
@@ -28,7 +28,7 @@ export function BlogInlineCta({ whatsappNumber, topic }: { whatsappNumber: strin
 const REASONS = [
   { title: "Kendi takviminiz", text: "Kafile tarihine bağlı kalmadan gidiş ve dönüş gününü siz belirlersiniz." },
   { title: "Otelinizi siz seçersiniz", text: "Harem'e yürüme mesafesinde ya da bütçe dostu otel; tercih sizin." },
-  { title: "Tek planda her şey", text: "Vize, uçuş, transfer ve isteğe bağlı ilahiyatçı rehber aynı teklifte." },
+  { title: "Tek planda her şey", text: "Vize, otel, transfer ve isteğe bağlı ilahiyatçı rehber aynı teklifte." },
 ];
 
 export function BlogEndCta({ whatsappNumber }: { whatsappNumber: string }) {

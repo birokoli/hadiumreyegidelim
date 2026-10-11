@@ -24,7 +24,7 @@ const accented = (title: string) => (title.includes("*") ? title : title.replace
 
 export const metadata: Metadata = {
   title: { absolute: "Bireysel Umre 2026 | Hadi Umreye Gidelim" },
-  description: "Bireysel umre 2026: tarihinizi, Mekke ve Medine otelinizi ve gün sayısını siz seçin; vize, uçuş ve transfer tek planda. Teklifi WhatsApp'tan alın.",
+  description: "Bireysel umre 2026: tarihinizi, Mekke ve Medine otelinizi ve gün sayısını siz seçin; vize, otel ve transfer tek planda. Teklifi WhatsApp'tan alın.",
   alternates: {
     canonical: "/",
   },
@@ -105,8 +105,8 @@ export default async function Home() {
   const home_banner_subtitle = settings.HERO_DESC || "Bireysel umrenizi planlayın: tarihinizi, Mekke ve Medine otelinizi seçin, kişi başı fiyatı hemen görün. Umre vizesi 2 saatte, otel ve transfer bizden.";
   const whatsappNumber = settings.WHATSAPP_NUMBER ? settings.WHATSAPP_NUMBER.replace('+', '') : "905404010038";
 
-  const homeToursKicker = settings.HOME_TOURS_KICKER || "Kişiselleştirilmiş Lüks Turlar";
-  const homeToursTitle = settings.HOME_TOURS_TITLE || "Müsait & VIP Paketlerimiz";
+  const homeToursKicker = settings.HOME_TOURS_KICKER || "Hazır programlar";
+  const homeToursTitle = settings.HOME_TOURS_TITLE || "Umre *paketlerimiz*";
   const homeStepsKicker = settings.HOME_STEPS_KICKER || "Adım Adım Yolculuk";
   const homeStepsTitle = settings.HOME_STEPS_TITLE || "Maneviyat Yolunda Hazırlığınız Nasıl Başlar?";
   const homeBlogKicker = settings.HOME_BLOG_KICKER || "İlham Kaynağı";
@@ -162,6 +162,24 @@ export default async function Home() {
           ))}
         </ul>
       </nav>
+
+      {/* ─── Ücretsiz Tavaf El Kitabı (11 Ekim): Eylül kampanyası bitince bu alanda; kampanya yayındaysa onun yerine o görünür ─── */}
+      {!isHomeCardLive(eylulCampaign) && <section className="w-full max-w-screen-xl mx-auto px-4 md:px-8 pt-10 md:pt-12">
+        <Link href="/tavaf-kitapcigi" data-press className="bg-deep on-dark group relative flex flex-col md:flex-row md:items-center gap-6 overflow-hidden rounded-3xl p-6 md:p-9 text-white">
+          <span aria-hidden className="hat pointer-events-none absolute -left-4 -bottom-10 select-none text-[8rem] leading-none text-white/[0.05] md:text-[11rem]">طواف</span>
+          <div className="relative flex-1 min-w-0">
+            <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-[var(--h-sand)]">Ücretsiz · PDF · 19 sayfa</p>
+            <h2 className="mt-2 font-headline text-2xl md:text-[34px] leading-tight font-bold"><Accent text="Tavafta ne okuyacağınızı *bilerek* dönün" /></h2>
+            <p className="mt-2 text-sm md:text-base text-white/80 max-w-xl">Tavaf El Kitabı: yedi şavtın her biri için okunuşu ve anlamıyla dualar; Kur&apos;an&apos;dan, hadislerden ve münâcât geleneğinden.</p>
+            <span className="mt-5 inline-flex items-center gap-2 rounded-xl bg-[var(--h-sand)] px-5 py-3 text-sm font-bold text-[var(--h-blue-deep)] transition group-hover:brightness-95">
+              Kitapçığı ücretsiz indir <Arrow />
+            </span>
+          </div>
+          <div className="relative hidden md:block w-44 shrink-0">
+            <Image src="/indir/tavaf-el-kitabi-kapak.png" alt="Tavaf El Kitabı kapağı" width={320} height={452} className="w-full -rotate-3 rounded-lg shadow-2xl ring-1 ring-white/10 transition-transform duration-500 group-hover:rotate-0" />
+          </div>
+        </Link>
+      </section>}
 
       {/* ─── Kampanya bandı (admin'deki yayın tarihleri arasında) ─── */}
       {isHomeCardLive(eylulCampaign) && <section className="w-full max-w-screen-xl mx-auto px-4 md:px-8 pt-10 md:pt-12">

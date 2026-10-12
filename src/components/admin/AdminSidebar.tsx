@@ -32,7 +32,7 @@ const menuGroups: { title: string; links: SidebarLink[] }[] = [
         href: "/admin/contact",
         icon: "inbox",
         label: "Gelen Kutusu",
-        match: ["/admin/contact", "/admin/orders", "/admin/crm", "/admin/fiyat-teklifleri"],
+        match: ["/admin/contact", "/admin/orders", "/admin/crm", "/admin/fiyat-teklifleri", "/admin/musteri-havuzu"],
         permission: "orders",
         badgeKey: "unreadLeads",
       },

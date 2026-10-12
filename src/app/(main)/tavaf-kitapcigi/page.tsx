@@ -13,6 +13,7 @@ import HugIcon, { type HugIconName } from "@/components/icons/HugIcon";
 import Accent from "@/components/home/Accent";
 import { cairo, ruqaa } from "@/components/home/fonts";
 import { Faq, faqJsonLd } from "@/components/ui/kit";
+import LeadGateDownload from "@/components/leads/LeadGateDownload";
 
 export const revalidate = 3600;
 
@@ -61,7 +62,7 @@ const SSS: { q: string; a: string }[] = [
   { q: "Tavafa nasıl niyet edilir?", a: "Niyet kalben yapılır, dil ile söylemek güzeldir. Umre tavafı için \"Allah'ım! Senin rızan için umre tavafı yapmak istiyorum. Onu bana kolaylaştır ve kabul eyle.\" denebilir; niyetin Arapça olması gerekmez." },
   { q: "Tavaf nasıl yapılır?", a: "Abdestli olarak Hacerülesved hizasında niyet edilir, istilam yapılır ve Kâbe sol tarafta kalacak şekilde, Hicr bölümünün dışından yedi şavt dönülür. İhramlı erkekler tavaf boyunca sağ omzu açık bırakır (ızdıba) ve ilk üç şavtta çabuk yürür (remel). Tavaftan sonra iki rekat tavaf namazı kılınır." },
   { q: "Umre duaları nelerdir?", a: "İhrama girerken ve tavafa kadar telbiye, tavafta istilam tekbiri ve Rabbenâ âtinâ, sa'ye başlarken Safâ'da \"İnne's-Safâ ve'l-Merve min şeâirillâh\" okunur. Zemzem içerken ve Mültezem'de dilediğiniz duayı edebilirsiniz." },
-  { q: "Tavaf El Kitabı ücretsiz mi?", a: "Evet. 19 sayfalık PDF'i bu sayfanın sonundan kayıt olmadan indirebilir, umreye gidecek yakınlarınızla paylaşabilirsiniz." },
+  { q: "Tavaf El Kitabı ücretsiz mi?", a: "Evet. 19 sayfalık PDF'i bu sayfanın sonundan adınızı ve e-posta ya da telefonunuzu yazarak ücretsiz indirebilir, umreye gidecek yakınlarınızla paylaşabilirsiniz." },
 ];
 
 const SECIM: string[] = ["Gidiş ve dönüş tarihiniz", "Mekke ve Medine'de kaç gece kalacağınız", "Otel tercihiniz (Harem'e yakın ya da servisli)", "Önce Mekke mi, Medine mi", "Rehberlik ve ziyaret isteyip istemediğiniz"];
@@ -278,14 +279,14 @@ export default async function TavafKitapcigiPage() {
             </h2>
             <p className="mt-4 text-white/85">Telefonunuza kaydedin ya da yazdırıp yanınıza alın. PDF, 19 sayfa: yedi şavtın duaları, her şavtın başında ve sonunda okunanlar, tavaftan sonra yapılacaklar ve kaynaklar.</p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <a href={PDF} download className="inline-flex items-center gap-2 rounded-xl bg-[var(--h-sand)] px-7 py-4 text-base font-bold text-[var(--h-blue-deep)] transition hover:brightness-95">
+              <LeadGateDownload source="tavaf-kitapcigi" fileUrl={PDF} fileName="Tavaf-El-Kitabi-2026.pdf" className="inline-flex items-center gap-2 rounded-xl bg-[var(--h-sand)] px-7 py-4 text-base font-bold text-[var(--h-blue-deep)] transition hover:brightness-95">
                 <HugIcon name="dua" size={20} /> PDF&apos;i indir
-              </a>
+              </LeadGateDownload>
               <a href={shareHref} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-xl border border-white/30 px-6 py-4 text-sm font-semibold text-white transition hover:bg-white/10">
                 <HugIcon name="mesaj" size={18} /> Umreye gidecek birine gönderin
               </a>
             </div>
-            <p className="mt-6 text-xs text-white/60">Tavafta bizleri de dualarınızdan eksik etmeyin.</p>
+            <p className="mt-6 text-xs text-white/60">İndirmek için adınızı ve e-posta ya da telefonunuzu istiyoruz; bilgileriniz yalnızca Hadi Umreye Gidelim tarafından kullanılır. Tavafta bizleri de dualarınızdan eksik etmeyin.</p>
           </div>
         </div>
       </section>

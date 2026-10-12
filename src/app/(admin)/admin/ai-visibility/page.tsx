@@ -156,7 +156,7 @@ export default function AiVisibilityOverview() {
           {(missing.length > 0 || runnableEngines.length === 0) && (
             <p className="mt-16 max-w-[640px] text-[13px] leading-relaxed text-[var(--seo-ink-3)]">
               Seçili ama çalışmayan motorlar: {missing.map(engineLabel).join(", ")}.{" "}
-              {missing.includes("claude") && "Claude için Vercel'de ANTHROPIC_API_KEY gerekir. "}
+              {missing.includes("claude") && "Claude da DataForSEO üzerinden soruluyor; DataForSEO bağlantısını kontrol edin. "}
               {missing.some((m) => m !== "claude") && "Diğerleri için DATAFORSEO_LOGIN ve DATAFORSEO_PASSWORD gerekir."}
             </p>
           )}

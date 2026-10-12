@@ -4,7 +4,7 @@ export const ENGINES = {
   perplexity: { label: "Perplexity", via: "DataForSEO (Sonar API, web araması açık)" },
   "google-ai-overview": { label: "Google AI Overview", via: "DataForSEO (Google sonuç sayfası)" },
   "google-ai-mode": { label: "Google AI Mode", via: "DataForSEO (Google AI Mode)" },
-  claude: { label: "Claude", via: "Anthropic API (web araması açık)" },
+  claude: { label: "Claude", via: "DataForSEO · Claude Sonnet 5 (web araması açık)" },
 } as const;
 
 export type EngineId = keyof typeof ENGINES;

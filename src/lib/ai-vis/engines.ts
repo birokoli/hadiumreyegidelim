@@ -1,12 +1,11 @@
 // AI motorlarına tek bir soruyu sorar ve yanıt metni + kaynakları döndürür.
 // DataForSEO uç noktaları ve yanıt ayrıştırma, Elmo'nun (MIT)
 // packages/lib/src/providers/registry/dataforseo.ts ve text-extraction.ts
-// dosyalarından uyarlandı. Claude doğrudan Anthropic API ile, web araması açık sorulur.
+// dosyalarından uyarlandı. Claude da (12 Ekim'den beri) DataForSEO LLM Responses ile, web araması açık sorulur.
 
 import Anthropic from "@anthropic-ai/sdk";
 import { DataforseoError, dfsPost, isDataforseoConfigured } from "@/lib/seo/dataforseo";
 import { normalizeDomain } from "./analyze";
-import { assertBudget, recordSpend } from "@/lib/ai-budget";
 import type { Citation, EngineId, Run } from "./types";
 
 type EngineResult = Pick<Run, "status" | "text" | "citations" | "queries" | "cost" | "note">;
@@ -18,8 +17,8 @@ const MAX_TEXT = 6000;
 
 export function availableEngines(): EngineId[] {
   const list: EngineId[] = [];
-  if (isDataforseoConfigured()) list.push("chatgpt", "gemini", "perplexity", "google-ai-overview", "google-ai-mode");
-  if (process.env.ANTHROPIC_API_KEY) list.push("claude");
+  // 12 Ekim: Claude da DataForSEO üzerinden soruluyor (Anthropic kredisi bitti, tek fatura).
+  if (isDataforseoConfigured()) list.push("chatgpt", "gemini", "perplexity", "google-ai-overview", "google-ai-mode", "claude");
   return list;
 }
 
@@ -103,9 +102,9 @@ type LlmResponsesResult = {
   fan_out_queries?: string[] | null;
 };
 
-async function runPerplexity(prompt: string): Promise<EngineResult> {
-  const { result, cost } = await dfsPost<LlmResponsesResult>("/v3/ai_optimization/perplexity/llm_responses/live", [
-    { user_prompt: prompt, model_name: "sonar", web_search: true },
+async function runLlmResponses(llm: "perplexity" | "claude", model: string, prompt: string): Promise<EngineResult> {
+  const { result, cost } = await dfsPost<LlmResponsesResult>(`/v3/ai_optimization/${llm}/llm_responses/live`, [
+    { user_prompt: prompt, model_name: model, web_search: true },
   ]);
   const items = (result?.items ?? []).filter((i) => i.type !== "reasoning");
   const sections = items.flatMap((i) => i.sections ?? []);
@@ -118,6 +117,10 @@ async function runPerplexity(prompt: string): Promise<EngineResult> {
     cost,
   };
 }
+
+const runPerplexity = (prompt: string) => runLlmResponses("perplexity", "sonar", prompt);
+// Claude.ai'nin varsayılan modeline en yakın seçenek; DataForSEO model listesi: /v3/ai_optimization/claude/llm_responses/models
+const runClaude = (prompt: string) => runLlmResponses("claude", "claude-sonnet-5", prompt);
 
 // ─── DataForSEO: Google AI Overview / AI Mode ──────────────────────────────
 
@@ -208,78 +211,6 @@ export function explainAnthropicError(e: unknown): string {
     return `Anthropic API ${e.status ?? ""}: ${message}`.trim();
   }
   return raw;
-}
-
-async function runClaude(prompt: string): Promise<EngineResult> {
-  await assertBudget("ai-visibility");
-  const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
-  const messages: Anthropic.MessageParam[] = [{ role: "user", content: prompt }];
-  const tools: Anthropic.ToolUnion[] = [
-    {
-      type: "web_search_20260209",
-      name: "web_search",
-      max_uses: 5,
-      user_location: { type: "approximate", country: "TR" },
-    },
-  ];
-
-  let final: Anthropic.Message | null = null;
-  let claudeCost = 0;
-  const blocks: Anthropic.ContentBlock[] = [];
-  // Uzun süren sunucu aracı turu pause_turn ile durabilir; en fazla 3 kez devam ettir
-  for (let i = 0; i < 4; i++) {
-    const params = {
-      model: "claude-opus-5",
-      max_tokens: 16000,
-      thinking: { type: "adaptive" },
-      tools,
-      messages,
-      // Güvenlik sınıflandırıcısı reddederse istek sunucu tarafında önerilen modele düşer
-      betas: ["server-side-fallback-2026-07-01"],
-      fallbacks: "default",
-    };
-    // SDK 0.90 tipleri `fallbacks` alanını henüz tanımıyor; gövde olduğu gibi iletilir
-    try {
-      final = (await client.beta.messages.create(params as unknown as Anthropic.Beta.MessageCreateParamsNonStreaming)) as unknown as Anthropic.Message;
-    } catch (e) {
-      throw new Error(explainAnthropicError(e));
-    }
-    const usd = await recordSpend("ai-visibility", "claude-opus-5", final.usage);
-    claudeCost += usd;
-    blocks.push(...final.content);
-    if (final.stop_reason !== "pause_turn") break;
-    messages.push({ role: "assistant", content: final.content });
-  }
-
-  if (final?.stop_reason === "refusal") {
-    return { status: "error", text: "", citations: [], queries: [], cost: 0, note: "Claude bu soruyu yanıtlamayı reddetti." };
-  }
-
-  const text = blocks
-    .filter((b): b is Anthropic.TextBlock => b.type === "text")
-    .map((b) => b.text)
-    .join("")
-    .trim();
-  const cited = blocks
-    .filter((b): b is Anthropic.TextBlock => b.type === "text")
-    .flatMap((b) => b.citations ?? [])
-    .map((c) => ("url" in c ? citation(c.url, "title" in c ? c.title : "") : null));
-  const queries = blocks
-    .filter((b) => b.type === "server_tool_use")
-    .map((b) => {
-      const input = (b as { input?: unknown }).input;
-      return input && typeof input === "object" && "query" in input ? String((input as { query: unknown }).query) : "";
-    })
-    .filter(Boolean);
-
-  return {
-    status: text ? "ok" : "no_surface",
-    text: text.slice(0, MAX_TEXT),
-    citations: dedupe(cited),
-    queries,
-    cost: claudeCost,
-    note: "Claude maliyeti tahminidir (liste fiyatı); kesin tutar Anthropic konsolunda.",
-  };
 }
 
 export async function runEngine(engine: EngineId, prompt: string): Promise<EngineResult> {

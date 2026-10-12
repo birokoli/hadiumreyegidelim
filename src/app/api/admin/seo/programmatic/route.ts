@@ -20,7 +20,10 @@ export async function GET() {
     collectSiteFacts(),
     prisma.hotel.findMany({ where: { isActive: true }, select: { name: true }, orderBy: { distanceMeters: "asc" } }).catch(() => []),
   ]);
-  const existing = new Set(facts.sitemapUrls.map(toPath).filter(Boolean) as string[]);
+  // Sayfa listesi sitemap'i üreten koddan doğrudan alınır (12 Ekim): canlıda sunucunun kendi sitesini HTTP ile okuması
+  // başarısız olunca bütün kelimeler "sayfa yok" görünüyordu. HTTP'den gelen liste de varsa birleştirilir.
+  const internal = await import("@/app/sitemap").then((m) => m.default()).catch(() => []);
+  const existing = new Set([...internal.map((e) => e.url), ...facts.sitemapUrls].map(toPath).filter(Boolean) as string[]);
 
   const samples = await Promise.all(
     SAMPLE_CITIES.map(async (slug) => {

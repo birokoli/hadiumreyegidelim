@@ -173,7 +173,7 @@ export default async function Home() {
           </div>
           <div className="on-dark relative px-6 py-6 md:py-6 md:pl-9 md:pr-72">
             <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-[var(--h-sand)]">Ücretsiz · PDF · 19 sayfa</p>
-            <h2 className="mt-1.5 font-headline text-2xl md:text-[30px] leading-tight font-bold"><Accent text="Tavafta ne okuyacağınızı *bilerek* dönün" /></h2>
+            <h2 className="mt-1.5 font-headline text-2xl md:text-[30px] leading-tight font-bold"><Accent text="Yedi şavt, yedi *niyet*" /></h2>
             <p className="mt-1.5 text-sm md:text-[15px] text-white/80 max-w-2xl">Tavaf El Kitabı: yedi şavtın her biri için okunuşu ve anlamıyla dualar; Kur&apos;an&apos;dan, hadislerden ve münâcât geleneğinden.</p>
             <span className="mt-4 inline-flex items-center gap-2 rounded-xl bg-[var(--h-sand)] px-5 py-2.5 text-sm font-bold text-[var(--h-blue-deep)] transition group-hover:brightness-95">
               Kitapçığı ücretsiz indir <Arrow />

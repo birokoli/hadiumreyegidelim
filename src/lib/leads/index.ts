@@ -156,6 +156,12 @@ export async function setLeadStatus(leadId: string, status: string, note?: strin
   await prisma.$executeRaw`UPDATE "MarketingLead" SET "status" = ${status}, "note" = COALESCE(${note ?? null}, "note") WHERE "id" = ${leadId}`;
 }
 
+/** Kaydı kalıcı olarak siler (test kayıtları, KVKK silme talepleri). */
+export async function deleteLead(leadId: string) {
+  await ensureLeadSchema();
+  await prisma.$executeRaw`DELETE FROM "MarketingLead" WHERE "id" = ${leadId}`;
+}
+
 export async function leadCounts(): Promise<{ total: number; fresh: number }> {
   await ensureLeadSchema();
   const [row] = await prisma.$queryRaw<{ total: bigint; fresh: bigint }[]>`SELECT COUNT(*) AS "total", COUNT(*) FILTER (WHERE "status" = 'new') AS "fresh" FROM "MarketingLead"`;

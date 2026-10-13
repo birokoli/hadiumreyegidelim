@@ -1,7 +1,7 @@
 // Müşteri havuzu admin API'si: liste, CSV, durum.
 import { NextRequest, NextResponse } from "next/server";
 import { getAdminSession } from "@/lib/admin-auth";
-import { listLeads, setLeadStatus, LEAD_SOURCES } from "@/lib/leads";
+import { deleteLead, listLeads, setLeadStatus, LEAD_SOURCES } from "@/lib/leads";
 
 export const dynamic = "force-dynamic";
 
@@ -23,6 +23,10 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   if (!(await getAdminSession())) return NextResponse.json({ error: "Yetkisiz." }, { status: 401 });
   const b = await req.json().catch(() => ({}));
+  if (b.action === "delete" && typeof b.id === "string" && b.id) {
+    await deleteLead(b.id);
+    return NextResponse.json({ ok: true });
+  }
   if (!b.id || !["new", "contacted", "customer", "not_interested"].includes(b.status)) return NextResponse.json({ error: "Geçersiz istek." }, { status: 400 });
   await setLeadStatus(b.id, b.status, b.note);
   return NextResponse.json({ ok: true });

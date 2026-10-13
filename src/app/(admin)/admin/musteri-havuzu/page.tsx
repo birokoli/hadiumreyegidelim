@@ -45,6 +45,13 @@ export default function MusteriHavuzuPage() {
     if (r.ok) setLeads((l) => l.map((x) => (x.id === id ? { ...x, status } : x)));
   };
 
+  const remove = async (l: Lead) => {
+    if (!confirm(`${l.name} (${l.email ?? l.phone ?? ""}) kaydı kalıcı olarak silinsin mi? Bu işlem geri alınamaz.`)) return;
+    const r = await fetch("/api/admin/leads", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ id: l.id, action: "delete" }) });
+    if (r.ok) setLeads((list) => list.filter((x) => x.id !== l.id));
+    else setError("Kayıt silinemedi.");
+  };
+
   const count = (s: StatusKey) => leads.filter((l) => l.status === s).length;
   const consentCount = leads.filter((l) => l.marketingConsent).length;
 
@@ -230,6 +237,15 @@ export default function MusteriHavuzuPage() {
                           <span>E-posta</span>
                         </a>
                       )}
+                      <button
+                        type="button"
+                        onClick={() => remove(l)}
+                        title="Kaydı sil"
+                        aria-label={`${l.name} kaydını sil`}
+                        className="inline-flex items-center p-1.5 align-middle text-outline hover:text-error transition-colors"
+                      >
+                        <span className="material-symbols-outlined text-[16px]">delete</span>
+                      </button>
                     </td>
                   </tr>
                 );

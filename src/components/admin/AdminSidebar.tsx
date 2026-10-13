@@ -32,9 +32,16 @@ const menuGroups: { title: string; links: SidebarLink[] }[] = [
         href: "/admin/contact",
         icon: "inbox",
         label: "Gelen Kutusu",
-        match: ["/admin/contact", "/admin/orders", "/admin/crm", "/admin/fiyat-teklifleri", "/admin/musteri-havuzu"],
+        match: ["/admin/contact", "/admin/orders", "/admin/crm", "/admin/fiyat-teklifleri"],
         permission: "orders",
         badgeKey: "unreadLeads",
+      },
+      {
+        href: "/admin/musteri-havuzu",
+        icon: "contacts",
+        label: "Müşteri Havuzu",
+        permission: "orders",
+        badgeKey: "newPoolLeads",
       },
       {
         href: "/admin/packages",
@@ -117,7 +124,7 @@ export default function AdminSidebar({ logoUrl }: { logoUrl?: string }) {
   const { sidebarOpen, setSidebarOpen } = useAdminContext();
   const [allowedPermissions, setAllowedPermissions] = useState<AdminPermission[] | null>(null);
   const [isSuperAdmin, setIsSuperAdmin] = useState(true);
-  const [counts, setCounts] = useState<{ unreadLeads?: number; totalPackages?: number; totalPosts?: number }>({});
+  const [counts, setCounts] = useState<{ unreadLeads?: number; totalPackages?: number; totalPosts?: number; newPoolLeads?: number }>({});
   const [filterQuery, setFilterQuery] = useState("");
   const DEFAULT_OPEN = ["Genel Bakış", "Satış", "İçerik"];
   const [openGroups, setOpenGroups] = useState<string[]>(DEFAULT_OPEN);

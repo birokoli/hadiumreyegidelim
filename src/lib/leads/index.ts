@@ -73,3 +73,9 @@ export async function setLeadStatus(leadId: string, status: string, note?: strin
   await ensureLeadSchema();
   await prisma.$executeRaw`UPDATE "MarketingLead" SET "status" = ${status}, "note" = COALESCE(${note ?? null}, "note") WHERE "id" = ${leadId}`;
 }
+
+export async function leadCounts(): Promise<{ total: number; fresh: number }> {
+  await ensureLeadSchema();
+  const [row] = await prisma.$queryRaw<{ total: bigint; fresh: bigint }[]>`SELECT COUNT(*) AS "total", COUNT(*) FILTER (WHERE "status" = 'new') AS "fresh" FROM "MarketingLead"`;
+  return { total: Number(row?.total ?? 0), fresh: Number(row?.fresh ?? 0) };
+}

@@ -4,14 +4,16 @@ import React from 'react';
 import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
 import TodayPanel from '@/components/admin/TodayPanel';
+import { leadCounts } from '@/lib/leads';
 
 export default async function AdminDashboardPage() {
-  const [totalPackages, totalPosts, unreadLeads, totalLeads, recentLeads] = await Promise.all([
+  const [totalPackages, totalPosts, unreadLeads, totalLeads, recentLeads, pool] = await Promise.all([
     prisma.package.count({ where: { published: true } }),
     prisma.post.count({ where: { published: true } }),
     prisma.contactRequest.count({ where: { status: 'UNREAD' } }),
     prisma.contactRequest.count(),
-    prisma.contactRequest.findMany({ take: 6, orderBy: { createdAt: 'desc' } })
+    prisma.contactRequest.findMany({ take: 6, orderBy: { createdAt: 'desc' } }),
+    leadCounts().catch(() => ({ total: 0, fresh: 0 })),
   ]);
 
   const conversionRate = totalLeads > 0 ? Math.round(((totalLeads - unreadLeads) / totalLeads) * 100) : 100;
@@ -77,6 +79,11 @@ export default async function AdminDashboardPage() {
             className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-outline-variant/25 text-primary hover:border-primary text-xs font-bold transition-all active:scale-95">
             <span>Siteyi Gör</span>
             <span className="material-symbols-outlined text-[14px]">open_in_new</span>
+          </Link>
+          <Link href="/admin/musteri-havuzu"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-outline-variant/25 text-primary hover:border-primary text-xs font-bold transition-all active:scale-95">
+            <span className="material-symbols-outlined text-[16px]">contacts</span>
+            <span>Müşteri Havuzu ({pool.total})</span>
           </Link>
           <Link href="/admin/contact"
             className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-primary text-white text-xs font-bold hover:bg-primary-container transition-all active:scale-95 shadow-sm">
@@ -177,8 +184,9 @@ export default async function AdminDashboardPage() {
       </div>
 
       {/* Quick Navigation Cards */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
         {[
+          { href: "/admin/musteri-havuzu", icon: "contacts", label: "Müşteri Havuzu", desc: pool.fresh > 0 ? `${pool.fresh} yeni kayıt` : `${pool.total} kayıt` },
           { href: "/admin/crm", icon: "view_kanban", label: "CRM Komuta", desc: "Tüm talepleri yönet" },
           { href: "/admin/fiyat-teklifleri/hesaplayici", icon: "calculate", label: "Fiyat Motoru", desc: "Excel otomasyonu" },
           { href: "/admin/content", icon: "edit_document", label: "Yeni Blog", desc: "İçerik yazarı" },

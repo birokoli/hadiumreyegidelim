@@ -20,6 +20,7 @@ type Props = {
   className?: string;
   children: ReactNode;
   doneNote?: string;
+  memberSlug?: "tavaf" | "say"; // teşekkür ekranında üyelik daveti: şavt modu
 };
 type Step = "form" | "code" | "done";
 
@@ -49,7 +50,7 @@ const HEAD: Record<Step, { kicker: string; title: string }> = {
   done: { kicker: "Teşekkürler", title: "Hayırlı *umreler*" },
 };
 
-export default function LeadGateDownload({ source, fileUrl, fileName, title, cover, hat, className, children, doneNote }: Props) {
+export default function LeadGateDownload({ source, fileUrl, fileName, title, cover, hat, className, children, doneNote, memberSlug }: Props) {
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState<Step>("form");
   const [busy, setBusy] = useState(false);
@@ -337,6 +338,11 @@ export default function LeadGateDownload({ source, fileUrl, fileName, title, cov
                   <Link href="/bireysel-umre" className="flex items-center justify-center gap-2 rounded-2xl bg-[var(--h-sand)] px-5 py-3.5 text-sm font-bold text-[var(--h-blue-deep)] transition hover:brightness-95">
                     <HugIcon name="takvim" size={18} /> Umrenizi kendi tarihinizde planlayın
                   </Link>
+                  {memberSlug && (
+                    <Link href={`/profil/uye-ol?next=${encodeURIComponent(`/profil/oku/${memberSlug}`)}`} className="flex items-center justify-center gap-2 rounded-2xl bg-[var(--h-blue)] px-5 py-3.5 text-sm font-bold text-white transition hover:bg-[var(--h-blue-deep)]">
+                      <HugIcon name="rehber" size={18} className="text-[var(--h-sand)]" /> Üye olun, Harem&apos;de şavt şavt okuyun
+                    </Link>
+                  )}
                   {shareHref && (
                     <a href={shareHref} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 rounded-2xl border border-[var(--h-sky)] px-5 py-3.5 text-sm font-bold text-[var(--h-blue)] transition hover:border-[var(--h-blue)]">
                       <HugIcon name="mesaj" size={18} /> Umreye gidecek birine gönderin

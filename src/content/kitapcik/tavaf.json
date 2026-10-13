@@ -1,0 +1,1070 @@
+{
+ "slug": "tavaf",
+ "savtlar": [
+  {
+   "no": 1,
+   "baslik": "Tevhid, hamd ve teslimiyet",
+   "niyet": "Bu evin Sahibi'ni birlemek, O'na hamd etmek ve kendinizi O'na teslim etmek.",
+   "bolumler": [
+    {
+     "ad": "Senâ ve zikir",
+     "ogeler": [
+      {
+       "tur": "dua",
+       "ad": "Lâ ilâhe illallâhu vahdehû lâ şerîke leh",
+       "kaynak": "",
+       "kez": "10 kez",
+       "okunus": "Lâ ilâhe illallâhu vahdehû lâ şerîke leh, lehü'l-mülkü ve lehü'l-hamdü ve hüve alâ külli şey'in kadîr.",
+       "anlam": "Allah'tan başka ilah yoktur; O tektir, ortağı yoktur. Mülk O'nundur, hamd O'nadır ve O her şeye gücü yetendir. Efendimiz (s.a.v.) bunu kendisinin ve kendisinden önceki peygamberlerin söylediği en hayırlı söz olarak bildirmiştir (Tirmizî)."
+      },
+      {
+       "tur": "dua",
+       "ad": "Sübhânallâhi ve bi hamdihî",
+       "kaynak": "",
+       "kez": "3 kez",
+       "okunus": "Sübhânallâhi ve bi hamdihî, adede halkıhî ve rızâ nefsihî ve zinete arşihî ve midâde kelimâtih.",
+       "anlam": "Allah'ı hamd ile tesbih ederim: yarattıkları sayısınca, razı olacağı kadar, Arşı'nın ağırlığınca ve kelimelerinin mürekkebi miktarınca. (Müslim)"
+      },
+      {
+       "tur": "dua",
+       "ad": "Cevşen'den, 1. bab",
+       "kaynak": "",
+       "kez": "",
+       "okunus": "Allâhumme innî es'elüke bi'smike: yâ Allâhu, yâ Rahmânu, yâ Rahîmu, yâ Kerîmu, yâ Mukîmu, yâ Azîmu, yâ Kadîmu, yâ Alîmu, yâ Halîmu, yâ Hakîm. Sübhâneke yâ lâ ilâhe illâ ente, el-emân el-emân, hallisnâ mine'n-nâr.",
+       "anlam": "Allah'ım! Senden isminle istiyorum: Ey Allah, ey Rahmân, ey Rahîm, ey Kerîm, ey her şeyi ayakta tutan, ey Azîm, ey Kadîm, ey Alîm, ey Halîm, ey Hakîm! Seni tesbih ederim, ey kendisinden başka ilah olmayan! Aman, aman, bizi ateşten kurtar."
+      }
+     ]
+    },
+    {
+     "ad": "Kur'an'dan",
+     "ogeler": [
+      {
+       "tur": "dua",
+       "ad": "Hz. İbrahim ile Hz. İsmail'in duası",
+       "kaynak": "Bakara, 127–128",
+       "kez": "",
+       "okunus": "Rabbenâ tekabbel minnâ inneke ente's-semî'u'l-alîm. Rabbenâ vec'alnâ müslimeyni leke ve min zürriyyetinâ ümmeten müslimeten lek, ve erinâ menâsikenâ ve tüb aleynâ, inneke ente't-Tevvâbü'r-Rahîm.",
+       "anlam": "Rabbimiz! Bizden kabul buyur; şüphesiz sen işitensin, bilensin. Rabbimiz! Bizi sana teslim olanlardan, neslimizden de sana teslim olan bir ümmet kıl. Bize ibadet yerlerimizi ve şekillerini göster, tövbemizi kabul et; şüphesiz sen tövbeleri kabul eden, merhametli olansın. Bu dua, şu an etrafında döndüğünüz Kâbe'nin temelleri yükseltilirken edilmiştir."
+      },
+      {
+       "tur": "dua",
+       "ad": "Mülkün sahibine",
+       "kaynak": "Âl-i İmrân, 26",
+       "kez": "",
+       "okunus": "Kulillâhumme mâlike'l-mülki tü'ti'l-mülke men teşâü ve tenzi'u'l-mülke mimmen teşâ, ve tuizzü men teşâü ve tüzillü men teşâ, bi yedike'l-hayr, inneke alâ külli şey'in kadîr.",
+       "anlam": "De ki: Ey mülkün sahibi Allah'ım! Mülkü dilediğine verir, dilediğinden çekip alırsın. Dilediğini aziz, dilediğini zelil edersin. Hayır yalnız senin elindedir; şüphesiz sen her şeye gücü yetensin."
+      },
+      {
+       "tur": "dua",
+       "ad": "Aklı selim sahiplerinin duası",
+       "kaynak": "Âl-i İmrân, 191",
+       "kez": "",
+       "okunus": "Rabbenâ mâ halakte hâzâ bâtılâ, sübhâneke fe kınâ azâbe'n-nâr.",
+       "anlam": "Rabbimiz! Sen bunları boşuna yaratmadın. Seni tenzih ederiz; bizi ateş azabından koru."
+      },
+      {
+       "tur": "dua",
+       "ad": "Tevekkül",
+       "kaynak": "Tevbe, 129",
+       "kez": "7 kez",
+       "okunus": "Hasbiyallâhu lâ ilâhe illâ hû, aleyhi tevekkeltü ve hüve Rabbü'l-arşi'l-azîm.",
+       "anlam": "Allah bana yeter. O'ndan başka ilah yoktur. Ben yalnız O'na dayandım; O, büyük Arş'ın Rabbidir."
+      },
+      {
+       "tur": "dua",
+       "ad": "Hz. İbrahim'in teslimiyeti",
+       "kaynak": "Mümtehine, 4",
+       "kez": "",
+       "okunus": "Rabbenâ aleyke tevekkelnâ ve ileyke enebnâ ve ileyke'l-masîr.",
+       "anlam": "Rabbimiz! Yalnız sana dayandık, yalnız sana yöneldik; dönüş de yalnız sanadır."
+      }
+     ]
+    },
+    {
+     "ad": "Hadislerden",
+     "ogeler": [
+      {
+       "tur": "dua",
+       "ad": "İsm-i a'zam ile dua",
+       "kaynak": "Ebû Dâvûd, Tirmizî",
+       "kez": "",
+       "okunus": "Allâhumme innî es'elüke bi ennî eşhedü enneke ente'llâhu lâ ilâhe illâ ente, el-Ehadü's-Samedü, ellezî lem yelid ve lem yûled ve lem yekün lehû küfüven ehad.",
+       "anlam": "Allah'ım! Senden istiyorum; çünkü şahitlik ederim ki sen Allah'sın, senden başka ilah yoktur. Sen tek ve Samed'sin; doğurmamış, doğmamışsın, hiçbir şey sana denk değildir. Efendimiz (s.a.v.) bu duayı duyunca \"Allah'tan en büyük ismiyle istedi\" buyurmuştur."
+      },
+      {
+       "tur": "dua",
+       "ad": "Hamd",
+       "kaynak": "İbn Mâce",
+       "kez": "",
+       "okunus": "Yâ Rabbi leke'l-hamdü kemâ yenbağî li celâli vechike ve azîmi sultânik.",
+       "anlam": "Rabbim! Zatının celâline ve saltanatının azametine yakışan hamd sanadır."
+      },
+      {
+       "tur": "dua",
+       "ad": "Zikir ve şükür için",
+       "kaynak": "Ebû Dâvûd, Nesâî",
+       "kez": "3 kez",
+       "okunus": "Allâhumme a'innî alâ zikrike ve şükrike ve hüsni ibâdetik.",
+       "anlam": "Allah'ım! Seni anmak, sana şükretmek ve sana güzel ibadet etmek için bana yardım et. Efendimiz (s.a.v.) Muaz'a (r.a.) bunu her namazdan sonra söylemesini tavsiye etmiştir."
+      },
+      {
+       "tur": "dua",
+       "ad": "Selâm",
+       "kaynak": "Müslim",
+       "kez": "",
+       "okunus": "Allâhumme ente's-Selâm ve minke's-selâm, tebârekte yâ ze'l-celâli ve'l-ikrâm.",
+       "anlam": "Allah'ım! Sen Selâm'sın, esenlik sendendir. Ey celâl ve ikrâm sahibi, sen ne yüce ve bereketlisin."
+      }
+     ]
+    },
+    {
+     "ad": "Münâcât",
+     "ogeler": [
+      {
+       "tur": "hitap",
+       "metin": "Yâ Rabbe'l-Beyt! Ey bu mübarek evin Sahibi!"
+      },
+      {
+       "tur": "paragraf",
+       "metin": "Senin evinin etrafında dönen bu aciz kulun, ilk adımında sana geldi. Bu evi İbrahim Halîlullah'a kurdurdun, taşlarını İsmail'e taşıttın. Âdem'den bu yana nice peygamberi, nice velîyi, nice garibi bu kapıya getirdin. Beni de o kafilenin en arkasına katıp bu kapıya çağırdın. Hamd sanadır yâ Rabbi; bu daveti kazandıracak bir amelim yoktu, ancak senin keremin vardı."
+      },
+      {
+       "tur": "paragraf",
+       "metin": "Yâ Hâlık-ı Kerîm! Gökleri direksiz yükselten, yeri döşek gibi seren, denizleri sınırında durduran sensin. Zerreden güneşe kadar her şey senin emrinle döner. Bu Beytullah'ın etrafındaki halka da senin birliğini dönerek söyler. Ben de bu halkaya bir zerre gibi katıldım: Lâ ilâhe illallâh dedim; kalbimle, dilimle, adımlarımla dedim. Sen de kabul eyle."
+      },
+      {
+       "tur": "paragraf",
+       "metin": "Yâ Rabbi! Kalbime senden başkasını sokma. Sevgimi sana, korkumu sana, ümidimi sana bağla. Beni malın, makamın, insanların övgüsünün, nefsin heveslerinin esiri etme. İbrahim putları nasıl kırdıysa kalbimdeki putları da kır; bu evi nasıl temizlediysen kalbimi de öyle temizle."
+      },
+      {
+       "tur": "paragraf",
+       "metin": "Yâ Rabbi! Habîbin Muhammed Mustafa (s.a.v.) bu evin etrafında dönerken senden ne istediyse ben de onu istiyorum; neden sana sığındıysa ben de ondan sana sığınıyorum. Beni onun ümmetinden, onun sünnetine sarılanlardan, kıyamet günü onun sancağı altında toplananlardan eyle."
+      },
+      {
+       "tur": "paragraf",
+       "metin": "Teslim oldum yâ Rabbi. İşimi sana bıraktım, yüzümü sana döndüm, sırtımı sana dayadım. Senden başka sığınak, senden başka kurtuluş yoktur. Âmîn."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "no": 2,
+   "baslik": "Tövbe, istiğfar ve arınma",
+   "niyet": "Bilerek ya da bilmeyerek işlenen bütün günahlardan Allah'a dönmek.",
+   "bolumler": [
+    {
+     "ad": "Senâ ve zikir",
+     "ogeler": [
+      {
+       "tur": "dua",
+       "ad": "İstiğfar",
+       "kaynak": "Ebû Dâvûd, Tirmizî",
+       "kez": "3 kez",
+       "okunus": "Estağfirullâhe'l-azîm, ellezî lâ ilâhe illâ hüve'l-Hayye'l-Kayyûme ve etûbü ileyh.",
+       "anlam": "Kendisinden başka ilah olmayan, diri ve her şeyi ayakta tutan yüce Allah'tan bağışlanma dilerim ve O'na tövbe ederim. Efendimiz (s.a.v.) bunu söyleyenin, savaştan kaçmış olsa bile bağışlanacağını müjdelemiştir."
+      },
+      {
+       "tur": "dua",
+       "ad": "Efendimiz'in her mecliste okuduğu dua",
+       "kaynak": "Ebû Dâvûd, Tirmizî",
+       "kez": "10 kez",
+       "okunus": "Rabbiğfir lî ve tüb aleyye inneke ente't-Tevvâbü'r-Rahîm.",
+       "anlam": "Rabbim! Beni bağışla, tövbemi kabul et; şüphesiz sen tövbeleri çok kabul eden, merhametli olansın. Sahabe, Efendimiz'in tek bir mecliste bunu yüz kez söylediğini sayardı."
+      },
+      {
+       "tur": "dua",
+       "ad": "Esmâ ile yakarış",
+       "kaynak": "",
+       "kez": "",
+       "okunus": "Yâ Ğafûr, ey günahları örten! Yâ Ğaffâr, ey tekrar tekrar bağışlayan! Yâ Tevvâb, ey tövbeleri kabul eden! Yâ Afüvv, ey günahın izini bile silen! Yâ Rauf, ey şefkati sonsuz olan! Yâ Settâr, ey ayıpları gizleyen! Sübhâneke yâ lâ ilâhe illâ ente, el-emân el-emân, hallisnâ mine'n-nâr.",
+       "anlam": ""
+      }
+     ]
+    },
+    {
+     "ad": "Kur'an'dan",
+     "ogeler": [
+      {
+       "tur": "dua",
+       "ad": "Hz. Âdem ile Hz. Havva'nın tövbesi",
+       "kaynak": "A'râf, 23",
+       "kez": "",
+       "okunus": "Rabbenâ zalemnâ enfüsenâ ve in lem tağfir lenâ ve terhamnâ le nekûnenne mine'l-hâsirîn.",
+       "anlam": "Rabbimiz! Biz kendimize zulmettik. Eğer bizi bağışlamaz ve bize merhamet etmezsen, mutlaka kaybedenlerden oluruz. İnsanlığın ilk tövbesi budur."
+      },
+      {
+       "tur": "dua",
+       "ad": "Hz. Yunus'un duası",
+       "kaynak": "Enbiyâ, 87",
+       "kez": "7 kez",
+       "okunus": "Lâ ilâhe illâ ente sübhâneke innî küntü mine'z-zâlimîn.",
+       "anlam": "Senden başka ilah yoktur. Seni tenzih ederim. Gerçekten ben zalimlerden oldum. Efendimiz (s.a.v.): \"Hangi Müslüman bununla dua ederse, Allah ona mutlaka icabet eder\" buyurmuştur (Tirmizî)."
+      },
+      {
+       "tur": "dua",
+       "ad": "Hz. Musa'nın tövbesi",
+       "kaynak": "Kasas, 16",
+       "kez": "",
+       "okunus": "Rabbi innî zalemtü nefsî fağfir lî.",
+       "anlam": "Rabbim! Ben kendime zulmettim; beni bağışla."
+      },
+      {
+       "tur": "dua",
+       "ad": "Müminlerin duası",
+       "kaynak": "Âl-i İmrân, 16",
+       "kez": "",
+       "okunus": "Rabbenâ innenâ âmennâ fağfir lenâ zünûbenâ ve kınâ azâbe'n-nâr.",
+       "anlam": "Rabbimiz! Biz iman ettik; günahlarımızı bağışla ve bizi ateş azabından koru."
+      },
+      {
+       "tur": "dua",
+       "ad": "Aşırılıklarımız için",
+       "kaynak": "Âl-i İmrân, 147",
+       "kez": "",
+       "okunus": "Rabbenağfir lenâ zünûbenâ ve isrâfenâ fî emrinâ ve sebbit akdâmenâ vensurnâ ale'l-kavmi'l-kâfirîn.",
+       "anlam": "Rabbimiz! Günahlarımızı ve işlerimizdeki aşırılıklarımızı bağışla, ayaklarımızı sabit kıl ve bize yardım et."
+      },
+      {
+       "tur": "dua",
+       "ad": "Bakara suresinin sonu",
+       "kaynak": "Bakara, 286",
+       "kez": "",
+       "okunus": "Va'fu annâ, vağfir lenâ, verhamnâ, ente mevlânâ fensurnâ ale'l-kavmi'l-kâfirîn.",
+       "anlam": "Bizi affet, bizi bağışla, bize merhamet et. Sen bizim Mevlâmızsın; bize yardım et."
+      },
+      {
+       "tur": "dua",
+       "ad": "Merhamet",
+       "kaynak": "Mü'minûn, 118",
+       "kez": "3 kez",
+       "okunus": "Rabbiğfir verham ve ente hayru'r-râhimîn.",
+       "anlam": "Rabbim! Bağışla ve merhamet et; sen merhamet edenlerin en hayırlısısın."
+      }
+     ]
+    },
+    {
+     "ad": "Hadislerden",
+     "ogeler": [
+      {
+       "tur": "dua",
+       "ad": "Seyyidü'l-istiğfâr",
+       "kaynak": "Buhârî",
+       "kez": "",
+       "okunus": "Allâhumme ente Rabbî, lâ ilâhe illâ ente, halaktenî ve ene abdük, ve ene alâ ahdike ve va'dike me'steta'tü, eûzü bike min şerri mâ sana'tü, ebûü leke bi ni'metike aleyye, ve ebûü bi zenbî, fağfir lî, fe innehû lâ yağfiru'z-zünûbe illâ ente.",
+       "anlam": "Allah'ım! Sen benim Rabbimsin, senden başka ilah yoktur. Beni sen yarattın, ben senin kulunum. Gücüm yettiğince sana verdiğim söze ve vaadine bağlıyım. Yaptıklarımın şerrinden sana sığınırım. Bana verdiğin nimetleri ikrar eder, günahımı itiraf ederim. Beni bağışla; çünkü günahları senden başka bağışlayan yoktur. Efendimiz (s.a.v.) bunu \"istiğfarın efendisi\" diye adlandırmıştır."
+      },
+      {
+       "tur": "dua",
+       "ad": "Hz. Ebû Bekir'e öğretilen dua",
+       "kaynak": "Buhârî, Müslim",
+       "kez": "",
+       "okunus": "Allâhumme innî zalemtü nefsî zulmen kesîran, ve lâ yağfiru'z-zünûbe illâ ente, fağfir lî mağfireten min indike, verhamnî, inneke ente'l-Ğafûru'r-Rahîm.",
+       "anlam": "Allah'ım! Ben kendime çok zulmettim; günahları ancak sen bağışlarsın. Katından bir mağfiretle beni bağışla ve bana merhamet et; şüphesiz sen Ğafûr ve Rahîm olansın."
+      },
+      {
+       "tur": "dua",
+       "ad": "Bütün günahlar için",
+       "kaynak": "Müslim",
+       "kez": "",
+       "okunus": "Allâhumme'ğfir lî zenbî küllehû, dıkkahû ve cillehû, ve evvelehû ve âhirahû, ve alâniyetehû ve sirrahû.",
+       "anlam": "Allah'ım! Günahlarımın hepsini bağışla: küçüğünü ve büyüğünü, ilkini ve sonuncusunu, açığını ve gizlisini. Efendimiz (s.a.v.) bunu secdede okurdu."
+      },
+      {
+       "tur": "dua",
+       "ad": "Kadir Gecesi duası",
+       "kaynak": "Tirmizî, İbn Mâce",
+       "kez": "7 kez",
+       "okunus": "Allâhumme inneke afüvvün tuhibbü'l-afve fa'fu annî.",
+       "anlam": "Allah'ım! Sen affedicisin, affetmeyi seversin; beni affet."
+      }
+     ]
+    },
+    {
+     "ad": "Münâcât",
+     "ogeler": [
+      {
+       "tur": "hitap",
+       "metin": "Yâ Ğaffâre'z-zünûb! Ey günahları bağışlayan!"
+      },
+      {
+       "tur": "paragraf",
+       "metin": "Kapına geldim; elimde amel yok, yüzümde utanç var. Ömrümü gaflette geçirdim. Bana verdiğin gözle harama baktım, dille gıybet ettim, kulakla boş söz dinledim; ellerimle, ayaklarımla nice hataya gittim. Sen gördün ve örttün. Ben unuttum, sen kaydettin; yine de rızkımı kesmedin, kapını kapatmadın. Bugün beni yine bu kapıya getirdin."
+      },
+      {
+       "tur": "paragraf",
+       "metin": "Yâ Rabbi! Senin rahmetin gazabını geçmiştir. Günahım ne kadar büyük olsa affın ondan büyüktür. Denizin köpüğü kadar günahı olsa da tövbe edeni bağışlayacağını haber verdin. Ben de tövbe ediyorum: bildiğim ve bilmediğim, hatırladığım ve unuttuğum, gizli ve açık bütün günahlarımdan sana dönüyorum."
+      },
+      {
+       "tur": "paragraf",
+       "metin": "Yâ Settâre'l-uyûb! Dünyada ayıplarımı nasıl örttüysen ahirette de öyle ört. Beni kullarının önünde mahcup etme. Amel defterimi sağımdan ver, mizânımı ağır kıl."
+      },
+      {
+       "tur": "paragraf",
+       "metin": "Yâ Rabbi! Kul hakkı taşıyorsam hak sahiplerini razı et. Ödeyemediğim borcu, helalleşemediğim insanı senin hazinenden razı eyle. Benden incinmiş kim varsa gönlünü hoş et. Beni incitenleri de ben senin rızan için affettim."
+      },
+      {
+       "tur": "paragraf",
+       "metin": "Yâ Rabbi! Bu kapıdan, annemden doğduğum gün gibi tertemiz ayrılmayı nasip et. Bir daha o eski günahlara dönmemeyi, tövbemde sabit kalmayı ihsan et. Kalbime günahın acısını, ibadetin tadını ver. Âmîn."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "no": 3,
+   "baslik": "Aile, anne-baba ve evlat",
+   "niyet": "Eşinizi, anne-babanızı, evlatlarınızı ve sizden dua bekleyen herkesi Allah'a emanet etmek.",
+   "bolumler": [
+    {
+     "ad": "Senâ ve zikir",
+     "ogeler": [
+      {
+       "tur": "dua",
+       "ad": "Hz. İbrahim'in evlatlarını korumaya aldığı dua",
+       "kaynak": "Buhârî",
+       "kez": "3 kez",
+       "okunus": "Uîzüküm bi kelimâtillâhi't-tâmmeti min külli şeytânin ve hâmmeh, ve min külli aynin lâmmeh.",
+       "anlam": "Sizi, Allah'ın eksiksiz kelimeleriyle her şeytandan, her zehirli şeyden ve her kem gözden Allah'a sığındırırım. Efendimiz (s.a.v.) Hasan ile Hüseyin'i bununla korumaya alır ve \"Babamız İbrahim de İsmail ile İshak'ı bununla korumaya alırdı\" buyururdu."
+      },
+      {
+       "tur": "dua",
+       "ad": "Esmâ ile yakarış",
+       "kaynak": "",
+       "kez": "",
+       "okunus": "Yâ Vedûd, ey kullarını seven ve sevdiren! Yâ Hafîz, ey koruyan! Yâ Vehhâb, ey karşılıksız veren! Yâ Rahîm, ey merhameti her şeyi kuşatan! Yâ Vekîl, ey kendisine emanet edilenin zayi olmadığı! Sübhâneke yâ lâ ilâhe illâ ente, el-emân el-emân, hallisnâ mine'n-nâr.",
+       "anlam": ""
+      }
+     ]
+    },
+    {
+     "ad": "Kur'an'dan",
+     "ogeler": [
+      {
+       "tur": "dua",
+       "ad": "Hz. İbrahim'in bu vadide ailesi için duası",
+       "kaynak": "İbrâhîm, 37",
+       "kez": "",
+       "okunus": "Rabbenâ innî eskentü min zürriyyetî bi vâdin ğayri zî zer'in inde beytike'l-muharrem, Rabbenâ li yukîmü's-salâte fec'al ef'ideten mine'n-nâsi tehvî ileyhim verzukhüm mine's-semerâti leallehum yeşkürûn.",
+       "anlam": "Rabbimiz! Ben neslimden bir kısmını, senin kutsal evinin yanında, ekin bitmeyen bir vadiye yerleştirdim. Rabbimiz! Namazı dosdoğru kılsınlar diye. Sen de insanların gönüllerini onlara meylettir, onları ürünlerle rızıklandır; belki şükrederler. Şu an yürüdüğünüz yer, bu duanın edildiği vadidir."
+      },
+      {
+       "tur": "dua",
+       "ad": "Göz aydınlığı bir aile",
+       "kaynak": "Furkân, 74",
+       "kez": "",
+       "okunus": "Rabbenâ heb lenâ min ezvâcinâ ve zürriyyâtinâ kurrete a'yünin vec'alnâ lil-müttakîne imâmâ.",
+       "anlam": "Rabbimiz! Bize gözümüzü aydınlatacak eşler ve nesiller bağışla, bizi takva sahiplerine önder eyle."
+      },
+      {
+       "tur": "dua",
+       "ad": "Anne-baba için",
+       "kaynak": "İsrâ, 24",
+       "kez": "7 kez",
+       "okunus": "Rabbirhamhümâ kemâ rabbeyânî sağîrâ.",
+       "anlam": "Rabbim! Onlar beni küçükken nasıl yetiştirdilerse, sen de onlara öyle merhamet et."
+      },
+      {
+       "tur": "dua",
+       "ad": "Hz. İbrahim'in ana-baba için duası",
+       "kaynak": "İbrâhîm, 41",
+       "kez": "",
+       "okunus": "Rabbenağfir lî ve li vâlideyye ve li'l-mü'minîne yevme yekûmü'l-hisâb.",
+       "anlam": "Rabbimiz! Hesap günü beni, anne-babamı ve bütün müminleri bağışla."
+      },
+      {
+       "tur": "dua",
+       "ad": "Hz. Nuh'un duası",
+       "kaynak": "Nûh, 28",
+       "kez": "",
+       "okunus": "Rabbiğfir lî ve li vâlideyye ve li men dehale beytiye mü'minen ve li'l-mü'minîne ve'l-mü'minât.",
+       "anlam": "Rabbim! Beni, anne-babamı, evime mümin olarak giren herkesi ve bütün mümin erkek ve kadınları bağışla."
+      },
+      {
+       "tur": "dua",
+       "ad": "Kırk yaşın duası",
+       "kaynak": "Ahkâf, 15",
+       "kez": "",
+       "okunus": "Rabbi evzi'nî en eşküra ni'meteke'lletî en'amte aleyye ve alâ vâlideyye ve en a'mele sâlihan terdâhu ve aslih lî fî zürriyyetî, innî tübtü ileyke ve innî mine'l-müslimîn.",
+       "anlam": "Rabbim! Bana ve anne-babama verdiğin nimete şükretmeyi ve razı olacağın salih ameli işlemeyi bana ilham et. Neslimi de salih kıl. Ben sana tövbe ettim ve ben sana teslim olanlardanım."
+      },
+      {
+       "tur": "dua",
+       "ad": "Hz. Zekeriyya'nın evlat duası",
+       "kaynak": "Âl-i İmrân, 38",
+       "kez": "",
+       "okunus": "Rabbi heb lî min ledünke zürriyyeten tayyibeten, inneke semîu'd-duâ.",
+       "anlam": "Rabbim! Bana katından temiz bir nesil bağışla; şüphesiz sen duayı işitensin. Evlat bekleyenler için ve kendi evlatlarınızın salih olması için okuyun."
+      }
+     ]
+    },
+    {
+     "ad": "Hadislerden",
+     "ogeler": [
+      {
+       "tur": "dua",
+       "ad": "Gönüllerin birleşmesi için",
+       "kaynak": "Ebû Dâvûd",
+       "kez": "",
+       "okunus": "Allâhumme ellif beyne kulûbinâ, ve aslih zâte beyninâ, vehdinâ sübüle's-selâm, ve neccinâ mine'z-zulümâti ile'n-nûr, ve cennibne'l-fevâhişe mâ zahera minhâ ve mâ batan, ve bârik lenâ fî esmâinâ ve ebsârinâ ve kulûbinâ ve ezvâcinâ ve zürriyyâtinâ, ve tüb aleynâ inneke ente't-Tevvâbü'r-Rahîm.",
+       "anlam": "Allah'ım! Kalplerimizi birleştir, aramızı düzelt, bizi esenlik yollarına ilet, karanlıklardan nura çıkar. Açığıyla gizlisiyle çirkin işlerden bizi uzak tut. Kulaklarımızı, gözlerimizi, kalplerimizi, eşlerimizi ve nesillerimizi bereketli kıl. Tövbemizi kabul et; şüphesiz sen Tevvâb ve Rahîm olansın."
+      },
+      {
+       "tur": "dua",
+       "ad": "Vefat etmiş anne-baba için",
+       "kaynak": "Müslim (cenaze duasından)",
+       "kez": "",
+       "okunus": "Allâhumme'ğfir lehümâ verhamhümâ ve âfihimâ va'fu anhümâ, ve ekrim nüzûlehümâ ve vessi' medhalehümâ.",
+       "anlam": "Allah'ım! Onları bağışla, onlara merhamet et, onlara afiyet ver, onları affet. Konaklarını ikram et, kabirlerini genişlet. Efendimiz'in (s.a.v.) cenaze namazında okuduğu duadan, iki kişi için."
+      }
+     ]
+    },
+    {
+     "ad": "Münâcât",
+     "ogeler": [
+      {
+       "tur": "paragraf",
+       "metin": "Yâ Rabbi! Bu evin yanında İbrahim, hanımı Hacer'i ve bebeği İsmail'i sana emanet etti; sen de onları zayi etmedin. Ben de bugün ailemi sana emanet ediyorum."
+      },
+      {
+       "tur": "paragraf",
+       "metin": "Annemi ve babamı sana emanet ediyorum (isimlerini anın). Onlar beni küçükken nasıl büyüttülerse sen de onlara öyle merhamet et. Hayattaysalar ömürlerini hayırla uzat, sağlıklarını koru, onları kimseye muhtaç etme, son nefeslerini iman üzere eyle. Ahirete göçmüşlerse kabirlerini cennet bahçelerinden bir bahçe kıl, nurlarını artır, onları salih kullarının arasına kat. Onlara karşı yaptığım her saygısızlığı, eksik bıraktığım her hakkı affet."
+      },
+      {
+       "tur": "paragraf",
+       "metin": "Eşimi sana emanet ediyorum. Aramıza sevgi ve merhamet koy. Birbirimize dünyada huzur, ahirette yol arkadaşı kıl. Evimizi kavgadan, kırgınlıktan, haram lokmadan ve kem gözden koru."
+      },
+      {
+       "tur": "paragraf",
+       "metin": "Evlatlarımı sana emanet ediyorum (isimlerini anın). Onları namaz kılan, Kur'an'ı seven, anne-babasına hürmet eden, insanlara faydalı salih kullarından eyle. Onları kötü arkadaştan, zararlı alışkanlıktan, dinlerini zayıflatacak her fitneden koru. Evlat bekleyenlere hayırlı evlat, evlenecek olanlara hayırlı eş nasip et."
+      },
+      {
+       "tur": "paragraf",
+       "metin": "Kardeşlerimi, akrabalarımı, dostlarımı, komşularımı sana emanet ediyorum. Aramızda küs olanları barıştır, kırgın gönülleri birleştir."
+      },
+      {
+       "tur": "paragraf",
+       "metin": "Yâ Rabbi! Bana \"Kâbe'de bana da dua et\" diyen herkesin muradlarını hayırla ver; ben unuttuysam sen unutma. Bize dünyada huzurlu bir yuva, ahirette Firdevs'te birlikte bir yer nasip eyle. Âmîn."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "no": 4,
+   "baslik": "Helal rızık, iş ve borç",
+   "niyet": "Helal ve bereketli kazanç, borcun edası ve kimseye muhtaç olmamak.",
+   "bolumler": [
+    {
+     "ad": "Senâ ve zikir",
+     "ogeler": [
+      {
+       "tur": "dua",
+       "ad": "Tevekkül",
+       "kaynak": "Âl-i İmrân, 173",
+       "kez": "7 kez",
+       "okunus": "Hasbünallâhu ve ni'me'l-vekîl.",
+       "anlam": "Allah bize yeter; O ne güzel vekildir. Hz. İbrahim ateşe atılırken bunu söylemişti (Buhârî)."
+      },
+      {
+       "tur": "dua",
+       "ad": "Esmâ ile yakarış",
+       "kaynak": "",
+       "kez": "",
+       "okunus": "Yâ Rezzâk, ey rızkı veren! Yâ Fettâh, ey kapalı kapıları açan! Yâ Ğanî, ey hiçbir şeye muhtaç olmayan! Yâ Muğnî, ey kullarını zengin kılan! Yâ Vehhâb, ey karşılıksız veren! Yâ Kerîm, ey ikramı bol olan! Sübhâneke yâ lâ ilâhe illâ ente, el-emân el-emân, hallisnâ mine'n-nâr.",
+       "anlam": ""
+      }
+     ]
+    },
+    {
+     "ad": "Kur'an'dan",
+     "ogeler": [
+      {
+       "tur": "dua",
+       "ad": "Hz. Musa'nın Medyen'deki duası",
+       "kaynak": "Kasas, 24",
+       "kez": "7 kez",
+       "okunus": "Rabbi innî li mâ enzelte ileyye min hayrin fakîr.",
+       "anlam": "Rabbim! Bana indireceğin her hayra muhtacım. Hz. Musa bunu gurbette, aç ve yorgun bir halde söyledi; Allah ona hem rızık hem yuva hem iş verdi."
+      },
+      {
+       "tur": "dua",
+       "ad": "Bereketli bir konak",
+       "kaynak": "Mü'minûn, 29",
+       "kez": "",
+       "okunus": "Rabbi enzilnî münzelen mübâraken ve ente hayru'l-münzilîn.",
+       "anlam": "Rabbim! Beni bereketli bir yere indir; sen konuk edenlerin en hayırlısısın."
+      },
+      {
+       "tur": "dua",
+       "ad": "Takva ve beklenmedik rızık",
+       "kaynak": "Talâk, 2–3",
+       "kez": "",
+       "okunus": "Ve men yetteki'llâhe yec'al lehû mahracâ, ve yerzukhû min haysü lâ yahtesib, ve men yetevekkel ala'llâhi fe hüve hasbüh, inna'llâhe bâliğu emrih, kad ceale'llâhu li külli şey'in kadrâ.",
+       "anlam": "Kim Allah'tan korkarsa, Allah ona bir çıkış yolu açar ve onu hiç ummadığı yerden rızıklandırır. Kim Allah'a dayanırsa O ona yeter. Allah emrini yerine getirendir; Allah her şey için bir ölçü koymuştur."
+      },
+      {
+       "tur": "dua",
+       "ad": "Ashab-ı Kehf'in duası",
+       "kaynak": "Kehf, 10",
+       "kez": "",
+       "okunus": "Rabbenâ âtinâ min ledünke rahmeten ve heyyi' lenâ min emrinâ raşedâ.",
+       "anlam": "Rabbimiz! Bize katından bir rahmet ver ve işimizde bize doğru yolu kolaylaştır."
+      },
+      {
+       "tur": "dua",
+       "ad": "Hz. Musa'nın işe başlarken duası",
+       "kaynak": "Tâhâ, 25–28",
+       "kez": "",
+       "okunus": "Rabbişrah lî sadrî, ve yessir lî emrî, vahlül ukdeten min lisânî, yefkahû kavlî.",
+       "anlam": "Rabbim! Göğsüme genişlik ver, işimi kolaylaştır, dilimdeki düğümü çöz ki sözümü anlasınlar."
+      },
+      {
+       "tur": "dua",
+       "ad": "Hz. İsa'nın sofra duasından",
+       "kaynak": "Mâide, 114",
+       "kez": "",
+       "okunus": "...verzuknâ ve ente hayru'r-râzıkîn.",
+       "anlam": "Bizi rızıklandır; sen rızık verenlerin en hayırlısısın."
+      }
+     ]
+    },
+    {
+     "ad": "Hadislerden",
+     "ogeler": [
+      {
+       "tur": "dua",
+       "ad": "Helal ile yetinmek",
+       "kaynak": "Tirmizî",
+       "kez": "7 kez",
+       "okunus": "Allâhümmekfinî bi-halâlike an harâmike ve ağninî bi-fadlike ammen sivâk.",
+       "anlam": "Allah'ım! Helalinle beni haramından koru; lütfunla beni senden başkasına muhtaç etme. Hz. Ali (r.a.), borcundan sıkılan birine bunu öğretmiş ve \"Dağ kadar borcun olsa Allah onu öder\" demiştir."
+      },
+      {
+       "tur": "dua",
+       "ad": "Kaygı ve borçtan sığınma",
+       "kaynak": "Buhârî",
+       "kez": "",
+       "okunus": "Allâhumme innî eûzü bike mine'l-hemmi ve'l-hazen, ve'l-aczi ve'l-kesel, ve'l-buhli ve'l-cübn, ve dala'i'd-deyni ve ğalebeti'r-ricâl.",
+       "anlam": "Allah'ım! Kaygıdan ve hüzünden, acizlikten ve tembellikten, cimrilikten ve korkaklıktan, borcun ağırlığından ve insanların baskısından sana sığınırım. Efendimiz (s.a.v.) bu duayı çok okurdu."
+      },
+      {
+       "tur": "dua",
+       "ad": "Dört ni'met",
+       "kaynak": "Müslim",
+       "kez": "",
+       "okunus": "Allâhumme innî es'elüke'l-hüdâ ve't-tükâ ve'l-afâfe ve'l-ğınâ.",
+       "anlam": "Allah'ım! Senden hidayet, takva, iffet ve gönül zenginliği dilerim."
+      },
+      {
+       "tur": "dua",
+       "ad": "Zor işler için",
+       "kaynak": "İbn Hibbân",
+       "kez": "",
+       "okunus": "Allâhumme lâ sehle illâ mâ cealtehû sehlâ, ve ente tec'alü'l-hazne izâ şi'te sehlâ.",
+       "anlam": "Allah'ım! Senin kolay kıldığından başka kolay yoktur. Sen dilersen zoru da kolay kılarsın."
+      }
+     ]
+    },
+    {
+     "ad": "Münâcât",
+     "ogeler": [
+      {
+       "tur": "hitap",
+       "metin": "Yâ Rezzâk! Ey rızkı veren, ey her canlının nafakasını üstlenen!"
+      },
+      {
+       "tur": "paragraf",
+       "metin": "Toprağın altındaki tohuma, denizin dibindeki balığa, yuvadaki kuşa rızkını sen veriyorsun. Bu çorak vadide Hacer'e zemzemi sen akıttın. İbrahim'in duasıyla bu vadiye dünyanın dört bir yanından meyveyi sen getirdin. Benim rızkım da senin elindedir."
+      },
+      {
+       "tur": "paragraf",
+       "metin": "Yâ Rabbi! Rızkımı helal, temiz ve bereketli eyle. Bana haram lokma yedirme; çünkü haramla beslenen bedenin duası kabul olunmaz. Kazancıma şüpheli olanı karıştırma. Azı da olsa helalini, çoğu da olsa haramından üstün kıl."
+      },
+      {
+       "tur": "paragraf",
+       "metin": "Yâ Fettâh! Kapalı kapıları açan sensin. İşimde, ticaretimde, yolumda kapalı ne kapı varsa aç. Hayırlı olanı kolaylaştır, hayırsız olanı benden uzaklaştır. Beni yanlış ortaktan, aldatan insandan, hileden ve haksız kazançtan koru."
+      },
+      {
+       "tur": "paragraf",
+       "metin": "Yâ Ğanî, yâ Muğnî! Beni kul kapısına muhtaç etme. Borcum varsa ödemeyi kolaylaştır; borçlu kullarının borçlarını eda ettir. İşsiz olana helal iş, darda kalana genişlik, fakire bolluk nasip eyle."
+      },
+      {
+       "tur": "paragraf",
+       "metin": "Yâ Rabbi! Verdiğin nimetin şükrünü ver; nimeti verip şükrü unutturma. Malı elime ver, kalbime koyma. Kazandığımı anne-babama, aileme, yetime, fakire ve senin yoluna harcamayı nasip et. Malın hesabını kolay eyle; o mal ahirette aleyhime değil, lehime şahitlik etsin. Âmîn."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "no": 5,
+   "baslik": "Hidayet, istikamet ve ilim",
+   "niyet": "İman üzere sabit kalmak, faydalı ilim, kabul olunmuş amel ve nefsin şerrinden korunmak.",
+   "bolumler": [
+    {
+     "ad": "Senâ ve zikir",
+     "ogeler": [
+      {
+       "tur": "dua",
+       "ad": "Kalbin sebatı",
+       "kaynak": "Tirmizî",
+       "kez": "7 kez",
+       "okunus": "Yâ Mukallibe'l-kulûb, sebbit kalbî alâ dînik.",
+       "anlam": "Ey kalpleri halden hale çeviren! Kalbimi dinin üzere sabit kıl. Hz. Ümmü Seleme, Efendimiz'in (s.a.v.) en çok bu duayı okuduğunu haber vermiştir."
+      },
+      {
+       "tur": "dua",
+       "ad": "Esmâ ile yakarış",
+       "kaynak": "",
+       "kez": "",
+       "okunus": "Yâ Hâdî, ey doğru yolu gösteren! Yâ Nûr, ey gökleri ve yeri aydınlatan! Yâ Alîm, ey her şeyi bilen! Yâ Hakîm, ey her işi yerli yerinde olan! Yâ Reşîd, ey kullarını doğruya ileten! Yâ Fettâh, ey kapalı kalpleri açan! Sübhâneke yâ lâ ilâhe illâ ente, el-emân el-emân, hallisnâ mine'n-nâr.",
+       "anlam": ""
+      }
+     ]
+    },
+    {
+     "ad": "Kur'an'dan",
+     "ogeler": [
+      {
+       "tur": "dua",
+       "ad": "Dosdoğru yol",
+       "kaynak": "Fâtiha, 6–7",
+       "kez": "3 kez",
+       "okunus": "İhdine's-sırâta'l-müstakîm, sırâta'llezîne en'amte aleyhim, ğayri'l-mağdûbi aleyhim ve le'd-dâllîn.",
+       "anlam": "Bizi dosdoğru yola ilet: Kendilerine nimet verdiklerinin yoluna; gazaba uğrayanların ve sapıtanların yoluna değil."
+      },
+      {
+       "tur": "dua",
+       "ad": "Kalplerin kaymaması",
+       "kaynak": "Âl-i İmrân, 8–9",
+       "kez": "",
+       "okunus": "Rabbenâ lâ tüziğ kulûbenâ ba'de iz hedeytenâ ve heb lenâ min ledünke rahmeh, inneke ente'l-Vehhâb. Rabbenâ inneke câmiu'n-nâsi li yevmin lâ raybe fîh, inna'llâhe lâ yuhlifu'l-mîâd.",
+       "anlam": "Rabbimiz! Bizi hidayete erdirdikten sonra kalplerimizi kaydırma; bize katından bir rahmet bağışla, şüphesiz sen çok bağışlayansın. Rabbimiz! Sen insanları, geleceğinde şüphe olmayan bir günde toplayacaksın; Allah sözünden dönmez."
+      },
+      {
+       "tur": "dua",
+       "ad": "İlim",
+       "kaynak": "Tâhâ, 114",
+       "kez": "7 kez",
+       "okunus": "Rabbi zidnî ilmâ.",
+       "anlam": "Rabbim! İlmimi artır. Allah'ın Peygamberine arttırmasını istemesini emrettiği tek şey ilimdir."
+      },
+      {
+       "tur": "dua",
+       "ad": "Şeytanın vesvesesinden",
+       "kaynak": "Mü'minûn, 97–98",
+       "kez": "",
+       "okunus": "Rabbi eûzü bike min hemezâti'ş-şeytânîn, ve eûzü bike Rabbi en yahdurûn.",
+       "anlam": "Rabbim! Şeytanların vesveselerinden sana sığınırım. Onların yanımda bulunmasından da sana sığınırım, Rabbim."
+      },
+      {
+       "tur": "dua",
+       "ad": "Doğruluk üzere giriş ve çıkış",
+       "kaynak": "İsrâ, 80",
+       "kez": "",
+       "okunus": "Rabbi edhilnî müdhale sıdkın ve ahricnî muhrace sıdkın vec'al lî min ledünke sultânen nasîrâ.",
+       "anlam": "Rabbim! Gideceğim yere doğrulukla girmemi, çıkacağım yerden doğrulukla çıkmamı sağla. Bana katından yardımcı bir güç ver. Efendimiz (s.a.v.) Mekke'den hicret ederken bu ayetle dua etmiştir."
+      },
+      {
+       "tur": "dua",
+       "ad": "Sabır ve sebat",
+       "kaynak": "Bakara, 250",
+       "kez": "",
+       "okunus": "Rabbenâ efriğ aleynâ sabran ve sebbit akdâmenâ vensurnâ ale'l-kavmi'l-kâfirîn.",
+       "anlam": "Rabbimiz! Üzerimize sabır yağdır, ayaklarımızı sabit kıl ve bize yardım et."
+      }
+     ]
+    },
+    {
+     "ad": "Hadislerden",
+     "ogeler": [
+      {
+       "tur": "dua",
+       "ad": "Nefsin takvası",
+       "kaynak": "Müslim",
+       "kez": "",
+       "okunus": "Allâhumme âti nefsî takvâhâ, ve zekkihâ ente hayru men zekkâhâ, ente veliyyühâ ve mevlâhâ.",
+       "anlam": "Allah'ım! Nefsime takvasını ver ve onu arındır; sen onu arındıranların en hayırlısısın. Onun sahibi ve mevlâsı sensin."
+      },
+      {
+       "tur": "dua",
+       "ad": "Faydalı ilim",
+       "kaynak": "Tirmizî, İbn Mâce",
+       "kez": "",
+       "okunus": "Allâhumme'nfa'nî bimâ allemtenî, ve allimnî mâ yenfa'unî, ve zidnî ilmâ.",
+       "anlam": "Allah'ım! Bana öğrettiğin şeylerle beni faydalandır, bana fayda verecek şeyleri öğret ve ilmimi artır."
+      },
+      {
+       "tur": "dua",
+       "ad": "İlim, rızık ve amel",
+       "kaynak": "İbn Mâce",
+       "kez": "",
+       "okunus": "Allâhumme innî es'elüke ilmen nâfian ve rızkan tayyiben ve amelen mütekabbelâ.",
+       "anlam": "Allah'ım! Senden faydalı ilim, temiz rızık ve kabul olunmuş amel dilerim. Efendimiz (s.a.v.) bunu sabah namazından sonra okurdu."
+      },
+      {
+       "tur": "dua",
+       "ad": "Dört şeyden sığınma",
+       "kaynak": "Müslim",
+       "kez": "",
+       "okunus": "Allâhumme innî eûzü bike min ilmin lâ yenfa', ve min kalbin lâ yahşa', ve min nefsin lâ teşba', ve min da'vetin lâ yüstecâbü lehâ.",
+       "anlam": "Allah'ım! Fayda vermeyen ilimden, ürpermeyen kalpten, doymayan nefisten ve kabul olunmayan duadan sana sığınırım."
+      },
+      {
+       "tur": "dua",
+       "ad": "Allah sevgisi",
+       "kaynak": "Tirmizî",
+       "kez": "",
+       "okunus": "Allâhumme innî es'elüke hubbek, ve hubbe men yuhibbük, ve'l-amele'llezî yübelliğunî hubbek.",
+       "anlam": "Allah'ım! Senden seni sevmeyi, seni seveni sevmeyi ve beni senin sevgine ulaştıracak ameli dilerim."
+      }
+     ]
+    },
+    {
+     "ad": "Münâcât",
+     "ogeler": [
+      {
+       "tur": "hitap",
+       "metin": "Yâ Hâdî! Ey hidayet veren!"
+      },
+      {
+       "tur": "paragraf",
+       "metin": "Beni karanlıklardan nura çıkardın. Nice insan bu davete ulaşmadan dünyadan geçti; sen beni Müslüman olarak yarattın, bu evin yolunu gösterdin. Bu nimetin şükrünü ödeyemem."
+      },
+      {
+       "tur": "paragraf",
+       "metin": "Yâ Mukallibe'l-kulûb! Kalpler senin kudretinin elindedir. Bugün imanla dolu olan kalbimi yarın kaydırma. Bu tavafın halini ömrüm boyunca bana unutturma. Dönüp dünyaya karıştığımda beni gaflete bırakma."
+      },
+      {
+       "tur": "paragraf",
+       "metin": "Yâ Rabbi! Beni dosdoğru yolda sabit kıl. Namazımı vaktinde ve huşu ile kıldır. Beni Kur'an'ı okuyan, anlayan ve onunla amel eden kullarından eyle. Dilimi zikrinle, gözümü ibretle, aklımı tefekkürle meşgul et. Kalbime senin sevgini, Habîbinin sevgisini ve seni sevenlerin sevgisini koy."
+      },
+      {
+       "tur": "paragraf",
+       "metin": "Yâ Alîm! Bana faydalı ilim ver; bildiğimle amel ettir, amel ettiğimde ihlas ver. Bilmediğimi biliyormuş gibi davranmaktan, ilmimi dünyaya alet etmekten beni koru. Çocuklarımı, talebelerimi ve ilim yolundaki herkesi muvaffak eyle."
+      },
+      {
+       "tur": "paragraf",
+       "metin": "Yâ Rabbi! Nefsimin şerrinden, şeytanın vesvesesinden, zamanın fitnelerinden ve ekranların gafletinden sana sığınırım. Beni dinimden uzaklaştıracak her arkadaştan, her yoldan, her ortamdan koru. Beni hidayet ettiklerinin yoluna, sevdiklerinin safına kat. Yolunu şaşırmış sevdiklerime de hidayet ver. Âmîn."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "no": 6,
+   "baslik": "Şifa, sıkıntı ve ümmet",
+   "niyet": "Kendinizin, ailenizin, hastaların, dertlilerin ve bütün ümmetin şifası ve ferahlığı.",
+   "bolumler": [
+    {
+     "ad": "Senâ ve zikir",
+     "ogeler": [
+      {
+       "tur": "dua",
+       "ad": "Sıkıntı anının duası",
+       "kaynak": "Buhârî, Müslim",
+       "kez": "3 kez",
+       "okunus": "Lâ ilâhe illallâhu'l-Azîmü'l-Halîm, lâ ilâhe illallâhu Rabbü'l-arşi'l-azîm, lâ ilâhe illallâhu Rabbü's-semâvâti ve Rabbü'l-ardı ve Rabbü'l-arşi'l-kerîm.",
+       "anlam": "Azîm ve Halîm olan Allah'tan başka ilah yoktur. Büyük Arş'ın Rabbi Allah'tan başka ilah yoktur. Göklerin Rabbi, yerin Rabbi ve yüce Arş'ın Rabbi Allah'tan başka ilah yoktur. Efendimiz (s.a.v.) sıkıntıya düştüğünde bunu okurdu."
+      },
+      {
+       "tur": "dua",
+       "ad": "Esmâ ile yakarış",
+       "kaynak": "",
+       "kez": "",
+       "okunus": "Yâ Şâfî, ey şifa veren! Yâ Kâfî, ey yeten! Yâ Muâfî, ey afiyet veren! Yâ Latîf, ey en ince derdi bilen! Yâ Mucîb, ey darda kalanın çağrısına karşılık veren! Yâ Ferîc, ey sıkıntıyı açan! Sübhâneke yâ lâ ilâhe illâ ente, el-emân el-emân, hallisnâ mine'n-nâr.",
+       "anlam": ""
+      }
+     ]
+    },
+    {
+     "ad": "Kur'an'dan",
+     "ogeler": [
+      {
+       "tur": "dua",
+       "ad": "Hz. Eyyûb'un duası",
+       "kaynak": "Enbiyâ, 83",
+       "kez": "7 kez",
+       "okunus": "Ennî messeniye'd-durru ve ente erhamü'r-râhimîn.",
+       "anlam": "Rabbim! Bu dert bana dokundu; sen merhametlilerin en merhametlisisin. Hz. Eyyûb yıllarca süren hastalığında bundan fazlasını istemedi; Allah ona şifasını ve ailesini iade etti."
+      },
+      {
+       "tur": "dua",
+       "ad": "Hz. İbrahim'in şifa sözü",
+       "kaynak": "Şuarâ, 80",
+       "kez": "",
+       "okunus": "Ve izâ meridtü fe hüve yeşfîn.",
+       "anlam": "Hastalandığımda bana şifa veren O'dur."
+      },
+      {
+       "tur": "dua",
+       "ad": "Kur'an şifadır",
+       "kaynak": "İsrâ, 82",
+       "kez": "",
+       "okunus": "Ve nünezzilü mine'l-Kur'âni mâ hüve şifâün ve rahmetün li'l-mü'minîn.",
+       "anlam": "Biz Kur'an'dan müminler için şifa ve rahmet olan şeyler indiriyoruz."
+      },
+      {
+       "tur": "dua",
+       "ad": "Kaldıramayacağımız yükler",
+       "kaynak": "Bakara, 286",
+       "kez": "",
+       "okunus": "Rabbenâ lâ tüâhiznâ in nesînâ ev ahta'nâ, Rabbenâ ve lâ tahmil aleynâ ısran kemâ hameltehû ale'llezîne min kablinâ, Rabbenâ ve lâ tühammilnâ mâ lâ tâkate lenâ bih.",
+       "anlam": "Rabbimiz! Unutur ya da yanılırsak bizi sorumlu tutma. Rabbimiz! Bizden öncekilere yüklediğin gibi bize ağır yük yükleme. Rabbimiz! Gücümüzün yetmediği şeyi bize taşıtma."
+      },
+      {
+       "tur": "dua",
+       "ad": "Hz. Yakub'un hüznü",
+       "kaynak": "Yûsuf, 86",
+       "kez": "",
+       "okunus": "İnnemâ eşkû bessî ve huznî ila'llâh.",
+       "anlam": "Ben derdimi ve hüznümü yalnız Allah'a açıyorum. Hz. Yakub, Yusuf'un hüznüyle gözlerini kaybettiğinde bunu söyledi; Allah ona hem Yusuf'u hem gözlerini iade etti."
+      },
+      {
+       "tur": "dua",
+       "ad": "Zorlukla birlikte kolaylık",
+       "kaynak": "İnşirâh, 5–6",
+       "kez": "3 kez",
+       "okunus": "Fe inne mea'l-usri yüsrâ, inne mea'l-usri yüsrâ.",
+       "anlam": "Muhakkak ki zorlukla beraber bir kolaylık vardır. Gerçekten zorlukla beraber bir kolaylık vardır."
+      }
+     ]
+    },
+    {
+     "ad": "Hadislerden",
+     "ogeler": [
+      {
+       "tur": "dua",
+       "ad": "Efendimiz'in şifa duası",
+       "kaynak": "Buhârî, Müslim",
+       "kez": "",
+       "okunus": "Allâhumme Rabbe'n-nâs, ezhibi'l-be's, işfi ente'ş-Şâfî, lâ şifâe illâ şifâük, şifâen lâ yüğâdiru sekamâ.",
+       "anlam": "Ey insanların Rabbi Allah'ım! Sıkıntıyı gider, şifa ver; şifa veren sensin. Senin şifandan başka şifa yoktur. Arkasında hiçbir hastalık bırakmayan bir şifa ver."
+      },
+      {
+       "tur": "dua",
+       "ad": "Hasta için",
+       "kaynak": "Ebû Dâvûd, Tirmizî",
+       "kez": "7 kez",
+       "okunus": "Es'elüllâhe'l-azîm, Rabbe'l-arşi'l-azîm, en yeşfiyeke.",
+       "anlam": "Büyük Arş'ın Rabbi yüce Allah'tan sana şifa vermesini dilerim. Efendimiz (s.a.v.), eceli gelmemiş bir hasta için bunu yedi kez okuyanın duasıyla Allah'ın ona şifa vereceğini bildirmiştir. Her okuyuşta hastanın adını anın."
+      },
+      {
+       "tur": "dua",
+       "ad": "Bedenin afiyeti",
+       "kaynak": "Ebû Dâvûd",
+       "kez": "3 kez",
+       "okunus": "Allâhumme âfinî fî bedenî, Allâhumme âfinî fî sem'î, Allâhumme âfinî fî basarî, lâ ilâhe illâ ente.",
+       "anlam": "Allah'ım! Bedenime afiyet ver. Allah'ım! Kulağıma afiyet ver. Allah'ım! Gözüme afiyet ver. Senden başka ilah yoktur."
+      },
+      {
+       "tur": "dua",
+       "ad": "Af ve afiyet",
+       "kaynak": "Ebû Dâvûd, İbn Mâce",
+       "kez": "",
+       "okunus": "Allâhumme innî es'elüke'l-afve ve'l-âfiyete fi'd-dünyâ ve'l-âhira.",
+       "anlam": "Allah'ım! Senden dünyada ve ahirette af ve afiyet dilerim."
+      },
+      {
+       "tur": "dua",
+       "ad": "Hüzün ve keder için",
+       "kaynak": "Ahmed b. Hanbel",
+       "kez": "",
+       "okunus": "Allâhumme innî abdüke ve'bnü abdike ve'bnü emetik, nâsıyetî bi yedik, mâdın fiyye hukmük, adlün fiyye kadâük, es'elüke bi külli'smin hüve lek, sammeyte bihî nefsek, ev enzeltehû fî kitâbik, ev allemtehû ehaden min halkık, ev'ste'serte bihî fî ilmi'l-ğaybi indek, en tec'ale'l-Kur'âne rebîa kalbî, ve nûra sadrî, ve celâe hüznî, ve zehâbe hemmî.",
+       "anlam": "Allah'ım! Ben senin kulunum, kulunun ve cariyenin oğluyum. Alınım senin elindedir; hakkımdaki hükmün geçerlidir, hakkımdaki kaderin adalettir. Kendine verdiğin, Kitabında indirdiğin, yarattıklarından birine öğrettiğin ya da gayb ilminde saklı tuttuğun her isminle senden istiyorum: Kur'an'ı kalbimin baharı, göğsümün nuru, hüznümün ilacı ve kederimin gidericisi kıl. Efendimiz (s.a.v.), bunu okuyanın hüznünü Allah'ın sevince çevireceğini müjdelemiştir."
+      },
+      {
+       "tur": "dua",
+       "ad": "Bir an bile nefsime bırakma",
+       "kaynak": "Hâkim",
+       "kez": "",
+       "okunus": "Yâ Hayyu yâ Kayyûm, bi rahmetike esteğîs, aslih lî şe'nî küllehû, ve lâ tekilnî ilâ nefsî tarfete ayn.",
+       "anlam": "Ey Hayy, ey Kayyûm! Rahmetinle yardım diliyorum. Bütün halimi düzelt, beni göz açıp kapayacak kadar bile nefsime bırakma. Efendimiz (s.a.v.) bunu kızı Hz. Fâtıma'ya öğretmiştir."
+      }
+     ]
+    },
+    {
+     "ad": "Münâcât",
+     "ogeler": [
+      {
+       "tur": "hitap",
+       "metin": "Yâ Şâfî! Yâ Kâfî! Ey şifayı veren, ey yeten!"
+      },
+      {
+       "tur": "paragraf",
+       "metin": "Eyyûb sana \"Dert bana dokundu\" dedi, derdini giderdin. Yunus balığın karnında seslendi, onu karanlıklardan çıkardın. Yakub hüznünü sana açtı, Yusuf'u ona kavuşturdun. Ben de derdimi sana açıyorum."
+      },
+      {
+       "tur": "paragraf",
+       "metin": "Yâ Rabbi! Bedenimde ne hastalık varsa şifa ver; kalbimde ne sıkıntı, zihnimde ne kaygı varsa onu gider. Şu kullarına şifa ver (hastalarınızı adıyla anın). Ameliyat bekleyenlere kolaylık, ilaç kullananlara deva, yatağa düşenlere ayağa kalkmak nasip et. Doktorların eline ve ilaçların içine senden şifa koy."
+      },
+      {
+       "tur": "paragraf",
+       "metin": "Yâ Rabbi! Borcu olanın borcunu eda ettir, davası olanın hakkını teslim et, yolda kalanı yerine ulaştır, gurbette olanı sevdiğine kavuştur, evlat hasreti çekenin kucağını doldur, kaybı olanın gönlüne sabır indir."
+      },
+      {
+       "tur": "paragraf",
+       "metin": "Yâ Rabbi! Zulüm altındaki mazlum Müslümanlara, yetimlere, dullara, açlara, savaş altında kalanlara yardım et. Gözyaşlarını sil, korkularını emniyete çevir."
+      },
+      {
+       "tur": "paragraf",
+       "metin": "Yâ Rabbi! Bizi kaldıramayacağımız imtihanlarla imtihan etme. Gelecek belaları önümüzden çevir; gelmiş olanlara sabır ve rıza ver. Bizi bilmediğimiz tehlikelerden, ani ölümden, kazadan, yangından, depremden ve haksız iftiradan muhafaza eyle. Dertlerimiz geçsin ama sana yönelişimiz geçmesin; derman verdiğinde de seni unutturma. Âmîn."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "no": 7,
+   "baslik": "Kabul, hüsn-i hâtime ve cennet",
+   "niyet": "Tavafın ve duaların kabulü, iman üzere güzel bir son ve sevdiklerinizle cennette buluşmak.",
+   "bolumler": [
+    {
+     "ad": "Senâ ve zikir",
+     "ogeler": [
+      {
+       "tur": "dua",
+       "ad": "Mizânda ağır iki kelime",
+       "kaynak": "Buhârî, Müslim",
+       "kez": "10 kez",
+       "okunus": "Sübhânallâhi ve bi hamdihî, sübhânallâhi'l-azîm.",
+       "anlam": "Allah'ı hamd ile tesbih ederim; yüce Allah'ı tesbih ederim. Efendimiz (s.a.v.): \"Dile hafif, mizânda ağır, Rahmân'a sevimli iki kelime\" buyurmuştur. Buhârî'nin son hadisidir."
+      },
+      {
+       "tur": "dua",
+       "ad": "Esmâ ile yakarış",
+       "kaynak": "",
+       "kez": "",
+       "okunus": "Yâ Mucîb, ey dualara icabet eden! Yâ Kerîm, ey kapısından kimseyi eli boş çevirmeyen! Yâ Bâkî, ey her şey fani iken baki kalan! Yâ Vâris, ey her şeyin son sahibi! Yâ Rahmân, yâ Rahîm! Sübhâneke yâ lâ ilâhe illâ ente, el-emân el-emân, hallisnâ mine'n-nâr.",
+       "anlam": ""
+      }
+     ]
+    },
+    {
+     "ad": "Kur'an'dan",
+     "ogeler": [
+      {
+       "tur": "dua",
+       "ad": "Hz. İbrahim'in Mekke'deki duası",
+       "kaynak": "İbrâhîm, 40",
+       "kez": "",
+       "okunus": "Rabbic'alnî mukîme's-salâti ve min zürriyyetî, Rabbenâ ve tekabbel duâ.",
+       "anlam": "Rabbim! Beni ve neslimi namazı dosdoğru kılanlardan eyle. Rabbimiz! Duamı kabul buyur."
+      },
+      {
+       "tur": "dua",
+       "ad": "Hz. Yusuf'un son duası",
+       "kaynak": "Yûsuf, 101",
+       "kez": "",
+       "okunus": "Fâtıra's-semâvâti ve'l-ard, ente veliyyî fi'd-dünyâ ve'l-âhira, teveffenî müslimen ve elhıknî bi's-sâlihîn.",
+       "anlam": "Ey gökleri ve yeri yaratan! Dünyada ve ahirette benim velim sensin. Beni Müslüman olarak öldür ve salihlerin arasına kat."
+      },
+      {
+       "tur": "dua",
+       "ad": "İyilerle birlikte",
+       "kaynak": "Âl-i İmrân, 193–194",
+       "kez": "",
+       "okunus": "Rabbenâ fağfir lenâ zünûbenâ ve keffir annâ seyyiâtinâ ve teveffenâ mea'l-ebrâr. Rabbenâ ve âtinâ mâ vaadtenâ alâ rusulike ve lâ tuhzinâ yevme'l-kıyâmeh, inneke lâ tuhlifu'l-mîâd.",
+       "anlam": "Rabbimiz! Günahlarımızı bağışla, kötülüklerimizi ört ve canımızı iyilerle birlikte al. Rabbimiz! Peygamberlerin aracılığıyla bize vaat ettiklerini ver ve kıyamet günü bizi mahcup etme; şüphesiz sen sözünden dönmezsin."
+      },
+      {
+       "tur": "dua",
+       "ad": "Nurun tamamlanması",
+       "kaynak": "Tahrîm, 8",
+       "kez": "",
+       "okunus": "Rabbenâ etmim lenâ nûranâ vağfir lenâ, inneke alâ külli şey'in kadîr.",
+       "anlam": "Rabbimiz! Nurumuzu tamamla ve bizi bağışla; şüphesiz sen her şeye gücü yetensin. Müminler bu duayı Sırat'ın üzerinde okuyacaktır."
+      },
+      {
+       "tur": "dua",
+       "ad": "Hz. İbrahim'in cennet duası",
+       "kaynak": "Şuarâ, 83–85, 87",
+       "kez": "",
+       "okunus": "Rabbi heb lî hukmen ve elhıknî bi's-sâlihîn, vec'al lî lisâne sıdkın fi'l-âhirîn, vec'alnî min veraseti cenneti'n-naîm... ve lâ tuhzinî yevme yub'asûn.",
+       "anlam": "Rabbim! Bana hikmet ver ve beni salihlerin arasına kat. Sonra gelecekler arasında beni hayırla andır. Beni Naim cennetinin mirasçılarından eyle... Diriltilecekleri gün beni mahcup etme."
+      },
+      {
+       "tur": "dua",
+       "ad": "Kabul",
+       "kaynak": "Bakara, 127",
+       "kez": "3 kez",
+       "okunus": "Rabbenâ tekabbel minnâ inneke ente's-semî'u'l-alîm.",
+       "anlam": "Rabbimiz! Bizden kabul buyur; şüphesiz sen işitensin, bilensin. Tavafın ilk şavtında başladığımız İbrahim duasıyla tavafı kapatıyoruz."
+      }
+     ]
+    },
+    {
+     "ad": "Hadislerden",
+     "ogeler": [
+      {
+       "tur": "dua",
+       "ad": "Din, dünya ve ahiret",
+       "kaynak": "Müslim",
+       "kez": "",
+       "okunus": "Allâhumme aslih lî dîniye'llezî hüve ismetü emrî, ve aslih lî dünyâye'lletî fîhâ meâşî, ve aslih lî âhıratiye'lletî fîhâ meâdî, vec'ali'l-hayâte ziyâdeten lî fî külli hayr, vec'ali'l-mevte râhaten lî min külli şer.",
+       "anlam": "Allah'ım! İşlerimin korunması olan dinimi düzelt. Geçimimin olduğu dünyamı düzelt. Dönüşümün olacağı ahiretimi düzelt. Hayatı benim için her hayırda artış, ölümü her kötülükten kurtuluş kıl."
+      },
+      {
+       "tur": "dua",
+       "ad": "Kabir ve fitneler",
+       "kaynak": "Müslim",
+       "kez": "",
+       "okunus": "Allâhumme innî eûzü bike min azâbi'l-kabr, ve min azâbi cehennem, ve min fitneti'l-mahyâ ve'l-memât, ve min şerri fitneti'l-mesîhi'd-deccâl.",
+       "anlam": "Allah'ım! Kabir azabından, cehennem azabından, hayatın ve ölümün fitnesinden ve Deccal'in fitnesinin şerrinden sana sığınırım."
+      },
+      {
+       "tur": "dua",
+       "ad": "Kolay hesap",
+       "kaynak": "Ahmed b. Hanbel",
+       "kez": "3 kez",
+       "okunus": "Allâhumme hâsibnî hisâben yesîrâ.",
+       "anlam": "Allah'ım! Beni kolay bir hesapla hesaba çek."
+      },
+      {
+       "tur": "dua",
+       "ad": "Cennet ve Firdevs",
+       "kaynak": "Ebû Dâvûd; Buhârî",
+       "kez": "7 kez",
+       "okunus": "Allâhumme innî es'elüke'l-cennete ve eûzü bike mine'n-nâr. Allâhumme innî es'elüke'l-Firdevse'l-a'lâ.",
+       "anlam": "Allah'ım! Senden cenneti isterim, ateşten sana sığınırım. Allah'ım! Senden Firdevs'in en yücesini isterim. Efendimiz (s.a.v.): \"Allah'tan istediğinizde Firdevs'i isteyin; o cennetin ortası ve en yücesidir\" buyurmuştur (Buhârî)."
+      }
+     ]
+    },
+    {
+     "ad": "Münâcât",
+     "ogeler": [
+      {
+       "tur": "hitap",
+       "metin": "Yâ Mucîbe'd-de'avât! Ey duaları kabul eden!"
+      },
+      {
+       "tur": "paragraf",
+       "metin": "Yedi şavt boyunca kapını çaldım. Sana hamd ettim, günahlarımı itiraf ettim; ailemi, rızkımı, imanımı ve derdimi sana açtım. Şimdi bu son şavtta senden en büyük şeyi istiyorum: kabul."
+      },
+      {
+       "tur": "paragraf",
+       "metin": "Yâ Rabbi! Bu tavafımı, umremi, yolculuğumu, harcadığım malı ve attığım her adımı kabul eyle. İçine karışan riyayı, gafleti ve eksikliği bağışla. Benim eksiğime göre değil, senin keremine yakışır şekilde kabul et. İbrahim ile İsmail bu evin temellerini yükseltirken \"Rabbimiz, bizden kabul et\" dediler; ben de onların duasıyla diyorum: bizden kabul et."
+      },
+      {
+       "tur": "paragraf",
+       "metin": "Yâ Rabbi! Ömrümün en hayırlısını sonu, amelimin en hayırlısını sonuncusu, günlerimin en hayırlısını sana kavuşacağım gün eyle. Son nefesimde dilime kelime-i tevhidi nasip et. Kabrimi genişlet ve nurlandır; sorulara doğru cevap vermeyi nasip et."
+      },
+      {
+       "tur": "paragraf",
+       "metin": "Yâ Rabbi! Mahşerde beni Arşın'ın gölgesinde gölgelendir. Hesabımı kolay yap, kitabımı sağımdan ver. Sırat'ı şimşek gibi geçir. Habîbinin Kevser havuzundan içir, onun şefaatine nail eyle. Beni ve sevdiklerimi Firdevs'te buluştur; Cemal'ini görmekle müşerref eyle."
+      },
+      {
+       "tur": "paragraf",
+       "metin": "Yâ Rabbi! Bu evi bana son ziyaretim kılma. Beni, ailemi ve bu kapıya gelmeyi isteyen her mümini tekrar tekrar bu kapıya çağır. Gitmek isteyip de gidemeyenlerin yolunu aç. Bu kapıdan bizi eli boş çevirme."
+      },
+      {
+       "tur": "paragraf",
+       "metin": "Ve sallallâhu alâ Seyyidinâ Muhammedin ve alâ âlihî ve sahbihî ve sellem. Velhamdü lillâhi Rabbi'l-âlemîn. Âmîn."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -1,46 +1,33 @@
-import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
-import bcrypt from 'bcryptjs';
-import { createSessionCookie } from '@/lib/jwt';
-import { cookies } from 'next/headers';
+// Üye girişi (13 Ekim: IP başına deneme sınırı, büyük/küçük harf duyarsız e-posta, 7 günlük oturum).
+import { NextResponse } from "next/server";
+import bcrypt from "bcryptjs";
+import { cookies } from "next/headers";
+import { prisma } from "@/lib/prisma";
+import { createSessionCookie } from "@/lib/jwt";
+import { sessionCookie } from "@/lib/members";
+import { rateLimit, getClientIp } from "@/lib/rate-limit";
 
 export async function POST(request: Request) {
+  if (!rateLimit(getClientIp(request), "member-login", 10, 10 * 60 * 1000).allowed) {
+    return NextResponse.json({ error: "Çok fazla deneme yapıldı; birkaç dakika sonra tekrar deneyin." }, { status: 429 });
+  }
   try {
-    const { email, password } = await request.json();
+    const b = await request.json().catch(() => ({}));
+    const email = String(b.email ?? "").trim();
+    const password = String(b.password ?? "");
+    if (!email || !password) return NextResponse.json({ error: "E-posta ve şifrenizi yazın." }, { status: 400 });
 
-    if (!email || !password) {
-      return NextResponse.json({ error: 'Lütfen tüm alanları doldurun.' }, { status: 400 });
+    const user =
+      (await prisma.user.findUnique({ where: { email: email.toLowerCase() } })) ??
+      (await prisma.user.findFirst({ where: { email: { equals: email, mode: "insensitive" } } }));
+    if (!user || !(await bcrypt.compare(password, user.password))) {
+      return NextResponse.json({ error: "E-posta ya da şifre hatalı." }, { status: 401 });
     }
-
-    // Find user
-    const user = await prisma.user.findUnique({ where: { email } });
-    if (!user) {
-      return NextResponse.json({ error: 'E-posta veya şifre hatalı.' }, { status: 401 });
-    }
-
-    // Verify password
-    const isPasswordValid = await bcrypt.compare(password, user.password);
-    if (!isPasswordValid) {
-      return NextResponse.json({ error: 'E-posta veya şifre hatalı.' }, { status: 401 });
-    }
-
-    // Generate JWT token
     const token = await createSessionCookie({ id: user.id, email: user.email, name: user.name });
-
-    // Set cookie
-    const cookieStore = await cookies();
-    cookieStore.set({
-      name: 'b2c_session',
-      value: token,
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      maxAge: 60 * 60 * 24 * 7, // 7 days
-      path: '/',
-    });
-
-    return NextResponse.json({ success: true, message: 'Giriş başarılı.' });
+    (await cookies()).set(sessionCookie(token));
+    return NextResponse.json({ success: true });
   } catch (error) {
-    console.error('Login Error:', error);
-    return NextResponse.json({ error: 'Giriş sırasında bir hata oluştu.' }, { status: 500 });
+    console.error("[uye-giris]", error);
+    return NextResponse.json({ error: "Giriş sırasında bir hata oluştu; lütfen tekrar deneyin." }, { status: 500 });
   }
 }

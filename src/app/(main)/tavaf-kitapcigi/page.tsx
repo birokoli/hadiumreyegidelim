@@ -268,6 +268,26 @@ export default async function TavafKitapcigiPage() {
         </div>
       </section>
 
+      {/* Üyelere özel şavt modu (13 Ekim) */}
+      <section className="bg-white pb-4 pt-2 md:pb-6">
+        <div className="mx-auto max-w-5xl px-5 md:px-8">
+          <div className="relative overflow-hidden rounded-[28px] bg-[var(--h-white)] p-6 ring-1 ring-[var(--h-sky)]/60 md:flex md:items-center md:gap-8 md:p-8">
+            <span aria-hidden className="hat pointer-events-none absolute -bottom-10 -right-2 select-none text-[7rem] leading-none text-[var(--h-blue)]/[0.05]">لبيك</span>
+            <div className="relative flex-1">
+              <p className="text-[11px] font-bold uppercase tracking-[0.24em] text-[var(--h-blue)]/70">Üyelere özel · Şavt modu</p>
+              <h2 className="mt-2 text-2xl font-bold text-[var(--h-blue)] md:text-3xl"><Accent text="Tavafta *şavt şavt* okuyun" /></h2>
+              <p className="mt-2 max-w-xl text-sm leading-relaxed text-on-surface-variant">Ücretsiz üye olun; tavaf kitapçığı telefonunuzda her şavt bir ekran, büyük yazıyla açılsın. Kaldığınız yeri hatırlar, okurken ekran kararmaz.</p>
+            </div>
+            <div className="relative mt-5 flex flex-wrap gap-2 md:mt-0 md:shrink-0">
+              <Link href="/profil/uye-ol?next=%2Fprofil%2Foku%2Ftavaf" className="inline-flex items-center gap-2 rounded-2xl bg-[var(--h-blue)] px-5 py-3 text-sm font-bold text-white transition hover:bg-[var(--h-blue-deep)]">
+                <HugIcon name="rehber" size={18} className="text-[var(--h-sand)]" /> Ücretsiz üye ol
+              </Link>
+              <Link href="/profil/giris?next=%2Fprofil%2Foku%2Ftavaf" className="inline-flex items-center rounded-2xl border border-[var(--h-sky)] bg-white px-5 py-3 text-sm font-bold text-[var(--h-blue)] transition hover:border-[var(--h-blue)]">Giriş yap</Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* İndir */}
       <section id="indir" className="bg-deep on-dark scroll-mt-24 py-20 text-white md:py-24">
         <div className="mx-auto grid max-w-5xl items-center gap-10 px-5 md:grid-cols-[0.8fr_1.2fr] md:px-8">
@@ -279,7 +299,7 @@ export default async function TavafKitapcigiPage() {
             </h2>
             <p className="mt-4 text-white/85">Telefonunuza kaydedin ya da yazdırıp yanınıza alın. PDF, 19 sayfa: yedi şavtın duaları, her şavtın başında ve sonunda okunanlar, tavaftan sonra yapılacaklar ve kaynaklar.</p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <LeadGateDownload source="tavaf-kitapcigi" title="Tavaf El Kitabı" cover="/indir/tavaf-el-kitabi-kapak.png" hat="طواف" fileUrl={PDF} fileName="Tavaf-El-Kitabi-2026.pdf" doneNote="Tavafta bizleri de dualarınızdan eksik etmeyin." className="inline-flex items-center gap-2 rounded-xl bg-[var(--h-sand)] px-7 py-4 text-base font-bold text-[var(--h-blue-deep)] transition hover:brightness-95">
+              <LeadGateDownload source="tavaf-kitapcigi" memberSlug="tavaf" title="Tavaf El Kitabı" cover="/indir/tavaf-el-kitabi-kapak.png" hat="طواف" fileUrl={PDF} fileName="Tavaf-El-Kitabi-2026.pdf" doneNote="Tavafta bizleri de dualarınızdan eksik etmeyin." className="inline-flex items-center gap-2 rounded-xl bg-[var(--h-sand)] px-7 py-4 text-base font-bold text-[var(--h-blue-deep)] transition hover:brightness-95">
                 <HugIcon name="dua" size={20} /> PDF&apos;i indir
               </LeadGateDownload>
               <a href={shareHref} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-xl border border-white/30 px-6 py-4 text-sm font-semibold text-white transition hover:bg-white/10">

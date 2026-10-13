@@ -61,7 +61,7 @@ export type Lead = {
   createdAt: Date;
 };
 
-export const LEAD_SOURCES: Record<string, string> = { "tavaf-kitapcigi": "Tavaf El Kitabı", "say-kitapcigi": "Sa'y El Kitabı" };
+export const LEAD_SOURCES: Record<string, string> = { "tavaf-kitapcigi": "Tavaf El Kitabı", "say-kitapcigi": "Sa'y El Kitabı", uyelik: "Üyelik" };
 /** Kaynağın verdiği dosya ve e-postadaki görseller (kapak, ikon, kapanış duası). */
 export const LEAD_FILES: Record<string, { url: string; page: string; cover: string; icon: string; dua: string }> = {
   "tavaf-kitapcigi": { url: "/indir/tavaf-el-kitabi-2026.pdf", page: "/tavaf-kitapcigi", cover: "/indir/tavaf-el-kitabi-kapak.png", icon: "tavaf", dua: "Tavafta bizleri de dualarınızdan eksik etmeyin." },

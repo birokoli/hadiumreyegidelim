@@ -26,8 +26,7 @@ export const HUBS: Record<HubKey, TabItem[]> = {
     { label: "Müşteri havuzu", href: "/admin/musteri-havuzu" },
     { label: "Siparişler", href: "/admin/orders" },
     { label: "CRM", href: "/admin/crm" },
-    { label: "Fiyat teklifleri", href: "/admin/fiyat-teklifleri", exact: true },
-    { label: "Umre dosyaları", href: "/admin/umre-dosyalari" },
+    { label: "Satış masası", href: "/admin/satis" },
   ],
   urun: [
     { label: "Paketler", href: "/admin/packages" },

@@ -44,10 +44,9 @@ const FILES = {
     "src/components/admin/ai-vis/AiVisProvider.tsx  (istemci tarafı çalıştırma sırası)",
   ],
   fiyat: [
-    "src/app/(admin)/admin/fiyat-teklifleri/*  (sayfalar: teklif listesi, yeni teklif, teklif detayı, hizmet kütüphanesi, Excel Fiyat Motoru)",
-    "src/components/admin/ExcelPricingCalculator.tsx  (Excel Fiyat Motoru; dokunmadan önce kullanıcıya sor)",
-    "src/app/(admin)/admin/fiyat-teklifleri/QuotationForm.tsx  (teklif formu)",
-    "src/app/api/admin/quotations/*  (teklif CRUD, PDF)",
+    "src/app/(admin)/admin/fiyat-teklifleri/hizmetler/*  (hizmet kütüphanesi ve aylık fiyatlar)",
+    "src/app/(admin)/admin/satis/*  (satış masası: dosya, teklif, ödeme, voucher; 14 Ekim'de eski teklif sistemi ve Excel Fiyat Motoru kaldırıldı)",
+    "src/lib/satis/*  (satış dosyası verisi, hesaplar, WhatsApp mesajları)",
     "src/app/api/admin/service-library/*  (hizmet kütüphanesi)",
   ],
 };

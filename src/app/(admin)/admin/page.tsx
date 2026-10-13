@@ -188,7 +188,7 @@ export default async function AdminDashboardPage() {
         {[
           { href: "/admin/musteri-havuzu", icon: "contacts", label: "Müşteri Havuzu", desc: pool.fresh > 0 ? `${pool.fresh} yeni kayıt` : `${pool.total} kayıt` },
           { href: "/admin/crm", icon: "view_kanban", label: "CRM Komuta", desc: "Tüm talepleri yönet" },
-          { href: "/admin/fiyat-teklifleri/hesaplayici", icon: "calculate", label: "Fiyat Motoru", desc: "Excel otomasyonu" },
+          { href: "/admin/satis", icon: "travel_explore", label: "Satış Masası", desc: "Teklif, onay, voucher" },
           { href: "/admin/content", icon: "edit_document", label: "Yeni Blog", desc: "İçerik yazarı" },
           { href: "/admin/ai-logs", icon: "memory", label: "AI İzleme", desc: "Bot hareketleri" },
         ].map(item => (

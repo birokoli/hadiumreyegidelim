@@ -107,7 +107,7 @@ export default function AdminNavbar() {
                 {[
                   { href: "/admin/packages", icon: "inventory_2", label: "Yeni Paket Ekle" },
                   { href: "/admin/content", icon: "edit_document", label: "Yeni Blog Yazısı" },
-                  { href: "/admin/fiyat-teklifleri/hesaplayici", icon: "request_quote", label: "Fiyat Teklifi Al" },
+                  { href: "/admin/satis", icon: "request_quote", label: "Satış Masası" },
                   { href: "/admin/media", icon: "add_photo_alternate", label: "Medya Yükle" },
                 ].map((item) => (
                   <Link

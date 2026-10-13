@@ -1,7 +1,7 @@
 // Umre dosyası parçaları (13 Ekim): aşama çizelgesi, plan kartı, gün sayacı. Sunucu bileşeni olarak da kullanılabilir.
 import type { ReactNode } from "react";
 import HugIcon, { type HugIconName } from "@/components/icons/HugIcon";
-import { ASAMALAR, asamaIndex, trTarih } from "@/lib/umre";
+import { ASAMALAR, asamaIndex, trTarih } from "@/lib/satis/ortak";
 
 export function AsamaCubugu({ status, etiketli = false }: { status: string; etiketli?: boolean }) {
   const i = asamaIndex(status);
@@ -73,4 +73,4 @@ export function GunSayaci({ gun, koyu = false }: { gun: number | null; koyu?: bo
   );
 }
 
-export const usd = (n?: number) => (typeof n === "number" ? `${n.toLocaleString("tr-TR")} $` : "—");
+

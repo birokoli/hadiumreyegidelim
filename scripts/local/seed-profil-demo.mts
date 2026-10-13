@@ -1,9 +1,9 @@
-// YALNIZCA YEREL TEST: test üyesine (scripts/local/.test-uye.json) örnek teklifler ve umre dosyaları kurar; e-postasını
-// doğrulanmış sayar. Canlıda çalışmaz. Kullanım: DATABASE_URL=...127.0.0.1:5432... npx tsx scripts/local/seed-profil-demo.mts
+// YALNIZCA YEREL TEST: satış masasına örnek dosyalar kurar; biri test üyesine (scripts/local/.test-uye.json) bağlı.
+// Canlıda çalışmaz. Kullanım: DATABASE_URL=...127.0.0.1:5432... npx tsx scripts/local/seed-profil-demo.mts
 import { readFileSync } from "node:fs";
 import { prisma } from "@/lib/prisma";
 import { markEmailVerified } from "@/lib/members";
-import { addBelge, listBelgeler, openDosya, saveDosya, saveProfilKampanyalari } from "@/lib/umre";
+import { addBelge, createDosya, ensureSatisSchema, saveDosya, saveProfilKampanyalari, type Kalem } from "@/lib/satis";
 import { directoryHotels } from "@/lib/catalog/hotel-directory";
 
 if (!/@(127\.0\.0\.1|localhost):5432\//.test(process.env.DATABASE_URL ?? "")) throw new Error("Güvenlik: yalnızca yerel veritabanı.");
@@ -11,61 +11,57 @@ const cred = JSON.parse(readFileSync(new URL("./.test-uye.json", import.meta.url
 const uye = await prisma.user.findFirst({ where: { email: cred.email } });
 if (!uye) throw new Error("Önce test üyesini oluşturun (profil/uye-ol).");
 await markEmailVerified(uye.id);
-await prisma.user.update({ where: { id: uye.id }, data: { phone: uye.phone ?? "+905321112233" } });
+await ensureSatisSchema();
+await prisma.$executeRawUnsafe(`DELETE FROM "UmreBelge"`);
+await prisma.$executeRawUnsafe(`DELETE FROM "SatisDosyasi"`);
 
-const items = (toplam: number) => [
-  { category: "vize", name: "Umre vizesi", saleTotalUsd: Math.round(toplam * 0.12), sortOrder: 0 },
-  { category: "hotel", name: "Mekke oteli · 6 gece", saleTotalUsd: Math.round(toplam * 0.5), sortOrder: 1 },
-  { category: "hotel", name: "Medine oteli · 4 gece", saleTotalUsd: Math.round(toplam * 0.28), sortOrder: 2 },
-  { category: "transfer", name: "Karşılama ve transferler", saleTotalUsd: Math.round(toplam * 0.1), sortOrder: 3 },
-];
-async function teklif(no: string, status: string, travelDate: string, adults: number, toplam: number) {
-  await prisma.quotation.deleteMany({ where: { quotationNo: no } });
-  return prisma.quotation.create({
-    data: { quotationNo: no, customerName: uye!.name, customerEmail: uye!.email, customerPhone: "+905321112233", adultsCount: adults, travelDate, startDate: travelDate, validUntil: "3 iş günü", status, items: { create: items(toplam) } },
-  });
-}
-
-await prisma.$executeRawUnsafe(`DELETE FROM "UmreBelge"`).catch(() => {});
-await prisma.$executeRawUnsafe(`DELETE FROM "UmreDosyasi"`).catch(() => {});
-const q1 = await teklif("TKF-2026-0142", "accepted", "14-24 Kasım 2026", 2, 4000);
-await teklif("TKF-2026-0187", "sent", "8-18 Mart 2027 (Ramazan)", 4, 9800);
-await teklif("TKF-2026-0098", "expired", "Eylül 2026", 2, 3600);
-const q0 = await teklif("TKF-2026-0031", "accepted", "10-20 Nisan 2026", 2, 3700);
-
-const oteller = await directoryHotels({ all: true });
-const mekke = oteller.find((h) => h.city === "mekke" && (h.kaabaMeters ?? 9999) < 900) ?? oteller.find((h) => h.city === "mekke");
+const rehber = await directoryHotels({ all: true });
+const mekke = rehber.find((h) => h.city === "mekke" && (h.kaabaMeters ?? 9999) < 900) ?? rehber.find((h) => h.city === "mekke");
 const medineSvc = await prisma.service.findFirst({ where: { type: "HOTEL", extraData: { contains: "Medine" } } });
-const medine = oteller.find((h) => h.city === "medine") ?? (medineSvc ? { slug: `svc:${medineSvc.id}`, name: medineSvc.name } : undefined);
+const id = () => Math.random().toString(36).slice(2, 10);
+const kalemler = (g: string, ara: string, d: string, kisi: number, gecelik: [number, number]): Kalem[] => [
+  { id: id(), tur: "otel_mekke", ad: mekke?.name ?? "Mekke oteli", adet: 1, birim: gecelik[0], alis: Math.round(gecelik[0] * 0.82), otel: { slug: mekke?.slug, ad: mekke?.name ?? "Mekke oteli", giris: g, cikis: ara, oda: "2 kişilik oda" } },
+  { id: id(), tur: "otel_medine", ad: medineSvc?.name ?? "Medine oteli", adet: 1, birim: gecelik[1], alis: Math.round(gecelik[1] * 0.82), otel: { slug: medineSvc ? `svc:${medineSvc.id}` : undefined, ad: medineSvc?.name ?? "Medine oteli", giris: ara, cikis: d, oda: "2 kişilik oda" } },
+  { id: id(), tur: "vize", ad: "Umre vizesi", aciklama: "Sigorta dahil", adet: kisi, birim: 180, alis: 150 },
+  { id: id(), tur: "transfer", ad: "Karşılama ve transferler", aciklama: "Havalimanı – otel – istasyon, özel araç", adet: 1, birim: 260, alis: 190 },
+  { id: id(), tur: "tren", ad: "Haremeyn hızlı treni", aciklama: "Mekke → Medine, ekonomi", adet: kisi, birim: 75, alis: 60 },
+  { id: id(), tur: "rehber", ad: "Hoca rehberliği", aciklama: "Umre ibadeti ve ziyaretlerde Türkçe hoca", adet: 1, birim: 300, alis: 200 },
+];
 
-const d1 = await openDosya(q1.id);
+// 1) Onaylanmış, vizesi çıkmış dosya: test üyesine bağlı
+const d1 = await createDosya({ musteriAdi: uye.name, phone: "+905321112233", email: uye.email, yetiskin: 2, gidis: "2026-11-14", donus: "2026-11-24", talepNotu: "Harem'e yakın otel, önce Mekke", kim: "Yerel test" });
 await saveDosya(d1.id, {
   status: "vize_cikti",
   userId: uye.id,
   data: {
-    gidis: "2026-11-14", donus: "2026-11-24", onceSehir: "mekke", yetiskin: 2, cocuk: 0,
-    mekke: { slug: mekke?.slug, ad: mekke?.name ?? "Mekke oteli", giris: "2026-11-14", cikis: "2026-11-20", onayNo: "88412", oda: "2 kişilik oda" },
-    medine: { slug: medine?.slug, ad: medine?.name ?? "Medine oteli", giris: "2026-11-20", cikis: "2026-11-24", onayNo: "51907", oda: "2 kişilik oda" },
-    karsilamaYeri: "Cidde Havalimanı · Terminal 1", karsilayanAd: "Mustafa Bey",
-    tren: "20 Kasım · 10:30 · Mekke → Medine · ekonomi, 2 bilet", donusTransfer: "Otelden Medine Havalimanı'na özel araç",
-    toplamUsd: 4000, odenenUsd: 2400, sonOdeme: "2026-11-07",
-    not: "İhram için Mikat'tan önce niyet edin; havalimanında Mustafa Bey çıkışta isminizin yazılı olduğu kartla bekleyecek.",
-    asamaTarihleri: { teklif: "2026-10-02", onaylandi: "2026-10-04", odeme: "2026-10-06", vize_basvuru: "2026-10-08", vize_cikti: "2026-10-11" },
+    onceSehir: "mekke",
+    kalemler: kalemler("2026-11-14", "2026-11-20", "2026-11-24", 2, [310, 260]),
+    gecerlilik: "2026-10-20",
+    teklifGonderildi: "2026-10-03T10:00:00.000Z",
+    karsilamaYeri: "Cidde Havalimanı · Terminal 1", karsilayanAd: "Mustafa Bey", rehberAd: "Ahmet Hoca",
+    tren: "20 Kasım · 10:30 · Mekke → Medine", donusTransfer: "Otelden Medine Havalimanı'na özel araç",
+    odemePlani: "bolunmus",
+    odemeler: [{ id: id(), tarih: "2026-10-06", tutar: 3200, yontem: "havale", yer: "onden", aciklama: "Otel, vize, hoca yarısı" }],
+    musteriyeNot: "İhram için Mikat'tan önce niyet edin; havalimanında Mustafa Bey çıkışta isminizin yazılı olduğu kartla bekleyecek.",
+    asamaTarihleri: { talep: "2026-10-02", teklif: "2026-10-03", onaylandi: "2026-10-04", odeme: "2026-10-06", vize_basvuru: "2026-10-08", vize_cikti: "2026-10-11" },
   },
-});
-if ((await listBelgeler(d1.id)).length === 0) {
-  const pdf = readFileSync(new URL("../../public/indir/tavaf-el-kitabi-2026.pdf", import.meta.url)).toString("base64");
-  await addBelge(d1.id, { ad: "ornek-vize-belgesi.pdf", tur: "vize", mime: "application/pdf", base64: pdf });
-  await addBelge(d1.id, { ad: "ornek-otel-mekke.pdf", tur: "otel", mime: "application/pdf", base64: pdf });
-}
+}, "Yerel test");
+await saveDosya(d1.id, { data: { asamaTarihleri: { talep: "2026-10-02", teklif: "2026-10-03", onaylandi: "2026-10-04", odeme: "2026-10-06", vize_basvuru: "2026-10-08", vize_cikti: "2026-10-11" } } }, "Yerel test");
+const pdf = readFileSync(new URL("../../public/indir/tavaf-el-kitabi-2026.pdf", import.meta.url)).toString("base64");
+await addBelge(d1.id, { ad: "ornek-vize-belgesi.pdf", tur: "vize", mime: "application/pdf", base64: pdf });
+await addBelge(d1.id, { ad: "ornek-otel-mekke.pdf", tur: "otel", mime: "application/pdf", base64: pdf });
 
-const d0 = await openDosya(q0.id);
-await saveDosya(d0.id, {
-  status: "tamamlandi",
-  userId: uye.id,
-  data: { gidis: "2026-04-10", donus: "2026-04-20", onceSehir: "medine", yetiskin: 2, mekke: { ad: mekke?.name ?? "Mekke oteli" }, medine: { ad: medine?.name ?? "Medine oteli" }, toplamUsd: 3700, odenenUsd: 3700 },
-});
+// 2) Teklifi gönderilmiş, yanıt bekleyen dosya (Ramazan): test üyesine bağlı
+const d2 = await createDosya({ musteriAdi: uye.name, phone: "+905321112233", email: uye.email, yetiskin: 4, gidis: "2027-03-08", donus: "2027-03-18", kim: "Yerel test" });
+await saveDosya(d2.id, { status: "teklif", userId: uye.id, data: { onceSehir: "medine", kalemler: kalemler("2027-03-12", "2027-03-08", "2027-03-18", 4, [520, 380]).map((k) => (k.tur === "otel_mekke" ? { ...k, adet: 2, otel: { ...k.otel!, giris: "2027-03-12", cikis: "2027-03-18" } } : k.tur === "otel_medine" ? { ...k, adet: 2, otel: { ...k.otel!, giris: "2027-03-08", cikis: "2027-03-12" } } : k)), gecerlilik: "2026-10-25", teklifGonderildi: new Date().toISOString(), teklifNotu: "Ramazan'ın son on günü için oteller hızla doluyor; onayınızla yerinizi hemen ayırtıyoruz." } }, "Yerel test");
+
+// 3) Yeni talep (panoda görünsün, üyeye bağlı değil)
+await createDosya({ musteriAdi: "Ayşe Demir", phone: "05551234567", yetiskin: 2, cocuk: 1, gidis: "2026-12-20", donus: "2026-12-30", talepNotu: "Çocuklu aile, servisli otel olabilir", kim: "Yerel test" });
+
+// 4) Tamamlanmış geçmiş umre
+const d4 = await createDosya({ musteriAdi: uye.name, email: uye.email, yetiskin: 2, gidis: "2026-04-10", donus: "2026-04-20", kim: "Yerel test" });
+await saveDosya(d4.id, { status: "tamamlandi", userId: uye.id, data: { kalemler: kalemler("2026-04-10", "2026-04-16", "2026-04-20", 2, [280, 230]), odemeler: [{ id: id(), tarih: "2026-03-20", tutar: 4370, yontem: "havale", yer: "onden" }] } }, "Yerel test");
 
 await saveProfilKampanyalari([{ id: "ramazan27", baslik: "Ramazan 2027 umresi *erken kayıt*", aciklama: "Son 10 gün oteller dolmadan yerinizi ayırtın.", link: "/bireysel-umre", hat: "رمضان", aktif: true }]);
-console.log("hazır:", { dosya: d1.no, gecmis: d0.no, mekke: mekke?.name, medine: medine?.name });
+console.log("hazır:", [d1.no, d2.no, d4.no]);
 await prisma.$disconnect();

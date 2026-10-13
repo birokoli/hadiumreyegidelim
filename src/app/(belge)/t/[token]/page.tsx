@@ -1,0 +1,105 @@
+// Teklif sayfası (14 Ekim): WhatsApp mesajındaki bağlantı. Oteller, dahil hizmetler, toplam, ödeme planı ve onay.
+import type { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import { getDosya, geceSayisi, KALEM_TURLERI, odemeDagilimi, teklifSuresiDoldu, onaylandiMi, oteller, toplam, trTarih, usd } from "@/lib/satis";
+import { findDirectoryHotel, kaabaText } from "@/lib/catalog/hotel-directory";
+import HugIcon, { type HugIconName } from "@/components/icons/HugIcon";
+import Accent from "@/components/home/Accent";
+import TeklifOnayla from "@/components/profil/TeklifOnayla";
+
+export const dynamic = "force-dynamic";
+export const metadata: Metadata = { title: "Umre teklifiniz" };
+
+export default async function TeklifSayfasi({ params }: { params: Promise<{ token: string }> }) {
+  const d = await getDosya("token", (await params).token);
+  if (!d || d.status === "iptal" || !d.data.kalemler.length) notFound();
+  const x = d.data;
+  const t = toplam(x);
+  const kisi = x.yetiskin + x.cocuk;
+  const ots = await Promise.all(
+    oteller(x).map(async (k) => {
+      const h = k.otel?.slug && !k.otel.slug.startsWith("svc:") ? await findDirectoryHotel(k.otel.slug).catch(() => null) : null;
+      return { k, h };
+    }),
+  );
+  const dahil = x.kalemler.filter((k) => !k.tur.startsWith("otel_"));
+  const suresiDoldu = teklifSuresiDoldu(x.gecerlilik) && !onaylandiMi(d.status);
+  const wa = `https://wa.me/905404010038?text=${encodeURIComponent(`Merhaba, ${d.no} numaralı teklifim hakkında yazıyorum.`)}`;
+
+  return (
+    <div className="mx-auto max-w-3xl space-y-5 px-4 pb-16">
+      <section className="bg-deep on-dark relative overflow-hidden rounded-[28px] p-6 text-white md:p-8">
+        <span aria-hidden className="hat pointer-events-none absolute -bottom-12 right-4 select-none text-[9rem] leading-none text-white/[0.05]">عمرة</span>
+        <p className="relative text-[11px] font-bold uppercase tracking-[0.24em] text-[var(--h-sand)]">Umre teklifiniz · {d.no}</p>
+        <h1 className="relative mt-2 text-3xl font-bold leading-tight md:text-[40px]"><Accent text={`${x.musteriAdi.split(" ")[0]}, umreniz *hazır*`} /></h1>
+        <p className="relative mt-2 text-sm text-white/80">
+          {x.gidis ? `${trTarih(x.gidis)} – ${trTarih(x.donus, { day: "numeric", month: "long", year: "numeric" })} · ` : ""}
+          {x.yetiskin} yetişkin{x.cocuk ? `, ${x.cocuk} çocuk` : ""}{x.bebek ? `, ${x.bebek} bebek` : ""}
+        </p>
+      </section>
+
+      {ots.length > 0 && (
+        <section className="rounded-[28px] bg-white p-6 ring-1 ring-[var(--h-sky)]/60">
+          <h2 className="text-lg font-bold text-[var(--h-blue)]">Konaklama</h2>
+          <div className="mt-4 space-y-3">
+            {ots.map(({ k, h }) => {
+              const g = geceSayisi(k.otel?.giris, k.otel?.cikis);
+              return (
+                <div key={k.id} className="flex gap-4 rounded-2xl bg-[var(--h-white)] p-4">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white text-[var(--h-blue)]"><HugIcon name={k.tur === "otel_mekke" ? "otel" : "medine"} size={22} /></span>
+                  <div className="min-w-0 flex-1">
+                    <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--h-blue)]/60">{k.tur === "otel_mekke" ? "Mekke" : "Medine"}{g ? ` · ${g} gece` : ""}{k.otel?.giris ? ` · ${trTarih(k.otel.giris, { day: "numeric", month: "short" })} – ${trTarih(k.otel.cikis, { day: "numeric", month: "short" })}` : ""}</p>
+                    <p className="text-[15px] font-bold text-[#14213d]">{k.otel?.ad}</p>
+                    <p className="text-[13px] text-[#5b6680]">{[k.otel?.oda, k.adet > 1 && `${k.adet} oda`, h?.kaabaMeters != null && `${k.tur === "otel_mekke" ? "Kâbe'ye" : "Harem'e"} ${kaabaText(h.kaabaMeters)}`].filter(Boolean).join(" · ")}</p>
+                    {h && <Link href={`/oteller/${h.slug}`} className="mt-1 inline-flex items-center gap-1 text-xs font-bold text-[var(--h-blue)]"><HugIcon name="konum" size={13} /> Otel rehberinde gör</Link>}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      )}
+
+      {dahil.length > 0 && (
+        <section className="rounded-[28px] bg-white p-6 ring-1 ring-[var(--h-sky)]/60">
+          <h2 className="text-lg font-bold text-[var(--h-blue)]">Fiyata dahil</h2>
+          <ul className="mt-3 divide-y divide-[#e1e6ef]">
+            {dahil.map((k) => (
+              <li key={k.id} className="flex items-start gap-3 py-3">
+                <HugIcon name={KALEM_TURLERI[k.tur].ikon as HugIconName} size={20} className="mt-0.5 text-[var(--h-blue)]" />
+                <div className="flex-1"><p className="text-[14px] font-semibold text-[#14213d]">{k.ad}</p>{k.aciklama && <p className="text-[13px] text-[#5b6680]">{k.aciklama}</p>}</div>
+                {k.adet > 1 && <span className="text-xs text-[#8a94ab]">{k.adet} × </span>}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      <section className="rounded-[28px] bg-white p-6 ring-1 ring-[var(--h-sky)]/60">
+        <div className="flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[var(--h-blue)]/60">Toplam</p>
+            <p className="text-4xl font-bold text-[var(--h-blue)]">{usd(t)}</p>
+            {kisi > 1 && <p className="text-sm text-[#5b6680]">Kişi başı {usd(t / kisi)}</p>}
+          </div>
+          {x.gecerlilik && <p className={`rounded-full px-3 py-1 text-xs font-bold ${suresiDoldu ? "bg-red-50 text-red-700" : "bg-[#fbf4e1] text-[#8a6a1c]"}`}>{suresiDoldu ? "Süresi doldu" : `${trTarih(x.gecerlilik)} tarihine kadar geçerli`}</p>}
+        </div>
+        {x.odemePlani === "bolunmus" && (() => { const o = odemeDagilimi(x); return (
+          <div className="mt-4 grid gap-2 sm:grid-cols-2">
+            <div className="rounded-2xl bg-[var(--h-white)] p-4"><p className="text-xs text-[#5b6680]">Önden (otel, vize, hoca ücretinin yarısı)</p><p className="text-lg font-bold text-[#14213d]">{usd(o.onden)}</p></div>
+            <div className="rounded-2xl bg-[var(--h-white)] p-4"><p className="text-xs text-[#5b6680]">Cidde&apos;de (transfer, hoca ücretinin yarısı)</p><p className="text-lg font-bold text-[#14213d]">{usd(o.varis)}</p></div>
+          </div>
+        ); })()}
+        {x.teklifNotu && <p className="mt-4 text-sm text-[#5b6680]">{x.teklifNotu}</p>}
+      </section>
+
+      {!suresiDoldu && <TeklifOnayla token={d.token} onaylandi={onaylandiMi(d.status)} />}
+      <div className="grid gap-2 sm:grid-cols-2">
+        <a href={wa} className="flex items-center justify-center gap-2 rounded-2xl border border-[var(--h-sky)] bg-white px-5 py-3.5 text-sm font-bold text-[var(--h-blue)]"><HugIcon name="mesaj" size={18} /> WhatsApp&apos;tan sorun</a>
+        <Link href="/profil/uye-ol" className="flex items-center justify-center gap-2 rounded-2xl bg-[var(--h-sand)] px-5 py-3.5 text-sm font-bold text-[var(--h-blue-deep)]"><HugIcon name="bireysel" size={18} /> Üye olun, umrenizi takip edin</Link>
+      </div>
+      <p className="text-center text-xs text-[#8a94ab]">Üye olurken bu teklifteki e-posta adresinizi kullanırsanız dosyanız profilinize kendiliğinden bağlanır.</p>
+    </div>
+  );
+}

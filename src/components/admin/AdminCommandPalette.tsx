@@ -26,7 +26,7 @@ export default function AdminCommandPalette({ isOpen, onClose }: AdminCommandPal
     { id: "crm", label: "CRM Komuta Merkezi", category: "Sayfalar", href: "/admin/crm", icon: "view_kanban" },
     { id: "leads", label: "Talepler & WhatsApp İletişim", category: "Sayfalar", href: "/admin/contact", icon: "chat" },
     { id: "pkg", label: "Lüks Paket Yönetimi", category: "Sayfalar", href: "/admin/packages", icon: "inventory_2" },
-    { id: "calc", label: "Excel Fiyat Motoru", category: "Sayfalar", href: "/admin/fiyat-teklifleri/hesaplayici", icon: "calculate" },
+    { id: "satis", label: "Satış Masası", category: "Sayfalar", href: "/admin/satis", icon: "travel_explore" },
     { id: "blog", label: "Blog İçerik Stüdyosu", category: "Sayfalar", href: "/admin/content", icon: "article" },
     { id: "ai", label: "Otomatik blog yazısı (Blog motoru)", category: "Sayfalar", href: "/admin/content?panel=auto", icon: "memory" },
     { id: "users", label: "Kullanıcı Yönetimi", category: "Sayfalar", href: "/admin/users", icon: "manage_accounts" },
@@ -34,7 +34,7 @@ export default function AdminCommandPalette({ isOpen, onClose }: AdminCommandPal
 
     { id: "act-pkg", label: "Yeni Paket Oluştur", category: "Hızlı Eylemler", href: "/admin/packages?action=new", icon: "add_box" },
     { id: "act-blog", label: "Yeni Blog Yazısı Ekle", category: "Hızlı Eylemler", href: "/admin/content?action=new", icon: "post_add" },
-    { id: "act-quote", label: "Yeni Fiyat Teklifi Hazırla", category: "Hızlı Eylemler", href: "/admin/fiyat-teklifleri/hesaplayici", icon: "request_quote" },
+    { id: "act-quote", label: "Yeni müşteri dosyası / teklif", category: "Hızlı Eylemler", href: "/admin/satis", icon: "request_quote" },
     { id: "act-site", label: "Canlı Siteyi Aç", category: "Yönetim", action: () => window.open("/", "_blank"), icon: "open_in_new" },
   ];
 

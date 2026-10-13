@@ -44,16 +44,9 @@ const menuGroups: { title: string; links: SidebarLink[] }[] = [
         badgeKey: "newPoolLeads",
       },
       {
-        href: "/admin/fiyat-teklifleri",
-        icon: "request_quote",
-        label: "Fiyat Teklifleri",
-        match: ["/admin/fiyat-teklifleri"],
-        permission: "orders",
-      },
-      {
-        href: "/admin/umre-dosyalari",
+        href: "/admin/satis",
         icon: "travel_explore",
-        label: "Umre Dosyaları",
+        label: "Satış Masası",
         permission: "orders",
       },
       {

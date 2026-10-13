@@ -29,8 +29,8 @@ function apiNeedsAdmin(pathname: string, method: string) {
 function requiredAdminPermission(pathname: string) {
   if (pathname.startsWith('/admin/users') || pathname.startsWith('/api/admin/users')) return 'users';
   if (pathname.startsWith('/admin/settings') || pathname.startsWith('/api/admin/settings') || pathname.startsWith('/api/admin/company-settings')) return 'settings';
-  if (pathname.startsWith('/admin/orders') || pathname.startsWith('/admin/contact') || pathname.startsWith('/admin/fiyat-teklifleri') || pathname.startsWith('/admin/umre-dosyalari')) return 'orders';
-  if (pathname.startsWith('/api/admin/orders') || pathname.startsWith('/api/admin/contact') || pathname.startsWith('/api/admin/quotations') || pathname.startsWith('/api/admin/umre') || pathname.startsWith('/api/admin/service-library') || pathname.startsWith('/api/admin/service-prices') || pathname.startsWith('/api/admin/catalog-status')) return 'orders';
+  if (pathname.startsWith('/admin/orders') || pathname.startsWith('/admin/contact') || pathname.startsWith('/admin/fiyat-teklifleri') || pathname.startsWith('/admin/umre-dosyalari') || pathname.startsWith('/admin/satis')) return 'orders';
+  if (pathname.startsWith('/api/admin/orders') || pathname.startsWith('/api/admin/contact') || pathname.startsWith('/api/admin/quotations') || pathname.startsWith('/api/admin/umre') || pathname.startsWith('/api/admin/satis') || pathname.startsWith('/api/admin/service-library') || pathname.startsWith('/api/admin/service-prices') || pathname.startsWith('/api/admin/catalog-status')) return 'orders';
   if (pathname.startsWith('/admin/sayfa-metinleri') || pathname.startsWith('/api/admin/page-texts')) return 'content';
   if (pathname.startsWith('/api/admin/blog-topics') || pathname.startsWith('/api/admin/blog-experience') || pathname.startsWith('/admin/yardim-merkezi')) return 'content';
   if (pathname.startsWith('/admin/content') || pathname.startsWith('/admin/categories') || pathname.startsWith('/admin/authors') || pathname.startsWith('/admin/media')) return 'content';

@@ -32,7 +32,7 @@ const menuGroups: { title: string; links: SidebarLink[] }[] = [
         href: "/admin/contact",
         icon: "inbox",
         label: "Gelen Kutusu",
-        match: ["/admin/contact", "/admin/orders", "/admin/crm", "/admin/fiyat-teklifleri", "/admin/umre-dosyalari"],
+        match: ["/admin/contact", "/admin/orders", "/admin/crm"],
         permission: "orders",
         badgeKey: "unreadLeads",
       },
@@ -42,6 +42,19 @@ const menuGroups: { title: string; links: SidebarLink[] }[] = [
         label: "Müşteri Havuzu",
         permission: "orders",
         badgeKey: "newPoolLeads",
+      },
+      {
+        href: "/admin/fiyat-teklifleri",
+        icon: "request_quote",
+        label: "Fiyat Teklifleri",
+        match: ["/admin/fiyat-teklifleri"],
+        permission: "orders",
+      },
+      {
+        href: "/admin/umre-dosyalari",
+        icon: "travel_explore",
+        label: "Umre Dosyaları",
+        permission: "orders",
       },
       {
         href: "/admin/packages",

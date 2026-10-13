@@ -1,7 +1,7 @@
 // E-posta doğrulama kodu: kontrol ve yeniden gönderme (13 Ekim).
 import { NextResponse } from "next/server";
 import { rateLimit, getClientIp } from "@/lib/rate-limit";
-import { getLead, issueCode, verifyCode, LEAD_SOURCES } from "@/lib/leads";
+import { getLead, issueCode, verifyCode } from "@/lib/leads";
 import { emailVerificationEnabled, sendLeadCode } from "@/lib/leads/mailer";
 
 const MESSAGES = {
@@ -24,7 +24,7 @@ export async function POST(req: Request) {
     if (!rateLimit(lead.email, "lead-code", 3, 30 * 60 * 1000).allowed) return NextResponse.json({ ok: false, error: "Kısa sürede çok kod istendi; birkaç dakika bekleyin." }, { status: 429 });
     const code = await issueCode(leadId);
     try {
-      await sendLeadCode({ to: lead.email, name: lead.name, code, title: LEAD_SOURCES[lead.source] ?? "Kitapçık", leadId });
+      await sendLeadCode({ to: lead.email, name: lead.name, code, source: lead.source, leadId });
     } catch (e) {
       console.error("[leads] kod yeniden gönderilemedi", e);
       return NextResponse.json({ ok: false, error: "E-posta şu an gönderilemedi; biraz sonra tekrar deneyin." }, { status: 502 });

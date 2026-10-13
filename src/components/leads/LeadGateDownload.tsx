@@ -2,11 +2,25 @@
 // Ücretsiz materyali indirmeden önce ad + e-posta ya da telefon ister (12 Ekim, kullanıcı: müşteri havuzu).
 // 13 Ekim: e-posta yazana 6 haneli kod gönderilir (uydurma adresler için); kod girilince ya da e-postadaki bağlantıya
 // dokunulunca dosya iner. Reklam kaynağı (utm_*, fbclid, gclid) ilk gelişte saklanır ve kayda eklenir.
-// Aynı tarayıcıda bir kez kayıt olan tekrar sorulmaz.
+// Tasarım site kimliğiyle aynı (13 Ekim, kullanıcı): .home-v2 sayfalarında açılır; lacivert başlık, Arapça hat, kitap
+// kapağı, kendi ikon setimiz (HugIcon), Cairo + serif italik vurgu. Aynı tarayıcıda bir kez kayıt olan tekrar sorulmaz.
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import Image from "next/image";
 import Link from "next/link";
+import HugIcon from "@/components/icons/HugIcon";
+import Accent from "@/components/home/Accent";
 
-type Props = { source: string; fileUrl: string; fileName: string; className?: string; children: ReactNode; doneNote?: string };
+type Props = {
+  source: string;
+  fileUrl: string;
+  fileName: string;
+  title: string; // "Sa'y El Kitabı"
+  cover: string; // kapak görseli
+  hat: string; // başlıktaki Arapça hat: طواف / سعي
+  className?: string;
+  children: ReactNode;
+  doneNote?: string;
+};
 type Step = "form" | "code" | "done";
 
 const UTM_KEY = "lead:utm";
@@ -29,7 +43,13 @@ function readUtm(): string {
   }
 }
 
-export default function LeadGateDownload({ source, fileUrl, fileName, className, children, doneNote }: Props) {
+const HEAD: Record<Step, { kicker: string; title: string }> = {
+  form: { kicker: "Ücretsiz PDF · 19 sayfa", title: "Kitapçığınız *hazır*" },
+  code: { kicker: "Son adım", title: "E-postanızı *doğrulayın*" },
+  done: { kicker: "Teşekkürler", title: "Hayırlı *umreler*" },
+};
+
+export default function LeadGateDownload({ source, fileUrl, fileName, title, cover, hat, className, children, doneNote }: Props) {
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState<Step>("form");
   const [busy, setBusy] = useState(false);
@@ -40,7 +60,9 @@ export default function LeadGateDownload({ source, fileUrl, fileName, className,
   const [leadId, setLeadId] = useState("");
   const [sentTo, setSentTo] = useState("");
   const [code, setCode] = useState("");
+  const [codeFocus, setCodeFocus] = useState(false);
   const [resendIn, setResendIn] = useState(0);
+  const [shareHref, setShareHref] = useState("");
   const dialog = useRef<HTMLDialogElement>(null);
   const codeInput = useRef<HTMLInputElement>(null);
   const key = `lead:${source}`;
@@ -78,6 +100,7 @@ export default function LeadGateDownload({ source, fileUrl, fileName, className,
 
   const finish = () => {
     try { localStorage.setItem(key, "1"); } catch { /* gizli pencere */ }
+    setShareHref(`https://wa.me/?text=${encodeURIComponent(`${title}: okunuşu ve anlamıyla dualar, ücretsiz PDF. ${window.location.origin}${window.location.pathname}`)}`);
     setStep("done");
     download(fileUrl, fileName);
   };
@@ -152,10 +175,12 @@ export default function LeadGateDownload({ source, fileUrl, fileName, className,
     if (!r?.ok) fail(d.error || "Kod gönderilemedi; biraz sonra tekrar deneyin.", "code");
   };
 
-  const input = (field: string) =>
-    `w-full rounded-xl border bg-white px-4 py-3 text-[15px] text-[#14213d] placeholder:text-[#8a94ab] focus:outline-none focus:ring-2 ${
-      errorField === field ? "border-red-400 focus:border-red-500 focus:ring-red-200" : "border-[#b8c9e3] focus:border-[#1d428a] focus:ring-[#1d428a]/15"
+  const field = (name: string) =>
+    `w-full rounded-2xl border bg-[var(--h-white)]/60 py-3.5 pl-12 pr-4 text-[15px] text-[#14213d] placeholder:text-[#7d88a3] transition focus:bg-white focus:outline-none focus:ring-4 ${
+      errorField === name ? "border-red-300 focus:border-red-400 focus:ring-red-100" : "border-[var(--h-sky)] focus:border-[var(--h-blue)] focus:ring-[var(--h-sky)]/40"
     }`;
+  const fieldIcon = "pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-[var(--h-blue)]/55";
+  const head = HEAD[step];
 
   return (
     <>
@@ -164,88 +189,163 @@ export default function LeadGateDownload({ source, fileUrl, fileName, className,
         ref={dialog}
         onClose={() => setOpen(false)}
         onClick={(e) => { if (e.target === dialog.current) setOpen(false); }}
-        className="m-auto w-[min(92vw,440px)] rounded-3xl p-0 text-left backdrop:bg-[#12295a]/60 backdrop:backdrop-blur-sm"
+        className="m-auto w-[min(94vw,460px)] overflow-visible bg-transparent p-0 text-left backdrop:bg-[#12295a]/70 backdrop:backdrop-blur-sm"
       >
-        <div className="relative p-6 md:p-7">
-          <button type="button" onClick={() => setOpen(false)} aria-label="Kapat" className="absolute right-4 top-4 rounded-full p-1.5 text-[#5b6680] hover:bg-[#edf1fe]">✕</button>
-
-          {step === "done" && (
-            <div className="py-4 text-center">
-              <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-[#1d428a]/70">Teşekkürler</p>
-              <h2 className="mt-2 text-2xl font-bold text-[#1d428a]">İndirme başladı</h2>
-              <p className="mt-3 text-sm text-[#5b6680]">İnmediyse <a href={fileUrl} download={fileName} className="font-semibold text-[#1d428a] underline">buraya tıklayın</a>. {doneNote}</p>
-              <button type="button" onClick={() => setOpen(false)} className="mt-6 rounded-xl bg-[#1d428a] px-6 py-3 text-sm font-bold text-white">Kapat</button>
-            </div>
-          )}
-
-          {step === "code" && (
-            <div>
-              <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-[#1d428a]/70">Son adım</p>
-              <h2 className="mt-2 pr-8 text-2xl font-bold leading-tight text-[#1d428a]">E-postanızı doğrulayın</h2>
-              <p className="mt-2 text-sm text-[#5b6680]">
-                <b className="text-[#14213d]">{sentTo}</b>{" "}adresine 6 haneli bir kod gönderdik. Kodu yazın ya da e-postadaki &quot;Kitapçığı indir&quot; düğmesine dokunun.
+        <div className="max-h-[92vh] overflow-y-auto rounded-[28px] bg-white shadow-[0_40px_80px_-20px_rgba(18,41,90,0.55)]">
+          {/* Başlık: lacivert, Arapça hat ve kitap kapağı */}
+          <div className="bg-deep on-dark relative overflow-hidden px-6 pb-6 pt-6 text-white md:px-7">
+            <span aria-hidden className="hat pointer-events-none absolute -bottom-10 -left-2 select-none text-[7rem] leading-none text-white/[0.06]">{hat}</span>
+            <Image src={cover} alt="" width={160} height={226} className="pointer-events-none absolute -bottom-7 right-14 w-[80px] rotate-6 rounded-md shadow-[0_18px_30px_-10px_rgba(0,0,0,0.5)] ring-1 ring-white/15" />
+            <button type="button" onClick={() => setOpen(false)} aria-label="Kapat" className="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-sm text-white/80 transition hover:bg-white/20 hover:text-white">✕</button>
+            <div className="relative pr-24 md:pr-28">
+              <p className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--h-sand)] md:text-[11px] md:tracking-[0.22em]">
+                <HugIcon name={step === "done" ? "onay" : "rehber"} size={15} /> {head.kicker}
               </p>
-              <input
-                ref={codeInput}
-                value={code}
-                onChange={(e) => {
-                  const v = e.target.value.replace(/\D/g, "").slice(0, 6);
-                  setCode(v);
-                  if (v.length === 6) verify(v);
-                }}
-                inputMode="numeric"
-                autoComplete="one-time-code"
-                placeholder="••••••"
-                aria-label="Doğrulama kodu"
-                className={`${input("code")} mt-5 text-center font-mono text-2xl tracking-[0.5em]`}
-              />
-              {error && <p className="mt-3 rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>}
-              <button type="button" onClick={() => verify(code)} disabled={busy || code.length !== 6} className="mt-4 w-full rounded-xl bg-[#1d428a] px-6 py-3.5 text-[15px] font-bold text-white transition hover:bg-[#12295a] disabled:opacity-50">
-                {busy ? "Kontrol ediliyor…" : "Doğrula ve indir"}
-              </button>
-              <p className="mt-4 text-xs text-[#5b6680]">E-posta gelmediyse Spam ya da Gereksiz klasörüne bakın.</p>
-              <div className="mt-2 flex flex-wrap items-center justify-between gap-2 text-sm">
-                <button type="button" onClick={resend} disabled={resendIn > 0} className="font-semibold text-[#1d428a] underline-offset-4 hover:underline disabled:text-[#8a94ab] disabled:no-underline">
-                  {resendIn > 0 ? `Yeni kod (${resendIn} sn)` : "Kodu tekrar gönder"}
-                </button>
-                <button type="button" onClick={() => { setStep("form"); fail(""); }} className="text-[#5b6680] underline-offset-4 hover:underline">E-postayı değiştir</button>
-              </div>
+              <h2 className="mt-2 text-[24px] font-bold leading-tight md:text-[26px]"><Accent text={head.title} /></h2>
+              <p className="mt-1 text-sm text-white/75">{title}</p>
             </div>
-          )}
+          </div>
 
-          {step === "form" && (
-            <form onSubmit={submit} noValidate>
-              <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-[#1d428a]/70">Ücretsiz · PDF</p>
-              <h2 className="mt-2 pr-8 text-2xl font-bold leading-tight text-[#1d428a]">Kitapçığınızı hemen indirin</h2>
-              <p className="mt-2 text-sm text-[#5b6680]">Adınızı ve size ulaşabileceğimiz bir iletişim bilgisini yazın.</p>
-              <div className="mt-5 space-y-3">
-                <input className={input("name")} placeholder="Adınız soyadınız" autoComplete="name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
-                <input className={input("email")} type="email" inputMode="email" placeholder="E-posta adresiniz" autoComplete="email" value={form.email} onChange={(e) => { setForm({ ...form, email: e.target.value }); setSuggestion(""); }} />
-                {suggestion && (
-                  <button type="button" onClick={() => { setForm({ ...form, email: suggestion }); setSuggestion(""); fail(""); }} className="-mt-1 text-left text-sm text-[#1d428a]">
-                    <span className="font-semibold underline underline-offset-4">{suggestion}</span> olarak düzelt
-                  </button>
+          <div className="px-6 pb-6 pt-6 md:px-7">
+            {step === "form" && (
+              <form onSubmit={submit} noValidate>
+                <div className="space-y-3">
+                  <label className="relative block">
+                    <span className="sr-only">Adınız soyadınız</span>
+                    <HugIcon name="bireysel" size={20} className={fieldIcon} />
+                    <input className={field("name")} placeholder="Adınız soyadınız" autoComplete="name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
+                  </label>
+                  <label className="relative block">
+                    <span className="sr-only">E-posta adresiniz</span>
+                    <HugIcon name="eposta" size={20} className={fieldIcon} />
+                    <input className={field("email")} type="email" inputMode="email" placeholder="E-posta adresiniz" autoComplete="email" value={form.email} onChange={(e) => { setForm({ ...form, email: e.target.value }); setSuggestion(""); }} />
+                  </label>
+                  {suggestion && (
+                    <button type="button" onClick={() => { setForm({ ...form, email: suggestion }); setSuggestion(""); fail(""); }} className="flex w-full items-center gap-2 rounded-2xl bg-[#fbf4e1] px-4 py-2.5 text-left text-sm text-[#5a4612] ring-1 ring-[var(--h-sand)]">
+                      <HugIcon name="bilgi" size={16} className="text-[#b8862f]" />
+                      <span>Bunu mu demek istediniz: <b className="underline underline-offset-4">{suggestion}</b></span>
+                    </button>
+                  )}
+                  <label className="relative block">
+                    <span className="sr-only">Telefon veya WhatsApp numaranız</span>
+                    <HugIcon name="telefon" size={20} className={fieldIcon} />
+                    <input className={field("phone")} type="tel" inputMode="tel" placeholder="Telefon / WhatsApp (05xx xxx xx xx)" autoComplete="tel" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} />
+                  </label>
+                  <p className="flex items-start gap-2 px-1 text-xs leading-relaxed text-[#5b6680]">
+                    <HugIcon name="bilgi" size={14} className="mt-0.5 text-[var(--h-blue)]/50" />
+                    En az biri yeterli. E-posta yazarsanız adresinize kısa bir doğrulama kodu göndeririz.
+                  </p>
+                  {/* bal küpü: insanlar görmez, botlar doldurur */}
+                  <input tabIndex={-1} autoComplete="off" aria-hidden className="hidden" value={form.website} onChange={(e) => setForm({ ...form, website: e.target.value })} />
+                </div>
+
+                <div className="mt-5 space-y-2 rounded-2xl bg-[var(--h-white)] p-4">
+                  <label className={`flex cursor-pointer items-start gap-3 text-[13px] leading-snug ${errorField === "kvkk" ? "text-red-700" : "text-[#14213d]"}`}>
+                    <input type="checkbox" className="mt-0.5 h-[18px] w-[18px] shrink-0 accent-[var(--h-blue)]" checked={form.kvkk} onChange={(e) => setForm({ ...form, kvkk: e.target.checked })} />
+                    <span><Link href="/kvkk" target="_blank" className="font-bold text-[var(--h-blue)] underline underline-offset-2">KVKK Aydınlatma Metni</Link>&apos;ni okudum; kişisel verilerimin bu kapsamda işlenmesine ilişkin bilgilendirildim.</span>
+                  </label>
+                  <label className="flex cursor-pointer items-start gap-3 text-[13px] leading-snug text-[#5b6680]">
+                    <input type="checkbox" className="mt-0.5 h-[18px] w-[18px] shrink-0 accent-[var(--h-blue)]" checked={form.marketing} onChange={(e) => setForm({ ...form, marketing: e.target.checked })} />
+                    <span>Umre programları ve bilgilendirmeler için e-posta, SMS ve WhatsApp ile benimle iletişime geçilmesine izin veriyorum. <span className="text-[#8a94ab]">(İsteğe bağlı)</span></span>
+                  </label>
+                </div>
+
+                {error && !suggestion && (
+                  <p className="mt-4 flex items-start gap-2 rounded-2xl bg-red-50 px-4 py-3 text-sm text-red-700">
+                    <HugIcon name="bilgi" size={16} className="mt-0.5" /> {error}
+                  </p>
                 )}
-                <input className={input("phone")} type="tel" inputMode="tel" placeholder="Telefon / WhatsApp (05xx xxx xx xx)" autoComplete="tel" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} />
-                <p className="text-xs text-[#5b6680]">En az biri yeterli. E-posta yazarsanız adresinize kısa bir doğrulama kodu göndeririz.</p>
-                {/* bal küpü: insanlar görmez, botlar doldurur */}
-                <input tabIndex={-1} autoComplete="off" aria-hidden className="hidden" value={form.website} onChange={(e) => setForm({ ...form, website: e.target.value })} />
+                <button type="submit" disabled={busy} className="mt-5 flex w-full items-center justify-center gap-2 rounded-2xl bg-[var(--h-blue)] px-6 py-4 text-[15px] font-bold text-white shadow-[0_12px_24px_-12px_rgba(29,66,138,0.8)] transition hover:bg-[var(--h-blue-deep)] disabled:opacity-60">
+                  <HugIcon name="rehber" size={20} className="text-[var(--h-sand)]" />
+                  {busy ? "Kontrol ediliyor…" : "Kitapçığı indir"}
+                </button>
+                <p className="mt-3 flex items-center justify-center gap-1.5 text-[11px] text-[#8a94ab]">
+                  <HugIcon name="guven" size={13} /> Bilgileriniz yalnızca Hadi Umreye Gidelim&apos;de kalır.
+                </p>
+              </form>
+            )}
+
+            {step === "code" && (
+              <div>
+                <div className="flex items-center gap-3 rounded-2xl bg-[var(--h-white)] p-4">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[var(--h-blue)] text-[var(--h-sand)]">
+                    <HugIcon name="eposta" size={22} />
+                  </span>
+                  <p className="text-sm leading-snug text-[#3d4a66]">6 haneli kodu gönderdik:<br /><b className="break-all text-[#14213d]">{sentTo}</b></p>
+                </div>
+
+                {/* 6 kutu; asıl giriş kutuların üstünde görünmez durur (yapıştırma ve SMS/OTP doldurma çalışsın) */}
+                <div className="relative mt-5" onClick={() => codeInput.current?.focus()}>
+                  <div className="grid grid-cols-6 gap-2" aria-hidden>
+                    {Array.from({ length: 6 }, (_, i) => {
+                      const active = codeFocus && i === Math.min(code.length, 5);
+                      return (
+                        <span key={i} className={`flex h-14 items-center justify-center rounded-2xl border-2 text-2xl font-bold text-[var(--h-blue)] transition ${
+                          errorField === "code" ? "border-red-300 bg-red-50/50" : active ? "border-[var(--h-blue)] bg-white ring-4 ring-[var(--h-sky)]/40" : code[i] ? "border-[var(--h-sky)] bg-white" : "border-[var(--h-sky)]/70 bg-[var(--h-white)]/60"
+                        }`}>
+                          {code[i] ?? ""}
+                        </span>
+                      );
+                    })}
+                  </div>
+                  <input
+                    ref={codeInput}
+                    value={code}
+                    onChange={(e) => {
+                      const v = e.target.value.replace(/\D/g, "").slice(0, 6);
+                      setCode(v);
+                      if (errorField === "code") fail("");
+                      if (v.length === 6) verify(v);
+                    }}
+                    onFocus={() => setCodeFocus(true)}
+                    onBlur={() => setCodeFocus(false)}
+                    inputMode="numeric"
+                    autoComplete="one-time-code"
+                    aria-label="Doğrulama kodu"
+                    className="absolute inset-0 h-full w-full cursor-text opacity-0"
+                  />
+                </div>
+
+                {error && (
+                  <p className="mt-4 flex items-start gap-2 rounded-2xl bg-red-50 px-4 py-3 text-sm text-red-700">
+                    <HugIcon name="bilgi" size={16} className="mt-0.5" /> {error}
+                  </p>
+                )}
+                <button type="button" onClick={() => verify(code)} disabled={busy || code.length !== 6} className="mt-5 flex w-full items-center justify-center gap-2 rounded-2xl bg-[var(--h-blue)] px-6 py-4 text-[15px] font-bold text-white shadow-[0_12px_24px_-12px_rgba(29,66,138,0.8)] transition hover:bg-[var(--h-blue-deep)] disabled:opacity-50">
+                  <HugIcon name="onay" size={20} className="text-[var(--h-sand)]" />
+                  {busy ? "Kontrol ediliyor…" : "Doğrula ve indir"}
+                </button>
+                <p className="mt-4 text-center text-xs text-[#5b6680]">E-posta gelmediyse Spam ya da Gereksiz klasörüne bakın. E-postadaki &quot;Kitapçığı indir&quot; düğmesi de çalışır.</p>
+                <div className="mt-3 flex items-center justify-between border-t border-[var(--h-sky)]/50 pt-3 text-sm">
+                  <button type="button" onClick={resend} disabled={resendIn > 0} className="font-bold text-[var(--h-blue)] underline-offset-4 hover:underline disabled:font-semibold disabled:text-[#8a94ab] disabled:no-underline">
+                    {resendIn > 0 ? `Yeni kod ${resendIn} sn sonra` : "Kodu tekrar gönder"}
+                  </button>
+                  <button type="button" onClick={() => { setStep("form"); fail(""); }} className="text-[#5b6680] underline-offset-4 hover:underline">E-postayı değiştir</button>
+                </div>
               </div>
-              <label className={`mt-4 flex items-start gap-2.5 text-[13px] leading-snug ${errorField === "kvkk" ? "text-red-700" : "text-[#14213d]"}`}>
-                <input type="checkbox" className="mt-0.5 h-4 w-4 accent-[#1d428a]" checked={form.kvkk} onChange={(e) => setForm({ ...form, kvkk: e.target.checked })} />
-                <span><Link href="/kvkk" target="_blank" className="font-semibold text-[#1d428a] underline">KVKK Aydınlatma Metni</Link>&apos;ni okudum; kişisel verilerimin bu kapsamda işlenmesine ilişkin bilgilendirildim.</span>
-              </label>
-              <label className="mt-2.5 flex items-start gap-2.5 text-[13px] leading-snug text-[#5b6680]">
-                <input type="checkbox" className="mt-0.5 h-4 w-4 accent-[#1d428a]" checked={form.marketing} onChange={(e) => setForm({ ...form, marketing: e.target.checked })} />
-                <span>Umre programları ve bilgilendirmeler için e-posta, SMS ve WhatsApp ile benimle iletişime geçilmesine izin veriyorum. (İsteğe bağlı)</span>
-              </label>
-              {error && !suggestion && <p className="mt-3 rounded-xl bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>}
-              {suggestion && <p className="mt-3 rounded-xl bg-amber-50 px-3 py-2 text-sm text-amber-800">{error}</p>}
-              <button type="submit" disabled={busy} className="mt-5 w-full rounded-xl bg-[#1d428a] px-6 py-3.5 text-[15px] font-bold text-white transition hover:bg-[#12295a] disabled:opacity-60">
-                {busy ? "Kontrol ediliyor…" : "Kitapçığı indir"}
-              </button>
-            </form>
-          )}
+            )}
+
+            {step === "done" && (
+              <div className="text-center">
+                <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[var(--h-white)] text-[var(--h-blue)] ring-8 ring-[var(--h-white)]/50">
+                  <HugIcon name="onay" size={32} />
+                </span>
+                <p className="mt-4 text-[15px] font-bold text-[#14213d]">İndirme başladı</p>
+                <p className="mt-1 text-sm text-[#5b6680]">İnmediyse <a href={fileUrl} download={fileName} className="font-bold text-[var(--h-blue)] underline underline-offset-2">buraya dokunun</a>.</p>
+                {doneNote && <p className="mx-auto mt-5 max-w-xs font-['Noto_Serif',Georgia,serif] text-[17px] italic leading-snug text-[var(--h-blue)]">{doneNote}</p>}
+                <div className="mt-6 grid gap-2.5">
+                  <Link href="/bireysel-umre" className="flex items-center justify-center gap-2 rounded-2xl bg-[var(--h-sand)] px-5 py-3.5 text-sm font-bold text-[var(--h-blue-deep)] transition hover:brightness-95">
+                    <HugIcon name="takvim" size={18} /> Umrenizi kendi tarihinizde planlayın
+                  </Link>
+                  {shareHref && (
+                    <a href={shareHref} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 rounded-2xl border border-[var(--h-sky)] px-5 py-3.5 text-sm font-bold text-[var(--h-blue)] transition hover:border-[var(--h-blue)]">
+                      <HugIcon name="mesaj" size={18} /> Umreye gidecek birine gönderin
+                    </a>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </dialog>
     </>

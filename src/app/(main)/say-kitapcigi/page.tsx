@@ -297,7 +297,7 @@ export default async function SayKitapcigiPage() {
             </h2>
             <p className="mt-4 text-white/85">Telefonunuza kaydedin ya da yazdırıp yanınıza alın. PDF, 19 sayfa: Safa&apos;da ve Merve&apos;de okunanlar, yedi şavtın duaları, yeşil ışıklar arası dua, sa&apos;yden sonra yapılacaklar ve kaynaklar.</p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <LeadGateDownload source="say-kitapcigi" fileUrl={PDF} fileName="Say-El-Kitabi-2026.pdf" doneNote="Sa'yde bizleri de dualarınızdan eksik etmeyin." className="inline-flex items-center gap-2 rounded-xl bg-[var(--h-sand)] px-7 py-4 text-base font-bold text-[var(--h-blue-deep)] transition hover:brightness-95">
+              <LeadGateDownload source="say-kitapcigi" title="Sa'y El Kitabı" cover="/indir/say-el-kitabi-kapak.png" hat="سعي" fileUrl={PDF} fileName="Say-El-Kitabi-2026.pdf" doneNote="Sa'yde bizleri de dualarınızdan eksik etmeyin." className="inline-flex items-center gap-2 rounded-xl bg-[var(--h-sand)] px-7 py-4 text-base font-bold text-[var(--h-blue-deep)] transition hover:brightness-95">
                 <HugIcon name="say" size={20} /> PDF&apos;i indir
               </LeadGateDownload>
               <a href={shareHref} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-xl border border-white/30 px-6 py-4 text-sm font-semibold text-white transition hover:bg-white/10">

@@ -58,7 +58,7 @@ export async function POST(req: Request) {
     if (!rateLimit(email, "lead-code", 3, 30 * 60 * 1000).allowed) return NextResponse.json({ ok: false, error: "Bu adrese kısa sürede çok kod gönderildi; e-postanızdaki son kodu kullanın." }, { status: 429 });
     const code = await issueCode(leadId);
     try {
-      await sendLeadCode({ to: email, name, code, title: LEAD_SOURCES[source], leadId });
+      await sendLeadCode({ to: email, name, code, source, leadId });
     } catch (e) {
       // E-posta servisi çalışmazsa kişiyi kaybetmeyelim: kayıt doğrulanmamış olarak kalır, indirme açılır
       console.error("[leads] kod gönderilemedi", e);

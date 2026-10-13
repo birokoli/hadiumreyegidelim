@@ -62,10 +62,10 @@ export type Lead = {
 };
 
 export const LEAD_SOURCES: Record<string, string> = { "tavaf-kitapcigi": "Tavaf El Kitabı", "say-kitapcigi": "Sa'y El Kitabı" };
-/** Kaynağın verdiği dosya (e-postadaki indirme bağlantısı için). */
-export const LEAD_FILES: Record<string, { url: string; page: string }> = {
-  "tavaf-kitapcigi": { url: "/indir/tavaf-el-kitabi-2026.pdf", page: "/tavaf-kitapcigi" },
-  "say-kitapcigi": { url: "/indir/say-el-kitabi-2026.pdf", page: "/say-kitapcigi" },
+/** Kaynağın verdiği dosya ve e-postadaki görseller (kapak, ikon, kapanış duası). */
+export const LEAD_FILES: Record<string, { url: string; page: string; cover: string; icon: string; dua: string }> = {
+  "tavaf-kitapcigi": { url: "/indir/tavaf-el-kitabi-2026.pdf", page: "/tavaf-kitapcigi", cover: "/indir/tavaf-el-kitabi-kapak.png", icon: "tavaf", dua: "Tavafta bizleri de dualarınızdan eksik etmeyin." },
+  "say-kitapcigi": { url: "/indir/say-el-kitabi-2026.pdf", page: "/say-kitapcigi", cover: "/indir/say-el-kitabi-kapak.png", icon: "say", dua: "Sa'yde bizleri de dualarınızdan eksik etmeyin." },
 };
 
 export const KVKK_TEXT = "Kişisel verilerimin KVKK Aydınlatma Metni kapsamında işlenmesine ilişkin bilgilendirmeyi okudum.";

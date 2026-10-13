@@ -59,3 +59,4 @@ scripts/local/.test-admin.json
 # Antigravity geçici dosyaları
 /scratch/
 scripts/pdf/tavaf/tavaf.html
+scripts/pdf/say/say.html

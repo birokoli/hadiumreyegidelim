@@ -4,16 +4,16 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import HubTabs from "@/components/admin/HubTabs";
 
-type Lead = { id: string; name: string; email: string | null; phone: string | null; source: string; marketingConsent: boolean; status: string; note: string | null; createdAt: string };
+type Lead = { id: string; name: string; email: string | null; phone: string | null; source: string; marketingConsent: boolean; emailVerified: boolean; utm: string | null; status: string; note: string | null; createdAt: string };
 type StatusKey = "new" | "contacted" | "customer" | "not_interested";
 const STATUS: Record<StatusKey, string> = { new: "Yeni", contacted: "Arandı", customer: "Müşteri oldu", not_interested: "İlgilenmiyor" };
 
-function waUrl(l: Lead): string {
+function waUrl(l: Lead, title: string): string {
   let phone = (l.phone ?? "").replace(/\D/g, "");
   if (phone.startsWith("0")) phone = "9" + phone;
   if (!phone.startsWith("90")) phone = "90" + phone;
   const first = l.name.split(" ")[0];
-  const msg = `Merhaba ${first} Bey/Hanım, Hadi Umreye Gidelim'den yazıyoruz. Tavaf El Kitabı'nı indirdiğiniz için teşekkür ederiz. Umre planınızla ilgili yardımcı olabileceğimiz bir konu var mı?`;
+  const msg = `Merhaba ${first} Bey/Hanım, Hadi Umreye Gidelim'den yazıyoruz. ${title}'nı indirdiğiniz için teşekkür ederiz. Umre planınızla ilgili yardımcı olabileceğimiz bir konu var mı?`;
   return `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
 }
 
@@ -23,7 +23,7 @@ export default function MusteriHavuzuPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState<"ALL" | StatusKey | "CONSENT">("ALL");
+  const [statusFilter, setStatusFilter] = useState<"ALL" | StatusKey | "CONSENT" | "VERIFIED">("ALL");
 
   const load = useCallback(async () => {
     try {
@@ -52,7 +52,8 @@ export default function MusteriHavuzuPage() {
     const q = search.trim().toLocaleLowerCase("tr-TR");
     return leads.filter((l) => {
       if (statusFilter === "CONSENT" && !l.marketingConsent) return false;
-      if (statusFilter !== "ALL" && statusFilter !== "CONSENT" && l.status !== statusFilter) return false;
+      if (statusFilter === "VERIFIED" && !l.emailVerified) return false;
+      if (statusFilter !== "ALL" && statusFilter !== "CONSENT" && statusFilter !== "VERIFIED" && l.status !== statusFilter) return false;
       return !q || `${l.name} ${l.email ?? ""} ${l.phone ?? ""}`.toLocaleLowerCase("tr-TR").includes(q);
     });
   }, [leads, search, statusFilter]);
@@ -66,6 +67,7 @@ export default function MusteriHavuzuPage() {
     { key: "customer", label: "Müşteri oldu" },
     { key: "not_interested", label: "İlgilenmiyor" },
     { key: "CONSENT", label: "İleti izni verenler" },
+    { key: "VERIFIED", label: "E-postası doğrulanan" },
   ];
 
   return (
@@ -76,7 +78,7 @@ export default function MusteriHavuzuPage() {
         <div>
           <span className="text-[10px] font-bold tracking-widest text-secondary uppercase">Satış & CRM</span>
           <h1 className="font-headline text-2xl font-bold tracking-tight text-primary mt-1">Müşteri Havuzu</h1>
-          <p className="text-xs text-on-surface-variant mt-0.5">Tavaf El Kitabı&apos;nı indirirken adını ve iletişim bilgisini bırakanlar.</p>
+          <p className="text-xs text-on-surface-variant mt-0.5">Ücretsiz kitapçıkları (Tavaf ve Sa&apos;y El Kitabı) indirirken adını ve iletişim bilgisini bırakanlar.</p>
         </div>
         {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- dosya indirme, sayfa değil */}
         <a
@@ -180,12 +182,22 @@ export default function MusteriHavuzuPage() {
                     </td>
                     <td className="px-4 py-3 font-mono text-on-surface-variant">
                       {l.phone && <div>{l.phone}</div>}
-                      {l.email && <div className="text-[11px]">{l.email}</div>}
+                      {l.email && (
+                        <div className="text-[11px]">
+                          {l.email}{" "}
+                          {l.emailVerified ? (
+                            <span className="ml-1 rounded-full bg-secondary/10 px-1.5 py-0.5 font-sans text-[10px] font-bold text-secondary">doğrulandı</span>
+                          ) : (
+                            <span className="ml-1 rounded-full bg-outline-variant/20 px-1.5 py-0.5 font-sans text-[10px] text-outline">doğrulanmadı</span>
+                          )}
+                        </div>
+                      )}
                     </td>
                     <td className="px-4 py-3">
                       <span className="inline-flex items-center whitespace-nowrap px-2.5 py-1 rounded-full text-[11px] font-bold bg-primary/10 text-primary border border-primary/20">
                         {sources[l.source] ?? l.source}
                       </span>
+                      {l.utm && <div className="mt-1 max-w-[180px] truncate font-mono text-[10px] text-outline" title={l.utm}>{l.utm.replace(/utm_source=/, "").split("&")[0]}</div>}
                     </td>
                     <td className="px-4 py-3 text-outline font-mono whitespace-nowrap">{date}</td>
                     <td className="px-4 py-3">
@@ -200,7 +212,7 @@ export default function MusteriHavuzuPage() {
                     <td className="px-4 py-3 text-right whitespace-nowrap space-x-2">
                       {l.phone && (
                         <a
-                          href={waUrl(l)}
+                          href={waUrl(l, sources[l.source] ?? "El Kitabı")}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="inline-flex items-center gap-1 bg-[#25D366] text-white hover:bg-[#1fb958] px-2.5 py-1.5 rounded-lg text-[11px] font-bold transition-all active:scale-95"

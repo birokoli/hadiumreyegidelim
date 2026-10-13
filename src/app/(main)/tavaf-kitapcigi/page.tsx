@@ -263,7 +263,7 @@ export default async function TavafKitapcigiPage() {
           </h2>
           <div className="mt-8"><Faq items={SSS} /></div>
           <p className="mt-6 text-sm text-on-surface-variant">
-            Ayrıntılı anlatım için: <Link href="/blog/tavaf-sirasinda-okunacak-dualar" className="font-semibold text-[var(--h-blue)] underline-offset-4 hover:underline">Tavaf duaları, tavaf niyeti ve tavaf nasıl yapılır</Link> · <Link href="/umre-rehberi/tavaf-nedir" className="font-semibold text-[var(--h-blue)] underline-offset-4 hover:underline">Tavaf nedir?</Link>
+            Ayrıntılı anlatım için: <Link href="/blog/tavaf-sirasinda-okunacak-dualar" className="font-semibold text-[var(--h-blue)] underline-offset-4 hover:underline">Tavaf duaları, tavaf niyeti ve tavaf nasıl yapılır</Link> · <Link href="/umre-rehberi/tavaf-nedir" className="font-semibold text-[var(--h-blue)] underline-offset-4 hover:underline">Tavaf nedir?</Link> · Sa&apos;y için: <Link href="/say-kitapcigi" className="font-semibold text-[var(--h-blue)] underline-offset-4 hover:underline">Sa&apos;y El Kitabı</Link>
           </p>
         </div>
       </section>
@@ -279,7 +279,7 @@ export default async function TavafKitapcigiPage() {
             </h2>
             <p className="mt-4 text-white/85">Telefonunuza kaydedin ya da yazdırıp yanınıza alın. PDF, 19 sayfa: yedi şavtın duaları, her şavtın başında ve sonunda okunanlar, tavaftan sonra yapılacaklar ve kaynaklar.</p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <LeadGateDownload source="tavaf-kitapcigi" fileUrl={PDF} fileName="Tavaf-El-Kitabi-2026.pdf" className="inline-flex items-center gap-2 rounded-xl bg-[var(--h-sand)] px-7 py-4 text-base font-bold text-[var(--h-blue-deep)] transition hover:brightness-95">
+              <LeadGateDownload source="tavaf-kitapcigi" fileUrl={PDF} fileName="Tavaf-El-Kitabi-2026.pdf" doneNote="Tavafta bizleri de dualarınızdan eksik etmeyin." className="inline-flex items-center gap-2 rounded-xl bg-[var(--h-sand)] px-7 py-4 text-base font-bold text-[var(--h-blue-deep)] transition hover:brightness-95">
                 <HugIcon name="dua" size={20} /> PDF&apos;i indir
               </LeadGateDownload>
               <a href={shareHref} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-xl border border-white/30 px-6 py-4 text-sm font-semibold text-white transition hover:bg-white/10">

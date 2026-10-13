@@ -1,29 +1,70 @@
 // Ücretsiz materyal karşılığı iletişim bilgisi (müşteri havuzu). Spam: bal küpü alanı + IP başına sınır.
+// 13 Ekim: e-posta yazan herkese 6 haneli kod gider (RESEND_API_KEY varsa); önce adres kontrol edilir (biçim, yazım hatası,
+// geçici servis, MX). Yalnızca telefon bırakmak serbest (daha çok kayıt için), numara biçimi kontrol edilir.
 import { NextResponse } from "next/server";
 import { rateLimit, getClientIp } from "@/lib/rate-limit";
-import { createLead, LEAD_SOURCES } from "@/lib/leads";
+import { createLead, findLeadByEmail, issueCode, refreshLead, LEAD_SOURCES } from "@/lib/leads";
+import { checkEmail, checkPhone } from "@/lib/leads/email-check";
+import { emailVerificationEnabled, sendLeadCode } from "@/lib/leads/mailer";
 
-const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+const bad = (error: string, extra: Record<string, unknown> = {}) => NextResponse.json({ ok: false, error, ...extra }, { status: 400 });
 
 export async function POST(req: Request) {
   const ip = getClientIp(req);
-  const { allowed } = rateLimit(ip, "leads", 5, 10 * 60 * 1000);
-  if (!allowed) return NextResponse.json({ ok: false, error: "Çok fazla deneme; birkaç dakika sonra tekrar deneyin." }, { status: 429 });
+  if (!rateLimit(ip, "leads", 8, 10 * 60 * 1000).allowed) return NextResponse.json({ ok: false, error: "Çok fazla deneme; birkaç dakika sonra tekrar deneyin." }, { status: 429 });
   const b = (await req.json().catch(() => ({}))) as Record<string, unknown>;
-  if (b.website) return NextResponse.json({ ok: true }); // bal küpü
-  const name = String(b.name ?? "").trim().slice(0, 80);
-  const email = String(b.email ?? "").trim().toLowerCase().slice(0, 120) || null;
-  const digits = String(b.phone ?? "").replace(/[^\d+]/g, "").slice(0, 20);
-  const phone = digits.replace(/\D/g, "").length >= 10 ? digits : null;
+  if (b.website) return NextResponse.json({ ok: true, step: "done" }); // bal küpü
   const source = String(b.source ?? "");
-  if (!LEAD_SOURCES[source]) return NextResponse.json({ ok: false, error: "Geçersiz kaynak." }, { status: 400 });
-  if (name.length < 2) return NextResponse.json({ ok: false, error: "Lütfen adınızı yazın." }, { status: 400 });
-  if (email && !EMAIL.test(email)) return NextResponse.json({ ok: false, error: "E-posta adresi geçersiz görünüyor." }, { status: 400 });
-  if (!email && !phone) return NextResponse.json({ ok: false, error: "E-posta adresinizi ya da telefon numaranızı yazın." }, { status: 400 });
-  if (b.kvkk !== true) return NextResponse.json({ ok: false, error: "Devam etmek için KVKK bilgilendirmesini onaylayın." }, { status: 400 });
+  if (!LEAD_SOURCES[source]) return bad("Geçersiz kaynak.");
+  const name = String(b.name ?? "").trim().replace(/\s+/g, " ").slice(0, 80);
+  if (name.length < 2 || !/\p{L}/u.test(name)) return bad("Lütfen adınızı yazın.", { field: "name" });
+  const emailRaw = String(b.email ?? "").trim().slice(0, 120);
+  const phoneRaw = String(b.phone ?? "").trim().slice(0, 25);
+  if (!emailRaw && !phoneRaw) return bad("E-posta adresinizi ya da telefon numaranızı yazın.", { field: "email" });
+
+  let phone: string | null = null;
+  if (phoneRaw) {
+    const p = checkPhone(phoneRaw);
+    if (!p.ok) return bad(p.error, { field: "phone" });
+    phone = p.phone;
+  }
+  let email: string | null = null;
+  if (emailRaw) {
+    const c = await checkEmail(emailRaw);
+    if (!c.ok) return bad(c.error, { field: "email", suggestion: c.suggestion });
+    email = c.email;
+  }
+  if (b.kvkk !== true) return bad("Devam etmek için KVKK bilgilendirmesini onaylayın.", { field: "kvkk" });
+
+  const input = {
+    name,
+    email,
+    phone,
+    source,
+    marketingConsent: b.marketing === true,
+    referrer: String(b.referrer ?? "").slice(0, 300) || null,
+    utm: String(b.utm ?? "").slice(0, 300) || null,
+  };
   try {
-    await createLead({ name, email, phone, source, marketingConsent: b.marketing === true, referrer: String(b.referrer ?? "").slice(0, 300) || null });
-    return NextResponse.json({ ok: true });
+    if (!email) {
+      await createLead(input);
+      return NextResponse.json({ ok: true, step: "done" });
+    }
+    const existing = await findLeadByEmail(email, source);
+    if (existing) await refreshLead(existing.id, input);
+    if (existing?.emailVerified) return NextResponse.json({ ok: true, step: "done" });
+    const leadId = existing?.id ?? (await createLead(input));
+    if (!emailVerificationEnabled()) return NextResponse.json({ ok: true, step: "done" });
+    if (!rateLimit(email, "lead-code", 3, 30 * 60 * 1000).allowed) return NextResponse.json({ ok: false, error: "Bu adrese kısa sürede çok kod gönderildi; e-postanızdaki son kodu kullanın." }, { status: 429 });
+    const code = await issueCode(leadId);
+    try {
+      await sendLeadCode({ to: email, name, code, title: LEAD_SOURCES[source], leadId });
+    } catch (e) {
+      // E-posta servisi çalışmazsa kişiyi kaybetmeyelim: kayıt doğrulanmamış olarak kalır, indirme açılır
+      console.error("[leads] kod gönderilemedi", e);
+      return NextResponse.json({ ok: true, step: "done" });
+    }
+    return NextResponse.json({ ok: true, step: "code", leadId, email });
   } catch (e) {
     console.error("[leads]", e);
     return NextResponse.json({ ok: false, error: "Kaydedilemedi; lütfen tekrar deneyin." }, { status: 500 });

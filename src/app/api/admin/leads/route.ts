@@ -12,8 +12,8 @@ export async function GET(req: NextRequest) {
   const source = req.nextUrl.searchParams.get("source") || undefined;
   const leads = await listLeads(source);
   if (req.nextUrl.searchParams.get("format") === "csv") {
-    const rows = [["Tarih", "Ad", "E-posta", "Telefon", "Kaynak", "Ticari ileti izni", "Durum", "Not"]];
-    for (const l of leads) rows.push([new Date(l.createdAt).toISOString().slice(0, 16).replace("T", " "), l.name, l.email ?? "", l.phone ?? "", LEAD_SOURCES[l.source] ?? l.source, l.marketingConsent ? "evet" : "hayır", l.status, l.note ?? ""]);
+    const rows = [["Tarih", "Ad", "E-posta", "E-posta doğrulandı", "Telefon", "Kaynak", "Ticari ileti izni", "Reklam kaynağı", "Durum", "Not"]];
+    for (const l of leads) rows.push([new Date(l.createdAt).toISOString().slice(0, 16).replace("T", " "), l.name, l.email ?? "", l.email ? (l.emailVerified ? "evet" : "hayır") : "", l.phone ?? "", LEAD_SOURCES[l.source] ?? l.source, l.marketingConsent ? "evet" : "hayır", l.utm ?? "", l.status, l.note ?? ""]);
     const csv = "﻿" + rows.map((r) => r.map(csvCell).join(";")).join("\n");
     return new NextResponse(csv, { headers: { "Content-Type": "text/csv; charset=utf-8", "Content-Disposition": `attachment; filename="musteri-havuzu.csv"` } });
   }

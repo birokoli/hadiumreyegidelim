@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { AnimatePresence, motion } from "motion/react";
 import WhatsAppIcon from "@/components/home/WhatsAppIcon";
 
 /*
@@ -53,7 +52,7 @@ function Toggle({ label, hint, checked, onChange }: { label: string; hint: strin
         <span className="block text-[12px] text-on-surface-variant">{hint}</span>
       </span>
       <span className={`relative w-11 h-6 shrink-0 rounded-full transition-colors ${checked ? "bg-primary" : "bg-outline-variant/60"}`}>
-        <motion.span layout transition={{ type: "spring", stiffness: 600, damping: 35 }} className={`absolute top-0.5 w-5 h-5 rounded-full bg-white shadow ${checked ? "right-0.5" : "left-0.5"}`} />
+        <span className={`absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white shadow transition-transform duration-200 ease-out ${checked ? "translate-x-5" : ""}`} />
       </span>
     </button>
   );
@@ -284,28 +283,19 @@ export default function UmrePlanner({ whatsappNumber }: { whatsappNumber: string
               <span className="block text-[14px] text-on-surface truncate">{s.value}</span>
             </button>
             {/* Mobil: panel satırın hemen altında açılır */}
-            <AnimatePresence initial={false}>
-              {open === s.id && (
-                <motion.div key="m" initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.2 }} className="md:hidden overflow-hidden">
-                  <div className="px-4 pb-4 pt-1">{panelBody(s.id)}</div>
-                </motion.div>
-              )}
-            </AnimatePresence>
+            {open === s.id && (
+              <div className="md:hidden overflow-hidden anim-acil">
+                <div className="px-4 pb-4 pt-1">{panelBody(s.id)}</div>
+              </div>
+            )}
             {/* Masaüstü: panel çubuğun altında kayan kart */}
-            <AnimatePresence>
-              {open === s.id && (
-                <motion.div
-                  key="d"
-                  initial={{ opacity: 0, y: -6 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -6 }}
-                  transition={{ duration: 0.16 }}
-                  className={`hidden md:block absolute top-[calc(100%+14px)] z-30 bg-white rounded-2xl shadow-[0_24px_60px_-20px_rgba(0,25,68,0.45)] border border-outline-variant/20 p-5 ${i === segments.length - 1 ? "right-0" : "left-0"}`}
-                >
-                  {panelBody(s.id)}
-                </motion.div>
-              )}
-            </AnimatePresence>
+            {open === s.id && (
+              <div
+                className={`anim-acil hidden md:block absolute top-[calc(100%+14px)] z-30 bg-white rounded-2xl shadow-[0_24px_60px_-20px_rgba(0,25,68,0.45)] border border-outline-variant/20 p-5 ${i === segments.length - 1 ? "right-0" : "left-0"}`}
+              >
+                {panelBody(s.id)}
+              </div>
+            )}
           </div>
         ))}
         <a

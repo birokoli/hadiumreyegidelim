@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
 
 const STEPS = [
   {
@@ -48,12 +47,7 @@ export default function UmrahSteps() {
     <div className="grid grid-cols-[minmax(0,1fr)] lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] gap-6 lg:gap-12 items-center">
       <div className="relative">
         <div className="absolute left-[19px] top-8 bottom-8 w-px bg-outline-variant/40" aria-hidden="true" />
-        <motion.div
-          className="absolute left-[19px] top-8 w-px bg-primary origin-top"
-          animate={{ height: active * 64 }}
-          transition={{ type: "spring", stiffness: 120, damping: 20 }}
-          aria-hidden="true"
-        />
+        <div className="absolute left-[19px] top-8 w-px bg-primary transition-[height] duration-500 ease-out" style={{ height: active * 64 }} aria-hidden="true" />
         <ul role="tablist" aria-label="Umre adımları">
           {STEPS.map((s, i) => {
             const on = i === active;
@@ -88,13 +82,11 @@ export default function UmrahSteps() {
       <div className="relative min-h-[230px] rounded-2xl bg-primary text-white p-6 md:p-8 overflow-hidden" role="tabpanel" id="umre-adim-panel" aria-labelledby={`umre-adim-${active}`} aria-live="polite">
         <div className="absolute -right-16 -top-16 w-64 h-64 rounded-full border border-white/10" aria-hidden="true" />
         <div className="absolute -right-4 -top-4 w-40 h-40 rounded-full border border-white/10" aria-hidden="true" />
-        <AnimatePresence mode="wait">
-          <motion.div key={step.name} initial={{ opacity: 0, x: 24 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -24 }} transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }} className="relative">
+        <div key={step.name} className="relative anim-kay">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/60">Adım {active + 1} / {STEPS.length}</p>
             <h3 className="mt-2 font-headline text-2xl md:text-3xl font-bold">{step.name}</h3>
             <p className="mt-3 text-white/85 text-[15px] leading-relaxed max-w-xl">{step.text}</p>
-          </motion.div>
-        </AnimatePresence>
+        </div>
         <div className="relative mt-6 flex items-center justify-between gap-4">
           <div className="flex gap-1.5" aria-hidden="true">
             {STEPS.map((s, i) => (

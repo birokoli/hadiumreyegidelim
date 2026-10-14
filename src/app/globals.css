@@ -425,3 +425,10 @@
 .home-v2 .bg-sky { background: linear-gradient(180deg, color-mix(in srgb, var(--h-sky) 45%, white) 0%, var(--h-white) 100%); }
 .home-v2 .bg-deep { background: linear-gradient(135deg, var(--h-blue-deep) 0%, var(--h-blue) 100%); }
 
+
+/* Ana sayfa küçük geçişleri (14 Ekim): animasyon kütüphanesi yerine CSS; ana sayfa paketinden ~50 KB JS çıktı */
+@keyframes anim-acil { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+@keyframes anim-kay { from { opacity: 0; transform: translateX(24px); } to { opacity: 1; transform: none; } }
+.anim-acil { animation: anim-acil 0.18s ease-out; }
+.anim-kay { animation: anim-kay 0.28s cubic-bezier(0.16, 1, 0.3, 1); }
+@media (prefers-reduced-motion: reduce) { .anim-acil, .anim-kay { animation: none; } }

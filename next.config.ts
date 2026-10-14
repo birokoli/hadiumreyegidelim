@@ -9,6 +9,9 @@ const nextConfig: NextConfig = {
   // build ederken bağlantı sınırına takılmamak için işçi ve eş zamanlılık sınırlı; düşen
   // sayfa build'i bozmadan önce yeniden denenir.
   experimental: {
+    // 14 Ekim (hız): CSS ayrı dosya yerine HTML'in içinde gelir; mobilde ilk boyamayı ~1 sn bekleten istek kalkar.
+    // Ziyaretçilerin çoğu Instagram'dan ilk kez geliyor; önbellek avantajı bu kazançtan küçük.
+    inlineCss: true,
     cpus: 4,
     staticGenerationMaxConcurrency: 4,
     staticGenerationMinPagesPerWorker: 40,

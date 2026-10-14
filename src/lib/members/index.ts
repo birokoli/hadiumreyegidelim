@@ -6,6 +6,7 @@ import { prisma } from "@/lib/prisma";
 import { verifyToken } from "@/lib/jwt";
 import { ensureSatisSchema } from "@/lib/satis";
 import { ensureLeadSchema } from "@/lib/leads";
+import { ensureUyeKampanyaSchema } from "@/lib/uye-kampanya";
 
 export const SESSION_COOKIE = "b2c_session";
 
@@ -115,19 +116,34 @@ export type AdminMember = Member & {
   sonDosyaStatus: string | null;
   /** Son 7 günde üye oldu */
   yeni: boolean;
+  // Profil 2: tercih tablosundan (yoksa üyelik kaydındaki izinden)
+  izinEposta: boolean;
+  izinWhatsapp: boolean;
+  izinTarihi: Date | null;
+  planDonem: string | null;
+  planKisi: number | null;
+  planKimle: string | null;
+  planOtel: string | null;
+  sonGiris: Date | null;
 };
 
 export async function listMembersForAdmin(): Promise<AdminMember[]> {
   await ensureSchema();
-  await Promise.all([ensureSatisSchema(), ensureLeadSchema()]);
+  await Promise.all([ensureSatisSchema(), ensureLeadSchema(), ensureUyeKampanyaSchema()]);
   const rows = await prisma.$queryRawUnsafe<(Omit<AdminMember, "dosyaSayisi"> & { dosyaSayisi: bigint })[]>(`
     SELECT u."id", u."name", u."email", u."phone", u."createdAt",
       m."emailVerifiedAt", (u."createdAt" > NOW() - INTERVAL '7 days') AS "yeni",
       COALESCE((SELECT bool_or(l."marketingConsent") FROM "MarketingLead" l WHERE LOWER(l."email") = LOWER(u."email")), false) AS "marketingConsent",
       (SELECT COUNT(*) FROM "SatisDosyasi" d WHERE d."userId" = u."id" OR LOWER(d."email") = LOWER(u."email")) AS "dosyaSayisi",
       (SELECT d."no" FROM "SatisDosyasi" d WHERE d."userId" = u."id" OR LOWER(d."email") = LOWER(u."email") ORDER BY d."updatedAt" DESC LIMIT 1) AS "sonDosyaNo",
-      (SELECT d."status" FROM "SatisDosyasi" d WHERE d."userId" = u."id" OR LOWER(d."email") = LOWER(u."email") ORDER BY d."updatedAt" DESC LIMIT 1) AS "sonDosyaStatus"
-    FROM "User" u LEFT JOIN "UyeMeta" m ON m."userId" = u."id"
+      (SELECT d."status" FROM "SatisDosyasi" d WHERE d."userId" = u."id" OR LOWER(d."email") = LOWER(u."email") ORDER BY d."updatedAt" DESC LIMIT 1) AS "sonDosyaStatus",
+      CASE WHEN t."izinTarihi" IS NOT NULL OR t."izinSoruldu" IS NOT NULL THEN t."izinEposta" ELSE
+        COALESCE((SELECT bool_or(l."marketingConsent") FROM "MarketingLead" l WHERE LOWER(l."email") = LOWER(u."email") AND l."source" = 'uyelik'), false) END AS "izinEposta",
+      CASE WHEN t."izinTarihi" IS NOT NULL OR t."izinSoruldu" IS NOT NULL THEN t."izinWhatsapp" ELSE
+        COALESCE((SELECT bool_or(l."marketingConsent") FROM "MarketingLead" l WHERE LOWER(l."email") = LOWER(u."email") AND l."source" = 'uyelik'), false) END AS "izinWhatsapp",
+      COALESCE(t."izinTarihi", (SELECT MIN(l."createdAt") FROM "MarketingLead" l WHERE LOWER(l."email") = LOWER(u."email") AND l."source" = 'uyelik' AND l."marketingConsent")) AS "izinTarihi",
+      t."planDonem", t."planKisi", t."planKimle", t."planOtel", t."sonGiris"
+    FROM "User" u LEFT JOIN "UyeMeta" m ON m."userId" = u."id" LEFT JOIN "UyeTercih" t ON t."userId" = u."id"
     ORDER BY u."createdAt" DESC LIMIT 5000`);
   return rows.map((r) => ({ ...r, dosyaSayisi: Number(r.dosyaSayisi) }));
 }

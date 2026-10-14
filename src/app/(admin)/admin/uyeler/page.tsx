@@ -7,10 +7,11 @@ import HubTabs from "@/components/admin/HubTabs";
 import { getAdminSession } from "@/lib/admin-auth";
 import { listMembersForAdmin } from "@/lib/members";
 import { asamaLabel } from "@/lib/satis/ortak";
+import { donemLabel, KIMLE, OTEL } from "@/lib/uye-kampanya/ortak";
 
 export const dynamic = "force-dynamic";
 
-const FILTRE = { tumu: "Tümü", dogrulanan: "E-postası doğrulanan", dogrulanmayan: "Doğrulanmayan", dosyali: "Umre dosyası olan", izinli: "İleti izni verenler" } as const;
+const FILTRE = { tumu: "Tümü", izinli: "İleti izni verenler", planli: "Umre planı olan", dosyali: "Umre dosyası olan", dogrulanan: "E-postası doğrulanan", dogrulanmayan: "Doğrulanmayan" } as const;
 type Filtre = keyof typeof FILTRE;
 
 function waUrl(phone: string, name: string) {
@@ -20,9 +21,9 @@ function waUrl(phone: string, name: string) {
   return `https://wa.me/${p}?text=${encodeURIComponent(`Merhaba ${name.split(" ")[0]}, Hadi Umreye Gidelim'den yazıyoruz.`)}`;
 }
 
-export default async function UyelerPage({ searchParams }: { searchParams: Promise<{ q?: string; f?: string }> }) {
+export default async function UyelerPage({ searchParams }: { searchParams: Promise<{ q?: string; f?: string; d?: string }> }) {
   if (!(await getAdminSession())) redirect("/admin/login");
-  const { q = "", f = "tumu" } = await searchParams;
+  const { q = "", f = "tumu", d = "" } = await searchParams;
   const filtre: Filtre = f in FILTRE ? (f as Filtre) : "tumu";
   const uyeler = await listMembersForAdmin();
 
@@ -31,32 +32,47 @@ export default async function UyelerPage({ searchParams }: { searchParams: Promi
     if (filtre === "dogrulanan" && !u.emailVerifiedAt) return false;
     if (filtre === "dogrulanmayan" && u.emailVerifiedAt) return false;
     if (filtre === "dosyali" && u.dosyaSayisi === 0) return false;
-    if (filtre === "izinli" && !u.marketingConsent) return false;
+    if (filtre === "izinli" && !u.izinEposta && !u.izinWhatsapp) return false;
+    if (filtre === "planli" && !u.planDonem) return false;
+    if (d && u.planDonem !== d) return false;
     return !ara || `${u.name} ${u.email} ${u.phone ?? ""}`.toLocaleLowerCase("tr-TR").includes(ara);
   });
 
   const dogrulanan = uyeler.filter((u) => u.emailVerifiedAt).length;
   const dosyali = uyeler.filter((u) => u.dosyaSayisi > 0).length;
+  const izinli = uyeler.filter((u) => u.izinEposta || u.izinWhatsapp).length;
+  const donemler = [...new Set(uyeler.map((u) => u.planDonem).filter((x): x is string => !!x))].sort();
   const son7 = uyeler.filter((u) => u.yeni).length;
   const kart = [
     { etiket: "Toplam üye", sayi: uyeler.length, alt: `Son 7 günde ${son7} yeni üye`, renk: "text-primary border-primary/20" },
     { etiket: "E-postası doğrulanan", sayi: dogrulanan, alt: "Umre dosyası otomatik bağlanır", renk: "text-secondary border-secondary/25" },
-    { etiket: "Doğrulanmayan", sayi: uyeler.length - dogrulanan, alt: "Dosya admin'den bağlanır", renk: "text-[#b8862f] border-[#b8862f]/25" },
+    { etiket: "İleti izni veren", sayi: izinli, alt: "Kampanya e-postası ve WhatsApp gönderilebilir", renk: "text-[#b8862f] border-[#b8862f]/25" },
     { etiket: "Umre dosyası olan", sayi: dosyali, alt: "Satış masasında dosyası var", renk: "text-error border-error/20" },
   ];
-  const href = (yeniF: Filtre) => `/admin/uyeler?f=${yeniF}${q ? `&q=${encodeURIComponent(q)}` : ""}`;
+  const href = (yeniF: Filtre) => `/admin/uyeler?f=${yeniF}${q ? `&q=${encodeURIComponent(q)}` : ""}${d ? `&d=${encodeURIComponent(d)}` : ""}`;
 
   return (
     <div className="p-6 lg:p-8 max-w-7xl mx-auto space-y-8 min-h-screen bg-surface text-on-surface">
       <HubTabs hub="satis" />
 
-      <div className="pb-6 border-b border-outline-variant/15">
+      <div className="pb-6 border-b border-outline-variant/15 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+        <div>
         <span className="text-[10px] font-bold tracking-widest text-secondary uppercase">Satış & CRM</span>
         <h1 className="font-headline text-2xl font-bold tracking-tight text-primary mt-1">Üyeler</h1>
         <p className="text-xs text-on-surface-variant mt-0.5">
           Siteye üye olanlar (profil, umrelerim, teklifler). Kitapçık indirenler{" "}
           <Link href="/admin/musteri-havuzu" className="font-bold text-primary hover:underline">Müşteri havuzu</Link>&apos;nda.
         </p>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <Link href="/admin/uyeler/gonder" className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-primary text-white text-xs font-bold">
+            <span className="material-symbols-outlined text-[16px]">send</span> Duyuru ve kampanya gönder
+          </Link>
+          {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- dosya indirme */}
+          <a href="/api/admin/uyeler/iys" className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl border border-outline-variant/25 text-primary text-xs font-bold">
+            <span className="material-symbols-outlined text-[16px]">download</span> İYS dosyası
+          </a>
+        </div>
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -85,6 +101,7 @@ export default async function UyelerPage({ searchParams }: { searchParams: Promi
         </div>
         <form action="/admin/uyeler" className="relative w-full sm:w-72">
           <input type="hidden" name="f" value={filtre} />
+          {d && <input type="hidden" name="d" value={d} />}
           <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[16px]">search</span>
           <input
             type="search"
@@ -96,6 +113,18 @@ export default async function UyelerPage({ searchParams }: { searchParams: Promi
         </form>
       </div>
 
+      {donemler.length > 0 && (
+        <div className="flex flex-wrap items-center gap-1.5 -mt-4">
+          <span className="text-[10px] font-bold uppercase tracking-widest text-outline mr-1">Umre planı</span>
+          <Link href={`/admin/uyeler?f=${filtre}${q ? `&q=${encodeURIComponent(q)}` : ""}`} className={`px-2.5 py-1 rounded-lg text-[11px] font-bold border ${!d ? "bg-primary/10 text-primary border-primary/30" : "border-outline-variant/25 text-on-surface-variant"}`}>Hepsi</Link>
+          {donemler.map((x) => (
+            <Link key={x} href={`/admin/uyeler?f=${filtre}&d=${encodeURIComponent(x)}${q ? `&q=${encodeURIComponent(q)}` : ""}`} className={`px-2.5 py-1 rounded-lg text-[11px] font-bold border ${d === x ? "bg-primary/10 text-primary border-primary/30" : "border-outline-variant/25 text-on-surface-variant"}`}>
+              {donemLabel(x)} ({uyeler.filter((u) => u.planDonem === x).length})
+            </Link>
+          ))}
+        </div>
+      )}
+
       <div className="border border-outline-variant/15 rounded-2xl overflow-x-auto bg-surface-container-lowest">
         {liste.length === 0 ? (
           <div className="py-16 text-center text-outline text-xs font-medium">{uyeler.length === 0 ? "Henüz üye yok." : "Aramanıza uygun üye bulunamadı."}</div>
@@ -105,7 +134,8 @@ export default async function UyelerPage({ searchParams }: { searchParams: Promi
               <tr>
                 <th className="px-4 py-3">Üye</th>
                 <th className="px-4 py-3">İletişim</th>
-                <th className="px-4 py-3">Üyelik tarihi</th>
+                <th className="px-4 py-3">Umre planı</th>
+                <th className="px-4 py-3">Üyelik · son giriş</th>
                 <th className="px-4 py-3">Umre dosyası</th>
                 <th className="px-4 py-3 text-right">İşlem</th>
               </tr>
@@ -120,7 +150,11 @@ export default async function UyelerPage({ searchParams }: { searchParams: Promi
                       </div>
                       <div>
                         <div className="font-bold text-on-surface whitespace-nowrap">{u.name}</div>
-                        {u.marketingConsent ? <span className="text-[10px] font-bold text-secondary">İleti izni var</span> : <span className="text-[10px] text-outline">İleti izni yok</span>}
+                        {u.izinEposta || u.izinWhatsapp ? (
+                          <span className="text-[10px] font-bold text-secondary">İzin: {[u.izinEposta && "e-posta", u.izinWhatsapp && "WhatsApp"].filter(Boolean).join(", ")}</span>
+                        ) : (
+                          <span className="text-[10px] text-outline">İleti izni yok</span>
+                        )}
                       </div>
                     </div>
                   </td>
@@ -135,8 +169,19 @@ export default async function UyelerPage({ searchParams }: { searchParams: Promi
                       )}
                     </div>
                   </td>
+                  <td className="px-4 py-3 text-on-surface-variant">
+                    {u.planDonem ? (
+                      <>
+                        <div className="font-bold text-on-surface whitespace-nowrap">{donemLabel(u.planDonem)}{u.planKisi ? ` · ${u.planKisi} kişi` : ""}</div>
+                        <div className="text-[10px] text-outline">{[u.planKimle && KIMLE[u.planKimle], u.planOtel && OTEL[u.planOtel]].filter(Boolean).join(" · ")}</div>
+                      </>
+                    ) : (
+                      <span className="text-outline">Yok</span>
+                    )}
+                  </td>
                   <td className="px-4 py-3 text-outline font-mono whitespace-nowrap">
                     {new Date(u.createdAt).toLocaleDateString("tr-TR", { day: "2-digit", month: "short", year: "numeric" })}
+                    <div className="text-[10px]">{u.sonGiris ? `son: ${new Date(u.sonGiris).toLocaleDateString("tr-TR", { day: "2-digit", month: "short" })}` : "giriş kaydı yok"}</div>
                   </td>
                   <td className="px-4 py-3">
                     {u.sonDosyaNo ? (

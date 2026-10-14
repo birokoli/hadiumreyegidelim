@@ -1,6 +1,7 @@
 import { SITE_URL } from "@/lib/seo/site";
 import HugIcon from "@/components/icons/HugIcon";
 import { getPackagePricing } from "@/lib/pricing/package-server";
+import { uyeFiyati, uyeKurali } from "@/lib/pricing/uye";
 import PackageHotelPicker from "@/components/packages/PackageHotelPicker";
 import React from 'react';
 export const revalidate = 300;
@@ -68,6 +69,9 @@ export default async function PackageDetailPage({ params }: { params: Promise<{ 
   // Şablonlu paket (ör. 10 gün Mekke): fiyat otele ve kişi sayısına göre hesaplanır; gösterilen "başlayan" fiyattır
   const pricing = await getPackagePricing(pkg.slug).catch(() => null);
   const price = pricing?.fromPrice ?? pkg.price;
+  // Profil 2: üyelerimize özel fiyat yalnızca admin'de bu pakete üye fiyatı tanımlandıysa
+  const uyeKural = pricing ? pricing.uyeKural : uyeKurali(await getSiteSettings().catch(() => ({} as Record<string, string>)), pkg.slug);
+  const uyePrice = uyeFiyati(price, uyeKural);
 
   let includes: string[] = [];
   let mainDesc = pkg.description;
@@ -152,7 +156,7 @@ export default async function PackageDetailPage({ params }: { params: Promise<{ 
         lead={
           <div className="flex flex-wrap items-center gap-3 mt-2">
             {pkg.duration && <Badge tone="primary">{pkg.duration}</Badge>}
-            {price > 0 && <PriceTag amount={price} currency={pkg.currency} label="Başlangıç" />}
+            {price > 0 && <PriceTag amount={price} currency={pkg.currency} label="Başlangıç" memberAmount={uyePrice} large />}
           </div>
         }
         aside={
@@ -205,7 +209,7 @@ export default async function PackageDetailPage({ params }: { params: Promise<{ 
             )}
 
             {pricing && (
-              <PackageHotelPicker title={pkg.title} preset={pricing.preset} catalog={pricing.catalog} month={pricing.month} monthLabel={pricing.monthLabel} packagePercent={pricing.packagePercent} whatsappNumber={whatsappNumber} />
+              <PackageHotelPicker title={pkg.title} preset={pricing.preset} catalog={pricing.catalog} month={pricing.month} monthLabel={pricing.monthLabel} packagePercent={pricing.packagePercent} uyeKural={pricing.uyeKural} slug={pkg.slug} whatsappNumber={whatsappNumber} />
             )}
             {includes.length > 0 && (
               <Panel tone="white">
@@ -239,7 +243,7 @@ export default async function PackageDetailPage({ params }: { params: Promise<{ 
 
               {price > 0 && (
                 <div className="mb-6 p-4 bg-surface-container-low rounded-xl">
-                  <PriceTag amount={price} currency={pkg.currency} label={pricing ? "Kişi başı, 2 kişi · başlayan" : "Kişi başı paket fiyatı"} />
+                  <PriceTag amount={price} currency={pkg.currency} label={pricing ? "Kişi başı, 2 kişi · başlayan" : "Kişi başı paket fiyatı"} memberAmount={uyePrice} large />
                 </div>
               )}
 

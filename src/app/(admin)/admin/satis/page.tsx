@@ -7,7 +7,6 @@ import HubTabs from "@/components/admin/HubTabs";
 import { ASAMALAR, gunKaldi, toplam, trTarih, usd, type Dosya } from "@/lib/satis/ortak";
 
 type Ekip = { id: string; name: string };
-type Kampanya = { id: string; baslik: string; aciklama: string; link: string; hat?: string; aktif: boolean };
 const inp = "w-full bg-surface-container-lowest border border-outline-variant/25 rounded-lg p-2 text-xs outline-none focus:border-primary/40";
 
 export default function SatisMasasi() {
@@ -21,8 +20,6 @@ export default function SatisMasasi() {
   const [yeni, setYeni] = useState(false);
   const [f, setF] = useState({ musteriAdi: "", phone: "", email: "", yetiskin: 2, cocuk: 0, gidis: "", donus: "", talepNotu: "" });
   const [hata, setHata] = useState("");
-  const [kampanyalar, setKampanyalar] = useState<Kampanya[]>([]);
-  const [kAcik, setKAcik] = useState(false);
 
   const yukle = useCallback(async () => {
     const r = await fetch("/api/admin/satis");
@@ -55,14 +52,6 @@ export default function SatisMasasi() {
     router.push(`/admin/satis/${d.dosya.no}`);
   };
 
-  const kampanyaAc = async () => {
-    setKAcik((v) => !v);
-    if (!kAcik) setKampanyalar((await fetch("/api/admin/satis/kampanyalar").then((r) => r.json())).kampanyalar ?? []);
-  };
-  const kampanyaKaydet = async () => {
-    const r = await fetch("/api/admin/satis/kampanyalar", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ kampanyalar }) });
-    if (r.ok) setKampanyalar((await r.json()).kampanyalar);
-  };
   const ekipAdi = (id: string | null) => ekip.find((x) => x.id === id)?.name ?? "";
 
   const sutunlar = [...ASAMALAR.map((a) => ({ key: a.key as string, label: a.label })), ...(iptal ? [{ key: "iptal", label: "İptal" }] : [])];
@@ -119,30 +108,10 @@ export default function SatisMasasi() {
         })}
       </div>
 
-      <section className="max-w-7xl rounded-2xl border border-outline-variant/15 bg-surface-container-lowest p-4">
-        <button type="button" onClick={kampanyaAc} className="flex w-full items-center justify-between text-left">
-          <span><span className="text-sm font-bold">Profilde gösterilen kampanyalar</span><span className="block text-xs text-on-surface-variant">Üyelerin profil özetinde &quot;Size uygun&quot; kartı. Başlıkta *yıldızlı* kısım italik olur.</span></span>
-          <span className="text-xs font-bold text-primary">{kAcik ? "Kapat" : "Düzenle"}</span>
-        </button>
-        {kAcik && (
-          <div className="mt-4 space-y-2">
-            {kampanyalar.map((k, i) => (
-              <div key={k.id} className="grid gap-2 rounded-xl bg-surface-container-low p-3 md:grid-cols-[1.2fr_1.6fr_1fr_90px_auto_auto]">
-                <input className={inp} placeholder="Ramazan 2027 *erken kayıt*" value={k.baslik} onChange={(e) => setKampanyalar((l) => l.map((x, j) => (j === i ? { ...x, baslik: e.target.value } : x)))} />
-                <input className={inp} placeholder="Kısa açıklama" value={k.aciklama} onChange={(e) => setKampanyalar((l) => l.map((x, j) => (j === i ? { ...x, aciklama: e.target.value } : x)))} />
-                <input className={inp} placeholder="/bireysel-umre" value={k.link} onChange={(e) => setKampanyalar((l) => l.map((x, j) => (j === i ? { ...x, link: e.target.value } : x)))} />
-                <input className={inp} placeholder="Hat: رمضان" value={k.hat ?? ""} onChange={(e) => setKampanyalar((l) => l.map((x, j) => (j === i ? { ...x, hat: e.target.value } : x)))} />
-                <label className="flex items-center gap-1.5 text-xs"><input type="checkbox" checked={k.aktif} onChange={(e) => setKampanyalar((l) => l.map((x, j) => (j === i ? { ...x, aktif: e.target.checked } : x)))} />Aktif</label>
-                <button type="button" onClick={() => setKampanyalar((l) => l.filter((_, j) => j !== i))} className="text-xs text-outline hover:text-error">sil</button>
-              </div>
-            ))}
-            <div className="flex gap-2">
-              <button type="button" onClick={() => setKampanyalar((l) => [...l, { id: `k${Date.now()}`, baslik: "", aciklama: "", link: "/bireysel-umre", hat: "", aktif: true }])} className="rounded-lg border border-outline-variant/25 px-3 py-1.5 text-xs font-bold text-primary">+ Kampanya</button>
-              <button type="button" onClick={kampanyaKaydet} className="rounded-lg bg-primary px-3 py-1.5 text-xs font-bold text-white">Kaydet</button>
-            </div>
-          </div>
-        )}
-      </section>
+      <Link href="/admin/uye-kampanyalari" className="block max-w-7xl rounded-2xl border border-outline-variant/15 bg-surface-container-lowest p-4 hover:border-primary/40">
+        <span className="text-sm font-bold">Üyelere özel kampanyalar</span>
+        <span className="block text-xs text-on-surface-variant">Profilde &quot;Size Özel&quot; sekmesinde görünen tarihler ve paketlerdeki üye fiyatı oranı; talepler bu panoya düşer.</span>
+      </Link>
 
       {yeni && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4" onClick={(e) => { if (e.target === e.currentTarget) setYeni(false); }}>

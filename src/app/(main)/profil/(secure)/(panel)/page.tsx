@@ -1,9 +1,10 @@
 // Profil özeti (14 Ekim, satış masasına bağlı): yaklaşan umre (gün sayacı, aşama, otel ve karşılama), sizden beklenenler,
-// yanıt bekleyen teklif, kitaplık ve admin'den eklenen kampanya.
+// yanıt bekleyen teklif, kitaplık; Profil 2 (14 Ekim): en üstte üyelere özel tarih, plan boşsa "umre planınızı yazın".
 import Image from "next/image";
 import Link from "next/link";
 import { getMember, isEmailVerified } from "@/lib/members";
-import { asamaLabel, dosyalarOfMember, gunKaldi, onaylandiMi, oteller, profilKampanyalari, toplam, trTarih, usd } from "@/lib/satis";
+import { asamaLabel, dosyalarOfMember, gunKaldi, onaylandiMi, oteller, toplam, trTarih, usd } from "@/lib/satis";
+import { geceToplam, getTercih, planaGoreSirala, trGun, usdTam, yayindakiKampanyalar } from "@/lib/uye-kampanya";
 import { getSiteSettings } from "@/lib/site-settings";
 import HugIcon from "@/components/icons/HugIcon";
 import Accent from "@/components/home/Accent";
@@ -13,11 +14,11 @@ export default async function ProfilOzet() {
   const m = await getMember();
   if (!m) return null;
   const dogrulandi = await isEmailVerified(m.id);
-  const [dosyalar, kampanyalar, settings] = await Promise.all([dosyalarOfMember(m, dogrulandi).catch(() => []), profilKampanyalari(), getSiteSettings()]);
+  const [dosyalar, kampanyalar, settings, tercih] = await Promise.all([dosyalarOfMember(m, dogrulandi).catch(() => []), yayindakiKampanyalar().catch(() => []), getSiteSettings(), getTercih(m.id, m.email)]);
   const wa = (settings.WHATSAPP_NUMBER || "905404010038").replace(/\D/g, "");
   const aktif = dosyalar.filter((d) => onaylandiMi(d.status) && d.status !== "tamamlandi").sort((a, b) => (a.data.gidis ?? "9999").localeCompare(b.data.gidis ?? "9999"))[0];
   const bekleyen = dosyalar.find((d) => d.status === "teklif" && d.data.kalemler.length);
-  const kampanya = kampanyalar.find((k) => k.aktif);
+  const kampanya = planaGoreSirala(kampanyalar, tercih)[0];
   const gun = aktif ? gunKaldi(aktif.data.gidis) : null;
   const ots = aktif ? oteller(aktif.data) : [];
 
@@ -92,12 +93,23 @@ export default async function ProfilOzet() {
           </span>
         </Link>
         {kampanya && (
-          <Link href={kampanya.link} className="bg-deep on-dark relative block overflow-hidden rounded-[28px] p-6 text-white">
+          <Link href="/profil/size-ozel" className="bg-deep on-dark relative block overflow-hidden rounded-[28px] p-6 text-white">
             {kampanya.hat && <span aria-hidden className="hat pointer-events-none absolute -bottom-8 -left-1 select-none text-[6rem] leading-none text-white/[0.06]">{kampanya.hat}</span>}
-            <p className="relative text-[11px] font-bold uppercase tracking-[0.22em] text-[var(--h-sand)]">Size uygun · Kampanya</p>
+            <p className="relative text-[11px] font-bold uppercase tracking-[0.22em] text-[var(--h-sand)]">Size özel{kampanya.eslesme ? " · planınıza uygun" : ""}</p>
             <h2 className="relative mt-2 text-xl font-bold leading-snug"><Accent text={kampanya.baslik} /></h2>
-            {kampanya.aciklama && <p className="relative mt-1 text-[13px] text-white/75">{kampanya.aciklama}</p>}
-            <span className="relative mt-4 inline-flex items-center gap-1.5 rounded-xl bg-[var(--h-sand)] px-4 py-2 text-[13px] font-bold text-[var(--h-blue-deep)]">İncele <HugIcon name="ok" size={14} /></span>
+            <p className="relative mt-1 text-[13px] text-white/75">
+              {[kampanya.gidis ? `${trGun(kampanya.gidis)} – ${trGun(kampanya.donus)}` : "", geceToplam(kampanya) ? `${geceToplam(kampanya)} gece` : "", kampanya.uyeFiyat != null ? `üye fiyatı ${usdTam(kampanya.uyeFiyat)}` : ""].filter(Boolean).join(" · ")}
+            </p>
+            <span className="relative mt-4 inline-flex items-center gap-1.5 rounded-xl bg-[var(--h-sand)] px-4 py-2 text-[13px] font-bold text-[var(--h-blue-deep)]">
+              {kampanyalar.length > 1 ? `${kampanyalar.length} tarihi gör` : "İncele"} <HugIcon name="ok" size={14} />
+            </span>
+          </Link>
+        )}
+        {!tercih.planDonem && (
+          <Link href="/profil/size-ozel" className="flex items-center gap-4 rounded-[28px] bg-white p-5 ring-1 ring-[var(--h-sky)]/60 md:p-6">
+            <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[var(--h-white)] text-[var(--h-blue)]"><HugIcon name="takvim" size={22} /></span>
+            <span className="flex-1"><span className="block text-sm font-bold text-[#14213d]">Umre planınızı yazın</span><span className="text-xs text-[#5b6680]">Ne zaman, kaç kişi; size uygun tarihleri önce gösterelim</span></span>
+            <HugIcon name="ok" size={18} className="text-[var(--h-blue)]" />
           </Link>
         )}
       </div>

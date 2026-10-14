@@ -1,9 +1,11 @@
-// Resend teslim olayları (14 Ekim): kitapçık kodu e-postası teslim edildi mi, geri mi döndü, şikâyet mi edildi.
+// Resend teslim olayları (14 Ekim): kitapçık kodu e-postası teslim edildi mi, geri mi döndü, şikâyet mi edildi;
+// üye duyuru ve kampanya e-postalarında ayrıca açılma ve tıklama (Resend'de açılma/tıklama izleme açıksa).
 // Resend → Webhooks'ta bu adres eklenir; imza anahtarı Vercel'e RESEND_WEBHOOK_SECRET olarak girilir. Anahtar yoksa uç nokta
 // hiçbir olayı kabul etmez (sahte "geri döndü" olayıyla kayıt bozulmasın). İmza Svix biçiminde: HMAC-SHA256(id.zaman.gövde).
 import { createHmac, timingSafeEqual } from "node:crypto";
 import { NextResponse } from "next/server";
 import { markEmailEvent, type EmailStatus } from "@/lib/leads";
+import { gonderimOlayi } from "@/lib/uye-kampanya/gonderim";
 
 export const dynamic = "force-dynamic";
 
@@ -25,7 +27,12 @@ function imzaGecerli(govde: string, id: string | null, zaman: string | null, imz
 
 type Olay = {
   type?: string;
-  data?: { to?: string[] | string; bounce?: { type?: string; subType?: string; message?: string }; suppressed?: { message?: string } };
+  data?: {
+    email_id?: string;
+    to?: string[] | string;
+    bounce?: { type?: string; subType?: string; message?: string };
+    suppressed?: { message?: string };
+  };
 };
 
 /** Resend olayını kayıt durumuna çevirir; ilgilenmediğimiz olaylar (açıldı, tıklandı, gönderildi) null döner. */
@@ -64,13 +71,15 @@ export async function POST(req: Request) {
   } catch {
     return NextResponse.json({ error: "Geçersiz gövde." }, { status: 400 });
   }
+  // Profil 2: üyelere giden duyuru/kampanya e-postalarının teslim, açılma ve tıklama kayıtları
+  const uye = olay.data?.email_id && olay.type ? await gonderimOlayi(olay.data.email_id, olay.type).catch(() => 0) : 0;
   const d = durum(olay);
-  if (!d) return NextResponse.json({ ok: true, ignored: olay.type ?? null });
+  if (!d) return NextResponse.json({ ok: true, ignored: olay.type ?? null, uye });
   const alicilar = Array.isArray(olay.data?.to) ? olay.data.to : olay.data?.to ? [olay.data.to] : [];
   let guncellenen = 0;
   for (const adres of alicilar) {
     const temiz = adres.match(/<([^>]+)>/)?.[1] ?? adres;
     guncellenen += await markEmailEvent(temiz, d.status, d.note);
   }
-  return NextResponse.json({ ok: true, status: d.status, updated: guncellenen });
+  return NextResponse.json({ ok: true, status: d.status, updated: guncellenen, uye });
 }

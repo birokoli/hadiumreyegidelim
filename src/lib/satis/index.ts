@@ -159,18 +159,3 @@ export async function deleteBelge(id: string) {
   await ensureSatisSchema();
   await prisma.$executeRaw`DELETE FROM "UmreBelge" WHERE "id" = ${id}`;
 }
-
-// ─── Profil kampanyaları (admin'den elle) ──────────────────────────────────
-export type ProfilKampanya = { id: string; baslik: string; aciklama: string; link: string; hat?: string; aktif: boolean };
-export async function profilKampanyalari(): Promise<ProfilKampanya[]> {
-  const s = await prisma.setting.findUnique({ where: { key: "PROFIL_KAMPANYALAR" } }).catch(() => null);
-  try {
-    return (JSON.parse(s?.value ?? "[]") as ProfilKampanya[]).filter((k) => k && k.baslik);
-  } catch {
-    return [];
-  }
-}
-export async function saveProfilKampanyalari(list: ProfilKampanya[]) {
-  const value = JSON.stringify(list.slice(0, 12));
-  await prisma.setting.upsert({ where: { key: "PROFIL_KAMPANYALAR" }, update: { value }, create: { key: "PROFIL_KAMPANYALAR", value } });
-}

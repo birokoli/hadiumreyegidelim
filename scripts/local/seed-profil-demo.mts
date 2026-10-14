@@ -3,7 +3,8 @@
 import { readFileSync } from "node:fs";
 import { prisma } from "@/lib/prisma";
 import { markEmailVerified } from "@/lib/members";
-import { addBelge, createDosya, ensureSatisSchema, saveDosya, saveProfilKampanyalari, type Kalem } from "@/lib/satis";
+import { addBelge, createDosya, ensureSatisSchema, saveDosya, type Kalem } from "@/lib/satis";
+import { saveKampanya } from "@/lib/uye-kampanya";
 import { directoryHotels } from "@/lib/catalog/hotel-directory";
 
 if (!/@(127\.0\.0\.1|localhost):5432\//.test(process.env.DATABASE_URL ?? "")) throw new Error("Güvenlik: yalnızca yerel veritabanı.");
@@ -62,6 +63,7 @@ await createDosya({ musteriAdi: "Ayşe Demir", phone: "05551234567", yetiskin: 2
 const d4 = await createDosya({ musteriAdi: uye.name, email: uye.email, yetiskin: 2, gidis: "2026-04-10", donus: "2026-04-20", kim: "Yerel test" });
 await saveDosya(d4.id, { status: "tamamlandi", userId: uye.id, data: { kalemler: kalemler("2026-04-10", "2026-04-16", "2026-04-20", 2, [280, 230]), odemeler: [{ id: id(), tarih: "2026-03-20", tutar: 4370, yontem: "havale", yer: "onden" }] } }, "Yerel test");
 
-await saveProfilKampanyalari([{ id: "ramazan27", baslik: "Ramazan 2027 umresi *erken kayıt*", aciklama: "Son 10 gün oteller dolmadan yerinizi ayırtın.", link: "/bireysel-umre", hat: "رمضان", aktif: true }]);
+await saveKampanya({ id: "uk_ornekkasim", baslik: "Kasım umresi *üyelere özel*", aciklama: "Okul tatiline denk gelen 10 gece; Harem'e yürüme mesafesinde oteller, Türkçe hoca eşliğinde.", hat: "عمرة", gidis: "2026-11-14", donus: "2026-11-24", mekkeGece: 6, medineGece: 4, mekkeOtel: mekke?.name ?? "Mekke oteli", medineOtel: medineSvc?.name ?? "Medine oteli", dahil: "Umre vizesi\nKarşılama ve özel transfer\nHaremeyn treni\nTürkçe hoca", uyeFiyat: 1690, normalFiyat: 1890, kontenjan: 24, sonTarih: "2026-11-01", durum: "yayinda" });
+await saveKampanya({ id: "uk_ornekramazan", baslik: "Ramazan'ın son on günü *erken kayıt*", aciklama: "Kadir gecesi Mekke'de; oteller dolmadan yerinizi ayırtın.", hat: "رمضان", hedef: "ramazan", gidis: "2027-02-27", donus: "2027-03-09", mekkeGece: 7, medineGece: 3, dahil: "Umre vizesi\nTransferler\nTürkçe hoca", uyeFiyat: 2450, normalFiyat: 2690, kontenjan: 40, sonTarih: "2027-01-15", durum: "yayinda" });
 console.log("hazır:", [d1.no, d2.no, d4.no]);
 await prisma.$disconnect();

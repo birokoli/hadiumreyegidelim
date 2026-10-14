@@ -5,6 +5,7 @@ import HugIcon, { type HugIconName } from "@/components/icons/HugIcon";
 
 const TABS: { href: string; label: string; ikon: HugIconName }[] = [
   { href: "/profil", label: "Özet", ikon: "kabe" },
+  { href: "/profil/size-ozel", label: "Size Özel", ikon: "takvim" },
   { href: "/profil/umrelerim", label: "Umrelerim", ikon: "paket" },
   { href: "/profil/teklifler", label: "Teklifler", ikon: "fiyat" },
   { href: "/profil/kitaplik", label: "Kitaplık", ikon: "rehber" },

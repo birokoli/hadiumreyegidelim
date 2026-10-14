@@ -3,14 +3,18 @@ import { getMember } from "@/lib/members";
 import HugIcon, { type HugIconName } from "@/components/icons/HugIcon";
 import Accent from "@/components/home/Accent";
 import LogoutButton from "@/components/profil/LogoutButton";
+import IletisimTercihleri from "@/components/profil/IletisimTercihleri";
+import TelefonFormu from "@/components/profil/TelefonFormu";
+import UyelikKapat from "@/components/profil/UyelikKapat";
+import { getTercih } from "@/lib/uye-kampanya";
 
 export default async function HesapPage() {
   const m = await getMember();
   if (!m) return null;
+  const tercih = await getTercih(m.id, m.email);
   const satirlar: { ikon: HugIconName; ad: string; deger: string }[] = [
     { ikon: "bireysel", ad: "Ad soyad", deger: m.name },
     { ikon: "eposta", ad: "E-posta", deger: m.email },
-    { ikon: "telefon", ad: "Telefon", deger: m.phone || "Eklenmemiş" },
     { ikon: "takvim", ad: "Üyelik tarihi", deger: new Date(m.createdAt).toLocaleDateString("tr-TR", { day: "numeric", month: "long", year: "numeric" }) },
   ];
   return (
@@ -26,7 +30,13 @@ export default async function HesapPage() {
               <dd className="min-w-0 break-words font-semibold text-[#14213d]">{s.deger}</dd>
             </div>
           ))}
+          <div className="flex items-center gap-4 py-4">
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-[var(--h-white)] text-[var(--h-blue)]"><HugIcon name="telefon" size={20} /></span>
+            <dt className="w-32 shrink-0 text-sm text-[#5b6680]">Telefon</dt>
+            <dd className="min-w-0 flex-1"><TelefonFormu phone={m.phone} /></dd>
+          </div>
         </dl>
+        <div className="mt-6"><IletisimTercihleri eposta={tercih.izinEposta} whatsapp={tercih.izinWhatsapp} tarih={tercih.izinTarihi} telefonVar={!!m.phone} /></div>
       </div>
       <div className="space-y-4 lg:pt-[68px]">
         <div className="rounded-[28px] bg-white p-6 ring-1 ring-[var(--h-sky)]/50">
@@ -37,8 +47,9 @@ export default async function HesapPage() {
           </Link>
         </div>
         <div className="rounded-[28px] bg-white p-6 ring-1 ring-[var(--h-sky)]/50">
-          <p className="font-bold text-[#14213d]">Bilgilerinizi güncellemek ya da hesabınızı silmek mi istiyorsunuz?</p>
-          <p className="mt-1 text-sm text-[#5b6680]">info@hadiumreyegidelim.com adresine ya da WhatsApp&apos;tan yazın; KVKK kapsamındaki talebiniz en geç 30 gün içinde sonuçlanır.</p>
+          <p className="font-bold text-[#14213d]">Üyeliği kapat</p>
+          <p className="mt-1 text-sm text-[#5b6680]">Hesabınız ve tercihleriniz silinir. Satın aldığınız umrenin kayıtları yasal saklama süresince ekibimizde kalır.</p>
+          <div className="mt-4"><UyelikKapat /></div>
         </div>
         <LogoutButton className="w-full rounded-2xl border border-red-200 bg-white px-4 py-3 text-sm font-bold text-red-700 transition hover:bg-red-50" />
       </div>

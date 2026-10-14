@@ -51,6 +51,9 @@ export type DosyaData = {
   donus?: string;
   onceSehir?: "mekke" | "medine";
   talepNotu?: string;
+  /** Talep üyeye özel bir kampanyadan geldiyse (Profil 2, 14 Ekim) */
+  kampanyaId?: string;
+  kampanyaBaslik?: string;
   kalemler: Kalem[];
   gecerlilik?: string; // teklif son geçerlilik tarihi
   teklifNotu?: string;

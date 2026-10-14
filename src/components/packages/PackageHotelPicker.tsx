@@ -1,14 +1,20 @@
 "use client";
 // Paket sayfası: müşteri kişi sayısını ve oteli seçer, kişi başı paket fiyatı anında hesaplanır (src/lib/pricing/package.ts).
+// Profil 2 (14 Ekim): her otelin altında "Üyelerimize özel" fiyat; üye değilse üye ol / giriş yap, üyeyse WhatsApp mesajında üye fiyatı.
 import Image from "next/image";
+import Link from "next/link";
 import { useMemo, useState } from "react";
+import UyeFiyat, { useUyeDurumu } from "@/components/uye/UyeFiyat";
+import { kuralMetni, uyeFiyati, type UyeKural } from "@/lib/pricing/uye";
 import type { CatalogItem } from "@/lib/catalog";
 import { quotePackage, type PackagePreset } from "@/lib/pricing/package";
 
 const usd = (n: number) => `${n.toLocaleString("tr-TR")} $`;
 
-export default function PackageHotelPicker({ title, preset, catalog, month, monthLabel, packagePercent, whatsappNumber }: { title: string; preset: PackagePreset; catalog: CatalogItem[]; month: string; monthLabel: string; packagePercent: number; whatsappNumber: string }) {
+export default function PackageHotelPicker({ title, preset, catalog, month, monthLabel, packagePercent, uyeKural = null, slug, whatsappNumber }: { title: string; preset: PackagePreset; catalog: CatalogItem[]; month: string; monthLabel: string; packagePercent: number; uyeKural?: UyeKural | null; slug?: string; whatsappNumber: string }) {
   const [people, setPeople] = useState(2);
+  const uye = useUyeDurumu();
+  const geri = slug ? `/paketler/${slug}` : "/paketler";
   const hotels = useMemo(
     () =>
       catalog
@@ -22,8 +28,14 @@ export default function PackageHotelPicker({ title, preset, catalog, month, mont
   const current = hotels.find((x) => x.h.slug === picked) ?? hotels[0];
   if (!hotels.length) return null;
 
+  const uyeKisi = current ? uyeFiyati(current.q!.perPersonUsd, uyeKural) : null;
+  const fiyatMetni = current
+    ? uye?.uye && uyeKisi
+      ? `üye fiyatı kişi başı ${usd(uyeKisi)} (üyeliğim: ${uye.email})`
+      : `kişi başı ${usd(current.q!.perPersonUsd)}`
+    : "";
   const wa = current
-    ? `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(`Merhaba, "${title}" paketi için ${people} kişi, ${current.h.name} oteliyle (${monthLabel}) kişi başı ${usd(current.q!.perPersonUsd)} fiyatı gördüm. Tarih ve uygunluk sormak istiyorum.`)}`
+    ? `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(`Merhaba, "${title}" paketi için ${people} kişi, ${current.h.name} oteliyle (${monthLabel}) ${fiyatMetni} fiyatı gördüm. Tarih ve uygunluk sormak istiyorum.`)}`
     : `https://wa.me/${whatsappNumber}`;
 
   return (
@@ -55,8 +67,14 @@ export default function PackageHotelPicker({ title, preset, catalog, month, mont
                 <span className="block text-[12px] text-on-surface-variant">{[h.hotelStars ? `${h.hotelStars} yıldız` : "", h.description ?? ""].filter(Boolean).join(" · ")}</span>
               </span>
               <span className="shrink-0 text-right">
-                <span className="block font-headline text-lg font-bold text-primary">{usd(q!.perPersonUsd)}</span>
-                <span className="text-[11px] text-on-surface-variant">kişi başı</span>
+                {uyeFiyati(q!.perPersonUsd, uyeKural) ? (
+                  <UyeFiyat normal={q!.perPersonUsd} uye={uyeFiyati(q!.perPersonUsd, uyeKural)!} boyut="satir" />
+                ) : (
+                  <>
+                    <span className="block font-headline text-lg font-bold text-primary">{usd(q!.perPersonUsd)}</span>
+                    <span className="text-[11px] text-on-surface-variant">kişi başı</span>
+                  </>
+                )}
               </span>
             </button>
           );
@@ -75,6 +93,19 @@ export default function PackageHotelPicker({ title, preset, catalog, month, mont
           <p>
             <b className="text-on-surface">{people} kişi · {current.h.name}:</b> kişi başı <b className="text-primary">{usd(current.q!.perPersonUsd)}</b>, toplam {usd(current.q!.totalUsd)}. {current.q!.rooms} oda; transfer ve tur {current.q!.vehicles > 1 ? `${current.q!.vehicles} × ` : ""}{current.q!.vehicleLabel} ile.
           </p>
+          {uyeKisi && (
+            <p className="mt-2 rounded-lg bg-[#fbf4e1] px-3 py-2 text-[#5a4612]">
+              {uye?.uye ? <><b>Üyelerimize özel:</b> kişi başı <b>{usd(uyeKisi)}</b>, toplam {usd(uyeKisi * people)}.{" "}</> : <><b>Üyelerimize özel fiyat</b> bu pakette normal fiyattan {uyeKural ? kuralMetni(uyeKural) : ""} daha uygun.{" "}</>}
+              {uye?.uye ? (
+                <span className="font-bold text-[#2f7d55]">Üye fiyatınız teklifinize uygulanır.</span>
+              ) : (
+                <>
+                  <Link href={`/profil/uye-ol?next=${encodeURIComponent(geri)}`} className="font-bold underline">Ücretsiz üye olun</Link> ya da{" "}
+                  <Link href={`/profil/giris?next=${encodeURIComponent(geri)}`} className="font-bold underline">giriş yapın</Link>, bu fiyattan yararlanın.
+                </>
+              )}
+            </p>
+          )}
           <p className="mt-1">Uçak bileti ve e-vize dahil değildir. Kesin fiyat tarih ve otel müsaitliğine göre WhatsApp'tan iletilir.</p>
         </div>
       )}

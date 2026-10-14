@@ -1,6 +1,7 @@
 // Tasarım kiti: ana sayfanın (2026 yenilemesi) görsel dili. Kurallar: docs/TASARIM-DILI.md
 // Yeni ya da dönüştürülen her herkese açık sayfa yalnızca bu parçaları kullanır.
 import Link from "next/link";
+import UyeFiyat from "@/components/uye/UyeFiyat";
 import Image from "next/image";
 import type { ReactNode } from "react";
 import BrandImageFallback from "@/components/ui/BrandImageFallback";
@@ -153,8 +154,10 @@ export function Badge({ children, tone = "light" }: { children: ReactNode; tone?
 }
 
 /** "Başlangıç 1.250 $" (fiyat 0 ya da yoksa hiçbir şey göstermez; uydurma fiyat yok) */
-export function PriceTag({ amount, currency = "USD", label = "Başlangıç", suffix }: { amount?: number | null; currency?: string; label?: string; suffix?: string }) {
+export function PriceTag({ amount, currency = "USD", label = "Başlangıç", suffix, memberAmount, large }: { amount?: number | null; currency?: string; label?: string; suffix?: string; memberAmount?: number | null; large?: boolean }) {
   if (!amount || amount <= 0) return null;
+  // Profil 2: üye fiyatı varsa normal fiyatla yan yana; üye olmayana bulanık (UyeFiyat)
+  if (memberAmount) return <UyeFiyat normal={amount} uye={memberAmount} para={currency} etiket={label} boyut={large ? "buyuk" : "kart"} />;
   return (
     <p className="text-[12px] text-on-surface-variant">
       {label}
@@ -167,11 +170,11 @@ export function PriceTag({ amount, currency = "USD", label = "Başlangıç", suf
 }
 
 /** Kart altı: solda fiyat, sağda "İncele →" */
-export function CardFooter({ price, currency, cta = "İncele", suffix }: { price?: number | null; currency?: string; cta?: string; suffix?: string }) {
+export function CardFooter({ price, currency, cta = "İncele", suffix, memberPrice }: { price?: number | null; currency?: string; cta?: string; suffix?: string; memberPrice?: number | null }) {
   return (
-    <div className="flex items-end justify-between">
-      <PriceTag amount={price} currency={currency} suffix={suffix} />
-      <span className="ml-auto inline-flex items-center gap-1 text-[13px] font-semibold text-primary group-hover:gap-2 transition-all">{cta} <Arrow /></span>
+    <div className={cx("flex justify-between", memberPrice ? "flex-wrap items-end gap-x-3 gap-y-2" : "items-end")}>
+      <PriceTag amount={price} currency={currency} suffix={suffix} memberAmount={memberPrice} />
+      <span className="ml-auto inline-flex items-center gap-1 whitespace-nowrap text-[13px] font-semibold text-primary group-hover:gap-2 transition-all">{cta} <Arrow /></span>
     </div>
   );
 }

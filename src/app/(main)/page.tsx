@@ -222,7 +222,7 @@ export default async function Home() {
                 sizes="(max-width: 768px) 80vw, 33vw"
                 topLeft={<Badge>{pkg.duration}</Badge>}
                 topRight={pkg.id === popularPackageId ? <Badge tone="primary">En çok tercih edilen</Badge> : undefined}
-                footer={<CardFooter price={pkg.price} currency={pkg.currency} />}
+                footer={<CardFooter price={pkg.price} currency={pkg.currency} memberPrice={"uyePrice" in pkg ? pkg.uyePrice : null} />}
               />
             ))}
           </div>

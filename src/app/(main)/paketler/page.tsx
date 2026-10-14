@@ -1,4 +1,5 @@
 import { SITE_URL } from "@/lib/seo/site";
+import { UyeFiyatMetin } from "@/components/uye/UyeFiyat";
 import { packageDisplayPrices } from "@/lib/pricing/package-server";
 import React from "react";
 export const revalidate = 300;
@@ -101,7 +102,7 @@ export default async function PackagesPage() {
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 topLeft={pkg.duration ? <Badge tone="light">{pkg.duration}</Badge> : undefined}
                 topRight={pkg.id === popularPackageId ? <Badge tone="primary">En çok tercih edilen</Badge> : undefined}
-                footer={<CardFooter price={pkg.price} currency={pkg.currency} cta="Turu İncele" />}
+                footer={<CardFooter price={pkg.price} currency={pkg.currency} memberPrice={pkg.uyePrice} cta="Turu İncele" />}
               />
             ))}
           </div>
@@ -118,6 +119,7 @@ export default async function PackagesPage() {
                     <th className="px-4 py-3 font-semibold">Paket</th>
                     <th className="px-4 py-3 font-semibold">Süre</th>
                     <th className="px-4 py-3 font-semibold text-right">Kişi başı</th>
+                    {priced.some((p) => p.uyePrice) && <th className="px-4 py-3 font-semibold text-right text-[#8a6a1c]">Üyelerimize özel</th>}
                   </tr>
                 </thead>
                 <tbody>
@@ -125,7 +127,8 @@ export default async function PackagesPage() {
                     <tr key={p.id} className="border-b border-outline-variant/10 last:border-0">
                       <td className="px-4 py-3"><a href={`/paketler/${p.slug}`} className="font-semibold text-primary hover:underline">{p.title}</a></td>
                       <td className="px-4 py-3 text-on-surface-variant">{p.duration}</td>
-                      <td className="px-4 py-3 text-right font-bold text-primary whitespace-nowrap">{usd(p.price)}&apos;dan</td>
+                      <td className={`px-4 py-3 text-right whitespace-nowrap ${p.uyePrice ? "text-on-surface-variant" : "font-bold text-primary"}`}>{usd(p.price)}&apos;dan</td>
+                      {priced.some((x) => x.uyePrice) && <td className="px-4 py-3 text-right font-bold text-primary whitespace-nowrap">{p.uyePrice ? <UyeFiyatMetin uye={p.uyePrice} ek="'dan" /> : "–"}</td>}
                     </tr>
                   ))}
                 </tbody>

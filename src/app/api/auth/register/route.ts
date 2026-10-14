@@ -10,6 +10,7 @@ import { sendUyeDogrulama } from "@/lib/leads/mailer";
 import { rateLimit, getClientIp } from "@/lib/rate-limit";
 import { checkEmail, checkPhone } from "@/lib/leads/email-check";
 import { createLead } from "@/lib/leads";
+import { saveTercih } from "@/lib/uye-kampanya";
 
 const bad = (error: string, extra: Record<string, unknown> = {}) => NextResponse.json({ error, ...extra }, { status: 400 });
 
@@ -40,6 +41,8 @@ export async function POST(request: Request) {
 
     const user = await prisma.user.create({ data: { name, email: e.email, password: await bcrypt.hash(password, 10), phone } });
     await createLead({ name, email: e.email, phone, source: "uyelik", marketingConsent: b.marketing === true, referrer: null, utm: String(b.utm ?? "").slice(0, 300) || null }).catch((err) => console.error("[uye-kayit] havuz", err));
+    // Profil 2: izin kayıt formunda verildiyse tercihe yazılır (izin penceresi bir daha çıkmaz); verilmediyse pencere bir kez sorar
+    if (b.marketing === true) await saveTercih(user.id, user.email, { izinEposta: true, izinWhatsapp: !!phone, soruldu: true }, "kayit", getClientIp(request)).catch((err) => console.error("[uye-kayit] tercih", err));
 
     // E-posta doğrulama kodu (profilde girilir); gönderilemezse kayıt yine tamamlanır
     await sendUyeDogrulama({ to: user.email, name: user.name, code: await issueCode(user.id, "eposta") }).catch((err) => console.error("[uye-kayit] doğrulama", err));

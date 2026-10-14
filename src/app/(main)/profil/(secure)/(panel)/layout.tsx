@@ -3,6 +3,8 @@ import { getMember, isEmailVerified } from "@/lib/members";
 import DogrulamaBandi from "@/components/profil/DogrulamaBandi";
 import Accent from "@/components/home/Accent";
 import ProfilTabs from "@/components/profil/ProfilTabs";
+import IzinPenceresi from "@/components/profil/IzinPenceresi";
+import { getTercih, touchSonGiris } from "@/lib/uye-kampanya";
 
 function selam() {
   const saat = Number(new Intl.DateTimeFormat("tr-TR", { hour: "numeric", hour12: false, timeZone: "Europe/Istanbul" }).format(new Date()));
@@ -15,6 +17,9 @@ export default async function PanelLayout({ children }: { children: React.ReactN
   const member = await getMember();
   const first = member?.name.split(" ")[0] ?? "";
   const dogrulandi = member ? await isEmailVerified(member.id) : true;
+  // Profil 2: son giriş ve tek seferlik iletişim izni penceresi (cevaplanınca bir daha çıkmaz)
+  const tercih = member ? await getTercih(member.id, member.email).catch(() => null) : null;
+  if (member) await touchSonGiris(member.id).catch(() => null);
   return (
     <>
       <section className="bg-deep on-dark relative overflow-hidden pt-28 text-white md:pt-32">
@@ -30,6 +35,7 @@ export default async function PanelLayout({ children }: { children: React.ReactN
         {member && !dogrulandi && <div className="mb-6"><DogrulamaBandi email={member.email} /></div>}
         {children}
       </div>
+      {member && tercih && !tercih.izinSoruldu && <IzinPenceresi ad={first} telefonVar={!!member.phone} />}
     </>
   );
 }

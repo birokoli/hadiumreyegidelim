@@ -4,6 +4,7 @@
 // 14 Ekim: aynı kişinin tekrar eden kayıtları (e-posta ya da telefon ortak) işaretlenir; Resend'den gelen teslim olaylarıyla
 // geri dönen adresler "adres geçersiz" görünür.
 import { useCallback, useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import HubTabs from "@/components/admin/HubTabs";
 
 type EmailStatus = "delivered" | "bounced" | "complained" | "delayed";
@@ -108,7 +109,10 @@ export default function MusteriHavuzuPage() {
         <div>
           <span className="text-[10px] font-bold tracking-widest text-secondary uppercase">Satış & CRM</span>
           <h1 className="font-headline text-2xl font-bold tracking-tight text-primary mt-1">Müşteri Havuzu</h1>
-          <p className="text-xs text-on-surface-variant mt-0.5">Ücretsiz kitapçıkları (Tavaf ve Sa&apos;y El Kitabı) indirirken adını ve iletişim bilgisini bırakanlar.</p>
+          <p className="text-xs text-on-surface-variant mt-0.5">
+            Ücretsiz kitapçıkları (Tavaf ve Sa&apos;y El Kitabı) indirirken adını ve iletişim bilgisini bırakanlar. &quot;Üyelik&quot; satırları üye olurken bırakılan
+            iletişim izinleridir; hesapların listesi <Link href="/admin/uyeler" className="font-bold text-primary hover:underline">Üyeler</Link>&apos;de.
+          </p>
         </div>
         {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- dosya indirme, sayfa değil */}
         <a

@@ -44,6 +44,12 @@ const menuGroups: { title: string; links: SidebarLink[] }[] = [
         badgeKey: "newPoolLeads",
       },
       {
+        href: "/admin/uyeler",
+        icon: "group",
+        label: "Üyeler",
+        permission: "orders",
+      },
+      {
         href: "/admin/satis",
         icon: "travel_explore",
         label: "Satış Masası",

@@ -1,8 +1,9 @@
 // Teklif sayfası (14 Ekim): WhatsApp mesajındaki bağlantı. Oteller, dahil hizmetler, toplam, ödeme planı ve onay.
+// 15 Ekim (kullanıcı, şeffaf fiyat politikası): her otelin ve hizmetin satış fiyatı satırında görünür.
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getDosya, geceSayisi, hitapAdi, KALEM_TURLERI, odemeDagilimi, teklifSuresiDoldu, onaylandiMi, oteller, toplam, trTarih, usd } from "@/lib/satis";
+import { getDosya, geceSayisi, hitapAdi, KALEM_TURLERI, kalemToplam, odemeDagilimi, teklifSuresiDoldu, onaylandiMi, oteller, toplam, trTarih, usd } from "@/lib/satis";
 import { durakSayisi, rotaOf } from "@/lib/satis/ziyaret";
 import ZiyaretRotasi from "@/components/satis/ZiyaretRotasi";
 import { findDirectoryHotel, kaabaText } from "@/lib/catalog/hotel-directory";
@@ -57,6 +58,12 @@ export default async function TeklifSayfasi({ params }: { params: Promise<{ toke
                     <p className="text-[13px] text-[#5b6680]">{[k.otel?.oda, k.adet > 1 && `${k.adet} oda`, h?.kaabaMeters != null && `${k.tur === "otel_mekke" ? "Kâbe'ye" : "Harem'e"} ${kaabaText(h.kaabaMeters)}`].filter(Boolean).join(" · ")}</p>
                     {h && <Link href={`/oteller/${h.slug}`} className="mt-1 inline-flex items-center gap-1 text-xs font-bold text-[var(--h-blue)]"><HugIcon name="konum" size={13} /> Otel rehberinde gör</Link>}
                   </div>
+                  {kalemToplam(k) > 0 && (
+                    <div className="shrink-0 text-right">
+                      <p className="text-[15px] font-bold text-[var(--h-blue)]">{usd(kalemToplam(k))}</p>
+                      <p className="text-[11px] text-[#5b6680]">{Math.max(1, g)} gece{k.adet > 1 ? ` × ${k.adet} oda` : ""} × {usd(k.birim)}</p>
+                    </div>
+                  )}
                 </div>
               );
             })}
@@ -75,7 +82,14 @@ export default async function TeklifSayfasi({ params }: { params: Promise<{ toke
                   <p className="text-[14px] font-semibold text-[#14213d]">{rotaOf(k.rota)?.ad ?? k.ad}</p>
                   {rotaOf(k.rota) ? <p className="text-[13px] text-[#5b6680]">{durakSayisi(rotaOf(k.rota)!)} durak · rotası aşağıda</p> : k.aciklama && <p className="text-[13px] text-[#5b6680]">{k.aciklama}</p>}
                 </div>
-                {k.adet > 1 && <span className="text-xs text-[#8a94ab]">{k.adet} × </span>}
+                {kalemToplam(k) > 0 ? (
+                  <div className="shrink-0 text-right">
+                    <p className="text-[14px] font-bold text-[var(--h-blue)]">{usd(kalemToplam(k))}</p>
+                    {k.adet > 1 && <p className="text-[11px] text-[#5b6680]">{k.adet} × {usd(k.birim)}</p>}
+                  </div>
+                ) : (
+                  <span className="shrink-0 text-xs font-semibold text-[#2f7d55]">Dahil</span>
+                )}
               </li>
             ))}
           </ul>

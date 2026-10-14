@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import HubTabs from "@/components/admin/HubTabs";
-import { ASAMALAR, gunKaldi, toplam, trTarih, usd, type Dosya } from "@/lib/satis/ortak";
+import { ASAMALAR, gunKaldi, SATIS_TURLERI, toplam, trTarih, usd, type Dosya } from "@/lib/satis/ortak";
 
 type Ekip = { id: string; name: string };
 const inp = "w-full bg-surface-container-lowest border border-outline-variant/25 rounded-lg p-2 text-xs outline-none focus:border-primary/40";
@@ -18,7 +18,7 @@ export default function SatisMasasi() {
   const [sadeceBen, setSadeceBen] = useState(false);
   const [iptal, setIptal] = useState(false);
   const [yeni, setYeni] = useState(false);
-  const [f, setF] = useState({ musteriAdi: "", phone: "", email: "", yetiskin: 2, cocuk: 0, gidis: "", donus: "", talepNotu: "" });
+  const [f, setF] = useState({ musteriAdi: "", phone: "", email: "", yetiskin: 2, cocuk: 0, gidis: "", donus: "", talepNotu: "", satisTuru: "01" });
   const [hata, setHata] = useState("");
 
   const yukle = useCallback(async () => {
@@ -119,6 +119,12 @@ export default function SatisMasasi() {
             <h2 className="font-headline text-lg font-bold text-primary">Yeni müşteri dosyası</h2>
             <p className="text-xs text-on-surface-variant">WhatsApp&apos;tan ya da telefonla gelen talep için. Teklifi dosyanın içinde hazırlarsınız.</p>
             <input className={inp} placeholder="Müşteri adı soyadı *" value={f.musteriAdi} onChange={(e) => setF({ ...f, musteriAdi: e.target.value })} autoFocus />
+            <label className="block">
+              <span className="mb-1 block text-[10px] font-bold uppercase tracking-wider text-on-surface-variant">Satış türü (dosya numarasında yer alır)</span>
+              <select className={inp} value={f.satisTuru} onChange={(e) => setF({ ...f, satisTuru: e.target.value })}>
+                {Object.entries(SATIS_TURLERI).map(([k, v]) => <option key={k} value={k}>{k} · {v}</option>)}
+              </select>
+            </label>
             <div className="grid grid-cols-2 gap-2">
               <input className={inp} placeholder="Telefon (WhatsApp)" value={f.phone} onChange={(e) => setF({ ...f, phone: e.target.value })} />
               <input className={inp} placeholder="E-posta (profil için)" value={f.email} onChange={(e) => setF({ ...f, email: e.target.value })} />

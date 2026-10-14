@@ -4,6 +4,7 @@
 import { use, useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { durakSayisi, ZIYARET_ROTALARI } from "@/lib/satis/ziyaret";
+import { SATIS_TURLERI } from "@/lib/satis/ortak";
 import { ASAMALAR, KALEM_TURLERI, alisToplam, asamaIndex, asamaLabel, geceSayisi, kalemToplam, odemeDagilimi, odenen, onaylandiMi, toplam, trTarih, usd, waNumara, type Dosya, type DosyaData, type Kalem, type KalemTur, type Odeme } from "@/lib/satis/ortak";
 import { teklifLinki, teklifMesaji, voucherLinki, voucherMesaji, waLink } from "@/lib/satis/mesaj";
 
@@ -137,7 +138,7 @@ export default function SatisDosyasi({ params }: { params: Promise<{ no: string 
         <Link href="/admin/satis" className="text-xs font-bold text-outline hover:text-primary">← Satış masası</Link>
         <div className="mt-2 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
           <div>
-            <p className="font-mono text-xs font-bold text-secondary">{d.no}</p>
+            <p className="font-mono text-xs font-bold text-secondary">{d.no}{data.satisTuru && <span className="ml-2 font-sans font-semibold text-on-surface-variant">· {SATIS_TURLERI[data.satisTuru]}</span>}</p>
             <h1 className="font-headline text-2xl font-bold text-primary">{data.musteriAdi}</h1>
             <p className="text-xs text-on-surface-variant">{kisiSayisi} kişi{data.gidis ? ` · ${trTarih(data.gidis)} – ${trTarih(data.donus)}` : ""}{hesap.t ? ` · ${usd(hesap.t)}` : ""}{y.bagliUye ? " · profile bağlı" : ""}</p>
           </div>

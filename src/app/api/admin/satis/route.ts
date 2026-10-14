@@ -2,7 +2,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAdminSession } from "@/lib/admin-auth";
 import { prisma } from "@/lib/prisma";
-import { createDosya, listDosyalar } from "@/lib/satis";
+import { createDosya, listDosyalar, SATIS_TURLERI, type SatisTuru } from "@/lib/satis";
 
 export const dynamic = "force-dynamic";
 
@@ -31,6 +31,7 @@ export async function POST(req: NextRequest) {
     gidis: String(b.gidis ?? "") || undefined,
     donus: String(b.donus ?? "") || undefined,
     talepNotu: String(b.talepNotu ?? "").slice(0, 1000) || undefined,
+    satisTuru: (String(b.satisTuru ?? "01") in SATIS_TURLERI ? String(b.satisTuru ?? "01") : "01") as SatisTuru,
     sorumluId: a.id,
     kim: a.name,
   });

@@ -16,6 +16,16 @@ export const asamaLabel = (k: string) => (k === "iptal" ? "İptal" : ASAMALAR.fi
 /** Müşteriye "umre dosyası" olarak görünen aşamalar (onaydan sonrası) */
 export const onaylandiMi = (k: string) => asamaIndex(k) >= asamaIndex("onaylandi") && k !== "iptal";
 
+/** Satış türü kodu (15 Ekim, kullanıcı): dosya numarasının 7–8. haneleri. HUG + YY + AA + tür + o ay o türdeki müşteri sırası. */
+export const SATIS_TURLERI = {
+  "01": "Bireysel umre",
+  "02": "Grup umre / tur",
+  "03": "Yalnızca vize",
+  "04": "Yalnızca otel",
+  "05": "Transfer ve diğer hizmetler",
+} as const;
+export type SatisTuru = keyof typeof SATIS_TURLERI;
+
 export const KALEM_TURLERI = {
   otel_mekke: { label: "Mekke oteli", ikon: "otel", odeme: "onden" },
   otel_medine: { label: "Medine oteli", ikon: "medine", odeme: "onden" },
@@ -46,6 +56,8 @@ export type Kayit = { id: string; t: string; kim: string; metin: string };
 
 export type DosyaData = {
   musteriAdi: string;
+  /** Satış türü kodu (numarada da yer alır); eski dosyalarda yok */
+  satisTuru?: SatisTuru;
   /** Hitap (15 Ekim, kullanıcı: "Neriman Hanım, Yasin Bey gibi olmalı"); admin seçer, isimden tahmin edilmez */
   hitap?: "bey" | "hanim";
   yetiskin: number;

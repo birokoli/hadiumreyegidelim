@@ -7,7 +7,7 @@
 // diğer yarısı Cidde'de alınır.
 import { randomBytes, randomInt } from "node:crypto";
 import { prisma } from "@/lib/prisma";
-import { ASAMALAR, asamaIndex, asamaLabel, type Dosya, type DosyaData } from "./ortak";
+import { ASAMALAR, asamaIndex, asamaLabel, SATIS_TURLERI, type Dosya, type DosyaData, type SatisTuru } from "./ortak";
 
 export * from "./ortak";
 
@@ -67,15 +67,30 @@ export async function getDosya(by: "id" | "no" | "token", value: string): Promis
   return rows[0] ? parse(rows[0]) : null;
 }
 
-export async function createDosya(input: { musteriAdi: string; phone?: string | null; email?: string | null; yetiskin?: number; cocuk?: number; gidis?: string; donus?: string; talepNotu?: string; sorumluId?: string | null; kim: string }): Promise<Dosya> {
+/**
+ * Dosya numarası (15 Ekim, kullanıcı): HUG + yıl (2) + ay (2) + satış türü (2) + o ay o türdeki müşteri sırası (2, 99'dan sonra 3).
+ * Örnek: HUG26100105 = 2026 Ekim, bireysel umre, ayın 5. bireysel umre müşterisi. Ay İstanbul saatine göre.
+ * Eski biçimli dosyalar (HUG-2026-0001) olduğu gibi kalır.
+ */
+async function yeniNo(tur: SatisTuru): Promise<string> {
+  const t = new Date(Date.now() + 3 * 3600e3).toISOString();
+  const onek = `HUG${t.slice(2, 4)}${t.slice(5, 7)}${tur}`;
+  const rows = await prisma.$queryRawUnsafe<{ m: number | null }[]>(
+    `SELECT MAX(CAST(SUBSTRING("no" FROM ${onek.length + 1}) AS INTEGER))::int AS m FROM "SatisDosyasi" WHERE "no" LIKE $1 AND SUBSTRING("no" FROM ${onek.length + 1}) ~ '^[0-9]+$'`,
+    `${onek}%`,
+  );
+  return `${onek}${String((rows[0]?.m ?? 0) + 1).padStart(2, "0")}`;
+}
+
+export async function createDosya(input: { musteriAdi: string; phone?: string | null; email?: string | null; yetiskin?: number; cocuk?: number; gidis?: string; donus?: string; talepNotu?: string; sorumluId?: string | null; satisTuru?: SatisTuru; kim: string }): Promise<Dosya> {
   await ensureSatisSchema();
-  const yil = new Date().getFullYear();
-  const n = await prisma.$queryRawUnsafe<{ n: number }[]>(`SELECT COUNT(*)::int AS n FROM "SatisDosyasi" WHERE "no" LIKE $1`, `HUG-${yil}-%`);
-  const no = `HUG-${yil}-${String((n[0]?.n ?? 0) + 1).padStart(4, "0")}`;
+  const satisTuru: SatisTuru = input.satisTuru && input.satisTuru in SATIS_TURLERI ? input.satisTuru : "01";
+  const no = await yeniNo(satisTuru);
   const simdi = new Date().toISOString();
   const data: DosyaData = {
     ...bos(),
     musteriAdi: input.musteriAdi,
+    satisTuru,
     yetiskin: input.yetiskin ?? 1,
     cocuk: input.cocuk ?? 0,
     gidis: input.gidis,

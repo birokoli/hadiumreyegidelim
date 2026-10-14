@@ -166,6 +166,7 @@ export async function kampanyaTalebi(m: { id: string; name: string; email: strin
     gidis: k.gidis ?? undefined,
     donus: k.donus ?? undefined,
     talepNotu: [`Üyelere özel kampanya: ${k.baslik.replace(/\*/g, "")}`, not?.trim()].filter(Boolean).join(" · "),
+    satisTuru: "02", // üyelere özel tarih: grup / tur
     kim: "Üye kampanyası",
   });
   await saveDosya(d.id, { userId: m.id, data: { kampanyaId: k.id, kampanyaBaslik: k.baslik.replace(/\*/g, "") } }, "Üye kampanyası");

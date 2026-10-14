@@ -7,8 +7,8 @@ import { contentPath } from '@/content/pages';
 import { getLiveContentPages } from '@/content/pages/store';
 import { SITE_URL } from '@/lib/seo/site';
 
-// 15 Ekim: her istekte yeniden üretmek yerine saatte bir (denetim ve Google 2,5 sn beklemesin)
-export const revalidate = 3600;
+// Her istekte canlı veriden üretilir (yeni yazı, paket, otel anında görünür). Hız sorgu tarafında: yalnızca gereken alanlar, paralel.
+export const dynamic = 'force-dynamic';
 
 // sayfa içeriği gerçekten değişince elle güncellenir
 const STATIC_REVIEWED = "2026-10-02";

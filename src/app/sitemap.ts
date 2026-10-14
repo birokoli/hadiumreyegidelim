@@ -7,7 +7,8 @@ import { contentPath } from '@/content/pages';
 import { getLiveContentPages } from '@/content/pages/store';
 import { SITE_URL } from '@/lib/seo/site';
 
-export const dynamic = 'force-dynamic';
+// 15 Ekim: her istekte yeniden üretmek yerine saatte bir (denetim ve Google 2,5 sn beklemesin)
+export const revalidate = 3600;
 
 // sayfa içeriği gerçekten değişince elle güncellenir
 const STATIC_REVIEWED = "2026-10-02";
@@ -17,25 +18,16 @@ const CITY_TEMPLATE_REVIEWED = "2026-10-02";
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = SITE_URL;
 
-  // Yalnızca yayındaki yazılar (taslaklar Google'a bildirilmez)
-  const posts = await prisma.post.findMany({
-    where: { published: true },
-    orderBy: { updatedAt: 'desc' }
-  }).catch(() => []);
-
-  const categories = await prisma.category.findMany({
-    orderBy: { updatedAt: 'desc' },
-    include: {
-      _count: {
-        select: { posts: { where: { published: true } } }
-      }
-    }
-  }).catch(() => []);
-
-  const packages = await prisma.package.findMany({
-    where: { published: true },
-    orderBy: { updatedAt: 'desc' }
-  }).catch(() => []);
+  // 15 Ekim (hız): yalnızca gereken alanlar (yazı içeriği çekilmez) ve sorgular paralel; eskiden ~2,5 sn sürüyordu
+  const [posts, categories, packages] = await Promise.all([
+    // Yalnızca yayındaki yazılar (taslaklar Google'a bildirilmez)
+    prisma.post.findMany({ where: { published: true }, select: { slug: true, updatedAt: true }, orderBy: { updatedAt: 'desc' } }).catch(() => []),
+    prisma.category.findMany({
+      orderBy: { updatedAt: 'desc' },
+      select: { slug: true, updatedAt: true, _count: { select: { posts: { where: { published: true } } } } },
+    }).catch(() => []),
+    prisma.package.findMany({ where: { published: true }, select: { slug: true, updatedAt: true }, orderBy: { updatedAt: 'desc' } }).catch(() => []),
+  ]);
 
   const blogUrls = posts.map((post) => ({
     url: `${baseUrl}/blog/${post.slug}`,

@@ -212,7 +212,8 @@ export async function collectSiteFacts(): Promise<SiteFacts> {
   const apex = SITE_DOMAIN;
   const [robots, sitemap, llms, http, www, bare] = await Promise.all([
     fetchText(`${SITE_URL}/robots.txt`),
-    fetchText(`${SITE_URL}/sitemap.xml`),
+    // Sitemap tek seferlik ağ ya da soğuk başlangıç hatasında "boş" sayılmasın: bir kez daha denenir
+    fetchText(`${SITE_URL}/sitemap.xml`).then((r) => (r && r.status === 200 ? r : fetchText(`${SITE_URL}/sitemap.xml`))),
     fetchText(`${SITE_URL}/llms.txt`),
     fetchText(`http://${apex}/`),
     fetchText(`https://www.${apex}/`),

@@ -1,12 +1,10 @@
 // Satış masası WhatsApp mesajları (14 Ekim, kullanıcı: "teklifi WhatsApp'tan mesaj olarak atıyoruz; PDF çok uzundu;
 // satın alımdan sonra voucher gönderiyoruz"). Kısa, düzgün metin + onay/voucher bağlantısı. İstemcide de çalışır.
 import { SITE_URL } from "@/lib/seo/site";
-import { geceSayisi, KALEM_TURLERI, odemeDagilimi, oteller, toplam, trTarih, usd, type Dosya } from "./ortak";
+import { geceSayisi, hitapAdi, KALEM_TURLERI, odemeDagilimi, oteller, toplam, trTarih, usd, type Dosya } from "./ortak";
+import { durakSayisi, rotaOf } from "./ziyaret";
 
-const hitap = (ad: string) => {
-  const ilk = ad.trim().split(/\s+/)[0] ?? "";
-  return ilk ? `${ilk[0].toLocaleUpperCase("tr-TR")}${ilk.slice(1)}` : "";
-};
+const hitap = (x: Dosya["data"]) => hitapAdi(x);
 const tarihAraligi = (g?: string, d?: string) => (g ? `${trTarih(g)}${d ? ` – ${trTarih(d, { day: "numeric", month: "long", year: "numeric" })}` : ""}` : "");
 const kisi = (x: Dosya["data"]) => [x.yetiskin && `${x.yetiskin} yetişkin`, x.cocuk && `${x.cocuk} çocuk`, x.bebek && `${x.bebek} bebek`].filter(Boolean).join(", ");
 
@@ -16,14 +14,17 @@ export const voucherLinki = (d: Dosya) => `${SITE_URL}/v/${d.token}`;
 export function teklifMesaji(d: Dosya): string {
   const x = d.data;
   const s: string[] = [];
-  s.push(`Selamün aleyküm ${hitap(x.musteriAdi)},`, "", `Umre teklifiniz hazır (${d.no}):`, "");
+  s.push(`Selamün aleyküm ${hitap(x)},`, "", `Umre teklifiniz hazır (${d.no}):`, "");
   const tarih = tarihAraligi(x.gidis, x.donus);
   if (tarih || kisi(x)) s.push(`📅 ${[tarih, kisi(x)].filter(Boolean).join(" · ")}`);
   for (const k of oteller(x)) {
     const g = geceSayisi(k.otel?.giris, k.otel?.cikis);
     s.push(`${k.tur === "otel_mekke" ? "🕋 Mekke" : "🕌 Medine"}: ${k.otel?.ad}${g ? ` · ${g} gece` : ""}${k.otel?.oda ? ` · ${k.otel.oda}` : ""}`);
   }
-  const dahil = [...new Set(x.kalemler.filter((k) => !k.tur.startsWith("otel_")).map((k) => k.ad || KALEM_TURLERI[k.tur].label))];
+  const dahil = [...new Set(x.kalemler.filter((k) => !k.tur.startsWith("otel_")).map((k) => {
+    const r = rotaOf(k.rota);
+    return r ? `${r.ad} (${durakSayisi(r)} durak)` : k.ad || KALEM_TURLERI[k.tur].label;
+  }))];
   if (dahil.length) s.push(`✅ Dahil: ${dahil.join(", ").toLocaleLowerCase("tr-TR")}`);
   const t = toplam(x);
   const kisiSayisi = x.yetiskin + x.cocuk;
@@ -40,7 +41,7 @@ export function teklifMesaji(d: Dosya): string {
 
 export function voucherMesaji(d: Dosya): string {
   const x = d.data;
-  const s: string[] = [`Selamün aleyküm ${hitap(x.musteriAdi)},`, "", `Umre belgeniz (voucher) hazır: ${d.no}`, ""];
+  const s: string[] = [`Selamün aleyküm ${hitap(x)},`, "", `Umre belgeniz (voucher) hazır: ${d.no}`, ""];
   const tarih = tarihAraligi(x.gidis, x.donus);
   if (tarih) s.push(`📅 ${tarih}`);
   for (const k of oteller(x)) s.push(`${k.tur === "otel_mekke" ? "🕋 Mekke" : "🕌 Medine"}: ${k.otel?.ad}${k.otel?.giris ? ` · ${trTarih(k.otel.giris, { day: "numeric", month: "short" })} – ${trTarih(k.otel.cikis, { day: "numeric", month: "short" })}` : ""}${k.otel?.onayNo ? ` · Onay no ${k.otel.onayNo}` : ""}`);

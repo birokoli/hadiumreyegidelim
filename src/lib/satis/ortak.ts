@@ -38,12 +38,16 @@ export type Kalem = {
   birim: number; // satış birim fiyatı ($); otel: gecelik oda fiyatı
   alis?: number; // birim alış ($), yalnızca admin görür
   otel?: Otel;
+  /** Ziyaret turu rotası (15 Ekim): "mekke" | "medine"; duraklar src/lib/satis/ziyaret.ts */
+  rota?: "mekke" | "medine";
 };
 export type Odeme = { id: string; tarih: string; tutar: number; yontem: "havale" | "kart" | "nakit"; yer: "onden" | "cidde"; aciklama?: string };
 export type Kayit = { id: string; t: string; kim: string; metin: string };
 
 export type DosyaData = {
   musteriAdi: string;
+  /** Hitap (15 Ekim, kullanıcı: "Neriman Hanım, Yasin Bey gibi olmalı"); admin seçer, isimden tahmin edilmez */
+  hitap?: "bey" | "hanim";
   yetiskin: number;
   cocuk: number;
   bebek: number;
@@ -147,3 +151,10 @@ export const waNumara = (p: string | null | undefined) => {
 
 /** Teklifin geçerlilik tarihi geçti mi (o gün dahil geçerli). */
 export const teklifSuresiDoldu = (gecerlilik?: string) => !!gecerlilik && new Date(gecerlilik).getTime() + 86_400_000 < Date.now();
+
+/** "Neriman Hanım" / "Yasin Bey"; hitap seçilmemişse yalnızca ad. */
+export function hitapAdi(x: Pick<DosyaData, "musteriAdi" | "hitap">): string {
+  const ilk = x.musteriAdi.trim().split(/\s+/)[0] ?? "";
+  const ad = ilk ? `${ilk[0].toLocaleUpperCase("tr-TR")}${ilk.slice(1).toLocaleLowerCase("tr-TR")}` : "";
+  return x.hitap === "bey" ? `${ad} Bey` : x.hitap === "hanim" ? `${ad} Hanım` : ad;
+}

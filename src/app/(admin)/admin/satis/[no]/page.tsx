@@ -3,6 +3,7 @@
 // voucher bu ekrandan gönderilir; teklif kalemleri onaydan sonra yolculuk planı olur (oteller tekrar yazılmaz).
 import { use, useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { durakSayisi, ZIYARET_ROTALARI } from "@/lib/satis/ziyaret";
 import { ASAMALAR, KALEM_TURLERI, alisToplam, asamaIndex, asamaLabel, geceSayisi, kalemToplam, odemeDagilimi, odenen, onaylandiMi, toplam, trTarih, usd, waNumara, type Dosya, type DosyaData, type Kalem, type KalemTur, type Odeme } from "@/lib/satis/ortak";
 import { teklifLinki, teklifMesaji, voucherLinki, voucherMesaji, waLink } from "@/lib/satis/mesaj";
 
@@ -221,7 +222,18 @@ export default function SatisDosyasi({ params }: { params: Promise<{ no: string 
                       ) : (
                         <div className="mt-2 grid grid-cols-2 gap-2 md:grid-cols-[1.6fr_1.6fr_70px_1fr_1fr]">
                           <label><span className={lbl}>Hizmet</span><input className={inp} value={k.ad} onChange={(e) => setKalem(k.id, { ad: e.target.value })} /></label>
-                          <label><span className={lbl}>Açıklama (müşteri görür)</span><input className={inp} value={k.aciklama ?? ""} onChange={(e) => setKalem(k.id, { aciklama: e.target.value })} /></label>
+                          {k.tur === "tur" ? (
+                            <label><span className={lbl}>Rota (müşteri durakları görür)</span>
+                              <select className={inp} value={k.rota ?? ""} onChange={(e) => { const r = e.target.value as "mekke" | "medine" | ""; setKalem(k.id, r ? { rota: r, ad: ZIYARET_ROTALARI[r].ad, aciklama: undefined } : { rota: undefined }); }}>
+                                <option value="mekke">Mekke ziyaret turu ({durakSayisi(ZIYARET_ROTALARI.mekke)} durak)</option>
+                                <option value="medine">Medine ziyaret turu ({durakSayisi(ZIYARET_ROTALARI.medine)} durak)</option>
+                                <option value="">Özel tur (açıklamayla)</option>
+                              </select>
+                              {!k.rota && <input className={`${inp} mt-1`} placeholder="Açıklama" value={k.aciklama ?? ""} onChange={(e) => setKalem(k.id, { aciklama: e.target.value })} />}
+                            </label>
+                          ) : (
+                            <label><span className={lbl}>Açıklama (müşteri görür)</span><input className={inp} value={k.aciklama ?? ""} onChange={(e) => setKalem(k.id, { aciklama: e.target.value })} /></label>
+                          )}
                           <label><span className={lbl}>Adet</span><input type="number" min={1} className={inp} value={k.adet} onChange={(e) => setKalem(k.id, { adet: Number(e.target.value) || 1 })} /></label>
                           <label><span className={lbl}>Birim satış $</span><input type="number" min={0} className={inp} value={k.birim || ""} onChange={(e) => setKalem(k.id, { birim: Number(e.target.value) || 0 })} /></label>
                           <label><span className={lbl}>Birim alış $</span><input type="number" min={0} className={inp} value={k.alis || ""} onChange={(e) => setKalem(k.id, { alis: Number(e.target.value) || 0 })} /></label>
@@ -232,9 +244,13 @@ export default function SatisDosyasi({ params }: { params: Promise<{ no: string 
                 })}
               </div>
               <div className="mt-3 flex flex-wrap gap-1.5">
-                {(Object.keys(KALEM_TURLERI) as KalemTur[]).map((t) => (
-                  <button key={t} type="button" onClick={() => kalemEkle(t)} className="rounded-lg border border-primary/25 px-3 py-1.5 text-[11px] font-bold text-primary hover:bg-primary/5">+ {KALEM_TURLERI[t].label}</button>
-                ))}
+                {(Object.keys(KALEM_TURLERI) as KalemTur[]).flatMap((t) =>
+                  t === "tur"
+                    ? (["mekke", "medine"] as const).map((r) => (
+                        <button key={`tur-${r}`} type="button" onClick={() => kalemEkle("tur", { rota: r, ad: ZIYARET_ROTALARI[r].ad })} className="rounded-lg border border-primary/25 px-3 py-1.5 text-[11px] font-bold text-primary hover:bg-primary/5">+ {ZIYARET_ROTALARI[r].ad}</button>
+                      ))
+                    : [<button key={t} type="button" onClick={() => kalemEkle(t)} className="rounded-lg border border-primary/25 px-3 py-1.5 text-[11px] font-bold text-primary hover:bg-primary/5">+ {KALEM_TURLERI[t].label}</button>],
+                )}
                 {y.kutuphane.length > 0 && (
                   <select className={`${inp} w-60`} value="" onChange={(e) => { const s = y.kutuphane.find((x) => x.id === e.target.value); if (s) kalemEkle(KUT_TUR[s.kategori] ?? "diger", { ad: s.ad, birim: s.satis ?? 0, alis: s.alis || undefined }); }}>
                     <option value="">Hizmet kütüphanesinden ekle…</option>
@@ -369,7 +385,16 @@ export default function SatisDosyasi({ params }: { params: Promise<{ no: string 
           <>
             <Kart baslik="İletişim">
               <div className="grid gap-3 md:grid-cols-3">
-                <label><span className={lbl}>Ad soyad</span><input className={inp} value={data.musteriAdi} onChange={(e) => set("musteriAdi", e.target.value)} /></label>
+                <label><span className={lbl}>Ad soyad</span>
+                  <span className="flex gap-1.5">
+                    <input className={inp} value={data.musteriAdi} onChange={(e) => set("musteriAdi", e.target.value)} />
+                    <select className={`${inp} w-24`} value={data.hitap ?? ""} onChange={(e) => set("hitap", (e.target.value || undefined) as DosyaData["hitap"])} title="Teklif, voucher ve mesajlarda hitap">
+                      <option value="">Hitap</option>
+                      <option value="hanim">Hanım</option>
+                      <option value="bey">Bey</option>
+                    </select>
+                  </span>
+                </label>
                 <label><span className={lbl}>Telefon (WhatsApp)</span><input className={inp} value={kisi.phone} onChange={(e) => { setKisi({ ...kisi, phone: e.target.value }); setKirli(true); }} /></label>
                 <label><span className={lbl}>E-posta (profil eşleşmesi)</span><input className={inp} value={kisi.email} onChange={(e) => { setKisi({ ...kisi, email: e.target.value }); setKirli(true); }} /></label>
                 <label className="md:col-span-2"><span className={lbl}>Talep notu</span><input className={inp} value={data.talepNotu ?? ""} onChange={(e) => set("talepNotu", e.target.value)} /></label>

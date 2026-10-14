@@ -2,7 +2,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getDosya, geceSayisi, KALEM_TURLERI, odemeDagilimi, teklifSuresiDoldu, onaylandiMi, oteller, toplam, trTarih, usd } from "@/lib/satis";
+import { getDosya, geceSayisi, hitapAdi, KALEM_TURLERI, odemeDagilimi, teklifSuresiDoldu, onaylandiMi, oteller, toplam, trTarih, usd } from "@/lib/satis";
+import { durakSayisi, rotaOf } from "@/lib/satis/ziyaret";
+import ZiyaretRotasi from "@/components/satis/ZiyaretRotasi";
 import { findDirectoryHotel, kaabaText } from "@/lib/catalog/hotel-directory";
 import HugIcon, { type HugIconName } from "@/components/icons/HugIcon";
 import Accent from "@/components/home/Accent";
@@ -24,6 +26,7 @@ export default async function TeklifSayfasi({ params }: { params: Promise<{ toke
     }),
   );
   const dahil = x.kalemler.filter((k) => !k.tur.startsWith("otel_"));
+  const rotalar = dahil.map((k) => rotaOf(k.rota)).filter((r): r is NonNullable<typeof r> => !!r);
   const suresiDoldu = teklifSuresiDoldu(x.gecerlilik) && !onaylandiMi(d.status);
   const wa = `https://wa.me/905404010038?text=${encodeURIComponent(`Merhaba, ${d.no} numaralı teklifim hakkında yazıyorum.`)}`;
 
@@ -32,7 +35,7 @@ export default async function TeklifSayfasi({ params }: { params: Promise<{ toke
       <section className="bg-deep on-dark relative overflow-hidden rounded-[28px] p-6 text-white md:p-8">
         <span aria-hidden className="hat pointer-events-none absolute -bottom-12 right-4 select-none text-[9rem] leading-none text-white/[0.05]">عمرة</span>
         <p className="relative text-[11px] font-bold uppercase tracking-[0.24em] text-[var(--h-sand)]">Umre teklifiniz · {d.no}</p>
-        <h1 className="relative mt-2 text-3xl font-bold leading-tight md:text-[40px]"><Accent text={`${x.musteriAdi.split(" ")[0]}, umreniz *hazır*`} /></h1>
+        <h1 className="relative mt-2 text-3xl font-bold leading-tight md:text-[40px]"><Accent text={`${hitapAdi(x)}, umreniz *hazır*`} /></h1>
         <p className="relative mt-2 text-sm text-white/80">
           {x.gidis ? `${trTarih(x.gidis)} – ${trTarih(x.donus, { day: "numeric", month: "long", year: "numeric" })} · ` : ""}
           {x.yetiskin} yetişkin{x.cocuk ? `, ${x.cocuk} çocuk` : ""}{x.bebek ? `, ${x.bebek} bebek` : ""}
@@ -68,11 +71,24 @@ export default async function TeklifSayfasi({ params }: { params: Promise<{ toke
             {dahil.map((k) => (
               <li key={k.id} className="flex items-start gap-3 py-3">
                 <HugIcon name={KALEM_TURLERI[k.tur].ikon as HugIconName} size={20} className="mt-0.5 text-[var(--h-blue)]" />
-                <div className="flex-1"><p className="text-[14px] font-semibold text-[#14213d]">{k.ad}</p>{k.aciklama && <p className="text-[13px] text-[#5b6680]">{k.aciklama}</p>}</div>
+                <div className="flex-1">
+                  <p className="text-[14px] font-semibold text-[#14213d]">{rotaOf(k.rota)?.ad ?? k.ad}</p>
+                  {rotaOf(k.rota) ? <p className="text-[13px] text-[#5b6680]">{durakSayisi(rotaOf(k.rota)!)} durak · rotası aşağıda</p> : k.aciklama && <p className="text-[13px] text-[#5b6680]">{k.aciklama}</p>}
+                </div>
                 {k.adet > 1 && <span className="text-xs text-[#8a94ab]">{k.adet} × </span>}
               </li>
             ))}
           </ul>
+        </section>
+      )}
+
+      {rotalar.length > 0 && (
+        <section className="rounded-[28px] bg-white p-6 ring-1 ring-[var(--h-sky)]/60">
+          <h2 className="text-lg font-bold text-[var(--h-blue)]">Ziyaret turlarınız</h2>
+          <p className="mt-1 text-[13px] text-[#5b6680]">Türkçe konuşan rehberimiz eşliğinde, özel araçla.</p>
+          <div className={`mt-5 grid gap-8 ${rotalar.length > 1 ? "md:grid-cols-2" : ""}`}>
+            {rotalar.map((r) => <ZiyaretRotasi key={r.ad} rota={r} />)}
+          </div>
         </section>
       )}
 

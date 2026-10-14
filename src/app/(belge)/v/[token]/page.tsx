@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getDosya, geceSayisi, KALEM_TURLERI, onaylandiMi, oteller, trTarih } from "@/lib/satis";
+import { durakSayisi, rotaOf } from "@/lib/satis/ziyaret";
+import ZiyaretRotasi from "@/components/satis/ZiyaretRotasi";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Umre belgesi (voucher)" };
@@ -16,6 +18,7 @@ export default async function Voucher({ params }: { params: Promise<{ token: str
   const x = d.data;
   const ots = oteller(x);
   const hizmet = x.kalemler.filter((k) => !k.tur.startsWith("otel_"));
+  const rotalar = hizmet.map((k) => rotaOf(k.rota)).filter((r): r is NonNullable<typeof r> => !!r);
   return (
     <div className="mx-auto max-w-3xl px-4 pb-16 print:max-w-none print:px-0">
       <article className="overflow-hidden rounded-[24px] bg-white ring-1 ring-[var(--h-sky)]/60 print:rounded-none print:ring-0">
@@ -70,8 +73,20 @@ export default async function Voucher({ params }: { params: Promise<{ token: str
             <section>
               <h2 className="border-b-2 border-[var(--h-blue)] pb-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-[var(--h-blue)]">Dahil hizmetler</h2>
               <ul className="mt-2 grid gap-1.5 text-sm sm:grid-cols-2">
-                {hizmet.map((k) => <li key={k.id} className="text-[#14213d]">✓ {k.ad || KALEM_TURLERI[k.tur].label}{k.aciklama ? <span className="text-[#5b6680]"> · {k.aciklama}</span> : null}</li>)}
+                {hizmet.map((k) => {
+                  const r = rotaOf(k.rota);
+                  return <li key={k.id} className="text-[#14213d]">✓ {r?.ad ?? (k.ad || KALEM_TURLERI[k.tur].label)}{r ? <span className="text-[#5b6680]"> · {durakSayisi(r)} durak</span> : k.aciklama ? <span className="text-[#5b6680]"> · {k.aciklama}</span> : null}</li>;
+                })}
               </ul>
+            </section>
+          )}
+
+          {rotalar.length > 0 && (
+            <section>
+              <h2 className="border-b-2 border-[var(--h-blue)] pb-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-[var(--h-blue)]">Ziyaret turları</h2>
+              <div className={`mt-4 grid gap-6 ${rotalar.length > 1 ? "sm:grid-cols-2 print:grid-cols-2" : ""}`}>
+                {rotalar.map((r) => <ZiyaretRotasi key={r.ad} rota={r} sikisik />)}
+              </div>
             </section>
           )}
 

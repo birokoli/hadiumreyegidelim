@@ -11,6 +11,8 @@ import Accent from "@/components/home/Accent";
 import { AsamaCizelgesi, GunSayaci, PlanKart } from "@/components/profil/umre";
 import UcusFormu from "@/components/profil/UcusFormu";
 import HazirlikListesi from "@/components/profil/HazirlikListesi";
+import ZiyaretRotasi from "@/components/satis/ZiyaretRotasi";
+import { rotaOf } from "@/lib/satis/ziyaret";
 
 const kisa = (iso?: string) => trTarih(iso, { day: "numeric", month: "short" });
 const BELGE_IKON: Record<string, HugIconName> = { vize: "vize", otel: "otel", tren: "tren", ucak: "ucak", diger: "rehber" };
@@ -107,6 +109,14 @@ export default async function DosyaPage({ params }: { params: Promise<{ no: stri
               {(x.donus || x.donusTransfer || x.ucusDonus) && <PlanKart ikon="ucak" ust={`${x.donus ? `${kisa(x.donus)} · ` : ""}Dönüş`} baslik={x.ucusDonus || "Dönüş"} alt={x.donusTransfer} />}
             </div>
           </div>
+          {x.kalemler.some((k) => rotaOf(k.rota)) && (
+            <div className="rounded-[28px] bg-white p-6 ring-1 ring-[var(--h-sky)]/60">
+              <p className="text-[15px] font-bold text-[#14213d]">Ziyaret turlarınız</p>
+              <div className="mt-4 grid gap-8 md:grid-cols-2">
+                {x.kalemler.map((k) => rotaOf(k.rota)).filter((r): r is NonNullable<typeof r> => !!r).map((r) => <ZiyaretRotasi key={r.ad} rota={r} />)}
+              </div>
+            </div>
+          )}
           <div className="grid gap-5 md:grid-cols-2">
             <div className="rounded-[28px] bg-white p-6 ring-1 ring-[var(--h-sky)]/60">
               <p className="text-[15px] font-bold text-[#14213d]">Belgeleriniz</p>

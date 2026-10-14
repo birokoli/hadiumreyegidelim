@@ -1,10 +1,23 @@
 "use client";
 // Müşteri havuzu (12 Ekim): ücretsiz materyal karşılığı bırakılan iletişim bilgileri. Tasarım Gelen Kutusu ile aynı (13 Ekim, kullanıcı).
 // Ticari ileti izni olmayanlara pazarlama mesajı gönderilmez; izin verenlere göndermeden önce İYS kaydı gerekir.
+// 14 Ekim: aynı kişinin tekrar eden kayıtları (e-posta ya da telefon ortak) işaretlenir; Resend'den gelen teslim olaylarıyla
+// geri dönen adresler "adres geçersiz" görünür.
 import { useCallback, useEffect, useMemo, useState } from "react";
 import HubTabs from "@/components/admin/HubTabs";
 
-type Lead = { id: string; name: string; email: string | null; phone: string | null; source: string; marketingConsent: boolean; emailVerified: boolean; utm: string | null; status: string; note: string | null; createdAt: string };
+type EmailStatus = "delivered" | "bounced" | "complained" | "delayed";
+type Lead = {
+  id: string; name: string; email: string | null; phone: string | null; source: string; marketingConsent: boolean; emailVerified: boolean;
+  emailStatus: EmailStatus | null; emailStatusNote: string | null; utm: string | null; status: string; note: string | null; createdAt: string;
+  dupCount: number; dupFirstId: string; dupIndex: number;
+};
+const MAIL: Record<EmailStatus, { label: string; cls: string }> = {
+  delivered: { label: "teslim edildi", cls: "bg-secondary/10 text-secondary" },
+  bounced: { label: "adres geçersiz", cls: "bg-error/10 text-error" },
+  complained: { label: "spam bildirdi", cls: "bg-error/10 text-error" },
+  delayed: { label: "teslim gecikiyor", cls: "bg-[#b8862f]/10 text-[#b8862f]" },
+};
 type StatusKey = "new" | "contacted" | "customer" | "not_interested";
 const STATUS: Record<StatusKey, string> = { new: "Yeni", contacted: "Arandı", customer: "Müşteri oldu", not_interested: "İlgilenmiyor" };
 
@@ -23,7 +36,8 @@ export default function MusteriHavuzuPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState<"ALL" | StatusKey | "CONSENT" | "VERIFIED">("ALL");
+  const [statusFilter, setStatusFilter] = useState<"ALL" | StatusKey | "CONSENT" | "VERIFIED" | "DUP" | "BAD_EMAIL">("ALL");
+  const [tekil, setTekil] = useState(false);
 
   const load = useCallback(async () => {
     try {
@@ -54,16 +68,23 @@ export default function MusteriHavuzuPage() {
 
   const count = (s: StatusKey) => leads.filter((l) => l.status === s).length;
   const consentCount = leads.filter((l) => l.marketingConsent).length;
+  const kisiSayisi = new Set(leads.map((l) => l.dupFirstId)).size;
+  const tekrarSayisi = leads.length - kisiSayisi;
+  const gecersizSayisi = leads.filter((l) => l.emailStatus === "bounced" || l.emailStatus === "complained").length;
 
   const filtered = useMemo(() => {
     const q = search.trim().toLocaleLowerCase("tr-TR");
     return leads.filter((l) => {
       if (statusFilter === "CONSENT" && !l.marketingConsent) return false;
       if (statusFilter === "VERIFIED" && !l.emailVerified) return false;
-      if (statusFilter !== "ALL" && statusFilter !== "CONSENT" && statusFilter !== "VERIFIED" && l.status !== statusFilter) return false;
+      if (statusFilter === "DUP" && l.dupCount < 2) return false;
+      if (statusFilter === "BAD_EMAIL" && l.emailStatus !== "bounced" && l.emailStatus !== "complained") return false;
+      if (["new", "contacted", "customer", "not_interested"].includes(statusFilter) && l.status !== statusFilter) return false;
+      // Her kişiyi bir kez göster: grubun en son kaydı kalır (liste yeniden eskiye sıralı)
+      if (tekil && l.dupIndex !== l.dupCount) return false;
       return !q || `${l.name} ${l.email ?? ""} ${l.phone ?? ""}`.toLocaleLowerCase("tr-TR").includes(q);
     });
-  }, [leads, search, statusFilter]);
+  }, [leads, search, statusFilter, tekil]);
 
   if (loading) return <div className="p-8 max-w-7xl mx-auto min-h-screen bg-surface text-on-surface-variant text-xs">Kayıtlar yükleniyor...</div>;
 
@@ -75,6 +96,8 @@ export default function MusteriHavuzuPage() {
     { key: "not_interested", label: "İlgilenmiyor" },
     { key: "CONSENT", label: "İleti izni verenler" },
     { key: "VERIFIED", label: "E-postası doğrulanan" },
+    { key: "DUP", label: `Tekrar edenler (${tekrarSayisi})` },
+    { key: "BAD_EMAIL", label: `Adres geçersiz (${gecersizSayisi})` },
   ];
 
   return (
@@ -115,8 +138,8 @@ export default function MusteriHavuzuPage() {
         </div>
         <div className="p-5 rounded-2xl border border-primary/20 bg-surface-container-lowest">
           <span className="text-[10px] font-bold tracking-widest text-primary uppercase">Toplam</span>
-          <p className="font-headline text-2xl font-bold text-on-surface mt-1">{leads.length}</p>
-          <p className="text-[11px] text-outline mt-0.5">{consentCount} kişi ileti izni verdi</p>
+          <p className="font-headline text-2xl font-bold text-on-surface mt-1">{kisiSayisi} <span className="text-sm font-medium text-outline">kişi</span></p>
+          <p className="text-[11px] text-outline mt-0.5">{leads.length} kayıt · {consentCount} ileti izni</p>
         </div>
       </div>
 
@@ -136,6 +159,10 @@ export default function MusteriHavuzuPage() {
             </button>
           ))}
         </div>
+        <label className="flex items-center gap-2 text-xs font-bold text-on-surface-variant whitespace-nowrap cursor-pointer">
+          <input type="checkbox" checked={tekil} onChange={(e) => setTekil(e.target.checked)} className="accent-primary" />
+          Her kişiyi bir kez göster
+        </label>
         <div className="relative w-full sm:w-72">
           <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[16px]">search</span>
           <input
@@ -178,7 +205,17 @@ export default function MusteriHavuzuPage() {
                           {l.name.charAt(0).toLocaleUpperCase("tr-TR")}
                         </div>
                         <div>
-                          <div className="font-bold text-on-surface whitespace-nowrap">{l.name}</div>
+                          <div className="font-bold text-on-surface whitespace-nowrap">
+                            {l.name}
+                            {l.dupCount > 1 && (
+                              <span
+                                className="ml-1.5 rounded-full bg-[#b8862f]/10 px-1.5 py-0.5 text-[10px] font-bold text-[#b8862f]"
+                                title={`Bu kişinin ${l.dupCount} kaydı var (aynı e-posta ya da telefon). Bu, ${l.dupIndex}. kaydı.`}
+                              >
+                                {tekil ? `${l.dupCount} kayıt` : `${l.dupIndex === 1 ? "ilk kayıt" : `${l.dupIndex}. kayıt`} · ${l.dupCount}`}
+                              </span>
+                            )}
+                          </div>
                           {l.marketingConsent ? (
                             <span className="text-[10px] font-bold text-secondary">İleti izni var</span>
                           ) : (
@@ -193,9 +230,14 @@ export default function MusteriHavuzuPage() {
                         <div className="text-[11px]">
                           {l.email}{" "}
                           {l.emailVerified ? (
-                            <span className="ml-1 rounded-full bg-secondary/10 px-1.5 py-0.5 font-sans text-[10px] font-bold text-secondary">doğrulandı</span>
+                            <span className="ml-1 inline-block whitespace-nowrap rounded-full bg-secondary/10 px-1.5 py-0.5 font-sans text-[10px] font-bold text-secondary">doğrulandı</span>
                           ) : (
-                            <span className="ml-1 rounded-full bg-outline-variant/20 px-1.5 py-0.5 font-sans text-[10px] text-outline">doğrulanmadı</span>
+                            <span className="ml-1 inline-block whitespace-nowrap rounded-full bg-outline-variant/20 px-1.5 py-0.5 font-sans text-[10px] text-outline">doğrulanmadı</span>
+                          )}
+                          {l.emailStatus && (l.emailStatus !== "delivered" || !l.emailVerified) && (
+                            <span title={l.emailStatusNote ?? undefined} className={`ml-1 inline-block whitespace-nowrap rounded-full px-1.5 py-0.5 font-sans text-[10px] font-bold ${MAIL[l.emailStatus].cls}`}>
+                              {MAIL[l.emailStatus].label}
+                            </span>
                           )}
                         </div>
                       )}
@@ -256,7 +298,8 @@ export default function MusteriHavuzuPage() {
       </div>
 
       <p className="text-[11px] text-outline">
-        Kampanya ya da toplu mesaj yalnızca &quot;ileti izni var&quot; olanlara gönderilebilir.
+        Kampanya ya da toplu mesaj yalnızca &quot;ileti izni var&quot; olanlara gönderilebilir. &quot;Adres geçersiz&quot; kayıtlara e-posta
+        göndermeyin; telefonu varsa WhatsApp&apos;tan ulaşın. Tekrar eden kayıtlar aynı e-posta ya da telefonla bırakılmış kayıtlardır.
       </p>
     </div>
   );

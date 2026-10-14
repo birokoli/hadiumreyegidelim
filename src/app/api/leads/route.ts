@@ -3,7 +3,7 @@
 // geçici servis, MX). Yalnızca telefon bırakmak serbest (daha çok kayıt için), numara biçimi kontrol edilir.
 import { NextResponse } from "next/server";
 import { rateLimit, getClientIp } from "@/lib/rate-limit";
-import { createLead, findLeadByEmail, issueCode, refreshLead, LEAD_SOURCES } from "@/lib/leads";
+import { createLead, findLeadByEmail, isEmailBounced, issueCode, recordEmailSent, refreshLead, LEAD_SOURCES } from "@/lib/leads";
 import { checkEmail, checkPhone } from "@/lib/leads/email-check";
 import { emailVerificationEnabled, sendLeadCode } from "@/lib/leads/mailer";
 
@@ -33,6 +33,8 @@ export async function POST(req: Request) {
     const c = await checkEmail(emailRaw);
     if (!c.ok) return bad(c.error, { field: "email", suggestion: c.suggestion });
     email = c.email;
+    // Bu adrese daha önce gönderdiğimiz e-posta geri döndüyse (adres yok / kutu kapalı) kişiyi şimdi uyaralım
+    if (await isEmailBounced(email).catch(() => false)) return bad("Bu adrese daha önce gönderdiğimiz e-posta ulaşmadı. Adresi kontrol edin ya da başka bir adres yazın.", { field: "email" });
   }
   if (b.kvkk !== true) return bad("Devam etmek için KVKK bilgilendirmesini onaylayın.", { field: "kvkk" });
 
@@ -58,7 +60,7 @@ export async function POST(req: Request) {
     if (!rateLimit(email, "lead-code", 3, 30 * 60 * 1000).allowed) return NextResponse.json({ ok: false, error: "Bu adrese kısa sürede çok kod gönderildi; e-postanızdaki son kodu kullanın." }, { status: 429 });
     const code = await issueCode(leadId);
     try {
-      await sendLeadCode({ to: email, name, code, source, leadId });
+      await recordEmailSent(leadId, await sendLeadCode({ to: email, name, code, source, leadId }));
     } catch (e) {
       // E-posta servisi çalışmazsa kişiyi kaybetmeyelim: kayıt doğrulanmamış olarak kalır, indirme açılır
       console.error("[leads] kod gönderilemedi", e);

@@ -91,15 +91,18 @@ Bu isteği siz yapmadıysanız bu e-postayı yok sayabilirsiniz.</p>
   return { subject: `${opts.code} · ${title} doğrulama kodunuz`, html, text };
 }
 
-export async function sendLeadCode(opts: { to: string; name: string; code: string; source: string; leadId: string }): Promise<void> {
+/** Kodu gönderir; Resend'in e-posta kimliğini döndürür (teslim olayları bu kimlikle gelir). */
+export async function sendLeadCode(opts: { to: string; name: string; code: string; source: string; leadId: string }): Promise<string | null> {
   const { subject, html, text } = leadCodeEmail(opts);
   const r = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, "Content-Type": "application/json" },
-    body: JSON.stringify({ from: process.env.LEAD_EMAIL_FROM, to: [opts.to], subject, html, text }),
+    body: JSON.stringify({ from: process.env.LEAD_EMAIL_FROM, to: [opts.to], subject, html, text, tags: [{ name: "lead", value: opts.leadId }] }),
     signal: AbortSignal.timeout(10_000),
   });
   if (!r.ok) throw new Error(`Resend ${r.status}: ${(await r.text()).slice(0, 200)}`);
+  const d = (await r.json().catch(() => ({}))) as { id?: string };
+  return d.id ?? null;
 }
 
 /** Şifre sıfırlama kodu (üyelik, 13 Ekim). Aynı kimlik, kitapçık e-postasının sade hali. */

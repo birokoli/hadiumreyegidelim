@@ -70,12 +70,16 @@ export default function SatisDosyasi({ params }: { params: Promise<{ no: string 
     setKirli(true);
   };
   const setKalem = (id: string, patch: Partial<Kalem>) => set("kalemler", (data?.kalemler ?? []).map((k) => (k.id === id ? { ...k, ...patch, otel: patch.otel ? { ...(k.otel ?? { ad: "" }), ...patch.otel } : k.otel } : k)));
-  // Kişi başı fiyatlanan kalemler: adet = kişi sayısı, birim = kişi başı fiyat
-  const kisiBasi = (k: Kalem) => ["vize", "tren", "tur"].includes(k.tur);
+  // Kişi başı fiyatlanan kalemler: adet = kişi sayısı, birim = kişi başı fiyat. 15 Ekim (kullanıcı): ziyaret turu ve transfer
+  // araç bazlı; adet = araç sayısı, birim = araç başı fiyat
+  const kisiBasi = (k: Kalem) => ["vize", "tren"].includes(k.tur);
+  const aracBasi = (k: Kalem) => ["tur", "transfer"].includes(k.tur);
+  const adetEtiketi = (k: Kalem) => (kisiBasi(k) ? "Kişi" : aracBasi(k) ? "Araç" : "Adet");
+  const birimEtiketi = (k: Kalem, ne: "satış" | "alış") => `${kisiBasi(k) ? "Kişi başı" : aracBasi(k) ? "Araç başı" : "Birim"} ${ne} $`;
   const yuvarla = (n: number) => Math.round(n * 100) / 100;
   const kalemEkle = (tur: KalemTur, extra: Partial<Kalem> = {}) => {
     const kisiSayisi = (data?.yetiskin ?? 1) + (data?.cocuk ?? 0);
-    const base: Kalem = { id: uid(), tur, ad: KALEM_TURLERI[tur].label, adet: tur.startsWith("otel_") ? 1 : ["vize", "tren", "tur"].includes(tur) ? kisiSayisi : 1, birim: 0, ...extra };
+    const base: Kalem = { id: uid(), tur, ad: KALEM_TURLERI[tur].label, adet: tur.startsWith("otel_") ? 1 : ["vize", "tren"].includes(tur) ? kisiSayisi : 1, birim: 0, ...extra };
     if (tur.startsWith("otel_")) base.otel = { ad: "", giris: tur === "otel_mekke" ? data?.gidis : undefined, cikis: tur === "otel_medine" ? data?.donus : undefined, oda: "" };
     set("kalemler", [...(data?.kalemler ?? []), base]);
   };
@@ -202,7 +206,7 @@ export default function SatisDosyasi({ params }: { params: Promise<{ no: string 
                       <div className="flex items-center justify-between gap-2">
                         <span className="rounded bg-primary/10 px-2 py-0.5 text-[10px] font-bold text-primary">{KALEM_TURLERI[k.tur].label}</span>
                         <div className="flex items-center gap-3">
-                          <span className="text-[11px] text-on-surface-variant">{k.birim ? (otel ? `${k.adet} oda × ${Math.max(1, g)} gece × ${usd(k.birim)}` : k.adet > 1 ? `${k.adet} × ${usd(k.birim)}` : "") : ""}</span>
+                          <span className="text-[11px] text-on-surface-variant">{k.birim ? (otel ? `${k.adet} oda × ${Math.max(1, g)} gece × ${usd(k.birim)}` : aracBasi(k) ? `${k.adet} araç × ${usd(k.birim)}` : k.adet > 1 ? `${k.adet} × ${usd(k.birim)}` : "") : ""}</span>
                           <span className="font-mono text-sm font-bold text-primary">{usd(kalemToplam(k))}</span>
                           <button type="button" onClick={() => set("kalemler", data.kalemler.filter((x) => x.id !== k.id))} className="text-xs text-outline hover:text-error">sil</button>
                         </div>
@@ -239,11 +243,11 @@ export default function SatisDosyasi({ params }: { params: Promise<{ no: string 
                           ) : (
                             <label><span className={lbl}>Açıklama (müşteri görür)</span><input className={inp} value={k.aciklama ?? ""} onChange={(e) => setKalem(k.id, { aciklama: e.target.value })} /></label>
                           )}
-                          <label><span className={lbl}>{kisiBasi(k) ? "Kişi" : "Adet"}</span><input type="number" min={1} className={inp} value={k.adet} onChange={(e) => setKalem(k.id, { adet: Number(e.target.value) || 1 })} /></label>
-                          <label><span className={lbl}>{kisiBasi(k) ? "Kişi başı satış $" : "Birim satış $"}</span><input type="number" min={0} className={inp} value={k.birim || ""} onChange={(e) => setKalem(k.id, { birim: Number(e.target.value) || 0 })} /></label>
+                          <label><span className={lbl}>{adetEtiketi(k)}</span><input type="number" min={1} className={inp} value={k.adet} onChange={(e) => setKalem(k.id, { adet: Number(e.target.value) || 1 })} /></label>
+                          <label><span className={lbl}>{birimEtiketi(k, "satış")}</span><input type="number" min={0} className={inp} value={k.birim || ""} onChange={(e) => setKalem(k.id, { birim: Number(e.target.value) || 0 })} /></label>
                           {/* 15 Ekim: Excel'deki toplamı yazınca birim fiyat kendiliğinden hesaplanır (toplam ÷ adet) */}
                           <label><span className={lbl}>Toplam satış $</span><input type="number" min={0} className={`${inp} font-bold`} value={k.birim ? yuvarla(k.birim * k.adet) : ""} onChange={(e) => setKalem(k.id, { birim: yuvarla((Number(e.target.value) || 0) / Math.max(1, k.adet)) })} /></label>
-                          <label><span className={lbl}>{kisiBasi(k) ? "Kişi başı alış $" : "Birim alış $"}</span><input type="number" min={0} className={inp} value={k.alis || ""} onChange={(e) => setKalem(k.id, { alis: Number(e.target.value) || 0 })} /></label>
+                          <label><span className={lbl}>{birimEtiketi(k, "alış")}</span><input type="number" min={0} className={inp} value={k.alis || ""} onChange={(e) => setKalem(k.id, { alis: Number(e.target.value) || 0 })} /></label>
                           <label><span className={lbl}>Toplam alış $</span><input type="number" min={0} className={inp} value={k.alis ? yuvarla(k.alis * k.adet) : ""} onChange={(e) => setKalem(k.id, { alis: yuvarla((Number(e.target.value) || 0) / Math.max(1, k.adet)) })} /></label>
                         </div>
                       )}

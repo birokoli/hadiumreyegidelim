@@ -85,7 +85,7 @@ export default async function TeklifSayfasi({ params }: { params: Promise<{ toke
                 {kalemToplam(k) > 0 ? (
                   <div className="shrink-0 text-right">
                     <p className="text-[14px] font-bold text-[var(--h-blue)]">{usd(kalemToplam(k))}</p>
-                    {k.adet > 1 && <p className="text-[11px] text-[#5b6680]">{k.adet} × {usd(k.birim)}</p>}
+                    {k.adet > 1 && <p className="text-[11px] text-[#5b6680]">{k.adet}{k.tur === "tur" || k.tur === "transfer" ? " araç" : ""} × {usd(k.birim)}</p>}
                   </div>
                 ) : (
                   <span className="shrink-0 text-xs font-semibold text-[#2f7d55]">Dahil</span>

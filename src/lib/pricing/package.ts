@@ -1,7 +1,7 @@
 // Paket fiyatı (3 Ekim, kullanıcı): sabit fiyat yerine "… $'dan başlayan"; müşteri oteli seçer, fiyat kişi başı hesaplanır.
 // Paket = otel (gece × oda) + kişi sayısına göre önerilen araçla transfer/tur rotaları; toplam × (1 + paket payı) ÷ kişi.
 import type { CatalogItem } from "@/lib/catalog";
-import { roomsNeeded, unitPrice } from "@/lib/pricing/plan";
+import { hotelNightCost, roomsNeeded, unitPrice } from "@/lib/pricing/plan";
 import { parseTransferSlug, suggestedVehicles, vehicleByKey } from "@/lib/catalog/transfers";
 
 export type PackagePreset = { nights: number; city: "mekke" | "medine"; routes: string[]; hotelSlug?: string };
@@ -22,7 +22,8 @@ export type PackageQuote = { perPersonUsd: number; totalUsd: number; rooms: numb
 /** Kişi başı paket fiyatı (tam dolara yukarı yuvarlanır). Fiyatı eksik kalem varsa null. */
 export function quotePackage(preset: PackagePreset, hotel: CatalogItem, catalog: CatalogItem[], people: number, month: string, packagePercent: number): PackageQuote {
   const p = Math.max(1, people);
-  const nightly = unitPrice(hotel, month);
+  // 1 gecelik toplam oda bedeli (kişi sayısına göre oda fiyatı varsa ona göre)
+  const nightly = hotelNightCost(hotel, month, p);
   if (nightly == null) return null;
   const rooms = roomsNeeded(p);
   const vehicleKey = suggestedVehicles(p)[0];
@@ -39,7 +40,7 @@ export function quotePackage(preset: PackagePreset, hotel: CatalogItem, catalog:
     if (price == null) return null;
     transport += price * vehicles;
   }
-  const base = nightly * preset.nights * rooms + transport;
+  const base = nightly * preset.nights + transport;
   const total = base * (1 + packagePercent / 100);
   return { perPersonUsd: Math.ceil(total / p), totalUsd: Math.ceil(total), rooms, vehicleLabel: vehicle.label, vehicles };
 }

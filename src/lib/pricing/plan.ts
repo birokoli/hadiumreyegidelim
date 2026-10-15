@@ -50,8 +50,38 @@ export function unitPrice(item: CatalogItem, month: string): number | null {
   const monthPrices = (item.prices ?? []).filter((p) => p.month === month);
   const single = monthPrices.find((p) => p.variant === "");
   if (single) return single.priceUsd;
+  // Kişi bazlı oda fiyatı olan otelde gösterilen "oda / gece" fiyatı 2 kişilik odanınkidir
+  const k2 = monthPrices.find((p) => p.variant === "k2");
+  if (k2) return k2.priceUsd;
   if (monthPrices.length) return Math.min(...monthPrices.map((p) => p.priceUsd));
   return item.basePriceUsd ?? null;
+}
+
+/**
+ * Otelin 1 gecelik toplam oda bedeli (15 Ekim): kişiler odalara eşit dağıtılır (en fazla 4); otelde 2/3/4 kişilik oda fiyatı
+ * girilmişse her oda kendi doluluğunun fiyatıyla (1 kişi 2 kişilik fiyatla) hesaplanır. Yarım pansiyon gibi kişi başı yemekli
+ * otellerde (ör. Address Jabal Omar) fark büyüktür. Kişi bazlı fiyatlar "k2"/"k3"/"k4" varyantında tutulur (eski "2/3/4"
+ * kayıtları eski kuralla, en düşük fiyat olarak kalır). Kişi bazlı fiyat yoksa eski kural: tek oda fiyatı × oda.
+ */
+export const DOLULUK_VARYANT = ["k2", "k3", "k4"] as const;
+export function hotelNightCost(item: CatalogItem, month: string, people: number): number | null {
+  const rooms = roomsNeeded(people);
+  const monthPrices = (item.prices ?? []).filter((p) => p.month === month);
+  const byOcc = (k: number) => monthPrices.find((p) => p.variant === `k${Math.min(4, Math.max(2, k))}`)?.priceUsd;
+  if (!monthPrices.some((p) => (DOLULUK_VARYANT as readonly string[]).includes(p.variant))) {
+    const u = unitPrice(item, month);
+    return u == null ? null : u * rooms;
+  }
+  const taban = Math.floor(people / rooms);
+  const fazla = people % rooms;
+  let toplam = 0;
+  for (let i = 0; i < rooms; i++) {
+    const k = taban + (i < fazla ? 1 : 0);
+    const f = byOcc(k) ?? monthPrices.find((p) => p.variant === "")?.priceUsd;
+    if (f == null) return null;
+    toplam += f;
+  }
+  return toplam;
 }
 
 function lineFor(item: CatalogItem, input: PlanInput, people: number, rooms: number): PlanLine {
@@ -60,12 +90,12 @@ function lineFor(item: CatalogItem, input: PlanInput, people: number, rooms: num
   switch (item.category === "hotel" ? "per_room" : item.pricingType) {
     case "per_room": {
       const nights = item.city === "medine" ? input.medineNights : input.mekkeNights;
-      const p = unitPrice(item, m);
+      const gecelik = hotelNightCost(item, m, people);
       return {
         itemId: item.id,
         label: item.name,
         detail: `${rooms} oda × ${nights} gece`,
-        totalUsd: p == null || nights <= 0 ? (nights <= 0 ? 0 : null) : round(p * rooms * nights),
+        totalUsd: gecelik == null || nights <= 0 ? (nights <= 0 ? 0 : null) : round(gecelik * nights),
       };
     }
     case "per_vehicle": {

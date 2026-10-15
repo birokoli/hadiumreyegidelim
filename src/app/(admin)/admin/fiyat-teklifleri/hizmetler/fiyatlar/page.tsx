@@ -26,6 +26,7 @@ export default function MonthlyPricesPage() {
   const [busy, setBusy] = useState(false);
   const [copy, setCopy] = useState({ from: "", to: "", percent: 5, category: "", overwrite: false });
   const [fill, setFill] = useState({ month: "", margin: 10, category: "", overwrite: false });
+  const [toplu, setToplu] = useState({ serviceId: "", metin: "" });
   const [pay, setPay] = useState({ usdTry: "", rateDate: "", ibanPercent: "20", cardPercent: "26", packagePercent: "75" });
 
   type Loaded = { s: { error?: string; services?: Service[] }; p: { error?: string; months?: string[]; prices?: Price[]; payment?: { usdTry: number | null; rateDate: string | null; ibanPercent: number; cardPercent: number; packagePercent: number } } };
@@ -57,12 +58,15 @@ export default function MonthlyPricesPage() {
     return ORDER.flatMap((cat) => {
       const items = list.filter((s) => s.category === cat);
       if (!items.length) return [];
-      return [{ head: CATEGORIES[cat] ?? cat }, ...items.flatMap((s) =>
-        // Otel fiyatı 1 odanın 1 gecelik fiyatı; oda tipi ayrımı yok (2 Ekim kullanıcı kuralı)
-        [{ s, variant: "", sub: UNIT[s.category === "hotel" ? "per_room" : s.defaultPricingType] ?? "", first: true }],
-      )];
+      return [{ head: CATEGORIES[cat] ?? cat }, ...items.flatMap((s) => {
+        // Otel fiyatı 1 odanın 1 gecelik fiyatı. 15 Ekim: kişi bazlı fiyatı (k2/k3/k4) girilmiş otelde üç satır gösterilir
+        if (s.category === "hotel" && Object.keys(values).some((k) => k.startsWith(`${s.id}|`) && /\|k[234]$/.test(k))) {
+          return (["k2", "k3", "k4"] as const).map((v, i) => ({ s, variant: v, sub: `${v.slice(1)} kişilik oda / gece`, first: i === 0 }));
+        }
+        return [{ s, variant: "", sub: UNIT[s.category === "hotel" ? "per_room" : s.defaultPricingType] ?? "", first: true }];
+      })];
     });
-  }, [services, onlyPublic]);
+  }, [services, onlyPublic, values]);
 
   const set = (k: string, v: string) => {
     setValues((prev) => ({ ...prev, [k]: v }));
@@ -105,6 +109,30 @@ export default function MonthlyPricesPage() {
     if (dirty.size && !confirm("Kaydedilmemiş değişiklikler var; önce kaydedin. Yine de devam edilsin mi?")) return;
     post({ action: "fromCost", ...fill, category: fill.category || undefined }, (r) => `${label(fill.month)}: ${r.filled} fiyat maliyetten hesaplandı (maliyet × ${1 + fill.margin / 100})${r.skipped ? `, ${r.skipped} dolu hücre korundu` : ""}. Yalnızca "Sitede göster" işaretli ve maliyeti girilmiş hizmetler.`);
   };
+  /** Toplu yapıştır (15 Ekim): her satır "YYYY-AA 2kişi 3kişi 4kişi" (kişi bazlı oda fiyatı) ya da "YYYY-AA fiyat" (tek oda fiyatı), USD */
+  const topluSatirlar = toplu.metin
+    .split(/\n/)
+    .map((l) => l.trim())
+    .filter(Boolean)
+    .map((l) => {
+      const [ay, ...rakamlar] = l.split(/[\s;,\t]+/);
+      const n = rakamlar.map((x) => Number(x.replace(/[^0-9.]/g, "")));
+      return { ay, n, gecerli: /^\d{4}-(0[1-9]|1[0-2])$/.test(ay) && (n.length === 1 || n.length === 3) && n.every((x) => x > 0) };
+    });
+  const runToplu = async () => {
+    if (!toplu.serviceId || !topluSatirlar.length || topluSatirlar.some((r) => !r.gecerli)) return;
+    const cells = topluSatirlar.flatMap((r) =>
+      r.n.length === 3 ? r.n.map((f, i) => ({ serviceId: toplu.serviceId, month: r.ay, variant: `k${i + 2}`, salePriceUsd: f })) : [{ serviceId: toplu.serviceId, month: r.ay, variant: "", salePriceUsd: r.n[0] }],
+    );
+    setBusy(true); setMsg("");
+    const r = await fetch("/api/admin/service-prices", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ cells }) }).then((x) => x.json());
+    setBusy(false);
+    if (r.error) return setMsg(r.error);
+    setMsg(`${services.find((x) => x.id === toplu.serviceId)?.name}: ${r.saved} fiyat kaydedildi.`);
+    setToplu({ ...toplu, metin: "" });
+    load();
+  };
+
   const savePay = () => post({ action: "payment", usdTry: Number(pay.usdTry.replace(",", ".")) || 0, rateDate: pay.rateDate, ibanPercent: Number(pay.ibanPercent), cardPercent: Number(pay.cardPercent), packagePercent: Number(pay.packagePercent) }, () => "Ödeme farkları ve kur kaydedildi; planlayıcı bunlarla hesaplar.");
 
   const cell = "w-20 rounded-md border border-outline-variant/30 bg-white px-2 py-1 text-right font-mono text-xs focus:border-primary/50 focus:outline-none";
@@ -122,6 +150,22 @@ export default function MonthlyPricesPage() {
         <div className="flex items-center gap-3">
           <label className="flex items-center gap-2 text-xs"><input type="checkbox" checked={onlyPublic} onChange={(e) => setOnlyPublic(e.target.checked)} className="accent-[#003781]" /> Yalnızca sitede görünenler</label>
           <button onClick={save} disabled={busy || !dirty.size} className="rounded-xl bg-primary px-5 py-2.5 text-xs font-bold text-white disabled:opacity-50">{busy ? "Kaydediliyor…" : `Kaydet${dirty.size ? ` (${dirty.size})` : ""}`}</button>
+        </div>
+      </div>
+
+      <div className="rounded-2xl border border-outline-variant/20 bg-white p-4 text-xs space-y-2">
+        <p className="font-bold text-primary">Otel fiyat tablosunu toplu yapıştır <span className="font-normal text-on-surface-variant">(otelden gelen PDF için; satış fiyatı, USD, oda / gece)</span></p>
+        <p className="text-on-surface-variant">Her satıra bir ay: <code className="rounded bg-surface-container-low px-1">2026-11 310 372 433</code> = 2, 3 ve 4 kişilik oda fiyatı (kişi sayısına göre hesaplanır). Tek oda fiyatı için <code className="rounded bg-surface-container-low px-1">2026-11 310</code>. Var olan aynı hücrelerin üzerine yazılır.</p>
+        <div className="flex flex-wrap items-start gap-3">
+          <select value={toplu.serviceId} onChange={(e) => setToplu({ ...toplu, serviceId: e.target.value })} className={sel}>
+            <option value="">Otel seçin</option>
+            {services.filter((x) => x.category === "hotel").map((x) => <option key={x.id} value={x.id}>{x.name}{x.city ? ` · ${x.city}` : ""}</option>)}
+          </select>
+          <textarea value={toplu.metin} onChange={(e) => setToplu({ ...toplu, metin: e.target.value })} rows={5} placeholder={"2026-10 296 355 413\n2026-11 310 372 433"} className="min-w-[260px] flex-1 rounded-lg border border-outline-variant/30 px-3 py-2 font-mono text-xs" />
+          <div className="space-y-2">
+            <p className="text-on-surface-variant">{topluSatirlar.length} satır{topluSatirlar.some((r) => !r.gecerli) ? <span className="font-bold text-error"> · hatalı satır var</span> : null}</p>
+            <button onClick={runToplu} disabled={busy || !toplu.serviceId || !topluSatirlar.length || topluSatirlar.some((r) => !r.gecerli)} className="rounded-lg bg-primary px-3 py-1.5 font-bold text-white disabled:opacity-50">Yükle</button>
+          </div>
         </div>
       </div>
 

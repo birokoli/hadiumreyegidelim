@@ -77,6 +77,33 @@ export default function ServiceLibraryPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
   const [form, setForm] = useState({ ...BLANK });
+  const [gorselYukleniyor, setGorselYukleniyor] = useState(false);
+
+  // Fotoğraf yükleme (15 Ekim): telefon fotoğrafları 4,5 MB sınırını aşabildiği için tarayıcıda en fazla 1600 px JPEG'e küçültülür
+  const gorselYukle = async (dosya: File) => {
+    setGorselYukleniyor(true);
+    try {
+      const bmp = await createImageBitmap(dosya);
+      const oran = Math.min(1, 1600 / Math.max(bmp.width, bmp.height));
+      const tuval = document.createElement('canvas');
+      tuval.width = Math.round(bmp.width * oran);
+      tuval.height = Math.round(bmp.height * oran);
+      tuval.getContext('2d')!.drawImage(bmp, 0, 0, tuval.width, tuval.height);
+      const blob = await new Promise<Blob | null>((r) => tuval.toBlob(r, 'image/jpeg', 0.85));
+      if (!blob) throw new Error('Fotoğraf okunamadı');
+      const fd = new FormData();
+      fd.append('file', new File([blob], 'otel.jpg', { type: 'image/jpeg' }));
+      fd.append('headingSlug', form.slug || form.name || 'hizmet');
+      const res = await fetch('/api/upload', { method: 'POST', body: fd });
+      const data = await res.json().catch(() => ({}));
+      if (!data.success || !data.url) throw new Error(data.error || 'Yükleme başarısız');
+      setForm((f) => ({ ...f, imageUrl: data.url }));
+    } catch (e) {
+      alert(`Fotoğraf yüklenemedi: ${e instanceof Error ? e.message : ''}`);
+    } finally {
+      setGorselYukleniyor(false);
+    }
+  };
   const [saving, setSaving] = useState(false);
   const [togglingId, setTogglingId] = useState<string | null>(null);
   const [importing, setImporting] = useState(false);
@@ -484,8 +511,20 @@ export default function ServiceLibraryPage() {
                       </>
                     )}
                     <div className="col-span-2">
-                      <label className="block font-bold text-on-surface-variant mb-1">Görsel adresi</label>
-                      <input type="url" value={form.imageUrl} onChange={(e) => setForm({ ...form, imageUrl: e.target.value })} placeholder="https://…" className="w-full bg-surface-container-lowest border border-outline-variant/25 rounded-lg p-2 focus:outline-none focus:border-primary/40" />
+                      <label className="block font-bold text-on-surface-variant mb-1">Görsel</label>
+                      <div className="flex items-center gap-3">
+                        {form.imageUrl ? (
+                          <img src={form.imageUrl} alt="" className="w-20 h-14 object-cover rounded-lg border border-outline-variant/25" />
+                        ) : null}
+                        <label className={`cursor-pointer px-3 py-2 rounded-lg border border-outline-variant/25 font-bold text-primary ${gorselYukleniyor ? 'opacity-60 pointer-events-none' : ''}`}>
+                          {gorselYukleniyor ? 'Yükleniyor…' : form.imageUrl ? 'Fotoğrafı değiştir' : 'Fotoğraf yükle'}
+                          <input type="file" accept="image/jpeg,image/png,image/webp" className="hidden" onChange={(e) => { const f = e.target.files?.[0]; e.target.value = ''; if (f) gorselYukle(f); }} />
+                        </label>
+                        {form.imageUrl ? (
+                          <button type="button" onClick={() => setForm({ ...form, imageUrl: '' })} className="text-on-surface-variant underline">Kaldır</button>
+                        ) : null}
+                      </div>
+                      <input type="url" value={form.imageUrl} onChange={(e) => setForm({ ...form, imageUrl: e.target.value })} placeholder="ya da görsel adresi: https://…" className="mt-2 w-full bg-surface-container-lowest border border-outline-variant/25 rounded-lg p-2 focus:outline-none focus:border-primary/40" />
                     </div>
                     <div className="col-span-2">
                       <label className="block font-bold text-on-surface-variant mb-1">Sitedeki açıklama (müşteri görür; "en ucuz", "sıfır", "garanti" yazmayın)</label>

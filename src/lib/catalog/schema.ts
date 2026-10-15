@@ -2,6 +2,7 @@
 // Proje `prisma db push` kullanmıyor; tablolar ilk kullanımda bu fonksiyonla oluşturulur
 // (WhatsApp AI tablolarıyla aynı yöntem). Kullanıcı onayı: 2 Ekim 2026.
 import { prisma } from "@/lib/prisma";
+import { veriAdimlari } from "./veri-adimlari";
 
 let ready: Promise<void> | null = null;
 
@@ -29,6 +30,8 @@ async function migrate() {
     `CREATE INDEX IF NOT EXISTS "ServicePrice_month_idx" ON "ServicePrice"("month")`,
   ];
   for (const sql of statements) await prisma.$executeRawUnsafe(sql);
+  // 15 Ekim: bir kez çalışan veri adımları (ör. otelden gelen fiyat listesi)
+  await veriAdimlari();
 }
 
 /** ServiceLibrary / ServicePrice'a dokunan her yerden önce çağrılır */

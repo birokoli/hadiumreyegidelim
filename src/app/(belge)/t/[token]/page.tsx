@@ -3,7 +3,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getDosya, geceSayisi, hitapAdi, KALEM_TURLERI, kalemToplam, odemeDagilimi, teklifSuresiDoldu, onaylandiMi, oteller, toplam, trTarih, usd } from "@/lib/satis";
+import { getDosya, geceSayisi, hitapAdi, KALEM_TURLERI, kalemToplam, odemeDagilimi, teklifSuresiDoldu, onaylandiMi, oteller, toplam, genelToplam, kdvTutari, kartla, KART_PAYI, trTarih, usd } from "@/lib/satis";
 import { durakSayisi, rotaOf } from "@/lib/satis/ziyaret";
 import ZiyaretRotasi from "@/components/satis/ZiyaretRotasi";
 import { findDirectoryHotel, kaabaText } from "@/lib/catalog/hotel-directory";
@@ -18,7 +18,8 @@ export default async function TeklifSayfasi({ params }: { params: Promise<{ toke
   const d = await getDosya("token", (await params).token);
   if (!d || d.status === "iptal" || !d.data.kalemler.length) notFound();
   const x = d.data;
-  const t = toplam(x);
+  const t = genelToplam(x);
+  const net = toplam(x);
   const kisi = x.yetiskin + x.cocuk;
   const ots = await Promise.all(
     oteller(x).map(async (k) => {
@@ -109,12 +110,20 @@ export default async function TeklifSayfasi({ params }: { params: Promise<{ toke
       <section className="rounded-[28px] bg-white p-6 ring-1 ring-[var(--h-sky)]/60">
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
-            <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[var(--h-blue)]/60">Toplam</p>
+            <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[var(--h-blue)]/60">Toplam{x.kdv ? " · KDV dahil" : ""}</p>
             <p className="text-4xl font-bold text-[var(--h-blue)]">{usd(t)}</p>
             {kisi > 1 && <p className="text-sm text-[#5b6680]">Kişi başı {usd(t / kisi)}</p>}
           </div>
           {x.gecerlilik && <p className={`rounded-full px-3 py-1 text-xs font-bold ${suresiDoldu ? "bg-red-50 text-red-700" : "bg-[#fbf4e1] text-[#8a6a1c]"}`}>{suresiDoldu ? "Süresi doldu" : `${trTarih(x.gecerlilik)} tarihine kadar geçerli`}</p>}
         </div>
+        {x.kdv && (
+          <dl className="mt-4 space-y-1.5 border-t border-[var(--h-sky)]/60 pt-4 text-sm">
+            <div className="flex justify-between text-[#5b6680]"><dt>Hizmetler (KDV hariç)</dt><dd>{usd(net)}</dd></div>
+            <div className="flex justify-between text-[#5b6680]"><dt>KDV %20</dt><dd>{usd(kdvTutari(x))}</dd></div>
+            <div className="flex justify-between font-bold text-[#14213d]"><dt>Havale / EFT ile</dt><dd>{usd(t)}</dd></div>
+            <div className="flex justify-between font-bold text-[#14213d]"><dt>Kredi kartıyla (%{Math.round(KART_PAYI * 100)} kart payı dahil)</dt><dd>{usd(kartla(t))}</dd></div>
+          </dl>
+        )}
         {x.odemePlani === "bolunmus" && (() => { const o = odemeDagilimi(x); return (
           <div className="mt-4 grid gap-2 sm:grid-cols-2">
             <div className="rounded-2xl bg-[var(--h-white)] p-4"><p className="text-xs text-[#5b6680]">Önden (otel, vize, hoca ücretinin yarısı)</p><p className="text-lg font-bold text-[#14213d]">{usd(o.onden)}</p></div>

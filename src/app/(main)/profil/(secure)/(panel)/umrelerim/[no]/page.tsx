@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getMember, isEmailVerified } from "@/lib/members";
-import { asamaLabel, BELGE_TURLERI, geceSayisi, getDosya, gunKaldi, listBelgeler, memberCanSee, odemeDagilimi, odenen, onaylandiMi, oteller, toplam, trTarih, usd, waNumara, type Kalem } from "@/lib/satis";
+import { asamaLabel, BELGE_TURLERI, geceSayisi, getDosya, gunKaldi, listBelgeler, memberCanSee, odemeDagilimi, odenen, onaylandiMi, oteller, genelToplam, trTarih, usd, waNumara, type Kalem } from "@/lib/satis";
 import { findDirectoryHotel, kaabaText } from "@/lib/catalog/hotel-directory";
 import { getSiteSettings } from "@/lib/site-settings";
 import HugIcon, { type HugIconName } from "@/components/icons/HugIcon";
@@ -45,7 +45,7 @@ export default async function DosyaPage({ params }: { params: Promise<{ no: stri
   const x = d.data;
   const gun = d.status === "tamamlandi" ? null : gunKaldi(x.gidis);
   const ots = oteller(x);
-  const t = toplam(x);
+  const t = genelToplam(x);
   const o = odenen(x);
   const dag = odemeDagilimi(x);
   const waKarsilama = waNumara(x.karsilayanTel) || wa;

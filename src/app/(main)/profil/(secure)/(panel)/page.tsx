@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { getMember, isEmailVerified } from "@/lib/members";
-import { asamaLabel, dosyalarOfMember, gunKaldi, onaylandiMi, oteller, toplam, trTarih, usd } from "@/lib/satis";
+import { asamaLabel, dosyalarOfMember, gunKaldi, onaylandiMi, oteller, genelToplam, trTarih, usd } from "@/lib/satis";
 import { geceToplam, getTercih, planaGoreSirala, trGun, usdTam, yayindakiKampanyalar } from "@/lib/uye-kampanya";
 import { getSiteSettings } from "@/lib/site-settings";
 import HugIcon from "@/components/icons/HugIcon";
@@ -77,7 +77,7 @@ export default async function ProfilOzet() {
             <div className="flex items-center justify-between"><p className="text-sm font-bold text-[#14213d]">Yanıt bekleyen teklif</p><Link href="/profil/teklifler" className="text-sm font-bold text-[var(--h-blue)]">Tümü →</Link></div>
             <p className="mt-3 text-[11px] font-bold tracking-[0.12em] text-[#8a94ab]">{bekleyen.no}</p>
             <p className="text-base font-bold text-[#14213d]">{bekleyen.data.gidis ? `${trTarih(bekleyen.data.gidis)} – ${trTarih(bekleyen.data.donus)}` : "Umre teklifi"} · {bekleyen.data.yetiskin + bekleyen.data.cocuk} kişi</p>
-            <p className="text-sm text-[#5b6680]">{usd(toplam(bekleyen.data))}{bekleyen.data.gecerlilik ? ` · ${trTarih(bekleyen.data.gecerlilik)} tarihine kadar` : ""}</p>
+            <p className="text-sm text-[#5b6680]">{usd(genelToplam(bekleyen.data))}{bekleyen.data.gecerlilik ? ` · ${trTarih(bekleyen.data.gecerlilik)} tarihine kadar` : ""}</p>
             <Link href={`/t/${bekleyen.token}`} className="mt-4 flex items-center justify-center rounded-xl bg-[var(--h-blue)] py-3 text-sm font-bold text-white">Teklifi incele ve onayla</Link>
           </section>
         )}

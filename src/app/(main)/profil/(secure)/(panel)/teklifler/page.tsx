@@ -1,7 +1,7 @@
 // Tekliflerim (14 Ekim): satış masasındaki dosyaların teklifleri. Bekleyen teklif bağlantıdan incelenip onaylanır.
 import Link from "next/link";
 import { getMember, isEmailVerified } from "@/lib/members";
-import { dosyalarOfMember, onaylandiMi, teklifSuresiDoldu, toplam, trTarih, usd } from "@/lib/satis";
+import { dosyalarOfMember, onaylandiMi, teklifSuresiDoldu, genelToplam, trTarih, usd } from "@/lib/satis";
 import Accent from "@/components/home/Accent";
 import TeklifBagla from "@/components/profil/TeklifBagla";
 
@@ -31,7 +31,7 @@ export default async function TekliflerPage() {
                     <span className={`rounded-full px-3 py-1 text-xs font-bold ${st.c}`}>{st.l}</span>
                   </div>
                   <h3 className="mt-1 text-lg font-bold text-[#14213d]">{d.data.gidis ? `${trTarih(d.data.gidis)} – ${trTarih(d.data.donus)}` : "Umre teklifi"} · {d.data.yetiskin + d.data.cocuk} kişi</h3>
-                  <p className="text-sm text-[#5b6680]">{usd(toplam(d.data))}{!onay && d.data.gecerlilik ? ` · ${trTarih(d.data.gecerlilik)} tarihine kadar` : ""}</p>
+                  <p className="text-sm text-[#5b6680]">{usd(genelToplam(d.data))}{!onay && d.data.gecerlilik ? ` · ${trTarih(d.data.gecerlilik)} tarihine kadar` : ""}</p>
                   <div className="mt-4 flex flex-wrap gap-2">
                     {onay ? (
                       <Link href={`/profil/umrelerim/${d.no}`} className="inline-flex rounded-xl bg-[var(--h-blue)] px-4 py-2.5 text-sm font-bold text-white">Umre dosyasını aç</Link>

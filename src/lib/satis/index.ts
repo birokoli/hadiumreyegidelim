@@ -91,6 +91,7 @@ export async function createDosya(input: { musteriAdi: string; phone?: string | 
     ...bos(),
     musteriAdi: input.musteriAdi,
     satisTuru,
+    kdv: true,
     yetiskin: input.yetiskin ?? 1,
     cocuk: input.cocuk ?? 0,
     gidis: input.gidis,

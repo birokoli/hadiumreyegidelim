@@ -51,7 +51,8 @@ export type Kalem = {
   /** Ziyaret turu rotası (15 Ekim): "mekke" | "medine"; duraklar src/lib/satis/ziyaret.ts */
   rota?: "mekke" | "medine";
 };
-export type Odeme = { id: string; tarih: string; tutar: number; yontem: "havale" | "kart" | "nakit"; yer: "onden" | "cidde"; aciklama?: string };
+/** tutar borçtan düşen kısımdır; kartla ödemede karttan çekilen = tutar + kartPayi (16 Ekim'den önceki ödemelerde kartPayi yok) */
+export type Odeme = { id: string; tarih: string; tutar: number; yontem: "havale" | "kart" | "nakit"; yer: "onden" | "cidde"; aciklama?: string; kartPayi?: number };
 export type Kayit = { id: string; t: string; kim: string; metin: string };
 
 export type DosyaData = {
@@ -88,6 +89,8 @@ export type DosyaData = {
   // Ödeme
   odemePlani: "tek" | "bolunmus";
   odemeler: Odeme[];
+  /** %20 KDV eklenir mi (16 Ekim). Yeni dosyalarda true; eski dosyalarda yok, toplamları değişmesin diye KDV'siz kalır. */
+  kdv?: boolean;
   // Geçmiş
   asamaTarihleri: Partial<Record<Asama, string>>;
   gecmis: Kayit[];
@@ -119,6 +122,18 @@ export const toplam = (d: DosyaData) => d.kalemler.reduce((s, k) => s + kalemTop
 export const alisToplam = (d: DosyaData) => d.kalemler.reduce((s, k) => s + kalemAlis(k), 0);
 export const odenen = (d: DosyaData) => d.odemeler.reduce((s, o) => s + o.tutar, 0);
 
+// KDV ve kart payı (16 Ekim, kullanıcı): kalem fiyatları KDV hariçtir; havale/nakitte %20 KDV eklenir,
+// kartla ödenen kısma ayrıca KDV'li tutarın %5'i kart payı eklenir. Kâr hesabı KDV hariç tutarla yapılır.
+export const KDV_ORANI = 0.2;
+export const KART_PAYI = 0.05;
+const kdvCarpani = (d: DosyaData) => (d.kdv ? 1 + KDV_ORANI : 1);
+export const kdvTutari = (d: DosyaData) => (d.kdv ? toplam(d) * KDV_ORANI : 0);
+/** Müşterinin havale/nakitle ödeyeceği toplam (KDV dahil) */
+export const genelToplam = (d: DosyaData) => toplam(d) * kdvCarpani(d);
+/** Bir tutarın kartla ödenince çekilecek hali */
+export const kartla = (tutar: number) => tutar * (1 + KART_PAYI);
+export const kartPayiOf = (tutar: number) => Math.round(tutar * KART_PAYI * 100) / 100;
+
 /** Bölünmüş ödemede önden ve Cidde'de alınacak tutarlar. */
 export function odemeDagilimi(d: DosyaData) {
   let onden = 0;
@@ -132,7 +147,8 @@ export function odemeDagilimi(d: DosyaData) {
       varis += t / 2;
     } else onden += t;
   }
-  return { onden: Math.round(onden), varis: Math.round(varis) };
+  const c = kdvCarpani(d);
+  return { onden: Math.round(onden * c), varis: Math.round(varis * c) };
 }
 
 export const oteller = (d: DosyaData) => {

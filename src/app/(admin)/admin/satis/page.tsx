@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import HubTabs from "@/components/admin/HubTabs";
-import { ASAMALAR, gunKaldi, SATIS_TURLERI, toplam, trTarih, usd, type Dosya } from "@/lib/satis/ortak";
+import { ASAMALAR, gunKaldi, SATIS_TURLERI, genelToplam, trTarih, usd, type Dosya } from "@/lib/satis/ortak";
 
 type Ekip = { id: string; name: string };
 const inp = "w-full bg-surface-container-lowest border border-outline-variant/25 rounded-lg p-2 text-xs outline-none focus:border-primary/40";
@@ -86,7 +86,7 @@ export default function SatisMasasi() {
               <div className="space-y-2">
                 {kartlar.map((d) => {
                   const g = gunKaldi(d.data.gidis);
-                  const t = toplam(d.data);
+                  const t = genelToplam(d.data);
                   return (
                     <Link key={d.id} href={`/admin/satis/${d.no}`} className="block rounded-xl border border-outline-variant/15 bg-surface-container-lowest p-3 transition hover:border-primary/40 hover:shadow-sm">
                       <div className="flex items-center justify-between gap-2">

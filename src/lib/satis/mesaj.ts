@@ -1,7 +1,7 @@
 // Satış masası WhatsApp mesajları (14 Ekim, kullanıcı: "teklifi WhatsApp'tan mesaj olarak atıyoruz; PDF çok uzundu;
 // satın alımdan sonra voucher gönderiyoruz"). Kısa, düzgün metin + onay/voucher bağlantısı. İstemcide de çalışır.
 import { SITE_URL } from "@/lib/seo/site";
-import { geceSayisi, hitapAdi, KALEM_TURLERI, odemeDagilimi, oteller, toplam, trTarih, usd, type Dosya } from "./ortak";
+import { geceSayisi, genelToplam, hitapAdi, KALEM_TURLERI, kartla, KART_PAYI, odemeDagilimi, oteller, trTarih, usd, type Dosya } from "./ortak";
 import { durakSayisi, rotaOf } from "./ziyaret";
 
 const hitap = (x: Dosya["data"]) => hitapAdi(x);
@@ -26,9 +26,10 @@ export function teklifMesaji(d: Dosya): string {
     return r ? `${r.ad} (${durakSayisi(r)} durak)` : k.ad || KALEM_TURLERI[k.tur].label;
   }))];
   if (dahil.length) s.push(`✅ Dahil: ${dahil.join(", ").toLocaleLowerCase("tr-TR")}`);
-  const t = toplam(x);
+  const t = genelToplam(x);
   const kisiSayisi = x.yetiskin + x.cocuk;
-  s.push("", `Toplam: ${usd(t)}${kisiSayisi > 1 ? ` (kişi başı ${usd(t / kisiSayisi)})` : ""}`);
+  s.push("", `Toplam: ${usd(t)}${x.kdv ? " (KDV dahil)" : ""}${kisiSayisi > 1 ? ` · kişi başı ${usd(t / kisiSayisi)}` : ""}`);
+  if (x.kdv) s.push(`Kartla ödemede: ${usd(kartla(t))} (%${Math.round(KART_PAYI * 100)} kart payı)`);
   if (x.odemePlani === "bolunmus") {
     const o = odemeDagilimi(x);
     s.push(`Ödeme: ${usd(o.onden)} önden, ${usd(o.varis)} Cidde'de`);

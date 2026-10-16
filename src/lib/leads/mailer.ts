@@ -46,7 +46,7 @@ export function leadCodeEmail(opts: { name: string; code: string; source: string
     <td valign="middle" style="padding-left:18px">
       <p style="margin:0 0 6px;font-family:${SANS};font-size:10px;font-weight:700;letter-spacing:2.5px;color:#f2dda6">${esc(title.toLocaleUpperCase("tr-TR"))}</p>
       <p style="margin:0;font-family:${SANS};font-size:24px;line-height:1.2;font-weight:700;color:#ffffff">Kitapçığınız bir adım <em style="font-family:${SERIF};font-style:italic;font-weight:400;color:#f2dda6">uzakta</em></p>
-      <p style="margin:8px 0 0;font-family:${SANS};font-size:13px;line-height:1.5;color:#d6e0f2">Okunuşu ve anlamıyla 19 sayfa; telefonunuza kaydedin ya da yazdırın.</p>
+      <p style="margin:8px 0 0;font-family:${SANS};font-size:13px;line-height:1.5;color:#d6e0f2">${esc(file.alt ?? "Okunuşu ve anlamıyla 19 sayfa; telefonunuza kaydedin ya da yazdırın.")}</p>
     </td>
   </tr></table>
 </td></tr>
@@ -66,7 +66,7 @@ export function leadCodeEmail(opts: { name: string; code: string; source: string
 
 <tr><td style="padding:22px 22px 6px"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #e1e6ef"><tr><td style="padding-top:22px">
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
-    ${ozellik(file.icon, "7 şavt,<br>7 niyet")}${ozellik("dua", "Okunuşu ve<br>anlamıyla dualar")}${ozellik("guven", "Kaynakları<br>belli dualar")}
+    ${ozellik(file.icon, file.ozellik ?? "7 şavt,<br>7 niyet")}${ozellik("dua", "Okunuşu ve<br>anlamıyla dualar")}${ozellik("guven", "Kaynakları<br>belli dualar")}
   </tr></table>
 </td></tr></table></td></tr>
 

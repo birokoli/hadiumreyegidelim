@@ -38,7 +38,7 @@ export default function UyeOlForm({ next }: { next: string }) {
         if (d.exists) setExists(true);
         return fail(d.error || "Kayıt yapılamadı.", d.field || "");
       }
-      try { localStorage.setItem("lead:tavaf-kitapcigi", "1"); localStorage.setItem("lead:say-kitapcigi", "1"); } catch { /* gizli pencere */ }
+      try { localStorage.setItem("lead:tavaf-kitapcigi", "1"); localStorage.setItem("lead:say-kitapcigi", "1"); localStorage.setItem("lead:dua-haritasi", "1"); } catch { /* gizli pencere */ }
       window.location.href = next;
     } catch {
       fail("Bağlantı kurulamadı; lütfen tekrar deneyin.");

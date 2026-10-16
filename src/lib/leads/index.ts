@@ -70,11 +70,12 @@ export type Lead = {
   createdAt: Date;
 };
 
-export const LEAD_SOURCES: Record<string, string> = { "tavaf-kitapcigi": "Tavaf El Kitabı", "say-kitapcigi": "Sa'y El Kitabı", uyelik: "Üyelik" };
-/** Kaynağın verdiği dosya ve e-postadaki görseller (kapak, ikon, kapanış duası). */
-export const LEAD_FILES: Record<string, { url: string; page: string; cover: string; icon: string; dua: string }> = {
+export const LEAD_SOURCES: Record<string, string> = { "tavaf-kitapcigi": "Tavaf El Kitabı", "say-kitapcigi": "Sa'y El Kitabı", "dua-haritasi": "Harem Dua Haritası", uyelik: "Üyelik" };
+/** Kaynağın verdiği dosya ve e-postadaki görseller (kapak, ikon, kapanış duası). alt ve ozellik verilmezse el kitabı metni kullanılır. */
+export const LEAD_FILES: Record<string, { url: string; page: string; cover: string; icon: string; dua: string; alt?: string; ozellik?: string }> = {
   "tavaf-kitapcigi": { url: "/indir/tavaf-el-kitabi-2026.pdf", page: "/tavaf-kitapcigi", cover: "/indir/tavaf-el-kitabi-kapak.png", icon: "tavaf", dua: "Tavafta bizleri de dualarınızdan eksik etmeyin." },
   "say-kitapcigi": { url: "/indir/say-el-kitabi-2026.pdf", page: "/say-kitapcigi", cover: "/indir/say-el-kitabi-kapak.png", icon: "say", dua: "Sa'yde bizleri de dualarınızdan eksik etmeyin." },
+  "dua-haritasi": { url: "/indir/harem-dua-haritasi-2026.pdf", page: "/dua-haritasi", cover: "/indir/harem-dua-haritasi-kapak.jpg", icon: "kabe", dua: "Harem'de bizleri de dualarınızdan eksik etmeyin.", alt: "12 dua durağı, duanın kabul olduğu 10 an ve dua listeniz; 66 sayfa.", ozellik: "12 durak,<br>10 an" },
 };
 
 export const KVKK_TEXT = "Kişisel verilerimin KVKK Aydınlatma Metni kapsamında işlenmesine ilişkin bilgilendirmeyi okudum.";

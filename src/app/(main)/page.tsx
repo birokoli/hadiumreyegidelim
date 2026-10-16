@@ -286,6 +286,26 @@ export default async function Home() {
         ))}
       </section>
 
+      {/* ─── Ücretsiz Harem Dua Haritası (16 Ekim, kullanıcı): tavaf ve sa'y bantlarının üçüncüsü; kitap yine sağda ─── */}
+      <section className="w-full max-w-screen-xl mx-auto px-4 md:px-8 pb-12 md:pb-20">
+        <Link href="/dua-haritasi" data-press className="group relative block rounded-3xl text-white">
+          <div aria-hidden className="bg-deep absolute inset-0 overflow-hidden rounded-3xl">
+            <span className="hat pointer-events-none absolute -left-4 -bottom-12 select-none text-[7rem] leading-none text-white/[0.05] md:text-[9rem]">دعاء</span>
+          </div>
+          <div className="on-dark relative px-6 py-6 md:py-6 md:pl-9 md:pr-72">
+            <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-[var(--h-sand)]">Ücretsiz · PDF · 66 sayfa</p>
+            <h2 className="mt-1.5 font-headline text-2xl md:text-[30px] leading-tight font-bold"><Accent text="Kâbe'de nerede, ne zaman *dua*" /></h2>
+            <p className="mt-1.5 text-sm md:text-[15px] text-white/80 max-w-2xl">Harem Dua Haritası: Mescid-i Haram&apos;daki 12 dua durağı ve duanın kabul olduğu 10 an; krokisi, ayet ve hadisleri, okunuşu ve anlamıyla dualarıyla.</p>
+            <span className="mt-4 inline-flex items-center gap-2 rounded-xl bg-[var(--h-sand)] px-5 py-2.5 text-sm font-bold text-[var(--h-blue-deep)] transition group-hover:brightness-95">
+              Haritayı ücretsiz indir <Arrow />
+            </span>
+          </div>
+          <div className="kitap-suzul pointer-events-none absolute right-10 top-1/2 hidden h-[calc(100%+72px)] aspect-[640/905] md:block lg:right-16">
+            <Image src="/indir/harem-dua-haritasi-kapak.jpg" alt="Harem Dua Haritası kapağı" fill sizes="220px" className="rounded-lg object-cover shadow-[0_24px_50px_-12px_rgba(18,41,90,0.55)] ring-1 ring-white/10" />
+          </div>
+        </Link>
+      </section>
+
       {/* ─── Yorumlar (admin → Yorumlar; metinler Sayfa Metinleri → Yorumlar) ─── */}
       {reviews.length > 0 && (
         <section className="w-full bg-soft">

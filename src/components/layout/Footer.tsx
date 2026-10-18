@@ -3,6 +3,7 @@ import HugIcon from "@/components/icons/HugIcon";
 import Image from "next/image";
 import React from "react";
 import SeoCitiesFooter from "./SeoCitiesFooter";
+import CerezTercihButon from "@/components/analitik/CerezTercihButon";
 import { getSiteSettings } from "@/lib/site-settings";
 import { SOCIAL_BRANDS, SOCIAL_KEYS, SocialIcon } from "@/components/icons/SocialIcons";
 import { getPageTexts } from "@/lib/page-texts";
@@ -106,6 +107,7 @@ export default async function Footer({ logoUrl }: { logoUrl?: string }) {
             <Link className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/60 hover:text-primary transition-all" href="/kullanim-sartlari">
               Kullanım Şartları
             </Link>
+            <CerezTercihButon className="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/60 hover:text-primary transition-all" />
           </div>
           {/* Kurum bilgisi: küçük ama görünür (gizli metin arama motorlarınca cezalandırılır); şemadaki parentOrganization ile aynı */}
           <p className="mt-4 text-[10px] leading-relaxed text-on-surface-variant/60 max-w-3xl">

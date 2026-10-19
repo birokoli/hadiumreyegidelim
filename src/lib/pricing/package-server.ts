@@ -1,5 +1,6 @@
 // Sunucu: paketin "… $'dan başlayan" fiyatı ve paket sayfası otel seçicisinin verisi (katalog + ödeme ayarları).
 import { getCatalog, monthsFrom, monthLabel, paymentSettingsFrom, type CatalogItem } from "@/lib/catalog";
+import { paketGorseli } from "@/lib/hotels/galeri";
 import { getSiteSettings } from "@/lib/site-settings";
 import { packageHotels, packagePreset, type PackagePreset } from "@/lib/pricing/package";
 import { parseTransferSlug } from "@/lib/catalog/transfers";
@@ -29,6 +30,8 @@ export async function packageDisplayPrices<T extends { slug: string; price: numb
   return Promise.all(pkgs.map(async (p) => {
     const pr = await getPackagePricing(p.slug).catch(() => null);
     const price = pr ? pr.fromPrice : p.price;
-    return { ...p, price, uyePrice: uyeFiyati(price, kurallar[p.slug]) };
+    // Paket görseli yoksa paketin otelinin fotoğrafı (19 Ekim)
+    const gorsel = "imageUrl" in p ? { imageUrl: paketGorseli((p as { imageUrl?: string | null }).imageUrl, packagePreset(p.slug)?.hotelSlug) } : {};
+    return { ...p, ...gorsel, price, uyePrice: uyeFiyati(price, kurallar[p.slug]) };
   }));
 }

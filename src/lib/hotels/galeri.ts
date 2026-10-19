@@ -19,7 +19,34 @@ export const OTEL_GALERI: Record<string, GaleriFoto[]> = {
     ["10-banyo", "Deluxe oda banyosu"],
     ["02-dis-cephe", "Address Jabal Omar Makkah dış cephe"],
   ].map(([d, alt]) => ({ src: yol("address-jabal-omar-makkah", d), alt })),
+  "mehd-al-resaleh-3": [
+    ["01-dis-cephe", "Mehd Al Resaleh 3 otel binası"],
+    ["02-uc-kisilik-oda", "Üç yataklı oda"],
+    ["03-oda", "Oda"],
+    ["04-oda-dolap-ve-masa", "Oda: dolap, çalışma masası ve televizyon"],
+    ["05-banyo", "Banyo"],
+    ["06-restoran", "Restoran"],
+    ["07-lobi", "Lobi oturma alanı"],
+    ["08-resepsiyon", "Resepsiyon"],
+  ].map(([d, alt]) => ({ src: yol("mehd-al-resaleh-3", d), alt })),
+  "holiday-inn-makkah-al-aziziah": [
+    ["01-dis-cephe", "Holiday Inn Makkah Al Aziziah otel binası"],
+    ["02-uc-kisilik-oda", "Üç yataklı oda"],
+    ["03-iki-kisilik-oda", "İki yataklı oda"],
+    ["04-cift-kisilik-oda", "Çift kişilik yataklı oda"],
+    ["05-kahvalti-bufesi", "Kahvaltı büfesi"],
+    ["06-restoran", "Restoran"],
+    ["07-resepsiyon", "Resepsiyon"],
+    ["08-lobi", "Lobi"],
+    ["09-havuz", "Havuz ve teras"],
+  ].map(([d, alt]) => ({ src: yol("holiday-inn-makkah-al-aziziah", d), alt })),
 };
 
 export const otelGalerisi = (slug: string | null | undefined): GaleriFoto[] => (slug ? OTEL_GALERI[slug] ?? [] : []);
 export const otelKapagi = (slug: string | null | undefined): string | null => otelGalerisi(slug)[0]?.src ?? null;
+
+/** Paket görseli (19 Ekim): admin'de paket görseli yoksa ya da ortak Kâbe görseliyse paketin otelinin kapağı. */
+export function paketGorseli(imageUrl: string | null | undefined, hotelSlug: string | null | undefined): string | null {
+  const ortak = !imageUrl || imageUrl.includes("hero-kabe");
+  return ortak ? (otelKapagi(hotelSlug) ?? imageUrl ?? null) : imageUrl;
+}

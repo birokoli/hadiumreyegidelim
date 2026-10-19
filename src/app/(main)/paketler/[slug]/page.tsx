@@ -1,4 +1,6 @@
 import { SITE_URL } from "@/lib/seo/site";
+import { packagePreset } from "@/lib/pricing/package";
+import { paketGorseli } from "@/lib/hotels/galeri";
 import HugIcon from "@/components/icons/HugIcon";
 import { getPackagePricing } from "@/lib/pricing/package-server";
 import { uyeFiyati, uyeKurali } from "@/lib/pricing/uye";
@@ -37,6 +39,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     where: { slug },
   }).catch(() => null);
   if (!pkg) return { title: 'Bulunamadı' };
+  pkg.imageUrl = paketGorseli(pkg.imageUrl, packagePreset(slug)?.hotelSlug);
   
   const shortDesc = pkg.description ? pkg.description.substring(0, 150) + "..." : "Sınırlı kontenjanlı, ayrıcalıklı Umre paketimizi keşfedin.";
 
@@ -65,6 +68,7 @@ export default async function PackageDetailPage({ params }: { params: Promise<{ 
   if (!pkg || !pkg.published) {
     notFound();
   }
+  pkg.imageUrl = paketGorseli(pkg.imageUrl, packagePreset(slug)?.hotelSlug);
 
   // Şablonlu paket (ör. 10 gün Mekke): fiyat otele ve kişi sayısına göre hesaplanır; gösterilen "başlayan" fiyattır
   const pricing = await getPackagePricing(pkg.slug).catch(() => null);

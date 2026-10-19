@@ -96,6 +96,16 @@ export const OTEL_GALERI: Record<string, GaleriFoto[]> = {
     ["04-masa-ve-buzdolabi", "Odada masa ve buzdolabı"],
     ["05-banyo", "Banyo"],
   ].map(([d, alt]) => ({ src: yol("safwah-al-talayie", d), alt })),
+  // Kaynak klasörde grubun farklı binalarının dış cepheleri karışık olduğu için dış cephe kullanılmadı
+  "mehd-al-resaleh-1-2": [
+    ["01-giris", "Mehd Al Resaleh otel girişi"],
+    ["02-lobi", "Lobi"],
+    ["03-uc-yatakli-oda", "Üç yataklı oda"],
+    ["04-iki-yatakli-oda", "İki yataklı oda"],
+    ["05-oda", "Oda"],
+    ["06-oda-dolap", "Oda: dolap ve banyo girişi"],
+    ["07-mescit", "Otelin mescidi"],
+  ].map(([d, alt]) => ({ src: yol("mehd-al-resaleh-1-2", d), alt })),
 };
 
 export const otelGalerisi = (slug: string | null | undefined): GaleriFoto[] => (slug ? OTEL_GALERI[slug] ?? [] : []);

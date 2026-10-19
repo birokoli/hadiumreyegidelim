@@ -25,7 +25,9 @@ export async function GET(req: Request) {
 
   let published = 0;
   for (const { id } of due) {
-    const post = await prisma.post.update({ where: { id }, data: { published: true, createdAt: new Date() } });
+    // scheduledAt temizlenir: zamanlama tek seferliktir. Temizlenmezse sonradan yayından kaldırılan yazı (admin ya da
+    // birleştirme) bir sonraki çalışmada yeniden yayına girer (19 Ekim: vize yazıları böyle geri dönmüştü).
+    const post = await prisma.post.update({ where: { id }, data: { published: true, createdAt: new Date(), scheduledAt: null } });
     published++;
     await connectMeasurement(post).catch((e) => console.error('[publish-scheduled] ölçüm bağlantısı', e));
   }

@@ -81,10 +81,18 @@ async function vizeBirlestir() {
       where: { id: post.id },
       data: { title: VIZE_BASLIK, metaTitle: VIZE_BASLIK, description: VIZE_ACIKLAMA, content: VIZE_ICERIK, tldr: BIRLESIK_TLDR, faq: JSON.stringify(BIRLESIK_SSS), personalExperience: null, focusKeyword: "umre vizesi" },
     }),
-    prisma.post.updateMany({ where: { slug: { in: VIZE_BIRLESEN_SLUGLAR } }, data: { published: false } }),
+    prisma.post.updateMany({ where: { slug: { in: VIZE_BIRLESEN_SLUGLAR } }, data: { published: false, scheduledAt: null } }),
   ]);
   await prisma.setting.create({ data: { key: ISARET, value: `${new Date().toISOString()} yayından kalkan: ${kalkan.count}` } });
   console.log("[blog] vize yazıları birleştirildi; yayından kalkan:", kalkan.count);
+}
+
+/** Birleştirmede yayından kalkan yazılardan zamanlanmış olanlar cron'la yeniden yayına girmişti; zamanlamasıyla birlikte tekrar kaldırılır. */
+async function vizeBirlestirDuzelt() {
+  const ISARET = "VERI_ADIMI_BLOG_VIZE_BIRLESTIR_2_2026_10";
+  if (await prisma.setting.findUnique({ where: { key: ISARET } })) return;
+  const r = await prisma.post.updateMany({ where: { slug: { in: VIZE_BIRLESEN_SLUGLAR } }, data: { published: false, scheduledAt: null } });
+  await prisma.setting.create({ data: { key: ISARET, value: `${new Date().toISOString()} yayından kalkan: ${r.count}` } });
 }
 
 let calisti: Promise<void> | null = null;
@@ -93,6 +101,7 @@ export function blogVeriAdimlari() {
   calisti ??= (async () => {
     await vizeYazisi().catch((e) => console.error("[blog] vize yazısı adımı", e));
     await vizeBirlestir().catch((e) => console.error("[blog] vize birleştirme adımı", e));
+    await vizeBirlestirDuzelt().catch((e) => console.error("[blog] vize birleştirme düzeltmesi", e));
   })();
   return calisti;
 }

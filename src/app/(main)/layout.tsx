@@ -4,7 +4,6 @@ import React from "react";
 import { getSiteSettings } from "@/lib/site-settings";
 import FloatingWhatsApp from "@/components/ui/FloatingWhatsApp";
 import MotionInit from "@/components/ui/MotionInit";
-import CerezIzni from "@/components/analitik/CerezIzni";
 
 // Site sayfaları en geç 5 dakikada bir yeniden üretilir (sayfa daha kısa süre verirse o geçerli).
 // Admin'de içerik/ayar değişince revalidatePublic / revalidateSiteSettings beklemeden tazeler.
@@ -47,7 +46,6 @@ export default async function MainLayout({
       </div>
       <FloatingWhatsApp />
       <MotionInit />
-      <CerezIzni />
     </>
   );
 }

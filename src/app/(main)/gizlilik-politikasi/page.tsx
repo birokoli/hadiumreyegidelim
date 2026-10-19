@@ -80,9 +80,6 @@ export default function GizlilikPolitikasiPage() {
               <p>
                 Sitemiz, kullanıcı deneyimini iyileştirmek ve analitik veriler toplamak amacıyla çerez kullanmaktadır. Tarayıcı ayarlarınızdan çerezleri devre dışı bırakabilirsiniz; ancak bu durumda bazı özellikler çalışmayabilir.
               </p>
-              <p className="mt-3">
-                <strong>Microsoft Clarity:</strong> Yalnızca çerez bandında izin verirseniz, sitemizin hangi bölümlerinin kullanıldığını ve sayfalarda nereye tıklandığını anlamak için Microsoft Clarity kullanırız. Clarity; tıklama, kaydırma ve fare hareketlerini, sayfa görüntülemelerini ve cihaz bilgilerini toplar ve ısı haritası ile oturum kaydı olarak gösterir. Formlara yazdığınız bilgiler kaydedilmez, profil sayfalarında Clarity çalışmaz. Veriler Microsoft tarafından işlenir; ayrıntılar için Microsoft Gizlilik Bildirimi&apos;ne bakabilirsiniz. İzninizi sayfanın altındaki &quot;Çerez Tercihleri&quot; bağlantısından istediğiniz zaman geri alabilirsiniz.
-              </p>
             </section>
           </article>
         </Container>

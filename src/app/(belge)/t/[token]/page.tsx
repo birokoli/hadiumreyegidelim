@@ -3,7 +3,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getDosya, geceSayisi, hitapAdi, KALEM_TURLERI, kalemToplam, odemeDagilimi, teklifSuresiDoldu, onaylandiMi, oteller, toplam, genelToplam, kdvTutari, kartla, KART_PAYI, trTarih, usd } from "@/lib/satis";
+import { getDosya, geceSayisi, hitapAdi, KALEM_TURLERI, kalemToplam, odemeDagilimi, teklifSuresiDoldu, onaylandiMi, oteller, toplam, genelToplam, kdvTutari, kartla, KART_PAYI, KDV_ETIKETI, trTarih, usd } from "@/lib/satis";
 import { durakSayisi, rotaOf } from "@/lib/satis/ziyaret";
 import ZiyaretRotasi from "@/components/satis/ZiyaretRotasi";
 import { findDirectoryHotel, kaabaText } from "@/lib/catalog/hotel-directory";
@@ -119,7 +119,7 @@ export default async function TeklifSayfasi({ params }: { params: Promise<{ toke
         {x.kdv && (
           <dl className="mt-4 space-y-1.5 border-t border-[var(--h-sky)]/60 pt-4 text-sm">
             <div className="flex justify-between text-[#5b6680]"><dt>Hizmetler (KDV hariç)</dt><dd>{usd(net)}</dd></div>
-            <div className="flex justify-between text-[#5b6680]"><dt>KDV %20</dt><dd>{usd(kdvTutari(x))}</dd></div>
+            <div className="flex justify-between text-[#5b6680]"><dt>{KDV_ETIKETI}</dt><dd>{usd(kdvTutari(x))}</dd></div>
             <div className="flex justify-between font-bold text-[#14213d]"><dt>Havale / EFT ile</dt><dd>{usd(t)}</dd></div>
             <div className="flex justify-between font-bold text-[#14213d]"><dt>Kredi kartıyla (%{Math.round(KART_PAYI * 100)} kart payı dahil)</dt><dd>{usd(kartla(t))}</dd></div>
           </dl>

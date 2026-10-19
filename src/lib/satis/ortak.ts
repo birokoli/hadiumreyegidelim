@@ -89,7 +89,7 @@ export type DosyaData = {
   // Ödeme
   odemePlani: "tek" | "bolunmus";
   odemeler: Odeme[];
-  /** %20 KDV eklenir mi (16 Ekim). Yeni dosyalarda true; eski dosyalarda yok, toplamları değişmesin diye KDV'siz kalır. */
+  /** KDV eklenir mi (16 Ekim; oran KDV_ORANI). Yeni dosyalarda true; eski dosyalarda yok, toplamları değişmesin diye KDV'siz kalır. */
   kdv?: boolean;
   // Geçmiş
   asamaTarihleri: Partial<Record<Asama, string>>;
@@ -122,9 +122,11 @@ export const toplam = (d: DosyaData) => d.kalemler.reduce((s, k) => s + kalemTop
 export const alisToplam = (d: DosyaData) => d.kalemler.reduce((s, k) => s + kalemAlis(k), 0);
 export const odenen = (d: DosyaData) => d.odemeler.reduce((s, o) => s + o.tutar, 0);
 
-// KDV ve kart payı (16 Ekim, kullanıcı): kalem fiyatları KDV hariçtir; havale/nakitte %20 KDV eklenir,
+// KDV ve kart payı (16 Ekim, kullanıcı): kalem fiyatları KDV hariçtir; havale/nakitte KDV eklenir,
 // kartla ödenen kısma ayrıca KDV'li tutarın %5'i kart payı eklenir. Kâr hesabı KDV hariç tutarla yapılır.
-export const KDV_ORANI = 0.2;
+// 19 Ekim (kullanıcı): fatura Dubai'den kesiliyor; BAE KDV'si %5 (önce %20 idi)
+export const KDV_ORANI = 0.05;
+export const KDV_ETIKETI = `KDV %${Math.round(KDV_ORANI * 100)}`;
 export const KART_PAYI = 0.05;
 const kdvCarpani = (d: DosyaData) => (d.kdv ? 1 + KDV_ORANI : 1);
 export const kdvTutari = (d: DosyaData) => (d.kdv ? toplam(d) * KDV_ORANI : 0);

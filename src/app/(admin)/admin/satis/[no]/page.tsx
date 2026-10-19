@@ -5,7 +5,7 @@ import { use, useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { durakSayisi, ZIYARET_ROTALARI } from "@/lib/satis/ziyaret";
 import { SATIS_TURLERI } from "@/lib/satis/ortak";
-import { ASAMALAR, KALEM_TURLERI, KART_PAYI, alisToplam, genelToplam, kartla, kartPayiOf, kdvTutari, asamaIndex, asamaLabel, geceSayisi, kalemToplam, odemeDagilimi, odenen, onaylandiMi, toplam, trTarih, usd, waNumara, type Dosya, type DosyaData, type Kalem, type KalemTur, type Odeme } from "@/lib/satis/ortak";
+import { ASAMALAR, KALEM_TURLERI, KART_PAYI, KDV_ETIKETI, KDV_ORANI, alisToplam, genelToplam, kartla, kartPayiOf, kdvTutari, asamaIndex, asamaLabel, geceSayisi, kalemToplam, odemeDagilimi, odenen, onaylandiMi, toplam, trTarih, usd, waNumara, type Dosya, type DosyaData, type Kalem, type KalemTur, type Odeme } from "@/lib/satis/ortak";
 import { teklifLinki, teklifMesaji, voucherLinki, voucherMesaji, waLink } from "@/lib/satis/mesaj";
 
 type Otel = { slug: string; ad: string; sehir: string; kabe: number | null };
@@ -273,11 +273,11 @@ export default function SatisDosyasi({ params }: { params: Promise<{ no: string 
               <div className="mt-4 rounded-xl bg-surface-container-low p-4">
                 <label className="mb-3 flex items-center gap-2 text-xs font-bold text-on-surface-variant">
                   <input type="checkbox" checked={!!data.kdv} onChange={(e) => set("kdv", e.target.checked)} />
-                  Fiyatlara %20 KDV ekle <span className="font-normal text-outline">(kalem fiyatları KDV hariç girilir; kartla ödemede ayrıca %{Math.round(KART_PAYI * 100)} kart payı)</span>
+                  Fiyatlara %{Math.round(KDV_ORANI * 100)} KDV ekle <span className="font-normal text-outline">(kalem fiyatları KDV hariç girilir; kartla ödemede ayrıca %{Math.round(KART_PAYI * 100)} kart payı)</span>
                 </label>
                 <div className="grid gap-3 md:grid-cols-4">
                   <div><p className={lbl}>KDV hariç</p><p className="font-mono text-lg font-bold">{usd(hesap.t)}</p></div>
-                  <div><p className={lbl}>KDV %20</p><p className="font-mono text-lg font-bold">{data.kdv ? usd(hesap.kdv) : "—"}</p></div>
+                  <div><p className={lbl}>{KDV_ETIKETI}</p><p className="font-mono text-lg font-bold">{data.kdv ? usd(hesap.kdv) : "—"}</p></div>
                   <div><p className={lbl}>Toplam · havale/EFT</p><p className="font-mono text-lg font-bold text-primary">{usd(hesap.g)}</p></div>
                   <div><p className={lbl}>Toplam · kartla</p><p className="font-mono text-lg font-bold text-primary">{usd(kartla(hesap.g))}</p></div>
                 </div>

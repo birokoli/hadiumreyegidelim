@@ -15,8 +15,15 @@ import { prisma } from "@/lib/prisma";
 const STATE_KEY = "WEEKLY_MEASURE_STATE";
 const CAP_KEY = "WEEKLY_MEASURE_CAP_USD";
 export const DEFAULT_WEEKLY_CAP = 2;
-const TIME_BUDGET_MS = 230_000; // 300 sn sınırının altında kal (son yazım için pay)
+// 19 Ekim: adım 300 sn'yi aşıp kesiliyordu (49 kelimelik sıra kontrolü tek başına ~4 dk) ve her şey sonda kaydedildiği için
+// hiçbir sonuç kalmıyor, aynı iş her saat yeniden ücretleniyordu. Artık her iş bitince kaydedilir; yeni iş yalnızca
+// motorun en uzun süresine yetecek zaman kaldıysa başlar.
+const HARD_LIMIT_MS = 285_000;
 const CONCURRENCY = 3;
+// Yeni iş için kalması gereken süre: tek denemenin zaman aşımı + pay (ChatGPT 120 sn, diğerleri 60 sn). Nadiren yeniden
+// deneme sınırı aşarsa yalnızca o iş kaybolur; önceki işler kaydedilmiştir.
+const WORST_MS: Record<EngineId, number> = { chatgpt: 130_000, gemini: 70_000, perplexity: 70_000, "google-ai-overview": 70_000, "google-ai-mode": 70_000, claude: 70_000 };
+const RANK_WORST_MS = 70_000;
 
 // Geçmiş kayıt yoksa iş başına ihtiyatlı maliyet varsayımı (USD)
 const DEFAULT_COST: Record<EngineId, number> = {
@@ -40,6 +47,8 @@ export type WeeklyState = {
   errors: number;
   spent: number;
   ranksDone: boolean;
+  /** Bu hafta sırası kontrol edilmiş kelimeler (adım yarıda kesilirse kaldığı yerden devam eder) */
+  ranksChecked?: string[];
   capHit: boolean;
   finishedAt: string | null;
   lastRunAt: string | null;
@@ -85,27 +94,41 @@ async function newState(week: string): Promise<WeeklyState> {
   return { week, startedAt: new Date().toISOString(), queue, total: queue.length, done: 0, errors: 0, spent: 0, ranksDone: false, capHit: false, finishedAt: null, lastRunAt: null };
 }
 
-async function checkRanks(state: WeeklyState, cap: number) {
+async function checkRanks(state: WeeklyState, cap: number, started: number) {
   const tracked = await readJson<TrackedKeyword[]>(SEO_KEYS.tracked, []);
   const date = new Date().toISOString();
-  for (const item of tracked) {
-    if (state.spent + RANK_CHECK_COST > cap) {
-      state.capHit = true;
-      break;
+  const checked = new Set(state.ranksChecked ?? []);
+  const todo = tracked.filter((t) => !checked.has(t.keyword));
+  let cursor = 0;
+  let blocked = false;
+  const worker = async () => {
+    while (cursor < todo.length && !blocked && Date.now() - started + RANK_WORST_MS < HARD_LIMIT_MS) {
+      if (state.spent + RANK_CHECK_COST > cap) {
+        state.capHit = true;
+        return;
+      }
+      const item = todo[cursor++];
+      try {
+        const { data, cost } = await checkSerpPosition(item.keyword, SITE_DOMAIN);
+        state.spent += cost;
+        item.history = [...item.history, { date, position: data.position, url: data.url }].slice(-60);
+        item.topThree = data.topThree;
+      } catch (e) {
+        state.errors++;
+        // DataForSEO bağlı değilse hepsi aynı hatayı verir; sıra kontrolünü atla
+        if (e instanceof Error && e.message.includes("bağlı değil")) blocked = true;
+      }
+      checked.add(item.keyword);
     }
-    try {
-      const { data, cost } = await checkSerpPosition(item.keyword, SITE_DOMAIN);
-      state.spent += cost;
-      item.history = [...item.history, { date, position: data.position, url: data.url }].slice(-60);
-      item.topThree = data.topThree;
-    } catch (e) {
-      state.errors++;
-      // DataForSEO bağlı değilse hepsi aynı hatayı verir; sıra kontrolünü atla
-      if (e instanceof Error && e.message.includes("bağlı değil")) break;
-    }
-  }
-  await writeJson(SEO_KEYS.tracked, tracked);
-  state.ranksDone = true;
+  };
+  await Promise.all(Array.from({ length: 5 }, worker));
+  // Bu arada sıra takibine elle eklenen/çıkarılan kelimeler kaybolmasın: güncel listenin üstüne yazılır
+  const current = await readJson<TrackedKeyword[]>(SEO_KEYS.tracked, []);
+  const byKeyword = new Map(tracked.map((t) => [t.keyword, t]));
+  await writeJson(SEO_KEYS.tracked, current.map((t) => byKeyword.get(t.keyword) ?? t));
+  state.ranksChecked = [...checked];
+  state.ranksDone = blocked || tracked.every((t) => checked.has(t.keyword));
+  await saveState(state);
 }
 
 /** Bir cron çağrısı: kuyruktan zaman ve bütçe elverdiğince iş yapar, durumu kaydeder */
@@ -119,16 +142,22 @@ export async function runWeeklyStep() {
 
   state.lastRunAt = new Date().toISOString();
 
-  if (!state.ranksDone) await checkRanks(state, cap);
+  if (!state.ranksDone) await checkRanks(state, cap, started);
 
   const config = await loadConfig();
   const prompts = new Map(config.prompts.map((p) => [p.id, p]));
   const est = await costEstimates();
-  const runs: Run[] = [];
+  // Her iş bitince sonuç ve durum kaydedilir; eş zamanlı işlerin kayıtları sırayla yazılır (biri ötekini ezmesin)
+  let yazim: Promise<unknown> = Promise.resolve();
+  const kaydet = (run: Run) => {
+    yazim = yazim.then(() => appendRuns([run])).then(() => saveState(state!)).catch((e) => console.error("[weekly-measure] kayıt", e));
+    return yazim;
+  };
 
   const worker = async () => {
-    while (state!.queue.length && !state!.capHit && Date.now() - started < TIME_BUDGET_MS) {
+    while (state!.ranksDone && state!.queue.length && !state!.capHit) {
       const next = state!.queue[0];
+      if (Date.now() - started + WORST_MS[next.engine] > HARD_LIMIT_MS) break;
       // Tavanı aşacak işe başlama (eş zamanlı işler için tahmini maliyet peşin ayrılır)
       if (state!.spent + est[next.engine] > cap) {
         state!.capHit = true;
@@ -141,19 +170,20 @@ export async function runWeeklyStep() {
       const base = { id: `r_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 7)}`, promptId: prompt.id, prompt: prompt.text, engine: next.engine, at: new Date().toISOString() };
       try {
         const result = await runEngine(next.engine, prompt.text);
-        runs.push({ ...base, ...result });
         state!.spent += (result.cost ?? 0) - est[next.engine];
+        state!.done++;
+        await kaydet({ ...base, ...result });
       } catch (e) {
         state!.spent -= est[next.engine];
         state!.errors++;
-        runs.push({ ...base, status: "error", error: e instanceof Error ? e.message : String(e), text: "", citations: [], queries: [], cost: 0 });
+        state!.done++;
+        await kaydet({ ...base, status: "error", error: e instanceof Error ? e.message : String(e), text: "", citations: [], queries: [], cost: 0 });
       }
-      state!.done++;
     }
   };
   await Promise.all(Array.from({ length: CONCURRENCY }, worker));
+  await yazim;
 
-  if (runs.length) await appendRuns(runs);
   state.spent = Math.round(state.spent * 10000) / 10000;
   if (!state.queue.length || state.capHit) state.finishedAt = new Date().toISOString();
   await saveState(state);

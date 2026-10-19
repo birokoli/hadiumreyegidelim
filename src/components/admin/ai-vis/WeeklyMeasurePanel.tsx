@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { api, ErrorLine } from "@/components/admin/seo/ui";
 import type { WeeklyState } from "@/lib/weekly-measure";
 
@@ -15,30 +15,39 @@ export default function WeeklyMeasurePanel() {
   const [running, setRunning] = useState(false);
   const [note, setNote] = useState("");
 
+  const yukle = useCallback(() => api<Status>("/api/admin/ai-vis/weekly").then((s) => {
+    setStatus(s);
+    return s;
+  }), []);
+
+  // İş arka planda sürer (en fazla ~5 dk); bu sürede durum 10 sn'de bir yenilenir
   const runNow = async () => {
     setRunning(true);
     setError("");
-    setNote("Çalışıyor; birkaç dakika sürebilir…");
     try {
-      const r = await api<{ state: WeeklyState; message: string }>("/api/admin/ai-vis/weekly", { method: "POST", body: JSON.stringify({ action: "run" }) });
-      setStatus((s) => (s ? { ...s, state: r.state } : s));
-      setNote(`${r.message} Sonuçları görmek için sayfayı yenileyin.`);
+      const r = await api<{ message: string }>("/api/admin/ai-vis/weekly", { method: "POST", body: JSON.stringify({ action: "run" }) });
+      setNote(r.message);
+      const bitis = Date.now() + 5 * 60_000;
+      const izle = setInterval(() => {
+        yukle().catch(() => {});
+        if (Date.now() > bitis) {
+          clearInterval(izle);
+          setRunning(false);
+          setNote("Bu adım bitti. Sonuçları görmek için sayfayı yenileyin; kalan iş varsa yeniden çalıştırabilirsiniz.");
+        }
+      }, 10_000);
     } catch (e) {
       setError((e as Error).message);
       setNote("");
-    } finally {
       setRunning(false);
     }
   };
 
   useEffect(() => {
-    api<Status>("/api/admin/ai-vis/weekly")
-      .then((s) => {
-        setStatus(s);
-        setCap(String(s.cap));
-      })
+    yukle()
+      .then((s) => setCap(String(s.cap)))
       .catch((e) => setError((e as Error).message));
-  }, []);
+  }, [yukle]);
 
   const save = async () => {
     setSaving(true);

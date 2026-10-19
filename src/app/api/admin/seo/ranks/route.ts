@@ -68,7 +68,7 @@ export async function POST(req: Request) {
         }
       }
     };
-    const results = await Promise.all(Array.from({ length: 3 }, worker));
+    const results = await Promise.all(Array.from({ length: 5 }, worker));
     const blocked = results.find((r) => r instanceof Response);
     if (blocked) return blocked;
     await writeJson(SEO_KEYS.tracked, tracked);

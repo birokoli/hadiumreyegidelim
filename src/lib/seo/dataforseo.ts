@@ -55,6 +55,23 @@ function explainTaskError(code: number, message: string) {
   return `DataForSEO: ${message} (${code})`;
 }
 
+/** DataForSEO'nun "Internal SE Server Error" (40101) hatası geçicidir: arama motoru ya da yapay zekâ o an yanıt vermemiştir.
+ * Birkaç deneme çoğu zaman geçiriyor. Hâlâ geçmezse anlaşılır mesajla düşer. (19 Ekim: önce AI motorlarında, sonra sıra takibinde görüldü) */
+export async function withSeRetry<T>(call: () => Promise<T>, attempts = 3): Promise<T> {
+  for (let i = 1; ; i++) {
+    try {
+      return await call();
+    } catch (e) {
+      const transient = e instanceof DataforseoError && (e.status === 40101 || /Internal SE Server Error/i.test(e.message));
+      if (!transient) throw e;
+      if (i >= attempts) {
+        throw new DataforseoError("DataForSEO tarafında geçici hata (40101): arama motoru ya da yapay zekâ o an yanıt vermedi. Birkaç saat sonra yeniden deneyin.", 40101);
+      }
+      await new Promise((r) => setTimeout(r, 3000 * i));
+    }
+  }
+}
+
 export async function dfsPost<T>(path: string, body: unknown[], opts: { timeoutMs?: number } = {}): Promise<{ result: T | null; cost: number }> {
   const auth = authHeader();
   if (!auth) throw new DataforseoError("DataForSEO bağlı değil.", 412);
@@ -224,11 +241,11 @@ export type SerpCheck = {
 };
 
 export async function checkSerpPosition(keyword: string, domain: string): Promise<DfsResult<SerpCheck>> {
-  const { result, cost } = await dfsPost<{
+  const { result, cost } = await withSeRetry(() => dfsPost<{
     items?: { type: string; rank_group?: number; domain?: string; url?: string; title?: string }[];
   }>("/v3/serp/google/organic/live/advanced", [
     { keyword, location_code: DFS_LOCATION_CODE, language_code: DFS_LANGUAGE_CODE, depth: 50, device: "mobile" },
-  ]);
+  ]));
   const organic = (result?.items ?? []).filter((i) => i.type === "organic");
   const ours = organic.find((i) => (i.domain ?? "").replace(/^www\./, "").endsWith(domain));
   return {

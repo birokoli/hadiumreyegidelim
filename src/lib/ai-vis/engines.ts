@@ -4,7 +4,7 @@
 // dosyalarından uyarlandı. Claude da (12 Ekim'den beri) DataForSEO LLM Responses ile, web araması açık sorulur.
 
 import Anthropic from "@anthropic-ai/sdk";
-import { DataforseoError, dfsPost, isDataforseoConfigured } from "@/lib/seo/dataforseo";
+import { DataforseoError, dfsPost, isDataforseoConfigured, withSeRetry } from "@/lib/seo/dataforseo";
 import { normalizeDomain } from "./analyze";
 import type { Citation, EngineId, Run } from "./types";
 
@@ -67,24 +67,6 @@ async function resolveRedirect(url: string) {
     return res.headers.get("location") || url;
   } catch {
     return url;
-  }
-}
-
-/** DataForSEO ara sıra görev düzeyinde 40101 "Internal SE Server Error" veriyor (arama motoru / yapay zekâ tarafında geçici hata).
- * İlk görüldüğü yer AI Overview'du; 19 Ekim'de ChatGPT/Gemini/Perplexity/Claude sorularında da görüldü, hepsine uygulanır.
- * Birkaç deneme çoğu zaman geçiriyor (Elmo retryTransient ile aynı yaklaşım). Hâlâ geçmezse anlaşılır mesajla düşer. */
-async function withSeRetry<T>(call: () => Promise<T>, attempts = 3): Promise<T> {
-  for (let i = 1; ; i++) {
-    try {
-      return await call();
-    } catch (e) {
-      const transient = e instanceof DataforseoError && (e.status === 40101 || /Internal SE Server Error/i.test(e.message));
-      if (!transient) throw e;
-      if (i >= attempts) {
-        throw new DataforseoError("DataForSEO tarafında geçici hata (40101): yapay zekâ ya da arama motoru o an yanıt vermedi. Bu soruyu birkaç saat sonra yeniden ölçün.", 40101);
-      }
-      await new Promise((r) => setTimeout(r, 3000 * i));
-    }
   }
 }
 

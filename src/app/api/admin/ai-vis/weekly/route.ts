@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { after, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireAiVisAdmin } from "@/lib/seo/guard";
 import { getWeeklyCap, isoWeek, loadWeeklyState, runWeeklyStep } from "@/lib/weekly-measure";
@@ -18,10 +18,11 @@ export async function POST(req: Request) {
   const denied = await requireAiVisAdmin();
   if (denied) return denied;
   const body = (await req.json()) as { cap?: number; action?: "run" };
-  // Elle bir adım çalıştır (cron'la aynı kuyruk ve tavan; en fazla ~4 dk iş)
+  // Elle bir adım çalıştır (cron'la aynı kuyruk ve tavan; en fazla ~4 dk iş). İş arka planda sürer, istek hemen döner:
+  // beklemek tarayıcıda 504 veriyordu (19 Ekim). Panel ilerlemeyi GET ile izler.
   if (body.action === "run") {
-    const { state, message } = await runWeeklyStep();
-    return NextResponse.json({ state, message });
+    after(() => runWeeklyStep().catch((e) => console.error("[weekly-measure] elle çalıştırma", e)));
+    return NextResponse.json({ started: true, message: "Ölçüm arka planda başladı; ilerleme birkaç saniyede bir güncellenir." });
   }
   const { cap } = body;
   if (typeof cap !== "number" || !Number.isFinite(cap) || cap < 0 || cap > 20) {

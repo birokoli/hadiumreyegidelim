@@ -70,6 +70,24 @@ async function resolveRedirect(url: string) {
   }
 }
 
+/** DataForSEO ara sıra görev düzeyinde 40101 "Internal SE Server Error" veriyor (arama motoru / yapay zekâ tarafında geçici hata).
+ * İlk görüldüğü yer AI Overview'du; 19 Ekim'de ChatGPT/Gemini/Perplexity/Claude sorularında da görüldü, hepsine uygulanır.
+ * Birkaç deneme çoğu zaman geçiriyor (Elmo retryTransient ile aynı yaklaşım). Hâlâ geçmezse anlaşılır mesajla düşer. */
+async function withSeRetry<T>(call: () => Promise<T>, attempts = 3): Promise<T> {
+  for (let i = 1; ; i++) {
+    try {
+      return await call();
+    } catch (e) {
+      const transient = e instanceof DataforseoError && (e.status === 40101 || /Internal SE Server Error/i.test(e.message));
+      if (!transient) throw e;
+      if (i >= attempts) {
+        throw new DataforseoError("DataForSEO tarafında geçici hata (40101): yapay zekâ ya da arama motoru o an yanıt vermedi. Bu soruyu birkaç saat sonra yeniden ölçün.", 40101);
+      }
+      await new Promise((r) => setTimeout(r, 3000 * i));
+    }
+  }
+}
+
 async function runScraper(engine: "chatgpt" | "gemini", prompt: string): Promise<EngineResult> {
   const path =
     engine === "chatgpt"
@@ -77,7 +95,11 @@ async function runScraper(engine: "chatgpt" | "gemini", prompt: string): Promise
       : "/v3/ai_optimization/gemini/llm_scraper/live/advanced";
   const { value, note } = await withLocation((loc) =>
     // Web aramalı ChatGPT yanıtı 60 sn'yi aşabiliyor (1 Ekim: 3 zaman aşımı); ChatGPT için 120 sn
-    dfsPost<ScraperResult>(path, [{ keyword: prompt, ...loc, ...(engine === "chatgpt" ? { force_web_search: true } : {}) }], { timeoutMs: engine === "chatgpt" ? 120_000 : undefined }),
+    // ChatGPT tek denemede 120 sn sürebildiği için 2 deneme (300 sn sınırı)
+    withSeRetry(
+      () => dfsPost<ScraperResult>(path, [{ keyword: prompt, ...loc, ...(engine === "chatgpt" ? { force_web_search: true } : {}) }], { timeoutMs: engine === "chatgpt" ? 120_000 : undefined }),
+      engine === "chatgpt" ? 2 : 3,
+    ),
   );
   const r = value.result;
   const text =
@@ -103,9 +125,9 @@ type LlmResponsesResult = {
 };
 
 async function runLlmResponses(llm: "perplexity" | "claude", model: string, prompt: string): Promise<EngineResult> {
-  const { result, cost } = await dfsPost<LlmResponsesResult>(`/v3/ai_optimization/${llm}/llm_responses/live`, [
-    { user_prompt: prompt, model_name: model, web_search: true },
-  ]);
+  const { result, cost } = await withSeRetry(() =>
+    dfsPost<LlmResponsesResult>(`/v3/ai_optimization/${llm}/llm_responses/live`, [{ user_prompt: prompt, model_name: model, web_search: true }]),
+  );
   const items = (result?.items ?? []).filter((i) => i.type !== "reasoning");
   const sections = items.flatMap((i) => i.sections ?? []);
   const text = sections.map((s) => s.text?.trim()).filter(Boolean).join("\n");
@@ -127,20 +149,6 @@ const runClaude = (prompt: string) => runLlmResponses("claude", "claude-sonnet-5
 type SerpResult = {
   items?: { type?: string; markdown?: string | null; references?: { url?: string; title?: string }[] | null }[] | null;
 };
-
-/** AI Overview'da DataForSEO ara sıra görev düzeyinde 40101 "Internal SE Server Error" veriyor;
- * birkaç deneme çoğu zaman geçiriyor (Elmo retryTransient ile aynı yaklaşım). */
-async function withSeRetry<T>(call: () => Promise<T>, attempts = 3): Promise<T> {
-  for (let i = 1; ; i++) {
-    try {
-      return await call();
-    } catch (e) {
-      const transient = e instanceof DataforseoError && (e.status === 40101 || /Internal SE Server Error/i.test(e.message));
-      if (!transient || i >= attempts) throw e;
-      await new Promise((r) => setTimeout(r, 1000 * i));
-    }
-  }
-}
 
 /** Google AI yanıtı tam yüklenmeden alınan yer tutucu metinler (ör. "`bilsis` :load{skill_names:[...]}") */
 function isPlaceholder(markdown: string, referenceCount: number) {

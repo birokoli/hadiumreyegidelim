@@ -1,6 +1,7 @@
 // Blog veri adımları (19 Ekim): canlı veritabanındaki yazılara bir kez uygulanan düzeltmeler. Her adımın Setting'te işareti vardır;
 // işaret varsa adım bir daha çalışmaz. Değişiklikten önce yazının hali PostVersion'a kaydedilir (admin'den geri alınabilir).
 import { prisma } from "@/lib/prisma";
+import { VIZE_ACIKLAMA, VIZE_BASLIK, VIZE_BIRLESEN_SLUGLAR, VIZE_ICERIK, VIZE_SSS as BIRLESIK_SSS, VIZE_TLDR as BIRLESIK_TLDR } from "./vize-birlesik";
 
 /**
  * Vize yazısı (kullanıcı, 19 Ekim): TL;DR ve "Yazarın Kişisel Deneyimi" kutuları eski bilgiyle kalmıştı (1–3 / 5–7 iş günü,
@@ -64,9 +65,34 @@ async function vizeYazisi() {
   console.log("[blog] vize yazısı düzeltildi", sonuc.join(" "));
 }
 
+/** Vize yazılarının birleştirilmesi (19 Ekim, kullanıcı): ana yazı yeni içerikle güncellenir, dört yazı yayından kalkar
+ * (silinmez; adresleri next.config.ts'de ana yazıya 301 ile yönlenir). Ana yazının önceki hali PostVersion'a kaydedilir. */
+async function vizeBirlestir() {
+  const ISARET = "VERI_ADIMI_BLOG_VIZE_BIRLESTIR_2026_10";
+  if (await prisma.setting.findUnique({ where: { key: ISARET } })) return;
+  const post = await prisma.post.findUnique({ where: { slug: VIZE_SLUG } });
+  if (!post) return;
+  const sonVersiyon = await prisma.postVersion.findFirst({ where: { postId: post.id }, orderBy: { version: "desc" }, select: { version: true } });
+  const [, , kalkan] = await prisma.$transaction([
+    prisma.postVersion.create({
+      data: { postId: post.id, title: post.title, content: post.content, description: post.description, version: (sonVersiyon?.version ?? 0) + 1, savedBy: "veri adımı (vize yazıları birleştirilmeden önce)" },
+    }),
+    prisma.post.update({
+      where: { id: post.id },
+      data: { title: VIZE_BASLIK, metaTitle: VIZE_BASLIK, description: VIZE_ACIKLAMA, content: VIZE_ICERIK, tldr: BIRLESIK_TLDR, faq: JSON.stringify(BIRLESIK_SSS), personalExperience: null, focusKeyword: "umre vizesi" },
+    }),
+    prisma.post.updateMany({ where: { slug: { in: VIZE_BIRLESEN_SLUGLAR } }, data: { published: false } }),
+  ]);
+  await prisma.setting.create({ data: { key: ISARET, value: `${new Date().toISOString()} yayından kalkan: ${kalkan.count}` } });
+  console.log("[blog] vize yazıları birleştirildi; yayından kalkan:", kalkan.count);
+}
+
 let calisti: Promise<void> | null = null;
 /** Blog yazısı sayfası açılırken çağrılır; süreç başına bir kez çalışır, hata sayfayı durdurmaz. */
 export function blogVeriAdimlari() {
-  calisti ??= vizeYazisi().catch((e) => console.error("[blog] vize yazısı adımı", e));
+  calisti ??= (async () => {
+    await vizeYazisi().catch((e) => console.error("[blog] vize yazısı adımı", e));
+    await vizeBirlestir().catch((e) => console.error("[blog] vize birleştirme adımı", e));
+  })();
   return calisti;
 }

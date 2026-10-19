@@ -35,6 +35,11 @@ const nextConfig: NextConfig = {
       // G6-3: Kırık iç bağlantı kalıcı yönlendirmeleri (Faz I3)
       { source: "/blog/mescid-i-haram-ziyareti", destination: "/blog/mescidi-haram-ziyaret-rehberi", permanent: true },
       { source: "/blog/nusuk-uygulamasi-kullanimi", destination: "/blog/nusuk-uygulamasi-nasil-kullanilir", permanent: true },
+      // 19 Ekim: vize yazıları tek yazıda birleştirildi (src/lib/blog/vize-birlesik.ts)
+      { source: "/blog/umre-vizesi-basvurusu-nasil-yapilir-2", destination: "/blog/bireysel-umre-vizesi-nasil-alinir", permanent: true },
+      { source: "/blog/umre-vizesi-ne-kadar-ucret", destination: "/blog/bireysel-umre-vizesi-nasil-alinir", permanent: true },
+      { source: "/blog/umre-vizesi-2026-ucreti-kac-tl", destination: "/blog/bireysel-umre-vizesi-nasil-alinir", permanent: true },
+      { source: "/blog/2026-bireysel-umre-rehberi-nusuk-vize-surecleri", destination: "/blog/bireysel-umre-vizesi-nasil-alinir", permanent: true },
       { source: "/otel-rezervasyonu", destination: "/bireysel-umre", permanent: true },
       { source: "/tren-bileti-al", destination: "/bireysel-umre", permanent: true },
       // Yanlış slug prefix düzeltmesi: /blog/blog/:slug → /blog/:slug

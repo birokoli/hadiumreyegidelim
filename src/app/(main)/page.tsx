@@ -15,6 +15,7 @@ import { DEFAULT_HANIM_UMRESI_CAMPAIGN, DEFAULT_ILK_UMREM_CAMPAIGN, EYLUL_CAMPAI
 import { PageTrust, webPageJsonLd } from "@/components/seo/PageTrust";
 import { getApprovedReviews } from "@/lib/reviews";
 import ReviewCard from "@/components/reviews/ReviewCard";
+import ReviewSlider from "@/components/reviews/ReviewSlider";
 import Accent from "@/components/home/Accent";
 import NiyetBand from "@/components/home/NiyetBand";
 import { cairo, ruqaa } from "@/components/home/fonts";
@@ -311,9 +312,9 @@ export default async function Home() {
         <section className="w-full bg-soft">
           <div className="max-w-screen-xl mx-auto px-4 md:px-8 py-12 md:py-16">
             <SectionHead kicker={reviewTexts("kicker")} title={<Accent text={accented(reviewTexts("title"))} />} href="/yorumlar" linkLabel={reviewTexts("link")} />
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5">
-              {reviews.slice(0, 6).map((r) => <ReviewCard key={r.id} r={r} clamp />)}
-            </div>
+            <ReviewSlider>
+              {reviews.slice(0, 12).map((r) => <ReviewCard key={r.id} r={r} kompakt />)}
+            </ReviewSlider>
           </div>
         </section>
       )}

@@ -82,7 +82,7 @@ export const DEFAULT_EYLUL_CAMPAIGN: EylulCampaignConfig = {
   seoTitle: "Eylül Grup Umresi — 10, 15 ve 20 Günlük Programlar | HadiUmreyeGidelim",
   seoDescription: "15 veya 25 Eylül çıkışlı grup umresi. Kişi başı 1.250 USD'den başlayan fiyatlarla vize, uçak bileti, Kâbe'ye yürüme mesafesinde otel ve mübarek yerler turu dahil.",
   heroImage: "https://images.unsplash.com/photo-1564769625905-50e93615e769?q=80&w=1200&auto=format&fit=crop",
-  footerImage: "https://images.unsplash.com/photo-1591604466107-ec97de577aff?q=80&w=1080&auto=format&fit=crop",
+  footerImage: "/images/kampanya/aile-umresi.jpg",
   badgeText: "SINIRLI KONTENJAN — 15 VEYA 25 EYLÜL ÇIKIŞLI",
   title: "Eylül",
   highlightedTitle: "Grup Umresi",
@@ -152,7 +152,7 @@ export const DEFAULT_EYLUL_CAMPAIGN: EylulCampaignConfig = {
   readyCtaDescription: "İlk kez umreye gidecek misafirlerimiz için hazırlık aşamasından ibadetlerin tamamlanmasına kadar rehberli ve güvenli bir program.",
   readyCtaNote: "İlk kez umreye gideceklere özel rehberlik",
   readyCtaButton: "İlk Umrem İçin Bilgi Al",
-  readyCtaImage: "https://images.unsplash.com/photo-1591604466107-ec97de577aff?q=80&w=1080&auto=format&fit=crop",
+  readyCtaImage: "/images/kampanya/aile-umresi.jpg",
   readyCtaWhatsappMessage: "Merhaba, İlk Umrem Kampanyası hakkında bilgi almak istiyorum.",
   finalAdsBadge: "HANIMLARA ÖZEL MANEVİ YOLCULUK",
   finalAdsTitle: "Hanım Umresi Kampanyası",
@@ -169,7 +169,7 @@ export const DEFAULT_ILK_UMREM_CAMPAIGN: EylulCampaignConfig = {
   homeVisibleUntil: "",
   seoTitle: "İlk Umrem Kampanyası | Hadi Umreye Gidelim",
   seoDescription: "İlk kez umreye gidecek misafirlerimize özel, hazırlıktan ibadetlerin tamamlanmasına kadar rehberli umre programı.",
-  heroImage: DEFAULT_EYLUL_CAMPAIGN.readyCtaImage,
+  heroImage: "/images/kampanya/ilk-umrem.jpg",
   footerImage: DEFAULT_EYLUL_CAMPAIGN.readyCtaImage,
   badgeText: "İLK KEZ UMREYE GİDECEKLERE ÖZEL",
   title: "İlk Umrem",
@@ -209,7 +209,7 @@ export const DEFAULT_HANIM_UMRESI_CAMPAIGN: EylulCampaignConfig = {
   homeVisibleUntil: "",
   seoTitle: "Hanım Umresi Kampanyası | Hadi Umreye Gidelim",
   seoDescription: "Hanım misafirlerimize özel, huzurlu ve güvenli grup düzeniyle hazırlanan umre programı.",
-  heroImage: DEFAULT_EYLUL_CAMPAIGN.finalAdsImage,
+  heroImage: "/images/kampanya/hanim-umresi.jpg",
   footerImage: DEFAULT_EYLUL_CAMPAIGN.finalAdsImage,
   badgeText: "HANIMLARA ÖZEL MANEVİ YOLCULUK",
   title: "Hanım Umresi",
@@ -243,10 +243,18 @@ export const DEFAULT_HANIM_UMRESI_CAMPAIGN: EylulCampaignConfig = {
   homeFeatures: ["Hanımlara Özel Grup", "Rehberlik", "Güvenli Program", "7/24 WhatsApp"],
 };
 
+// 19 Ekim (kullanıcı): eski varsayılan Unsplash görselleri (biri düğün fotoğrafıydı) admin kaydında kalmışsa yenisi kullanılır
+const ESKI_GORSELLER = ["photo-1591604466107-ec97de577aff", "photo-1565552645632-d725f8bfc19a", "photo-1564769625905-50e93615e769"];
+const GORSEL_ALANLARI = ["heroImage", "footerImage", "readyCtaImage", "finalAdsImage"] as const;
+
 export function parseEylulCampaign(value?: string | null, fallback = DEFAULT_EYLUL_CAMPAIGN): EylulCampaignConfig {
   if (!value) return fallback;
   try {
     const parsed = JSON.parse(value) as Partial<EylulCampaignConfig> & { includedServices?: string[] };
+    for (const alan of GORSEL_ALANLARI) {
+      const v = parsed[alan];
+      if (typeof v === "string" && ESKI_GORSELLER.some((id) => v.includes(id))) delete parsed[alan];
+    }
     const legacyIncluded = Array.isArray(parsed.includedServices)
       ? parsed.includedServices.map((label, index) => ({ ...DEFAULT_EYLUL_CAMPAIGN.includedItems[index], label }))
       : undefined;

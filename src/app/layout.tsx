@@ -109,10 +109,6 @@ export default async function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <link rel="preconnect" href="https://lh3.googleusercontent.com" />
-        <link rel="dns-prefetch" href="https://lh3.googleusercontent.com" />
-        <link rel="preconnect" href="https://images.unsplash.com" />
-        <link rel="dns-prefetch" href="https://images.unsplash.com" />
         {/* Ana yazı tipleri projede; ilk boyamada gecikmesin diye önceden yüklenir */}
         <link rel="preload" href="/fonts/site/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
         <link rel="preload" href="/fonts/site/noto-serif-latin-wght-normal.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />

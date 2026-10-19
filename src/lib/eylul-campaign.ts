@@ -81,7 +81,7 @@ export const HANIM_UMRESI_CAMPAIGN_SETTING_KEY = "HANIM_UMRESI_CAMPAIGN_CONFIG";
 export const DEFAULT_EYLUL_CAMPAIGN: EylulCampaignConfig = {
   seoTitle: "Eylül Grup Umresi — 10, 15 ve 20 Günlük Programlar | HadiUmreyeGidelim",
   seoDescription: "15 veya 25 Eylül çıkışlı grup umresi. Kişi başı 1.250 USD'den başlayan fiyatlarla vize, uçak bileti, Kâbe'ye yürüme mesafesinde otel ve mübarek yerler turu dahil.",
-  heroImage: "https://images.unsplash.com/photo-1564769625905-50e93615e769?q=80&w=1200&auto=format&fit=crop",
+  heroImage: "/og/grup-umre.jpg",
   footerImage: "/images/kampanya/aile-umresi.jpg",
   badgeText: "SINIRLI KONTENJAN — 15 VEYA 25 EYLÜL ÇIKIŞLI",
   title: "Eylül",
@@ -159,7 +159,7 @@ export const DEFAULT_EYLUL_CAMPAIGN: EylulCampaignConfig = {
   finalAdsDescription: "Hanım misafirlerimize özel, huzurlu ve güvenli grup düzeniyle manevi yolculuğunuzu birlikte planlayalım.",
   finalAdsNote: "Program detayları ve müsait tarihler için bize ulaşın",
   finalAdsButton: "Hanım Umresi İçin Bilgi Al",
-  finalAdsImage: "https://images.unsplash.com/photo-1565552645632-d725f8bfc19a?q=80&w=1080&auto=format&fit=crop",
+  finalAdsImage: "/images/kampanya/hanim-umresi.jpg",
   finalAdsWhatsappMessage: "Merhaba, Hanım Umresi Kampanyası hakkında bilgi almak istiyorum.",
 };
 

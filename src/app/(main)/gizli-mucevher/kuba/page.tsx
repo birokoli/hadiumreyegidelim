@@ -23,12 +23,12 @@ export default function KubaGizliMucevherPage() {
         <section className="max-w-7xl mx-auto px-6 mb-20">
           <div className="relative h-[716px] w-full overflow-hidden rounded-3xl">
             <Image 
-              alt="Kuba Mosque at Dawn" 
+              alt="Kuba Mescidi, seher vakti" 
               className="object-cover" 
               fill
               sizes="(max-width: 1280px) 100vw, 1280px"
               priority
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuCF3iYs_k-G6gpEERHVEt5PfsY1dj89cZHCQe5Z1A_8_5aDG7ILB99nJBnia5m7PPFYD-GtPUBUDu29IebEhoLmvwf9gOEGZ2A-iC9HdZkW_q_aVJJZlvCOWRKJIHP551I64zFlz_38-WmGR0FbFqXIBsPV99Eszl--qhZtY2fdlx61rfiD532K0kH5ssRWrI-QK2qw52mPalfhkA6clKdTlAVVEzNjR6zz-OUdr8GZ-0Yukiw2Ff1MRWzwtq5xyTxLaDx0c9ErLn0"
+              src="/og/kuba.jpg"
             />
             <div className="absolute inset-0 ethereal-gradient flex flex-col justify-end p-12">
               <span className="inline-block px-4 py-1 bg-secondary-container text-on-secondary-container rounded-full text-xs font-bold tracking-widest uppercase mb-4 self-start">GİZLİ MÜCEVHER</span>
@@ -120,50 +120,6 @@ export default function KubaGizliMucevherPage() {
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Bento Grid for Photography */}
-        <section className="max-w-7xl mx-auto px-6 mb-32">
-          <h2 className="text-3xl font-serif text-center mb-16">Ethereal Anlar</h2>
-          <div className="grid grid-cols-1 md:grid-cols-4 grid-rows-2 gap-4 h-[800px]">
-            <div className="md:col-span-2 md:row-span-2 rounded-3xl overflow-hidden relative group">
-              <Image 
-                alt="Mimari Detaylar"
-                className="object-cover group-hover:scale-105 transition-transform duration-700" 
-                fill
-                sizes="(max-width: 768px) 100vw, 50vw"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBNKVAhnAbGkTBy64tSptB4oTVsn1UAcLwiars8oVQQgE2dd52q_57E_lCnfcrowomgn6XZibDNjrxi8WBIWdgmKzGZgMpK26U23Gy-1qk38q3SeFvNynrKZ-UMDTDVSs1ktjb6SAHRJzq63Uax4KCl6mwKwa-xNtyHrDPJ9-W3kuecSmil0H26KTNpEeWjI80mRkS10VtcXXDxHtnRrml7AIECIJkdTS6YoyNIsCe_p2iruq8FiiXRilasfW9w8SFLpQe6nBCBn4g"
-              />
-              <div className="absolute bottom-6 left-6 text-white bg-black/20 backdrop-blur-md px-4 py-2 rounded-lg text-sm z-10">Mimari Detaylar</div>
-            </div>
-            <div className="md:col-span-2 md:row-span-1 rounded-3xl overflow-hidden relative group">
-              <Image 
-                alt="Seher Vakti Işığı"
-                className="object-cover group-hover:scale-105 transition-transform duration-700" 
-                fill
-                sizes="(max-width: 768px) 100vw, 50vw"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuB8xmAXnD7O-78mPSVjq6LEsdryKoY-WbOTOZx1YpLlQlLmZK2CkB2kRpU53of4MbwPpkETCOwi4pmDpEEv9DOqZJ40_Ofg6nojRXeboDfdQc1P_9Gb2pGHyXA7PNDLuOxJEyPaa7VLEmEwTvHhW68YuDcr3u-Hq_6N8miMISwbvHRCN4uyz5uXa-2RmfmsqkHFSZVCXQTFxGLtMReOqmbHHFfiGoHh4-Usu3L3Ckmf13bu4TgWvIVYtfZ-xU4NppYMceD_i4So3A0"
-              />
-            </div>
-            <div className="md:col-span-1 md:row-span-1 rounded-3xl overflow-hidden relative group">
-              <Image 
-                alt="Geleneksel Sunum"
-                className="object-cover group-hover:scale-105 transition-transform duration-700" 
-                fill
-                sizes="(max-width: 768px) 100vw, 25vw"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDlhYp4zEF1HVzb0Chx6IGFC0TUaF8I7kAm22nTpDHRQj-NlPEv1mbYWhsLeHU4HdclhFfXAbHWUK04XiFrMT3EKsb26J58HDjdapFmkTEahgFakIdLh3ly29Jy9afcjESHArzlLZ4JMhf2GugvJGtH-4sTZ0bkWOH60wlZSVT9KSIsAG5evrt--WujLorjZouTh_Gj79XtWNyHkryeLQj51UQtQGQGvZZnFBWCuLnM0YAHHlFBHzNFu3y8okSKum2Gj3y5vr823hw"
-              />
-            </div>
-            <div className="md:col-span-1 md:row-span-1 rounded-3xl overflow-hidden relative group">
-              <Image 
-                alt="Minareler"
-                className="object-cover group-hover:scale-105 transition-transform duration-700" 
-                fill
-                sizes="(max-width: 768px) 100vw, 25vw"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgOFDAYGnvN0oCzMh6zlY6a1kMrAgvENjBUhSfnOoGJiof4SODfElw7jp06tp4f1mg6qXKcsC5eaVkT3KG-qi42z3D-mhR3YqJ6NZGmF62POcSwfhaDGIlqU0iyfwJDWRyMT9G6PlzzNi834nCbuKlZ5MSrJ1m4LC6fPayVijb9QsdOjkQz1FoHMJomSY11aPt_c_qo9iig1qhlns8_HDOhQh_vCoXX09zCfqTjtQS4I118T3UiphrnyrtIYw-RlQkPKGdoS49MlA"
-              />
             </div>
           </div>
         </section>

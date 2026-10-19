@@ -7,7 +7,7 @@ import {
 
 export const metadata: Metadata = { title: "Tasarım kiti", robots: { index: false, follow: false } };
 
-const IMG = "https://images.unsplash.com/photo-1565552645632-d725f8bfc19a?q=80&w=1200&auto=format&fit=crop";
+const IMG = "/images/oteller/address-jabal-omar-makkah/01-dis-cephe-gece.jpg";
 
 export default function KitPage() {
   if (process.env.NODE_ENV === "production") notFound();

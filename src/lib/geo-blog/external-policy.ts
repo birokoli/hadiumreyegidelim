@@ -34,7 +34,16 @@ export function soldServiceFor(text: string) {
 const SALES_HOST = /^(visa|evisa|umrah|booking|shop|store)\./i;
 const SALES_PATH = /visa|vize|booking|book|reserv|hotel|otel|flight|transfer|train|package|paket|shop|store|buy|checkout|cart/i;
 
+/** Kullanıcının tek tek onayladığı dış bağlantılar (19 Ekim, Address Jabal Omar yazısı): otelin resmî sayfası ve tanıtım videosu.
+ *  Yalnızca bu adreslerle başlayan bağlantılar geçer; aynı sitelerin diğer sayfaları kurala tabidir. */
+const ONAYLI_DIS_LINKLER = [
+  "https://www.addresshotels.com/en/hotels/address-jabal-omar-makkah",
+  "https://www.instagram.com/reel/DeroB8HuMtE",
+];
+const onayliMi = (url: string) => ONAYLI_DIS_LINKLER.some((o) => url.startsWith(o));
+
 export function isAllowedExternal(url: string) {
+  if (onayliMi(url)) return true;
   try {
     const u = new URL(url);
     const host = u.hostname.toLowerCase().replace(/^www\./, "");
@@ -102,7 +111,7 @@ export function stripDisallowedLinks(html: string) {
       return "";
     });
   const out = html.replace(/<a\b[^>]*href=["'](https?:\/\/[^"']+)["'][^>]*>([\s\S]*?)<\/a>/gi, (full, href: string, inner: string) => {
-    if (/^https?:\/\/(www\.)?hadiumreyegidelim\.com/i.test(href)) return full;
+    if (/^https?:\/\/(www\.)?hadiumreyegidelim\.com/i.test(href) || onayliMi(href)) return full;
     const service = soldServiceFor(inner.replace(/<[^>]+>/g, " "));
     if (service) {
       redirected++;

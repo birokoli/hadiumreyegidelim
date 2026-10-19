@@ -1,6 +1,7 @@
 // Blog veri adımları (19 Ekim): canlı veritabanındaki yazılara bir kez uygulanan düzeltmeler. Her adımın Setting'te işareti vardır;
 // işaret varsa adım bir daha çalışmaz. Değişiklikten önce yazının hali PostVersion'a kaydedilir (admin'den geri alınabilir).
 import { prisma } from "@/lib/prisma";
+import * as A from "./address-yazisi";
 import { VIZE_ACIKLAMA, VIZE_BASLIK, VIZE_BIRLESEN_SLUGLAR, VIZE_ICERIK, VIZE_SSS as BIRLESIK_SSS, VIZE_TLDR as BIRLESIK_TLDR } from "./vize-birlesik";
 
 /**
@@ -95,6 +96,43 @@ async function vizeBirlestirDuzelt() {
   await prisma.setting.create({ data: { key: ISARET, value: `${new Date().toISOString()} yayından kalkan: ${r.count}` } });
 }
 
+/** Address Jabal Omar tanıtım yazısı (19 Ekim, kullanıcı): admin → Blog'a TASLAK olarak eklenir. scheduledAt boş kalır;
+ * böylece zamanlanmış yayın cron'u yazıyı kendiliğinden yayına almaz. Aynı adresli yazı varsa dokunulmaz. */
+async function addressTaslak() {
+  const ISARET = "VERI_ADIMI_BLOG_ADDRESS_TASLAK_2026_10";
+  if (await prisma.setting.findUnique({ where: { key: ISARET } })) return;
+  const var_ = await prisma.post.findUnique({ where: { slug: A.ADDRESS_SLUG }, select: { id: true } });
+  if (!var_) {
+    const [kategori, yazar] = await Promise.all([
+      prisma.category.findUnique({ where: { slug: "otel-ve-ulasim" }, select: { id: true } }),
+      prisma.author.findFirst({ where: { name: { contains: "Yasin", mode: "insensitive" } }, select: { id: true, name: true } }),
+    ]);
+    await prisma.post.create({
+      data: {
+        slug: A.ADDRESS_SLUG,
+        title: A.ADDRESS_BASLIK,
+        metaTitle: A.ADDRESS_META_BASLIK,
+        description: A.ADDRESS_ACIKLAMA,
+        content: A.ADDRESS_ICERIK,
+        keywords: A.ADDRESS_ANAHTAR,
+        focusKeyword: A.ADDRESS_ODAK,
+        imageUrl: A.ADDRESS_GORSEL,
+        imageAlt: A.ADDRESS_GORSEL_ALT,
+        tldr: A.ADDRESS_TLDR,
+        faq: JSON.stringify(A.ADDRESS_SSS),
+        references: "https://www.addresshotels.com/en/hotels/address-jabal-omar-makkah/",
+        author: yazar?.name ?? "Hadi Umreye Gidelim",
+        authorId: yazar?.id ?? null,
+        categoryId: kategori?.id ?? null,
+        published: false,
+        scheduledAt: null,
+      },
+    });
+  }
+  await prisma.setting.create({ data: { key: ISARET, value: `${new Date().toISOString()} ${var_ ? "zaten vardı" : "taslak eklendi"}` } });
+  console.log("[blog] Address Jabal Omar taslağı", var_ ? "zaten vardı" : "eklendi");
+}
+
 let calisti: Promise<void> | null = null;
 /** Blog yazısı sayfası açılırken çağrılır; süreç başına bir kez çalışır, hata sayfayı durdurmaz. */
 export function blogVeriAdimlari() {
@@ -102,6 +140,7 @@ export function blogVeriAdimlari() {
     await vizeYazisi().catch((e) => console.error("[blog] vize yazısı adımı", e));
     await vizeBirlestir().catch((e) => console.error("[blog] vize birleştirme adımı", e));
     await vizeBirlestirDuzelt().catch((e) => console.error("[blog] vize birleştirme düzeltmesi", e));
+    await addressTaslak().catch((e) => console.error("[blog] Address taslağı", e));
   })();
   return calisti;
 }

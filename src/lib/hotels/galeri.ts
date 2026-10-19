@@ -88,6 +88,14 @@ export const OTEL_GALERI: Record<string, GaleriFoto[]> = {
     ["07-lobi", "Lobi"],
     ["08-banyo", "Banyo"],
   ].map(([d, alt]) => ({ src: yol("al-safwah-tower-3", d), alt })),
+  // Kullanıcı kararı (19 Ekim): telefonla çekilmiş, bir acentenin sitesinden; itiraz gelirse kaldırılır
+  "safwah-al-talayie": [
+    ["01-giris", "Safwah Al Talayie otel girişi"],
+    ["02-uc-yatakli-oda", "Üç yataklı oda"],
+    ["03-oda", "Oda"],
+    ["04-masa-ve-buzdolabi", "Odada masa ve buzdolabı"],
+    ["05-banyo", "Banyo"],
+  ].map(([d, alt]) => ({ src: yol("safwah-al-talayie", d), alt })),
 };
 
 export const otelGalerisi = (slug: string | null | undefined): GaleriFoto[] => (slug ? OTEL_GALERI[slug] ?? [] : []);

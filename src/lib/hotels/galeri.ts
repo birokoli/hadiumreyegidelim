@@ -62,6 +62,32 @@ export const OTEL_GALERI: Record<string, GaleriFoto[]> = {
     ["07-oda", "Oda ve banyo girişi"],
     ["08-banyo", "Banyo"],
   ].map(([d, alt]) => ({ src: yol("pullman-zamzam-makkah", d), alt })),
+  // Snood: kaynak fotoğraflar küçük (en büyüğü 800 px); yalnızca kullanılabilir boyuttakiler alındı
+  "snood-ajyad": [
+    ["01-dis-cephe", "Snood Ajyad otel binası"],
+    ["02-oda", "Oda"],
+    ["03-uc-yatakli-oda", "Üç yataklı oda"],
+    ["04-lobi", "Lobi ve resepsiyon"],
+    ["05-banyo", "Banyo"],
+  ].map(([d, alt]) => ({ src: yol("snood-ajyad", d), alt })),
+  // Rotana: klasördeki Mekke ve Kâbe genel fotoğrafları otele ait olmadığı için alınmadı
+  "rotana-jabal-omar": [
+    ["01-oda", "Oda"],
+    ["02-resepsiyon", "Resepsiyon"],
+    ["03-oturma-salonu", "Oturma salonu"],
+    ["04-kafe", "Kafe"],
+    ["05-koridor", "Kat koridoru"],
+  ].map(([d, alt]) => ({ src: yol("rotana-jabal-omar", d), alt })),
+  "al-safwah-tower-3": [
+    ["01-dis-cephe", "Al Safwah Tower 3 otel binası"],
+    ["02-uc-yatakli-oda", "Üç yataklı oda"],
+    ["03-iki-yatakli-oda", "İki yataklı oda"],
+    ["04-uc-yatakli-oda-oturma", "Üç yataklı oda ve oturma köşesi"],
+    ["05-manzarali-oturma-kosesi", "Manzaralı oturma köşesi"],
+    ["06-restoran", "Restoran"],
+    ["07-lobi", "Lobi"],
+    ["08-banyo", "Banyo"],
+  ].map(([d, alt]) => ({ src: yol("al-safwah-tower-3", d), alt })),
 };
 
 export const otelGalerisi = (slug: string | null | undefined): GaleriFoto[] => (slug ? OTEL_GALERI[slug] ?? [] : []);

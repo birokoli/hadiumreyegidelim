@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ogGorsel } from "@/lib/seo/og";
 import Link from "next/link";
 import HelpLayout from "@/components/help/HelpLayout";
 import FaqBrowser from "@/components/help/FaqBrowser";
@@ -11,6 +12,7 @@ export const metadata: Metadata = {
   title: "Sıkça Sorulan Sorular: Umre ve Vize",
   description: "Umre planlama, umre vizesi, ödeme, iptal ve rezervasyon süreçleriyle ilgili en çok sorulan soruların cevapları.",
   alternates: { canonical: "/sss" },
+  openGraph: { images: [ogGorsel("sss", "Umre ve vize hakkında sık sorulanlar", "Sık sorulanlar")] },
 };
 
 export default async function FaqPage() {

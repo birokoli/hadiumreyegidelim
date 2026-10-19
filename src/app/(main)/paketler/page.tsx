@@ -1,4 +1,5 @@
 import { SITE_URL } from "@/lib/seo/site";
+import { ogGorsel } from "@/lib/seo/og";
 import { UyeFiyatMetin } from "@/components/uye/UyeFiyat";
 import { packageDisplayPrices } from "@/lib/pricing/package-server";
 import React from "react";
@@ -24,7 +25,8 @@ export const metadata: Metadata = {
   description: "2026 umre paketleri ve kişi başı başlangıç fiyatları. Fiyat seçtiğiniz otele, kişi sayısına ve tarihe göre anında hesaplanır; otel ve transferler dahildir.",
   alternates: {
     canonical: "/paketler"
-  }
+  },
+  openGraph: { images: [ogGorsel("paketler", "Umre fiyatları 2026 ve umre paketleri", "Umre paketleri")] },
 };
 
 export default async function PackagesPage() {

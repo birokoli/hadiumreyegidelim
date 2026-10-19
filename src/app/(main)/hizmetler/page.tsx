@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ogGorsel } from "@/lib/seo/og";
 import { formatPrice } from "@/lib/format";
 import { parseTransferSlug, TRANSFER_ROUTES, TRANSFER_VEHICLES } from "@/lib/catalog/transfers";
 import { getCatalog, fromPrice, type CatalogItem } from "@/lib/catalog";
@@ -9,6 +10,7 @@ export const metadata: Metadata = {
   title: "Umre Hizmetleri ve Güncel Fiyatlar",
   description: "Mekke otelleri, araçlı transfer, Haremeyn treni, ziyaret turları ve Suudi Arabistan e-vize: güncel aylık fiyatlar, planlayıcıda seçip birleştirin.",
   alternates: { canonical: "/hizmetler" },
+  openGraph: { images: [ogGorsel("hizmetler", "Otel, transfer, tren ve vize tek planda", "Umre hizmetleri")] },
 };
 
 // Katalog derleme anında okunamayabiliyor (boş liste önbelleğe girer); istek anında okunur, getCatalog zaten önbellekli

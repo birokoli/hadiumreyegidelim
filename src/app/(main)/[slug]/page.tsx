@@ -1,4 +1,5 @@
 import { SITE_URL } from "@/lib/seo/site";
+import { BOLGE_GORSELI, ogGorsel, REHBER_GORSELI } from "@/lib/seo/og";
 import React from "react";
 import Link from "next/link";
 import { Metadata } from "next";
@@ -6,7 +7,7 @@ import { notFound } from "next/navigation";
 import { ButtonLink, PageHero, Panel } from "@/components/ui/kit";
 import { turkeyCities, getTurkishCityBySlug, type TurkeyCity } from "@/lib/turkey-cities";
 import { cityTravelFacts, nearestCities, type Region } from "@/lib/city-geo";
-import { DEFAULT_OG_IMAGE, metaDescription, pageTitle } from "@/lib/seo/meta";
+import { metaDescription, pageTitle } from "@/lib/seo/meta";
 import ContentPageView from "@/components/content/ContentPageView";
 import { CONTENT_PAGES } from "@/content/pages";
 import { getLiveContentPage, getLiveContentPages } from "@/content/pages/store";
@@ -108,7 +109,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: pageTitle(content.title),
       description: content.description,
       alternates: { canonical: `${SITE_URL}/${content.slug}` },
-      openGraph: { title: content.title, description: content.description, type: "article", images: [DEFAULT_OG_IMAGE] },
+      openGraph: { title: content.title, description: content.description, type: "article", images: [ogGorsel(REHBER_GORSELI[content.slug] ?? "varsayilan", content.title, "Umre rehberi")] },
     };
   }
   if (!slug?.endsWith(SUFFIX)) return {};
@@ -124,6 +125,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         : `${city.name} çıkışlı umre: ${city.airportName} (${city.airportCode}) kalkış; otel, vize ve transferi tek planda seçin.`,
     ),
     alternates: { canonical: `${SITE_URL}/${slug}` },
+    // 19 Ekim: il sayfası paylaşım görseli bölge görselinden, il adı şablonla yazılır
+    openGraph: { images: [ogGorsel((facts && BOLGE_GORSELI[facts.region]) || "varsayilan", `${city.name} çıkışlı bireysel umre`, "Bireysel umre · 2026")] },
   };
 }
 

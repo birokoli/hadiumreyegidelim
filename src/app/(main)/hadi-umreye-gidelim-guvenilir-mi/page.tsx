@@ -1,6 +1,7 @@
 // "Hadi Umreye Gidelim güvenilir mi?" (6 Ekim): marka sorusunun cevabı bizim sayfamızdan gelsin.
 // Yalnızca doğrulanabilir bilgi: lisans, açık fiyat, yazılı vize süreci, gerçek yorum sayısı, yapmadıklarımız.
 import type { Metadata } from "next";
+import { ogGorsel } from "@/lib/seo/og";
 import Link from "next/link";
 import HelpLayout from "@/components/help/HelpLayout";
 import ReviewCard from "@/components/reviews/ReviewCard";
@@ -15,6 +16,7 @@ export const metadata: Metadata = {
   title: "Hadi Umreye Gidelim Güvenilir mi?",
   description: "Hadi Umreye Gidelim kimdir, fiyatlar ve ödeme nasıl işler, vize süreci, misafir yorumları ve yapmadıklarımız: güvenle karar vermeniz için açık bilgiler.",
   alternates: { canonical: "/hadi-umreye-gidelim-guvenilir-mi" },
+  openGraph: { images: [ogGorsel("yorumlar", "Hadi Umreye Gidelim güvenilir mi?", "Hakkımızda")] },
 };
 
 export default async function TrustPage() {

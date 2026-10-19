@@ -1,17 +1,15 @@
 // Sayfa başlığı ve açıklaması için ortak kurallar (denetimdeki title-long / description sorunları).
 // Kök düzen başlığa " | Hadi Umreye Gidelim" ekler; sayfa başlığında site adı tekrar yazılmaz.
 
+import { ogGorsel } from "./og";
+
 export const SITE_NAME = "Hadi Umreye Gidelim";
 const TEMPLATE_SUFFIX = ` | ${SITE_NAME}`;
 const MAX_TITLE = 60;
 const MAX_DESCRIPTION = 158;
 
-export const DEFAULT_OG_IMAGE = {
-  url: "https://images.unsplash.com/photo-1565552645632-d725f8bfc19a?q=80&w=1200&auto=format&fit=crop",
-  width: 1200,
-  height: 630,
-  alt: "Mescid-i Haram ve Kâbe",
-};
+// 19 Ekim: Unsplash yerine kendi paylaşım görselimiz (src/app/og/route.tsx)
+export const DEFAULT_OG_IMAGE = ogGorsel("varsayilan", "Bireysel umre: tarihi, oteli ve temponuzu siz seçin", "Hadi Umreye Gidelim");
 
 const BRAND_RE = /\s*[|—–-]\s*hadi\s*umre'?ye\s*gidelim\b/gi;
 

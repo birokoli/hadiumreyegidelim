@@ -1,4 +1,5 @@
 import { SITE_URL } from "@/lib/seo/site";
+import { ogGorsel } from "@/lib/seo/og";
 import HugIcon from "@/components/icons/HugIcon";
 import React from "react";
 import type { Metadata } from "next";
@@ -12,7 +13,8 @@ export const metadata: Metadata = {
   keywords: ["umre vizesi", "bireysel umre vizesi", "bireysel umre vizesi nasıl alınır", "suudi arabistan e vize umre", "umre vize fiyatları 2026", "turistik umre vizesi", "bireysel umre"],
   alternates: {
     canonical: `${SITE_URL}/umre-vizesi`,
-  }
+  },
+  openGraph: { images: [ogGorsel("umre-vizesi", "Umre vizesi: kişi başı 140 USD, 2 iş saatinde", "Umre vizesi")] },
 };
 
 const VISA_FAQ = [

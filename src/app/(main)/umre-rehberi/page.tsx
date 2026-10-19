@@ -1,4 +1,5 @@
 import { SITE_URL } from "@/lib/seo/site";
+import { ogGorsel } from "@/lib/seo/og";
 import Link from "next/link";
 import { Metadata } from "next";
 import { contentPath } from "@/content/pages";
@@ -10,6 +11,7 @@ export const metadata: Metadata = {
   title: "Umre Rehberi: Terimler ve Kıyaslar",
   description: "İhram, tavaf, sa'y gibi umre terimlerinin anlamları; bireysel umre, dönem ve kişiye göre umre planlama rehberleri. Hadi Umreye Gidelim'in umre rehberi.",
   alternates: { canonical: `${SITE_URL}/umre-rehberi` },
+  openGraph: { images: [ogGorsel("rehberlik", "Umre rehberi: terimler ve kıyaslar", "Umre rehberi")] },
 };
 
 const GROUPS = [

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ogGorsel } from "@/lib/seo/og";
 import { getApprovedReviews } from "@/lib/reviews";
 import { getPageTexts } from "@/lib/page-texts";
 import { EmptyState, PageHero, Section } from "@/components/ui/kit";
@@ -9,6 +10,7 @@ export const metadata: Metadata = {
   title: "Umre Yorumları: Sizden Gelenler",
   description: "Umresini Hadi Umreye Gidelim ile planlayan misafirlerimizin yorumları: otel, transfer, vize süreci ve ekibimiz hakkında gerçek deneyimler.",
   alternates: { canonical: "/yorumlar" },
+  openGraph: { images: [ogGorsel("yorumlar", "Misafirlerimizin umre yorumları", "Yorumlar")] },
 };
 
 export default async function ReviewsPage() {

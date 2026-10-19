@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { ogGorsel } from "@/lib/seo/og";
 import { prisma } from "@/lib/prisma";
 import { PageHero } from "@/components/ui/kit";
 import { BlogGrid, BlogTopics } from "@/components/blog/BlogList";
@@ -19,6 +20,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   if (!category) return { title: "Kategori bulunamadı", robots: { index: false } };
   const def = BLOG_CATEGORIES.find((c) => c.slug === slug);
   return {
+    openGraph: { images: [ogGorsel("blog", def?.seoTitle ?? `${category.name}: Umre Yazıları`, "Blog")] },
     title: def?.seoTitle ?? `${category.name}: Umre Yazıları`,
     description: def?.description || category.description || `${category.name} konusundaki umre rehber yazıları.`,
     alternates: { canonical: `/blog/kategori/${slug}` },

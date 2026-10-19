@@ -1,11 +1,12 @@
 import { SITE_URL } from "@/lib/seo/site";
+import { ogGorsel, REHBER_GORSELI } from "@/lib/seo/og";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import ContentPageView from "@/components/content/ContentPageView";
 import { CONTENT_PAGES, contentPath } from "@/content/pages";
 import { getLiveContentPage, getLiveContentPages } from "@/content/pages/store";
 import { pageTitles } from "@/content/pages/titles";
-import { DEFAULT_OG_IMAGE, pageTitle } from "@/lib/seo/meta";
+import { pageTitle } from "@/lib/seo/meta";
 import { getSiteSettings } from "@/lib/site-settings";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -24,7 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: pageTitle(page.title),
     description: page.description,
     alternates: { canonical: `${SITE_URL}${contentPath(page)}` },
-    openGraph: { title: page.title, description: page.description, type: "article", images: [DEFAULT_OG_IMAGE] },
+    openGraph: { title: page.title, description: page.description, type: "article", images: [ogGorsel(REHBER_GORSELI[page.slug] ?? "varsayilan", page.title, "Umre rehberi")] },
   };
 }
 

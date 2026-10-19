@@ -1,4 +1,5 @@
 import { SITE_URL } from "@/lib/seo/site";
+import { DEFAULT_OG_IMAGE } from "@/lib/seo/meta";
 import type { Metadata } from "next";
 import "./globals.css";
 
@@ -31,14 +32,7 @@ export const metadata: Metadata = {
     description: "Bireysel umre: otelinizi, transferinizi ve tarihlerinizi kendiniz seçin, fiyatı anında görün. Suudi Arabistan e-vize ve Türkçe rehberlik.",
     url: SITE_URL,
     siteName: "Hadi Umreye Gidelim",
-    images: [
-      {
-        url: 'https://images.unsplash.com/photo-1565552645632-d725f8bfc19a?q=80&w=2600&auto=format&fit=crop',
-        width: 1200,
-        height: 630,
-        alt: 'Bireysel umre: Mekke ve Medine',
-      },
-    ],
+    images: [DEFAULT_OG_IMAGE],
     locale: 'tr_TR',
     type: 'website',
   },

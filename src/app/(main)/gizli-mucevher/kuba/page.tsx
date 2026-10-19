@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ogGorsel } from "@/lib/seo/og";
 import React from "react";
 import Image from "next/image";
 
@@ -8,6 +9,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/gizli-mucevher/kuba",
   },
+  openGraph: { images: [ogGorsel("kuba", "Kuba Mescidi'nde seher vakti", "Gizli mücevher")] },
 };
 
 export default function KubaGizliMucevherPage() {

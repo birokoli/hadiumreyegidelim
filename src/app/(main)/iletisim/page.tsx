@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ogGorsel } from "@/lib/seo/og";
 import HugIcon from "@/components/icons/HugIcon";
 import Link from "next/link";
 import HelpLayout from "@/components/help/HelpLayout";
@@ -9,7 +10,7 @@ export const metadata: Metadata = {
   title: "İletişim ve Destek",
   description: "Umre planı, vize, ödeme ya da rezervasyonunuzla ilgili sorularınız için bize yazın; WhatsApp, telefon ve e-posta ile ulaşın.",
   alternates: { canonical: "/iletisim" },
-  openGraph: { images: ["/images/hero-kabe.jpg"] },
+  openGraph: { images: [ogGorsel("hakkimizda", "Bize ulaşın: WhatsApp, telefon, e-posta", "İletişim")] },
 };
 
 export default async function ContactPage({ searchParams }: { searchParams: Promise<{ paket?: string; konu?: string }> }) {

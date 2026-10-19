@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ogGorsel } from "@/lib/seo/og";
 import type { Metadata } from "next";
 import VisaApplicationForm from "@/components/visa/VisaApplicationForm";
 import { PageTrust, webPageJsonLd } from "@/components/seo/PageTrust";
@@ -12,6 +13,7 @@ export const metadata: Metadata = {
   title: pageTitle("Umre Vizesi Başvurusu: Online Başvuru"),
   description: "Umre vizesi başvurusu: kişi başı 140 USD, belgeleriniz tamamsa vize 2 iş saatinde çıkar. Formu doldurun, Suudi e-vizenizi sizin adınıza alalım.",
   alternates: { canonical: `${SITE_URL}/umre-vizesi/basvuru` },
+  openGraph: { images: [ogGorsel("umre-vizesi", "Umre vizesi başvurusu", "Umre vizesi")] },
 };
 
 const STEPS = [

@@ -1,4 +1,5 @@
 import { SITE_URL } from "@/lib/seo/site";
+import { ogGorsel } from "@/lib/seo/og";
 import HugIcon from "@/components/icons/HugIcon";
 import { getPageTexts } from "@/lib/page-texts";
 import React from "react";
@@ -11,9 +12,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/hakkimizda",
   },
-  openGraph: {
-    images: ["/images/hero-kabe.jpg"],
-  },
+  openGraph: { images: [ogGorsel("hakkimizda", "Ailenize özel bireysel umre", "Hakkımızda")] },
 };
 
 const jsonLd = {

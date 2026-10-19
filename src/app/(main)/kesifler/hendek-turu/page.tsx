@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { ogGorsel } from "@/lib/seo/og";
 import HugIcon from "@/components/icons/HugIcon";
 import type { Metadata } from "next";
 
@@ -8,6 +9,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/kesifler/hendek-turu",
   },
+  openGraph: { images: [ogGorsel("hendek-turu", "Hendek turu ve gizli duraklar", "Keşifler")] },
 };
 
 import React from "react";

@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { ogGorsel } from "@/lib/seo/og";
 import { PageHero } from "@/components/ui/kit";
 import { getPageTexts } from "@/lib/page-texts";
 import { BlogGrid, BlogTopics } from "@/components/blog/BlogList";
@@ -7,6 +8,7 @@ export const metadata = {
   title: "Umre Rehber Yazıları",
   description: "Umre vizesi, Mekke ve Medine otel seçimi, Haremeyn treni, ziyaret yerleri ve bireysel umre hazırlığı üzerine güncel rehber yazıları.",
   alternates: { canonical: "/blog" },
+  openGraph: { images: [ogGorsel("blog", "Umre rehber yazıları", "Blog")] },
 };
 
 export const revalidate = 60;

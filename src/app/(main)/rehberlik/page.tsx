@@ -1,4 +1,5 @@
 import React from "react";
+import { ogGorsel } from "@/lib/seo/og";
 import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
 import { ButtonLink, EmptyState, MediaCard, PageHero, Panel, Section, SectionHead } from "@/components/ui/kit";
@@ -9,7 +10,8 @@ export const metadata: Metadata = {
   description: "Mekke ve Medine'deki bireysel umre ziyaretleriniz için ilahiyatçı Türkçe rehberlik hizmeti. Manevi rehberler eşliğinde ibadet ve ziyaret planlama.",
   alternates: {
     canonical: "/rehberlik"
-  }
+  },
+  openGraph: { images: [ogGorsel("rehberlik", "Mekke ve Medine'de Türkçe rehberlik", "Umre rehberliği")] },
 };
 
 export const revalidate = 300;

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ogGorsel } from "@/lib/seo/og";
 import HelpLayout from "@/components/help/HelpLayout";
 import FormBlock from "@/components/help/FormBlock";
 import { getPageTexts } from "@/lib/page-texts";
@@ -8,6 +9,7 @@ export const metadata: Metadata = {
   title: "Grup Umresi Talepleri: Aile ve Grup",
   description: "Ailenizle ya da grubunuzla umre için kişi sayınızı ve tarihlerinizi iletin; otel, transfer ve rehberlik dahil programı birlikte planlayalım.",
   alternates: { canonical: "/grup-talepleri" },
+  openGraph: { images: [ogGorsel("grup-umre", "Ailenizle ya da grubunuzla umre", "Grup umresi")] },
 };
 
 export default async function GroupPage() {

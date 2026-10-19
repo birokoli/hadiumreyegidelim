@@ -5,7 +5,8 @@ import { notFound } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
 import { marked } from 'marked';
-import { DEFAULT_OG_IMAGE, metaDescription, pageTitle } from "@/lib/seo/meta";
+import { metaDescription, pageTitle } from "@/lib/seo/meta";
+import { ogGorsel } from "@/lib/seo/og";
 import { OfficialInfo } from "@/components/seo/PageTrust";
 import { BlogEndCta, BlogInlineCta } from "@/components/blog/BlogBrandCta";
 import { isAllowedExternal, stripDisallowedLinks } from "@/lib/geo-blog/external-policy";
@@ -42,7 +43,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   
   const seoTitle = (post as { metaTitle?: string | null }).metaTitle || post.title;
   const description = metaDescription(post.description);
-  const ogImages = post.imageUrl ? [{ url: post.imageUrl }] : [DEFAULT_OG_IMAGE];
+  const ogImages = post.imageUrl ? [{ url: post.imageUrl }] : [ogGorsel("blog", post.title, "Blog")];
 
   return {
     title: pageTitle(seoTitle),

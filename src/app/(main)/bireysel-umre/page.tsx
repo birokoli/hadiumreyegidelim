@@ -1,6 +1,7 @@
 // Bireysel umre planlayıcısı (v2): kendi kataloğumuz ve aylık fiyatlarımızla. Eski adımlı tasarlayıcı ve
 // /bireysel-umre/yeni önizlemesi buraya kalıcı yönlenir (2 Ekim 2026).
 import type { Metadata } from "next";
+import { ogGorsel } from "@/lib/seo/og";
 import HugIcon from "@/components/icons/HugIcon";
 import { SITE_URL } from "@/lib/seo/site";
 import { ButtonLink, Container, Faq, faqJsonLd, PageHero, Panel, Section, SectionHead, Steps } from "@/components/ui/kit";
@@ -15,6 +16,7 @@ export const metadata: Metadata = {
   title: "Bireysel Umre 2026: Planla, Fiyatı Gör",
   description: "Tarihleri, Mekke ve Medine otelini, transferi ve e-vizeyi seçin; bireysel umre fiyatını anında görün. Planı gönderin, kesin teklifi iletelim.",
   alternates: { canonical: "/bireysel-umre" },
+  openGraph: { images: [ogGorsel("bireysel-umre", "Umrenizi kendiniz planlayın, fiyatı anında görün", "Bireysel umre")] },
 };
 
 const STEPS = [

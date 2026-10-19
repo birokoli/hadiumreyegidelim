@@ -1,6 +1,7 @@
 // Sitede gösterilen kendi fiyat kataloğumuz (Y1). Kaynak: admin → Hizmet Kütüphanesi + aylık satış fiyatları.
 // Kurallar: yalnızca isPublic + isActive kalemler; maliyet (defaultCostUsd) hiçbir zaman seçilmez / dışarı verilmez.
 import { revalidatePath, revalidateTag, unstable_cache } from "next/cache";
+import { otelKapagi } from "@/lib/hotels/galeri";
 import { prisma } from "@/lib/prisma";
 import { ensureCatalogSchema } from "./schema";
 
@@ -77,7 +78,8 @@ export async function queryCatalog(): Promise<CatalogItem[]> {
       name: r.name,
       description: r.publicDescription,
       city: r.city,
-      imageUrl: r.imageUrl,
+      // Admin'de görsel yoksa otelin galerisindeki ilk fotoğraf (src/lib/hotels/galeri.ts)
+      imageUrl: r.imageUrl ?? otelKapagi(r.slug),
       hotelStars: r.hotelStars,
       distanceMeters: r.distanceMeters,
       pricingType: r.defaultPricingType as PricingType,
@@ -88,7 +90,7 @@ export async function queryCatalog(): Promise<CatalogItem[]> {
   });
 }
 
-const readCatalog = unstable_cache(queryCatalog, ["catalog-v15"], { tags: [CATALOG_TAG], revalidate: 3600 });
+const readCatalog = unstable_cache(queryCatalog, ["catalog-v16"], { tags: [CATALOG_TAG], revalidate: 3600 });
 
 /** Herkese açık katalog; veritabanı hatasında boş liste (sayfa yine açılır) */
 export async function getCatalog(): Promise<CatalogItem[]> {

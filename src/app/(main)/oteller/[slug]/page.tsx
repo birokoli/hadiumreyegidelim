@@ -13,6 +13,7 @@ import { PageHero, Section } from "@/components/ui/kit";
 import { hotelLongText } from "@/lib/catalog/hotel-texts";
 import { directoryHotels, findDirectoryHotel, kaabaText, DISTRICTS } from "@/lib/catalog/hotel-directory";
 import DirectoryHotelPage from "@/components/hotels/DirectoryHotelPage";
+import { otelGalerisi } from "@/lib/hotels/galeri";
 
 // Next 16: boş generateStaticParams olmadan dinamik yol her istekte yeniden oluşturulur (no-store); boş liste
 // sayfayı ilk istekte üretip önbelleğe alır (ISR). 6 Ekim denetimi: blog sayfaları 1,6–4,3 sn.
@@ -73,6 +74,7 @@ export default async function HotelPage({ params }: { params: Promise<{ slug: st
     return <DirectoryHotelPage h={d} />;
   }
   const city = cityName(h.city);
+  const galeri = otelGalerisi(h.slug);
   const dist = distanceText(h.distanceMeters);
   const price = fromPrice(h);
   const long = await hotelLongText(h);
@@ -103,11 +105,26 @@ export default async function HotelPage({ params }: { params: Promise<{ slug: st
       <Section tone="muted">
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
           <div className="space-y-6">
-            {h.imageUrl && (
+            {galeri.length > 1 ? (
+              // Otelin kendi fotoğrafları (19 Ekim): büyük kapak + küçükler; tıklayınca fotoğraf tam boyutta açılır
+              <div className="space-y-2">
+                <a href={galeri[0].src} target="_blank" rel="noopener" className="relative block aspect-[16/10] overflow-hidden rounded-2xl bg-surface-container-low">
+                  <Image src={galeri[0].src} alt={galeri[0].alt} fill sizes="(max-width: 1024px) 100vw, 60vw" className="object-cover" priority />
+                </a>
+                <div className="flex snap-x gap-2 overflow-x-auto pb-1">
+                  {galeri.slice(1).map((f) => (
+                    <a key={f.src} href={f.src} target="_blank" rel="noopener" title={f.alt} className="relative aspect-[4/3] w-36 shrink-0 snap-start overflow-hidden rounded-xl bg-surface-container-low sm:w-44">
+                      <Image src={f.src} alt={f.alt} fill sizes="176px" className="object-cover transition hover:scale-105" />
+                    </a>
+                  ))}
+                </div>
+                <p className="text-[11px] text-on-surface-variant">Fotoğraflar otelin kendi tanıtım görselleridir; büyütmek için dokunun.</p>
+              </div>
+            ) : h.imageUrl ? (
               <div className="relative aspect-[16/10] overflow-hidden rounded-2xl bg-surface-container-low">
                 <Image src={h.imageUrl} alt={h.name} fill sizes="(max-width: 1024px) 100vw, 60vw" className="object-cover" priority />
               </div>
-            )}
+            ) : null}
             {h.description && <p className="text-base font-semibold text-on-surface">{h.description}</p>}
             {long && <p className="text-base leading-relaxed text-on-surface whitespace-pre-line">{long}</p>}
             <dl className="grid grid-cols-2 gap-3 sm:grid-cols-3">

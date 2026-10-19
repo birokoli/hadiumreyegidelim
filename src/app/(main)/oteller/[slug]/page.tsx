@@ -103,8 +103,8 @@ export default async function HotelPage({ params }: { params: Promise<{ slug: st
         lead={[h.hotelStars ? `${h.hotelStars} yıldızlı` : "", dist ? `Harem'e ${dist}` : "", city].filter(Boolean).join(" · ")}
       />
       <Section tone="muted">
-        <div className="grid gap-8 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
-          <div className="space-y-6">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
+          <div className="min-w-0 space-y-6">
             {galeri.length > 1 ? (
               // Otelin kendi fotoğrafları (19 Ekim): büyük kapak + küçükler; tıklayınca fotoğraf tam boyutta açılır
               <div className="space-y-2">
@@ -140,13 +140,13 @@ export default async function HotelPage({ params }: { params: Promise<{ slug: st
               ))}
             </dl>
           </div>
-          <aside className="space-y-4">
+          <aside className="min-w-0 space-y-4">
             <div className="rounded-2xl border border-outline-variant/20 bg-white p-5">
               <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-primary/80">Fiyat</p>
               {price ? (
                 <>
                   <p className="mt-2 font-headline text-3xl font-bold text-primary">{Math.round(price.priceUsd).toLocaleString("tr-TR")} $&apos;dan</p>
-                  <p className="mt-1 text-[13px] text-on-surface-variant">Oda başı gecelik, odada en fazla 4 kişi · {monthLabel(price.month)} fiyatı. Giriş 16:00, çıkış 11:00.</p>
+                  <p className="mt-1 text-[13px] text-on-surface-variant">Oda başı gecelik, odada en fazla 4 kişi · {monthLabel(price.month)} fiyatı.</p>
                 </>
               ) : (
                 <p className="mt-2 text-[14px] text-on-surface-variant">Bu otelin güncel fiyatı için WhatsApp&apos;tan bize yazın.</p>

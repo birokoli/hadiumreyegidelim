@@ -16,9 +16,9 @@ export default function Navbar({ links, logoUrl, ctaText }: { links?: {label: st
 
   return (
     <nav className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-xl shadow-[0px_0px_32px_0px_rgba(0,0,0,0.04)]">
-      <div className="flex justify-between items-center px-8 py-4 max-w-screen-2xl mx-auto">
+      <div className="flex justify-between items-center px-4 py-2 md:px-8 md:py-4 max-w-screen-2xl mx-auto">
         <Link href="/" className="hover:opacity-80 transition-opacity flex items-center shrink-0">
-          <Image src={logoUrl || "/logo.png"} alt="Hadi Umreye" width={280} height={96} sizes="(max-width: 768px) 160px, 280px" quality={80} className="h-[80px] md:h-[96px] w-auto object-contain -my-6" priority />
+          <Image src={logoUrl || "/logo.png"} alt="Hadi Umreye" width={280} height={96} sizes="(max-width: 768px) 160px, 280px" quality={80} className="h-[72px] md:h-[96px] w-auto object-contain -my-5 md:-my-6" priority />
         </Link>
         <div className="hidden md:flex items-center space-x-12 font-headline font-medium text-sm tracking-wide">
           {(links || [
@@ -34,13 +34,13 @@ export default function Navbar({ links, logoUrl, ctaText }: { links?: {label: st
             </Link>
           ))}
         </div>
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-4 md:gap-6">
           <Link href="/profil" className="flex items-center text-primary hover:text-primary-container transition-colors">
             <span className="material-symbols-outlined text-[28px]" data-icon="account_circle" title="Kullanıcı Profili">
               account_circle
             </span>
           </Link>
-          <Link href="/bireysel-umre" className="bg-primary text-on-primary px-8 py-2.5 rounded-md font-medium text-sm tracking-tight hover:bg-primary-container active:scale-95 transition-all shadow-sm">
+          <Link href="/bireysel-umre" className="bg-primary text-on-primary px-5 py-2 md:px-8 md:py-2.5 rounded-md font-medium text-sm tracking-tight hover:bg-primary-container active:scale-95 transition-all shadow-sm">
             {ctaText || "Niyet Et"}
           </Link>
         </div>

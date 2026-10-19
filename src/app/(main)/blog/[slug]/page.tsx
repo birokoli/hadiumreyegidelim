@@ -145,14 +145,14 @@ function cleanAndWrapTables(content: string): string {
 
 const BLOG_CONTENT_CLASS = `blog-content
             w-full max-w-full
-            [&_h2]:font-headline [&_h2]:text-3xl [&_h2]:md:text-4xl [&_h2]:text-primary [&_h2]:mt-20 [&_h2]:mb-8 [&_h2]:font-bold [&_h2]:tracking-tight [&_h2]:border-b [&_h2]:border-outline-variant/20 [&_h2]:pb-4
+            [&_h2]:font-headline [&_h2]:text-[1.625rem] [&_h2]:leading-tight [&_h2]:md:text-4xl [&_h2]:text-primary [&_h2]:mt-14 [&_h2]:md:mt-20 [&_h2]:mb-6 [&_h2]:md:mb-8 [&_h2]:font-bold [&_h2]:tracking-tight [&_h2]:border-b [&_h2]:border-outline-variant/20 [&_h2]:pb-4
             [&_h3]:font-headline [&_h3]:text-2xl [&_h3]:text-secondary [&_h3]:mt-12 [&_h3]:mb-6 [&_h3]:font-bold [&_h3]:italic
-            [&_p]:text-[#334155] [&_p]:leading-[2.2] [&_p]:mb-8 [&_p]:font-body [&_p]:text-[1.125rem] [&_p]:tracking-wide
+            [&_p]:text-[#334155] [&_p]:leading-[1.8] [&_p]:md:leading-[2.2] [&_p]:mb-6 [&_p]:md:mb-8 [&_p]:font-body [&_p]:text-[1.0625rem] [&_p]:md:text-[1.125rem] [&_p]:md:tracking-wide
             [&_a]:text-blue-600 [&_a]:font-bold [&_a]:underline [&_a]:underline-offset-[3px] [&_a]:decoration-blue-600/30 [&_a]:hover:decoration-blue-600 [&_a]:hover:text-blue-800 [&_a]:transition-all [&_a]:bg-blue-50/50 [&_a]:px-1 [&_a]:rounded-md
             [&_ul]:list-none [&_ul]:pl-0 [&_ul]:mb-10 [&_ul_li]:relative [&_ul_li]:pl-8 [&_ul_li]:mb-4 [&_ul_li]:text-[#334155] [&_ul_li]:leading-[1.8]
             [&_ul_li::before]:content-[''] [&_ul_li::before]:absolute [&_ul_li::before]:left-0 [&_ul_li::before]:top-[0.6em] [&_ul_li::before]:w-3 [&_ul_li::before]:h-3 [&_ul_li::before]:bg-secondary/40 [&_ul_li::before]:rounded-full
             [&_blockquote]:border-l-4 [&_blockquote]:border-secondary [&_blockquote]:bg-secondary/5 [&_blockquote]:p-8 [&_blockquote]:rounded-r-3xl [&_blockquote]:italic [&_blockquote]:my-12 [&_blockquote]:text-xl [&_blockquote]:text-primary/90 [&_blockquote]:font-headline [&_blockquote]:shadow-sm
-            [&_img]:w-full [&_img]:h-auto [&_img]:rounded-[2rem] [&_img]:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.15)] [&_img]:my-16 [&_img]:object-cover [&_img]:border [&_img]:border-outline-variant/10 [&_img]:max-h-[600px]
+            [&_img]:w-full [&_img]:h-auto [&_img]:rounded-[2rem] [&_img]:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.15)] [&_img]:my-10 [&_img]:md:my-16 [&_img]:object-cover [&_img]:border [&_img]:border-outline-variant/10 [&_img]:max-h-[600px]
             [&_ol]:list-none [&_ol]:pl-0 [&_ol]:mb-10 [&_ol_li]:relative [&_ol_li]:pl-10 [&_ol_li]:mb-4 [&_ol_li]:text-[#334155] [&_ol_li]:leading-[1.8]
             [&_strong]:font-bold [&_strong]:text-primary
             [&_hr]:border-0 [&_hr]:border-t [&_hr]:border-slate-200 [&_hr]:my-12`;

@@ -13,6 +13,7 @@ import { fixInternalLinks } from "@/lib/geo-blog/internal-links";
 import { getSiteSettings } from "@/lib/site-settings";
 import Image from 'next/image';
 import { optimizeContentImages } from "@/lib/content-images";
+import { blogVeriAdimlari } from "@/lib/blog/veri-adimlari";
 
 // Next 16: generateStaticParams olmadan dinamik yol her istekte yeniden oluşturulur (no-store). 7 Ekim: boş liste
 // yayından sonraki ilk ziyareti yavaş bırakıyordu (soğuk başlangıç 2–4 sn); yayındaki yazılar artık build'de üretilir.
@@ -32,6 +33,7 @@ export const revalidate = 300;
 // 1. Dinamik Meta Etiketleri Altyapısı (Open Graph & Twitter)
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
+  await blogVeriAdimlari();
   const post = await prisma.post.findUnique({ where: { slug } });
   
   if (!post || !post.published) {
@@ -160,6 +162,7 @@ const normalizeSpaces = (html: string) => html.replace(/(&nbsp;|\u00a0)+/g, " ")
 
 export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
+  await blogVeriAdimlari();
   const post = await prisma.post.findUnique({
     where: { slug },
     include: { category: true, authorModel: true }

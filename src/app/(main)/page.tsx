@@ -60,6 +60,12 @@ const homeFaqJsonLd = faqJsonLd(HOME_FAQ);
 /** Hızlı erişim sekmeleri (ikonlar satır içi SVG: simge yazı tipine bağlı değil) */
 import HugIcon, { type HugIconName } from "@/components/icons/HugIcon";
 
+const KITAPCIKLAR = [
+  { href: "/tavaf-kitapcigi", ad: "Tavaf El Kitabı", sayfa: "19 sayfa", ozet: "Yedi şavtın her biri için okunuşu ve anlamıyla dualar.", kapak: "/indir/tavaf-el-kitabi-kapak.png" },
+  { href: "/say-kitapcigi", ad: "Sa'y El Kitabı", sayfa: "19 sayfa", ozet: "Safa ile Merve arasında her şavtın duası; tepede tekbir.", kapak: "/indir/say-el-kitabi-kapak.png" },
+  { href: "/dua-haritasi", ad: "Harem Dua Haritası", sayfa: "66 sayfa", ozet: "Mescid-i Haram'daki 12 dua durağı, krokisi ve duaları.", kapak: "/indir/harem-dua-haritasi-kapak.jpg" },
+];
+
 const QUICK_LINKS: { href: string; label: string; icon: HugIconName }[] = [
   { href: "/paketler", label: "Umre paketleri", icon: "paket" },
   { href: "/bireysel-umre", label: "Bireysel umre", icon: "bireysel" },
@@ -168,7 +174,33 @@ export default async function Home() {
       <style>{`@keyframes kitap-suzul{0%,100%{transform:translateY(-50%) rotate(-5deg)}50%{transform:translateY(calc(-50% - 10px)) rotate(-2deg)}}.kitap-suzul{transform:translateY(-50%) rotate(-5deg);transform-origin:50% 60%;animation:kitap-suzul 6s ease-in-out infinite}@keyframes kitap-suzul-sol{0%,100%{transform:translateY(-50%) rotate(5deg)}50%{transform:translateY(calc(-50% - 10px)) rotate(2deg)}}.kitap-suzul-sol{transform:translateY(-50%) rotate(5deg);transform-origin:50% 60%;animation:kitap-suzul-sol 6s ease-in-out infinite}.group:hover .kitap-suzul,.group:hover .kitap-suzul-sol{animation-play-state:paused}@media (prefers-reduced-motion:reduce){.kitap-suzul,.kitap-suzul-sol{animation:none}}`}</style>
 
       {/* ─── Ücretsiz Tavaf El Kitabı (11 Ekim): Eylül kampanyası bitince bu alanda; kampanya yayındaysa onun yerine o görünür ─── */}
-      {!isHomeCardLive(eylulCampaign) && <section className="w-full max-w-screen-xl mx-auto px-4 md:px-8 pt-10 md:pt-16 md:pb-6">
+      {/* Telefonda üç kitapçık bandı yerine tek kaydırmalı şerit (20 Ekim, mobil arayüz): sayfa ~3 ekran kısalır */}
+      <section className="md:hidden pt-10" aria-labelledby="kitapciklar">
+        <div className="flex items-end justify-between px-4">
+          <div>
+            <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-primary/70">Ücretsiz · PDF</p>
+            <h2 id="kitapciklar" className="mt-1 font-headline text-[22px] font-bold leading-tight text-primary"><Accent text="Yanınızdaki *kitapçıklar*" /></h2>
+          </div>
+          <span className="pb-1 text-[12px] text-on-surface-variant">Kaydırın →</span>
+        </div>
+        <div className="mt-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          {KITAPCIKLAR.map((k) => (
+            <Link key={k.href} href={k.href} data-press className="bg-deep on-dark relative flex w-[78%] shrink-0 snap-start gap-4 overflow-hidden rounded-2xl p-4 text-white">
+              <div className="relative h-[118px] w-[84px] shrink-0">
+                <Image src={k.kapak} alt={`${k.ad} kapağı`} fill sizes="84px" className="rounded-md object-cover shadow-[0_12px_24px_-8px_rgba(0,0,0,0.5)]" />
+              </div>
+              <div className="flex min-w-0 flex-col">
+                <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[var(--h-sand)]">{k.sayfa}</p>
+                <p className="mt-1 font-headline text-[17px] font-bold leading-snug">{k.ad}</p>
+                <p className="mt-1 line-clamp-2 text-[12px] leading-snug text-white/75">{k.ozet}</p>
+                <span className="mt-auto inline-flex items-center gap-1.5 pt-2 text-[13px] font-bold text-[var(--h-sand)]">Ücretsiz indir <Arrow /></span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {!isHomeCardLive(eylulCampaign) && <section className="hidden md:block w-full max-w-screen-xl mx-auto px-4 md:px-8 pt-10 md:pt-16 md:pb-6">
         <Link href="/tavaf-kitapcigi" data-press className="group relative block rounded-3xl text-white">
           <div aria-hidden className="bg-deep absolute inset-0 overflow-hidden rounded-3xl">
             <span className="hat pointer-events-none absolute -left-4 -bottom-12 select-none text-[7rem] leading-none text-white/[0.05] md:text-[9rem]">طواف</span>
@@ -247,7 +279,7 @@ export default async function Home() {
         <UmrahSteps />
 
         {/* Ücretsiz Sa'y El Kitabı (13 Ekim, kullanıcı): tavaf bandının aynası; umre adımlarının hemen ardından, kitap solda */}
-        <Link href="/say-kitapcigi" data-press className="group relative mt-14 md:mt-20 block rounded-3xl text-white">
+        <Link href="/say-kitapcigi" data-press className="group relative mt-14 md:mt-20 hidden md:block rounded-3xl text-white">
           <div aria-hidden className="bg-deep absolute inset-0 overflow-hidden rounded-3xl">
             <span className="hat pointer-events-none absolute -right-4 -bottom-12 select-none text-[7rem] leading-none text-white/[0.05] md:text-[9rem]">سعي</span>
           </div>
@@ -288,7 +320,7 @@ export default async function Home() {
       </section>
 
       {/* ─── Ücretsiz Harem Dua Haritası (16 Ekim, kullanıcı): tavaf ve sa'y bantlarının üçüncüsü; kitap yine sağda ─── */}
-      <section className="w-full max-w-screen-xl mx-auto px-4 md:px-8 pb-12 md:pb-20">
+      <section className="hidden md:block w-full max-w-screen-xl mx-auto px-4 md:px-8 pb-12 md:pb-20">
         <Link href="/dua-haritasi" data-press className="group relative block rounded-3xl text-white">
           <div aria-hidden className="bg-deep absolute inset-0 overflow-hidden rounded-3xl">
             <span className="hat pointer-events-none absolute -left-4 -bottom-12 select-none text-[7rem] leading-none text-white/[0.05] md:text-[9rem]">دعاء</span>

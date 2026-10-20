@@ -3,6 +3,7 @@ import Footer from "@/components/layout/Footer";
 import React from "react";
 import { getSiteSettings } from "@/lib/site-settings";
 import FloatingWhatsApp from "@/components/ui/FloatingWhatsApp";
+import MobileTabBar from "@/components/layout/MobileTabBar";
 import MotionInit from "@/components/ui/MotionInit";
 
 // Site sayfaları en geç 5 dakikada bir yeniden üretilir (sayfa daha kısa süre verirse o geçerli).
@@ -45,6 +46,7 @@ export default async function MainLayout({
         <Footer logoUrl={logoUrl} />
       </div>
       <FloatingWhatsApp />
+      <MobileTabBar />
       <MotionInit />
     </>
   );

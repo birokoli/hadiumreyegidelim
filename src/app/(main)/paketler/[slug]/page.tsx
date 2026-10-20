@@ -5,6 +5,8 @@ import HugIcon from "@/components/icons/HugIcon";
 import { getPackagePricing } from "@/lib/pricing/package-server";
 import { uyeFiyati, uyeKurali } from "@/lib/pricing/uye";
 import PackageHotelPicker from "@/components/packages/PackageHotelPicker";
+import MobileActionBar from "@/components/layout/MobileActionBar";
+import { formatPrice } from "@/lib/format";
 import React from 'react';
 export const revalidate = 300;
 import { prisma } from '@/lib/prisma';
@@ -213,6 +215,9 @@ export default async function PackageDetailPage({ params }: { params: Promise<{ 
             )}
 
             {pricing && (
+              <div id="otel-sec" className="scroll-mt-24" />
+            )}
+            {pricing && (
               <PackageHotelPicker title={pkg.title} preset={pricing.preset} catalog={pricing.catalog} month={pricing.month} monthLabel={pricing.monthLabel} packagePercent={pricing.packagePercent} uyeKural={pricing.uyeKural} slug={pkg.slug} whatsappNumber={whatsappNumber} />
             )}
             {includes.length > 0 && (
@@ -299,6 +304,13 @@ export default async function PackageDetailPage({ params }: { params: Promise<{ 
           </div>
         </Section>
       )}
+      <MobileActionBar
+        etiket={pricing ? "Kişi başı, başlayan" : "Kişi başı"}
+        fiyat={price > 0 ? formatPrice(price, pkg.currency || "USD") : null}
+        dugme={pricing ? "Otel seç" : "Rezervasyon"}
+        href={pricing ? "#otel-sec" : `/paketler/${pkg.slug}/checkout`}
+        whatsapp={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(`Merhaba, "${pkg.title}" paketi hakkında bilgi almak istiyorum.`)}`}
+      />
     </main>
   );
 }

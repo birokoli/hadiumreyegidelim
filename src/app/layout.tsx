@@ -1,8 +1,11 @@
 import { SITE_URL } from "@/lib/seo/site";
 import { DEFAULT_OG_IMAGE } from "@/lib/seo/meta";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
+
+// iPhone'da alt ve üst çentik alanı: mobil alt çubuk env(safe-area-inset-bottom) ile ana ekran çizgisinin üstünde durur
+export const viewport: Viewport = { width: "device-width", initialScale: 1, viewportFit: "cover", themeColor: "#ffffff" };
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),

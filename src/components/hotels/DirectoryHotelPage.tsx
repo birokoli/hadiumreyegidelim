@@ -8,6 +8,8 @@ import HotelMap from "@/components/hotels/HotelMap";
 
 const CITY = { mekke: "Mekke", medine: "Medine" } as const;
 
+import MobileActionBar from "@/components/layout/MobileActionBar";
+
 export default async function DirectoryHotelPage({ h }: { h: DirectoryHotel }) {
   const city = CITY[h.city];
   const district = DISTRICTS[h.district] ?? h.district;
@@ -122,6 +124,7 @@ export default async function DirectoryHotelPage({ h }: { h: DirectoryHotel }) {
           </aside>
         </div>
       </Section>
+      <MobileActionBar fiyat={null} dugme="Umreni planla" href="/bireysel-umre" whatsapp={waHref} />
     </main>
   );
 }

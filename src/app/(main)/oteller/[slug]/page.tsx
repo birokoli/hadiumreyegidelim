@@ -14,6 +14,9 @@ import { hotelLongText } from "@/lib/catalog/hotel-texts";
 import { directoryHotels, findDirectoryHotel, kaabaText, DISTRICTS } from "@/lib/catalog/hotel-directory";
 import DirectoryHotelPage from "@/components/hotels/DirectoryHotelPage";
 import { otelGalerisi } from "@/lib/hotels/galeri";
+import MobileActionBar from "@/components/layout/MobileActionBar";
+import { getSiteSettings } from "@/lib/site-settings";
+import { whatsappLinki } from "@/lib/whatsapp-mesaj";
 
 // Next 16: boş generateStaticParams olmadan dinamik yol her istekte yeniden oluşturulur (no-store); boş liste
 // sayfayı ilk istekte üretip önbelleğe alır (ISR). 6 Ekim denetimi: blog sayfaları 1,6–4,3 sn.
@@ -78,6 +81,7 @@ export default async function HotelPage({ params }: { params: Promise<{ slug: st
   const dist = distanceText(h.distanceMeters);
   const price = fromPrice(h);
   const long = await hotelLongText(h);
+  const wa = ((await getSiteSettings()).WHATSAPP_NUMBER || "905404010038").replace(/\D/g, "");
   const packages = (await prisma.package.findMany({ where: { published: true }, select: { slug: true, title: true, duration: true } }).catch(() => [])).filter(
     (p) => packagePreset(p.slug)?.city === h.city?.toLowerCase(),
   );
@@ -169,6 +173,14 @@ export default async function HotelPage({ params }: { params: Promise<{ slug: st
           </aside>
         </div>
       </Section>
+      <MobileActionBar
+        etiket="Oda başı gecelik"
+        fiyat={price ? `${Math.round(price.priceUsd).toLocaleString("tr-TR")} $'dan` : null}
+        alt={price ? `${monthLabel(price.month)} fiyatı` : undefined}
+        dugme="Bu otelle planla"
+        href="/bireysel-umre"
+        whatsapp={whatsappLinki(wa, `/oteller/${slug}`)}
+      />
     </main>
   );
 }

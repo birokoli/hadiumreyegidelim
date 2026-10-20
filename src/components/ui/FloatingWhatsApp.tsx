@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import WhatsAppIcon from "@/components/home/WhatsAppIcon";
+import { whatsappLinki } from "@/lib/whatsapp-mesaj";
 
 export default function FloatingWhatsApp() {
   const pathname = usePathname();
@@ -27,30 +28,14 @@ export default function FloatingWhatsApp() {
   if (pathname?.startsWith("/profil") || pathname?.startsWith("/admin")) return null;
   // Planlayıcı v2'nin kendi WhatsApp düğmesi ve alt toplam çubuğu var
   if (pathname === "/bireysel-umre") return null;
+  // Telefonda gizli: mobil alt çubukta WhatsApp sekmesi var (src/components/layout/MobileTabBar.tsx)
 
   const handleWhatsAppClick = () => {
-    let contextMessage = "Merhaba, Hadi Umreye Gidelim hizmetleriniz hakkında bilgi almak istiyorum.";
-
-    // Dinamik İçerik Yakalama (Context)
-    if (pathname === "/bireysel-umre") {
-      contextMessage = "Merhaba Yasin Bey, Bireysel Umre Konfigüratöründeyim. Özel Umre tasarımı hakkında fiyat ve destek almak istiyorum.";
-    } else if (pathname === "/umre-vizesi") {
-      contextMessage = "Merhaba, Suudi Arabistan Turist/Umre Vizesi sayfanızı inceliyorum. Acaba işlemler nasıl yürüyor bilgi alabilir miyim?";
-    } else if (pathname.startsWith("/blog/")) {
-      const slug = pathname.replace("/blog/", "");
-      contextMessage = `Merhaba, blogunuzdaki "${slug}" başlıklı yazıyı okudum. Umre süreci hakkında size danışmak istediğim birkaç konu var.`;
-    } else if (pathname.startsWith("/paketler/")) {
-      contextMessage = "Merhaba, Vip Umre paketlerinizi inceliyorum. Bu paketin detayları hakkında görüşebilir miyiz?";
-    } else if (pathname === "/") {
-      contextMessage = "Merhaba Ana Sayfanızdan ulaşıyorum. Ailemle özel bir umre yapmak istiyorum, detaylı bilgi alabilir miyim?";
-    }
-
-    const text = encodeURIComponent(contextMessage);
-    window.open(`https://wa.me/${whatsappNumber}?text=${text}`, "_blank");
+    window.open(whatsappLinki(whatsappNumber, pathname), "_blank");
   };
 
   return (
-    <div className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50 animate-in fade-in slide-in-from-bottom-5 duration-700">
+    <div className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50 hidden md:block animate-in fade-in slide-in-from-bottom-5 duration-700">
       <button
         onClick={handleWhatsAppClick}
         className="group flex flex-col items-center justify-center relative w-[52px] h-[52px] md:w-[60px] md:h-[60px] bg-[#25D366] rounded-[50%] shadow-2xl shadow-[#25D366]/30 hover:shadow-[#25D366]/50 transition-all hover:-translate-y-1 active:translate-y-0 border border-white/20"

@@ -54,7 +54,50 @@ async function addressJabalOmar() {
   console.log("[katalog] Address Jabal Omar eklendi", id);
 }
 
+/**
+ * Safwah Al Talayie paketi (20 Ekim, kullanıcı): "Mehd Al Resaleh 1&2 paketini değiştir, yerine Safwah Al Talayie;
+ * otelin gecelik fiyatı yemek dahil 132 SAR". Otel fiyatları alış + %15 kuralıyla girildiği için (Safwah'ın önceki
+ * fiyatı 75 SAR + %15 idi) 132 SAR × 1,15 = 151,80 SAR = 40,48 USD / oda / gece. Otelin bütün aylarına yazılır.
+ * Mehd 1&2 paketi silinmez: adresi ve adı Safwah olur (eski adres next.config.ts'de yeni adrese 301). Mehd 1&2 oteli katalogda kalır.
+ */
+const SAFWAH_ALIS_SAR = 132;
+const ESKI_PAKET = "10-gunluk-bireysel-umre-mekke-mehd-al-resaleh";
+export const SAFWAH_PAKET = "10-gunluk-bireysel-umre-mekke-safwah-al-talayie";
+
+async function safwahPaketi() {
+  const ISARET = "VERI_ADIMI_SAFWAH_PAKET_2026_10";
+  if (await prisma.setting.findUnique({ where: { key: ISARET } })) return;
+  const satisSar = Math.round(SAFWAH_ALIS_SAR * KAR * 100) / 100;
+  const satisUsd = Math.round((satisSar / SAR) * 100) / 100;
+  const log: string[] = [];
+  const otel = await prisma.serviceLibrary.findUnique({ where: { slug: "safwah-al-talayie" }, select: { id: true } });
+  if (otel) {
+    const r = await prisma.servicePrice.updateMany({ where: { serviceId: otel.id }, data: { salePriceUsd: satisUsd, note: `Alış ${SAFWAH_ALIS_SAR} SAR (yemek dahil) + %15 = ${satisSar} SAR / oda / gece` } });
+    await prisma.serviceLibrary.update({ where: { id: otel.id }, data: { publicDescription: "Harem'e ücretsiz servis. Fiyata yemek dahildir." } });
+    log.push(`fiyat:${r.count}`);
+  }
+  const [eski, yeni] = await Promise.all([
+    prisma.package.findUnique({ where: { slug: ESKI_PAKET }, select: { id: true } }),
+    prisma.package.findUnique({ where: { slug: SAFWAH_PAKET }, select: { id: true } }),
+  ]);
+  if (eski && !yeni) {
+    await prisma.package.update({
+      where: { id: eski.id },
+      data: {
+        slug: SAFWAH_PAKET,
+        title: "10 Günlük Bireysel Umre · Mekke · Safwah Al Talayie",
+        description: "Yalnızca Mekke odaklı 10 günlük bireysel umre: Safwah Al Talayie (Harem'e ücretsiz servis, yemek dahil). Fiyat kişi başıdır, en az 2 kişi. Uçak bileti ve e-vize fiyata dahil değildir; güncel kurla toplam maliyeti WhatsApp'tan iletiyoruz. Medine ziyareti dahil değildir.",
+        includes: JSON.stringify(["Mekke'de 9 gece konaklama (yemek dahil)", "Havalimanında karşılama", "Cidde ↔ Mekke transferleri (özel araç)", "Mekke ziyaret turu: Cebel-i Nur, Sevr, Arafat, Mina"]),
+      },
+    });
+    log.push("paket:yeniden-adlandirildi");
+  } else log.push(yeni ? "paket:zaten-var" : "paket:eski-yok");
+  await prisma.setting.create({ data: { key: ISARET, value: `${new Date().toISOString()} ${log.join(" ")}` } });
+  console.log("[katalog] Safwah paketi", log.join(" "));
+}
+
 /** Şema hazırlandıktan sonra çağrılır; hata siteyi durdurmaz. */
 export async function veriAdimlari() {
   await addressJabalOmar().catch((e) => console.error("[katalog] Address Jabal Omar adımı", e));
+  await safwahPaketi().catch((e) => console.error("[katalog] Safwah paketi adımı", e));
 }

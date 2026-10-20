@@ -35,9 +35,10 @@ const nextConfig: NextConfig = {
       // G6-3: Kırık iç bağlantı kalıcı yönlendirmeleri (Faz I3)
       { source: "/blog/mescid-i-haram-ziyareti", destination: "/blog/mescidi-haram-ziyaret-rehberi", permanent: true },
       { source: "/blog/nusuk-uygulamasi-kullanimi", destination: "/blog/nusuk-uygulamasi-nasil-kullanilir", permanent: true },
-      // 19 Ekim: vize yazıları tek yazıda birleştirildi (src/lib/blog/vize-birlesik.ts)
+      // 20 Ekim: Mehd Al Resaleh 1&2 paketi Safwah Al Talayie paketi oldu (src/lib/catalog/veri-adimlari.ts)
       { source: "/paketler/10-gunluk-bireysel-umre-mekke-mehd-al-resaleh", destination: "/paketler/10-gunluk-bireysel-umre-mekke-safwah-al-talayie", permanent: true },
       { source: "/paketler/10-gunluk-bireysel-umre-mekke-mehd-al-resaleh/:rest*", destination: "/paketler/10-gunluk-bireysel-umre-mekke-safwah-al-talayie/:rest*", permanent: true },
+      // 19 Ekim: vize yazıları tek yazıda birleştirildi (src/lib/blog/vize-birlesik.ts)
       { source: "/blog/umre-vizesi-basvurusu-nasil-yapilir-2", destination: "/blog/bireysel-umre-vizesi-nasil-alinir", permanent: true },
       { source: "/blog/umre-vizesi-ne-kadar-ucret", destination: "/blog/bireysel-umre-vizesi-nasil-alinir", permanent: true },
       { source: "/blog/umre-vizesi-2026-ucreti-kac-tl", destination: "/blog/bireysel-umre-vizesi-nasil-alinir", permanent: true },

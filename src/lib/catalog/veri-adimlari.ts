@@ -96,8 +96,39 @@ async function safwahPaketi() {
   console.log("[katalog] Safwah paketi", log.join(" "));
 }
 
+/**
+ * Safwah düzeltmesi (20 Ekim, kullanıcının fiyat tablosu): 132 SAR otelin SATIŞ fiyatı (yemek dahil, alış ~110 SAR);
+ * ilk adımda alış sayılıp %15 eklenmişti (151,80 SAR). Fiyat 132 SAR = 35,20 USD olur. Paket artık gece (4/6/8/9) ve
+ * kişi (2/3/4) seçmeli, vize dahil net fiyatlı paket (src/lib/pricing/net-paket.ts): başlık ve süre buna göre.
+ */
+async function safwahDuzeltme() {
+  const ISARET = "VERI_ADIMI_SAFWAH_PAKET_2_2026_10";
+  if (await prisma.setting.findUnique({ where: { key: ISARET } })) return;
+  const satisSar = 132;
+  const satisUsd = Math.round((satisSar / SAR) * 100) / 100;
+  const log: string[] = [];
+  const otel = await prisma.serviceLibrary.findUnique({ where: { slug: "safwah-al-talayie" }, select: { id: true } });
+  if (otel) {
+    const r = await prisma.servicePrice.updateMany({ where: { serviceId: otel.id }, data: { salePriceUsd: satisUsd, note: `Satış ${satisSar} SAR / oda / gece, yemek dahil (20 Ekim)` } });
+    log.push(`fiyat:${r.count}`);
+  }
+  const r2 = await prisma.package.updateMany({
+    where: { slug: SAFWAH_PAKET },
+    data: {
+      title: "Mekke Umre Paketi · Safwah Al Talayie · Vize Dahil",
+      duration: "5–10 Gün",
+      description: "Vize, otel (yemek dahil), havalimanı karşılama, özel araçla transferler ve Mekke ziyaret turu tek fiyatta. 4, 6, 8 ya da 9 gece; 2, 3 ya da 4 kişi. Uçak bileti dahil değildir.",
+      includes: JSON.stringify(["Umre vizesi (e-vize ve zorunlu sağlık sigortası)", "Safwah Al Talayie'de konaklama, yemek dahil", "Havalimanında karşılama", "Cidde ↔ Mekke transferleri (Toyota Camry, özel araç)", "Mekke ziyaret turu: Cebel-i Nur, Sevr, Arafat, Mina"]),
+    },
+  });
+  log.push(`paket:${r2.count}`);
+  await prisma.setting.create({ data: { key: ISARET, value: `${new Date().toISOString()} ${log.join(" ")}` } });
+  console.log("[katalog] Safwah düzeltmesi", log.join(" "));
+}
+
 /** Şema hazırlandıktan sonra çağrılır; hata siteyi durdurmaz. */
 export async function veriAdimlari() {
   await addressJabalOmar().catch((e) => console.error("[katalog] Address Jabal Omar adımı", e));
   await safwahPaketi().catch((e) => console.error("[katalog] Safwah paketi adımı", e));
+  await safwahDuzeltme().catch((e) => console.error("[katalog] Safwah düzeltmesi", e));
 }

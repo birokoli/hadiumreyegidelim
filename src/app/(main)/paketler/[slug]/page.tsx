@@ -6,6 +6,9 @@ import { getPackagePricing } from "@/lib/pricing/package-server";
 import { uyeFiyati, uyeKurali } from "@/lib/pricing/uye";
 import PackageHotelPicker from "@/components/packages/PackageHotelPicker";
 import MobileActionBar from "@/components/layout/MobileActionBar";
+import NetPaketSayfasi from "@/components/packages/NetPaketSayfasi";
+import { getCatalog, monthsFrom, monthLabel as ayEtiketi } from "@/lib/catalog";
+import { netFiyatTablosu, netPaket } from "@/lib/pricing/net-paket";
 import { formatPrice } from "@/lib/format";
 import React from 'react';
 export const revalidate = 300;
@@ -42,6 +45,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   }).catch(() => null);
   if (!pkg) return { title: 'Bulunamadı' };
   pkg.imageUrl = paketGorseli(pkg.imageUrl, packagePreset(slug)?.hotelSlug);
+
   
   const shortDesc = pkg.description ? pkg.description.substring(0, 150) + "..." : "Sınırlı kontenjanlı, ayrıcalıklı Umre paketimizi keşfedin.";
 
@@ -71,6 +75,18 @@ export default async function PackageDetailPage({ params }: { params: Promise<{ 
     notFound();
   }
   pkg.imageUrl = paketGorseli(pkg.imageUrl, packagePreset(slug)?.hotelSlug);
+
+  // Net fiyatlı paket (20 Ekim): gece × kişi fiyat tablosu, vize dahil; kendi sayfa tasarımı (reklam açılış sayfası)
+  const net = netPaket(slug);
+  if (net) {
+    const catalog = await getCatalog();
+    for (const ay of monthsFrom(undefined, 4)) {
+      const tablo = netFiyatTablosu(net, catalog, ay);
+      if (!tablo) continue;
+      const otel = catalog.find((c) => c.category === "hotel" && c.slug === net.hotelSlug) ?? null;
+      return <NetPaketSayfasi pkg={{ slug: pkg.slug, title: pkg.title, description: pkg.description }} cfg={net} tablo={tablo} otel={otel} whatsapp={whatsappNumber} ay={ayEtiketi(ay)} />;
+    }
+  }
 
   // Şablonlu paket (ör. 10 gün Mekke): fiyat otele ve kişi sayısına göre hesaplanır; gösterilen "başlayan" fiyattır
   const pricing = await getPackagePricing(pkg.slug).catch(() => null);

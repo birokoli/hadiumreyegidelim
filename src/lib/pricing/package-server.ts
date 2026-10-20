@@ -5,6 +5,19 @@ import { getSiteSettings } from "@/lib/site-settings";
 import { packageHotels, packagePreset, type PackagePreset } from "@/lib/pricing/package";
 import { parseTransferSlug } from "@/lib/catalog/transfers";
 import { uyeFiyati, uyeKurali, uyeKurallari, type UyeKural } from "@/lib/pricing/uye";
+import { netFiyatTablosu, netPaket } from "@/lib/pricing/net-paket";
+
+/** Net fiyatlı pakette kartta gösterilen fiyat: tablodaki en düşük kişi başı fiyat ($, vize, KDV ve kart payı dahil) */
+async function netBaslangic(slug: string): Promise<number | null> {
+  const cfg = netPaket(slug);
+  if (!cfg) return null;
+  const catalog = await getCatalog();
+  for (const ay of monthsFrom(undefined, 4)) {
+    const tablo = netFiyatTablosu(cfg, catalog, ay);
+    if (tablo?.length) return Math.min(...tablo.map((t) => t.kisiBasiUsd));
+  }
+  return null;
+}
 
 export type PackagePricing = { preset: PackagePreset; catalog: CatalogItem[]; month: string; monthLabel: string; packagePercent: number; fromPrice: number; uyeKural: UyeKural | null };
 
@@ -28,8 +41,9 @@ export async function getPackagePricing(slug: string): Promise<PackagePricing | 
 export async function packageDisplayPrices<T extends { slug: string; price: number }>(pkgs: T[]): Promise<(T & { uyePrice: number | null })[]> {
   const kurallar = uyeKurallari(await getSiteSettings().catch(() => ({} as Record<string, string>)));
   return Promise.all(pkgs.map(async (p) => {
-    const pr = await getPackagePricing(p.slug).catch(() => null);
-    const price = pr ? pr.fromPrice : p.price;
+    const net = await netBaslangic(p.slug).catch(() => null);
+    const pr = net == null ? await getPackagePricing(p.slug).catch(() => null) : null;
+    const price = net ?? (pr ? pr.fromPrice : p.price);
     // Paket görseli yoksa paketin otelinin fotoğrafı (19 Ekim)
     const gorsel = "imageUrl" in p ? { imageUrl: paketGorseli((p as { imageUrl?: string | null }).imageUrl, packagePreset(p.slug)?.hotelSlug) } : {};
     return { ...p, ...gorsel, price, uyePrice: uyeFiyati(price, kurallar[p.slug]) };

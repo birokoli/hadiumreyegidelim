@@ -1,6 +1,6 @@
 // Paket bülteni (21 Ekim, kullanıcı: "pazarlama izni verenlere paket tasarımlarını gönderebileceğimiz bir sistem").
-// Alıcılar: e-posta izni olan üyeler + kitapçık formunda pazarlama iznini işaretleyen ve adresini doğrulayan kayıtlar
-// (MarketingLead). Aynı adres bir kez; üye izni kapattıysa havuz kaydındaki izin de sayılmaz; geri dönen/spam adresler çıkar.
+// Alıcılar: e-posta izni olan üyeler + kitapçık formunda pazarlama iznini işaretleyen bütün kayıtlar (MarketingLead; üye
+// olmayanlar dahil, adresini doğrulamamış olsa da — kullanıcı, 21 Ekim). Aynı adres bir kez; üye izni kapattıysa havuz kaydındaki izin de sayılmaz; geri dönen/spam adresler çıkar.
 // Gönderimler üye gönderimleriyle aynı tablolarda (UyeGonderim, tur = "paket"); Resend olayları oraya işlenir.
 // E-posta Instagram görselleriyle aynı beyaz tasarım dilinde: logo, aralıklı gri üst başlık, altın çizgi, lacivert kutular.
 import { prisma } from "@/lib/prisma";
@@ -125,6 +125,7 @@ export async function havuzCikisLinki(leadId: string) {
 }
 
 export type BultenAlici = { anahtar: string; ad: string; email: string; kaynak: "uye" | "havuz"; id: string };
+/** dogrulanmamis: havuz alıcılarından adresini doğrulamamış olanlar (gönderilir; bilgi için) */
 export type AliciSayim = { alicilar: BultenAlici[]; uye: number; havuz: number; dogrulanmamis: number; engelli: number; zatenGitti: number; izniKapali: number };
 
 /** Kime gidecek. anahtar: UyeGonderimAlici.userId alanına yazılan tekil anahtar (üye: userId, havuz: "lead:<id>"). */
@@ -158,7 +159,7 @@ export async function bultenAlicilari(kod: string): Promise<AliciSayim> {
     goruldu.add(a);
     // Üye olup izni kapatan kişinin eski kitapçık iznine dayanılmaz
     if (izniKapaliUye.has(a)) { sayim.izniKapali++; continue; }
-    if (!l.emailVerified) { sayim.dogrulanmamis++; continue; }
+    if (!l.emailVerified) sayim.dogrulanmamis++;
     if (engelli.has(a) || l.emailStatus === "bounced" || l.emailStatus === "complained") { sayim.engelli++; continue; }
     if (gidenAdres.has(a)) { sayim.zatenGitti++; continue; }
     sayim.havuz++;

@@ -1,5 +1,5 @@
 "use client";
-// Paket bülteni (21 Ekim): pazarlama izni verenlere (izinli üyeler + kitapçık formunda izin veren, adresi doğrulanmış kayıtlar)
+// Paket bülteni (21 Ekim): pazarlama izni verenlere (izinli üyeler + kitapçık formunda izin veren bütün kayıtlar, üye olmayanlar dahil)
 // net fiyatlı paketlerin e-postası. Paket seç → metinleri düzenle → önizleme ve alıcı sayısı → kendine deneme → "GÖNDER".
 // Aynı gönderim kodu aynı adrese bir kez gider. Sunucu: src/lib/paket-bulteni
 import { useCallback, useEffect, useState } from "react";
@@ -84,7 +84,7 @@ export default function PaketBulteni() {
         <Link href="/admin/uyeler/gonder" className="text-xs font-bold text-primary">← Üyelere gönderim</Link>
         <h1 className="font-headline text-2xl font-bold tracking-tight text-primary mt-2">Paket bülteni</h1>
         <p className="text-xs text-on-surface-variant mt-0.5">
-          Pazarlama e-postasına izin verenlere gider: e-posta izni olan üyeler ve kitapçık formunda izin verip adresini doğrulayan kayıtlar. Her e-postada abonelikten çıkma bağlantısı vardır; aynı gönderim kodu aynı adrese bir kez gider.
+          Pazarlama e-postasına izin verenlere gider: e-posta izni olan üyeler ve müşteri havuzunda pazarlama izni veren herkes (üye olmayanlar dahil). Her e-postada abonelikten çıkma bağlantısı vardır; aynı gönderim kodu aynı adrese bir kez gider.
         </p>
       </div>
 
@@ -125,8 +125,7 @@ export default function PaketBulteni() {
               <p className="font-headline text-3xl font-bold text-primary mt-1">{o.alici} <span className="text-sm font-medium text-outline">kişi</span></p>
               <ul className="mt-2 space-y-0.5 text-[11px] text-on-surface-variant">
                 <li>E-posta izni olan üye: {o.uye}</li>
-                <li>Kitapçık formunda izin veren (doğrulanmış): {o.havuz}</li>
-                <li>İzin verip adresini doğrulamamış (gönderilmez): {o.dogrulanmamis}</li>
+                <li>Müşteri havuzunda pazarlama izni veren (üye olmayan): {o.havuz}{o.dogrulanmamis ? <span className="text-outline"> · {o.dogrulanmamis} tanesi adresini doğrulamamış</span> : null}</li>
                 <li>Üye olup izni kapatmış (gönderilmez): {o.izniKapali}</li>
                 <li>Adresi geçersiz ya da spam bildirmiş (atlanır): {o.engelli}</li>
                 <li>Bu kodla daha önce almış (atlanır): {o.zatenGitti}</li>

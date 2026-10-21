@@ -36,6 +36,8 @@ export const NET_PAKETLER: Record<string, NetPaket> = {
     rotalar: ["cidde-hav-mekke", "mekke-cidde-hav", "mekke-ziyaret"],
     arac: "camry",
     vitrin: { gece: 4, kisi: 4 },
+    // Fiyat her ay aynı; reklam ve bülten Kasım'a göre (21 Ekim)
+    ay: "2026-11",
     yemek: "yemek dahil",
     otelNotu: "Harem'e ücretsiz servis",
   },

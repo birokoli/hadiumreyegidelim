@@ -85,6 +85,7 @@ export default function UyeGonderim() {
         <Link href="/admin/uyeler" className="text-xs font-bold text-primary">← Üyeler</Link>
         <h1 className="font-headline text-2xl font-bold tracking-tight text-primary mt-2">Üyelere gönderim</h1>
         <p className="text-xs text-on-surface-variant mt-0.5">Hesap duyurusu bilgilendirmedir, bütün üyelere bir kez gider. Kampanya e-postası ve WhatsApp yalnızca izin verenlere gider.</p>
+        <Link href="/admin/uyeler/paket-bulteni" className="mt-2 inline-block text-xs font-bold text-primary">Paket bülteni: pazarlama izni verenlere paket e-postası →</Link>
       </div>
 
       <div className="flex flex-wrap items-center gap-2">
@@ -175,7 +176,7 @@ export default function UyeGonderim() {
                 {gecmis.map((g) => (
                   <tr key={g.id}>
                     <td className="px-4 py-3 font-mono text-outline whitespace-nowrap">{new Date(g.createdAt).toLocaleString("tr-TR", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" })}</td>
-                    <td className="px-4 py-3"><b>{g.tur === "duyuru" ? "Duyuru" : "Kampanya"}</b> · {g.konu}<div className="text-[10px] text-outline">{g.kim ?? ""}{g.durum !== "bitti" ? " · sürüyor" : ""}</div></td>
+                    <td className="px-4 py-3"><b>{g.tur === "duyuru" ? "Duyuru" : g.tur === "paket" ? "Paket bülteni" : "Kampanya"}</b> · {g.konu}<div className="text-[10px] text-outline">{g.kim ?? ""}{g.durum !== "bitti" ? " · sürüyor" : ""}</div></td>
                     <td className="px-4 py-3">{g.gonderilen}/{g.toplam}{g.hatali ? <span className="text-error"> · {g.hatali} hata</span> : null}</td>
                     <td className="px-4 py-3">{g.teslim}</td>
                     <td className="px-4 py-3">{g.acildi}{g.gonderilen ? <span className="text-outline"> (%{Math.round((g.acildi / g.gonderilen) * 100)})</span> : null}</td>

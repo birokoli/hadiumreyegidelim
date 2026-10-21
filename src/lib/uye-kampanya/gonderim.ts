@@ -10,7 +10,8 @@ import { abonelikLinki, DUYURU_ANAHTAR, duyuruEposta, kampanyaEposta } from "./e
 import type { Kampanya } from "./ortak";
 
 let ready: Promise<void> | null = null;
-function ensureSchema() {
+/** Gönderim tabloları (paket bülteni de aynı tabloları kullanır: src/lib/paket-bulteni) */
+export function ensureSchema() {
   ready ??= (async () => {
     await ensureUyeKampanyaSchema();
     for (const s of [
@@ -57,7 +58,7 @@ export type GonderimTur = "duyuru" | "kampanya";
 const yeniId = (p: string) => `${p}_${Date.now().toString(36)}${Math.random().toString(36).slice(2, 8)}`;
 
 /** Geri dönmüş ya da spam bildirilmiş adresler (küçük harf). */
-async function engelliAdresler(): Promise<Set<string>> {
+export async function engelliAdresler(): Promise<Set<string>> {
   await ensureSchema();
   const rows = await prisma.$queryRawUnsafe<{ a: string }[]>(`
     SELECT LOWER("email") AS "a" FROM "MarketingLead" WHERE "email" IS NOT NULL AND "emailStatus" IN ('bounced','complained')
@@ -101,9 +102,9 @@ export async function onizleme(tur: GonderimTur, kampanyaId?: string) {
   return { konu: c.subject, html: c.html, alici: o.alicilar.length, toplamUye: o.toplamUye, izinsiz: o.izinsiz, engelli: o.engelli, zatenGitti: o.zatenGitti };
 }
 
-const gonderen = () => process.env.UYE_EMAIL_FROM || process.env.LEAD_EMAIL_FROM || "";
+export const gonderen = () => process.env.UYE_EMAIL_FROM || process.env.LEAD_EMAIL_FROM || "";
 
-async function resendToplu(mesajlar: { to: string[]; subject: string; html: string; text: string; headers?: Record<string, string>; tags: { name: string; value: string }[] }[]): Promise<(string | null)[]> {
+export async function resendToplu(mesajlar: { to: string[]; subject: string; html: string; text: string; headers?: Record<string, string>; tags: { name: string; value: string }[] }[]): Promise<(string | null)[]> {
   const r = await fetch("https://api.resend.com/emails/batch", {
     method: "POST",
     headers: { Authorization: `Bearer ${process.env.RESEND_API_KEY}`, "Content-Type": "application/json" },

@@ -7,8 +7,8 @@ import { uyeFiyati, uyeKurali } from "@/lib/pricing/uye";
 import PackageHotelPicker from "@/components/packages/PackageHotelPicker";
 import MobileActionBar from "@/components/layout/MobileActionBar";
 import NetPaketSayfasi from "@/components/packages/NetPaketSayfasi";
-import { getCatalog, monthsFrom, monthLabel as ayEtiketi } from "@/lib/catalog";
-import { netFiyatTablosu, netPaket } from "@/lib/pricing/net-paket";
+import { getCatalog, monthLabel as ayEtiketi } from "@/lib/catalog";
+import { netPaket, netPaketTablosu } from "@/lib/pricing/net-paket";
 import { formatPrice } from "@/lib/format";
 import React from 'react';
 export const revalidate = 300;
@@ -80,12 +80,12 @@ export default async function PackageDetailPage({ params }: { params: Promise<{ 
   const net = netPaket(slug);
   if (net) {
     const catalog = await getCatalog();
-    for (const ay of monthsFrom(undefined, 4)) {
-      const tablo = netFiyatTablosu(net, catalog, ay);
-      if (!tablo) continue;
+    const sonuc = netPaketTablosu(net, catalog);
+    if (sonuc) {
       const otel = catalog.find((c) => c.category === "hotel" && c.slug === net.hotelSlug) ?? null;
-      return <NetPaketSayfasi pkg={{ slug: pkg.slug, title: pkg.title, description: pkg.description }} cfg={net} tablo={tablo} otel={otel} whatsapp={whatsappNumber} ay={ayEtiketi(ay)} />;
+      return <NetPaketSayfasi pkg={{ slug: pkg.slug, title: pkg.title, description: pkg.description }} cfg={net} tablo={sonuc.tablo} otel={otel} whatsapp={whatsappNumber} ay={ayEtiketi(sonuc.ay)} />;
     }
+
   }
 
   // Şablonlu paket (ör. 10 gün Mekke): fiyat otele ve kişi sayısına göre hesaplanır; gösterilen "başlayan" fiyattır

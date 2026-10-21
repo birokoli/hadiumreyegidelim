@@ -126,9 +126,68 @@ async function safwahDuzeltme() {
   console.log("[katalog] Safwah düzeltmesi", log.join(" "));
 }
 
+/**
+ * Kasım paketleri (21 Ekim, kullanıcı): Safwah gibi gece × kişi seçmeli, vize dahil net fiyatlı paketler (src/lib/pricing/net-paket.ts).
+ * - Mehd Al Resaleh 3: Kasım alış 100 SAR, satış 120 SAR = 32 USD / oda / gece, yalnızca oda. Paket bu yapıya geçer.
+ * - Address Jabal Omar: Kasım hafta sonu fiyatı katalogda (k2/k3/k4); yeni paket kaydı açılır.
+ * Camry transferleri katalogda zaten B2B + %15 (240 + 180 + 180 SAR → 690 SAR).
+ */
+async function kasimPaketleri() {
+  const ISARET = "VERI_ADIMI_KASIM_PAKETLERI_2026_10";
+  if (await prisma.setting.findUnique({ where: { key: ISARET } })) return;
+  const log: string[] = [];
+  const mehd = await prisma.serviceLibrary.findUnique({ where: { slug: "mehd-al-resaleh-3" }, select: { id: true } });
+  if (mehd) {
+    const satisUsd = Math.round((120 / SAR) * 100) / 100;
+    const note = "Alış 100 SAR, satış 120 SAR / oda / gece, yalnızca oda (21 Ekim)";
+    const var_ = await prisma.servicePrice.findFirst({ where: { serviceId: mehd.id, month: "2026-11", variant: "" }, select: { id: true } });
+    if (var_) await prisma.servicePrice.update({ where: { id: var_.id }, data: { salePriceUsd: satisUsd, note } });
+    else await prisma.servicePrice.create({ data: { serviceId: mehd.id, month: "2026-11", variant: "", salePriceUsd: satisUsd, note } });
+    log.push("mehd-fiyat");
+  }
+  const ortak = (otel: string, yemek: string) => [
+    "Umre vizesi (e-vize ve zorunlu sağlık sigortası)",
+    `${otel} otelinde konaklama${yemek}`,
+    "Havalimanında karşılama",
+    "Cidde ↔ Mekke transferleri (Toyota Camry, özel araç)",
+    "Mekke ziyaret turu: Cebel-i Nur, Sevr, Arafat, Mina",
+  ];
+  const r = await prisma.package.updateMany({
+    where: { slug: "10-gunluk-bireysel-umre-mekke-mehd-al-resaleh-3" },
+    data: {
+      title: "Mekke Umre Paketi · Mehd Al Resaleh 3 · Vize Dahil",
+      duration: "5–10 Gün",
+      description: "Vize, otel (yalnızca oda), havalimanı karşılama, özel araçla transferler ve Mekke ziyaret turu tek fiyatta. 4, 6, 8 ya da 9 gece; 2, 3 ya da 4 kişi. Uçak bileti dahil değildir.",
+      includes: JSON.stringify(ortak("Mehd Al Resaleh 3", " (yemek hariç)")),
+    },
+  });
+  log.push(`mehd-paket:${r.count}`);
+  const ADDRESS = "10-gunluk-bireysel-umre-mekke-address-jabal-omar";
+  if (!(await prisma.package.findUnique({ where: { slug: ADDRESS }, select: { id: true } }))) {
+    await prisma.package.create({
+      data: {
+        slug: ADDRESS,
+        title: "Mekke Umre Paketi · Address Jabal Omar · Vize Dahil",
+        duration: "5–10 Gün",
+        description: "Vize, Harem'in yanındaki 5 yıldızlı Address Jabal Omar Makkah (kahvaltı ve akşam yemeği dahil), havalimanı karşılama, özel araçla transferler ve Mekke ziyaret turu tek fiyatta. 4, 6, 8 ya da 9 gece; 2, 3 ya da 4 kişi. Uçak bileti dahil değildir.",
+        includes: JSON.stringify(ortak("Address Jabal Omar Makkah", ", kahvaltı ve akşam yemeği dahil")),
+        price: 0,
+        currency: "USD",
+        isPopular: false,
+        published: true,
+        gallery: "[]",
+      },
+    });
+    log.push("address-paket:acildi");
+  } else log.push("address-paket:vardi");
+  await prisma.setting.create({ data: { key: ISARET, value: `${new Date().toISOString()} ${log.join(" ")}` } });
+  console.log("[katalog] Kasım paketleri", log.join(" "));
+}
+
 /** Şema hazırlandıktan sonra çağrılır; hata siteyi durdurmaz. */
 export async function veriAdimlari() {
   await addressJabalOmar().catch((e) => console.error("[katalog] Address Jabal Omar adımı", e));
   await safwahPaketi().catch((e) => console.error("[katalog] Safwah paketi adımı", e));
   await safwahDuzeltme().catch((e) => console.error("[katalog] Safwah düzeltmesi", e));
+  await kasimPaketleri().catch((e) => console.error("[katalog] Kasım paketleri", e));
 }

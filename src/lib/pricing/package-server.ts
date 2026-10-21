@@ -5,18 +5,14 @@ import { getSiteSettings } from "@/lib/site-settings";
 import { packageHotels, packagePreset, type PackagePreset } from "@/lib/pricing/package";
 import { parseTransferSlug } from "@/lib/catalog/transfers";
 import { uyeFiyati, uyeKurali, uyeKurallari, type UyeKural } from "@/lib/pricing/uye";
-import { netFiyatTablosu, netPaket } from "@/lib/pricing/net-paket";
+import { netPaket, netPaketTablosu } from "@/lib/pricing/net-paket";
 
 /** Net fiyatlı pakette kartta gösterilen fiyat: tablodaki en düşük kişi başı fiyat ($, vize, KDV ve kart payı dahil) */
 async function netBaslangic(slug: string): Promise<number | null> {
   const cfg = netPaket(slug);
   if (!cfg) return null;
-  const catalog = await getCatalog();
-  for (const ay of monthsFrom(undefined, 4)) {
-    const tablo = netFiyatTablosu(cfg, catalog, ay);
-    if (tablo?.length) return Math.min(...tablo.map((t) => t.kisiBasiUsd));
-  }
-  return null;
+  const sonuc = netPaketTablosu(cfg, await getCatalog());
+  return sonuc ? Math.min(...sonuc.tablo.map((t) => t.kisiBasiUsd)) : null;
 }
 
 export type PackagePricing = { preset: PackagePreset; catalog: CatalogItem[]; month: string; monthLabel: string; packagePercent: number; fromPrice: number; uyeKural: UyeKural | null };

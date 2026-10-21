@@ -4,7 +4,9 @@ const CURRENCY_SYMBOL: Record<string, string> = { USD: "$", EUR: "€", TRY: "�
 
 /** 1250, "USD" → "1.250 $" */
 export function formatPrice(price: number, currency = "USD") {
-  return `${price.toLocaleString("tr-TR", { maximumFractionDigits: 0 })} ${CURRENCY_SYMBOL[currency] ?? currency}`;
+  // ",99" fiyatlı paketlerde (21 Ekim) kuruş gösterilir: 215,99 $; diğer fiyatlar tam sayı
+  const kurus = Math.round((price % 1) * 100) === 99 ? 2 : 0;
+  return `${price.toLocaleString("tr-TR", { minimumFractionDigits: kurus, maximumFractionDigits: kurus })} ${CURRENCY_SYMBOL[currency] ?? currency}`;
 }
 
 /** "12 Eylül 2026" */

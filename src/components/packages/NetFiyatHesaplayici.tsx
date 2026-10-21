@@ -5,7 +5,7 @@ import { useState } from "react";
 import WhatsAppIcon from "@/components/home/WhatsAppIcon";
 import type { NetFiyat } from "@/lib/pricing/net-paket";
 
-const usd = (n: number) => `${n.toLocaleString("tr-TR")}\u00a0$`;
+const usd = (n: number) => `${n.toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}\u00a0$`;
 const gun = (gece: number) => `${gece + 1} gün`;
 
 export default function NetFiyatHesaplayici({ tablo, geceler, kisiler, vitrin, baslik, otelAdi, whatsapp }: {

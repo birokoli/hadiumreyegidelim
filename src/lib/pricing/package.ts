@@ -12,6 +12,7 @@ export function packagePreset(slug: string): PackagePreset | null {
   const hotel: Record<string, string> = {
     // 20 Ekim: Mehd Al Resaleh 1&2 paketi Safwah Al Talayie paketi oldu (eski adres 301)
     "10-gunluk-bireysel-umre-mekke-safwah-al-talayie": "safwah-al-talayie",
+    "10-gunluk-bireysel-umre-mekke-address-jabal-omar": "address-jabal-omar-makkah",
     "10-gunluk-bireysel-umre-mekke-mehd-al-resaleh-3": "mehd-al-resaleh-3",
     "10-gunluk-bireysel-umre-mekke-holiday-inn": "holiday-inn-makkah-al-aziziah",
   };

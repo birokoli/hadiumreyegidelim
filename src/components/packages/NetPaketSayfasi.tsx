@@ -15,9 +15,9 @@ import { otelGalerisi } from "@/lib/hotels/galeri";
 import type { NetFiyat, NetPaket } from "@/lib/pricing/net-paket";
 import { SITE_URL } from "@/lib/seo/site";
 
-const DAHIL: { icon: HugIconName; baslik: string; metin: string }[] = [
+const dahil = (otelAdi: string, cfg: NetPaket): { icon: HugIconName; baslik: string; metin: string }[] => [
   { icon: "vize", baslik: "Umre vizesi", metin: "E-vize ve zorunlu sağlık sigortası. Belgeler tamamsa 2 iş saatinde." },
-  { icon: "otel", baslik: "Otel, yemek dahil", metin: "Safwah Al Talayie; Harem'e ücretsiz servis." },
+  { icon: "otel", baslik: cfg.yemek ? `Otel, ${cfg.yemek}` : "Otel konaklaması", metin: `${otelAdi}; ${cfg.otelNotu}.` },
   { icon: "transfer", baslik: "Özel araçla transfer", metin: "Cidde Havalimanı → otel → havalimanı, Toyota Camry." },
   { icon: "kabe", baslik: "Mekke ziyaret turu", metin: "Cebel-i Nur, Sevr, Arafat ve Mina." },
 ];
@@ -32,13 +32,16 @@ export default function NetPaketSayfasi({ pkg, cfg, tablo, otel, whatsapp, ay }:
 }) {
   const vitrin = tablo.find((t) => t.gece === cfg.vitrin.gece && t.kisi === cfg.vitrin.kisi) ?? tablo[0];
   const enDusuk = tablo.reduce((a, b) => (b.kisiBasiUsd < a.kisiBasiUsd ? b : a), tablo[0]);
-  const otelAdi = otel?.name ?? "Safwah Al Talayie";
+  const otelAdi = otel?.name ?? pkg.title;
+  // Ek almayan kalıp ("… otelinde"): otel adına göre 'de/'da/'te ayrımı gerekmesin
+  const konaklama = cfg.yemek ? `${otelAdi} otelinde ${cfg.yemek} konaklama` : `${otelAdi} otelinde konaklama (yemek hariç)`;
+  const DAHIL = dahil(otelAdi, cfg);
   const galeri = otelGalerisi(cfg.hotelSlug);
-  const usd = (n: number) => `${n.toLocaleString("tr-TR")}\u00a0$`;
+  const usd = (n: number) => `${n.toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}\u00a0$`;
   const waGenel = `https://wa.me/${whatsapp}?text=${encodeURIComponent(`Merhaba, "${pkg.title}" hakkında bilgi almak istiyorum.\nKaç gece: \nKaç kişi: \nTarih: `)}`;
 
   const sss = [
-    { q: "Fiyata neler dahil?", a: `Umre vizesi (e-vize ve zorunlu sağlık sigortası), ${otelAdi}'de yemek dahil konaklama, Cidde Havalimanı'nda karşılama, havalimanı ile otel arasındaki gidiş-dönüş transferleri (Toyota Camry, özel araç) ve Mekke ziyaret turu. Uçak bileti dahil değildir.` },
+    { q: "Fiyata neler dahil?", a: `Umre vizesi (e-vize ve zorunlu sağlık sigortası), ${konaklama}, Cidde Havalimanı'nda karşılama, havalimanı ile otel arasındaki gidiş-dönüş transferleri (Toyota Camry, özel araç) ve Mekke ziyaret turu. Uçak bileti dahil değildir.` },
     { q: "Fiyata ek bir ücret çıkar mı?", a: "Hayır. Sayfadaki fiyat kişi başı son fiyattır ve ödeme yönteminden bağımsız olarak aynıdır. Uçak bileti dahil değildir." },
     { q: "Fiyat neden kişi sayısına göre değişiyor?", a: "Oda ve araç fiyatı kişi sayısından bağımsızdır; aynı odada ve aynı araçta kalan kişi sayısı arttıkça kişi başına düşen pay azalır. Fiyatlar 2, 3 ya da 4 kişinin aynı odada kalmasına göredir." },
     { q: "Fiyatlar hangi para birimiyle?", a: "Fiyatlar ABD doları üzerindendir." },
@@ -81,7 +84,7 @@ export default function NetPaketSayfasi({ pkg, cfg, tablo, otel, whatsapp, ay }:
               <Accent text={`Vize, otel ve transfer *tek fiyatta*`} />
             </h1>
             <p className="mt-4 max-w-xl text-[16px] leading-relaxed text-white/80 md:text-[17px]">
-              {otelAdi}&apos;de yemek dahil konaklama, havalimanında karşılama, özel araçla transferler ve Mekke ziyaret turu. 4, 6, 8 ya da 9 gece; 2, 3 ya da 4 kişi.
+              {konaklama}, havalimanında karşılama, özel araçla transferler ve Mekke ziyaret turu. 4, 6, 8 ya da 9 gece; 2, 3 ya da 4 kişi.
             </p>
             <div className="mt-6 flex flex-wrap items-end gap-x-6 gap-y-3">
               <div>
@@ -119,7 +122,7 @@ export default function NetPaketSayfasi({ pkg, cfg, tablo, otel, whatsapp, ay }:
             </div>
           ))}
         </div>
-        <p className="mt-3 text-[13px] text-on-surface-variant">Dahil değil: uçak bileti, Medine ziyareti ve kişisel harcamalar.</p>
+        <p className="mt-3 text-[13px] text-on-surface-variant">Dahil değil: uçak bileti{cfg.yemek ? "" : ", yemekler"}, Medine ziyareti ve kişisel harcamalar.</p>
       </section>
 
       {/* ─── Fiyat hesaplayıcı ─── */}

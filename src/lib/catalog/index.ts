@@ -90,7 +90,7 @@ export async function queryCatalog(): Promise<CatalogItem[]> {
   });
 }
 
-const readCatalog = unstable_cache(queryCatalog, ["catalog-v22"], { tags: [CATALOG_TAG], revalidate: 3600 });
+const readCatalog = unstable_cache(queryCatalog, ["catalog-v23"], { tags: [CATALOG_TAG], revalidate: 3600 });
 
 /** Herkese açık katalog; veritabanı hatasında boş liste (sayfa yine açılır) */
 export async function getCatalog(): Promise<CatalogItem[]> {

@@ -7,12 +7,13 @@ import { durakSayisi, ZIYARET_ROTALARI } from "@/lib/satis/ziyaret";
 import { SATIS_TURLERI } from "@/lib/satis/ortak";
 import { ASAMALAR, KALEM_TURLERI, KART_PAYI, KDV_ETIKETI, KDV_ORANI, alisToplam, genelToplam, kartla, kartPayiOf, kdvTutari, asamaIndex, asamaLabel, geceSayisi, kalemToplam, odemeDagilimi, odenen, onaylandiMi, toplam, trTarih, usd, waNumara, type Dosya, type DosyaData, type Kalem, type KalemTur, type Odeme } from "@/lib/satis/ortak";
 import { teklifLinki, teklifMesaji, voucherLinki, voucherMesaji, waLink } from "@/lib/satis/mesaj";
+import type { TeklifAcilis } from "@/lib/satis/acilis";
 
 type Otel = { slug: string; ad: string; sehir: string; kabe: number | null };
 type Kutuphane = { id: string; kategori: string; ad: string; alis: number; satis: number | null };
 type Uye = { id: string; name: string; email: string };
 type Belge = { id: string; ad: string; tur: string; boyut: number };
-type Yanit = { dosya: Dosya; belgeler: Belge[]; oneri: Uye[]; bagliUye: Uye | null; ekip: { id: string; name: string }[]; oteller: Otel[]; kutuphane: Kutuphane[] };
+type Yanit = { dosya: Dosya; belgeler: Belge[]; oneri: Uye[]; bagliUye: Uye | null; ekip: { id: string; name: string }[]; oteller: Otel[]; kutuphane: Kutuphane[]; acilislar?: TeklifAcilis[] };
 
 const SEKMELER = ["Teklif", "Yolculuk", "Ödeme", "Belgeler", "Müşteri", "Geçmiş"] as const;
 const inp = "w-full bg-surface-container-lowest border border-outline-variant/25 rounded-lg px-2.5 py-2 text-xs outline-none focus:border-primary/40";
@@ -148,6 +149,14 @@ export default function SatisDosyasi({ params }: { params: Promise<{ no: string 
             <p className="font-mono text-xs font-bold text-secondary">{d.no}{data.satisTuru && <span className="ml-2 font-sans font-semibold text-on-surface-variant">· {SATIS_TURLERI[data.satisTuru]}</span>}</p>
             <h1 className="font-headline text-2xl font-bold text-primary">{data.musteriAdi}</h1>
             <p className="text-xs text-on-surface-variant">{kisiSayisi} kişi{data.gidis ? ` · ${trTarih(data.gidis)} – ${trTarih(data.donus)}` : ""}{hesap.g ? ` · ${usd(hesap.g)}` : ""}{y.bagliUye ? " · profile bağlı" : ""}</p>
+            {/* Teklif bağlantısı açıldı mı (21 Ekim): müşterinin açışları; bot, önizleme ve admin sayılmaz */}
+            {(y.acilislar?.length ?? 0) > 0 ? (
+              <p className="mt-1.5 inline-flex rounded-lg bg-secondary/10 px-2.5 py-1 text-[11px] font-bold text-secondary">
+                Müşteri teklifi açtı · {y.acilislar!.length} kez · son {new Date(y.acilislar![0].at).toLocaleString("tr-TR", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })} ({y.acilislar![0].cihaz})
+              </p>
+            ) : data.teklifGonderildi ? (
+              <p className="mt-1.5 inline-flex rounded-lg bg-[#fef3c7] px-2.5 py-1 text-[11px] font-bold text-[#92400e]">Teklif gönderildi, müşteri henüz açmadı</p>
+            ) : null}
           </div>
           <div className="flex flex-wrap gap-2">
             <button type="button" onClick={() => mesajAc("teklif")} disabled={!data.kalemler.length} className="rounded-xl bg-[#25D366] px-4 py-2 text-xs font-bold text-white disabled:opacity-40">Teklifi WhatsApp&apos;tan gönder</button>
@@ -155,7 +164,7 @@ export default function SatisDosyasi({ params }: { params: Promise<{ no: string 
               <button type="button" onClick={() => mesajAc("voucher")} disabled={!onaylandiMi(status)} className="rounded-xl border border-[#25D366] px-4 py-2 text-xs font-bold text-[#1a8f47] disabled:opacity-40">Voucher gönder</button>
               {!onaylandiMi(status) && <span className="mt-1 text-[10px] text-outline">Onaylandıktan sonra açılır</span>}
             </span>
-            <a href={teklifLinki(d).replace("https://hadiumreyegidelim.com", "")} target="_blank" className="rounded-xl border border-outline-variant/25 px-3 py-2 text-xs font-bold text-primary">Teklif sayfası</a>
+            <a href={`${teklifLinki(d).replace("https://hadiumreyegidelim.com", "")}?onizleme=1`} target="_blank" className="rounded-xl border border-outline-variant/25 px-3 py-2 text-xs font-bold text-primary">Teklif sayfası</a>
             {onaylandiMi(status) && <a href={voucherLinki(d).replace("https://hadiumreyegidelim.com", "")} target="_blank" className="rounded-xl border border-outline-variant/25 px-3 py-2 text-xs font-bold text-primary">Voucher</a>}
           </div>
         </div>
@@ -445,7 +454,10 @@ export default function SatisDosyasi({ params }: { params: Promise<{ no: string 
               <button type="button" disabled={!not.trim()} onClick={async () => { await islem({ action: "not", metin: not }); setNot(""); }} className="rounded-lg bg-primary px-3 py-2 text-xs font-bold text-white disabled:opacity-40">Ekle</button>
             </div>
             <ol className="mt-4 space-y-2">
-              {[...data.gecmis].reverse().map((g) => (
+              {[...data.gecmis, ...(y.acilislar ?? []).map((a) => ({ id: a.id, t: a.at, kim: "müşteri", metin: `Müşteri teklifi açtı${a.cihaz ? ` (${a.cihaz})` : ""}` }))]
+                .sort((a, b) => a.t.localeCompare(b.t))
+                .reverse()
+                .map((g) => (
                 <li key={g.id} className="flex gap-3 text-xs">
                   <span className="w-28 shrink-0 font-mono text-outline">{new Date(g.t).toLocaleString("tr-TR", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" })}</span>
                   <span className="flex-1">{g.metin}</span>

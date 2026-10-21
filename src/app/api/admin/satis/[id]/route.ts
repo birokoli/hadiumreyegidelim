@@ -1,6 +1,7 @@
 // Satış masası: tek dosya (admin). GET: dosya + belgeler + üye önerisi + otel listesi + hizmet kütüphanesi fiyatları.
 // PUT: kaydet (aşama değişince istenirse müşteriye e-posta). POST: üyeye bağla, not ekle, mesaj gönderildi kaydı.
 import { NextRequest, NextResponse } from "next/server";
+import { acilislar } from "@/lib/satis/acilis";
 import { getAdminSession } from "@/lib/admin-auth";
 import { prisma } from "@/lib/prisma";
 import { ASAMALAR, asamaLabel, getDosya, listBelgeler, phoneDigits, saveDosya, type Dosya, type DosyaData } from "@/lib/satis";
@@ -26,7 +27,8 @@ async function ozet(d: Dosya) {
     or.length ? prisma.user.findMany({ where: { OR: or }, select: { id: true, name: true, email: true }, take: 5 }) : [],
     d.userId ? prisma.user.findUnique({ where: { id: d.userId }, select: { id: true, name: true, email: true } }) : null,
   ]);
-  return { dosya: d, belgeler, oneri: oneri.filter((u) => u.id !== d.userId), bagliUye };
+  const acilis = await acilislar(d.id).catch(() => []);
+  return { dosya: d, belgeler, oneri: oneri.filter((u) => u.id !== d.userId), bagliUye, acilislar: acilis };
 }
 
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ id: string }> }) {

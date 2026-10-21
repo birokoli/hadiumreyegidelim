@@ -1,5 +1,6 @@
 // Satış masası: dosya listesi ve yeni dosya (admin).
 import { NextRequest, NextResponse } from "next/server";
+import { acilisOzetleri } from "@/lib/satis/acilis";
 import { getAdminSession } from "@/lib/admin-auth";
 import { prisma } from "@/lib/prisma";
 import { createDosya, listDosyalar, SATIS_TURLERI, type SatisTuru } from "@/lib/satis";
@@ -9,11 +10,12 @@ export const dynamic = "force-dynamic";
 export async function GET() {
   const a = await getAdminSession();
   if (!a) return NextResponse.json({ error: "Yetkisiz." }, { status: 401 });
-  const [dosyalar, ekip] = await Promise.all([
+  const [dosyalar, ekip, acilis] = await Promise.all([
     listDosyalar(),
     prisma.adminUser.findMany({ where: { status: "active" }, select: { id: true, name: true }, orderBy: { name: "asc" } }).catch(() => []),
+    acilisOzetleri().catch(() => ({})),
   ]);
-  return NextResponse.json({ dosyalar, ekip, ben: { id: a.id, name: a.name } });
+  return NextResponse.json({ dosyalar, ekip, ben: { id: a.id, name: a.name }, acilis });
 }
 
 export async function POST(req: NextRequest) {

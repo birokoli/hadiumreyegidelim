@@ -1,6 +1,7 @@
 "use client";
 // Satış masası (14 Ekim): her müşteri tek dosya; aşama sütunları. Yeni dosya buradan açılır.
 import { useCallback, useEffect, useMemo, useState } from "react";
+import type { AcilisOzet } from "@/lib/satis/acilis";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import HubTabs from "@/components/admin/HubTabs";
@@ -12,6 +13,8 @@ const inp = "w-full bg-surface-container-lowest border border-outline-variant/25
 export default function SatisMasasi() {
   const router = useRouter();
   const [dosyalar, setDosyalar] = useState<Dosya[]>([]);
+  // Teklif bağlantısının açılma özeti (21 Ekim): dosya kimliği → sayı, ilk/son açılış
+  const [acilis, setAcilis] = useState<Record<string, AcilisOzet>>({});
   const [ekip, setEkip] = useState<Ekip[]>([]);
   const [ben, setBen] = useState<Ekip | null>(null);
   const [ara, setAra] = useState("");
@@ -26,6 +29,7 @@ export default function SatisMasasi() {
     if (!r.ok) return setHata(r.status === 401 || r.status === 403 ? "Oturumunuzun süresi dolmuş; /admin/login adresinden yeniden giriş yapın." : "Liste alınamadı; sayfayı yenileyin.");
     const d = await r.json();
     setDosyalar(d.dosyalar);
+    setAcilis(d.acilis ?? {});
     setEkip(d.ekip);
     setBen(d.ben);
   }, []);
@@ -97,6 +101,11 @@ export default function SatisMasasi() {
                       <p className="text-[11px] text-on-surface-variant">
                         {d.data.yetiskin + d.data.cocuk} kişi{d.data.gidis ? ` · ${trTarih(d.data.gidis, { day: "numeric", month: "short" })}` : ""}{t ? ` · ${usd(t)}` : ""}
                       </p>
+                      {acilis[d.id] ? (
+                        <p className="mt-1.5 text-[10px] font-bold text-secondary">Teklifi açtı · {acilis[d.id].sayi} kez · son {new Date(acilis[d.id].son!).toLocaleString("tr-TR", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}</p>
+                      ) : d.data.teklifGonderildi ? (
+                        <p className="mt-1.5 text-[10px] font-bold text-[#b45309]">Teklif gönderildi, henüz açılmadı</p>
+                      ) : null}
                       {ekipAdi(d.sorumluId) && <p className="mt-1.5 text-[10px] text-outline">Sorumlu: {ekipAdi(d.sorumluId)}</p>}
                     </Link>
                   );

@@ -10,13 +10,20 @@ import { findDirectoryHotel, kaabaText } from "@/lib/catalog/hotel-directory";
 import HugIcon, { type HugIconName } from "@/components/icons/HugIcon";
 import Accent from "@/components/home/Accent";
 import TeklifOnayla from "@/components/profil/TeklifOnayla";
+import { cookies, headers } from "next/headers";
+import { after } from "next/server";
+import { acilisKaydet } from "@/lib/satis/acilis";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = { title: "Umre teklifiniz" };
 
-export default async function TeklifSayfasi({ params }: { params: Promise<{ token: string }> }) {
+export default async function TeklifSayfasi({ params, searchParams }: { params: Promise<{ token: string }>; searchParams: Promise<{ onizleme?: string }> }) {
   const d = await getDosya("token", (await params).token);
   if (!d || d.status === "iptal" || !d.data.kalemler.length) notFound();
+  // Açılma kaydı (21 Ekim): sayfa gönderildikten sonra yazılır; botlar, admin önizlemesi ve admin oturumu sayılmaz
+  const [h, c, sp] = await Promise.all([headers(), cookies(), searchParams]);
+  const acilan = { ua: h.get("user-agent") ?? "", ip: h.get("x-forwarded-for")?.split(",")[0]?.trim() || h.get("x-real-ip"), admin: Boolean(c.get("admin_token")), onizleme: sp.onizleme === "1" };
+  after(() => acilisKaydet(d.id, acilan));
   const x = d.data;
   const t = genelToplam(x);
   const net = toplam(x);

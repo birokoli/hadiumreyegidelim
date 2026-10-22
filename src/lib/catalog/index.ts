@@ -55,7 +55,7 @@ export const monthLabel = (ym: string) => `${MONTH_TR[Number(ym.slice(5, 7)) - 1
 export async function queryCatalog(): Promise<CatalogItem[]> {
   await ensureCatalogSchema();
   // Tek seferlik veri düzeltmesi (2 Ekim); hata olursa katalog yine okunur
-  await import("./data-fixes").then(async (m) => { await m.runDataFixesOnce(); await m.runDataFixesOnceB(); await m.runDataFixesOnceC(); await m.runDataFixesOnceD(); await m.runDataFixesOnceE(); await m.runDataFixesOnceF(); await m.runDataFixesOnceG(); await m.runDataFixesOnceH(); await m.runDataFixesOnceI(); await m.runDataFixesOnceJ(); await m.runDataFixesOnceK(); await m.runDataFixesOnceL(); await m.runDataFixesOnceM(); await m.runDataFixesOnceN(); await m.runDataFixesOnceO(); }).catch((e) => console.error("[data-fix]", e));
+  await import("./data-fixes").then(async (m) => { await m.runDataFixesOnce(); await m.runDataFixesOnceB(); await m.runDataFixesOnceC(); await m.runDataFixesOnceD(); await m.runDataFixesOnceE(); await m.runDataFixesOnceF(); await m.runDataFixesOnceG(); await m.runDataFixesOnceH(); await m.runDataFixesOnceI(); await m.runDataFixesOnceJ(); await m.runDataFixesOnceK(); await m.runDataFixesOnceL(); await m.runDataFixesOnceM(); await m.runDataFixesOnceN(); await m.runDataFixesOnceO(); await m.runDataFixesOnceP(); }).catch((e) => console.error("[data-fix]", e));
   const months = monthsFrom(currentMonth(), 13);
   const rows = await prisma.serviceLibrary.findMany({
     where: { isPublic: true, isActive: true },

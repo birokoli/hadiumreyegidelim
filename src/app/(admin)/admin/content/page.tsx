@@ -1,5 +1,6 @@
 "use client";
 import { SITE_URL } from "@/lib/seo/site";
+import { thToTd } from "@/lib/blog/table-html";
 import React, { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import dynamic from "next/dynamic";
 import "react-quill-new/dist/quill.snow.css";
@@ -1285,7 +1286,7 @@ export default function ContentPage() {
                    <div className="bg-white rounded-xl border border-outline-variant/30 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/10 transition-all">
                      <ReactQuill
                        theme="snow"
-                       value={newPost.content}
+                       value={thToTd(newPost.content)}
                        onChange={(val) => setNewPost(prev => ({...prev, content: val}))}
                        modules={modules}
                        className="min-h-[700px] text-lg"

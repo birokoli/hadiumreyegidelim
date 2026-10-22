@@ -479,3 +479,30 @@ export async function runDataFixesOnceO() {
     revalidateSiteSettings();
   } catch { /* önbellek tazeleme düzeltmeyi engellemez */ }
 }
+
+// On altıncı düzeltme (22 Ekim): editör (Quill) tablo başlık satırlarını tek hücreye ezmişti (26 yazı, 37 tablo).
+// Sözlük canlı sayfalardan çıkarıldı; birleşik metin hücrelere bölünür (content-fixes/tablo-basliklari.json, blog/table-html.ts).
+const FLAG_P = "DATA_FIX_2026_10_22_P";
+let ranP = false;
+export async function runDataFixesOnceP() {
+  if (ranP) return;
+  ranP = true;
+  if (await prisma.setting.findUnique({ where: { key: FLAG_P } })) return;
+  const { splitMergedHeaders } = await import("@/lib/blog/table-html");
+  const map = (await import("@/lib/content-fixes/tablo-basliklari.json")).default as Record<string, string[]>;
+  const posts = await prisma.post.findMany({ where: { content: { contains: "<table" } }, select: { id: true, slug: true, content: true } });
+  const log: Record<string, number> = {};
+  for (const post of posts) {
+    const { html, fixed } = splitMergedHeaders(post.content, map);
+    if (fixed.length) {
+      await prisma.post.update({ where: { id: post.id }, data: { content: html } });
+      log[post.slug] = fixed.length;
+    }
+  }
+  await prisma.setting.upsert({ where: { key: FLAG_P }, update: { value: JSON.stringify(log) }, create: { key: FLAG_P, value: JSON.stringify(log) } });
+  try {
+    const { revalidatePath } = await import("next/cache");
+    for (const slug of Object.keys(log)) revalidatePath(`/blog/${slug}`);
+  } catch { /* derleme sırasında çalıştıysa sayfalar zaten yeni içerikle üretilir */ }
+  console.log("[data-fix] 2026-10-22 P", log);
+}

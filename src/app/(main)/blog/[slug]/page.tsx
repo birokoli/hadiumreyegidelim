@@ -1,4 +1,5 @@
 import { SITE_URL } from "@/lib/seo/site";
+import { promoteHeaderRow } from "@/lib/blog/table-html";
 import HugIcon from "@/components/icons/HugIcon";
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
@@ -136,7 +137,7 @@ function cleanAndWrapTables(content: string): string {
 
   // Her <table>...</table> bloğunu scroll wrapper'a al
   const wrapped = content.replace(/<table[\s\S]*?<\/table>/gi, (match) => {
-    const clean = stripTableAttrs(match);
+    const clean = promoteHeaderRow(stripTableAttrs(match));
     return `<div class="table-scroll-wrapper">${clean}</div>`;
   });
 

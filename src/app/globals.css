@@ -186,6 +186,19 @@
   white-space: nowrap;
 }
 
+/* Editörden gelen tablolarda başlık satırı tbody'nin ilk satırıdır (blog/table-html.ts → promoteHeaderRow) */
+.blog-content table tbody tr th {
+  background-color: #003781 !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  padding: 12px 20px !important;
+  text-align: left !important;
+  font-size: 13px !important;
+  letter-spacing: 0.03em !important;
+  border: none !important;
+  vertical-align: bottom !important;
+}
+
 .blog-content table tbody tr {
   border-bottom: 1px solid #f1f5f9 !important;
   transition: background 0.15s;

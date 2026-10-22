@@ -107,7 +107,11 @@ export default async function Home() {
 
   // Varsayılan kapak: ana sayfa videosunun ilk karesi (eskiden 512 px'lik geçici bir Google görseli büyütülüyordu)
   const home_banner_image = settings.home_banner_image || "/images/hero-kabe.jpg";
-  const heroVideo = settings.HOME_HERO_VIDEO?.trim() || "";
+  // 22 Ekim: 20 MB'lık video her masaüstü ziyaretinde Supabase'den iniyordu ve aylık kotayı bitirdi (bütün yüklenen görseller
+  // 402 verdi). Aynı video sıkıştırılıp siteye kondu (8,8 MB, Vercel CDN); admin'den yeni video yüklenirse o kullanılır.
+  const HERO_VIDEO_SUPABASE = "https://rzvrlytisqemhmnaxqfy.supabase.co/storage/v1/object/public/uploads/anasayfa-video-1790720069230.mp4";
+  const heroSetting = settings.HOME_HERO_VIDEO?.trim() || "";
+  const heroVideo = heroSetting === HERO_VIDEO_SUPABASE ? "/video/anasayfa-kabe.mp4" : heroSetting;
   const home_banner_title = settings.HERO_TITLE || "Ruhunuzun Ritmini Kalabalıklara Teslim Etmeyin.";
   const home_banner_subtitle = settings.HERO_DESC || "Bireysel umrenizi planlayın: tarihinizi, Mekke ve Medine otelinizi seçin, kişi başı fiyatı hemen görün. Umre vizesi 2 saatte, otel ve transfer bizden.";
   const whatsappNumber = settings.WHATSAPP_NUMBER ? settings.WHATSAPP_NUMBER.replace('+', '') : "905404010038";

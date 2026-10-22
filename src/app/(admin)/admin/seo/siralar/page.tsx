@@ -15,6 +15,7 @@ export default function RankTrackingPage() {
   const dfsReady = useDataforseoReady();
   const needsKey = needsKeyError || dfsReady === false;
   const [problems, setProblems] = useState<string[]>([]);
+  const [failed, setFailed] = useState<string[]>([]);
 
   useEffect(() => {
     api<{ tracked: TrackedKeyword[] }>("/api/admin/seo/ranks").then((d) => setTracked(d.tracked)).catch((e) => setError(e.message));
@@ -23,13 +24,14 @@ export default function RankTrackingPage() {
   const call = async (body: unknown) => {
     setError("");
     try {
-      const d = await api<{ tracked: TrackedKeyword[]; cost?: number; errors?: string[] }>("/api/admin/seo/ranks", {
+      const d = await api<{ tracked: TrackedKeyword[]; cost?: number; errors?: string[]; failed?: string[] }>("/api/admin/seo/ranks", {
         method: "POST",
         body: JSON.stringify(body),
       });
       setTracked(d.tracked);
       if (d.cost != null) setCost(d.cost);
       setProblems(d.errors ?? []);
+      setFailed(d.failed ?? []);
       return true;
     } catch (e) {
       const err = e as Error & { needsKey?: boolean };
@@ -45,9 +47,10 @@ export default function RankTrackingPage() {
     if (await call({ action: "add", keywords })) setInput("");
   };
 
-  const check = async () => {
+  // keywords verilirse yalnızca onlar sorgulanır (hata verenleri yeniden denemek için; ücret de yalnızca onlar için)
+  const check = async (keywords?: string[]) => {
     setChecking(true);
-    await call({ action: "check" });
+    await call({ action: "check", ...(keywords ? { keywords } : {}) });
     setChecking(false);
   };
 
@@ -63,7 +66,7 @@ export default function RankTrackingPage() {
         title="Sıra takibi"
         lede="Seçtiğiniz kelimelerde sitenin Google'daki yeri; Türkiye, mobil sonuçlar, ilk 50 sıra. Her kontrol ayrı ücretlendirilir, bu yüzden otomatik değil, siz başlatırsınız."
       >
-        <button className="seo-btn" onClick={check} disabled={checking || list.length === 0 || needsKey}>
+        <button className="seo-btn" onClick={() => check()} disabled={checking || list.length === 0 || needsKey}>
           {checking ? "Kontrol ediliyor" : `${list.length} kelimeyi kontrol et`}
         </button>
       </PageHead>
@@ -72,6 +75,11 @@ export default function RankTrackingPage() {
       <ErrorLine>{error}</ErrorLine>
       {problems.length > 0 && (
         <ul className="mt-3 text-[13px] text-[var(--seo-danger)]">{problems.map((p) => <li key={p}>{p}</li>)}</ul>
+      )}
+      {failed.length > 0 && !checking && (
+        <button className="seo-btn mt-3" onClick={() => check(failed)}>
+          Hata veren {failed.length} kelimeyi yeniden dene
+        </button>
       )}
 
       {checking && (

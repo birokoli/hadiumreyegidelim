@@ -50,29 +50,41 @@ export async function POST(req: Request) {
   if (body.action === "check") {
     const targets = body.keywords?.length ? tracked.filter((t) => body.keywords!.includes(t.keyword)) : tracked;
     let cost = 0;
-    const errors: string[] = [];
+    const started = Date.now();
+    const failed = new Map<TrackedKeyword, string>();
     const date = new Date().toISOString();
-    let cursor = 0;
-    const worker = async () => {
-      while (cursor < targets.length) {
-        const item = targets[cursor++];
-        try {
-          const { data, cost: c } = await checkSerpPosition(item.keyword, SITE_DOMAIN);
-          cost += c;
-          item.history = [...item.history, { date, position: data.position, url: data.url }].slice(-60);
-          item.topThree = data.topThree;
-        } catch (e) {
-          // bağlantı yoksa hepsi aynı hatayı verir; ilkinde dur
-          if (e instanceof Error && e.message.includes("bağlı değil")) return dfsErrorResponse(e);
-          errors.push(`${item.keyword}: ${e instanceof Error ? e.message : e}`);
+    const run = (list: TrackedKeyword[], workers: number, until: number) => {
+      let cursor = 0;
+      const worker = async () => {
+        while (cursor < list.length && Date.now() - started < until) {
+          const item = list[cursor++];
+          try {
+            const { data, cost: c } = await checkSerpPosition(item.keyword, SITE_DOMAIN);
+            cost += c;
+            item.history = [...item.history, { date, position: data.position, url: data.url }].slice(-60);
+            item.topThree = data.topThree;
+            failed.delete(item);
+          } catch (e) {
+            // bağlantı yoksa hepsi aynı hatayı verir; ilkinde dur
+            if (e instanceof Error && e.message.includes("bağlı değil")) return dfsErrorResponse(e);
+            failed.set(item, e instanceof Error ? e.message : String(e));
+          }
         }
-      }
+      };
+      return Promise.all(Array.from({ length: workers }, worker));
     };
-    const results = await Promise.all(Array.from({ length: 5 }, worker));
-    const blocked = results.find((r) => r instanceof Response);
+    const blocked = (await run(targets, 5, 280_000)).find((r) => r instanceof Response);
     if (blocked) return blocked;
+    // 22 Ekim: 40101 (Google o an yanıt vermedi) 9 sn içindeki 3 denemede geçmeyebiliyor. Süre yetiyorsa 10 sn bekleyip
+    // düşen kelimeleri daha yavaş (2 paralel) bir kez daha dene; yetmezse ekrandaki "Hata verenleri yeniden dene" kullanılır.
+    const transient = [...failed].filter(([, m]) => m.includes("40101")).map(([t]) => t);
+    if (transient.length && Date.now() - started < 220_000) {
+      await new Promise((r) => setTimeout(r, 10_000));
+      await run(transient, 2, 250_000); // maxDuration 300 sn: yeni sorgu 250. saniyeden sonra başlamaz
+    }
+    const errors = [...failed].map(([t, m]) => `${t.keyword}: ${m}`);
     await writeJson(SEO_KEYS.tracked, tracked);
-    return NextResponse.json({ tracked, cost, errors });
+    return NextResponse.json({ tracked, cost, errors, failed: [...failed.keys()].map((t) => t.keyword) });
   }
 
   return NextResponse.json({ error: "Bilinmeyen işlem." }, { status: 400 });

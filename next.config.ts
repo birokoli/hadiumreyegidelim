@@ -4,6 +4,7 @@ const nextConfig: NextConfig = {
   // Yorum paylaşım görseli fontları ve görselleri dosyadan okur; Vercel fonksiyonuna dahil edilmeli
   outputFileTracingIncludes: {
     "/api/admin/reviews/[id]/image": ["./public/fonts/Poppins-*.ttf", "./public/images/hero-kabe.jpg", "./public/hadiumreyegidelim.svg"],
+    "/api/og/story": ["./public/logo-beyaz.svg"],
   },
   // Sayfalar build sırasında veritabanından önceden üretilir. İki Vercel projesi aynı anda
   // build ederken bağlantı sınırına takılmamak için işçi ve eş zamanlılık sınırlı; düşen

@@ -1,6 +1,8 @@
 // /api/og/story?campaign={slug}&ref={code}
 // Şablon 1 (campaign.imageUrl varsa): Foto — kırmızı banner, tırtıklı rozetler, yeşil WA CTA
 // Şablon 2 (imageUrl yoksa):          Koyu lacivert — büyük beyaz başlık, özellikler, indirim kartı
+import { readFileSync } from 'fs';
+import path from 'path';
 import { ImageResponse } from 'next/og';
 import { NextRequest } from 'next/server';
 import { prisma } from '@/lib/prisma';
@@ -92,6 +94,13 @@ const waIconSvg = 'data:image/svg+xml;base64,' + Buffer.from(
 
 const e = React.createElement;
 
+// Yeni dikey logo (25 Ekim): eski "hadi umreye / gidelim.com" yazısı yerine public/logo-beyaz.svg (fotoğrafta lacivert kart içinde)
+let beyazLogo: string | null = null;
+function logo() {
+  beyazLogo ??= 'data:image/svg+xml;base64,' + readFileSync(path.join(process.cwd(), 'public', 'logo-beyaz.svg')).toString('base64');
+  return beyazLogo;
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // ŞABLON 1: Fotoğraflı (kırmızı banner, tırtıklı rozet, yeşil CTA)
 // ─────────────────────────────────────────────────────────────────────────────
@@ -142,12 +151,10 @@ function buildPhotoTemplate(
     ),
 
     // Logo
-    e('div', { style: { position: 'absolute', top: 1700, left: 0, width: 1080, display: 'flex', flexDirection: 'column', alignItems: 'center', color: NAVY } },
-      e('div', { style: { display: 'flex', flexDirection: 'row', alignItems: 'flex-end' } },
-        e('span', { style: { fontSize: 90, fontWeight: 600 } }, 'hadi'),
-        e('span', { style: { fontSize: 90, fontWeight: 800, marginLeft: 16 } }, 'umreye'),
+    e('div', { style: { position: 'absolute', top: 1665, left: 0, width: 1080, display: 'flex', flexDirection: 'column', alignItems: 'center', color: NAVY } },
+      e('div', { style: { display: 'flex', backgroundColor: NAVY, borderRadius: 26, padding: 20 } },
+        e('img', { src: logo(), width: 117, height: 120 }),
       ),
-      e('div', { style: { fontSize: 44, fontWeight: 600, color: NAVY, marginTop: 4 } }, 'gidelim.com'),
       handle ? e('div', { style: { fontSize: 28, color: 'rgba(255,255,255,0.6)', marginTop: 14 } }, handle + ' \u00f6nerisiyle') : null,
     ),
   );
@@ -179,9 +186,7 @@ function buildDarkTemplate(
     // ── ÜST: site adı + eyebrow + başlık + alt metin ──────────────────────
     e('div', { style: { display: 'flex', flexDirection: 'column' } },
 
-      e('div', { style: { fontSize: 26, fontWeight: 600, color: 'rgba(255,255,255,0.35)', marginBottom: 80, display: 'flex' } },
-        'hadiumreyegidelim.com'
-      ),
+      e('img', { src: logo(), width: 107, height: 110, style: { marginBottom: 70 } }),
 
       e('div', { style: { fontSize: 24, fontWeight: 700, color: GOLD, letterSpacing: 5, marginBottom: 36, display: 'flex' } },
         eyebrow.toUpperCase()

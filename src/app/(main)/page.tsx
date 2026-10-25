@@ -18,6 +18,7 @@ import ReviewCard from "@/components/reviews/ReviewCard";
 import ReviewSlider from "@/components/reviews/ReviewSlider";
 import Accent from "@/components/home/Accent";
 import NiyetBand from "@/components/home/NiyetBand";
+import RamazanBandi from "@/components/home/RamazanBandi";
 import { cairo, ruqaa } from "@/components/home/fonts";
 
 // Başlıkta *vurgu* yoksa son kelime serif italik vurgulanır (MBD ritmi); admin metninde *…* ile seçilebilir
@@ -159,6 +160,9 @@ export default async function Home() {
           </div>
         </div>
       </section>
+
+      {/* ─── Ramazan 2027 (25 Ekim): hero'nun hemen altında, paketlerden ayrı ─── */}
+      <RamazanBandi />
 
       {/* ─── Hızlı erişim ──────────────────────────────────── */}
       <nav aria-label="Hızlı erişim" className="w-full bg-white border-b border-outline-variant/20">

@@ -2,6 +2,7 @@
 // işaret varsa adım bir daha çalışmaz. Değişiklikten önce yazının hali PostVersion'a kaydedilir (admin'den geri alınabilir).
 import { prisma } from "@/lib/prisma";
 import * as A from "./address-yazisi";
+import * as R from "./ramazan-yazisi";
 import { VIZE_ACIKLAMA, VIZE_BASLIK, VIZE_BIRLESEN_SLUGLAR, VIZE_ICERIK, VIZE_SSS as BIRLESIK_SSS, VIZE_TLDR as BIRLESIK_TLDR } from "./vize-birlesik";
 
 /**
@@ -133,6 +134,40 @@ async function addressTaslak() {
   console.log("[blog] Address Jabal Omar taslağı", var_ ? "zaten vardı" : "eklendi");
 }
 
+/** Ramazan 2027 yazısı (25 Ekim, kullanıcı: rezervasyon sistemini tamamlayan blog; Ramazan sayfasıyla birlikte yayına). Yayında eklenir. */
+async function ramazanYazisi() {
+  const ISARET = "VERI_ADIMI_BLOG_RAMAZAN_2027";
+  if (await prisma.setting.findUnique({ where: { key: ISARET } })) return;
+  const var_ = await prisma.post.findUnique({ where: { slug: R.RAMAZAN_YAZI_SLUG }, select: { id: true } });
+  if (!var_) {
+    const [kategori, yazar] = await Promise.all([
+      prisma.category.findUnique({ where: { slug: "bireysel-umre" }, select: { id: true } }),
+      prisma.author.findFirst({ where: { name: { contains: "Yasin", mode: "insensitive" } }, select: { id: true, name: true } }),
+    ]);
+    await prisma.post.create({
+      data: {
+        slug: R.RAMAZAN_YAZI_SLUG,
+        title: R.RAMAZAN_YAZI_BASLIK,
+        metaTitle: R.RAMAZAN_YAZI_META,
+        description: R.RAMAZAN_YAZI_ACIKLAMA,
+        content: R.RAMAZAN_YAZI_ICERIK,
+        keywords: R.RAMAZAN_YAZI_ANAHTAR,
+        focusKeyword: R.RAMAZAN_YAZI_ODAK,
+        imageUrl: R.RAMAZAN_YAZI_GORSEL,
+        imageAlt: R.RAMAZAN_YAZI_GORSEL_ALT,
+        tldr: R.RAMAZAN_YAZI_TLDR,
+        faq: JSON.stringify(R.RAMAZAN_YAZI_SSS),
+        author: yazar?.name ?? "Hadi Umreye Gidelim",
+        authorId: yazar?.id ?? null,
+        categoryId: kategori?.id ?? null,
+        published: true,
+        scheduledAt: null,
+      },
+    });
+  }
+  await prisma.setting.create({ data: { key: ISARET, value: `${new Date().toISOString()} ${var_ ? "zaten vardı" : "yayında eklendi"}` } });
+}
+
 let calisti: Promise<void> | null = null;
 /** Blog yazısı sayfası açılırken çağrılır; süreç başına bir kez çalışır, hata sayfayı durdurmaz. */
 export function blogVeriAdimlari() {
@@ -141,6 +176,7 @@ export function blogVeriAdimlari() {
     await vizeBirlestir().catch((e) => console.error("[blog] vize birleştirme adımı", e));
     await vizeBirlestirDuzelt().catch((e) => console.error("[blog] vize birleştirme düzeltmesi", e));
     await addressTaslak().catch((e) => console.error("[blog] Address taslağı", e));
+    await ramazanYazisi().catch((e) => console.error("[blog] Ramazan yazısı", e));
   })();
   return calisti;
 }

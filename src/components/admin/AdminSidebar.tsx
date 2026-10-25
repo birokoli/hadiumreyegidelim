@@ -56,6 +56,12 @@ const menuGroups: { title: string; links: SidebarLink[] }[] = [
         permission: "orders",
       },
       {
+        href: "/admin/ramazan",
+        icon: "nights_stay",
+        label: "Ramazan 2027",
+        permission: "orders",
+      },
+      {
         href: "/admin/packages",
         icon: "inventory_2",
         label: "Ürün ve Fiyat",

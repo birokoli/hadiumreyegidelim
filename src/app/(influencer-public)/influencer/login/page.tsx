@@ -62,8 +62,8 @@ export default function InfluencerLoginPage() {
           <Image
             src="/marketing-logo.svg"
             alt="Hadi Umreye Gidelim"
-            width={280}
-            height={85}
+            width={124}
+            height={128}
             className="brightness-0 invert opacity-90"
             priority
           />
@@ -113,7 +113,7 @@ export default function InfluencerLoginPage() {
 
         {/* Mobil logo */}
         <div className="lg:hidden mb-10">
-          <Image src="/marketing-logo.svg" alt="Hadi Umreye Gidelim" width={210} height={64} priority />
+          <Image src="/marketing-logo.svg" alt="Hadi Umreye Gidelim" width={96} height={99} priority />
         </div>
 
         <div className="w-full max-w-[360px]">

@@ -14,10 +14,12 @@ export const metadata: Metadata = {
     default: "Hadi Umreye Gidelim | Umrenizi Kolayca Planlayın",
   },
   description: "Bireysel umre: otelinizi, transferinizi ve tarihlerinizi kendiniz seçin, fiyatı anında görün. Suudi Arabistan e-vize ve Türkçe rehberlik.",
-  keywords: ["bireysel umre", "bireysel umre vizesi", "bireysel umre nasıl yapılır", "bireysel umre vizesi nasıl alınır", "umre fiyatları 2026", "özel umre", "kendi imkanlarıyla umre", "vip umre"],
+  keywords: ["bireysel umre", "bireysel umre vizesi", "bireysel umre nasıl yapılır", "bireysel umre vizesi nasıl alınır", "umre fiyatları 2026", "özel umre", "kendi imkanlarıyla umre"],
   icons: {
     // Küçük dosyalar: eskiden 110 KB'lık logo.png her sayfada sekme simgesi olarak iniyordu
+    // 25 Ekim: yeni logo; sekme simgesi h sembolü (sosyal/marka-kiti/05-dijital/web-ikonlari)
     icon: [
+      { url: '/favicon.ico', sizes: 'any' },
       { url: '/icons/icon-48.png', sizes: '48x48', type: 'image/png' },
       { url: '/icons/icon-192.png', sizes: '192x192', type: 'image/png' },
     ],

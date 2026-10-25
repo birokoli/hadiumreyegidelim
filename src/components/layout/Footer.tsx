@@ -39,7 +39,7 @@ export default async function Footer({ logoUrl }: { logoUrl?: string }) {
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-12 mb-12">
             <div>
               <div className="mb-4">
-                <Image src={logoUrl || "/logo.png"} alt="Hadi Umreye" width={240} height={80} className="h-16 w-auto object-contain" />
+                <Image src={logoUrl || "/logo.svg"} alt="Hadi Umreye Gidelim" width={464} height={479} className="h-[72px] w-auto object-contain" />
               </div>
               <p className="font-label text-xs uppercase tracking-widest text-on-surface-variant">
                 © {new Date().getFullYear()} {t("copyright")}

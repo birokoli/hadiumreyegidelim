@@ -152,7 +152,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
 
         {/* Alt: logo sol, çağrı sağ */}
         <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between" }}>
-          <img src={dark ? a.logoWhite : a.logoNavy} alt="" width={story ? 160 : 150} height={story ? 118 : 111} />
+          <img src={dark ? a.logoWhite : a.logoNavy} alt="" width={story ? 132 : 122} height={story ? 136 : 126} />
           <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 10 }}>
             <span style={{ fontSize: 24, color: fgSoft }}>Umrenizi birlikte planlayalım</span>
             <div style={{ display: "flex", padding: "14px 28px", borderRadius: 999, backgroundColor: GOLD, color: DEEP, fontSize: 26, fontWeight: 700 }}>WhatsApp&apos;tan yazın</div>

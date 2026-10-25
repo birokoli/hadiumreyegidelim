@@ -19,7 +19,7 @@ export default async function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  let logoUrl = "/logo.png";
+  let logoUrl = "/logo.svg";
   try {
     const setting = await prisma.setting.findUnique({ where: { key: 'SITE_LOGO' } });
     if (setting?.value) {

@@ -233,7 +233,7 @@ export default function AdminSidebar({ logoUrl }: { logoUrl?: string }) {
         <div className="px-6 pt-7 pb-5 flex items-center justify-between shrink-0 border-b border-outline-variant/10">
           <Link href="/admin" className="flex items-center gap-2.5">
             {logoUrl ? (
-              <Image src={logoUrl} alt="Logo" width={130} height={40} className="w-auto h-8 object-contain" priority />
+              <Image src={logoUrl} alt="Hadi Umreye Gidelim" width={464} height={479} className="w-auto h-11 object-contain" priority />
             ) : (
               <div className="flex items-center gap-2">
                 <div className="w-7 h-7 bg-primary text-white rounded-lg flex items-center justify-center font-bold text-xs font-headline">HU</div>

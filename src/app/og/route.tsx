@@ -37,7 +37,7 @@ export async function GET(req: Request) {
         <img src={`${kok}/og/${gorsel}.jpg`} width={1200} height={630} style={{ position: "absolute", top: 0, left: 0, width: 1200, height: 630, objectFit: "cover" }} alt="" />
         <div style={{ position: "absolute", top: 0, left: 0, width: 1200, height: 630, display: "flex", backgroundImage: "linear-gradient(90deg, rgba(15,37,82,0.94) 0%, rgba(15,37,82,0.82) 34%, rgba(15,37,82,0.35) 58%, rgba(15,37,82,0) 75%)" }} />
         <div style={{ position: "absolute", top: 0, left: 0, width: 640, height: 630, display: "flex", flexDirection: "column", justifyContent: "space-between", padding: "48px 56px" }}>
-          <img src={`${kok}/email/logo-beyaz.png`} width={108} height={80} style={{ width: 108, height: 80 }} alt="" />
+          <img src={`${kok}/email/logo-beyaz.png`} width={92} height={95} style={{ width: 92, height: 95 }} alt="" />
           <div style={{ display: "flex", flexDirection: "column" }}>
             <div style={{ display: "flex", fontSize: 22, fontWeight: 700, letterSpacing: 4, color: "#f2dda6", textTransform: "uppercase" }}>{kicker}</div>
             <div style={{ display: "flex", width: 56, height: 5, borderRadius: 3, backgroundColor: "#f2dda6", margin: "16px 0 20px" }} />

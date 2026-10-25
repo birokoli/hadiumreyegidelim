@@ -94,7 +94,7 @@ export default async function Voucher({ params }: { params: Promise<{ token: str
 
           <section className="flex flex-wrap items-center justify-between gap-4 border-t border-[#e1e6ef] pt-4">
             <div className="flex items-center gap-3">
-              <Image src="/email/logo.png" alt="Hadi Umreye Gidelim" width={70} height={52} />
+              <Image src="/logo.svg" alt="Hadi Umreye Gidelim" width={52} height={54} />
               <div className="text-xs text-[#5b6680]"><p><b className="text-[#14213d]">Hadi Umreye Gidelim</b> · hadiumreyegidelim.com</p><p>WhatsApp +90 540 401 00 38 · info@hadiumreyegidelim.com</p></div>
             </div>
             <YazdirDugmesi />

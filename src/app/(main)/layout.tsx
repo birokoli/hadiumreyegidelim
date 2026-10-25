@@ -25,7 +25,7 @@ export default async function MainLayout({
     {label: "İletişim", url: "/iletisim"}
   ];
 
-  let logoUrl = "/logo.png";
+  let logoUrl = "/logo.svg";
 
   let navbarCtaText = "Niyet Et";
 

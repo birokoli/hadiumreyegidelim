@@ -25,7 +25,7 @@ export default function InfluencerSidebar() {
         {/* Logo */}
         <div className="px-6 py-5 border-b border-gray-100">
           <Link href="/" className="flex items-center gap-2.5">
-            <img src="/marketing-logo.png" alt="Logo" className="h-8 w-auto object-contain" />
+            <img src="/marketing-logo.svg" alt="Hadi Umreye Gidelim" className="h-10 w-auto object-contain" />
             <div>
               <p className="text-[13px] font-bold text-gray-900 leading-tight">Marketing</p>
               <p className="text-[11px] text-gray-400 leading-tight">Influencer Paneli</p>

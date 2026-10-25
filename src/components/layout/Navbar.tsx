@@ -29,7 +29,7 @@ export default function Navbar({ links, logoUrl, ctaText }: { links?: {label: st
     <nav className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-xl shadow-[0px_0px_32px_0px_rgba(0,0,0,0.04)]">
       <div className="flex justify-between items-center px-4 py-2 md:px-8 md:py-4 max-w-screen-2xl mx-auto">
         <Link href="/" className="hover:opacity-80 transition-opacity flex items-center shrink-0">
-          <Image src={logoUrl || "/logo.png"} alt="Hadi Umreye" width={280} height={96} sizes="(max-width: 768px) 160px, 280px" quality={80} className="h-[72px] md:h-[96px] w-auto object-contain -my-5 md:-my-6" priority />
+          <Image src={logoUrl || "/logo.svg"} alt="Hadi Umreye Gidelim" width={464} height={479} sizes="(max-width: 768px) 48px, 62px" className="h-[48px] md:h-[62px] w-auto object-contain" priority />
         </Link>
         <div className="hidden md:flex items-center space-x-12 font-headline font-medium text-sm tracking-wide">
           {menuLinks.map((link, idx) => (

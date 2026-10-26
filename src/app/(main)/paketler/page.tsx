@@ -42,7 +42,13 @@ export default async function PackagesPage() {
   const includeCounts = new Map<string, number>();
   for (const p of packages) {
     try {
-      for (const item of JSON.parse(p.includes ?? "[]") as string[]) includeCounts.set(item, (includeCounts.get(item) ?? 0) + 1);
+      // includes bazı paketlerde dizi değil düz metin; metni karakter karakter saymamak için ikisini de destekle
+      const parsed: unknown = JSON.parse(p.includes ?? "[]");
+      const items = Array.isArray(parsed) ? parsed : typeof parsed === "string" ? parsed.split(/[,\n]/) : [];
+      for (const raw of items) {
+        const item = String(raw).trim();
+        if (item.length > 2) includeCounts.set(item, (includeCounts.get(item) ?? 0) + 1);
+      }
     } catch {}
   }
   const common = [...includeCounts.entries()].filter(([, c]) => c >= Math.ceil(packages.length / 2)).sort((a, b) => b[1] - a[1]).slice(0, 6).map(([k]) => k);
@@ -51,11 +57,13 @@ export default async function PackagesPage() {
   const faq = [
     priced.length > 0 && {
       q: "Umre fiyatları 2026'da ne kadar?",
-      a: `Yayındaki paketlerimizde kişi başı fiyatlar ${usd(priced[0].price)}'dan başlıyor. Fiyat sabit değildir: seçtiğiniz otele, odadaki kişi sayısına ve seyahat ayına göre paket sayfasında anında hesaplanır. Uçak bileti fiyata dahil değildir, umre vizesi ayrıca alınır.`,
+      a: `Yayındaki paketlerimizde kişi başı fiyatlar ${usd(priced[0].price)}'dan başlıyor. Fiyat sabit değildir: seçtiğiniz otele, odadaki kişi sayısına ve seyahat ayına göre paket sayfasında anında hesaplanır. Paket adında “Vize Dahil” yazan paketlerde umre vizesi fiyata dahildir; uçak bileti dahil değildir.`,
     },
     days.length > 0 && {
       q: "Umre paketleri kaç gün sürer?",
-      a: `Şu anda yayında ${packages.length} paket var; süreler ${Math.min(...days)} gün ile ${Math.max(...days)} gün arasında değişir. Her paketin günlük programı kendi sayfasında yer alır.`,
+      a: Math.min(...days) === Math.max(...days)
+        ? `Şu anda yayında ${packages.length} paket var. Gece sayısını ve odadaki kişi sayısını paket sayfasında siz seçersiniz; fiyat seçiminize göre hesaplanır.`
+        : `Şu anda yayında ${packages.length} paket var; süreler ${Math.min(...days)} ile ${Math.max(...days)} gece arasında değişir. Her paketin seçenekleri kendi sayfasında yer alır.`,
     },
     common.length > 0 && {
       q: "Umre paketlerine neler dahil?",

@@ -75,7 +75,7 @@ export const PAGE_TEXTS: PageTextDef[] = [
       { key: "title", label: "Başlık (H1)", default: "Umre Fiyatları 2026 ve Paketler" },
       { key: "lead", label: "Giriş", multiline: true, default: "Paket fiyatlarımız sabit değildir: seçtiğiniz otele, kişi sayısına ve seyahat ayına göre hesaplanır. Her paketin kişi başı başlangıç fiyatını görün, otelinizi seçince fiyat anında güncellensin." },
       { key: "tours_kicker", label: "Turlar · Üst etiket", default: "Yayındaki paketler" },
-      { key: "tours_lead", label: "Turlar · Giriş", multiline: true, default: "Otel ve transferler paket fiyatına dahildir. Uçak bileti dahil değildir; umre vizesi ayrıca alınır." },
+      { key: "tours_lead", label: "Turlar · Giriş", multiline: true, default: "Otel, transfer ve umre vizesi paket fiyatına dahildir. Uçak bileti dahil değildir." },
       { key: "empty_state", label: "Boş durum mesajı", multiline: true, default: "Şu an için yayında olan bir umre paketi bulunmuyor. Tur planlamalarımız devam etmektedir, lütfen daha sonra tekrar kontrol edin." },
     ],
   },

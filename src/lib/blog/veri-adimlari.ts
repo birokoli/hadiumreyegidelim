@@ -168,6 +168,30 @@ async function ramazanYazisi() {
   await prisma.setting.create({ data: { key: ISARET, value: `${new Date().toISOString()} ${var_ ? "zaten vardı" : "yayında eklendi"}` } });
 }
 
+/**
+ * Paketler giriş metni (26 Ekim): admin'de kayıtlı "tours_lead" metni "umre vizesi ayrıca alınır" diyordu; paket adları "Vize Dahil".
+ * Yalnızca bu cümle değişir; metnin geri kalanı ve diğer alanlar korunur.
+ */
+async function paketlerVizeCumlesi() {
+  const ISARET = "VERI_ADIMI_PAKETLER_VIZE_CUMLESI";
+  if (await prisma.setting.findUnique({ where: { key: ISARET } })) return;
+  const kayit = await prisma.setting.findUnique({ where: { key: "PAGE_TEXTS:paketler" } });
+  let sonuc = "kayıt yok";
+  if (kayit?.value) {
+    const metinler = JSON.parse(kayit.value) as Record<string, string>;
+    const eski = metinler.tours_lead ?? "";
+    if (eski.includes("umre vizesi ayrıca alınır")) {
+      metinler.tours_lead = eski
+        .replace("Otel ve transferler paket fiyatına dahildir.", "Otel, transfer ve umre vizesi paket fiyatına dahildir.")
+        .replace(/;?\s*umre vizesi ayrıca alınır\.?/, ".")
+        .replace("..", ".");
+      await prisma.setting.update({ where: { key: kayit.key }, data: { value: JSON.stringify(metinler) } });
+      sonuc = `düzeltildi: ${metinler.tours_lead}`;
+    } else sonuc = "cümle yok";
+  }
+  await prisma.setting.create({ data: { key: ISARET, value: `${new Date().toISOString()} ${sonuc}` } });
+}
+
 let calisti: Promise<void> | null = null;
 /** Blog yazısı sayfası açılırken çağrılır; süreç başına bir kez çalışır, hata sayfayı durdurmaz. */
 export function blogVeriAdimlari() {
@@ -177,6 +201,7 @@ export function blogVeriAdimlari() {
     await vizeBirlestirDuzelt().catch((e) => console.error("[blog] vize birleştirme düzeltmesi", e));
     await addressTaslak().catch((e) => console.error("[blog] Address taslağı", e));
     await ramazanYazisi().catch((e) => console.error("[blog] Ramazan yazısı", e));
+    await paketlerVizeCumlesi().catch((e) => console.error("[blog] paketler vize cümlesi", e));
   })();
   return calisti;
 }

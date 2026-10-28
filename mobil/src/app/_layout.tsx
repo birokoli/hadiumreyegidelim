@@ -15,6 +15,7 @@ import { OturumSaglayici, useOturum } from "@/oturum/Oturum";
 import { bildirimleriKur, useBildirimDinleyici } from "@/bildirim/kurulum";
 import GirisEkrani from "@/ekranlar/Giris";
 import KilitEkrani from "@/ekranlar/Kilit";
+import Guncelleme from "@/ui/Guncelleme";
 import { ApiHatasi } from "@/api/istemci";
 import { R } from "@/tema";
 
@@ -51,7 +52,12 @@ function Icerik() {
   if (durum === "hazirlaniyor") return null;
   if (durum === "giris") return <GirisEkrani />;
   if (durum === "kilitli") return <KilitEkrani />;
-  return <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: R.zemin }, animation: "slide_from_right" }} />;
+  return (
+    <>
+      <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: R.zemin }, animation: "slide_from_right" }} />
+      <Guncelleme />
+    </>
+  );
 }
 
 export default function Kok() {

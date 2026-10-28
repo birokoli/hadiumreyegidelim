@@ -35,7 +35,8 @@ export default function Ayarlar() {
     const [bas, son] = ss === "yok" ? [null, null] : ss.split("-");
     kaydet.mutate({ kapali, sessizBas: bas, sessizSon: son });
   };
-  const yeni = s.data && s.data.surum !== SURUM && s.data.apk;
+  const sayi = (v: string) => v.split(".").map(Number).reduce((t, n, i) => t + (n || 0) * [10000, 100, 1][i]!, 0);
+  const yeni = s.data && s.data.apk && sayi(s.data.surum) > sayi(SURUM);
 
   return (
     <View style={{ flex: 1 }}>

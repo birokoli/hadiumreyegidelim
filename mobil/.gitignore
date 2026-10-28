@@ -51,3 +51,5 @@ firebase-hizmet-hesabi*.json
 
 # Derlenmiş APK'lar depoya girmez
 /apk
+# Firebase istemci ayarı (API anahtarı içerir): depo herkese açık, yalnızca bu bilgisayarda
+/google-services.json

@@ -192,6 +192,24 @@ async function paketlerVizeCumlesi() {
   await prisma.setting.create({ data: { key: ISARET, value: `${new Date().toISOString()} ${sonuc}` } });
 }
 
+/**
+ * Yasaklı "diyanetsiz" (28 Ekim): Google'da /blog/bireysel-umre-vize-maliyet-rehberi açıklaması "Diyanetsiz umreye gitmek mi
+ * istiyorsunuz?" diye görünüyordu. Açıklamasında geçen bütün yazılarda yalnızca bu ifade değişir.
+ */
+async function diyanetsizIfadesi() {
+  const ISARET = "VERI_ADIMI_BLOG_DIYANETSIZ";
+  if (await prisma.setting.findUnique({ where: { key: ISARET } })) return;
+  const yazilar = await prisma.post.findMany({ where: { description: { contains: "iyanetsiz", mode: "insensitive" } }, select: { id: true, slug: true, description: true } });
+  for (const y of yazilar) {
+    const yeni = (y.description ?? "")
+      .replace(/Diyanetsiz umreye gitmek mi istiyorsunuz\?/g, "Tur olmadan, kendi tarihinizde umreye gitmek mi istiyorsunuz?")
+      .replace(/diyanetsiz umre/gi, "tur olmadan umre")
+      .replace(/diyanetsiz/gi, "tursuz");
+    await prisma.post.update({ where: { id: y.id }, data: { description: yeni } });
+  }
+  await prisma.setting.create({ data: { key: ISARET, value: `${new Date().toISOString()} ${yazilar.map((y) => y.slug).join(", ") || "yok"}` } });
+}
+
 let calisti: Promise<void> | null = null;
 /** Blog yazısı sayfası açılırken çağrılır; süreç başına bir kez çalışır, hata sayfayı durdurmaz. */
 export function blogVeriAdimlari() {
@@ -202,6 +220,7 @@ export function blogVeriAdimlari() {
     await addressTaslak().catch((e) => console.error("[blog] Address taslağı", e));
     await ramazanYazisi().catch((e) => console.error("[blog] Ramazan yazısı", e));
     await paketlerVizeCumlesi().catch((e) => console.error("[blog] paketler vize cümlesi", e));
+    await diyanetsizIfadesi().catch((e) => console.error("[blog] diyanetsiz ifadesi", e));
   })();
   return calisti;
 }

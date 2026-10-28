@@ -246,38 +246,40 @@ async function bireyselUmreSeo() {
  * blog yazılarında VIP, lüks, eşsiz, 7/24, kesintisiz, "Harem'e sıfır" ve TÜRSAB geçti. Sıra önemlidir (özelden genele).
  * Ürün "garanti"si gibi meşru kullanımlar listede yok. Her değişen yazının önceki hali PostVersion'a kaydedilir. Adres (slug) değişmez.
  */
+// Yazı içeriğinde bazı boşluklar bölünmez boşluk (U+00A0/U+202F) olarak saklı; sayfa bunları gösterirken normalleştirir.
+// Bu yüzden kurallardaki boşluklar (?:\s|&nbsp;)+ ile yazılır (28 Ekim, ilk iki adımda "7/24 sunduğu" eşleşmedi).
 const YASAKLI_DEGISIM: [RegExp, string][] = [
-  [/\(VIP\)\s*ve\s*/g, ""],
-  [/balayı\/VIP konseptinde/g, "balayı konseptinde"],
-  [/VIP transfer/g, "özel transfer"],
-  [/VIP Transfer/g, "Özel Transfer"],
-  [/VIP araç/g, "özel araç"],
-  [/VIP otel/g, "Harem'e yakın otel"],
-  [/VIP Otel/g, "Harem'e Yakın Otel"],
-  [/VIP Paketler/g, "Özel Paketler"],
-  [/VIP Seçenekler/g, "Özel Seçenekler"],
-  [/VIP İpuçları/g, "İpuçları"],
+  [/\(VIP\)(?:\s|&nbsp;)*ve(?:\s|&nbsp;)*/g, ""],
+  [/balayı\/VIP(?:\s|&nbsp;)+konseptinde/g, "balayı konseptinde"],
+  [/VIP(?:\s|&nbsp;)+transfer/g, "özel transfer"],
+  [/VIP(?:\s|&nbsp;)+Transfer/g, "Özel Transfer"],
+  [/VIP(?:\s|&nbsp;)+araç/g, "özel araç"],
+  [/VIP(?:\s|&nbsp;)+otel/g, "Harem'e yakın otel"],
+  [/VIP(?:\s|&nbsp;)+Otel/g, "Harem'e Yakın Otel"],
+  [/VIP(?:\s|&nbsp;)+Paketler/g, "Özel Paketler"],
+  [/VIP(?:\s|&nbsp;)+Seçenekler/g, "Özel Seçenekler"],
+  [/VIP(?:\s|&nbsp;)+İpuçları/g, "İpuçları"],
   [/\bVIP\b/g, "özel"],
-  [/Harem['’]e sıfır/g, "Harem'e çok yakın"],
-  [/Kabe['’]ye sıfır/g, "Kabe'ye çok yakın"],
-  [/7\/24'e yakın hizmet/g, "gün boyunca hizmet"],
-  [/7\/24 /g, ""],
-  [/komisyon farksız ve garantili olarak/g, "komisyon farksız"],
-  [/vaktini garanti altına alan/g, "vaktini planlayan"],
-  [/Kesintisiz Kabe erişimi/g, "Doğrudan Kabe erişimi"],
+  [/Harem['’]e(?:\s|&nbsp;)+sıfır/g, "Harem'e çok yakın"],
+  [/Kabe['’]ye(?:\s|&nbsp;)+sıfır/g, "Kabe'ye çok yakın"],
+  [/7\/24'e(?:\s|&nbsp;)+yakın(?:\s|&nbsp;)+hizmet/g, "gün boyunca hizmet"],
+  [/7\/24(?:\s|&nbsp;)+/g, ""],
+  [/komisyon(?:\s|&nbsp;)+farksız(?:\s|&nbsp;)+ve(?:\s|&nbsp;)+garantili(?:\s|&nbsp;)+olarak/g, "komisyon farksız"],
+  [/vaktini(?:\s|&nbsp;)+garanti(?:\s|&nbsp;)+altına(?:\s|&nbsp;)+alan/g, "vaktini planlayan"],
+  [/Kesintisiz(?:\s|&nbsp;)+Kabe(?:\s|&nbsp;)+erişimi/g, "Doğrudan Kabe erişimi"],
   [/(?<!\p{L})(kesintisiz)(?!\p{L})/gu, "sürekli"],
   [/(?<!\p{L})(Kesintisiz)(?!\p{L})/gu, "Sürekli"],
-  [/eşsiz bireysel umre deneyimleri sunuyor/g, "bireysel umre planlaması sunuyor"],
-  [/eşsiz bir fırsat/g, "değerli bir fırsat"],
-  [/eşsiz atmosfer/g, "manevi atmosfer"],
+  [/eşsiz(?:\s|&nbsp;)+bireysel(?:\s|&nbsp;)+umre(?:\s|&nbsp;)+deneyimleri(?:\s|&nbsp;)+sunuyor/g, "bireysel umre planlaması sunuyor"],
+  [/eşsiz(?:\s|&nbsp;)+bir(?:\s|&nbsp;)+fırsat/g, "değerli bir fırsat"],
+  [/eşsiz(?:\s|&nbsp;)+atmosfer/g, "manevi atmosfer"],
   [/(?<!\p{L})(eşsiz)(?!\p{L})/gu, "özel"],
   [/(?<!\p{L})(Eşsiz)(?!\p{L})/gu, "Özel"],
-  [/Lüks Umre Paketleri/g, "Üst Segment Umre Paketleri"],
+  [/Lüks(?:\s|&nbsp;)+Umre(?:\s|&nbsp;)+Paketleri/g, "Üst Segment Umre Paketleri"],
   [/(?<!\p{L})(LÜKS)(?!\p{L})/gu, "ÜST SEGMENT"],
   [/(?<!\p{L})(Lüks)(?!\p{L})/gu, "Üst segment"],
   [/(?<!\p{L})(lüks)(?!\p{L})/gu, "üst segment"],
-  [/TÜRSAB üyeliğini/g, "turizm lisansını"],
-  [/TÜRSAB üyelik sorgusu/g, "Turizm lisansı sorgusu"],
+  [/TÜRSAB(?:\s|&nbsp;)+üyeliğini/g, "turizm lisansını"],
+  [/TÜRSAB(?:\s|&nbsp;)+üyelik(?:\s|&nbsp;)+sorgusu/g, "Turizm lisansı sorgusu"],
   [/TÜRSAB/g, "turizm lisansı"],
 ];
 const yasakliTemizle = (t: string) => YASAKLI_DEGISIM.reduce((s, [re, yeni]) => s.replace(re, yeni), t);
@@ -315,8 +317,7 @@ async function yasakliIfadeler() {
  * biyografisini kapsamıyordu; canlı taramada "VIP araçlar", "(VIP) ve" bunlardan geliyordu. Yeni eklenen kurallar
  * (7/24'e yakın, garantili) için yazı alanları da yeniden geçilir. Yazar biyografisinin önceki hali işarete yazılır.
  */
-async function yasakliIfadeler2() {
-  const ISARET = "VERI_ADIMI_BLOG_YASAKLI_IFADE_2";
+async function yasakliIfadeler2(ISARET = "VERI_ADIMI_BLOG_YASAKLI_IFADE_2") {
   if (await prisma.setting.findUnique({ where: { key: ISARET } })) return;
   const yazilar = await prisma.post.findMany({ select: { id: true, slug: true, title: true, metaTitle: true, description: true, content: true, tldr: true, faq: true, personalExperience: true } });
   const degisen: string[] = [];
@@ -367,6 +368,8 @@ export function blogVeriAdimlari() {
     await bireyselUmreSeo().catch((e) => console.error("[blog] bireysel umre SEO", e));
     await yasakliIfadeler().catch((e) => console.error("[blog] yasaklı ifadeler", e));
     await yasakliIfadeler2().catch((e) => console.error("[blog] yasaklı ifadeler 2", e));
+    // 3. geçiş: bölünmez boşluklu metinler (kurallar \s+ ile)
+    await yasakliIfadeler2("VERI_ADIMI_BLOG_YASAKLI_IFADE_3").catch((e) => console.error("[blog] yasaklı ifadeler 3", e));
   })();
   return calisti;
 }

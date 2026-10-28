@@ -1,7 +1,7 @@
 // Talepler: iletişim formu ve planlayıcıdan gelenler (Gelen Kutusu), CRM, müşteri havuzu. Ramazan ayrı ekranda.
 import { useMemo, useState } from "react";
 import { FlatList, RefreshControl, View } from "react-native";
-import { router } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { useCrm, useHavuz, useIletisim } from "@/veri/sorgular";
 import { Arama, Ayrac, Baslik, Bos, Dugme, HataKutusu, Rozet, Satir, Segment, Yukleniyor } from "@/ui/temel";
 import { goreli } from "@/ui/bicim";
@@ -11,7 +11,8 @@ type Sekme = "gelen" | "crm" | "havuz";
 const CRM_ASAMA: Record<string, string> = { NEW: "Yeni", IN_DISCUSSION: "Görüşmede", QUOTATION_SENT: "Teklif gönderildi", WON: "Kazanıldı", LOST: "Kaybedildi" };
 
 export default function Talepler() {
-  const [sekme, setSekme] = useState<Sekme>("gelen");
+  const p = useLocalSearchParams<{ sekme?: Sekme }>();
+  const [sekme, setSekme] = useState<Sekme>(p.sekme === "crm" || p.sekme === "havuz" ? p.sekme : "gelen");
   const [ara, setAra] = useState("");
   const gelen = useIletisim();
   const crm = useCrm();

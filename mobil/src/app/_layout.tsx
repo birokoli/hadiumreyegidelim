@@ -5,7 +5,8 @@ import { StatusBar } from "expo-status-bar";
 import * as SplashScreen from "expo-splash-screen";
 import { Stack } from "expo-router";
 import { useFonts, Cairo_400Regular, Cairo_500Medium, Cairo_600SemiBold, Cairo_700Bold, Cairo_800ExtraBold } from "@expo-google-fonts/cairo";
-import { QueryClient } from "@tanstack/react-query";
+import { QueryClient, focusManager, onlineManager } from "@tanstack/react-query";
+import { AppState } from "react-native";
 import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
 import { createAsyncStoragePersister } from "@tanstack/query-async-storage-persister";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -22,12 +23,20 @@ SplashScreen.preventAutoHideAsync();
 const qc = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 30_000,
+      staleTime: 15_000,
+      refetchOnWindowFocus: true,
       gcTime: 7 * 86_400_000,
       retry: (n, e) => !(e instanceof ApiHatasi && [401, 403, 404].includes(e.durum)) && n < 2,
     },
   },
 });
+// Admin paneliyle senkron: uygulama öne gelince açık ekranların verisi sunucudan yeniden okunur (aynı veritabanı)
+focusManager.setEventListener((tazele) => {
+  const abone = AppState.addEventListener("change", (s) => tazele(s === "active"));
+  return () => abone.remove();
+});
+onlineManager.setOnline(true);
+
 const saklayici = createAsyncStoragePersister({ storage: AsyncStorage, key: "hy-onbellek" });
 
 function Icerik() {

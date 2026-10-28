@@ -3,9 +3,9 @@
 // Hesaplar sitenin src/lib/satis/ortak.ts dosyasından (web paneliyle birebir aynı).
 import { useState } from "react";
 import { Alert, Linking, Share, Switch, View } from "react-native";
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import { useQueryClient } from "@tanstack/react-query";
-import { API_URL, istek } from "@/api/istemci";
+import { istek } from "@/api/istemci";
 import { useDosya, type DosyaAyrinti } from "@/veri/sorgular";
 import {
   ASAMALAR, KALEM_TURLERI, KART_PAYI, KDV_ETIKETI, alisToplam, asamaLabel, faturaGece, genelToplam, geceSayisi, gunKaldi, kalemToplam, kartPayiOf, kartla, kdvTutari,
@@ -90,7 +90,7 @@ export default function DosyaEkrani() {
         baslik={x.musteriAdi}
         alt={`${d.no} · ${asamaLabel(d.status)}`}
         geri
-        sag={<IkonDugme ikon="web" etiket="Web panelinde aç" onPress={() => Linking.openURL(`${API_URL}/admin/satis/${d.no}`)} />}
+        sag={<IkonDugme ikon="kalem" etiket="Tam düzenleme" onPress={() => router.push({ pathname: "/panel", params: { yol: `/admin/satis/${d.no}`, baslik: d.no } })} />}
       />
       <Ekran yenile={q.refetch} yenileniyor={q.isRefetching}>
         {/* Hızlı işlemler */}
@@ -150,7 +150,7 @@ export default function DosyaEkrani() {
         </Bolum>
 
         {/* Kalemler */}
-        <Bolum baslik={`Kalemler (${x.kalemler.length})`}>
+        <Bolum baslik={`Kalemler (${x.kalemler.length})`} sag={<Dugme metin="Düzenle" kucuk tur="hafif" onPress={() => router.push({ pathname: "/panel", params: { yol: `/admin/satis/${d.no}`, baslik: d.no } })} />}>
           <Kart style={{ padding: 0, overflow: "hidden" }}>
             {x.kalemler.length ? x.kalemler.map((k, i) => (
               <View key={k.id}>
@@ -162,7 +162,7 @@ export default function DosyaEkrani() {
                   sag={<Yazi tur="govde" style={{ fontFamily: Y.kalin }}>{usd(kalemToplam(k))}</Yazi>}
                 />
               </View>
-            )) : <View style={{ padding: 16 }}><Yazi tur="kucuk">Henüz kalem yok. Teklif kalemleri web panelinden eklenir.</Yazi></View>}
+            )) : <View style={{ padding: 16, gap: 8 }}><Yazi tur="kucuk">Henüz kalem yok.</Yazi><Dugme metin="Kalem ve fiyat ekle" ikon="kalem" kucuk tur="hafif" onPress={() => router.push({ pathname: "/panel", params: { yol: `/admin/satis/${d.no}`, baslik: d.no } })} /></View>}
           </Kart>
         </Bolum>
 

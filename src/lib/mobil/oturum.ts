@@ -39,6 +39,13 @@ export function ensureMobilSchema() {
         "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP
       )`,
       `CREATE INDEX IF NOT EXISTS "MobilBildirim_admin_idx" ON "MobilBildirim"("adminId", "createdAt" DESC)`,
+      `CREATE TABLE IF NOT EXISTS "MobilGecis" (
+        "ozet" TEXT PRIMARY KEY,
+        "adminId" TEXT NOT NULL,
+        "cihazId" TEXT NOT NULL,
+        "bitis" TIMESTAMP(3) NOT NULL,
+        "kullanildi" BOOLEAN NOT NULL DEFAULT FALSE
+      )`,
       `CREATE TABLE IF NOT EXISTS "MobilTercih" (
         "adminId" TEXT PRIMARY KEY,
         "kapali" TEXT NOT NULL DEFAULT '[]',
@@ -60,7 +67,7 @@ const yeniAnahtar = () => crypto.randomBytes(32).toString("base64url");
 export type MobilCihaz = { id: string; adminId: string; ad: string; platform: string; uygulamaSurumu: string | null; bildirimAnahtari: string | null; iptal: boolean; sonGorulme: Date; createdAt: Date };
 
 /** Yönetici kimliğinden güncel oturum (yetkiler ve durum her yenilemede veritabanından okunur) */
-async function guncelOturum(adminId: string): Promise<Omit<AdminSession, "legacy"> | null> {
+export async function guncelOturum(adminId: string): Promise<Omit<AdminSession, "legacy"> | null> {
   if (adminId === LEGACY_ADMIN_ID) {
     const ad = await prisma.setting.findUnique({ where: { key: "ADMIN_USERNAME" } }).catch(() => null);
     return legacyAdminSession(ad?.value || "Yasin");
@@ -130,4 +137,28 @@ export async function cihazGecerli(cihazId: string | undefined) {
   await ensureMobilSchema();
   const rows = await prisma.$queryRawUnsafe<{ iptal: boolean }[]>(`SELECT "iptal" FROM "MobilCihaz" WHERE "id" = $1`, cihazId);
   return !!rows[0] && !rows[0].iptal;
+}
+
+/**
+ * Uygulama içinde web admin sayfası açmak için tek kullanımlık, 60 saniyelik geçiş kodu (28 Ekim, kullanıcı: "admin
+ * sayfasında ne yaparsam appte onu yapabilmeliyim"). Uygulama kodu alır, WebView /api/mobil/web-gecis?kod= adresini açar;
+ * sunucu admin çerezini yazıp istenen /admin sayfasına yönlendirir. Erişim anahtarı adres çubuğuna hiç yazılmaz.
+ */
+export async function webGecisKodu(adminId: string, cihazId: string) {
+  await ensureMobilSchema();
+  const kod = yeniAnahtar();
+  await prisma.$executeRawUnsafe(`DELETE FROM "MobilGecis" WHERE "bitis" < NOW() - INTERVAL '1 day'`);
+  await prisma.$executeRawUnsafe(`INSERT INTO "MobilGecis" ("ozet","adminId","cihazId","bitis") VALUES ($1,$2,$3,NOW() + INTERVAL '60 seconds')`, ozet(kod), adminId, cihazId);
+  return kod;
+}
+
+export async function webGecisKullan(kod: string) {
+  await ensureMobilSchema();
+  const rows = await prisma.$queryRawUnsafe<{ adminId: string; cihazId: string }[]>(
+    `UPDATE "MobilGecis" SET "kullanildi" = TRUE WHERE "ozet" = $1 AND NOT "kullanildi" AND "bitis" > NOW() RETURNING "adminId", "cihazId"`,
+    ozet(kod),
+  );
+  const g = rows[0];
+  if (!g || !(await cihazGecerli(g.cihazId))) return null;
+  return guncelOturum(g.adminId);
 }

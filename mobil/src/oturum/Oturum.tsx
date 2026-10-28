@@ -12,7 +12,7 @@ type Deger = {
   giris: (kullanici: string, sifre: string, cihazAdi: string) => Promise<void>;
   cikis: () => Promise<void>;
   kilidiAc: () => Promise<boolean>;
-  yetki: (y: "orders" | "marketing" | "content" | "dashboard" | "settings") => boolean;
+  yetki: (y: "orders" | "marketing" | "content" | "dashboard" | "settings" | "operations" | "users") => boolean;
 };
 
 const Baglam = createContext<Deger | null>(null);

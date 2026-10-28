@@ -4,7 +4,8 @@ import { View } from "react-native";
 import { useQuery } from "@tanstack/react-query";
 import { istek } from "@/api/istemci";
 import { useFiyatlar } from "@/veri/sorgular";
-import { Arama, Baslik, Satir, Segment, Yazi } from "@/ui/temel";
+import { Arama, Baslik, IkonDugme, Satir, Segment, Yazi } from "@/ui/temel";
+import { router } from "expo-router";
 import Liste from "@/ui/Liste";
 import { usd } from "@/ui/bicim";
 import { Y } from "@/tema";
@@ -25,7 +26,7 @@ export default function Fiyatlar() {
   }), [k.data, f.data, secAy, t]);
   return (
     <View style={{ flex: 1 }}>
-      <Baslik baslik="Hizmet fiyatları" alt={f.data?.payment.usdTry ? `1 $ = ${f.data.payment.usdTry} TL · IBAN +%${f.data.payment.ibanPercent} · kart +%${f.data.payment.cardPercent}` : undefined} geri />
+      <Baslik baslik="Hizmet fiyatları" alt={f.data?.payment.usdTry ? `1 $ = ${f.data.payment.usdTry} TL · IBAN +%${f.data.payment.ibanPercent} · kart +%${f.data.payment.cardPercent}` : undefined} geri sag={<IkonDugme ikon="kalem" etiket="Fiyatları düzenle" onPress={() => router.push({ pathname: "/panel", params: { yol: "/admin/fiyat-teklifleri/hizmetler/fiyatlar", baslik: "Aylık fiyatlar" } })} />} />
       <View style={{ paddingHorizontal: 16, gap: 8, paddingBottom: 8 }}>
         <Arama deger={t} degisti={setT} yer="Otel, transfer, vize…" />
         <Segment secenekler={aylar.map((m) => ({ deger: m, etiket: `${AY[Number(m.slice(5, 7)) - 1]} ${m.slice(2, 4)}` }))} deger={secAy ?? ""} degisti={setAy} />

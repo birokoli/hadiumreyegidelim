@@ -48,3 +48,6 @@ example
 # İmza anahtarı ve Firebase hizmet hesabı asla depoya girmez
 *.keystore
 firebase-hizmet-hesabi*.json
+
+# Derlenmiş APK'lar depoya girmez
+/apk

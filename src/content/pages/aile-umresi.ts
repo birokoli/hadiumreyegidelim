@@ -24,13 +24,13 @@ const page: ContentPage = {
       paragraphs: [
         "Ailece yapılan umre seyahatlerinde otelin Harem-i Şerif'e yürüyüş mesafesinde olması büyük bir kolaylık sağlar. Bebek arabasıyla zorlanmadan Harem'e ulaşabilmek ya da çocuk acıktığında otele hızlıca dönebilmek seyahatin kalitesini artırır.",
         "Ayrıca ailelerin bir arada konaklamasına imkân tanıyan bağlantılı (family suite) odalar veya 3-4 kişilik geniş aile odaları tercih edilmelidir. Konaklama şartları ve resmî seyahat düzenlemeleri hakkında [resmî dinî duyuruları](https://www.diyanet.gov.tr/) inceleyebilirsiniz.",
-        "Harem avlusuna doğrudan geçişi olan veya tünel servisi kesintisiz çalışan oteller aile fertlerinin yorulmasını önler. Odalarda çocuk yatağı ve bebek karyolası imkânlarını önceden talep etmek faydalıdır.",
+        "Harem avlusuna doğrudan geçişi olan veya tünel servisi düzenli çalışan oteller aile fertlerinin yorulmasını önler. Odalarda çocuk yatağı ve bebek karyolası imkânlarını önceden talep etmek faydalıdır.",
         "Aile odalarında su ısıtıcı veya çocuk maması hazırlamaya elverişli alanların yer alması anne babaların günlük ihtiyaçlarını zorlanmadan karşılamalarına yardımcı olur.",
       ],
       table: {
         head: ["Yaş Grubu", "Seyahat İhtiyacı", "Tavsiye Edilen İmkanlar"],
         rows: [
-          ["Bebekler (0-2 yaş)", "Sık dinlenme, mama ve bebek arabası kullanımı", "Harem'e sıfır yürüme mesafeli oteller"],
+          ["Bebekler (0-2 yaş)", "Sık dinlenme, mama ve bebek arabası kullanımı", "Harem'e kısa yürüme mesafeli oteller"],
           ["Çocuklar (3-11 yaş)", "Esnek ibadet saatleri ve eğlenceli ziyaretler", "Geniş aile odaları ve klimalı transferler"],
           ["Gençler (12+ yaş)", "İbadet bilinci ve rehberli bilgilendirme", "Ziyaret yerleri turu ve ilahiyatçı sohbetleri"],
         ],
@@ -68,7 +68,7 @@ const page: ContentPage = {
         rows: [
           ["Family Suite", "Ailelerin bir arada kalmasını sağlayan bağlantılı geniş odalar"],
           ["Bebek Arabası Kulvarı", "Mescid-i Haram'da tekerlekli ve bebek arabaları için ayrılmış yollar"],
-          ["Özel Transfer", "Aileye özel VIP minibüs veya otomobil ile havalimanı ulaşımı"],
+          ["Özel Transfer", "Aileye özel minibüs veya otomobil ile havalimanı ulaşımı"],
           ["Esnek Program", "İbadet ve gezilerin ailenin keyfine göre ayarlandığı seyahat"],
         ],
       },

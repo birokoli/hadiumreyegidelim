@@ -241,6 +241,71 @@ async function bireyselUmreSeo() {
   await prisma.setting.create({ data: { key: ISARET, value: `${new Date().toISOString()} ${notlar.join(" | ") || "değişiklik yok"}` } });
 }
 
+/**
+ * Yasaklı ifade temizliği (28 Ekim, kullanıcı: "sitemde bu tür amatörlükler istemiyorum"): canlı site taramasında yayındaki
+ * blog yazılarında VIP, lüks, eşsiz, 7/24, kesintisiz, "Harem'e sıfır" ve TÜRSAB geçti. Sıra önemlidir (özelden genele).
+ * Ürün "garanti"si gibi meşru kullanımlar listede yok. Her değişen yazının önceki hali PostVersion'a kaydedilir. Adres (slug) değişmez.
+ */
+const YASAKLI_DEGISIM: [RegExp, string][] = [
+  [/\(VIP\)\s*ve\s*/g, ""],
+  [/balayı\/VIP konseptinde/g, "balayı konseptinde"],
+  [/VIP transfer/g, "özel transfer"],
+  [/VIP Transfer/g, "Özel Transfer"],
+  [/VIP araç/g, "özel araç"],
+  [/VIP otel/g, "Harem'e yakın otel"],
+  [/VIP Otel/g, "Harem'e Yakın Otel"],
+  [/VIP Paketler/g, "Özel Paketler"],
+  [/VIP Seçenekler/g, "Özel Seçenekler"],
+  [/VIP İpuçları/g, "İpuçları"],
+  [/\bVIP\b/g, "özel"],
+  [/Harem['’]e sıfır/g, "Harem'e çok yakın"],
+  [/7\/24 /g, ""],
+  [/Kesintisiz Kabe erişimi/g, "Doğrudan Kabe erişimi"],
+  [/(?<!\p{L})(kesintisiz)(?!\p{L})/gu, "sürekli"],
+  [/(?<!\p{L})(Kesintisiz)(?!\p{L})/gu, "Sürekli"],
+  [/eşsiz bireysel umre deneyimleri sunuyor/g, "bireysel umre planlaması sunuyor"],
+  [/eşsiz bir fırsat/g, "değerli bir fırsat"],
+  [/eşsiz atmosfer/g, "manevi atmosfer"],
+  [/(?<!\p{L})(eşsiz)(?!\p{L})/gu, "özel"],
+  [/(?<!\p{L})(Eşsiz)(?!\p{L})/gu, "Özel"],
+  [/Lüks Umre Paketleri/g, "Üst Segment Umre Paketleri"],
+  [/(?<!\p{L})(LÜKS)(?!\p{L})/gu, "ÜST SEGMENT"],
+  [/(?<!\p{L})(Lüks)(?!\p{L})/gu, "Üst segment"],
+  [/(?<!\p{L})(lüks)(?!\p{L})/gu, "üst segment"],
+  [/TÜRSAB üyeliğini/g, "turizm lisansını"],
+  [/TÜRSAB üyelik sorgusu/g, "Turizm lisansı sorgusu"],
+  [/TÜRSAB/g, "turizm lisansı"],
+];
+const yasakliTemizle = (t: string) => YASAKLI_DEGISIM.reduce((s, [re, yeni]) => s.replace(re, yeni), t);
+
+async function yasakliIfadeler() {
+  const ISARET = "VERI_ADIMI_BLOG_YASAKLI_IFADE_1";
+  if (await prisma.setting.findUnique({ where: { key: ISARET } })) return;
+  const yazilar = await prisma.post.findMany({ select: { id: true, slug: true, title: true, metaTitle: true, description: true, content: true, tldr: true, faq: true } });
+  const degisen: string[] = [];
+  for (const y of yazilar) {
+    const yeni = {
+      title: yasakliTemizle(y.title),
+      metaTitle: y.metaTitle ? yasakliTemizle(y.metaTitle) : y.metaTitle,
+      description: y.description ? yasakliTemizle(y.description) : y.description,
+      content: yasakliTemizle(y.content),
+      tldr: y.tldr ? yasakliTemizle(y.tldr) : y.tldr,
+      faq: y.faq ? yasakliTemizle(y.faq) : y.faq,
+    };
+    if (Object.entries(yeni).every(([k, v]) => v === (y as Record<string, unknown>)[k])) continue;
+    const sonVersiyon = await prisma.postVersion.findFirst({ where: { postId: y.id }, orderBy: { version: "desc" }, select: { version: true } });
+    await prisma.$transaction([
+      prisma.postVersion.create({
+        data: { postId: y.id, title: y.title, content: y.content, description: y.description, version: (sonVersiyon?.version ?? 0) + 1, savedBy: "veri adımı (yasaklı ifade temizliği öncesi)" },
+      }),
+      prisma.post.update({ where: { id: y.id }, data: yeni }),
+    ]);
+    degisen.push(y.slug);
+  }
+  await prisma.setting.create({ data: { key: ISARET, value: `${new Date().toISOString()} ${degisen.join(", ") || "yok"}` } });
+  console.log("[blog] yasaklı ifade temizliği", degisen.length);
+}
+
 let calisti: Promise<void> | null = null;
 /** Blog yazısı sayfası açılırken çağrılır; süreç başına bir kez çalışır, hata sayfayı durdurmaz. */
 export function blogVeriAdimlari() {
@@ -253,6 +318,7 @@ export function blogVeriAdimlari() {
     await paketlerVizeCumlesi().catch((e) => console.error("[blog] paketler vize cümlesi", e));
     await diyanetsizIfadesi().catch((e) => console.error("[blog] diyanetsiz ifadesi", e));
     await bireyselUmreSeo().catch((e) => console.error("[blog] bireysel umre SEO", e));
+    await yasakliIfadeler().catch((e) => console.error("[blog] yasaklı ifadeler", e));
   })();
   return calisti;
 }

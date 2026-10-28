@@ -2,10 +2,11 @@
 // "maliyeti" aramalarına sayfanın kendisi cevap versin. Fiyatlar uydurulmaz: hepsi kataloğun bu ayki fiyatlarından hesaplanır.
 // Program: docs/BIREYSEL-UMRE-SEO-PROGRAMI.md
 import Link from "next/link";
-import { currentMonth, monthLabel, priceFor, type CatalogItem } from "@/lib/catalog";
+import { currentMonth, monthLabel, priceFor, type CatalogItem, type PaymentSettings } from "@/lib/catalog";
 import { parseTransferSlug } from "@/lib/catalog/transfers";
 import { formatPrice } from "@/lib/format";
-import { Panel, Section, SectionHead } from "@/components/ui/kit";
+import { hotelNightCost } from "@/lib/pricing/plan";
+import { Section, SectionHead } from "@/components/ui/kit";
 
 /** Rehberde anlatılan altı adım; HowTo yerine düz içerik (Google HowTo zengin sonucunu kaldırdı) */
 export const NASIL_ADIMLAR = [
@@ -22,10 +23,11 @@ type Fiyat = { ad: string; usd: number } | null;
 const ay = currentMonth();
 const fiyat = (i: CatalogItem) => priceFor(i, ay);
 
-function enUygun(items: CatalogItem[]): Fiyat {
+/** En uygun kalem; kisi verilirse otelin o doluluktaki gecelik oda bedeli (planlayıcıyla aynı hesap) */
+function enUygun(items: CatalogItem[], kisi?: number): Fiyat {
   let best: Fiyat = null;
   for (const i of items) {
-    const p = fiyat(i);
+    const p = kisi ? hotelNightCost(i, ay, kisi) : fiyat(i);
     if (p != null && (!best || p < best.usd)) best = { ad: i.name, usd: p };
   }
   return best;
@@ -35,6 +37,7 @@ function enUygun(items: CatalogItem[]): Fiyat {
 export function maliyetVerisi(catalog: CatalogItem[]) {
   const otel = (sehir: string) => catalog.filter((i) => i.category === "hotel" && i.city?.toLocaleLowerCase("tr") === sehir);
   const yakin = (list: CatalogItem[]) => list.filter((i) => i.distanceMeters != null && i.distanceMeters <= 400);
+  const besYildiz = (list: CatalogItem[]) => list.filter((i) => (i.hotelStars ?? 0) >= 5);
   const transfer = (rota: string) => {
     const i = catalog.find((x) => {
       const t = parseTransferSlug(x.slug);
@@ -43,14 +46,24 @@ export function maliyetVerisi(catalog: CatalogItem[]) {
     const p = i ? fiyat(i) : null;
     return p != null ? { ad: "Toyota Camry", usd: p } : null;
   };
+  // Katalogda vize kalemi yoksa planlayıcıdaki sabit fiyat (kişi başı 140 USD; src/lib/pricing/plan.ts)
   const vize = catalog.find((i) => i.category === "vize");
-  const vizeUsd = vize ? fiyat(vize) : null;
+  const vizeUsd = vize ? fiyat(vize) : 140;
   return {
     ay,
     mekke: enUygun(otel("mekke")),
     mekkeYakin: enUygun(yakin(otel("mekke"))),
     medine: enUygun(otel("medine")),
     medineYakin: enUygun(yakin(otel("medine"))),
+    // Seviye hesabı için 2 kişilik oda bedeli
+    cift: {
+      mekke: enUygun(otel("mekke"), 2),
+      medine: enUygun(otel("medine"), 2),
+      mekkeYakin: enUygun(yakin(otel("mekke")), 2),
+      medineYakin: enUygun(yakin(otel("medine")), 2),
+      mekkeKonfor: enUygun(besYildiz(yakin(otel("mekke"))), 2),
+      medineKonfor: enUygun(besYildiz(yakin(otel("medine"))), 2),
+    },
     ciddeMekke: transfer("cidde-hav-mekke"),
     mekkeMedine: transfer("mekke-medine"),
     medineHav: transfer("medine-otel-hav"),
@@ -58,19 +71,21 @@ export function maliyetVerisi(catalog: CatalogItem[]) {
   };
 }
 
-/** Örnek hesap: 2 yetişkin, 1 oda, 4 gece Mekke + 3 gece Medine, en uygun oteller, sedan transfer, vize. Eksik kalem varsa null. */
-export function ornekHesap(m: ReturnType<typeof maliyetVerisi>) {
-  if (!m.mekke || !m.medine || !m.ciddeMekke || !m.mekkeMedine || !m.medineHav || !m.vize) return null;
-  const satirlar = [
-    { kalem: `Mekke oteli · 4 gece (${m.mekke.ad})`, usd: m.mekke.usd * 4 },
-    { kalem: `Medine oteli · 3 gece (${m.medine.ad})`, usd: m.medine.usd * 3 },
-    { kalem: "Transfer · Cidde Havalimanı → Mekke", usd: m.ciddeMekke.usd },
-    { kalem: "Transfer · Mekke → Medine", usd: m.mekkeMedine.usd },
-    { kalem: "Transfer · Medine oteli → Medine Havalimanı", usd: m.medineHav.usd },
-    { kalem: "Umre vizesi · 2 kişi", usd: m.vize.usd * 2 },
-  ];
-  const toplam = satirlar.reduce((s, x) => s + x.usd, 0);
-  return { satirlar, toplam, kisiBasi: toplam / 2 };
+/**
+ * Seviye hesabı (28 Ekim, AI alıntısı için): 2 yetişkin aynı odada, sedan transfer (Cidde → Mekke, Mekke → Medine,
+ * Medine → havalimanı), 2 vize. Kişi başı = toplam / 2. Uçak bileti hariç. Kalem eksikse o seviye gösterilmez.
+ */
+export function seviyeler(m: ReturnType<typeof maliyetVerisi>) {
+  const sabit = m.ciddeMekke && m.mekkeMedine && m.medineHav && m.vize ? m.ciddeMekke.usd + m.mekkeMedine.usd + m.medineHav.usd + m.vize.usd * 2 : null;
+  if (sabit == null) return [];
+  const kisiBasi = (mekke: Fiyat, medine: Fiyat, mGece: number, dGece: number) => (mekke && medine ? (mekke.usd * mGece + medine.usd * dGece + sabit) / 2 : null);
+  return [
+    { ad: "Ekonomik", aciklama: "En uygun Mekke ve Medine otelleri", mekke: m.cift.mekke, medine: m.cift.medine },
+    { ad: "Harem'e yakın", aciklama: "Harem'e 400 m içindeki en uygun oteller", mekke: m.cift.mekkeYakin, medine: m.cift.medineYakin },
+    { ad: "Konforlu", aciklama: "Harem'e 400 m içinde 5 yıldızlı oteller", mekke: m.cift.mekkeKonfor, medine: m.cift.medineKonfor },
+  ]
+    .map((x) => ({ ...x, yedi: kisiBasi(x.mekke, x.medine, 4, 3), on: kisiBasi(x.mekke, x.medine, 5, 5) }))
+    .filter((x) => x.yedi != null && x.on != null) as { ad: string; aciklama: string; mekke: Fiyat; medine: Fiyat; yedi: number; on: number }[];
 }
 
 const LINKLER = [
@@ -90,10 +105,15 @@ const SEHIRLER = [
 ] as const;
 
 const usd = (n: number) => formatPrice(Math.round(n));
+/** TL karşılığı yüzlüğe yuvarlanır (kur günlük değişir; kesin tutar teklifte) */
+const tl = (n: number, kur: number) => `${(Math.round((n * kur) / 100) * 100).toLocaleString("tr-TR")} TL`;
 
-export default function BireyselUmreRehberi({ catalog }: { catalog: CatalogItem[] }) {
+export default function BireyselUmreRehberi({ catalog, payment }: { catalog: CatalogItem[]; payment: PaymentSettings }) {
+  const { usdTry } = payment;
+  const kurTarihi = payment.rateDate && !Number.isNaN(new Date(payment.rateDate).getTime()) ? new Date(payment.rateDate).toLocaleDateString("tr-TR") : null;
   const m = maliyetVerisi(catalog);
-  const ornek = ornekHesap(m);
+  const seviye = seviyeler(m);
+  const ilk = seviye[0];
   const tablo = [
     { kalem: "Mekke oteli (1 oda, 1 gece)", en: m.mekke, yakin: m.mekkeYakin },
     { kalem: "Medine oteli (1 oda, 1 gece)", en: m.medine, yakin: m.medineYakin },
@@ -174,26 +194,48 @@ export default function BireyselUmreRehberi({ catalog }: { catalog: CatalogItem[
               </table>
             </div>
 
-            {ornek && (
-              <Panel tone="muted" className="mt-6 p-5 md:p-6">
-                <h3 className="font-headline text-lg font-bold text-primary">Örnek hesap: 2 kişi, 7 gece</h3>
-                <p className="text-[13px] text-on-surface-variant mt-1">1 oda, 4 gece Mekke + 3 gece Medine, en uygun oteller, sedan araçla transfer, 2 vize. Uçak bileti hariç.</p>
-                <ul className="mt-4 space-y-1.5 text-[14px]">
-                  {ornek.satirlar.map((s) => (
-                    <li key={s.kalem} className="flex justify-between gap-4">
-                      <span className="text-on-surface-variant">{s.kalem}</span>
-                      <span className="font-semibold text-on-surface whitespace-nowrap">{usd(s.usd)}</span>
-                    </li>
-                  ))}
-                </ul>
-                <div className="mt-4 pt-4 border-t border-outline-variant/40 flex flex-wrap justify-between gap-2 text-on-surface">
-                  <span className="font-semibold">Toplam: {usd(ornek.toplam)}</span>
-                  <span className="font-bold text-primary">Kişi başı: {usd(ornek.kisiBasi)}</span>
-                </div>
-                <p className="mt-3 text-[12.5px] text-on-surface-variant">
-                  Aynı odada 3–4 kişi kaldığınızda ve araç paylaşıldığında kişi başı tutar düşer. Kendi tarihinizle kesin fiyatı görmek için yukarıdaki planlayıcıyı kullanın.
+            {ilk && (
+              <div className="mt-8">
+                <h3 className="font-headline text-lg font-bold text-primary">Kişi başı bireysel umre fiyatı ({monthLabel(m.ay)})</h3>
+                <p className="mt-2 text-[15px] leading-relaxed text-on-surface">
+                  {monthLabel(m.ay)} fiyatlarıyla, 2 kişinin aynı odada kaldığı 10 gecelik (5 gece Mekke, 5 gece Medine) bireysel umre kişi başı{" "}
+                  <strong>{usd(ilk.on)}</strong>{usdTry ? <> (yaklaşık <strong>{tl(ilk.on, usdTry)}</strong>)</> : null}&apos;den başlar. Fiyat nakit ödemeye göredir; otel, sedan araçla üç transfer ve umre vizesi dahildir, uçak bileti dahil değildir.
                 </p>
-              </Panel>
+                <div className="mt-4 overflow-x-auto border border-outline-variant/30 bg-white">
+                  <table className="w-full text-[14px]">
+                    <thead className="bg-surface-container-low text-left text-on-surface">
+                      <tr>
+                        <th className="px-4 py-3 font-semibold">Seviye</th>
+                        <th className="px-4 py-3 font-semibold whitespace-nowrap">7 gece (4+3)</th>
+                        <th className="px-4 py-3 font-semibold whitespace-nowrap">10 gece (5+5)</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-outline-variant/30 text-on-surface-variant">
+                      {seviye.map((x) => (
+                        <tr key={x.ad}>
+                          <td className="px-4 py-3">
+                            <span className="block font-semibold text-on-surface">{x.ad}</span>
+                            <span className="block text-[12.5px]">{x.aciklama}</span>
+                          </td>
+                          <td className="px-4 py-3 whitespace-nowrap">
+                            <span className="block font-semibold text-on-surface">{usd(x.yedi)}</span>
+                            {usdTry ? <span className="block text-[12.5px]">≈ {tl(x.yedi, usdTry)}</span> : null}
+                          </td>
+                          <td className="px-4 py-3 whitespace-nowrap">
+                            <span className="block font-semibold text-on-surface">{usd(x.on)}</span>
+                            {usdTry ? <span className="block text-[12.5px]">≈ {tl(x.on, usdTry)}</span> : null}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <p className="mt-3 text-[12.5px] leading-relaxed text-on-surface-variant">
+                  Kişi başı tutar, 2 kişinin aynı odada kalmasına ve nakit ödemeye göredir; IBAN ile ödemede %{payment.ibanPercent}, kredi kartıyla %{payment.cardPercent} eklenir. Odada 3–4 kişi kaldığınızda ve araç paylaşıldığında kişi başı tutar düşer. Uçak bileti hariçtir.
+                  {usdTry ? ` TL karşılıkları ${kurTarihi ? `${kurTarihi} tarihli ` : ""}kurla (1 $ = ${usdTry.toLocaleString("tr-TR")} TL) hesaplanmış yaklaşık tutarlardır.` : ""}{" "}
+                  Kendi tarihinizle kesin fiyat için yukarıdaki planlayıcıyı kullanın.
+                </p>
+              </div>
             )}
           </div>
         </Section>

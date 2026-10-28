@@ -21,7 +21,7 @@ const page: ContentPage = {
         rows: [
           ["Seyahat Tarihi", "Kullanıcı istediği günü ve süreyi özgürce seçer", "Acente tarafından belirlenmiş sabit tarihler"],
           ["Otel Seçimi", "Harem'e yakınlık ve konfor tercihine göre bağımsız seçim", "Kafilenin konaklayacağı önceden seçilmiş oteller"],
-          ["Uçuş ve Transfer", "İstenen havayolu ve özel VIP transfer imkânı", "Grup uçuşları ve toplu otobüs transferleri"],
+          ["Uçuş ve Transfer", "İstenen havayolu ve özel araçla transfer imkânı", "Grup uçuşları ve toplu otobüs transferleri"],
           ["Program Esnekliği", "İbadet ve dinlenme saatleri kişiye göre ayarlanır", "Kafile saatlerine ve ortak plana uyma zorunluluğu"],
           ["Rehberlik Hizmeti", "Kişiye veya aileye özel ilahiyatçı rehber eşliği", "Tüm gruba ortak hizmet veren kafile rehberi"],
         ],
@@ -45,7 +45,7 @@ const page: ContentPage = {
     {
       h2: "Bireysel umre planlarken dikkat edilmesi gerekenler nelerdir?",
       paragraphs: [
-        "Kendi umrenizi planlarken ilk adım uçuş saatleri ile otel giriş-çıkış vakitlerini uyumlu hale getirmektir. Uçaktan indikten sonra Mekke veya Medine otelinize ulaşım için VIP transfer araçlarını önceden organize etmek yorgunluğu en aza indirir.",
+        "Kendi umrenizi planlarken ilk adım uçuş saatleri ile otel giriş-çıkış vakitlerini uyumlu hale getirmektir. Uçaktan indikten sonra Mekke veya Medine otelinize ulaşım için özel transfer aracını önceden organize etmek yorgunluğu en aza indirir.",
         "Ayrıca Harem-i Şerif'e yürüme mesafesinde olan otelleri seçmek, gün içinde ibadete gidiş gelişlerde zaman kazandırır. Mevcut hazır seyahat alternatiflerini görmek için [paketler sayfamızı](/paketler) veya özel rehber imkânları için [rehberlik sayfamızı](/rehberlik) ziyaret edebilirsiniz.",
         "Uçak biletlerinizi erken dönemde almak ve seyahat sağlık sigortanızı yaptırmak hazırlık sürecinizi sorunsuz tamamlamanızı sağlar.",
       ],
@@ -66,7 +66,7 @@ const page: ContentPage = {
           ["Bireysel Umre", "Tarih, otel ve transferlerin tamamen kişiye özel planlandığı umre"],
           ["Kafile Turu", "Belirli tarih ve program dahilinde grupça yapılan umre"],
           ["E-Vize", "Elektronik ortamda kısa sürede onaylanan Suudi Arabistan vizesi"],
-          ["Özel Transfer", "Havalimanı ve şehirler arası VIP araç ile ulaşım hizmeti"],
+          ["Özel Transfer", "Havalimanı ve şehirler arası özel araçla ulaşım hizmeti"],
           ["Özel Rehberlik", "Ziyaretler boyunca sadece aileye/kişiye özel sunulan rehberlik"],
         ],
       },

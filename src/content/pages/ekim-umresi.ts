@@ -32,7 +32,7 @@ const page: ContentPage = {
         rows: [
           ["İklim Durumu", "Mevsim şartlarına uygun hava dengesi", "Açık havada rahat ibadet"],
           ["Yoğunluk", "Döneme özgü ziyaretçi hareketliliği", "Ferah hareket ve tavaf alanı"],
-          ["Ulaşım", "Özel VIP araç ve hızlı tren", "Konforlu seyahat geçişleri"],
+          ["Ulaşım", "Özel araç (sedan, minivan) ve hızlı tren", "Konforlu seyahat geçişleri"],
           ["Rehberlik", "Kişiye ve aileye özel rehber", "Doğru ve huzurlu ibadet adımları"],
         ],
       },

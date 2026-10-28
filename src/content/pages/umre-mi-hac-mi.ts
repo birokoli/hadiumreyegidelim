@@ -31,7 +31,7 @@ const page: ContentPage = {
     {
       h2: "Hac vakti dışında umre yapmanın önemi nedir?",
       paragraphs: [
-        "Hac ibadeti belirli kontenjan ve kural kısıtlamalarına tabi olduğu için her yıl milyonlarca Müslüman arzulamasına rağmen hacca gidememektedir. Umre ise yıl boyu kesintisiz açık olduğu için Kutsal Toprakların özlemini dindirmek adına büyük bir imkân sunar.",
+        "Hac ibadeti belirli kontenjan ve kural kısıtlamalarına tabi olduğu için her yıl milyonlarca Müslüman arzulamasına rağmen hacca gidememektedir. Umre ise yıl boyunca yapılabildiği için Kutsal Toprakların özlemini dindirmek adına büyük bir imkân sunar.",
         "Özellikle Ramazan ayında yapılan umrenin sevabı ve manevi ecri hakkında müjdeler bulunmaktadır. Peygamber Efendimiz (s.a.v.) Ramazan umresinin faziletini övmüştür. Hac şartları ve resmî kural detayları için [resmî dinî bilgilendirmelerden](https://www.diyanet.gov.tr/) faydalanabilirsiniz.",
         "Yıl içinde istenen tarihte umre yapabilmek, seyahatinizi iş ve aile takviminize göre esnek şekilde organize etmenize imkân tanır. İster kış aylarında ister bahar döneminde Kutsal Mekânları ziyaret edebilirsiniz.",
       ],

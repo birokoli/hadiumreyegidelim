@@ -86,9 +86,13 @@ export default async function RootLayout({
       "telephone": `+${settings.WHATSAPP_NUMBER || '905404010038'}`,
       "address": {
         "@type": "PostalAddress",
+        "addressLocality": "Bakırköy",
+        "addressRegion": "İstanbul",
         "addressCountry": "TR"
       },
       "description": "Bireysel umre planlama: Mekke ve Medine otelleri, transfer, tren, rehberlik ve Suudi Arabistan e-vize.",
+      "knowsAbout": ["Bireysel umre", "Umre vizesi", "Mekke otelleri", "Medine otelleri", "Umre transferi", "Haremeyn hızlı treni", "Ravza randevusu"],
+      "areaServed": [{ "@type": "Country", "name": "Türkiye" }, { "@type": "City", "name": "Mekke" }, { "@type": "City", "name": "Medine" }],
       // Bağlı olduğumuz lisanslı acente (alt bilgide de küçük yazıyla görünür)
       "parentOrganization": {
         "@type": "TravelAgency",

@@ -5,10 +5,10 @@ const page: ContentPage = {
   group: "kisi",
   keyword: "yaşlılar için umre",
   title: "Yaşlılar İçin Umre: Konforlu Umre",
-  description: "Yaşlı büyüklerimiz için umre seyahati planlama rehberi. Harem'e sıfır oteller, tekerlekli sandalye desteği, refakatçi ve özel sağlık önerileri.",
+  description: "Yaşlı büyüklerimiz için umre seyahati planlama rehberi. Harem'e yakın oteller, tekerlekli sandalye desteği, refakatçi ve özel sağlık önerileri.",
   h1: "Yaşlılar için umre",
   lead:
-    "Yaşlılar için umre, fiziksel kısıtları ve yürüme zorlukları bulunan değerli büyüklerimizin ibadetlerini yorulmadan, huzur ve güven içinde eda edebilmeleri için özel olarak tasarlanan seyahat programıdır. Harem'e sıfır mesafedeki oteller, tekerlekli sandalye desteği ve düz ayak ulaşım imkânları yaşlılarımızın ibadet kalitesini artırır.",
+    "Yaşlılar için umre, fiziksel kısıtları ve yürüme zorlukları bulunan değerli büyüklerimizin ibadetlerini yorulmadan, huzur ve güven içinde eda edebilmeleri için özel olarak tasarlanan seyahat programıdır. Harem'e yürüme mesafesindeki oteller, tekerlekli sandalye desteği ve düz ayak ulaşım imkânları yaşlılarımızın ibadet kalitesini artırır.",
   sections: [
     {
       h2: "Yaşlı büyüklerimiz için umre seyahati nasıl kolaylaştırılır?",
@@ -31,7 +31,7 @@ const page: ContentPage = {
         head: ["Kriter", "Önerilen Standart", "Sağladığı Konfor"],
         rows: [
           ["Otel Konumu", "Harem avlusuna sıfır veya maks. 100 metre", "Uzun yürüyüş yapmadan ibadete katılma"],
-          ["Ulaşım", "VIP hususi araç veya hızlı tren", "Toplu taşıma yorgunluğunu önleme"],
+          ["Ulaşım", "Hususi araç veya hızlı tren", "Toplu taşıma yorgunluğunu önleme"],
           ["Oda Tipi", "Geniş banyolu ve engelsiz duşlu odalar", "Güvenli ve rahat kişisel bakım"],
           ["Rehberlik", "Özel ilahiyatçı rehber ve refakatçi", "İbadet adımlarında sürekli destek"],
         ],

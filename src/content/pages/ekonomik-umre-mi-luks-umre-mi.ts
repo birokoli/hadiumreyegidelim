@@ -8,7 +8,7 @@ const page: ContentPage = {
   description: "Ekonomik umre ile lüks umre arasındaki farklar, otel mesafeleri, servis imkânları, seyahat konforu ve bütçe planlama önerileri rehberinizde.",
   h1: "Ekonomik umre mi lüks umre mi?",
   lead:
-    "Ekonomik umre ile lüks umre arasındaki temel fark konaklanan otellerin Harem-i Şerif'e olan mesafesi, servis imkânları ve seyahat konforudur. Ekonomik umrede 24 saat kesintisiz çalışan servisli oteller tercih edilirken, lüks umrede Kâbe ve Mescid-i Nebevi avlusuna yürüme mesafesindeki oteller tercih edilir.",
+    "Ekonomik umre ile lüks umre arasındaki temel fark konaklanan otellerin Harem-i Şerif'e olan mesafesi, servis imkânları ve seyahat konforudur. Ekonomik umrede gün boyu çalışan servisli oteller tercih edilirken, lüks umrede Kâbe ve Mescid-i Nebevi avlusuna yürüme mesafesindeki oteller tercih edilir.",
   sections: [
     {
       h2: "Ekonomik ve lüks umre arasındaki temel farklar nelerdir?",
@@ -21,17 +21,17 @@ const page: ContentPage = {
         head: ["Kriter", "Ekonomik Umre", "Lüks Umre"],
         rows: [
           ["Otel Konumu", "Harem'e 1.5 - 3 km mesafede servisli oteller", "Mescid-i Haram ve Medine avlusuna sıfır oteller"],
-          ["Ulaşım & Transfer", "24 saat işleyen ücretsiz otobüs/servis hattı", "Yürüyerek Harem'e geçiş, VIP hususi araçlar"],
+          ["Ulaşım & Transfer", "Gün boyu işleyen ücretsiz otobüs/servis hattı", "Yürüyerek Harem'e geçiş, hususi araçlar"],
           ["Yemek Hizmeti", "Standart açık büfe veya set menü yemekler", "Zengin uluslararası açık büfe ve gurme lezzetler"],
           ["Süre & Esneklik", "Genellikle 10-14 günlük standart paketler", "İstenen gün sayısına göre esnek bireysel planlama"],
-          ["Rehberlik & Karşılama", "Ortak grup rehberliği ve karşılama", "Kişiye özel VIP karşılama ve özel ilahiyatçı rehber"],
+          ["Rehberlik & Karşılama", "Ortak grup rehberliği ve karşılama", "Kişiye özel karşılama ve özel ilahiyatçı rehber"],
         ],
       },
     },
     {
       h2: "Hangi umre seçeneği kimler için uygundur?",
       paragraphs: [
-        "Ekonomik umre programları, bütçesini korumak isteyen gençler, uzun süreli kalış planlayanlar ve yürüme engeli bulunmayan ziyaretçiler için gayet uygundur. Servisli oteller 24 saat kesintisiz Harem'e ring seferi düzenlediği için ibadetlere ulaşımda sıkıntı yaşanmaz.",
+        "Ekonomik umre programları, bütçesini korumak isteyen gençler, uzun süreli kalış planlayanlar ve yürüme engeli bulunmayan ziyaretçiler için gayet uygundur. Servisli oteller gün boyu Harem'e ring seferi düzenlediği için ibadetlere ulaşımda sıkıntı yaşanmaz.",
         "Lüks umre konsepti ise yaşlı yakınları olanlar, küçük çocuklu aileler, hareket kısıtlılığı bulunanlar ve zamandan tasarruf etmek isteyenler için büyük kolaylık sağlar. Otele girip çıkarken vakit kaybetmemek ibadete daha çok zaman ayırmayı mümkün kılar.",
         "Her iki seçenekte de Kâbe'deki ibadet ruhu ve maneviyat eksiksiz olarak yaşanır; seçim sadece kişisel önceliklere ve fiziksel imkânlara dayanır.",
       ],
@@ -48,7 +48,7 @@ const page: ContentPage = {
       h2: "Umre paketi seçerken nelere dikkat edilmeli?",
       paragraphs: [
         "Paket seçimi yaparken otelin Harem'e olan gerçek mesafesini, servis durumunu ve dahil olan hizmetleri mutlaka sorgulayın. Ayrıca havalimanı transferlerinin grup otobüsü mü yoksa hususi binek araç mı olduğu da konforu etkileyen unsurlardandır.",
-        "Güncel paket çeşitlerimizi incelemek için [paketler sayfamızı](/paketler), şehir içi VIP araç ve hızlı tren imkânları için ise [hizmetler sayfamızı](/hizmetler) ziyaret edebilirsiniz.",
+        "Güncel paket çeşitlerimizi incelemek için [paketler sayfamızı](/paketler), şehir içi özel araç ve hızlı tren imkânları için ise [hizmetler sayfamızı](/hizmetler) ziyaret edebilirsiniz.",
         "Ayrıca ilk defa gidecekseniz seyahat öncesi ibadet hazırlıklarınızı eksiksiz tamamlamak yolculuğunuzu daha anlamlı hale getirecektir. Ön bilgi edinmek manevi huzurunuzu güçlendirir.",
       ],
       bullets: [
@@ -67,7 +67,7 @@ const page: ContentPage = {
         rows: [
           ["Servisli Otel", "Harem'e otobüslerle 24 saat ring seferi sağlayan oteller"],
           ["Harem Önü Otel", "Kâbe veya Medine Mescidi avlusuna doğrudan açılan oteller"],
-          ["VIP Transfer", "Havalimanı ve şehirler arası hususi araçla ulaşım"],
+          ["Özel Transfer", "Havalimanı ve şehirler arası hususi araçla ulaşım"],
           ["Set Menü / Açık Büfe", "Otellerde sunulan beslenme ve yemek konseptleri"],
         ],
       },
@@ -76,7 +76,7 @@ const page: ContentPage = {
   faq: [
     {
       q: "Ekonomik umrede Harem'e ulaşım zor mudur?",
-      a: "Hayır. Ekonomik otellerin 24 saat kesintisiz çalışan ücretsiz Harem servisleri bulunur; servisler tüneller ve özel yollar üzerinden kısa sürede Harem'e ulaşır.",
+      a: "Hayır. Ekonomik otellerin gün boyu çalışan ücretsiz Harem servisleri bulunur; servisler tüneller ve özel yollar üzerinden kısa sürede Harem'e ulaşır.",
     },
     {
       q: "Lüks umre ile ekonomik umre arasında ibadet farkı var mıdır?",

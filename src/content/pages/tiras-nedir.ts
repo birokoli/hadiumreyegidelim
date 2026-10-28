@@ -40,7 +40,7 @@ const page: ContentPage = {
       h2: "Tıraş olmadan ihram yasakları kalkar mı?",
       paragraphs: [
         "Kâbe tavafı ve Safa-Merve sa'yı tamamlanmış olsa dahi tıraş olunmadığı sürece ihramlılık hâli hukuken devam eder. Tıraş olmadan ihram elbisesini çıkarmak, koku sürünmek veya ihram yasaklarını çiğnemek cezayı gerektirebilir.",
-        "Tıraşın usulüne uygun şekilde yapılmasıyla birlikte ihramın tüm yasakları kalkar ve günlük sivil kıyafetlere dönülür. Kendi turunu kendisi belirleyen ziyaretçilerimiz [Hadi Umreye Gidelim ile yaptıkları](/bireysel-umre) planlamalarda rehberlerimizden tıraş noktaları ve ihramdan çıkış adımları hakkında 7/24 rehberlik alabilirler. Ayrıca ilk defa gidenler [ilk umrem rehberi](/ilk-umrem) sayfamızı da inceleyebilirler.",
+        "Tıraşın usulüne uygun şekilde yapılmasıyla birlikte ihramın tüm yasakları kalkar ve günlük sivil kıyafetlere dönülür. Kendi turunu kendisi belirleyen ziyaretçilerimiz [Hadi Umreye Gidelim ile yaptıkları](/bireysel-umre) planlamalarda rehberlerimizden tıraş noktaları ve ihramdan çıkış adımları hakkında rehberlik alabilirler. Ayrıca ilk defa gidenler [ilk umrem rehberi](/ilk-umrem) sayfamızı da inceleyebilirler.",
         "İhramdan çıktıktan sonra Mekke'de geçirilen süre boyunca nafile ibadetlere, tavaflara ve dualara gönül rahatlığıyla devam edilebilir. İhram sonrasındaki ziyaretler ve ibadetler umre yolculuğunu manevi açıdan zenginleştirir.",
       ],
       bullets: [

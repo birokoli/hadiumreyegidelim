@@ -78,7 +78,7 @@ const page: ContentPage = {
     },
     {
       q: "Mekke ile Medine arasında ulaşım nasıl sağlanır?",
-      a: "İki şehir arasında Haramain Yüksek Hızlı Treni veya özel VIP transfer araçları ile konforlu ulaşım sağlanmaktadır.",
+      a: "İki şehir arasında Haramain Yüksek Hızlı Treni veya özel transfer araçlarıyla ulaşım sağlanmaktadır.",
     },
     {
       q: "Medine'de kaç gün kalınması tavsiye edilir?",

@@ -6,7 +6,7 @@ import HugIcon from "@/components/icons/HugIcon";
 import { SITE_URL } from "@/lib/seo/site";
 import { ButtonLink, Container, Faq, faqJsonLd, PageHero, Panel, Section, SectionHead, Steps } from "@/components/ui/kit";
 import { PageTrust, webPageJsonLd } from "@/components/seo/PageTrust";
-import BireyselUmreRehberi from "./Rehber";
+import BireyselUmreRehberi, { maliyetVerisi, seviyeler } from "./Rehber";
 import PlannerV2 from "@/components/planner/PlannerV2";
 import { getCatalog, monthsFrom, monthLabel, paymentSettingsFrom } from "@/lib/catalog";
 import { getSiteSettings } from "@/lib/site-settings";
@@ -70,7 +70,10 @@ export default async function BireyselUmrePage({ searchParams }: { searchParams:
   const [catalog, settings] = await Promise.all([getCatalog(), getSiteSettings().catch(() => ({} as Record<string, string>))]);
   const months = monthsFrom().map((m) => ({ value: m, label: monthLabel(m) }));
   const whatsappNumber = (settings.WHATSAPP_NUMBER || "905404010038").replace("+", "");
+  const payment = paymentSettingsFrom(settings);
   const url = `${SITE_URL}/bireysel-umre`;
+  // Kişi başı 10 gecelik seviye fiyatları (nakit, uçak hariç); şemada AggregateOffer olarak
+  const seviye = seviyeler(maliyetVerisi(catalog));
   const jsonLd = [
     {
       "@context": "https://schema.org",
@@ -88,6 +91,18 @@ export default async function BireyselUmrePage({ searchParams }: { searchParams:
       areaServed: [{ "@type": "City", name: "Mekke" }, { "@type": "City", name: "Medine" }],
       provider: { "@type": "TravelAgency", name: "Hadi Umreye Gidelim", url: SITE_URL },
       url,
+      ...(seviye.length
+        ? {
+            offers: {
+              "@type": "AggregateOffer",
+              priceCurrency: "USD",
+              lowPrice: Math.round(Math.min(...seviye.map((x) => x.on))),
+              highPrice: Math.round(Math.max(...seviye.map((x) => x.on))),
+              offerCount: seviye.length,
+              description: "Kişi başı, 10 gece (5 Mekke + 5 Medine), 2 kişi aynı odada; otel, transfer ve umre vizesi dahil, uçak bileti hariç, nakit ödeme.",
+            },
+          }
+        : {}),
     },
     faqJsonLd(FAQ),
     webPageJsonLd({ url, name: "Bireysel Umre 2026: Nasıl Yapılır, Fiyatı Ne Kadar?" }),
@@ -103,7 +118,7 @@ export default async function BireyselUmrePage({ searchParams }: { searchParams:
         lead={t("lead")}
       />
       <Container>
-        <PlannerV2 catalog={catalog} months={months} whatsappNumber={whatsappNumber} payment={paymentSettingsFrom(settings)} query={query} todayYmd={new Date().toLocaleDateString("en-CA", { timeZone: "Europe/Istanbul" })} vehicleImages={parseVehicleImages(settings[VEHICLE_IMAGES_SETTING_KEY])} />
+        <PlannerV2 catalog={catalog} months={months} whatsappNumber={whatsappNumber} payment={payment} query={query} todayYmd={new Date().toLocaleDateString("en-CA", { timeZone: "Europe/Istanbul" })} vehicleImages={parseVehicleImages(settings[VEHICLE_IMAGES_SETTING_KEY])} />
       </Container>
 
       <Section>
@@ -111,7 +126,7 @@ export default async function BireyselUmrePage({ searchParams }: { searchParams:
         <Steps items={STEPS} />
       </Section>
 
-      <BireyselUmreRehberi catalog={catalog} />
+      <BireyselUmreRehberi catalog={catalog} payment={payment} />
 
       <Section tone="muted">
         <SectionHead kicker={t("comp_kicker")} title={t("comp_title")} />

@@ -40,7 +40,7 @@ const page: ContentPage = {
       h2: "Öğrenciler için bütçe koruma önerileri nelerdir?",
       paragraphs: [
         "Öğrenci bütçesiyle seyahat ederken uçak biletlerini aylar öncesinden almak ve 3-4 kişilik oda paylaşımlarını tercih etmek ciddi bir bütçe avantajı sağlar.",
-        "Ayrıca Harem'e 24 saat ücretsiz servis imkânı sunan ekonomik otellerde konaklamak, hem bütçeyi korur hem de ibadetlere kesintisiz ulaşım imkânı verir.",
+        "Ayrıca Harem'e 24 saat ücretsiz servis imkânı sunan ekonomik otellerde konaklamak, hem bütçeyi korur hem de ibadetlere kolay ulaşım imkânı verir.",
         "Ortak bütçe planı yaparak yemek ve transfer harcamalarını bölüşmek seyahat maliyetini en aza indirir. Suudi Arabistan genelinde yerel toplu taşıma veya paylaşımlı araç kullanımı da öğrenci gruplarının seyahat harcamalarını kontrol altında tutmalarına yardımcı olan pratik çözümler arasındadır.",
         "Suudi Arabistan genelinde yerel toplu taşıma veya paylaşımlı araç kullanımı da öğrenci gruplarının seyahat harcamalarını kontrol altında tutmalarına yardımcı olan pratik çözümler arasındadır.",
       ],

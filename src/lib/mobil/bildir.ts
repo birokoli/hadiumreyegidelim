@@ -134,9 +134,10 @@ async function fcmGonder(h: Hesap, token: string, icerik: BildirimIcerik, olay: 
   }
 }
 
-export async function bildir(olay: Olay, icerik: BildirimIcerik) {
+/** yalniz: yalnızca bu yöneticiye (test bildirimi) */
+export async function bildir(olay: Olay, icerik: BildirimIcerik, yalniz?: string) {
   await ensureMobilSchema();
-  const liste = await alicilar(olay);
+  const liste = (await alicilar(olay)).filter((a) => !yalniz || a.adminId === yalniz);
   if (!liste.length) return;
   const h = hizmetHesabi();
   for (const a of liste) {

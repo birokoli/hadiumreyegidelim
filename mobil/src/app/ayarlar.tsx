@@ -65,6 +65,15 @@ export default function Ayarlar() {
               </View>
             ))}
           </Kart>
+          <Dugme metin="Test bildirimi gönder" ikon="zil" tur="hafif" kucuk onPress={async () => {
+            try {
+              await bildirimleriKur();
+              const r = await istek<{ fcm: boolean }>("/api/mobil/test-bildirim", { govde: {} });
+              Alert.alert(r.fcm ? "Gönderildi" : "Listeye eklendi", r.fcm ? "Birkaç saniye içinde telefona bildirim gelmeli." : "Sunucuda Firebase anahtarı yok; bildirim yalnızca uygulama içi listede.");
+            } catch (e) {
+              Alert.alert("Gönderilemedi", e instanceof Error ? e.message : "");
+            }
+          }} />
           <Yazi tur="etiket">Sessiz saatler</Yazi>
           <Segment secenekler={[{ deger: "yok", etiket: "Yok" }, { deger: "23:00-08:00", etiket: "23:00–08:00" }, { deger: "22:00-09:00", etiket: "22:00–09:00" }, { deger: "00:00-07:00", etiket: "00:00–07:00" }]} deger={sessiz} degisti={(v) => gonder({ sessiz: v })} />
           <Yazi tur="kucuk">Sessiz saatlerde telefona bildirim gelmez; olaylar Bildirimler listesinde görünür.</Yazi>

@@ -1,0 +1,39 @@
+{
+  "expo": {
+    "name": "Hadi Yönetim",
+    "slug": "hadi-yonetim",
+    "version": "1.0.0",
+    "orientation": "default",
+    "icon": "./assets/marka/ikon.png",
+    "scheme": "hadiyonetim",
+    "userInterfaceStyle": "light",
+    "backgroundColor": "#EDF1FE",
+    "android": {
+      "package": "com.hadiumreyegidelim.yonetim",
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "backgroundColor": "#203C76",
+        "foregroundImage": "./assets/marka/ikon-on.png",
+        "monochromeImage": "./assets/marka/ikon-tek-renk.png"
+      },
+      "predictiveBackGestureEnabled": true,
+      "permissions": ["android.permission.USE_BIOMETRIC", "android.permission.POST_NOTIFICATIONS"]
+    },
+    "plugins": [
+      "expo-router",
+      ["expo-splash-screen", { "backgroundColor": "#12295A", "image": "./assets/marka/acilis.png", "imageWidth": 180 }],
+      ["expo-notifications", { "icon": "./assets/marka/bildirim.png", "color": "#203C76" }],
+      "expo-secure-store",
+      ["expo-local-authentication", { "faceIDPermission": "Uygulamayı açmak için yüz tanıma kullanılır." }],
+      "expo-sharing",
+      "./eklentiler/imza.js"
+    ],
+    "extra": {
+      "apiUrl": "https://hadiumreyegidelim.com"
+    },
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    }
+  }
+}

@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { bildirArkada, kisaAd } from "@/lib/mobil/bildir";
 import { prisma } from "@/lib/prisma";
 import {
   conversationMemoryAsHistory,
@@ -68,6 +69,7 @@ export async function POST(request: Request) {
       },
     }),
   ]);
+  if (needsHuman) bildirArkada("whatsapp", { baslik: "WhatsApp: temsilci gerekiyor", govde: `${kisaAd(body.name)} · ${approvalRequired ? "Yönetici onayı bekleniyor" : ai.handoffReason || "Temsilci teyidi"}`, yol: `/whatsapp/${conversation.id}` });
   await prisma.$executeRawUnsafe(
     `UPDATE "WhatsAppConversation" SET "contextJson" = $1 WHERE "id" = $2`,
     contextJson,

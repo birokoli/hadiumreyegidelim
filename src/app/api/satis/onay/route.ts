@@ -1,5 +1,6 @@
 // Müşteri teklifi bağlantıdan onaylar (14 Ekim): dosya "Onaylandı" olur, geçmişe ve Gelen Kutusu'na düşer.
 import { NextResponse } from "next/server";
+import { bildirArkada, kisaAd } from "@/lib/mobil/bildir";
 import { prisma } from "@/lib/prisma";
 import { getDosya, saveDosya, teklifSuresiDoldu } from "@/lib/satis";
 import { rateLimit, getClientIp } from "@/lib/rate-limit";
@@ -12,6 +13,7 @@ export async function POST(req: Request) {
   if (d.status !== "talep" && d.status !== "teklif") return NextResponse.json({ ok: true });
   if (teklifSuresiDoldu(d.data.gecerlilik)) return NextResponse.json({ error: "Teklifin geçerlilik süresi dolmuş; güncel fiyat için WhatsApp'tan yazın." }, { status: 400 });
   await saveDosya(d.id, { status: "onaylandi" }, "Müşteri", "Müşteri teklifi bağlantıdan onayladı");
+  bildirArkada("teklif", { baslik: "Teklif onaylandı", govde: `${kisaAd(d.data.musteriAdi)} · ${d.no}`, yol: `/satis/${d.no}` });
   await prisma.contactRequest.create({ data: { name: d.data.musteriAdi, phone: d.phone || "-", package: "Teklif onayı", message: `${d.no} numaralı dosyanın teklifi müşteri tarafından onaylandı. Satış masasından ödeme ve sonraki adımlar.` } }).catch(() => {});
   return NextResponse.json({ ok: true });
 }

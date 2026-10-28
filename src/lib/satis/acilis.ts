@@ -3,6 +3,8 @@
 // sayfayı çeken botlar, admin'in "Teklif sayfası" düğmesi (?onizleme=1) ve admin oturumu açık tarayıcılar.
 // Dosya verisine (data.gecmis) yazılmaz: admin dosyayı kaydederken elindeki geçmişle üzerine yazabiliyor; ayrı tablo güvenli.
 import { createHash } from "node:crypto";
+import { bildirArkada, kisaAd } from "@/lib/mobil/bildir";
+import { getDosya } from "./index";
 import { prisma } from "@/lib/prisma";
 
 export type TeklifAcilis = { id: string; at: string; cihaz: string };
@@ -48,10 +50,16 @@ export async function acilisKaydet(dosyaId: string, o: { ua: string; ip: string 
       ? await prisma.$queryRawUnsafe<{ n: number }[]>(`SELECT COUNT(*)::int AS "n" FROM "TeklifAcilis" WHERE "dosyaId" = $1 AND "ipHash" = $2 AND "createdAt" > NOW() - INTERVAL '2 minutes'`, dosyaId, ipHash)
       : [{ n: 0 }];
     if (yakin[0]?.n) return;
+    // Mobil bildirim: dosyanın o günkü ilk açılışında (her yenilemede değil)
+    const bugun = await prisma.$queryRawUnsafe<{ n: number }[]>(`SELECT COUNT(*)::int AS "n" FROM "TeklifAcilis" WHERE "dosyaId" = $1 AND "createdAt" > NOW() - INTERVAL '20 hours'`, dosyaId);
     await prisma.$executeRawUnsafe(
       `INSERT INTO "TeklifAcilis" ("id","dosyaId","tur","cihaz","ipHash") VALUES ($1,$2,'teklif',$3,$4)`,
       `ta_${Date.now().toString(36)}${Math.random().toString(36).slice(2, 8)}`, dosyaId, cihazOf(o.ua), ipHash,
     );
+    if (!bugun[0]?.n) {
+      const d = await getDosya("id", dosyaId).catch(() => null);
+      if (d) bildirArkada("teklif", { baslik: "Teklif açıldı", govde: `${kisaAd(d.data.musteriAdi)} teklifine baktı · ${d.no}`, yol: `/satis/${d.no}` });
+    }
   } catch (e) {
     console.error("[teklif-acilis]", e);
   }

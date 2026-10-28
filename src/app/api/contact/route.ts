@@ -1,4 +1,5 @@
 import { NextResponse, after } from 'next/server';
+import { bildirArkada, kisaAd } from "@/lib/mobil/bildir";
 import { notifyNewLead } from '@/lib/lead-notify';
 import { prisma } from '@/lib/prisma';
 import { rateLimit, getClientIp } from '@/lib/rate-limit';
@@ -38,6 +39,7 @@ export async function POST(request: Request) {
 
     // Yöneticiye WhatsApp bildirimi yanıtı bekletmeden gönderilir
     after(() => notifyNewLead(newContact));
+    bildirArkada("talep", { baslik: "Yeni talep", govde: `${kisaAd(name)} · ${selectedPackage || subject || "iletişim formu"}`, yol: `/talepler/${newContact.id}` });
 
     return NextResponse.json({ success: true, ticket: ticketOf(newContact.id) });
   } catch (error) {

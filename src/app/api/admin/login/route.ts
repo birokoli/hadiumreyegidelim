@@ -1,7 +1,5 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
-import bcrypt from 'bcryptjs';
-import { createAdminToken, hashLegacyAdminPassword, legacyAdminSession, normalizePermissions, verifyLegacyAdminPassword } from '@/lib/admin-auth';
+import { adminKimlikDogrula, createAdminToken } from '@/lib/admin-auth';
 
 // ─── In-memory brute force protection ─────────────────
 // { ip -> { attempts, lockedUntil } }
@@ -66,82 +64,14 @@ export async function POST(request: Request) {
     const login = String(username || '').trim();
     const rawPassword = String(password || '');
 
-    const adminUser = await prisma.adminUser.findFirst({
-      where: {
-        OR: [
-          { username: login },
-          { email: login.toLowerCase() },
-        ],
-      },
-    }).catch(() => null);
-
-    if (adminUser) {
-      if (adminUser.status !== 'active') {
-        recordFailure(ip);
-        return NextResponse.json({ success: false, error: 'Bu yönetici hesabı pasif durumda.' }, { status: 403 });
-      }
-
-      const passwordValid = await bcrypt.compare(rawPassword, adminUser.password);
-      if (passwordValid) {
-        recordSuccess(ip);
-        await prisma.adminUser.update({
-          where: { id: adminUser.id },
-          data: { lastLoginAt: new Date() },
-        });
-
-        const adminToken = await createAdminToken({
-          id: adminUser.id,
-          name: adminUser.name,
-          username: adminUser.username,
-          email: adminUser.email,
-          role: adminUser.role,
-          permissions: normalizePermissions(adminUser.permissions),
-        });
-
-        const response = NextResponse.json({ success: true });
-        response.cookies.set({
-          name: 'admin_session',
-          value: 'true',
-          httpOnly: true,
-          path: '/',
-          secure: process.env.NODE_ENV === 'production',
-          sameSite: 'lax',
-          maxAge: 30 * 24 * 60 * 60,
-        });
-        response.cookies.set({
-          name: 'admin_token',
-          value: adminToken,
-          httpOnly: true,
-          path: '/',
-          secure: process.env.NODE_ENV === 'production',
-          sameSite: 'lax',
-          maxAge: 30 * 24 * 60 * 60,
-        });
-        return response;
-      }
+    const oturum = await adminKimlikDogrula(login, rawPassword);
+    if (oturum === 'pasif') {
+      recordFailure(ip);
+      return NextResponse.json({ success: false, error: 'Bu yönetici hesabı pasif durumda.' }, { status: 403 });
     }
-
-    // Check if a custom password hash exists in settings
-    const customPasswordSetting = await prisma.setting.findUnique({ where: { key: 'ADMIN_PASSWORD_HASH' } }).catch(() => null);
-    const customUsernameSetting = await prisma.setting.findUnique({ where: { key: 'ADMIN_USERNAME' } }).catch(() => null);
-
-    const validUsername = customUsernameSetting?.value || 'Yasin';
-    let passwordValid = false;
-    if (customPasswordSetting?.value) {
-      const check = await verifyLegacyAdminPassword(rawPassword, customPasswordSetting.value);
-      passwordValid = check.valid;
-      // Eski SHA-256 özeti ilk doğru girişte bcrypt'e çevrilir
-      if (check.valid && check.needsUpgrade && login === validUsername) {
-        await prisma.setting.update({ where: { key: 'ADMIN_PASSWORD_HASH' }, data: { value: await hashLegacyAdminPassword(rawPassword) } }).catch(() => null);
-      }
-    } else if (process.env.ADMIN_INITIAL_PASSWORD) {
-      // Şifre henüz ayarlanmadıysa yalnızca sunucu ortam değişkenindeki ilk şifre geçer
-      passwordValid = rawPassword === process.env.ADMIN_INITIAL_PASSWORD;
-    }
-
-    if (login === validUsername && passwordValid) {
+    if (oturum) {
       recordSuccess(ip);
-      const adminToken = await createAdminToken(legacyAdminSession(validUsername));
+      const adminToken = await createAdminToken(oturum);
       const response = NextResponse.json({ success: true });
       response.cookies.set({
         name: 'admin_session',

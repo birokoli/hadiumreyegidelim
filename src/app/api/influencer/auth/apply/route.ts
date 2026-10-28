@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { bildirArkada } from "@/lib/mobil/bildir";
 import { prisma } from '@/lib/prisma';
 import bcrypt from 'bcryptjs';
 
@@ -62,6 +63,7 @@ export async function POST(req: NextRequest) {
         tier: 'davetci',
       },
     });
+    bildirArkada("basvuru", { baslik: "Influencer başvurusu", govde: `${fullName.trim()}${instagramHandle ? ` · @${String(instagramHandle).replace(/^@/, "")}` : ""}`, yol: "/influencer/basvurular" });
 
     return NextResponse.json({ success: true });
   } catch (err) {

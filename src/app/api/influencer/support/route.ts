@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { bildirArkada } from "@/lib/mobil/bildir";
 import { cookies } from 'next/headers';
 import { verifyInfluencerToken } from '@/lib/influencer-auth';
 import { prisma } from '@/lib/prisma';
@@ -58,5 +59,6 @@ export async function POST(req: NextRequest) {
     data: { lastMessageAt: new Date(), unreadByAdmin: { increment: 1 } },
   });
 
+  bildirArkada("destek", { baslik: "Destek mesajı", govde: `${session.fullName ?? "Influencer"}: ${content.trim().slice(0, 90)}`, yol: `/destek/${chat.id}` });
   return NextResponse.json({ message });
 }

@@ -44,9 +44,15 @@ function requiredAdminPermission(pathname: string) {
   return null;
 }
 
+/** Mobil yönetim uygulaması (28 Ekim) anahtarı Authorization: Bearer ile gönderir; web paneli çerezle */
+function bearerToken(req: NextRequest) {
+  const h = req.headers.get('authorization') || '';
+  return h.toLowerCase().startsWith('bearer ') ? h.slice(7).trim() : null;
+}
+
 /** İmzalı admin_token'ı doğrular; admin_session=true çerezi tek başına yetki vermez */
 async function adminTokenPayload(req: NextRequest) {
-  const token = req.cookies.get('admin_token')?.value;
+  const token = req.cookies.get('admin_token')?.value || bearerToken(req);
   if (!token) return null;
   try {
     const { payload } = await jwtVerify(token, await getJwtKey());
@@ -88,6 +94,14 @@ export async function middleware(req: NextRequest) {
       return NextResponse.json({ error: 'Oturum gerekli.' }, { status: 401 });
     }
     if (!await hasAdminPermission(req, url)) return unauthorized(req);
+    // Bearer ile gelen istekte anahtar, route'ların okuduğu çerezlere çevrilir (route'lar cookies() ile okur)
+    const bearer = !req.cookies.get('admin_token') && bearerToken(req);
+    if (bearer) {
+      const headers = new Headers(req.headers);
+      const onceki = req.headers.get('cookie');
+      headers.set('cookie', `${onceki ? `${onceki}; ` : ''}admin_token=${bearer}; admin_session=true`);
+      return NextResponse.next({ request: { headers } });
+    }
     return NextResponse.next();
   }
 

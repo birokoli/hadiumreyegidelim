@@ -1,5 +1,6 @@
 // Ramazan 2027 umresi: GET müsaitlik ve fiyatlar (kişisel veri yok), POST rezervasyon (yer anında ayrılır, 24 saat içinde ödeme).
 import { NextResponse, after } from "next/server";
+import { bildirArkada, kisaAd } from "@/lib/mobil/bildir";
 import { prisma } from "@/lib/prisma";
 import { notifyNewLead } from "@/lib/lead-notify";
 import { rateLimit, getClientIp } from "@/lib/rate-limit";
@@ -60,6 +61,7 @@ export async function POST(request: Request) {
     `Yolcular: ${yolcular.join(", ")}`,
     eposta ? `E-posta: ${eposta}` : "",
   ].filter(Boolean).join("\n");
+  bildirArkada("ramazan", { baslik: "Ramazan rezervasyonu", govde: `${kisaAd(adSoyad)} · ${sonuc.paket} · ${kisi} kişi`, yol: "/ramazan" });
   after(async () => {
     const kayit = await prisma.contactRequest.create({ data: { name: adSoyad, phone: tel.phone, package: ozet, message: mesaj } }).catch(() => null);
     await notifyNewLead({ name: adSoyad, phone: tel.phone, package: ozet, message: mesaj });

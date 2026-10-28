@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { bildirArkada } from "@/lib/mobil/bildir";
 import { prisma } from '@/lib/prisma';
 import { getInfluencerSession } from '@/lib/influencer-auth';
 import { paylasimEkleri, paylasimKampanyaYaz } from '@/lib/marketing/paylasim';
@@ -52,6 +53,7 @@ export async function POST(req: NextRequest) {
     if (katilim) await paylasimKampanyaYaz(share.id, katilim.campaignId);
   }
 
+  bildirArkada("icerik", { baslik: "Yeni influencer içeriği", govde: `${session.fullName ?? "Influencer"} · ${platform}`, yol: "/influencer/icerikler" });
   return NextResponse.json({ success: true, share });
 }
 

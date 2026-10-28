@@ -1,6 +1,7 @@
 // Üye kaydı (13 Ekim): e-posta ve telefon kitapçık formundaki gibi kontrol edilir; KVKK onayı zorunlu, ticari ileti
 // izni isteğe bağlı. Üye aynı zamanda müşteri havuzuna "Üyelik" kaynağıyla (izin metniyle birlikte) yazılır.
 import { NextResponse } from "next/server";
+import { bildirArkada, kisaAd } from "@/lib/mobil/bildir";
 import bcrypt from "bcryptjs";
 import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
@@ -40,6 +41,7 @@ export async function POST(request: Request) {
     if (exists) return bad("Bu e-posta adresiyle zaten bir hesap var. Giriş yapın ya da şifrenizi sıfırlayın.", { field: "email", exists: true });
 
     const user = await prisma.user.create({ data: { name, email: e.email, password: await bcrypt.hash(password, 10), phone } });
+    bildirArkada("uye", { baslik: "Yeni üye", govde: kisaAd(name), yol: "/uyeler" });
     await createLead({ name, email: e.email, phone, source: "uyelik", marketingConsent: b.marketing === true, referrer: null, utm: String(b.utm ?? "").slice(0, 300) || null }).catch((err) => console.error("[uye-kayit] havuz", err));
     // Profil 2: izin kayıt formunda verildiyse tercihe yazılır (izin penceresi bir daha çıkmaz); verilmediyse pencere bir kez sorar
     if (b.marketing === true) await saveTercih(user.id, user.email, { izinEposta: true, izinWhatsapp: !!phone, soruldu: true }, "kayit", getClientIp(request)).catch((err) => console.error("[uye-kayit] tercih", err));

@@ -72,11 +72,12 @@ export function canManageUsers(session: AdminSession | null): boolean {
   return session.legacy || session.role === 'super_admin' || session.permissions.includes('users');
 }
 
-export async function createAdminToken(session: Omit<AdminSession, 'legacy'>) {
-  return new SignJWT(session)
+/** sure: web çerezinde 30 gün; mobil uygulamada 1 saatlik erişim anahtarı ve cihaz kimliği (cihaz) eklenir */
+export async function createAdminToken(session: Omit<AdminSession, 'legacy'>, sure = '30d', ek: Record<string, string> = {}) {
+  return new SignJWT({ ...session, ...ek })
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
-    .setExpirationTime('30d')
+    .setExpirationTime(sure)
     .sign(await getJwtKey());
 }
 
@@ -96,6 +97,48 @@ export async function verifyAdminToken(token: string): Promise<AdminSession | nu
   } catch {
     return null;
   }
+}
+
+/**
+ * Kullanıcı adı/e-posta + şifre doğrulaması (web girişi ve mobil uygulama ortak, 28 Ekim). Önce yönetici hesapları,
+ * sonra ayarlardaki tek yönetici (eski giriş). Hesap pasifse "pasif", yanlışsa null döner.
+ */
+export async function adminKimlikDogrula(login: string, rawPassword: string): Promise<Omit<AdminSession, 'legacy'> | 'pasif' | null> {
+  const adminUser = await prisma.adminUser.findFirst({
+    where: { OR: [{ username: login }, { email: login.toLowerCase() }] },
+  }).catch(() => null);
+
+  if (adminUser) {
+    if (adminUser.status !== 'active') return 'pasif';
+    if (await bcrypt.compare(rawPassword, adminUser.password)) {
+      await prisma.adminUser.update({ where: { id: adminUser.id }, data: { lastLoginAt: new Date() } });
+      return {
+        id: adminUser.id,
+        name: adminUser.name,
+        username: adminUser.username,
+        email: adminUser.email,
+        role: adminUser.role,
+        permissions: normalizePermissions(adminUser.permissions),
+      };
+    }
+  }
+
+  const customPasswordSetting = await prisma.setting.findUnique({ where: { key: 'ADMIN_PASSWORD_HASH' } }).catch(() => null);
+  const customUsernameSetting = await prisma.setting.findUnique({ where: { key: 'ADMIN_USERNAME' } }).catch(() => null);
+  const validUsername = customUsernameSetting?.value || 'Yasin';
+  let passwordValid = false;
+  if (customPasswordSetting?.value) {
+    const check = await verifyLegacyAdminPassword(rawPassword, customPasswordSetting.value);
+    passwordValid = check.valid;
+    // Eski SHA-256 özeti ilk doğru girişte bcrypt'e çevrilir
+    if (check.valid && check.needsUpgrade && login === validUsername) {
+      await prisma.setting.update({ where: { key: 'ADMIN_PASSWORD_HASH' }, data: { value: await hashLegacyAdminPassword(rawPassword) } }).catch(() => null);
+    }
+  } else if (process.env.ADMIN_INITIAL_PASSWORD) {
+    // Şifre henüz ayarlanmadıysa yalnızca sunucu ortam değişkenindeki ilk şifre geçer
+    passwordValid = rawPassword === process.env.ADMIN_INITIAL_PASSWORD;
+  }
+  return login === validUsername && passwordValid ? legacyAdminSession(validUsername) : null;
 }
 
 export function legacyAdminSession(username: string): Omit<AdminSession, 'legacy'> {

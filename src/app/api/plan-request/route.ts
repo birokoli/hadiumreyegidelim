@@ -1,5 +1,6 @@
 // Planlayıcı v2'den gelen talep: fiyat sunucuda katalogla yeniden hesaplanır, talep admin → İletişim/CRM'e düşer.
 import { NextResponse, after } from "next/server";
+import { bildirArkada, kisaAd } from "@/lib/mobil/bildir";
 import { prisma } from "@/lib/prisma";
 import { rateLimit, getClientIp } from "@/lib/rate-limit";
 import { getCatalog, paymentSettingsFrom } from "@/lib/catalog";
@@ -54,6 +55,7 @@ export async function POST(request: Request) {
   try {
     const lead = await prisma.contactRequest.create({ data: { name, phone, package: ai ? `Bireysel umre planı · AI: ${ai}` : "Bireysel umre planı", message } });
     after(() => notifyNewLead(lead));
+    bildirArkada("talep", { baslik: "Yeni umre planı", govde: `${kisaAd(name)} planlayıcıdan plan gönderdi`, yol: `/talepler/${lead.id}` });
     return NextResponse.json({ success: true, totalUsd: quote.totalUsd, complete: quote.complete });
   } catch (e) {
     console.error("[plan-request]", e);

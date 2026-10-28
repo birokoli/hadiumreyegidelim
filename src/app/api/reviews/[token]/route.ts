@@ -1,5 +1,6 @@
 // Müşterinin kişiye özel yorum bağlantısı: durum, gönderim ve fotoğraf yükleme imzası
 import { NextRequest, NextResponse } from "next/server";
+import { bildirArkada, kisaAd } from "@/lib/mobil/bildir";
 import { getByToken, signReviewPhoto, submitByToken } from "@/lib/reviews";
 
 export const dynamic = "force-dynamic";
@@ -35,6 +36,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ tok
       photoUrl,
       consent: b.consent === true,
     });
+    bildirArkada("yorum", { baslik: "Yeni yorum onay bekliyor", govde: `${kisaAd(String(b.displayName ?? "") || r.customerName)} · ${rating} yıldız`, yol: "/yorumlar" });
     return NextResponse.json({ ok: true });
   } catch (e) {
     return NextResponse.json({ error: e instanceof Error ? e.message : String(e) }, { status: 400 });

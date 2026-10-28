@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { connectMeasurement } from '@/lib/geo-blog/publish';
+import { gunlukHatirlatma } from '@/lib/mobil/hatirlatma';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -32,9 +33,13 @@ export async function GET(req: Request) {
     await connectMeasurement(post).catch((e) => console.error('[publish-scheduled] ölçüm bağlantısı', e));
   }
 
+  // Mobil uygulama hatırlatmaları: günde bir kez, 09:00 TR sonrası (ayrı cron eklemek dağıtımı durdurdu)
+  const hatirlatma = await gunlukHatirlatma(now).catch((e) => (console.error('[publish-scheduled] hatırlatma', e), null));
+
   return NextResponse.json({
     ok: true,
     published,
+    hatirlatma,
     checkedAt: now.toISOString(),
   });
 }

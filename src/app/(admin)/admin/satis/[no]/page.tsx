@@ -5,7 +5,7 @@ import { use, useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { durakSayisi, ZIYARET_ROTALARI } from "@/lib/satis/ziyaret";
 import { SATIS_TURLERI } from "@/lib/satis/ortak";
-import { ASAMALAR, KALEM_TURLERI, KART_PAYI, KDV_ETIKETI, KDV_ORANI, alisToplam, genelToplam, kartla, kartPayiOf, kdvTutari, asamaIndex, asamaLabel, geceSayisi, kalemToplam, odemeDagilimi, odenen, onaylandiMi, toplam, trTarih, usd, waNumara, type Dosya, type DosyaData, type Kalem, type KalemTur, type Odeme } from "@/lib/satis/ortak";
+import { ASAMALAR, KALEM_TURLERI, KART_PAYI, KDV_ETIKETI, KDV_ORANI, alisToplam, genelToplam, kartla, kartPayiOf, kdvTutari, asamaIndex, asamaLabel, geceSayisi, kalemToplam, tarihTers, faturaGece, gunEkle, odemeDagilimi, odenen, onaylandiMi, toplam, trTarih, usd, waNumara, type Dosya, type DosyaData, type Kalem, type KalemTur, type Odeme } from "@/lib/satis/ortak";
 import { teklifLinki, teklifMesaji, voucherLinki, voucherMesaji, waLink } from "@/lib/satis/mesaj";
 import type { TeklifAcilis } from "@/lib/satis/acilis";
 
@@ -197,9 +197,10 @@ export default function SatisDosyasi({ params }: { params: Promise<{ no: string 
                 <label><span className={lbl}>Çocuk</span><input type="number" min={0} className={inp} value={data.cocuk} onChange={(e) => set("cocuk", Number(e.target.value) || 0)} /></label>
                 <label><span className={lbl}>Bebek</span><input type="number" min={0} className={inp} value={data.bebek} onChange={(e) => set("bebek", Number(e.target.value) || 0)} /></label>
                 <label><span className={lbl}>Gidiş</span><input type="date" className={inp} value={data.gidis ?? ""} onChange={(e) => set("gidis", e.target.value)} /></label>
-                <label><span className={lbl}>Dönüş</span><input type="date" className={inp} value={data.donus ?? ""} onChange={(e) => set("donus", e.target.value)} /></label>
+                <label><span className={lbl}>Dönüş</span><input type="date" min={data.gidis || undefined} className={`${inp} ${tarihTers(data.gidis, data.donus) ? "!border-error" : ""}`} value={data.donus ?? ""} onChange={(e) => set("donus", e.target.value)} /></label>
                 <label><span className={lbl}>Önce</span><select className={inp} value={data.onceSehir ?? "mekke"} onChange={(e) => set("onceSehir", e.target.value as "mekke" | "medine")}><option value="mekke">Mekke</option><option value="medine">Medine</option></select></label>
               </div>
+              {tarihTers(data.gidis, data.donus) && <p className="mt-3 rounded-lg bg-error/10 px-3 py-2 text-xs font-semibold text-error">Dönüş tarihi gidişten önce görünüyor ({trTarih(data.gidis)} → {trTarih(data.donus)}). Ay ya da yılı kontrol edin.</p>}
               {data.talepNotu && <p className="mt-3 rounded-lg bg-surface-container-low px-3 py-2 text-xs text-on-surface-variant"><b>Talep notu:</b> {data.talepNotu}</p>}
             </Kart>
 
@@ -215,13 +216,14 @@ export default function SatisDosyasi({ params }: { params: Promise<{ no: string 
                       <div className="flex items-center justify-between gap-2">
                         <span className="rounded bg-primary/10 px-2 py-0.5 text-[10px] font-bold text-primary">{KALEM_TURLERI[k.tur].label}</span>
                         <div className="flex items-center gap-3">
-                          <span className="text-[11px] text-on-surface-variant">{k.birim ? (otel ? `${k.adet} oda × ${Math.max(1, g)} gece × ${usd(k.birim)}` : aracBasi(k) ? `${k.adet} araç × ${usd(k.birim)}` : k.adet > 1 ? `${k.adet} × ${usd(k.birim)}` : "") : ""}</span>
+                          <span className="text-[11px] text-on-surface-variant">{k.birim ? (otel ? `${k.adet} oda × ${faturaGece(k)} gece × ${usd(k.birim)}` : aracBasi(k) ? `${k.adet} araç × ${usd(k.birim)}` : k.adet > 1 ? `${k.adet} × ${usd(k.birim)}` : "") : ""}</span>
                           <span className="font-mono text-sm font-bold text-primary">{usd(kalemToplam(k))}</span>
                           <button type="button" onClick={() => set("kalemler", data.kalemler.filter((x) => x.id !== k.id))} className="text-xs text-outline hover:text-error">sil</button>
                         </div>
                       </div>
                       {otel ? (
-                        <div className="mt-2 grid grid-cols-2 gap-2 md:grid-cols-[2fr_1fr_1fr_70px_1.2fr_1fr_1fr]">
+                        <>
+                        <div className="mt-2 grid grid-cols-2 gap-2 md:grid-cols-[2fr_1fr_64px_1fr_64px_1.1fr_1fr_1fr]">
                           <label><span className={lbl}>Otel</span>
                             <select className={inp} value={k.otel?.slug ?? (k.otel?.ad ? "__elle" : "")} onChange={(e) => { const h = y.oteller.find((o) => o.slug === e.target.value); setKalem(k.id, { otel: { slug: h?.slug, ad: h?.ad ?? "" }, ad: h?.ad ?? KALEM_TURLERI[k.tur].label }); }}>
                               <option value="">Seçin</option>
@@ -230,13 +232,23 @@ export default function SatisDosyasi({ params }: { params: Promise<{ no: string 
                             </select>
                             {!k.otel?.slug && <input className={`${inp} mt-1`} placeholder="Otel adı" value={k.otel?.ad ?? ""} onChange={(e) => setKalem(k.id, { otel: { ad: e.target.value }, ad: e.target.value })} />}
                           </label>
-                          <label><span className={lbl}>Giriş</span><input type="date" className={inp} value={k.otel?.giris ?? ""} onChange={(e) => setKalem(k.id, { otel: { ad: k.otel?.ad ?? "", giris: e.target.value } })} /></label>
-                          <label><span className={lbl}>Çıkış {g ? `(${g} gece)` : ""}</span><input type="date" className={inp} value={k.otel?.cikis ?? ""} onChange={(e) => setKalem(k.id, { otel: { ad: k.otel?.ad ?? "", cikis: e.target.value } })} /></label>
+                          <label><span className={lbl}>Giriş</span><input type="date" className={inp} value={k.otel?.giris ?? ""} onChange={(e) => {
+                            // Giriş değişince gece sayısı korunur, çıkış kayar (28 Ekim: ters tarih olmasın)
+                            const yeni = e.target.value; const eski = g;
+                            setKalem(k.id, { otel: { ad: k.otel?.ad ?? "", giris: yeni, ...(yeni && eski ? { cikis: gunEkle(yeni, eski) } : {}) } });
+                          }} /></label>
+                          <label><span className={lbl}>Gece</span><input type="number" min={1} className={inp} value={g || ""} placeholder="—" disabled={!k.otel?.giris} title={k.otel?.giris ? "Gece sayısını yazın, çıkış tarihi hesaplanır" : "Önce giriş tarihini seçin"}
+                            onChange={(e) => { const n = Number(e.target.value); if (k.otel?.giris && n > 0) setKalem(k.id, { otel: { ad: k.otel?.ad ?? "", cikis: gunEkle(k.otel.giris, n) } }); }} /></label>
+                          <label><span className={lbl}>Çıkış</span><input type="date" min={k.otel?.giris ? gunEkle(k.otel.giris, 1) : undefined} className={`${inp} ${tarihTers(k.otel?.giris, k.otel?.cikis) ? "!border-error" : ""}`} value={k.otel?.cikis ?? ""} onChange={(e) => setKalem(k.id, { otel: { ad: k.otel?.ad ?? "", cikis: e.target.value } })} /></label>
                           <label><span className={lbl}>Oda</span><input type="number" min={1} className={inp} value={k.adet} onChange={(e) => setKalem(k.id, { adet: Number(e.target.value) || 1 })} /></label>
                           <label><span className={lbl}>Oda tipi</span><input className={inp} placeholder="2 kişilik" value={k.otel?.oda ?? ""} onChange={(e) => setKalem(k.id, { otel: { ad: k.otel?.ad ?? "", oda: e.target.value } })} /></label>
                           <label><span className={lbl}>Gecelik satış $</span><input type="number" min={0} className={inp} value={k.birim || ""} onChange={(e) => setKalem(k.id, { birim: Number(e.target.value) || 0 })} /></label>
                           <label><span className={lbl}>Gecelik alış $</span><input type="number" min={0} className={inp} value={k.alis || ""} onChange={(e) => setKalem(k.id, { alis: Number(e.target.value) || 0 })} /></label>
                         </div>
+                        {tarihTers(k.otel?.giris, k.otel?.cikis) && (
+                          <p className="mt-2 rounded-lg bg-error/10 px-3 py-2 text-xs font-semibold text-error">Çıkış ({trTarih(k.otel?.cikis)}) girişten ({trTarih(k.otel?.giris)}) önce; bu otel 0 gece sayılıyor. Çıkış tarihini düzeltin ya da “Gece” kutusuna gece sayısını yazın.</p>
+                        )}
+                        </>
                       ) : (
                         <div className="mt-2 grid grid-cols-2 gap-2 md:grid-cols-[1.4fr_1.4fr_64px_1fr_1fr_1fr_1fr]">
                           <label><span className={lbl}>Hizmet</span><input className={inp} value={k.ad} onChange={(e) => setKalem(k.id, { ad: e.target.value })} /></label>

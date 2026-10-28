@@ -116,8 +116,18 @@ export const geceSayisi = (giris?: string, cikis?: string) => {
   const n = Math.round((new Date(cikis).getTime() - new Date(giris).getTime()) / 86_400_000);
   return n > 0 ? n : 0;
 };
-export const kalemToplam = (k: Kalem) => (k.tur.startsWith("otel_") ? k.adet * k.birim * Math.max(1, geceSayisi(k.otel?.giris, k.otel?.cikis)) : k.adet * k.birim);
-export const kalemAlis = (k: Kalem) => (k.alis ? (k.tur.startsWith("otel_") ? k.adet * k.alis * Math.max(1, geceSayisi(k.otel?.giris, k.otel?.cikis)) : k.adet * k.alis) : 0);
+/** İki tarih de girilmiş ama çıkış girişten sonra değilse (28 Ekim: ters tarih sessizce "1 gece" sayılıyordu) */
+export const tarihTers = (giris?: string, cikis?: string) => !!giris && !!cikis && geceSayisi(giris, cikis) === 0;
+/** Fiyata giren gece: tarihler eksikse 1 (taslak), ikisi de varsa gerçek gece sayısı (ters tarihte 0, uyarı gösterilir) */
+export const faturaGece = (k: Kalem) => (k.otel?.giris && k.otel?.cikis ? geceSayisi(k.otel.giris, k.otel.cikis) : 1);
+/** "2027-01-28" + 5 gün → "2027-02-02" (saat dilimi kaymasın diye UTC) */
+export const gunEkle = (tarih: string, gun: number) => {
+  const d = new Date(`${tarih}T00:00:00Z`);
+  d.setUTCDate(d.getUTCDate() + gun);
+  return d.toISOString().slice(0, 10);
+};
+export const kalemToplam = (k: Kalem) => (k.tur.startsWith("otel_") ? k.adet * k.birim * faturaGece(k) : k.adet * k.birim);
+export const kalemAlis = (k: Kalem) => (k.alis ? (k.tur.startsWith("otel_") ? k.adet * k.alis * faturaGece(k) : k.adet * k.alis) : 0);
 export const toplam = (d: DosyaData) => d.kalemler.reduce((s, k) => s + kalemToplam(k), 0);
 export const alisToplam = (d: DosyaData) => d.kalemler.reduce((s, k) => s + kalemAlis(k), 0);
 export const odenen = (d: DosyaData) => d.odemeler.reduce((s, o) => s + o.tutar, 0);

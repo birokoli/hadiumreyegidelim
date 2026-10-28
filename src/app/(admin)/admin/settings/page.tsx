@@ -9,8 +9,8 @@ import HubTabs from "@/components/admin/HubTabs";
 const DEFAULTS = {
   home_banner_image: "",
   HOME_HERO_VIDEO: "",
-  HERO_TITLE: "Ruhunuzun Ritmini Kalabalıklara Teslim Etmeyin.",
-  HERO_DESC: "Bireysel umrenizi planlayın: tarihinizi, Mekke ve Medine otelinizi seçin, kişi başı fiyatı hemen görün. Umre vizesi 2 saatte, otel ve transfer bizden.",
+  HERO_TITLE: "Bireysel umrenin kolay yolu.",
+  HERO_DESC: "Tarihinizi ve otelinizi seçin, kişi başı fiyatı hemen görün. Vize, otel ve transfer tek yerden.",
   HOME_TOURS_KICKER: "Hazır programlar",
   HOME_TOURS_TITLE: "Umre *paketlerimiz*",
   HOME_STEPS_KICKER: "Adım Adım Yolculuk",

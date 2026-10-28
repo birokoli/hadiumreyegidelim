@@ -4,7 +4,7 @@ import { SITE_URL } from "@/lib/seo/site";
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import HeroVideo from "@/components/home/HeroVideo";
+import KapakVideo from "@/components/home/KapakVideo";
 import { Arrow, Badge, CardFooter, EmptyState, Faq, faqJsonLd, MediaCard, PostCard, SectionHead, Steps } from "@/components/ui/kit";
 import UmrePlanner from "@/components/home/UmrePlanner";
 import UmrahSteps from "@/components/home/UmrahSteps";
@@ -82,7 +82,7 @@ const QUICK_LINKS: { href: string; label: string; icon: HugIconName }[] = [
 
 
 export default async function Home() {
-  const [t, reviewTexts, reviews] = await Promise.all([getPageTexts("anasayfa"), getPageTexts("yorumlar"), getApprovedReviews()]);
+  const [reviewTexts, reviews] = await Promise.all([getPageTexts("yorumlar"), getApprovedReviews()]);
   // Veritabanına ulaşılamazsa sayfa yine açılsın (boş paket/blog listesiyle)
   const [latestBlogs, rawFeatured, settings] = await Promise.all([
     prisma.post.findMany({
@@ -113,8 +113,12 @@ export default async function Home() {
   const HERO_VIDEO_SUPABASE = "https://rzvrlytisqemhmnaxqfy.supabase.co/storage/v1/object/public/uploads/anasayfa-video-1790720069230.mp4";
   const heroSetting = settings.HOME_HERO_VIDEO?.trim() || "";
   const heroVideo = heroSetting === HERO_VIDEO_SUPABASE ? "/video/anasayfa-kabe.mp4" : heroSetting;
-  const home_banner_title = settings.HERO_TITLE || "Ruhunuzun Ritmini Kalabalıklara Teslim Etmeyin.";
-  const home_banner_subtitle = settings.HERO_DESC || "Bireysel umrenizi planlayın: tarihinizi, Mekke ve Medine otelinizi seçin, kişi başı fiyatı hemen görün. Umre vizesi 2 saatte, otel ve transfer bizden.";
+  // 28 Ekim: kapak başlığı KV imzası "Bireysel umrenin kolay yolu." oldu. Admin'de eski başlık/açıklama kayıtlıysa
+  // KV metni gösterilir; admin'den yeni bir metin yazılırsa o kullanılır.
+  const ESKI_BASLIK = "Ruhunuzun Ritmini Kalabalıklara Teslim Etmeyin.";
+  const ESKI_ACIKLAMA = "Bireysel umrenizi planlayın: tarihinizi, Mekke ve Medine otelinizi seçin, kişi başı fiyatı hemen görün. Umre vizesi 2 saatte, otel ve transfer bizden.";
+  const home_banner_title = settings.HERO_TITLE && settings.HERO_TITLE !== ESKI_BASLIK ? settings.HERO_TITLE : "Bireysel umrenin kolay yolu.";
+  const home_banner_subtitle = settings.HERO_DESC && settings.HERO_DESC !== ESKI_ACIKLAMA ? settings.HERO_DESC : "Tarihinizi ve otelinizi seçin, kişi başı fiyatı hemen görün. Vize, otel ve transfer tek yerden.";
   const whatsappNumber = settings.WHATSAPP_NUMBER ? settings.WHATSAPP_NUMBER.replace('+', '') : "905404010038";
 
   const homeToursKicker = settings.HOME_TOURS_KICKER || "Hazır programlar";
@@ -137,29 +141,11 @@ export default async function Home() {
 
   return (
     <main id="main-content" className={`home-v2 ${cairo.variable} ${ruqaa.variable}`}>
-      {/* ─── Hero + planlayıcı ─────────────────────────────── */}
-      <section className="relative z-20 w-full pt-28 pb-16 md:pt-32 md:pb-12 md:min-h-[620px] md:flex md:flex-col md:justify-end">
-        <div className="absolute inset-0 overflow-hidden">
-          <Image alt="Kabe ve Mescid-i Haram" className="object-cover object-bottom" src={home_banner_image} fill priority fetchPriority="high" sizes="100vw" quality={75} />
-          {heroVideo && (
-            // Döngü video yalnızca geniş ekranda ve sayfa yüklendikten sonra; altta kapak görseli kalır
-            <HeroVideo src={heroVideo} poster={`/_next/image?url=${encodeURIComponent(home_banner_image)}&w=1920&q=75`} />
-          )}
-          <div className="absolute inset-0 bg-[#12295a]/55" />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#12295a]/40 via-transparent to-[#12295a]/75" />
-        </div>
-        <div className="on-dark relative w-full max-w-screen-xl mx-auto px-4 md:px-8">
-          <p aria-hidden className="hat text-[var(--h-sand)] text-2xl md:text-3xl mb-2 text-left" style={{ direction: "rtl", unicodeBidi: "plaintext" }}>لَبَّيْكَ اللَّهُمَّ لَبَّيْكَ</p>
-          <h1 className="font-headline text-white font-bold tracking-tight max-w-3xl">
-            <span className="block font-body text-[12px] md:text-[13px] font-semibold tracking-[0.2em] uppercase text-white/75 mb-3">{t("kicker")}</span>
-            <span className="block text-3xl sm:text-4xl md:text-[56px] leading-[1.08] text-balance"><Accent text={accented(home_banner_title)} /></span>
-          </h1>
-          <p className="mt-3 text-base md:text-lg text-white/85 max-w-2xl">{home_banner_subtitle}</p>
-          <div className="mt-7 md:mt-9">
-            <UmrePlanner whatsappNumber={whatsappNumber} />
-          </div>
-        </div>
-      </section>
+      {/* ─── Hero + planlayıcı: video + imza "Bireysel umrenin kolay yolu." (28 Ekim). KV animasyonlu kapak
+          src/components/home/KapakAnimasyon.tsx'te hazır, kullanıcı geliştirip sonra koymak istiyor. ─── */}
+      <KapakVideo title={home_banner_title.replace(/\*/g, "")} lead={home_banner_subtitle} image={home_banner_image} video={heroVideo || undefined}>
+        <UmrePlanner whatsappNumber={whatsappNumber} />
+      </KapakVideo>
 
       {/* ─── Hızlı erişim ──────────────────────────────────── */}
       <nav aria-label="Hızlı erişim" className="w-full bg-white border-b border-outline-variant/20">

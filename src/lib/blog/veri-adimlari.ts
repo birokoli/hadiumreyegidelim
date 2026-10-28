@@ -210,6 +210,37 @@ async function diyanetsizIfadesi() {
   await prisma.setting.create({ data: { key: ISARET, value: `${new Date().toISOString()} ${yazilar.map((y) => y.slug).join(", ") || "yok"}` } });
 }
 
+/**
+ * Bireysel umre SEO programı 1. faz (28 Ekim, docs/BIREYSEL-UMRE-SEO-PROGRAMI.md):
+ * - "bireysel umre fiyatları" aramasında 5. sıradaki yazının SEO başlığı aramayla eşleşsin (sayfadaki H1 değişmez).
+ * - /bireysel-umre H1 ve girişi admin'den kaydedildiyse ve "bireysel" geçmiyorsa kayıt silinir, koddaki yeni varsayılan görünür.
+ */
+async function bireyselUmreSeo() {
+  const ISARET = "VERI_ADIMI_BIREYSEL_SEO_1";
+  if (await prisma.setting.findUnique({ where: { key: ISARET } })) return;
+  const notlar: string[] = [];
+  const yazi = await prisma.post.findUnique({ where: { slug: "bireysel-umre-vize-maliyet-rehberi" }, select: { id: true, metaTitle: true } });
+  if (yazi) {
+    await prisma.post.update({ where: { id: yazi.id }, data: { metaTitle: "Bireysel Umre Fiyatları 2026: Tursuz Gitmek Daha mı Ekonomik?" } });
+    notlar.push(`metaTitle önceki: ${yazi.metaTitle ?? "boş"}`);
+  }
+  const anahtar = "PAGE_TEXTS:bireysel-umre";
+  const kayit = await prisma.setting.findUnique({ where: { key: anahtar } });
+  if (kayit) {
+    let metin: Record<string, string> = {};
+    try { metin = JSON.parse(kayit.value || "{}"); } catch { metin = {}; }
+    for (const k of ["title", "lead"]) {
+      if (metin[k] && !/bireysel/i.test(metin[k])) {
+        notlar.push(`${k} önceki: ${metin[k]}`);
+        delete metin[k];
+      }
+    }
+    // Ayar önbelleği en geç 10 dakikada tazelenir (render sırasında revalidateTag çağrılamaz)
+    await prisma.setting.update({ where: { key: anahtar }, data: { value: JSON.stringify(metin) } });
+  }
+  await prisma.setting.create({ data: { key: ISARET, value: `${new Date().toISOString()} ${notlar.join(" | ") || "değişiklik yok"}` } });
+}
+
 let calisti: Promise<void> | null = null;
 /** Blog yazısı sayfası açılırken çağrılır; süreç başına bir kez çalışır, hata sayfayı durdurmaz. */
 export function blogVeriAdimlari() {
@@ -221,6 +252,7 @@ export function blogVeriAdimlari() {
     await ramazanYazisi().catch((e) => console.error("[blog] Ramazan yazısı", e));
     await paketlerVizeCumlesi().catch((e) => console.error("[blog] paketler vize cümlesi", e));
     await diyanetsizIfadesi().catch((e) => console.error("[blog] diyanetsiz ifadesi", e));
+    await bireyselUmreSeo().catch((e) => console.error("[blog] bireysel umre SEO", e));
   })();
   return calisti;
 }

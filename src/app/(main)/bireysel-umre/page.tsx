@@ -6,6 +6,7 @@ import HugIcon from "@/components/icons/HugIcon";
 import { SITE_URL } from "@/lib/seo/site";
 import { ButtonLink, Container, Faq, faqJsonLd, PageHero, Panel, Section, SectionHead, Steps } from "@/components/ui/kit";
 import { PageTrust, webPageJsonLd } from "@/components/seo/PageTrust";
+import BireyselUmreRehberi from "./Rehber";
 import PlannerV2 from "@/components/planner/PlannerV2";
 import { getCatalog, monthsFrom, monthLabel, paymentSettingsFrom } from "@/lib/catalog";
 import { getSiteSettings } from "@/lib/site-settings";
@@ -13,8 +14,9 @@ import { VEHICLE_IMAGES_SETTING_KEY, parseVehicleImages } from "@/lib/catalog/tr
 import { getPageTexts } from "@/lib/page-texts";
 
 export const metadata: Metadata = {
-  title: "Bireysel Umre 2026: Planla, Fiyatı Gör",
-  description: "Tarihleri, Mekke ve Medine otelini, transferi ve e-vizeyi seçin; bireysel umre fiyatını anında görün. Planı gönderin, kesin teklifi iletelim.",
+  // 28 Ekim (SEO programı): başlık "bireysel umre", "nasıl yapılır" ve "fiyatları" aramalarını birlikte karşılar
+  title: { absolute: "Bireysel Umre 2026: Nasıl Yapılır, Fiyatı Ne Kadar? | Hadi Umreye Gidelim" },
+  description: "Bireysel umre nedir, nasıl yapılır, ne kadar tutar? Adım adım rehber, bu ayın otel, transfer ve vize fiyatları ve fiyatı anında hesaplayan umre planlayıcısı.",
   alternates: { canonical: "/bireysel-umre" },
   openGraph: { images: [ogGorsel("bireysel-umre", "Umrenizi kendiniz planlayın, fiyatı anında görün", "Bireysel umre")] },
 };
@@ -32,6 +34,9 @@ const FAQ = [
   { q: "Umre vizesi fiyata dahil mi?", a: "İsterseniz eklenir. Suudi Arabistan e-vize kişi başı 140 USD'dir; belgeleriniz tamamsa vizeniz 2 iş saati içinde çıkar. Vizeniz varsa planlayıcıda \"Vizem var\" seçeneğini işaretlemeniz yeterli." },
   { q: "Uçak bileti planlayıcıda var mı?", a: "Hayır. Uçak biletinizi kendiniz alırsınız; planlayıcı giriş-çıkış tarihlerinize göre konaklama, transfer, vize ve ek hizmetleri hesaplar." },
   { q: "Bebekle gidersem oda sayısı değişir mi?", a: "Hayır. 0–2 yaş bebekler otele bildirilmez ve oda sayısına girmez; bebek başına gecelik beşik ücreti eklenir." },
+  { q: "Bireysel umre kaç gün sürer?", a: "Süreyi siz belirlersiniz. İlk umre için en çok tercih edilen süre 7–10 gündür: örneğin 4 gece Mekke ve 3 gece Medine ya da 5 gece Mekke ve 5 gece Medine. Daha uzun kalmak isteyenler 14 güne kadar plan yapar." },
+  { q: "Bireysel umre mi daha ucuz, turla umre mi?", a: "Kalabalık aile ya da arkadaş grubunda bireysel umre çoğunlukla daha ekonomiktir, çünkü oda ve araç fiyatı kişi sayısına bölünür. Tek ya da iki kişi giden yolcular için fark otel seçimine ve aya bağlıdır. Planlayıcıda kendi tarihinizle toplamı görüp karşılaştırabilirsiniz." },
+  { q: "Bireysel umreye kimler gidebilir?", a: "Pasaportu Suudi Arabistan'a giriş tarihinden itibaren en az 6 ay geçerli olan herkes Suudi Arabistan e-vizesiyle bireysel umreye gidebilir. Çocuklar ve bebekler aileleriyle birlikte gider; bebekler oda sayısına girmez." },
   { q: "Planı gönderdikten sonra ne oluyor?", a: "Planınız ekibimize ulaşır; otel müsaitliğini kontrol edip kesin teklifi ve ödeme bilgisini WhatsApp üzerinden iletiriz. Plan göndermek ödeme yükümlülüğü doğurmaz." },
 ];
 
@@ -85,7 +90,7 @@ export default async function BireyselUmrePage({ searchParams }: { searchParams:
       url,
     },
     faqJsonLd(FAQ),
-    webPageJsonLd({ url, name: "Bireysel Umre Planlayıcı 2026" }),
+    webPageJsonLd({ url, name: "Bireysel Umre 2026: Nasıl Yapılır, Fiyatı Ne Kadar?" }),
   ];
 
   return (
@@ -106,7 +111,8 @@ export default async function BireyselUmrePage({ searchParams }: { searchParams:
         <Steps items={STEPS} />
       </Section>
 
-      
+      <BireyselUmreRehberi catalog={catalog} />
+
       <Section tone="muted">
         <SectionHead kicker={t("comp_kicker")} title={t("comp_title")} />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">

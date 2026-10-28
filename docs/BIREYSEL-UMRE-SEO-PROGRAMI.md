@@ -30,6 +30,7 @@ Yukarıdaki tablodaki "hedef sayfa" dışındaki sayfalar o aramayı başlıkta 
 - [x] /bireysel-umre rehber bölümü (`Rehber.tsx`): "Bireysel umre nedir?", 6 adımlı "nasıl yapılır", katalogdan canlı maliyet tablosu + örnek hesap (2 kişi, 7 gece), küme bağlantıları, 8 il bağlantısı.
 - [x] SSS'ye 3 soru (kaç gün, bireysel mi tur mu ucuz, kimler gidebilir); FAQ şeması aynı diziden.
 - [x] /yorumlar başlığı "Bireysel Umre Yapanların Yorumları"; /oteller başlığı "Mekke ve Medine Otelleri 2026: Harem'e Mesafe ve Fiyat".
+- [x] Yasaklı ifade taraması (192 sayfa): alt bilgi, rehber sayfaları ve ~12 blog yazısında VIP / lüks / eşsiz / 7/24 / kesintisiz / "Harem'e sıfır" / TÜRSAB temizlendi (veri adımı `VERI_ADIMI_BLOG_YASAKLI_IFADE_1`). Bilerek bırakılanlar: müşteri yorumundaki "7/24", ürün garantisi, vize yazısındaki Schengen bilgisi, "Ekonomik umre mi lüks umre mi" sayfasının konusu.
 - [x] Veri adımı `VERI_ADIMI_BIREYSEL_SEO_1`: fiyat yazısının SEO başlığı "Bireysel Umre Fiyatları 2026: …"; admin'de kayıtlı H1/giriş "bireysel" içermiyorsa silinir (önceki değer işarete yazılır).
 
 ## Faz 2 — Dizine ekletme (yayından sonraki gün, kullanıcı)
@@ -52,6 +53,15 @@ Yukarıdaki tablodaki "hedef sayfa" dışındaki sayfalar o aramayı başlıkta 
 - [ ] Influencer paneli kampanya linkleri /bireysel-umre'ye UTM ile.
 - [ ] Google Business Profile: hizmet adı "Bireysel umre planlama".
 - [ ] Ekşi/Reddit/forumlarda sorulan "bireysel umre" sorularına gerçek kişi olarak cevap (spam yok).
+
+## AI önerileri (ChatGPT, Gemini, Perplexity) — 28 Ekim ölçümü
+- ChatGPT'ye "bireysel umre için güvenilir firma önerir misin?" (web aramalı): **Risalet Turizm** (Google Haritalar 4,7 / 422 yorum), **Zem Tur** (hakkımızda sayfasında "otel, transfer, rehberlik ayrı ayrı" cümlesi), **İnanç Turizm** (belgeler sayfası). Biz yokuz; DataForSEO LLM mention: 0.
+- "bireysel umre fiyatı 2026" sorusunda ChatGPT, bireyselumrerehberi.com/bireysel-umre-maliyeti-2026 sayfasını alıntılıyor: 3 seviye, kişi başı TL, 10 gece.
+- Yapılanlar (d181edf): /bireysel-umre'de tarihli, kişi başı, TL + USD seviye tablosu ve tek cümlelik alıntılanabilir cevap; Service şemasında AggregateOffer; Organization şemasında adres, knowsAbout, areaServed.
+- **Engel 1 — Medine otelleri:** canlı katalogda yayında Medine oteli yok (yalnızca 10 Mekke oteli). Planlayıcının Medine adımı boş, seviye tablosu Medine fiyatı olmadan hesaplanamıyor. Admin → Hizmetler'de Medine otelleri fiyatlarıyla "Sitede göster" yapılınca tablo kendiliğinden çıkar.
+- **Engel 2 — Google İşletme Profili ve yorum:** ChatGPT'nin 1. önerisi Haritalar yorum sayısından geliyor. Bakırköy adresiyle profil + her dönen müşteriden Google yorumu (hedef: 3 ayda 100).
+- **Engel 3 — TÜRSAB:** ChatGPT kullanıcıya "TÜRSAB kaydını kontrol et" diyor. Biz DTCM lisanslıyız; /hadi-umreye-gidelim-guvenilir-mi bunu anlatıyor. Bu sayfanın "Türkiye'de TÜRSAB'lı değil misiniz?" sorusuna dürüst ve net cevap vermesi gerekir (metin kullanıcı onayıyla).
+- Dış sinyaller: YouTube (AI alıntısıyla en güçlü ilişki), Ekşi/Reddit/forum cevapları, haber/blog anılmaları.
 
 ## Ölçüm
 - Her pazartesi DataForSEO `serp_organic_live_advanced` (Türkiye, tr, mobil) ile tablodaki 11 arama; sonuç bu belgenin altındaki günlüğe.

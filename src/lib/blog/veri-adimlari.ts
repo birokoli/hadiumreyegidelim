@@ -259,7 +259,11 @@ const YASAKLI_DEGISIM: [RegExp, string][] = [
   [/VIP İpuçları/g, "İpuçları"],
   [/\bVIP\b/g, "özel"],
   [/Harem['’]e sıfır/g, "Harem'e çok yakın"],
+  [/Kabe['’]ye sıfır/g, "Kabe'ye çok yakın"],
+  [/7\/24'e yakın hizmet/g, "gün boyunca hizmet"],
   [/7\/24 /g, ""],
+  [/komisyon farksız ve garantili olarak/g, "komisyon farksız"],
+  [/vaktini garanti altına alan/g, "vaktini planlayan"],
   [/Kesintisiz Kabe erişimi/g, "Doğrudan Kabe erişimi"],
   [/(?<!\p{L})(kesintisiz)(?!\p{L})/gu, "sürekli"],
   [/(?<!\p{L})(Kesintisiz)(?!\p{L})/gu, "Sürekli"],
@@ -306,6 +310,49 @@ async function yasakliIfadeler() {
   console.log("[blog] yasaklı ifade temizliği", degisen.length);
 }
 
+/**
+ * Yasaklı ifade temizliği 2 (28 Ekim): ilk adım "Yazarın Kişisel Deneyimi" kutusunu (personalExperience) ve yazar
+ * biyografisini kapsamıyordu; canlı taramada "VIP araçlar", "(VIP) ve" bunlardan geliyordu. Yeni eklenen kurallar
+ * (7/24'e yakın, garantili) için yazı alanları da yeniden geçilir. Yazar biyografisinin önceki hali işarete yazılır.
+ */
+async function yasakliIfadeler2() {
+  const ISARET = "VERI_ADIMI_BLOG_YASAKLI_IFADE_2";
+  if (await prisma.setting.findUnique({ where: { key: ISARET } })) return;
+  const yazilar = await prisma.post.findMany({ select: { id: true, slug: true, title: true, metaTitle: true, description: true, content: true, tldr: true, faq: true, personalExperience: true } });
+  const degisen: string[] = [];
+  for (const y of yazilar) {
+    const yeni = {
+      title: yasakliTemizle(y.title),
+      metaTitle: y.metaTitle ? yasakliTemizle(y.metaTitle) : y.metaTitle,
+      description: y.description ? yasakliTemizle(y.description) : y.description,
+      content: yasakliTemizle(y.content),
+      tldr: y.tldr ? yasakliTemizle(y.tldr) : y.tldr,
+      faq: y.faq ? yasakliTemizle(y.faq) : y.faq,
+      personalExperience: y.personalExperience ? yasakliTemizle(y.personalExperience) : y.personalExperience,
+    };
+    if (Object.entries(yeni).every(([k, v]) => v === (y as Record<string, unknown>)[k])) continue;
+    const sonVersiyon = await prisma.postVersion.findFirst({ where: { postId: y.id }, orderBy: { version: "desc" }, select: { version: true } });
+    await prisma.$transaction([
+      prisma.postVersion.create({
+        data: { postId: y.id, title: y.title, content: y.content, description: y.description, version: (sonVersiyon?.version ?? 0) + 1, savedBy: "veri adımı (yasaklı ifade temizliği 2 öncesi)" },
+      }),
+      prisma.post.update({ where: { id: y.id }, data: yeni }),
+    ]);
+    degisen.push(y.slug);
+  }
+  const yazarlar = await prisma.author.findMany({ select: { id: true, name: true, bio: true, expertise: true } });
+  const yazarNot: string[] = [];
+  for (const a of yazarlar) {
+    const bio = a.bio ? yasakliTemizle(a.bio) : a.bio;
+    const expertise = a.expertise ? yasakliTemizle(a.expertise) : a.expertise;
+    if (bio === a.bio && expertise === a.expertise) continue;
+    await prisma.author.update({ where: { id: a.id }, data: { bio, expertise } });
+    yazarNot.push(`${a.name} önceki bio: ${a.bio ?? ""} | expertise: ${a.expertise ?? ""}`);
+  }
+  await prisma.setting.create({ data: { key: ISARET, value: `${new Date().toISOString()} yazılar: ${degisen.join(", ") || "yok"} || yazarlar: ${yazarNot.join(" ;; ") || "yok"}` } });
+  console.log("[blog] yasaklı ifade temizliği 2", degisen.length, yazarNot.length);
+}
+
 let calisti: Promise<void> | null = null;
 /** Blog yazısı sayfası açılırken çağrılır; süreç başına bir kez çalışır, hata sayfayı durdurmaz. */
 export function blogVeriAdimlari() {
@@ -319,6 +366,7 @@ export function blogVeriAdimlari() {
     await diyanetsizIfadesi().catch((e) => console.error("[blog] diyanetsiz ifadesi", e));
     await bireyselUmreSeo().catch((e) => console.error("[blog] bireysel umre SEO", e));
     await yasakliIfadeler().catch((e) => console.error("[blog] yasaklı ifadeler", e));
+    await yasakliIfadeler2().catch((e) => console.error("[blog] yasaklı ifadeler 2", e));
   })();
   return calisti;
 }

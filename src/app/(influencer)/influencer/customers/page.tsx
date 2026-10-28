@@ -1,119 +1,73 @@
-'use client';
+// Müşterilerim (27 Ekim yenilemesi): linkten ya da koddan gelen müşteriler, aşamalara göre (KVKK: yalnız ilk ad + baş harf).
+import Ikon from '@/components/influencer/Ikon';
+import { redirect } from 'next/navigation';
+import { prisma } from '@/lib/prisma';
+import { getInfluencerSession } from '@/lib/influencer-auth';
+import { kisaAd, MUSTERI_DURUM } from '@/lib/marketing/panel';
 
-import { useEffect, useState } from 'react';
+export const dynamic = 'force-dynamic';
 
-const statusConfig: Record<string, { label: string; color: string; icon: string }> = {
-  clicked:       { label: 'Linke Tıkladı',    color: 'bg-blue-50 text-blue-600',     icon: 'ads_click' },
-  contacted:     { label: 'Arandı',            color: 'bg-yellow-50 text-yellow-700', icon: 'phone_in_talk' },
-  in_discussion: { label: 'Görüşüyor',         color: 'bg-orange-50 text-orange-600', icon: 'forum' },
-  contracted:    { label: 'Sözleşme İmzaladı', color: 'bg-purple-50 text-purple-600', icon: 'description' },
-  paid:          { label: 'Ödeme Yaptı',        color: 'bg-green-50 text-green-700',   icon: 'payments' },
-  completed:     { label: 'Umre Tamamlandı',    color: 'bg-emerald-50 text-emerald-700', icon: 'mosque' },
-  cancelled:     { label: 'İptal',              color: 'bg-red-50 text-red-500',       icon: 'cancel' },
-};
+const KAYNAK: Record<string, string> = { link: 'Link', coupon: 'Kod', manual_phone: 'Telefon', manual_branch: 'Ofis' };
+const ASAMALAR = ['clicked', 'contacted', 'in_discussion', 'contracted', 'paid', 'completed'];
 
-const sourceConfig: Record<string, { label: string; color: string }> = {
-  link:           { label: 'Link',             color: 'bg-blue-50 text-blue-600' },
-  coupon:         { label: 'Kupon',            color: 'bg-purple-50 text-purple-600' },
-  manual_phone:   { label: 'Telefon',          color: 'bg-orange-50 text-orange-600' },
-  manual_branch:  { label: 'Bayi',             color: 'bg-gray-50 text-gray-600' },
-};
-
-export default function InfluencerCustomersPage() {
-  const [customers, setCustomers] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState('all');
-
-  useEffect(() => {
-    fetch('/api/influencer/customers')
-      .then(r => r.json())
-      .then(d => { setCustomers(d.customers || []); setLoading(false); });
-  }, []);
-
-  const filtered = filter === 'all' ? customers : customers.filter(c => c.status === filter);
+export default async function MusterilerimPage() {
+  const s = await getInfluencerSession();
+  if (!s) redirect('/influencer/login');
+  const musteriler = await prisma.customer.findMany({ where: { influencerId: s.id }, orderBy: { createdAt: 'desc' }, include: { sales: { select: { commissionAmount: true, commissionStatus: true } } } });
+  const say = (d: string) => musteriler.filter((m) => m.status === d).length;
+  const enCok = Math.max(1, ...ASAMALAR.map(say));
 
   return (
-    <div className="space-y-6 pb-20 lg:pb-0">
-      <div>
-        <h1 className="text-[24px] font-bold text-gray-900 tracking-tight">Müşterilerim</h1>
-        <p className="text-[14px] text-gray-400 mt-0.5">Linkinizden veya kuponunuzdan gelen müşteriler (KVKK gereği isimler kısaltılmıştır)</p>
+    <div className="space-y-6">
+      <div className="mk-gir">
+        <p className="mk-ust">Müşterilerim</p>
+        <h1 className="mt-1 text-[28px] font-extrabold">Sizden gelen yolcular</h1>
+        <p className="mt-1 mk-soluk text-[15px] max-w-2xl">Linkinize tıklayan ya da kodunuzu kullanan herkes burada. Satış ekibimiz görüştükçe aşama güncellenir.</p>
       </div>
 
-      {/* Summary stats */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-        {[
-          { label: 'Toplam',         value: customers.length,                                            key: 'all' },
-          { label: 'Görüşüyor',      value: customers.filter(c => c.status === 'in_discussion').length,  key: 'in_discussion' },
-          { label: 'Ödeme Yaptı',   value: customers.filter(c => c.status === 'paid').length,            key: 'paid' },
-          { label: 'Tamamlandı',     value: customers.filter(c => c.status === 'completed').length,      key: 'completed' },
-        ].map(s => (
-          <button key={s.key} onClick={() => setFilter(s.key)}
-            className={`rounded-2xl border p-4 text-center transition-all ${filter === s.key ? 'bg-[#003781] border-[#003781] text-white' : 'bg-white border-gray-100 hover:border-gray-200 shadow-sm'}`}>
-            <p className={`text-[24px] font-bold ${filter === s.key ? 'text-white' : 'text-gray-900'}`}>{s.value}</p>
-            <p className={`text-[12px] font-medium mt-0.5 ${filter === s.key ? 'text-white/70' : 'text-gray-400'}`}>{s.label}</p>
-          </button>
-        ))}
-      </div>
-
-      {/* List */}
-      {loading ? (
-        <div className="flex items-center justify-center py-16">
-          <div className="w-8 h-8 border-2 border-[#003781]/20 border-t-[#003781] rounded-full animate-spin" />
-        </div>
-      ) : filtered.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-gray-100 p-12 text-center shadow-sm">
-          <span className="material-symbols-outlined text-5xl text-gray-200 mb-3 block" style={{ fontVariationSettings: "'FILL' 1" }}>person_search</span>
-          <p className="text-[15px] font-semibold text-gray-400">Henüz müşteri yok</p>
-          <p className="text-[13px] text-gray-300 mt-1">Linkinizi paylaşın, müşteriler geldiğinde burada görünür</p>
-        </div>
-      ) : (
-        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-          {filtered.map((c: any, i: number) => {
-            const st = statusConfig[c.status] || statusConfig.clicked;
-            const src = sourceConfig[c.source] || { label: c.source, color: 'bg-gray-50 text-gray-500' };
-            const earned = c.commissionEarned;
-            const pending = c.commissionPending;
-            return (
-              <div key={c.id} className={`flex items-center gap-4 px-5 py-4 ${i < filtered.length - 1 ? 'border-b border-gray-50' : ''}`}>
-                {/* Avatar */}
-                <div className="w-10 h-10 bg-gradient-to-br from-[#003781]/10 to-[#003781]/5 rounded-xl flex items-center justify-center shrink-0">
-                  <span className="text-[14px] font-bold text-[#003781]">{c.name[0]}</span>
-                </div>
-
-                {/* Info */}
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <p className="text-[14px] font-semibold text-gray-900">{c.name}</p>
-                    <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${src.color}`}>{src.label}</span>
-                  </div>
-                  <p className="text-[12px] text-gray-400 mt-0.5">{new Date(c.createdAt).toLocaleDateString('tr-TR')}</p>
-                </div>
-
-                {/* Commission */}
-                <div className="text-right shrink-0">
-                  {earned > 0 && <p className="text-[13px] font-bold text-emerald-600">+₺{earned.toLocaleString()}</p>}
-                  {pending > 0 && <p className="text-[12px] text-orange-500">₺{pending.toLocaleString()} bekliyor</p>}
-                  {earned === 0 && pending === 0 && <p className="text-[12px] text-gray-300">—</p>}
-                </div>
-
-                {/* Status */}
-                <div className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[11px] font-semibold shrink-0 ${st.color}`}>
-                  <span className="material-symbols-outlined text-[13px]" style={{ fontVariationSettings: "'FILL' 1" }}>{st.icon}</span>
-                  <span className="hidden sm:inline">{st.label}</span>
-                </div>
+      <section className="mk-kart p-5 lg:p-6">
+        <h2 className="text-[17px] font-extrabold">Aşamalar</h2>
+        <div className="mt-4 grid grid-cols-3 lg:grid-cols-6 gap-3">
+          {ASAMALAR.map((d, i) => (
+            <div key={d}>
+              <div className="h-24 flex items-end bg-[var(--mk-zemin)] mk-yuvarlak overflow-hidden">
+                <div className="w-full" style={{ height: `${Math.max(6, (say(d) / enCok) * 100)}%`, background: i >= 4 ? 'var(--mk-yesil)' : 'var(--mk-lacivert)', opacity: 0.55 + i * 0.08 }} />
               </div>
-            );
-          })}
+              <p className="mt-2 text-[22px] font-extrabold leading-none">{say(d)}</p>
+              <p className="mt-1 text-[12.5px] mk-soluk font-semibold">{MUSTERI_DURUM[d].ad}</p>
+            </div>
+          ))}
         </div>
-      )}
+      </section>
 
-      {/* KVKK notu */}
-      <div className="bg-gray-50 rounded-2xl border border-gray-100 px-5 py-4 flex items-start gap-3">
-        <span className="material-symbols-outlined text-[20px] text-gray-400 mt-0.5">shield</span>
-        <p className="text-[12px] text-gray-400 leading-relaxed">
-          KVKK kapsamında müşteri telefon ve email bilgileri görüntülenmemektedir. Sadece ad-soyad baş harfi ile süreç durumu görünür.
-        </p>
-      </div>
+      <section className="mk-kart overflow-hidden">
+        {musteriler.length === 0 ? (
+          <div className="p-10 text-center">
+            <Ikon ad="aile" boyut={44} className="text-[var(--mk-bulut)]" />
+            <p className="mt-2 font-bold">Henüz müşteri yok</p>
+            <p className="mt-1 text-[14px] mk-soluk">Kampanya linkinizi paylaştığınızda gelen ilk yolcu burada görünecek.</p>
+          </div>
+        ) : (
+          <div className="divide-y divide-[var(--mk-cizgi)]">
+            {musteriler.map((m) => {
+              const kom = m.sales.reduce((t, x) => t + (x.commissionStatus === 'refunded' ? 0 : x.commissionAmount), 0);
+              return (
+                <div key={m.id} className="px-5 py-3.5 flex items-center gap-3">
+                  <div className="w-10 h-10 mk-hap bg-[var(--mk-zemin)] text-[var(--mk-lacivert)] font-extrabold flex items-center justify-center">{m.fullName.trim()[0]}</div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[14.5px] font-bold">{kisaAd(m.fullName)}</p>
+                    <p className="text-[12.5px] mk-soluk">{new Date(m.createdAt).toLocaleDateString('tr-TR')} · {KAYNAK[m.source] ?? m.source}</p>
+                  </div>
+                  {kom > 0 && <p className="text-[14px] font-extrabold text-[var(--mk-yesil)]">+{kom.toLocaleString('tr-TR')} TL</p>}
+                  <span className={`mk-rozet ${m.status === 'paid' || m.status === 'completed' ? 'mk-rozet-onay' : m.status === 'cancelled' ? 'mk-rozet-red' : 'mk-rozet-mavi'}`}>{MUSTERI_DURUM[m.status]?.ad ?? m.status}</span>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </section>
+
+      <p className="text-[12.5px] mk-soluk flex gap-2"><Ikon ad="guven" boyut={18} />KVKK gereği müşterilerin telefon ve e-posta bilgileri gösterilmez; yalnızca ilk ad ve soyadın baş harfi görünür.</p>
     </div>
   );
 }

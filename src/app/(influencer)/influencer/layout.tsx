@@ -3,18 +3,20 @@ import { getInfluencerSession } from '@/lib/influencer-auth';
 import InfluencerSidebar from '@/components/influencer/InfluencerSidebar';
 import InfluencerTopBar from '@/components/influencer/InfluencerTopBar';
 import FullIconFont from "@/components/ui/FullIconFont";
+import { cairo } from "@/components/home/fonts";
+import "./marketing.css";
 
 export default async function InfluencerLayout({ children }: { children: React.ReactNode }) {
   const session = await getInfluencerSession();
   if (!session) redirect('/influencer/login');
 
   return (
-    <div className="min-h-screen bg-[#F5F5F7] flex">
+    <div className={`mk ${cairo.variable} min-h-screen`}>
       <FullIconFont />
       <InfluencerSidebar />
-      <div className="flex-1 flex flex-col min-h-screen lg:ml-64">
+      <div className="flex flex-col min-h-screen lg:ml-[264px]">
         <InfluencerTopBar session={session} />
-        <main className="flex-1 p-6 lg:p-8 max-w-6xl w-full mx-auto">
+        <main className="flex-1 w-full max-w-6xl mx-auto px-4 lg:px-8 py-6 lg:py-8 pb-28 lg:pb-10">
           {children}
         </main>
       </div>

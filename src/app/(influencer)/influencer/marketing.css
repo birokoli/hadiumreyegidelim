@@ -1,0 +1,82 @@
+/* Marketing paneli (27 Ekim): marka kiti renkleri ve Cairo. Sitenin genel .rounded-* kuralından etkilenmesin diye köşeler
+   bu dosyadaki sınıflarla verilir (globals.css'teki BUTTON_RADIUS !important kuralı rounded-xl/2xl'i ezer). */
+.mk {
+  --mk-gece: #12295a;
+  --mk-lacivert: #203c76;
+  --mk-kraliyet: #1d428a;
+  --mk-bulut: #b8c9e3;
+  --mk-zemin: #edf1fe;
+  --mk-kum: #f2dda6;
+  --mk-altin: #b8902a;
+  --mk-metin: #5b6b86;
+  --mk-yazi: #12295a;
+  --mk-arka: #f4f6fb;
+  --mk-cizgi: #e3e8f2;
+  --mk-yesil: #1b7f4b;
+  --mk-kirmizi: #b42318;
+  font-family: var(--font-cairo), "Cairo", system-ui, sans-serif;
+  color: var(--mk-yazi);
+  background: var(--mk-arka);
+}
+.mk h1, .mk h2, .mk h3 { letter-spacing: -0.01em; }
+.mk .ikon-dolu { font-variation-settings: "FILL" 1, "wght" 400; }
+
+.mk-kart { background: #fff; border: 1px solid var(--mk-cizgi); border-radius: 22px; box-shadow: 0 1px 2px rgba(18, 41, 90, 0.04); }
+.mk-kart-koyu { background: linear-gradient(135deg, var(--mk-gece) 0%, var(--mk-lacivert) 60%, var(--mk-kraliyet) 100%); color: #fff; border-radius: 22px; position: relative; overflow: hidden; }
+/* Yan menü: .mk-kart-koyu'daki position:relative, Tailwind'in fixed sınıfını ezdiği için ayrı */
+.mk-yan { background: linear-gradient(160deg, var(--mk-gece) 0%, var(--mk-lacivert) 65%, var(--mk-kraliyet) 100%); color: #fff; overflow: hidden; }
+.mk-yan::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0.07;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='96' viewBox='0 0 60 96'%3E%3Cpath d='M6 96V48C6 30 16 16 30 6c14 10 24 24 24 42v48' fill='none' stroke='%23fff' stroke-width='1.5'/%3E%3C/svg%3E");
+  background-size: 60px 96px;
+}
+.mk-desen::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0.07;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='96' viewBox='0 0 60 96'%3E%3Cpath d='M6 96V48C6 30 16 16 30 6c14 10 24 24 24 42v48' fill='none' stroke='%23fff' stroke-width='1.5'/%3E%3C/svg%3E");
+  background-size: 60px 96px;
+}
+.mk-yuvarlak { border-radius: 14px; }
+.mk-hap { border-radius: 999px; }
+
+.mk-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-weight: 700; font-size: 14px; border-radius: 14px; padding: 11px 18px; transition: transform 0.1s ease-out, background 0.15s, box-shadow 0.15s; white-space: nowrap; }
+.mk-btn:active { transform: scale(0.97); }
+.mk-btn-ana { background: var(--mk-lacivert); color: #fff; box-shadow: 0 6px 16px -6px rgba(32, 60, 118, 0.6); }
+.mk-btn-ana:hover { background: var(--mk-gece); }
+.mk-btn-kum { background: var(--mk-kum); color: var(--mk-gece); }
+.mk-btn-kum:hover { filter: brightness(0.96); }
+.mk-btn-cizgi { background: #fff; color: var(--mk-yazi); border: 1px solid var(--mk-cizgi); }
+.mk-btn-cizgi:hover { background: var(--mk-zemin); }
+.mk-btn-sade { color: var(--mk-metin); }
+.mk-btn-sade:hover { background: var(--mk-zemin); color: var(--mk-yazi); }
+.mk-btn:disabled { opacity: 0.55; pointer-events: none; }
+
+.mk-ust { font-size: 11.5px; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; color: var(--mk-altin); }
+.mk-soluk { color: var(--mk-metin); }
+
+.mk-alan { width: 100%; background: #fff; border: 1px solid var(--mk-cizgi); border-radius: 14px; padding: 11px 14px; font-size: 14px; color: var(--mk-yazi); outline: none; transition: border 0.15s, box-shadow 0.15s; }
+.mk-alan:focus { border-color: var(--mk-lacivert); box-shadow: 0 0 0 3px rgba(32, 60, 118, 0.12); }
+
+.mk-rozet { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 999px; }
+.mk-rozet-bekliyor { background: #fff6e0; color: #8a5a00; }
+.mk-rozet-onay { background: #e6f5ec; color: var(--mk-yesil); }
+.mk-rozet-red { background: #fdecea; color: var(--mk-kirmizi); }
+.mk-rozet-mavi { background: var(--mk-zemin); color: var(--mk-lacivert); }
+
+@keyframes mk-gir { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+/* Dolgu modu yok: animasyon çalışmazsa (arka plan sekmesi, ekran görüntüsü) içerik soluk kalmasın */
+.mk-gir { animation: mk-gir 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
+@media (prefers-reduced-motion: reduce) { .mk-gir { animation: none; } .mk-btn:active { transform: none; } }
+
+.mk-alt-menu { padding-bottom: env(safe-area-inset-bottom); }
+
+/* Uyum katmanı: henüz yeniden yazılmayan eski sayfalar (Linklerim, Davet, Destek, Yıldızlar, Ödemeler) eski #003781 ve gri
+   tonlarını kullanıyor; panelin içinde marka renklerine çevrilir. */
+.mk .bg-\[\#003781\], .mk .bg-\[\#002d6a\], .mk .bg-\[\#002a63\] { background-color: var(--mk-lacivert) !important; }
+.mk .hover\:bg-\[\#002a63\]:hover, .mk .hover\:bg-\[\#002d6a\]:hover { background-color: var(--mk-gece) !important; }
+.mk .text-\[\#003781\] { color: var(--mk-lacivert) !important; }
+.mk .from-\[\#003781\] { --tw-gradient-from: var(--mk-gece) !important; }
+.mk .to-\[\#001f4d\], .mk .to-\[\#002d6a\] { --tw-gradient-to: var(--mk-kraliyet) !important; }
+.mk .text-gray-900 { color: var(--mk-yazi); }
+.mk .text-gray-400, .mk .text-gray-500 { color: var(--mk-metin); }
+.mk .bg-white.rounded-2xl, .mk .bg-white.rounded-3xl { border-radius: 22px !important; border-color: var(--mk-cizgi); }
+.mk .bg-gray-50 { background-color: var(--mk-zemin); }

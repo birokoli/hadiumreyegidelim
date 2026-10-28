@@ -1,13 +1,14 @@
 'use client';
 
+import Ikon from '@/components/influencer/Ikon';
 import { useEffect, useState } from 'react';
 
 const REDEMPTION_TYPES = [
-  { key: 'cash',              label: 'Nakit Çek',        icon: 'payments' },
-  { key: 'free_umrah',        label: 'Ücretsiz Umre',    icon: 'mosque' },
-  { key: 'hybrid_umrah',      label: 'Karma Umre',       icon: 'auto_awesome' },
-  { key: 'gift_item',         label: 'Hediye Katalogu',  icon: 'card_giftcard' },
-  { key: 'customer_discount', label: 'Müşteri İndirimi', icon: 'local_offer' },
+  { key: 'cash',              label: 'Nakit Çek',        icon: 'cuzdan' },
+  { key: 'free_umrah',        label: 'Ücretsiz Umre',    icon: 'kabe' },
+  { key: 'hybrid_umrah',      label: 'Karma Umre',       icon: 'yapayzeka' },
+  { key: 'gift_item',         label: 'Hediye Katalogu',  icon: 'yildiz' },
+  { key: 'customer_discount', label: 'Müşteri İndirimi', icon: 'fiyat' },
 ];
 
 const FREE_UMRAH_OPTIONS = [
@@ -107,7 +108,7 @@ export default function LoyaltyPage() {
             <p className="text-white/60 text-[13px] font-medium">Toplam Yıldız</p>
             <p className="text-[42px] font-black tracking-tight leading-none mt-1">
               {(account.currentBalance ?? 0).toLocaleString('tr-TR')}
-              <span className="material-symbols-outlined text-[22px] font-normal ml-2 text-white/60" style={{ fontVariationSettings: "'FILL' 1", verticalAlign: '-4px' }}>star</span>
+              <Ikon ad="yildiz" boyut={22} className="font-normal ml-2 text-white/60" />
             </p>
             <p className="text-white/50 text-[13px] mt-1">≈ {(account.cashEquivalent ?? 0).toLocaleString('tr-TR', { style: 'currency', currency: 'TRY' })}</p>
           </div>
@@ -150,7 +151,7 @@ export default function LoyaltyPage() {
         {/* Puan süresi uyarısı */}
         {account.daysUntilExpiry < 180 && (
           <div className="mt-3 bg-red-500/20 border border-red-400/30 rounded-xl px-3 py-2 flex items-center gap-2">
-            <span className="material-symbols-outlined text-[18px] text-red-300">warning</span>
+            <Ikon ad="uyari" boyut={18} className="text-red-300" />
             <p className="text-[12px] text-red-200">{account.daysUntilExpiry} gün sonra yıldızların silinecek</p>
           </div>
         )}
@@ -163,7 +164,7 @@ export default function LoyaltyPage() {
           {pending.map((r: any) => (
             <div key={r.id} className="flex items-center justify-between py-1">
               <span className="text-[13px] text-amber-700 capitalize">{r.redemptionType.replace('_', ' ')}</span>
-              <span className="text-[13px] font-semibold text-amber-800 flex items-center gap-0.5">{r.pointsUsed.toLocaleString('tr-TR')} <span className="material-symbols-outlined text-[14px]" style={{ fontVariationSettings: "'FILL' 1" }}>star</span></span>
+              <span className="text-[13px] font-semibold text-amber-800 flex items-center gap-0.5">{r.pointsUsed.toLocaleString('tr-TR')} <Ikon ad="yildiz" boyut={14} /></span>
             </div>
           ))}
         </div>
@@ -177,7 +178,7 @@ export default function LoyaltyPage() {
               className={`flex-shrink-0 flex flex-col items-center gap-1 px-4 py-3 text-[12px] font-medium transition-colors ${
                 activeTab === t.key ? 'text-[#003781] border-b-2 border-[#003781]' : 'text-gray-400 hover:text-gray-600'
               }`}>
-              <span className="material-symbols-outlined text-[20px]">{t.icon}</span>
+              <Ikon ad={t.icon} boyut={20} />
               {t.label}
             </button>
           ))}
@@ -222,7 +223,7 @@ export default function LoyaltyPage() {
                         : 'border-gray-200 hover:border-gray-300'
                     }`}>
                     <p className="text-[12px] font-semibold text-gray-800">{opt.label}</p>
-                    <p className="text-[12px] text-[#003781] font-bold mt-0.5 flex items-center gap-0.5">{opt.points.toLocaleString('tr-TR')} <span className="material-symbols-outlined text-[13px]" style={{ fontVariationSettings: "'FILL' 1" }}>star</span></p>
+                    <p className="text-[12px] text-[#003781] font-bold mt-0.5 flex items-center gap-0.5">{opt.points.toLocaleString('tr-TR')} <Ikon ad="yildiz" boyut={13} /></p>
                   </button>
                 ))}
               </div>
@@ -306,7 +307,7 @@ export default function LoyaltyPage() {
                       : 'border-gray-200 hover:border-gray-300'
                   }`}>
                   <p className="text-[13px] font-medium text-gray-800">{item.label}</p>
-                  <p className="text-[13px] font-bold text-[#003781] shrink-0 ml-3 flex items-center gap-0.5">{item.points.toLocaleString('tr-TR')} <span className="material-symbols-outlined text-[14px]" style={{ fontVariationSettings: "'FILL' 1" }}>star</span></p>
+                  <p className="text-[13px] font-bold text-[#003781] shrink-0 ml-3 flex items-center gap-0.5">{item.points.toLocaleString('tr-TR')} <Ikon ad="yildiz" boyut={14} /></p>
                 </div>
               ))}
             </div>
@@ -362,7 +363,7 @@ export default function LoyaltyPage() {
                   </p>
                 </div>
                 <p className={`text-[14px] font-bold flex items-center gap-0.5 ${tx.pointsAmount > 0 ? 'text-green-600' : 'text-red-500'}`}>
-                  {tx.pointsAmount > 0 ? '+' : ''}{tx.pointsAmount.toLocaleString('tr-TR')} <span className="material-symbols-outlined text-[15px]" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+                  {tx.pointsAmount > 0 ? '+' : ''}{tx.pointsAmount.toLocaleString('tr-TR')} <Ikon ad="yildiz" boyut={15} />
                 </p>
               </div>
             ))}

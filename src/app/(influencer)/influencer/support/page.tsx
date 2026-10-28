@@ -1,5 +1,6 @@
 'use client';
 
+import Ikon from '@/components/influencer/Ikon';
 import { useEffect, useRef, useState, useCallback } from 'react';
 
 interface Message {
@@ -92,7 +93,7 @@ export default function SupportPage() {
       {/* ── HEADER ── */}
       <div className="bg-white border-b border-gray-100 px-5 py-4 flex items-center gap-3 shrink-0 shadow-sm">
         <div className="w-10 h-10 rounded-full bg-[#003781] flex items-center justify-center shrink-0">
-          <span className="material-symbols-outlined text-[20px] text-white" style={{ fontVariationSettings: "'FILL' 1" }}>support_agent</span>
+          <Ikon ad="destek" boyut={20} className="text-white" />
         </div>
         <div className="flex-1">
           <p className="text-[14px] font-bold text-gray-900">Müşteri Temsilcisi</p>
@@ -113,7 +114,7 @@ export default function SupportPage() {
         {messages.length === 0 && (
           <div className="flex flex-col items-center justify-center h-full gap-4 text-center">
             <div className="w-16 h-16 rounded-2xl bg-[#003781]/10 flex items-center justify-center">
-              <span className="material-symbols-outlined text-[32px] text-[#003781]" style={{ fontVariationSettings: "'FILL' 1" }}>forum</span>
+              <Ikon ad="sohbet" boyut={32} className="text-[#003781]" />
             </div>
             <div>
               <p className="text-[15px] font-semibold text-gray-700">Nasıl yardımcı olabiliriz?</p>
@@ -180,7 +181,7 @@ export default function SupportPage() {
               disabled={!input.trim() || sending}
               className="w-11 h-11 rounded-full bg-[#003781] hover:bg-[#002d6a] disabled:opacity-40 transition-all flex items-center justify-center shrink-0 shadow-md shadow-[#003781]/20 active:scale-95"
             >
-              <span className="material-symbols-outlined text-[20px] text-white" style={{ fontVariationSettings: "'FILL' 1" }}>send</span>
+              <Ikon ad="gonder" boyut={20} className="text-white" />
             </button>
           </div>
         )}

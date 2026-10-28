@@ -2,6 +2,7 @@
 import { SITE_URL } from "@/lib/seo/site";
 
 import { useEffect, useRef, useState } from 'react';
+import Ikon from '@/components/influencer/Ikon';
 
 interface StoryModalProps {
   campaignSlug: string;
@@ -87,7 +88,7 @@ export default function StoryModal({
         <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100">
           <div className="flex items-center gap-3">
             <div className="w-9 h-9 rounded-xl bg-[#003781]/10 flex items-center justify-center">
-              <span className="material-symbols-outlined text-[#003781] text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>auto_awesome</span>
+              <Ikon ad="yapayzeka" boyut={20} className="text-[var(--mk-lacivert)]" />
             </div>
             <div>
               <p className="text-[15px] font-bold text-gray-900">Story Hazır!</p>
@@ -98,7 +99,7 @@ export default function StoryModal({
             onClick={onClose}
             className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors"
           >
-            <span className="material-symbols-outlined text-[20px]">close</span>
+            <Ikon ad="kapat" boyut={20} />
           </button>
         </div>
 
@@ -131,7 +132,7 @@ export default function StoryModal({
 
               {/* Katılım başarı notu */}
               <div className="bg-green-50 border border-green-200 rounded-2xl px-4 py-3 flex items-start gap-3">
-                <span className="material-symbols-outlined text-green-500 text-[22px] mt-0.5 shrink-0" style={{ fontVariationSettings: "'FILL' 1" }}>check_circle</span>
+                <Ikon ad="tik-daire" boyut={22} className="text-[var(--mk-yesil)] mt-0.5" />
                 <p className="text-[13px] text-green-700 leading-relaxed">
                   <span className="font-bold">Kampanyaya katıldın.</span> Kod ve takip linki sana özel oluşturuldu — hiçbir şey yazman gerekmiyor.
                 </p>
@@ -146,7 +147,7 @@ export default function StoryModal({
                     onClick={() => copy(uniqueCode, 'link')}
                     className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-[13px] font-semibold transition-all ${copied === 'link' ? 'bg-green-500 text-white' : 'bg-white border border-gray-200 text-gray-700 hover:bg-gray-50'}`}
                   >
-                    <span className="material-symbols-outlined text-[18px]">{copied === 'link' ? 'check' : 'content_copy'}</span>
+                    <Ikon ad={copied === 'link' ? 'tik' : 'kopyala'} boyut={18} />
                     {copied === 'link' ? 'Kopyalandı!' : 'Kopyala'}
                   </button>
                 </div>
@@ -161,7 +162,7 @@ export default function StoryModal({
                     onClick={() => copy(trackingUrl, 'caption')}
                     className={`shrink-0 flex items-center gap-1.5 px-3 py-2 rounded-xl text-[13px] font-semibold transition-all ${copied === 'caption' ? 'bg-green-500 text-white' : 'bg-white border border-gray-200 text-gray-700 hover:bg-gray-50'}`}
                   >
-                    <span className="material-symbols-outlined text-[18px]">{copied === 'caption' ? 'check' : 'content_copy'}</span>
+                    <Ikon ad={copied === 'caption' ? 'tik' : 'kopyala'} boyut={18} />
                     {copied === 'caption' ? 'Kopyalandı!' : 'Kopyala'}
                   </button>
                 </div>
@@ -177,7 +178,7 @@ export default function StoryModal({
                   onClick={() => { navigator.clipboard.writeText(caption); setCopied('link'); setTimeout(() => setCopied(null), 2500); }}
                   className={`mt-2 w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-[13px] font-semibold transition-all ${copied === 'link' ? 'bg-green-500 text-white' : 'bg-white border border-gray-200 text-gray-700 hover:bg-gray-50'}`}
                 >
-                  <span className="material-symbols-outlined text-[18px]">{copied === 'link' ? 'check' : 'content_copy'}</span>
+                  <Ikon ad={copied === 'link' ? 'tik' : 'kopyala'} boyut={18} />
                   {copied === 'link' ? 'Kopyalandı!' : 'Metni Kopyala'}
                 </button>
               </div>
@@ -194,7 +195,7 @@ export default function StoryModal({
           >
             {downloading
               ? <><span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" /> İndiriliyor...</>
-              : <><span className="material-symbols-outlined text-[22px]" style={{ fontVariationSettings: "'FILL' 1" }}>download</span> Story'yi İndir (PNG)</>
+              : <><Ikon ad="indir" boyut={22} /> Story'yi İndir (PNG)</>
             }
           </button>
           <button

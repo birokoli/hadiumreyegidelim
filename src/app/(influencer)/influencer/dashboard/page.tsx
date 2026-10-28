@@ -1,188 +1,170 @@
-'use client';
-
-import { useEffect, useState } from 'react';
+// Bugün (27 Ekim yenilemesi): influencer girince ne yapacağını görür: öne çıkan kampanya, kişisel link ve kod,
+// bu ayın sayıları, komisyon eşiği, içerik onayları ve son müşteriler. Veri sunucuda hazırlanır (bekleme ekranı yok).
+import Ikon from '@/components/influencer/Ikon';
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
+import { getInfluencerSession } from '@/lib/influencer-auth';
+import { bugunVerisi, MUSTERI_DURUM, indirimEtiketi } from '@/lib/marketing/panel';
+import { KopyalaButon, PaylasButon } from '@/components/influencer/araclar';
 
-const statusLabel: Record<string, { label: string; color: string }> = {
-  clicked:       { label: 'Linke Tıkladı',     color: 'bg-blue-50 text-blue-600' },
-  contacted:     { label: 'Arandı',             color: 'bg-yellow-50 text-yellow-700' },
-  in_discussion: { label: 'Görüşüyor',          color: 'bg-orange-50 text-orange-600' },
-  contracted:    { label: 'Sözleşme İmzaladı',  color: 'bg-purple-50 text-purple-600' },
-  paid:          { label: 'Ödeme Yaptı',         color: 'bg-green-50 text-green-600' },
-  completed:     { label: 'Umre Tamamlandı',     color: 'bg-emerald-50 text-emerald-600' },
-  cancelled:     { label: 'İptal',               color: 'bg-red-50 text-red-500' },
-};
+export const dynamic = 'force-dynamic';
 
-const tierLabel: Record<string, { label: string; color: string; icon: string }> = {
-  eci:     { label: 'Elçi',    color: 'bg-yellow-50 text-yellow-700 border-yellow-200', icon: 'military_tech' },
-  rehber:  { label: 'Rehber',  color: 'bg-blue-50 text-blue-700 border-blue-200',       icon: 'verified' },
-  davetci: { label: 'Davetçi', color: 'bg-gray-50 text-gray-600 border-gray-200',       icon: 'person' },
-};
+const tl = (n: number) => `${Math.round(n).toLocaleString('tr-TR')} TL`;
 
-export default function InfluencerDashboardPage() {
-  const [data, setData] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetch('/api/influencer/dashboard')
-      .then(r => r.json())
-      .then(d => { setData(d); setLoading(false); })
-      .catch(() => setLoading(false));
-  }, []);
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="flex flex-col items-center gap-3">
-          <div className="w-8 h-8 border-2 border-[#003781]/20 border-t-[#003781] rounded-full animate-spin" />
-          <p className="text-[14px] text-gray-400">Yükleniyor...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (!data || !data.influencer) return null;
-
-  const { influencer, stats, links, recentCustomers, freeUmreProgress } = data;
-  const tier = tierLabel[influencer.tier] || tierLabel.davetci;
-  const progressPct = Math.min((freeUmreProgress.current / freeUmreProgress.target) * 100, 100);
-  const remaining = Math.max(freeUmreProgress.target - freeUmreProgress.current, 0);
+export default async function BugunPage() {
+  const s = await getInfluencerSession();
+  if (!s) redirect('/influencer/login');
+  const d = await bugunVerisi(s.id);
+  if (!d) redirect('/influencer/login');
+  const { inf, stats, program, one, paylasim, musteriler } = d;
+  const ad = inf.fullName.split(' ')[0];
+  const saat = new Date().getHours();
+  const selam = saat < 12 ? 'Hayırlı sabahlar' : saat < 18 ? 'Hayırlı günler' : 'Hayırlı akşamlar';
+  const kalan = Math.max(program.esik - program.gecerli, 0);
+  const yuzde = Math.min(100, Math.round((program.gecerli / Math.max(program.esik, 1)) * 100));
 
   return (
-    <div className="space-y-6 pb-20 lg:pb-0">
-      {/* Header */}
-      <div className="flex items-start justify-between flex-wrap gap-3">
+    <div className="space-y-6">
+      <div className="mk-gir flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-[24px] font-bold text-gray-900 tracking-tight">
-            Merhaba, {influencer.fullName.split(' ')[0]} 👋
-          </h1>
-          <p className="text-[14px] text-gray-400 mt-0.5">Marketing panelinize hoş geldiniz</p>
+          <p className="mk-ust">{new Date().toLocaleDateString('tr-TR', { weekday: 'long', day: 'numeric', month: 'long' })}</p>
+          <h1 className="mt-1 text-[28px] lg:text-[32px] font-extrabold leading-tight">{selam}, {ad}</h1>
         </div>
-        <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-semibold border ${tier.color}`}>
-          <span className="material-symbols-outlined text-[14px]" style={{ fontVariationSettings: "'FILL' 1" }}>{tier.icon}</span>
-          {tier.label}
-        </span>
+        {inf.status === 'pending' && (
+          <span className="mk-rozet mk-rozet-bekliyor"><Ikon ad="saat" boyut={16} />Başvurunuz inceleniyor</span>
+        )}
       </div>
 
-      {/* Pending banner */}
-      {influencer.status === 'pending' && (
-        <div className="bg-amber-50 border border-amber-200 rounded-2xl px-5 py-4 flex items-center gap-3">
-          <span className="material-symbols-outlined text-amber-500 text-[24px]" style={{ fontVariationSettings: "'FILL' 1" }}>schedule</span>
-          <div>
-            <p className="text-[14px] font-semibold text-amber-800">Başvurunuz İnceleniyor</p>
-            <p className="text-[13px] text-amber-600 mt-0.5">Onaylandığında linkleriniz ve komisyonlarınız aktif olacak.</p>
-          </div>
-        </div>
-      )}
-
-      {/* Stat cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {[
-          { label: 'Bu Ay Satış',    value: stats.monthlySales,                                     icon: 'shopping_bag',           color: 'text-[#003781]',  bg: 'bg-[#003781]/5' },
-          { label: 'Toplam Kazanç', value: `₺${stats.totalEarnings.toLocaleString('tr-TR')}`,     icon: 'account_balance_wallet', color: 'text-emerald-600', bg: 'bg-emerald-50' },
-          { label: 'Bekleyen Ödeme', value: `₺${stats.pendingEarnings.toLocaleString('tr-TR')}`, icon: 'pending',                color: 'text-orange-500', bg: 'bg-orange-50' },
-          { label: 'Bu Ay Tıklanma', value: stats.monthlyClicks,                                   icon: 'ads_click',              color: 'text-purple-600', bg: 'bg-purple-50' },
-        ].map(s => (
-          <div key={s.label} className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm hover:shadow-md transition-shadow">
-            <div className={`w-10 h-10 ${s.bg} rounded-xl flex items-center justify-center mb-3`}>
-              <span className={`material-symbols-outlined text-[22px] ${s.color}`} style={{ fontVariationSettings: "'FILL' 1" }}>{s.icon}</span>
-            </div>
-            <p className="text-[12px] text-gray-400 font-medium">{s.label}</p>
-            <p className="text-[22px] font-bold text-gray-900 mt-0.5">{s.value}</p>
-          </div>
-        ))}
-      </div>
-
-      {/* Ücretsiz Umre Progress */}
-      <div className="bg-gradient-to-br from-[#003781] to-[#001f4d] rounded-2xl p-6 text-white shadow-lg shadow-[#003781]/20">
-        <div className="flex items-start justify-between mb-5">
-          <div>
-            <p className="text-[13px] text-white/60 font-medium">Ücretsiz Umre Ödülü</p>
-            <p className="text-[24px] font-bold mt-1">
-              {freeUmreProgress.current} / {freeUmreProgress.target} <span className="text-[15px] font-normal text-white/60">satış</span>
-            </p>
-          </div>
-          <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center">
-            <span className="material-symbols-outlined text-[28px] text-yellow-300" style={{ fontVariationSettings: "'FILL' 1" }}>mosque</span>
-          </div>
-        </div>
-        <div className="bg-white/20 rounded-full h-2 mb-3 overflow-hidden">
-          <div className="bg-yellow-300 h-2 rounded-full transition-all duration-1000" style={{ width: `${progressPct}%` }} />
-        </div>
-        <p className="text-[13px] text-white/60">
-          {remaining > 0 ? `${remaining} satış daha yaparsanız ücretsiz umre hakkı kazanırsınız 🕋` : '🎉 Tebrikler! Ücretsiz umre hakkı kazandınız!'}
-        </p>
-      </div>
-
-      {/* Quick actions + Recent customers */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-
-        {/* Quick link card */}
-        <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
-          <h3 className="text-[15px] font-bold text-gray-900 mb-4 flex items-center gap-2">
-            <span className="material-symbols-outlined text-[20px] text-[#003781]">link</span>
-            Takip Linkim
-          </h3>
-          <div className="space-y-2 mb-4">
-            <div className="bg-gray-50 rounded-xl px-4 py-3">
-              <p className="text-[11px] text-gray-400 mb-0.5">Link</p>
-              <p className="text-[12px] font-medium text-gray-700 truncate">{links.trackingUrl}</p>
-            </div>
-            <div className="bg-gray-50 rounded-xl px-4 py-3 flex items-center justify-between">
-              <div>
-                <p className="text-[11px] text-gray-400 mb-0.5">Kupon</p>
-                <p className="text-[16px] font-black text-[#003781] tracking-widest">{links.couponCode}</p>
-              </div>
-              <button onClick={() => navigator.clipboard.writeText(links.couponCode)}
-                className="flex items-center gap-1.5 bg-white border border-gray-200 text-gray-600 text-[12px] font-semibold px-3 py-1.5 rounded-xl hover:bg-gray-50 transition-all">
-                <span className="material-symbols-outlined text-[14px]">content_copy</span>
-                Kopyala
-              </button>
+      {/* Öne çıkan kampanya */}
+      {one ? (
+        <section className="mk-kart-koyu mk-desen mk-gir grid lg:grid-cols-[1.4fr_1fr]">
+          <div className="relative p-6 lg:p-8">
+            <p className="mk-ust !text-[var(--mk-kum)]">{one.katildi ? 'Katıldığınız kampanya' : 'Bu haftanın kampanyası'}</p>
+            <h2 className="mt-2 text-[26px] lg:text-[34px] font-extrabold leading-[1.1]">{one.brief?.soz || one.kampanya.title}</h2>
+            <p className="mt-3 text-[15px] text-white/75 max-w-xl">{one.brief?.anaMesaj || one.kampanya.description}</p>
+            <div className="mt-5 flex flex-wrap gap-2">
+              <Link href={`/influencer/campaigns/${one.kampanya.slug}`} className="mk-btn mk-btn-kum">
+                <Ikon ad="belge" boyut={19} />
+                {one.katildi ? 'Brief ve içerikler' : 'Brief’i aç ve katıl'}
+              </Link>
+              {indirimEtiketi(one.kampanya) && <span className="mk-btn !bg-white/10 !text-white !font-semibold">{indirimEtiketi(one.kampanya)}</span>}
             </div>
           </div>
-          <Link href="/influencer/links"
-            className="w-full flex items-center justify-center gap-2 border border-gray-200 text-gray-700 font-semibold py-2.5 rounded-xl text-[14px] hover:bg-gray-50 transition-all">
-            <span className="material-symbols-outlined text-[18px]">tune</span>
-            Tüm Link Araçları
-          </Link>
-        </div>
-
-        {/* Recent customers */}
-        <div className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
-          <h3 className="text-[15px] font-bold text-gray-900 mb-4 flex items-center gap-2">
-            <span className="material-symbols-outlined text-[20px] text-[#003781]">people</span>
-            Son Müşteriler
-          </h3>
-          {recentCustomers.length === 0 ? (
-            <div className="flex flex-col items-center py-8 text-gray-300">
-              <span className="material-symbols-outlined text-4xl mb-2" style={{ fontVariationSettings: "'FILL' 1" }}>person_search</span>
-              <p className="text-[13px] text-gray-400">Henüz müşteri yok</p>
-              <p className="text-[12px] text-gray-300 mt-0.5">Linkinizi paylaşın!</p>
-            </div>
-          ) : (
-            <div className="space-y-1">
-              {recentCustomers.slice(0, 5).map((c: any) => {
-                const s = statusLabel[c.status] || { label: c.status, color: 'bg-gray-50 text-gray-500' };
-                return (
-                  <div key={c.id} className="flex items-center justify-between py-2.5 border-b border-gray-50 last:border-0">
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-8 h-8 bg-gradient-to-br from-[#003781]/10 to-[#003781]/5 rounded-xl flex items-center justify-center">
-                        <span className="text-[12px] font-bold text-[#003781]">{c.name[0]}</span>
-                      </div>
-                      <p className="text-[13px] font-medium text-gray-800">{c.name}</p>
-                    </div>
-                    <span className={`text-[11px] font-semibold px-2.5 py-1 rounded-full ${s.color}`}>{s.label}</span>
-                  </div>
-                );
-              })}
+          {one.brief?.gorseller[0] && (
+            <div className="relative hidden lg:flex items-end justify-center pt-6 pr-6">
+              <img src={one.brief.gorseller[0].url} alt="" className="max-h-[260px] w-auto shadow-2xl" style={{ borderRadius: '16px 16px 0 0' }} />
             </div>
           )}
-          <Link href="/influencer/customers"
-            className="w-full flex items-center justify-center gap-2 border border-gray-200 text-gray-700 font-semibold py-2.5 rounded-xl text-[14px] hover:bg-gray-50 transition-all mt-4">
-            Tüm Müşteriler
-            <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
-          </Link>
-        </div>
+        </section>
+      ) : (
+        <section className="mk-kart p-6 mk-gir"><p className="mk-soluk">Şu an aktif kampanya yok; yeni kampanya açıldığında burada görünecek.</p></section>
+      )}
+
+      {/* Sayılar */}
+      <section className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        {[
+          { ad: 'Bu ay tıklama', deger: stats.ayTik.toLocaleString('tr-TR'), ikon: 'tikla' },
+          { ad: 'Bu ay yeni müşteri', deger: stats.ayMusteri.toLocaleString('tr-TR'), ikon: 'davet' },
+          { ad: 'Bu ay satış', deger: stats.aySatis.toLocaleString('tr-TR'), ikon: 'onay' },
+          { ad: 'Bekleyen kazanç', deger: tl(stats.bekleyen), ikon: 'cuzdan' },
+        ].map((k) => (
+          <div key={k.ad} className="mk-kart p-4 lg:p-5 mk-gir">
+            <Ikon ad={k.ikon} boyut={24} className="text-[var(--mk-altin)]" />
+            <p className="mt-2 text-[26px] font-extrabold leading-none">{k.deger}</p>
+            <p className="mt-1.5 text-[13px] mk-soluk font-semibold">{k.ad}</p>
+          </div>
+        ))}
+      </section>
+
+      <div className="grid lg:grid-cols-[1.25fr_1fr] gap-4">
+        {/* Link ve kod */}
+        <section className="mk-kart p-5 lg:p-6">
+          <div className="flex items-center justify-between">
+            <h3 className="text-[17px] font-extrabold">Kişisel linkiniz ve kodunuz</h3>
+            <Link href="/influencer/links" className="text-[13px] font-bold text-[var(--mk-lacivert)]">Tüm linkler</Link>
+          </div>
+          <p className="mt-1 text-[13.5px] mk-soluk">Linkten gelen ve kodu kullanan her müşteri size yazılır.</p>
+          <div className="mt-4 space-y-3">
+            <div className="flex items-center gap-2 bg-[var(--mk-zemin)] mk-yuvarlak px-4 py-3">
+              <Ikon ad="link" boyut={20} className="text-[var(--mk-lacivert)]" />
+              <p className="flex-1 min-w-0 truncate text-[14px] font-semibold">{d.link.replace(/^https?:\/\//, '')}</p>
+              <KopyalaButon metin={d.link} />
+            </div>
+            <div className="flex items-center gap-2 bg-[var(--mk-zemin)] mk-yuvarlak px-4 py-3">
+              <Ikon ad="fiyat" boyut={20} className="text-[var(--mk-lacivert)]" />
+              <p className="flex-1 text-[20px] font-extrabold tracking-[0.12em] text-[var(--mk-lacivert)]">{inf.uniqueCode}</p>
+              <KopyalaButon metin={inf.uniqueCode} />
+            </div>
+          </div>
+          <div className="mt-4">
+            <PaylasButon metin={`Umreye kendi tarihinizde gitmek isterseniz: Hadi Umreye Gidelim. Kodum: ${inf.uniqueCode}`} url={d.link} sinif="mk-btn mk-btn-ana w-full" />
+          </div>
+        </section>
+
+        {/* Program ilerlemesi */}
+        <section className="mk-kart p-5 lg:p-6">
+          <h3 className="text-[17px] font-extrabold">Komisyon programı</h3>
+          {program.acik ? (
+            <p className="mt-1 text-[13.5px] mk-soluk">Programınız açık. Bu ayki komisyon oranınız <b className="text-[var(--mk-yazi)]">%{program.oran}</b>.</p>
+          ) : (
+            <p className="mt-1 text-[13.5px] mk-soluk">{kalan > 0 ? <>Program <b className="text-[var(--mk-yazi)]">{kalan} geçerli satıştan</b> sonra açılır; o ana kadarki komisyonlar birlikte yatar.</> : 'Eşiğe ulaştınız; program açılıyor.'}</p>
+          )}
+          <div className="mt-4 h-3 mk-hap bg-[var(--mk-zemin)] overflow-hidden">
+            <div className="h-full mk-hap bg-[var(--mk-lacivert)]" style={{ width: `${program.acik ? 100 : yuzde}%` }} />
+          </div>
+          <div className="mt-2 flex justify-between text-[12.5px] mk-soluk font-semibold">
+            <span>{program.gecerli} geçerli satış</span><span>Eşik {program.esik}</span>
+          </div>
+          <div className="mt-4 grid grid-cols-2 gap-2">
+            <div className="bg-[var(--mk-zemin)] mk-yuvarlak p-3"><p className="text-[12px] mk-soluk font-semibold">Yıldız bakiyesi</p><p className="text-[18px] font-extrabold">{Math.round(program.yildiz).toLocaleString('tr-TR')}</p></div>
+            <div className="bg-[var(--mk-zemin)] mk-yuvarlak p-3"><p className="text-[12px] mk-soluk font-semibold">Toplam kazanç</p><p className="text-[18px] font-extrabold">{tl(stats.toplamKazanc)}</p></div>
+          </div>
+        </section>
+      </div>
+
+      <div className="grid lg:grid-cols-2 gap-4">
+        {/* İçerik onayları */}
+        <section className="mk-kart p-5 lg:p-6">
+          <div className="flex items-center justify-between">
+            <h3 className="text-[17px] font-extrabold">İçeriklerim</h3>
+            <Link href="/influencer/shares" className="mk-btn mk-btn-cizgi !py-2 !px-3 text-[13px]"><Ikon ad="arti" boyut={18} />Paylaşım bildir</Link>
+          </div>
+          <div className="mt-3 flex gap-2">
+            <span className="mk-rozet mk-rozet-bekliyor">{paylasim.bekleyen} onay bekliyor</span>
+            <span className="mk-rozet mk-rozet-onay">{paylasim.onay} onaylandı</span>
+          </div>
+          <div className="mt-3 divide-y divide-[var(--mk-cizgi)]">
+            {paylasim.son.length === 0 && <p className="py-4 text-[14px] mk-soluk">Henüz paylaşım bildirmediniz. Paylaştığınız story ya da Reels’i buradan bildirin; onaylanınca kampanyaya sayılır.</p>}
+            {paylasim.son.map((p) => (
+              <div key={p.id} className="py-3 flex items-start gap-3">
+                <Ikon ad={p.platform.includes('reel') || p.platform === 'tiktok' ? 'film' : 'kamera'} boyut={20} className="text-[var(--mk-metin)] mt-0.5" />
+                <div className="flex-1 min-w-0">
+                  <p className="text-[14px] font-semibold">{new Date(p.shareDate).toLocaleDateString('tr-TR')} · {p.platform.replace('instagram_', 'Instagram ').replace('_', ' ')}</p>
+                  {p.not && <p className="text-[13px] mk-soluk mt-0.5">“{p.not}”</p>}
+                </div>
+                <span className={`mk-rozet ${p.status === 'approved' ? 'mk-rozet-onay' : p.status === 'rejected' ? 'mk-rozet-red' : 'mk-rozet-bekliyor'}`}>{p.status === 'approved' ? 'Onaylandı' : p.status === 'rejected' ? 'Düzeltme' : 'Bekliyor'}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Son müşteriler */}
+        <section className="mk-kart p-5 lg:p-6">
+          <div className="flex items-center justify-between">
+            <h3 className="text-[17px] font-extrabold">Son müşterileriniz</h3>
+            <Link href="/influencer/customers" className="text-[13px] font-bold text-[var(--mk-lacivert)]">Tümü</Link>
+          </div>
+          <div className="mt-3 divide-y divide-[var(--mk-cizgi)]">
+            {musteriler.length === 0 && <p className="py-4 text-[14px] mk-soluk">Linkinizden ya da kodunuzla gelen ilk müşteri burada görünecek.</p>}
+            {musteriler.map((m) => (
+              <div key={m.id} className="py-3 flex items-center gap-3">
+                <div className="w-9 h-9 mk-hap bg-[var(--mk-zemin)] text-[var(--mk-lacivert)] text-[14px] font-extrabold flex items-center justify-center">{m.ad[0]}</div>
+                <div className="flex-1"><p className="text-[14px] font-semibold">{m.ad}</p><p className="text-[12px] mk-soluk">{new Date(m.tarih).toLocaleDateString('tr-TR')}</p></div>
+                <span className={`mk-rozet ${m.durum === 'paid' || m.durum === 'completed' ? 'mk-rozet-onay' : m.durum === 'cancelled' ? 'mk-rozet-red' : 'mk-rozet-mavi'}`}>{MUSTERI_DURUM[m.durum]?.ad ?? m.durum}</span>
+              </div>
+            ))}
+          </div>
+        </section>
       </div>
     </div>
   );

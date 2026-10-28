@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 
 import HubTabs from "@/components/admin/HubTabs";
+import BriefDuzenle from "./BriefDuzenle";
 
 const typeLabels: Record<string, { label: string; icon: string; color: string }> = {
   package:  { label: 'Paket',    icon: 'inventory_2',    color: 'bg-primary/[0.08] text-primary' },
@@ -24,6 +25,7 @@ export default function AdminCampaignsPage() {
   const [showForm, setShowForm] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
+  const [brief, setBrief] = useState<{ id: string; title: string } | null>(null);
   const [form, setForm] = useState({
     title: '', description: '', type: 'transfer',
     discountType: 'percent', discountValue: '', codeTemplate: '',
@@ -74,6 +76,7 @@ export default function AdminCampaignsPage() {
   return (
     <div className="p-6 lg:p-8 max-w-6xl mx-auto space-y-6">
       <HubTabs hub="influencer" />
+      {brief && <BriefDuzenle campaignId={brief.id} baslik={brief.title} onClose={() => setBrief(null)} />}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="font-headline text-2xl font-bold text-primary">Kampanyalar</h1>
@@ -234,6 +237,10 @@ export default function AdminCampaignsPage() {
                       <p className="text-[11px] text-outline">Kullanım</p>
                     </div>
                     <div className="flex items-center gap-2">
+                      <button onClick={() => setBrief({ id: c.id, title: c.title })} title="Influencer brief'i"
+                        className="h-9 px-3 rounded-xl flex items-center gap-1.5 transition-all border border-[#003781]/25 text-[#003781] hover:bg-[#003781]/10 text-[13px] font-semibold">
+                        <span className="material-symbols-outlined text-[18px]">description</span>Brief
+                      </button>
                       <button onClick={() => toggleStatus(c.id, c.status)} title={c.status === 'active' ? 'Duraklat' : 'Aktif Et'}
                         className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all border ${c.status === 'active' ? 'border-[#b8862f]/25 text-[#b8862f] hover:bg-[#b8862f]/10' : 'border-secondary/25 text-secondary hover:bg-secondary/10'}`}>
                         <span className="material-symbols-outlined text-[18px]">{c.status === 'active' ? 'pause' : 'play_arrow'}</span>

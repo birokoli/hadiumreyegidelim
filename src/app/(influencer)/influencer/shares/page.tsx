@@ -1,213 +1,179 @@
 'use client';
+// İçeriklerim (27 Ekim yenilemesi): paylaşımı kampanyaya bağlayarak bildirme; onay durumu ve ekibin geri bildirimi.
 
-import { useEffect, useState } from 'react';
+import Ikon from '@/components/influencer/Ikon';
+import { Suspense, useCallback, useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 
-const platformLabels: Record<string, { label: string; icon: string; color: string }> = {
-  instagram_story: { label: 'Instagram Story', icon: 'fiber_manual_record', color: 'bg-pink-50 text-pink-600' },
-  instagram_reel:  { label: 'Instagram Reel',  icon: 'play_circle',        color: 'bg-pink-50 text-pink-600' },
-  instagram_post:  { label: 'Instagram Post',  icon: 'photo_camera',       color: 'bg-pink-50 text-pink-600' },
-  tiktok:          { label: 'TikTok',           icon: 'music_note',        color: 'bg-gray-900 text-white'   },
-  youtube:         { label: 'YouTube',          icon: 'smart_display',     color: 'bg-red-50 text-red-600'   },
-  x:               { label: 'X (Twitter)',      icon: 'close',             color: 'bg-gray-50 text-gray-700' },
-  other:           { label: 'Diğer',            icon: 'share',             color: 'bg-gray-50 text-gray-600' },
+type Paylasim = {
+  id: string; platform: string; shareUrl: string | null; shareDate: string; description: string | null; status: string;
+  rejectReason: string | null; adminNote: string | null; campaignTitle: string | null; clickCount: number; saleCount: number;
 };
 
-const statusMap: Record<string, { label: string; color: string }> = {
-  pending:  { label: 'İnceleniyor', color: 'bg-yellow-50 text-yellow-700 border-yellow-200' },
-  approved: { label: 'Onaylı',      color: 'bg-green-50 text-green-700 border-green-200'   },
-  rejected: { label: 'Reddedildi',  color: 'bg-red-50 text-red-600 border-red-200'         },
+const PLATFORM: Record<string, { ad: string; ikon: string }> = {
+  instagram_story: { ad: 'Instagram story', ikon: 'story' },
+  instagram_reel: { ad: 'Reels', ikon: 'film' },
+  instagram_post: { ad: 'Instagram gönderi', ikon: 'kamera' },
+  tiktok: { ad: 'TikTok', ikon: 'muzik' },
+  youtube: { ad: 'YouTube', ikon: 'video' },
+  x: { ad: 'X', ikon: 'etiket' },
+  other: { ad: 'Diğer', ikon: 'dunya' },
 };
+const DURUM: Record<string, { ad: string; sinif: string; ikon: string }> = {
+  pending: { ad: 'Onay bekliyor', sinif: 'mk-rozet-bekliyor', ikon: 'saat' },
+  approved: { ad: 'Onaylandı', sinif: 'mk-rozet-onay', ikon: 'tik-daire' },
+  rejected: { ad: 'Düzeltme istendi', sinif: 'mk-rozet-red', ikon: 'kalem' },
+};
+const bugun = () => new Date().toISOString().slice(0, 10);
 
-export default function InfluencerSharesPage() {
-  const [shares, setShares] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [showForm, setShowForm] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
-  const [form, setForm] = useState({ platform: 'instagram_story', shareUrl: '', shareDate: '', description: '' });
-  const [error, setError] = useState('');
+function Icerik() {
+  const sp = useSearchParams();
+  const [liste, setListe] = useState<Paylasim[]>([]);
+  const [kampanyalar, setKampanyalar] = useState<{ id: string; ad: string }[]>([]);
+  const [yuk, setYuk] = useState(true);
+  const [form, setForm] = useState({ platform: 'instagram_story', shareUrl: '', shareDate: bugun(), description: '', campaignId: sp.get('kampanya') ?? '' });
+  const [gonder, setGonder] = useState(false);
+  const [mesaj, setMesaj] = useState<{ tur: 'ok' | 'hata'; metin: string } | null>(null);
+  const [acik, setAcik] = useState(Boolean(sp.get('kampanya')));
 
-  const load = () => {
-    fetch('/api/influencer/shares').then(r => r.json()).then(d => { setShares(d.shares || []); setLoading(false); });
-  };
+  const yukle = useCallback(async () => {
+    const d = await fetch('/api/influencer/shares').then((r) => r.json()).catch(() => ({}));
+    setListe(d.shares ?? []);
+    setKampanyalar(d.kampanyalar ?? []);
+    setYuk(false);
+  }, []);
+  useEffect(() => { yukle(); }, [yukle]);
 
-  useEffect(() => { load(); }, []);
-
-  const set = (k: string, v: string) => setForm(f => ({ ...f, [k]: v }));
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitting(true);
-    setError('');
-    const res = await fetch('/api/influencer/shares', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(form),
-    });
-    const data = await res.json();
-    if (res.ok) {
-      setShowForm(false);
-      setForm({ platform: 'instagram_story', shareUrl: '', shareDate: '', description: '' });
-      load();
-    } else {
-      setError(data.error || 'Bir hata oluştu.');
-    }
-    setSubmitting(false);
-  };
-
-  const handleDelete = async (id: string) => {
-    if (!confirm('Paylaşımı silmek istediğinize emin misiniz?')) return;
-    await fetch(`/api/influencer/shares?id=${id}`, { method: 'DELETE' });
-    load();
-  };
+  const sayi = (s: string) => liste.filter((p) => p.status === s).length;
 
   return (
-    <div className="space-y-6 pb-20 lg:pb-0">
-      {/* Header */}
-      <div className="flex items-center justify-between">
+    <div className="space-y-6">
+      <div className="mk-gir flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-[24px] font-bold text-gray-900 tracking-tight">Paylaşımlarım</h1>
-          <p className="text-[14px] text-gray-400 mt-0.5">Yaptığınız paylaşımları sisteme ekleyin, admin onayına gönderin</p>
+          <p className="mk-ust">İçeriklerim</p>
+          <h1 className="mt-1 text-[28px] font-extrabold">Paylaşımlarınız ve onaylar</h1>
+          <p className="mt-1 mk-soluk text-[15px] max-w-2xl">Paylaştığınız her story, gönderi ya da Reels’i bildirin. Ekibimiz bakar; onaylanan paylaşım kampanyaya sayılır, düzeltme gerekirse notunu burada görürsünüz.</p>
         </div>
-        <button onClick={() => setShowForm(true)}
-          className="flex items-center gap-2 bg-[#003781] hover:bg-[#002a63] text-white font-semibold px-4 py-2.5 rounded-xl text-[14px] transition-all shadow-sm shadow-[#003781]/20">
-          <span className="material-symbols-outlined text-[18px]">add</span>
-          Yeni Paylaşım
+        <button className="mk-btn mk-btn-ana" onClick={() => setAcik((v) => !v)}>
+          <Ikon ad={acik ? 'kapat' : 'arti'} boyut={19} />{acik ? 'Kapat' : 'Paylaşım bildir'}
         </button>
       </div>
 
-      {/* Yeni paylaşım formu */}
-      {showForm && (
-        <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4" onClick={() => setShowForm(false)}>
-          <div className="bg-white rounded-3xl shadow-2xl w-full max-w-md p-6" onClick={e => e.stopPropagation()}>
-            <div className="flex items-center justify-between mb-5">
-              <h2 className="text-[18px] font-bold text-gray-900">Yeni Paylaşım Ekle</h2>
-              <button onClick={() => setShowForm(false)} className="w-8 h-8 rounded-xl bg-gray-100 flex items-center justify-center hover:bg-gray-200 transition-all">
-                <span className="material-symbols-outlined text-[18px] text-gray-500">close</span>
-              </button>
-            </div>
-
-            {error && (
-              <div className="mb-4 bg-red-50 text-red-600 text-[13px] px-4 py-3 rounded-xl border border-red-100">{error}</div>
-            )}
-
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Platform *</label>
-                <select value={form.platform} onChange={e => set('platform', e.target.value)}
-                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-[14px] text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#003781]/20 focus:border-[#003781] transition-all">
-                  {Object.entries(platformLabels).map(([k, v]) => (
-                    <option key={k} value={k}>{v.label}</option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Paylaşım URL'si</label>
-                <input type="url" value={form.shareUrl} onChange={e => set('shareUrl', e.target.value)}
-                  placeholder="https://instagram.com/p/..."
-                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-[14px] text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#003781]/20 focus:border-[#003781] transition-all" />
-              </div>
-              <div>
-                <label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Paylaşım Tarihi *</label>
-                <input type="date" value={form.shareDate} onChange={e => set('shareDate', e.target.value)} required
-                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-[14px] text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#003781]/20 focus:border-[#003781] transition-all" />
-              </div>
-              <div>
-                <label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Açıklama (opsiyonel)</label>
-                <textarea value={form.description} onChange={e => set('description', e.target.value)} rows={2}
-                  placeholder="Kısa bir not..."
-                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-[14px] text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#003781]/20 focus:border-[#003781] transition-all resize-none" />
-              </div>
-              <div className="flex gap-3 pt-2">
-                <button type="button" onClick={() => setShowForm(false)}
-                  className="flex-1 border border-gray-200 text-gray-700 font-semibold py-3 rounded-xl text-[14px] hover:bg-gray-50 transition-all">
-                  İptal
-                </button>
-                <button type="submit" disabled={submitting}
-                  className="flex-1 bg-[#003781] hover:bg-[#002a63] text-white font-semibold py-3 rounded-xl text-[14px] transition-all disabled:opacity-60 flex items-center justify-center gap-2">
-                  {submitting ? <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : 'Gönder'}
-                </button>
-              </div>
-            </form>
+      <div className="grid grid-cols-3 gap-3">
+        {(['pending', 'approved', 'rejected'] as const).map((k) => (
+          <div key={k} className="mk-kart p-4">
+            <p className="text-[26px] font-extrabold leading-none">{sayi(k)}</p>
+            <p className="mt-1.5 text-[13px] mk-soluk font-semibold">{DURUM[k].ad}</p>
           </div>
-        </div>
+        ))}
+      </div>
+
+      {acik && (
+        <form
+          className="mk-kart p-5 lg:p-6 mk-gir space-y-4"
+          onSubmit={async (e) => {
+            e.preventDefault();
+            setGonder(true); setMesaj(null);
+            const r = await fetch('/api/influencer/shares', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(form) });
+            const d = await r.json().catch(() => ({}));
+            if (!r.ok) setMesaj({ tur: 'hata', metin: d.error || 'Gönderilemedi.' });
+            else {
+              setMesaj({ tur: 'ok', metin: 'Paylaşımınız ekibe iletildi; onaylanınca burada göreceksiniz.' });
+              setForm({ ...form, shareUrl: '', description: '' });
+              await yukle();
+            }
+            setGonder(false);
+          }}
+        >
+          <div>
+            <p className="text-[13px] font-bold mb-2">Nerede paylaştınız?</p>
+            <div className="flex flex-wrap gap-2">
+              {Object.entries(PLATFORM).map(([k, p]) => (
+                <button type="button" key={k} onClick={() => setForm({ ...form, platform: k })} className={`mk-btn !py-2 !px-3 text-[13px] ${form.platform === k ? 'mk-btn-ana' : 'mk-btn-cizgi'}`}>
+                  <Ikon ad={p.ikon} boyut={17} />{p.ad}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="grid sm:grid-cols-2 gap-3">
+            <label className="block">
+              <span className="text-[13px] font-bold">Kampanya</span>
+              <select className="mk-alan mt-1.5" value={form.campaignId} onChange={(e) => setForm({ ...form, campaignId: e.target.value })}>
+                <option value="">Kampanyasız (genel paylaşım)</option>
+                {kampanyalar.map((k) => <option key={k.id} value={k.id}>{k.ad}</option>)}
+              </select>
+            </label>
+            <label className="block">
+              <span className="text-[13px] font-bold">Paylaşım tarihi</span>
+              <input type="date" className="mk-alan mt-1.5" value={form.shareDate} max={bugun()} onChange={(e) => setForm({ ...form, shareDate: e.target.value })} required />
+            </label>
+          </div>
+          <label className="block">
+            <span className="text-[13px] font-bold">Paylaşım linki</span>
+            <input type="url" className="mk-alan mt-1.5" placeholder="https://www.instagram.com/p/…" value={form.shareUrl} onChange={(e) => setForm({ ...form, shareUrl: e.target.value })} />
+            <span className="text-[12px] mk-soluk">Story’lerde link yoksa boş bırakın; ekip hesabınızdan kontrol eder.</span>
+          </label>
+          <label className="block">
+            <span className="text-[13px] font-bold">Not (isteğe bağlı)</span>
+            <textarea className="mk-alan mt-1.5 min-h-[72px]" maxLength={500} placeholder="Örn. 3 story’lik seri, ikincisinde kod var." value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
+          </label>
+          <div className="flex items-center gap-3">
+            <button className="mk-btn mk-btn-ana" disabled={gonder}><Ikon ad="gonder" boyut={19} />{gonder ? 'Gönderiliyor…' : 'Ekibe gönder'}</button>
+            {mesaj && <p className={`text-[13.5px] font-semibold ${mesaj.tur === 'ok' ? 'text-[var(--mk-yesil)]' : 'text-[var(--mk-kirmizi)]'}`}>{mesaj.metin}</p>}
+          </div>
+        </form>
       )}
 
-      {/* List */}
-      {loading ? (
-        <div className="flex items-center justify-center py-16">
-          <div className="w-8 h-8 border-2 border-[#003781]/20 border-t-[#003781] rounded-full animate-spin" />
-        </div>
-      ) : shares.length === 0 ? (
-        <div className="bg-white rounded-2xl border border-gray-100 p-12 text-center shadow-sm">
-          <span className="material-symbols-outlined text-5xl text-gray-200 mb-3 block" style={{ fontVariationSettings: "'FILL' 1" }}>photo_camera</span>
-          <p className="text-[16px] font-semibold text-gray-400">Henüz paylaşım eklemediniz</p>
-          <p className="text-[13px] text-gray-300 mt-1">İlk paylaşımınızı ekleyerek başlayın</p>
-          <button onClick={() => setShowForm(true)}
-            className="mt-5 inline-flex items-center gap-2 bg-[#003781] text-white font-semibold px-5 py-2.5 rounded-xl text-[14px] hover:bg-[#002a63] transition-all">
-            <span className="material-symbols-outlined text-[18px]">add</span>
-            Paylaşım Ekle
-          </button>
-        </div>
-      ) : (
-        <div className="space-y-3">
-          {shares.map((share: any) => {
-            const plat = platformLabels[share.platform] || platformLabels.other;
-            const st = statusMap[share.status] || statusMap.pending;
-            return (
-              <div key={share.id} className="bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex items-center gap-3">
-                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${plat.color}`}>
-                      <span className="material-symbols-outlined text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>{plat.icon}</span>
-                    </div>
-                    <div>
-                      <p className="text-[14px] font-semibold text-gray-900">{plat.label}</p>
-                      <p className="text-[12px] text-gray-400">{new Date(share.shareDate).toLocaleDateString('tr-TR')}</p>
-                    </div>
+      <section className="mk-kart overflow-hidden">
+        {yuk ? (
+          <p className="p-6 mk-soluk">Yükleniyor…</p>
+        ) : liste.length === 0 ? (
+          <div className="p-10 text-center">
+            <Ikon ad="icerik" boyut={44} className="text-[var(--mk-bulut)]" />
+            <p className="mt-2 font-bold">Henüz paylaşım bildirmediniz</p>
+            <p className="mt-1 text-[14px] mk-soluk">Bir kampanyaya katılıp paylaştıktan sonra buradan bildirin.</p>
+          </div>
+        ) : (
+          <div className="divide-y divide-[var(--mk-cizgi)]">
+            {liste.map((p) => {
+              const pl = PLATFORM[p.platform] ?? PLATFORM.other;
+              const du = DURUM[p.status] ?? DURUM.pending;
+              const not = p.adminNote || p.rejectReason;
+              return (
+                <div key={p.id} className="p-4 lg:p-5 flex gap-4">
+                  <div className="w-11 h-11 mk-yuvarlak bg-[var(--mk-zemin)] text-[var(--mk-lacivert)] flex items-center justify-center shrink-0">
+                    <Ikon ad={pl.ikon} boyut={22} />
                   </div>
-                  <div className="flex items-center gap-2">
-                    <span className={`text-[11px] font-semibold px-2.5 py-1 rounded-full border ${st.color}`}>{st.label}</span>
-                    {share.status === 'pending' && (
-                      <button onClick={() => handleDelete(share.id)}
-                        className="w-7 h-7 rounded-lg bg-red-50 hover:bg-red-100 flex items-center justify-center transition-all">
-                        <span className="material-symbols-outlined text-[15px] text-red-500">delete</span>
-                      </button>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <p className="text-[15px] font-bold">{pl.ad}</p>
+                      <span className={`mk-rozet ${du.sinif}`}><Ikon ad={du.ikon} boyut={15} />{du.ad}</span>
+                    </div>
+                    <p className="text-[13px] mk-soluk mt-0.5">{new Date(p.shareDate).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' })}{p.campaignTitle ? ` · ${p.campaignTitle}` : ''}</p>
+                    {p.description && <p className="text-[13.5px] mt-1">{p.description}</p>}
+                    {not && (
+                      <div className="mt-2 bg-[var(--mk-zemin)] mk-yuvarlak px-3 py-2 text-[13.5px] flex gap-2">
+                        <Ikon ad="sohbet" boyut={18} className="text-[var(--mk-lacivert)]" /><span><b>Ekibin notu:</b> {not}</span>
+                      </div>
                     )}
-                  </div>
-                </div>
-
-                {share.rejectReason && (
-                  <div className="mt-3 bg-red-50 border border-red-100 rounded-xl px-3 py-2 text-[12px] text-red-600">
-                    <span className="font-semibold">Red sebebi: </span>{share.rejectReason}
-                  </div>
-                )}
-
-                {share.shareUrl && (
-                  <a href={share.shareUrl} target="_blank" rel="noopener noreferrer"
-                    className="mt-3 flex items-center gap-1.5 text-[12px] text-[#003781] font-medium hover:underline">
-                    <span className="material-symbols-outlined text-[14px]">open_in_new</span>
-                    Paylaşımı Gör
-                  </a>
-                )}
-
-                <div className="flex items-center gap-4 mt-3 pt-3 border-t border-gray-50">
-                  {[
-                    { icon: 'visibility', label: 'Görüntülenme', value: share.viewCount },
-                    { icon: 'ads_click',  label: 'Tıklanma',     value: share.clickCount },
-                    { icon: 'shopping_bag', label: 'Satış',       value: share.saleCount },
-                  ].map(m => (
-                    <div key={m.label} className="flex items-center gap-1.5 text-[12px] text-gray-400">
-                      <span className="material-symbols-outlined text-[14px]">{m.icon}</span>
-                      <span className="font-semibold text-gray-700">{m.value}</span>
-                      <span>{m.label}</span>
+                    <div className="mt-2 flex flex-wrap items-center gap-3 text-[12.5px] mk-soluk font-semibold">
+                      {p.shareUrl && <a href={p.shareUrl} target="_blank" rel="noreferrer" className="text-[var(--mk-lacivert)] inline-flex items-center gap-1"><Ikon ad="disari" boyut={16} />Paylaşımı aç</a>}
+                      {p.status === 'approved' && <span>{p.clickCount} tıklama · {p.saleCount} satış</span>}
+                      {p.status === 'pending' && (
+                        <button className="text-[var(--mk-kirmizi)]" onClick={async () => { if (!confirm('Bu bildirimi geri çekmek istiyor musunuz?')) return; await fetch(`/api/influencer/shares?id=${p.id}`, { method: 'DELETE' }); yukle(); }}>Geri çek</button>
+                      )}
                     </div>
-                  ))}
+                  </div>
                 </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
+              );
+            })}
+          </div>
+        )}
+      </section>
     </div>
   );
+}
+
+export default function IceriklerimPage() {
+  return <Suspense fallback={null}><Icerik /></Suspense>;
 }

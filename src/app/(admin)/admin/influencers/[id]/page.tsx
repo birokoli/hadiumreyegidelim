@@ -8,6 +8,7 @@ import AdminInfluencerActions from '@/components/admin/AdminInfluencerActions';
 import AdminInfluencerSalesPanel from '@/components/admin/AdminInfluencerSalesPanel';
 import AdminInfluencerLoyaltyPanel from '@/components/admin/AdminInfluencerLoyaltyPanel';
 import AdminInfluencerAffiliatePanel from '@/components/admin/AdminInfluencerAffiliatePanel';
+import PaylasimOnay from './PaylasimOnay';
 
 const tierConfig: Record<string, { label: string; color: string }> = {
   eci:     { label: 'Elçi',    color: 'bg-[#b8862f]/10 text-[#b8862f] border-[#b8862f]/25' },
@@ -190,13 +191,7 @@ export default async function AdminInfluencerDetailPage({ params }: { params: Pr
                     {s.rejectReason && <p className="text-[12px] text-error mt-0.5">Red: {s.rejectReason}</p>}
                   </div>
                   {s.status === 'pending' && (
-                    <div className="flex gap-2">
-                      <form action={`/api/admin/influencers/${inf.id}/shares`} method="POST">
-                        <input type="hidden" name="shareId" value={s.id} />
-                        <input type="hidden" name="action" value="approve" />
-                        <button className="bg-secondary hover:bg-secondary/85 text-white text-[12px] font-semibold px-3 py-1.5 rounded-lg transition-all">Onayla</button>
-                      </form>
-                    </div>
+                    <PaylasimOnay influencerId={inf.id} shareId={s.id} />
                   )}
                 </div>
               );

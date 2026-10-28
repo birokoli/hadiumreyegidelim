@@ -1,5 +1,6 @@
 'use client';
 
+import Ikon from '@/components/influencer/Ikon';
 import { useEffect, useState } from 'react';
 
 export default function InfluencerDavetPage() {
@@ -71,7 +72,7 @@ export default function InfluencerDavetPage() {
       <div className="bg-gradient-to-br from-[#003781] to-[#001f4d] rounded-2xl p-6 text-white shadow-lg shadow-[#003781]/20">
         <div className="flex items-start gap-4 mb-5">
           <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center shrink-0">
-            <span className="material-symbols-outlined text-[28px] text-yellow-300" style={{ fontVariationSettings: "'FILL' 1" }}>group_add</span>
+            <Ikon ad="davet" boyut={28} className="text-yellow-300" />
           </div>
           <div>
             <p className="text-[17px] font-bold">Davet Nasıl Çalışır?</p>
@@ -98,7 +99,7 @@ export default function InfluencerDavetPage() {
       {/* Davet Kodun */}
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
         <h2 className="text-[16px] font-bold text-gray-900 mb-4 flex items-center gap-2">
-          <span className="material-symbols-outlined text-[20px] text-[#003781]">share</span>
+          <Ikon ad="paylas" boyut={20} className="text-[#003781]" />
           Davet Kodunuz
         </h2>
 
@@ -111,20 +112,20 @@ export default function InfluencerDavetPage() {
               copied ? 'bg-green-500 text-white' : 'bg-white border border-gray-200 text-gray-700 hover:bg-gray-50'
             }`}
           >
-            <span className="material-symbols-outlined text-[18px]">{copied ? 'check' : 'content_copy'}</span>
+            <Ikon ad={copied ? 'tik' : 'kopyala'} boyut={18} />
             {copied ? 'Kopyalandı!' : 'Kopyala'}
           </button>
         </div>
 
         {/* Davet linki */}
         <div className="flex items-center gap-3 bg-gray-50 rounded-xl px-4 py-3 mb-4">
-          <span className="material-symbols-outlined text-[18px] text-gray-400">link</span>
+          <Ikon ad="link" boyut={18} className="text-gray-400" />
           <p className="flex-1 text-[12px] text-gray-600 truncate font-medium">{inviteLink}</p>
           <button
             onClick={() => copy(inviteLink)}
             className="flex items-center gap-1.5 bg-white border border-gray-200 text-gray-600 text-[12px] font-semibold px-3 py-1.5 rounded-lg hover:bg-gray-50 transition-all shrink-0"
           >
-            <span className="material-symbols-outlined text-[14px]">content_copy</span>
+            <Ikon ad="kopyala" boyut={14} />
             Link
           </button>
         </div>
@@ -138,7 +139,7 @@ export default function InfluencerDavetPage() {
       {referralReceived && (
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
           <h2 className="text-[16px] font-bold text-gray-900 mb-3 flex items-center gap-2">
-            <span className="material-symbols-outlined text-[20px] text-[#236B40]">person_add</span>
+            <Ikon ad="davet" boyut={20} className="text-[#236B40]" />
             Sizi Davet Eden
           </h2>
           <div className="flex items-center gap-3 bg-green-50 border border-green-100 rounded-xl px-4 py-3.5">
@@ -162,7 +163,7 @@ export default function InfluencerDavetPage() {
       {!referralReceived && (
         <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
           <h2 className="text-[16px] font-bold text-gray-900 mb-1 flex items-center gap-2">
-            <span className="material-symbols-outlined text-[20px] text-gray-400">qr_code</span>
+            <Ikon ad="link" boyut={20} className="text-gray-400" />
             Davet Koduyla Kayıt Ol
           </h2>
           <p className="text-[13px] text-gray-400 mb-4">Sizi davet eden influencer'ın kodunu girin</p>
@@ -192,7 +193,7 @@ export default function InfluencerDavetPage() {
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-[16px] font-bold text-gray-900 flex items-center gap-2">
-            <span className="material-symbols-outlined text-[20px] text-[#003781]">group</span>
+            <Ikon ad="aile" boyut={20} className="text-[#003781]" />
             Davet Ettiklerim
             <span className="bg-[#003781]/10 text-[#003781] text-[12px] font-bold px-2.5 py-0.5 rounded-full">{referralsMade.length}</span>
           </h2>
@@ -200,7 +201,7 @@ export default function InfluencerDavetPage() {
 
         {referralsMade.length === 0 ? (
           <div className="text-center py-10">
-            <span className="material-symbols-outlined text-5xl text-gray-200 mb-3 block" style={{ fontVariationSettings: "'FILL' 1" }}>group_add</span>
+            <Ikon ad="davet" boyut={40} className="text-gray-200 mb-3 block" />
             <p className="text-[14px] font-semibold text-gray-400">Henüz kimseyi davet etmediniz</p>
             <p className="text-[12px] text-gray-300 mt-1">Yukarıdaki kodunuzu paylaşarak başlayın</p>
           </div>
@@ -220,12 +221,12 @@ export default function InfluencerDavetPage() {
                 <div className="text-right">
                   {r.qualified ? (
                     <span className="inline-flex items-center gap-1 bg-green-50 text-green-700 text-[11px] font-semibold px-2.5 py-1 rounded-full border border-green-200">
-                      <span className="material-symbols-outlined text-[14px]" style={{ fontVariationSettings: "'FILL' 1" }}>check_circle</span>
+                      <Ikon ad="tik-daire" boyut={14} />
                       Aktif
                     </span>
                   ) : (
                     <span className="inline-flex items-center gap-1 bg-yellow-50 text-yellow-700 text-[11px] font-semibold px-2.5 py-1 rounded-full border border-yellow-200">
-                      <span className="material-symbols-outlined text-[14px]">schedule</span>
+                      <Ikon ad="saat" boyut={14} />
                       Bekliyor
                     </span>
                   )}

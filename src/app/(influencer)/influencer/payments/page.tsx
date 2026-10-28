@@ -1,12 +1,13 @@
 'use client';
 
+import Ikon from '@/components/influencer/Ikon';
 import { useEffect, useState } from 'react';
 
 const statusConfig: Record<string, { label: string; color: string; icon: string }> = {
-  pending:  { label: 'Bekliyor',     color: 'bg-yellow-50 text-yellow-700 border-yellow-200', icon: 'schedule' },
-  approved: { label: 'Onaylandı',    color: 'bg-blue-50 text-blue-700 border-blue-200',       icon: 'check_circle' },
-  paid:     { label: 'Ödendi',       color: 'bg-green-50 text-green-700 border-green-200',    icon: 'payments' },
-  cancelled:{ label: 'İptal',        color: 'bg-red-50 text-red-600 border-red-200',          icon: 'cancel' },
+  pending:  { label: 'Bekliyor',     color: 'bg-yellow-50 text-yellow-700 border-yellow-200', icon: 'saat' },
+  approved: { label: 'Onaylandı',    color: 'bg-blue-50 text-blue-700 border-blue-200',       icon: 'tik-daire' },
+  paid:     { label: 'Ödendi',       color: 'bg-green-50 text-green-700 border-green-200',    icon: 'cuzdan' },
+  cancelled:{ label: 'İptal',        color: 'bg-red-50 text-red-600 border-red-200',          icon: 'yasak' },
 };
 
 export default function InfluencerPaymentsPage() {
@@ -46,7 +47,7 @@ export default function InfluencerPaymentsPage() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="bg-gradient-to-br from-[#003781] to-[#002a63] rounded-2xl p-5 text-white shadow-lg shadow-[#003781]/20">
           <div className="flex items-center gap-2 mb-1">
-            <span className="material-symbols-outlined text-[18px] text-white/60">account_balance_wallet</span>
+            <Ikon ad="cuzdan" boyut={18} className="text-white/60" />
             <p className="text-[13px] text-white/60 font-medium">Toplam Kazanç</p>
           </div>
           <p className="text-[32px] font-bold">₺{(stats.totalEarnings || 0).toLocaleString()}</p>
@@ -55,7 +56,7 @@ export default function InfluencerPaymentsPage() {
 
         <div className="bg-white rounded-2xl border border-amber-100 p-5 shadow-sm">
           <div className="flex items-center gap-2 mb-1">
-            <span className="material-symbols-outlined text-[18px] text-amber-500">pending</span>
+            <Ikon ad="saat" boyut={18} className="text-amber-500" />
             <p className="text-[13px] text-gray-400 font-medium">Bekleyen Ödeme</p>
           </div>
           <p className="text-[32px] font-bold text-gray-900">₺{(stats.pendingEarnings || 0).toLocaleString()}</p>
@@ -64,7 +65,7 @@ export default function InfluencerPaymentsPage() {
 
         <div className="bg-white rounded-2xl border border-green-100 p-5 shadow-sm">
           <div className="flex items-center gap-2 mb-1">
-            <span className="material-symbols-outlined text-[18px] text-green-500">check_circle</span>
+            <Ikon ad="tik-daire" boyut={18} className="text-green-500" />
             <p className="text-[13px] text-gray-400 font-medium">Ödenen</p>
           </div>
           <p className="text-[32px] font-bold text-gray-900">
@@ -77,7 +78,7 @@ export default function InfluencerPaymentsPage() {
       {/* Nasıl çalışır */}
       <div className="bg-blue-50 border border-blue-100 rounded-2xl p-5">
         <h3 className="text-[14px] font-bold text-blue-900 mb-3 flex items-center gap-2">
-          <span className="material-symbols-outlined text-[18px]">info</span>
+          <Ikon ad="bilgi" boyut={18} />
           Ödeme Nasıl Çalışır?
         </h3>
         <div className="space-y-2">
@@ -102,7 +103,7 @@ export default function InfluencerPaymentsPage() {
 
         {payments.length === 0 ? (
           <div className="py-16 text-center">
-            <span className="material-symbols-outlined text-5xl text-gray-200 mb-3 block" style={{ fontVariationSettings: "'FILL' 1" }}>receipt_long</span>
+            <Ikon ad="belge" boyut={40} className="text-gray-200 mb-3 block" />
             <p className="text-[15px] font-semibold text-gray-400">Henüz ödeme kaydı yok</p>
             <p className="text-[13px] text-gray-300 mt-1">Satışlarınız hak edildikçe burada görünür</p>
           </div>
@@ -113,7 +114,7 @@ export default function InfluencerPaymentsPage() {
               return (
                 <div key={p.id} className="flex items-center gap-4 px-5 py-4">
                   <div className={`w-10 h-10 rounded-xl flex items-center justify-center border ${st.color}`}>
-                    <span className="material-symbols-outlined text-[20px]" style={{ fontVariationSettings: "'FILL' 1" }}>{st.icon}</span>
+                    <Ikon ad={st.icon} boyut={20} />
                   </div>
                   <div className="flex-1">
                     <p className="text-[14px] font-semibold text-gray-900">{p.periodMonth} dönemi</p>

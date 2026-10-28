@@ -1,282 +1,70 @@
-'use client';
-import { SITE_URL } from "@/lib/seo/site";
+// Kampanyalar (27 Ekim yenilemesi): her kampanya bir brief kartı; katılınca kişiye özel kod ve hazır içerikler açılır.
+import Ikon from '@/components/influencer/Ikon';
+import Link from 'next/link';
+import { redirect } from 'next/navigation';
+import { getInfluencerSession } from '@/lib/influencer-auth';
+import { kampanyalar } from '@/lib/marketing/panel';
 
-import { useCallback, useEffect, useState } from 'react';
-import dynamic from 'next/dynamic';
+export const dynamic = 'force-dynamic';
 
-const StoryModal = dynamic(() => import('./StoryModal'), { ssr: false });
+export default async function KampanyalarPage() {
+  const s = await getInfluencerSession();
+  if (!s) redirect('/influencer/login');
+  const liste = await kampanyalar(s.id);
+  const katildiklarim = liste.filter((k) => k.katildi);
+  const yeniler = liste.filter((k) => !k.katildi);
 
-const typeLabels: Record<string, { label: string; icon: string; color: string; bg: string }> = {
-  package:  { label: 'Paket',    icon: 'inventory_2',    color: 'text-blue-600',    bg: 'bg-blue-50' },
-  transfer: { label: 'Transfer', icon: 'directions_car', color: 'text-orange-600',  bg: 'bg-orange-50' },
-  hotel:    { label: 'Otel',     icon: 'hotel',          color: 'text-purple-600',  bg: 'bg-purple-50' },
-  flight:   { label: 'Uçuş',    icon: 'flight',         color: 'text-sky-600',     bg: 'bg-sky-50' },
-  all:      { label: 'Tümü',    icon: 'star',           color: 'text-yellow-600',  bg: 'bg-yellow-50' },
-};
-
-interface StoryTarget {
-  campaignSlug: string;
-  campaignTitle: string;
-  uniqueCode: string;
-  discountLabel: string;
-  commissionPct?: number | null;
-}
-
-export default function InfluencerCampaignsPage() {
-  const [data, setData] = useState<{ available: any[]; joined: any[] } | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [joining, setJoining] = useState('');
-  const [copied, setCopied] = useState('');
-  const [tab, setTab] = useState<'available' | 'joined'>('joined');
-  const [storyTarget, setStoryTarget] = useState<StoryTarget | null>(null);
-
-  const load = useCallback(() => {
-    fetch('/api/influencer/campaigns')
-      .then(r => r.json())
-      .then(d => { setData(d); setLoading(false); })
-      .catch(() => setLoading(false));
-  }, []);
-
-  useEffect(() => { load(); }, [load]);
-
-  const join = async (campaignId: string) => {
-    setJoining(campaignId);
-    const res = await fetch('/api/influencer/campaigns', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ campaignId }),
-    });
-    const d = await res.json();
-    if (res.ok) {
-      await load();
-      setTab('joined');
-    } else {
-      alert(d.error || 'Hata oluştu.');
-    }
-    setJoining('');
-  };
-
-  const copy = (text: string, key: string) => {
-    navigator.clipboard.writeText(text);
-    setCopied(key);
-    setTimeout(() => setCopied(''), 2000);
-  };
-
-  const openStory = (p: any) => {
-    const discountLabel = p.campaign.discountType === 'percent'
-      ? `%${p.campaign.discountValue} İndirim`
-      : `₺${p.campaign.discountValue} İndirim`;
-    setStoryTarget({
-      campaignSlug:  p.campaign.slug,
-      campaignTitle: p.campaign.storyTitle || p.campaign.title,
-      uniqueCode:    p.uniqueCode,
-      discountLabel,
-      commissionPct: p.campaign.commissionPct ?? null,
-    });
-  };
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="w-8 h-8 border-2 border-[#003781]/20 border-t-[#003781] rounded-full animate-spin" />
+  const kart = (k: (typeof liste)[number]) => (
+    <Link key={k.id} href={`/influencer/campaigns/${k.slug}`} className="mk-kart mk-gir group overflow-hidden flex flex-col hover:shadow-lg transition-shadow">
+      {/* Hazır görseller 4:5 tasarım; kırpılmasın diye kart da 4:5 (yazı görselin içinde) */}
+      <div className="relative aspect-[4/5] bg-[var(--mk-gece)] overflow-hidden">
+        {k.gorsel ? (
+          <img src={k.gorsel} alt="" className="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500" />
+        ) : (
+          <div className="absolute inset-0 mk-kart-koyu mk-desen flex items-end p-5" style={{ borderRadius: 0 }}>
+            <p className="relative text-white text-[22px] font-extrabold leading-tight">{k.brief?.soz || k.baslik}</p>
+          </div>
+        )}
+        {k.katildi && <span className="absolute top-3 left-3 mk-rozet !bg-[var(--mk-kum)] !text-[var(--mk-gece)]"><Ikon ad="tik" boyut={15} />Katıldınız</span>}
       </div>
-    );
-  }
-
-  const available = data?.available || [];
-  const joined    = data?.joined    || [];
+      <div className="p-4 flex-1 flex flex-col">
+        <p className="text-[16px] font-extrabold">{k.baslik}</p>
+        <p className="mt-1 text-[13.5px] mk-soluk line-clamp-2">{k.brief?.anaMesaj || k.aciklama}</p>
+        <div className="mt-3 flex flex-wrap gap-1.5">
+          {k.indirim && <span className="mk-rozet mk-rozet-mavi">{k.indirim}</span>}
+          {k.komisyon ? <span className="mk-rozet mk-rozet-onay">%{k.komisyon} komisyon</span> : null}
+          {k.bitis && <span className="mk-rozet mk-rozet-bekliyor">{new Date(k.bitis).toLocaleDateString('tr-TR', { day: 'numeric', month: 'long' })}’e kadar</span>}
+        </div>
+        <div className="mt-auto pt-4 flex items-center justify-between text-[13px] font-bold">
+          {k.katildi ? <span className="text-[var(--mk-lacivert)] tracking-[0.08em]">{k.kod}</span> : <span className="mk-soluk">{k.katilimci} kişi katıldı</span>}
+          <span className="text-[var(--mk-lacivert)] inline-flex items-center gap-1">{k.katildi ? 'İçerikler' : 'Brief’i aç'}<Ikon ad="ok" boyut={18} /></span>
+        </div>
+      </div>
+    </Link>
+  );
 
   return (
-    <>
-      <div className="space-y-6 pb-20 lg:pb-0">
-        <div>
-          <h1 className="text-[24px] font-bold text-gray-900 tracking-tight">Kampanyalar</h1>
-          <p className="text-[14px] text-gray-400 mt-0.5">Katıl → story otomatik oluşturulsun → indir &amp; paylaş</p>
-        </div>
-
-        {/* ── Tab ──────────────────────────────────────────────────────────── */}
-        <div className="flex bg-gray-100 rounded-2xl p-1 gap-1 w-fit">
-          {[
-            { key: 'joined',    label: `Kampanyalarım (${joined.length})` },
-            { key: 'available', label: `Katılabileceklerim (${available.length})` },
-          ].map(t => (
-            <button key={t.key} onClick={() => setTab(t.key as any)}
-              className={`px-4 py-2 rounded-xl text-[13px] font-semibold transition-all ${tab === t.key ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-700'}`}>
-              {t.label}
-            </button>
-          ))}
-        </div>
-
-        {/* ── Katıldıklarım ────────────────────────────────────────────────── */}
-        {tab === 'joined' && (
-          <div className="space-y-4">
-            {joined.length === 0 ? (
-              <div className="bg-white rounded-2xl border border-gray-100 p-12 text-center shadow-sm">
-                <span className="material-symbols-outlined text-5xl text-gray-200 mb-3 block" style={{ fontVariationSettings: "'FILL' 1" }}>campaign</span>
-                <p className="text-[15px] font-semibold text-gray-400">Henüz kampanyaya katılmadınız</p>
-                <button onClick={() => setTab('available')} className="mt-4 inline-flex items-center gap-2 bg-[#003781] text-white font-semibold px-5 py-2.5 rounded-xl text-[14px] hover:bg-[#002a63] transition-all">
-                  Kampanyaları Gör
-                  <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
-                </button>
-              </div>
-            ) : joined.map(p => {
-              const t = typeLabels[p.campaign.type] || typeLabels.all;
-              const discountLabel = p.campaign.discountType === 'percent'
-                ? `%${p.campaign.discountValue}`
-                : `₺${p.campaign.discountValue}`;
-              return (
-                <div key={p.id} className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-                  {/* Header */}
-                  <div className="px-5 py-4 border-b border-gray-50 flex items-center gap-3">
-                    <div className={`w-10 h-10 ${t.bg} rounded-xl flex items-center justify-center shrink-0`}>
-                      <span className={`material-symbols-outlined text-[20px] ${t.color}`} style={{ fontVariationSettings: "'FILL' 1" }}>{t.icon}</span>
-                    </div>
-                    <div className="flex-1">
-                      <p className="text-[15px] font-bold text-gray-900">{p.campaign.title}</p>
-                      <p className="text-[12px] text-gray-400">{discountLabel} indirim · {t.label}</p>
-                    </div>
-                    <span className="text-[12px] font-semibold text-gray-400">{new Date(p.joinedAt).toLocaleDateString('tr-TR')} katıldı</span>
-                  </div>
-
-                  {/* Kod */}
-                  <div className="px-5 py-5">
-                    <p className="text-[12px] text-gray-400 font-medium mb-2">Size Özel Kampanya Kodunuz</p>
-                    <div className="flex items-center gap-3 bg-gradient-to-r from-[#003781]/5 to-[#003781]/10 rounded-2xl px-5 py-4">
-                      <p className="text-[28px] font-black text-[#003781] tracking-widest flex-1">{p.uniqueCode}</p>
-                      <button onClick={() => copy(p.uniqueCode, p.id)}
-                        className={`flex items-center gap-1.5 px-4 py-2.5 rounded-xl font-semibold text-[13px] transition-all ${copied === p.id ? 'bg-green-500 text-white' : 'bg-white border border-gray-200 text-gray-700 hover:bg-gray-50'}`}>
-                        <span className="material-symbols-outlined text-[18px]">{copied === p.id ? 'check' : 'content_copy'}</span>
-                        {copied === p.id ? 'Kopyalandı!' : 'Kopyala'}
-                      </button>
-                    </div>
-
-                    {/* ✨ Story CTA */}
-                    <button
-                      onClick={() => openStory(p)}
-                      className="mt-4 w-full flex items-center justify-center gap-2.5 bg-[#003781] hover:bg-[#002a63] text-white font-bold py-4 rounded-2xl text-[14px] transition-all shadow-sm group"
-                    >
-                      <span className="material-symbols-outlined text-[22px] group-hover:scale-110 transition-transform" style={{ fontVariationSettings: "'FILL' 1" }}>auto_awesome</span>
-                      Story Oluştur &amp; İndir →
-                    </button>
-
-                    {/* İstatistik */}
-                    <div className="grid grid-cols-2 gap-3 mt-4">
-                      <div className="bg-gray-50 rounded-xl p-3 text-center">
-                        <p className="text-[24px] font-bold text-gray-900">{p.usageCount}</p>
-                        <p className="text-[12px] text-gray-400 font-medium">Toplam Kullanım</p>
-                      </div>
-                      <div className="bg-gray-50 rounded-xl p-3 text-center">
-                        <p className="text-[24px] font-bold text-gray-900">{p.codeUsages?.length || 0}</p>
-                        <p className="text-[12px] text-gray-400 font-medium">Bu Ay</p>
-                      </div>
-                    </div>
-
-                    {/* Son kullanımlar */}
-                    {p.codeUsages && p.codeUsages.length > 0 && (
-                      <div className="mt-4">
-                        <p className="text-[12px] font-semibold text-gray-500 mb-2">Son Kullanımlar</p>
-                        <div className="space-y-1.5">
-                          {p.codeUsages.slice(0, 5).map((u: any) => (
-                            <div key={u.id} className="flex items-center justify-between bg-gray-50 rounded-xl px-3 py-2">
-                              <p className="text-[13px] font-medium text-gray-700">{u.customerName || 'Anonim'}</p>
-                              <p className="text-[12px] text-gray-400">{new Date(u.usedAt).toLocaleDateString('tr-TR')}</p>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Takip linki */}
-                    <div className="mt-4 bg-blue-50 border border-blue-100 rounded-xl px-4 py-3 flex items-start gap-2">
-                      <span className="material-symbols-outlined text-blue-400 text-[18px] mt-0.5 shrink-0">link</span>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-[11px] text-blue-600 font-bold uppercase tracking-widest mb-1">Takip Linkin</p>
-                        <p className="text-[12px] text-blue-700 font-medium break-all">
-                          hadiumreyegidelim.com/c/{p.campaign.slug}?ref={p.uniqueCode}
-                        </p>
-                      </div>
-                      <button
-                        onClick={() => copy(`${SITE_URL}/c/${p.campaign.slug}?ref=${p.uniqueCode}`, `link-${p.id}`)}
-                        className={`shrink-0 flex items-center gap-1 text-[12px] font-semibold px-3 py-1.5 rounded-lg transition-all ${copied === `link-${p.id}` ? 'bg-green-500 text-white' : 'bg-blue-100 text-blue-700 hover:bg-blue-200'}`}
-                      >
-                        <span className="material-symbols-outlined text-[14px]">{copied === `link-${p.id}` ? 'check' : 'content_copy'}</span>
-                        {copied === `link-${p.id}` ? 'Kopyalandı' : 'Kopyala'}
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        )}
-
-        {/* ── Katılabileceklerim ───────────────────────────────────────────── */}
-        {tab === 'available' && (
-          <div className="space-y-4">
-            {available.length === 0 ? (
-              <div className="bg-white rounded-2xl border border-gray-100 p-12 text-center shadow-sm">
-                <span className="material-symbols-outlined text-5xl text-gray-200 mb-3 block" style={{ fontVariationSettings: "'FILL' 1" }}>event_available</span>
-                <p className="text-[15px] font-semibold text-gray-400">Yeni kampanya yok</p>
-                <p className="text-[13px] text-gray-300 mt-1">Tüm aktif kampanyalara katıldınız</p>
-              </div>
-            ) : available.map((c: any) => {
-              const t = typeLabels[c.type] || typeLabels.all;
-              return (
-                <div key={c.id} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
-                  <div className="flex items-start gap-4">
-                    <div className={`w-12 h-12 ${t.bg} rounded-2xl flex items-center justify-center shrink-0`}>
-                      <span className={`material-symbols-outlined text-[24px] ${t.color}`} style={{ fontVariationSettings: "'FILL' 1" }}>{t.icon}</span>
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-start justify-between gap-3 flex-wrap">
-                        <div>
-                          <h3 className="text-[16px] font-bold text-gray-900">{c.title}</h3>
-                          {c.description && <p className="text-[13px] text-gray-400 mt-0.5">{c.description}</p>}
-                          <div className="flex items-center gap-2 mt-2 flex-wrap">
-                            <span className={`text-[12px] font-semibold px-2.5 py-1 rounded-full ${t.bg} ${t.color}`}>{t.label}</span>
-                            <span className="text-[13px] font-bold text-gray-800">
-                              {c.discountType === 'percent' ? `%${c.discountValue} indirim` : `₺${c.discountValue} indirim`}
-                            </span>
-                            {c.commissionPct && (
-                              <span className="text-[12px] font-semibold text-green-700 bg-green-50 px-2.5 py-1 rounded-full">%{c.commissionPct} komisyon</span>
-                            )}
-                            <span className="text-[12px] text-gray-400">{c._count?.participants ?? 0} katılımcı</span>
-                          </div>
-                          <div className="mt-2 bg-gray-50 rounded-xl px-3 py-2 inline-block">
-                            <p className="text-[11px] text-gray-400">Kodunuz şöyle görünecek:</p>
-                            <p className="text-[15px] font-black text-[#003781] tracking-widest mt-0.5">AD{c.codeTemplate}</p>
-                          </div>
-                        </div>
-                        <button onClick={() => join(c.id)} disabled={joining === c.id}
-                          className="flex items-center gap-2 bg-[#003781] hover:bg-[#002a63] text-white font-semibold px-4 py-2.5 rounded-xl text-[14px] transition-all shadow-sm shrink-0 disabled:opacity-60">
-                          {joining === c.id
-                            ? <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                            : <><span className="material-symbols-outlined text-[18px]">auto_awesome</span> Katıl &amp; Story Al</>
-                          }
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                  {c.endDate && (
-                    <p className="text-[12px] text-gray-400 mt-3 pt-3 border-t border-gray-50 flex items-center gap-1.5">
-                      <span className="material-symbols-outlined text-[14px]">event</span>
-                      Bitiş: {new Date(c.endDate).toLocaleDateString('tr-TR')}
-                    </p>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-        )}
+    <div className="space-y-8">
+      <div className="mk-gir">
+        <p className="mk-ust">Kampanyalar</p>
+        <h1 className="mt-1 text-[28px] font-extrabold">Ne paylaşacağınız hazır</h1>
+        <p className="mt-1 mk-soluk text-[15px] max-w-2xl">Her kampanyada ne anlatacağınız, hazır görseller ve açıklamalar var. Katılınca size özel kod oluşur; paylaştıklarınız kodla takip edilir.</p>
       </div>
 
-      {/* Story Modal */}
-      {storyTarget && (
-        <StoryModal
-          {...storyTarget}
-          onClose={() => setStoryTarget(null)}
-        />
+      {katildiklarim.length > 0 && (
+        <section>
+          <h2 className="text-[18px] font-extrabold mb-3">Katıldıklarınız</h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">{katildiklarim.map(kart)}</div>
+        </section>
       )}
-    </>
+      <section>
+        <h2 className="text-[18px] font-extrabold mb-3">{katildiklarim.length ? 'Katılabilecekleriniz' : 'Aktif kampanyalar'}</h2>
+        {yeniler.length === 0 ? (
+          <div className="mk-kart p-8 text-center mk-soluk">{liste.length ? 'Bütün aktif kampanyalara katıldınız.' : 'Şu an aktif kampanya yok.'}</div>
+        ) : (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">{yeniler.map(kart)}</div>
+        )}
+      </section>
+    </div>
   );
 }

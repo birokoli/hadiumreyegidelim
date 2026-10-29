@@ -15,21 +15,18 @@ import { after } from "next/server";
 import { acilisKaydet } from "@/lib/satis/acilis";
 
 export const dynamic = "force-dynamic";
-// Paylaşım önizlemesi (29 Ekim, kullanıcı: WhatsApp'ta görsel çıkmıyordu): kök düzenin ana sayfa og:url ve başlığı yerine
-// teklife özel başlık, adres ve görsel. Önizlemede müşteri adı ve tutar yok; sayfa yine arama motorlarına kapalı.
-export async function generateMetadata({ params }: { params: Promise<{ token: string }> }): Promise<Metadata> {
-  const { token } = await params;
-  const d = await getDosya("token", token).catch(() => null);
-  const baslik = d ? `Umre teklifiniz · ${d.no}` : "Umre teklifiniz";
-  const aciklama = "Teklif detayını görmek için dokunun: oteller, dahil hizmetler, toplam ve ödeme planı.";
-  const gorsel = `/og?${new URLSearchParams({ g: "bireysel-umre", k: d ? `Teklif ${d.no}` : "Umre teklifi", t: "Umre teklifiniz hazır. Detayları görmek için dokunun." })}`;
-  return {
-    title: baslik,
-    description: aciklama,
-    openGraph: { title: baslik, description: aciklama, url: `/t/${token}`, type: "website", images: [{ url: gorsel, width: 1200, height: 630, alt: "Umre teklifiniz hazır" }] },
-    twitter: { card: "summary_large_image", title: baslik, description: aciklama, images: [gorsel] },
-  };
-}
+// Paylaşım önizlemesi (29 Ekim, kullanıcı: WhatsApp'ta görsel çıkmıyordu): kök düzenin ana sayfa başlığı ve og:url'si yerine
+// teklife özel başlık ve görsel. Statik olmalı: generateMetadata etiketleri tanımadığı tarayıcılara <head> dışında akıtıyor ve
+// WhatsApp Web önizlemesi onları okuyamıyor. Önizlemede müşteri adı ve tutar yok; sayfa yine arama motorlarına kapalı.
+const ONIZLEME_BASLIK = "Umre teklifiniz hazır";
+const ONIZLEME_ACIKLAMA = "Teklif detayını görmek için dokunun: oteller, dahil hizmetler, toplam ve ödeme planı.";
+const ONIZLEME_GORSEL = `/og?${new URLSearchParams({ g: "bireysel-umre", k: "Hadi Umreye Gidelim", t: "Umre teklifiniz hazır. Detayları görmek için dokunun." })}`;
+export const metadata: Metadata = {
+  title: "Umre teklifiniz",
+  description: ONIZLEME_ACIKLAMA,
+  openGraph: { title: ONIZLEME_BASLIK, description: ONIZLEME_ACIKLAMA, type: "website", images: [{ url: ONIZLEME_GORSEL, width: 1200, height: 630, alt: ONIZLEME_BASLIK }] },
+  twitter: { card: "summary_large_image", title: ONIZLEME_BASLIK, description: ONIZLEME_ACIKLAMA, images: [ONIZLEME_GORSEL] },
+};
 
 export default async function TeklifSayfasi({ params, searchParams }: { params: Promise<{ token: string }>; searchParams: Promise<{ onizleme?: string }> }) {
   const d = await getDosya("token", (await params).token);

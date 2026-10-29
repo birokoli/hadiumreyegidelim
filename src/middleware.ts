@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { ONIZLEME_BOTU } from '@/lib/satis/onizleme';
 import type { NextRequest } from 'next/server';
 import { jwtVerify } from 'jose';
 import { getJwtKey } from '@/lib/jwt-key';
@@ -103,6 +104,11 @@ export async function middleware(req: NextRequest) {
       return NextResponse.next({ request: { headers } });
     }
     return NextResponse.next();
+  }
+
+  // ─── Teklif bağlantısı önizlemesi: botlara sabit sayfa (src/lib/satis/onizleme.ts) ─
+  if (url.startsWith('/t/') && ONIZLEME_BOTU.test(req.headers.get('user-agent') ?? '')) {
+    return NextResponse.rewrite(new URL('/teklif-onizleme', req.url));
   }
 
   // ─── MARKETING subdomaini ─────────────────────────────────────────────

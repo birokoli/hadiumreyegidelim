@@ -1,6 +1,5 @@
 // Teklif sayfası (14 Ekim): WhatsApp mesajındaki bağlantı. Oteller, dahil hizmetler, toplam, ödeme planı ve onay.
 // 15 Ekim (kullanıcı, şeffaf fiyat politikası): her otelin ve hizmetin satış fiyatı satırında görünür.
-import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getDosya, geceSayisi, hitapAdi, KALEM_TURLERI, kalemToplam, odemeDagilimi, teklifSuresiDoldu, onaylandiMi, oteller, toplam, genelToplam, kdvTutari, kartla, KART_PAYI, KDV_ETIKETI, trTarih, usd } from "@/lib/satis";
@@ -13,20 +12,11 @@ import TeklifOnayla from "@/components/profil/TeklifOnayla";
 import { cookies, headers } from "next/headers";
 import { after } from "next/server";
 import { acilisKaydet } from "@/lib/satis/acilis";
+import { TEKLIF_ONIZLEME } from "@/lib/satis/onizleme";
 
 export const dynamic = "force-dynamic";
-// Paylaşım önizlemesi (29 Ekim, kullanıcı: WhatsApp'ta görsel çıkmıyordu): kök düzenin ana sayfa başlığı ve og:url'si yerine
-// teklife özel başlık ve görsel. Statik olmalı: generateMetadata etiketleri tanımadığı tarayıcılara <head> dışında akıtıyor ve
-// WhatsApp Web önizlemesi onları okuyamıyor. Önizlemede müşteri adı ve tutar yok; sayfa yine arama motorlarına kapalı.
-const ONIZLEME_BASLIK = "Umre teklifiniz hazır";
-const ONIZLEME_ACIKLAMA = "Teklif detayını görmek için dokunun: oteller, dahil hizmetler, toplam ve ödeme planı.";
-const ONIZLEME_GORSEL = `/og?${new URLSearchParams({ g: "bireysel-umre", k: "Hadi Umreye Gidelim", t: "Umre teklifiniz hazır. Detayları görmek için dokunun." })}`;
-export const metadata: Metadata = {
-  title: "Umre teklifiniz",
-  description: ONIZLEME_ACIKLAMA,
-  openGraph: { title: ONIZLEME_BASLIK, description: ONIZLEME_ACIKLAMA, type: "website", images: [{ url: ONIZLEME_GORSEL, width: 1200, height: 630, alt: ONIZLEME_BASLIK }] },
-  twitter: { card: "summary_large_image", title: ONIZLEME_BASLIK, description: ONIZLEME_ACIKLAMA, images: [ONIZLEME_GORSEL] },
-};
+// Paylaşım önizlemesi: src/lib/satis/onizleme.ts
+export const metadata = TEKLIF_ONIZLEME;
 
 export default async function TeklifSayfasi({ params, searchParams }: { params: Promise<{ token: string }>; searchParams: Promise<{ onizleme?: string }> }) {
   const d = await getDosya("token", (await params).token);

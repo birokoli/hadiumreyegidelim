@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { ONIZLEME_BOTU } from '@/lib/satis/onizleme';
-import type { NextFetchEvent, NextRequest } from 'next/server';
+import type { NextRequest } from 'next/server';
 import { jwtVerify } from 'jose';
 import { getJwtKey } from '@/lib/jwt-key';
 import { SITE_URL } from '@/lib/seo/site';
@@ -82,7 +82,7 @@ function unauthorized(req: NextRequest) {
   return NextResponse.redirect(new URL('/admin', req.url));
 }
 
-export async function middleware(req: NextRequest, ev: NextFetchEvent) {
+export async function middleware(req: NextRequest) {
   const url = req.nextUrl.pathname;
   const hostname = req.headers.get('host') || '';
   const isMarketing = hostname.startsWith('marketing.');
@@ -108,11 +108,7 @@ export async function middleware(req: NextRequest, ev: NextFetchEvent) {
 
   // ─── Teklif bağlantısı önizlemesi: botlara sabit sayfa (src/lib/satis/onizleme.ts) ─
   if (url.startsWith('/t/')) {
-    const ua = req.headers.get('user-agent') ?? '';
-    const bot = ONIZLEME_BOTU.test(ua);
-    // GEÇİCİ (29 Ekim): önizleme çeken ajanı öğrenmek için (src/app/onizleme-gunluk/route.ts)
-    ev.waitUntil(fetch(new URL('/onizleme-gunluk', req.url), { method: 'POST', headers: { 'x-ua': ua, 'x-bot': bot ? '1' : '0' } }).catch(() => {}));
-    if (bot) return NextResponse.rewrite(new URL('/teklif-onizleme', req.url));
+    if (ONIZLEME_BOTU.test(req.headers.get('user-agent') ?? '')) return NextResponse.rewrite(new URL('/teklif-onizleme', req.url));
   }
 
   // ─── MARKETING subdomaini ─────────────────────────────────────────────

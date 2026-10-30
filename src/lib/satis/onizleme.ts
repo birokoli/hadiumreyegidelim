@@ -9,7 +9,8 @@ export const ONIZLEME_BOTU = /whatsapp|facebookexternalhit|facebookcatalog|meta-
 
 const baslik = "Umre teklifiniz hazır";
 const aciklama = "Teklif detayını görmek için dokunun: oteller, dahil hizmetler, toplam ve ödeme planı.";
-const gorsel = `/og?${new URLSearchParams({ g: "bireysel-umre", k: "Hadi Umreye Gidelim", t: "Umre teklifiniz hazır. Detayları görmek için dokunun." })}`;
+// Görsel sabit dosya (/og çıktısının kopyası): ilk istekte üretilmesi 2 sn sürüyor, WhatsApp beklemeden kartı boş bırakıyordu
+const gorsel = "/teklif-onizleme.jpg";
 
 export const TEKLIF_ONIZLEME: Metadata = {
   title: "Umre teklifiniz",

@@ -162,7 +162,7 @@ export default async function TeklifSayfasi({ params, searchParams }: { params: 
             <p className="relative text-[11px] font-bold uppercase tracking-[0.22em]">{hitapAdi(x)}, size özel indirim</p>
             <p className="relative mt-1 text-4xl font-bold md:text-5xl">{usd(indirimGenel(x))}</p>
             <p className="relative mt-1 text-[13px] font-semibold">
-              Normal fiyat <span className="line-through">{usd(indirimsizGenel(x))}</span> · %{Math.round((indirimOf(x) / Math.max(1, indirimOf(x) + toplam(x))) * 100)} daha az{kisi > 1 ? ` · kişi başı ${usd(indirimGenel(x) / kisi)} kazancınız` : ""}
+              Normal fiyat <span className="line-through">{usd(indirimsizGenel(x))}</span>{kisi > 1 ? ` · kişi başı ${usd(indirimGenel(x) / kisi)} kazancınız` : ""}
             </p>
           </div>
         )}

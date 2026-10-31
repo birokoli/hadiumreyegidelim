@@ -4,7 +4,7 @@
 import { use, useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { durakSayisi, ZIYARET_ROTALARI } from "@/lib/satis/ziyaret";
-import { SATIS_TURLERI, SECENEK_SINIRI, araToplam, indirimGenel, secenekUygula, type Secenek } from "@/lib/satis/ortak";
+import { SATIS_TURLERI, SECENEK_SINIRI, araToplam, indirimGenel, indirimOf, secenekUygula, type Secenek } from "@/lib/satis/ortak";
 import { ASAMALAR, KALEM_TURLERI, KART_PAYI, KDV_ETIKETI, KDV_ORANI, alisToplam, genelToplam, kartla, kartPayiOf, kdvTutari, asamaIndex, asamaLabel, geceSayisi, kalemToplam, tarihTers, faturaGece, gunEkle, odemeDagilimi, odenen, onaylandiMi, toplam, trTarih, usd, waNumara, type Dosya, type DosyaData, type Kalem, type KalemTur, type Odeme } from "@/lib/satis/ortak";
 import { teklifLinki, teklifMesaji, voucherLinki, voucherMesaji, waLink } from "@/lib/satis/mesaj";
 import type { TeklifAcilis } from "@/lib/satis/acilis";
@@ -147,8 +147,8 @@ export default function SatisDosyasi({ params }: { params: Promise<{ no: string 
   if (!y || !data || !hesap) return <div className="p-8 text-xs text-on-surface-variant">Dosya yükleniyor…</div>;
   const d = y.dosya;
   const tel = waNumara(kisi.phone);
-  // İndirim (31 Ekim, kullanıcı: "kâra indirim olacak"): kâr = indirimsiz toplam − alış; hızlı düğmeler kârın bir kısmını
-  // 10 $'a yuvarlar. Kârı aşan indirim kırmızı uyarı verir (zarar)
+  // İndirim (31 Ekim, kullanıcı: "kâra indirim olacak"): kâr = indirimsiz toplam − alış; tutar ya da kârın yüzdesi girilir.
+  // Kârı aşan indirim kırmızı uyarı verir (zarar)
   const indirimAlani = (dd: DosyaData, deger: number | undefined, degistir: (n: number | undefined) => void) => {
     const ara = araToplam(dd);
     const alis = alisToplam(dd);
@@ -159,14 +159,13 @@ export default function SatisDosyasi({ params }: { params: Promise<{ no: string 
       <div className="rounded-xl border border-[#B8902A]/30 bg-[#F2DDA6]/20 p-3">
         <div className="flex flex-wrap items-end gap-2">
           <label className="w-36"><span className={lbl}>İndirim $ (KDV hariç)</span><input type="number" min={0} className={`${inp} font-bold`} value={deger || ""} onChange={(e) => degistir(Number(e.target.value) > 0 ? Number(e.target.value) : undefined)} /></label>
-          {alis > 0 && kar > 0 && [0.25, 0.5].map((o) => (
-            <button key={o} type="button" onClick={() => degistir(Math.max(10, Math.floor((kar * o) / 10) * 10))} className="rounded-lg border border-[#B8902A]/40 px-3 py-2 text-[11px] font-bold text-[#8a6a1c] hover:bg-[#F2DDA6]/40">Kârın %{o * 100}&apos;i</button>
-          ))}
+          {/* 31 Ekim (kullanıcı): yüzdeyi kendisi girer; yüzde kâr üstünden, müşteriye yalnızca tutar gösterilir */}
+          <label className="w-32"><span className={lbl}>Kârın %&apos;si</span><input type="number" min={0} max={100} disabled={!(alis > 0 && kar > 0)} title={alis > 0 ? "" : "Önce alış fiyatlarını girin"} className={inp} value={ind > 0 && kar > 0 ? Math.round((ind / kar) * 100) : ""} onChange={(e) => { const y = Number(e.target.value); degistir(y > 0 ? Math.round((kar * y) / 100) : undefined); }} /></label>
           {ind > 0 && <button type="button" onClick={() => degistir(undefined)} className="px-2 py-2 text-[11px] text-outline hover:text-error">kaldır</button>}
         </div>
         {ind > 0 && (
           <p className={`mt-2 text-[11px] ${alis && kalan < 0 ? "font-bold text-error" : "text-on-surface-variant"}`}>
-            Müşteri görür: <s>{usd(ara)}</s> → <b>{usd(ara - Math.min(ind, ara))}</b> (KDV hariç) · %{ara ? Math.round((ind / ara) * 100) : 0} indirim
+            {kar > 0 && alis > 0 ? <>Kârın %{Math.round((ind / kar) * 100)}&apos;i · </> : null}Müşteri görür: <s>{usd(ara)}</s> → <b>{usd(ara - Math.min(ind, ara))}</b> (KDV hariç) · {usd(ind)} indirim (yüzde gösterilmez)
             {alis ? <> · kalan kâr <b>{usd(kalan)}</b>{kalan < 0 ? " · indirim kârı aşıyor, zarar ediyorsunuz" : ""}</> : " · alış girilmediği için kâr denetlenemiyor"}
           </p>
         )}
@@ -361,14 +360,19 @@ export default function SatisDosyasi({ params }: { params: Promise<{ no: string 
                 const setSec = (id: string, p: Partial<Secenek>) => setSecs(secs.map((x) => (x.id === id ? { ...x, ...p } : x)));
                 const kopya = (l: Kalem[]) => l.map((k) => ({ ...k, id: uid(), otel: k.otel ? { ...k.otel, onayNo: undefined } : undefined }));
                 const onerilen = data.onerilen ?? "ana";
-                const ozet = (dd: DosyaData) => { const g = genelToplam(dd); return { g, kisi: kisiSayisi ? g / kisiSayisi : g, kar: toplam(dd) - alisToplam(dd), a: alisToplam(dd) }; };
+                const ozet = (dd: DosyaData) => {
+                  const g = genelToplam(dd);
+                  const a = alisToplam(dd);
+                  const karOnce = araToplam(dd) - a;
+                  return { g, kisi: kisiSayisi ? g / kisiSayisi : g, kar: toplam(dd) - a, a, yuzde: a > 0 && karOnce > 0 && dd.indirim ? Math.round((indirimOf(dd) / karOnce) * 100) : 0 };
+                };
                 const anaOzet = ozet(data);
                 const satir = (id: string, ad: string, o: ReturnType<typeof ozet>, ind: number) => (
                   <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] text-on-surface-variant">
                     <label className="flex items-center gap-1.5 font-bold text-primary"><input type="radio" name="onerilen" checked={onerilen === id} onChange={() => set("onerilen", id)} /> Önerilen</label>
                     <span>Toplam <b className="font-mono text-on-surface">{usd(o.g)}</b></span>
                     <span>Kişi başı <b className="font-mono text-on-surface">{usd(o.kisi)}</b></span>
-                    {ind > 0 && <span className="font-bold text-[#8a6a1c]">{usd(ind)} indirim</span>}
+                    {ind > 0 && <span className="font-bold text-[#8a6a1c]">{usd(ind)} indirim{o.yuzde ? ` · kârın %${o.yuzde}'i` : ""}</span>}
                     {o.a > 0 && <span className={o.kar < 0 ? "font-bold text-error" : "text-secondary"}>Kâr {usd(o.kar)}</span>}
                     {id !== "ana" && <span>1. seçeneğe göre {o.g - anaOzet.g >= 0 ? "+" : "−"}{usd(Math.abs(o.g - anaOzet.g))}</span>}
                     <span className="sr-only">{ad}</span>

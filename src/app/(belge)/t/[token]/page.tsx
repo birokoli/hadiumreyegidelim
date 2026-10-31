@@ -2,7 +2,7 @@
 // 15 Ekim (kullanıcı, şeffaf fiyat politikası): her otelin ve hizmetin satış fiyatı satırında görünür.
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getDosya, geceSayisi, hitapAdi, KALEM_TURLERI, kalemToplam, odemeDagilimi, teklifSuresiDoldu, onaylandiMi, oteller, toplam, genelToplam, kdvTutari, kartla, KART_PAYI, KDV_ETIKETI, trTarih, usd } from "@/lib/satis";
+import { getDosya, geceSayisi, hitapAdi, KALEM_TURLERI, kalemToplam, odemeDagilimi, teklifSuresiDoldu, onaylandiMi, oteller, toplam, genelToplam, kdvTutari, kartla, KART_PAYI, KDV_ETIKETI, trTarih, usd, tumSecenekler, secenekUygula, indirimGenel, indirimsizGenel, indirimOf, type DosyaData } from "@/lib/satis";
 import { durakSayisi, rotaOf } from "@/lib/satis/ziyaret";
 import ZiyaretRotasi from "@/components/satis/ZiyaretRotasi";
 import { findDirectoryHotel, kaabaText } from "@/lib/catalog/hotel-directory";
@@ -18,14 +18,23 @@ export const dynamic = "force-dynamic";
 // Paylaşım önizlemesi: src/lib/satis/onizleme.ts
 export const metadata = TEKLIF_ONIZLEME;
 
-export default async function TeklifSayfasi({ params, searchParams }: { params: Promise<{ token: string }>; searchParams: Promise<{ onizleme?: string }> }) {
+export default async function TeklifSayfasi({ params, searchParams }: { params: Promise<{ token: string }>; searchParams: Promise<{ onizleme?: string; s?: string }> }) {
   const d = await getDosya("token", (await params).token);
   if (!d || d.status === "iptal" || !d.data.kalemler.length) notFound();
   // Açılma kaydı (21 Ekim): sayfa gönderildikten sonra yazılır; botlar, admin önizlemesi ve admin oturumu sayılmaz
   const [h, c, sp] = await Promise.all([headers(), cookies(), searchParams]);
   const acilan = { ua: h.get("user-agent") ?? "", ip: h.get("x-forwarded-for")?.split(",")[0]?.trim() || h.get("x-real-ip"), admin: Boolean(c.get("admin_token")), onizleme: sp.onizleme === "1" };
   after(() => acilisKaydet(d.id, acilan));
-  const x = d.data;
+  // Seçenekler (31 Ekim): kartlardan biri seçilidir (?s=), sayfanın geri kalanı o seçenekle hesaplanır. Onaydan sonra seçenek yok
+  const secs = onaylandiMi(d.status) ? [] : tumSecenekler(d.data);
+  const onerilen = d.data.onerilen ?? "ana";
+  const secili = secs.find((s) => s.id === sp.s) ?? secs.find((s) => s.id === onerilen) ?? secs[0];
+  const x: DosyaData = secenekUygula(d.data, secili?.id === "ana" ? null : secili);
+  const kisiS = Math.max(1, d.data.yetiskin + d.data.cocuk);
+  const kartlar = secs.map((s) => {
+    const dd = secenekUygula(d.data, s.id === "ana" ? null : s);
+    return { s, dd, g: genelToplam(dd), ind: indirimGenel(dd) };
+  });
   const t = genelToplam(x);
   const net = toplam(x);
   const kisi = x.yetiskin + x.cocuk;
@@ -51,6 +60,36 @@ export default async function TeklifSayfasi({ params, searchParams }: { params: 
           {x.yetiskin} yetişkin{x.cocuk ? `, ${x.cocuk} çocuk` : ""}{x.bebek ? `, ${x.bebek} bebek` : ""}
         </p>
       </section>
+
+      {kartlar.length > 0 && (
+        <section className="rounded-[28px] bg-white p-6 ring-1 ring-[var(--h-sky)]/60">
+          <h2 className="text-lg font-bold text-[var(--h-blue)]">Size {kartlar.length} seçenek hazırladık</h2>
+          <p className="mt-1 text-[13px] text-[#5b6680]">Oteller farklı; diğer hizmetler hepsinde aynı. Bir seçeneğe dokunun, ayrıntısı aşağıda.</p>
+          <div className={`mt-4 grid gap-3 ${kartlar.length > 2 ? "md:grid-cols-3" : "sm:grid-cols-2"}`}>
+            {kartlar.map(({ s, dd, g, ind }) => {
+              const aktif = s.id === secili?.id;
+              const q = new URLSearchParams({ s: s.id, ...(sp.onizleme === "1" ? { onizleme: "1" } : {}) });
+              return (
+                <Link key={s.id} href={`?${q}`} scroll={false} className={`relative flex flex-col rounded-2xl p-4 transition ${aktif ? "bg-[var(--h-blue)] text-white shadow-[0_14px_28px_-16px_rgba(29,66,138,0.9)]" : "bg-[var(--h-white)] text-[#14213d] ring-1 ring-[var(--h-sky)] hover:ring-[var(--h-blue)]/40"}`}>
+                  <span className="flex flex-wrap items-center gap-1.5">
+                    <span className="text-[15px] font-bold">{s.ad || "Seçenek"}</span>
+                    {s.id === onerilen && <span className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${aktif ? "bg-[var(--h-sand)] text-[var(--h-blue-deep)]" : "bg-[var(--h-blue)] text-white"}`}>Önerimiz</span>}
+                  </span>
+                  <span className={`mt-2 space-y-0.5 text-[12px] ${aktif ? "text-white/80" : "text-[#5b6680]"}`}>
+                    {oteller(dd).map((k) => { const n = geceSayisi(k.otel?.giris, k.otel?.cikis); return <span key={k.id} className="block">{k.tur === "otel_mekke" ? "Mekke" : "Medine"}: <b className={aktif ? "text-white" : "text-[#14213d]"}>{k.otel?.ad}</b>{n ? ` · ${n} gece` : ""}{k.otel?.oda ? ` · ${k.otel.oda}` : ""}</span>; })}
+                  </span>
+                  <span className="mt-auto pt-3">
+                    {ind > 0 && <span className={`block text-[12px] line-through ${aktif ? "text-white/60" : "text-[#8a94ab]"}`}>{usd(indirimsizGenel(dd))}</span>}
+                    <span className="block text-2xl font-bold">{usd(g)}</span>
+                    <span className={`block text-[12px] ${aktif ? "text-white/80" : "text-[#5b6680]"}`}>{kisiS > 1 ? `Kişi başı ${usd(g / kisiS)}` : "Toplam"}</span>
+                    {ind > 0 && <span className="mt-2 inline-flex rounded-full bg-[var(--h-sand)] px-2.5 py-1 text-[11px] font-bold text-[var(--h-blue-deep)]">{usd(ind)} indirim</span>}
+                  </span>
+                </Link>
+              );
+            })}
+          </div>
+        </section>
+      )}
 
       {ots.length > 0 && (
         <section className="rounded-[28px] bg-white p-6 ring-1 ring-[var(--h-sky)]/60">
@@ -116,9 +155,21 @@ export default async function TeklifSayfasi({ params, searchParams }: { params: 
       )}
 
       <section className="rounded-[28px] bg-white p-6 ring-1 ring-[var(--h-sky)]/60">
+        {/* İndirim (31 Ekim, kullanıcı: "büyük bir şey gibi olmalı"): üstü çizili fiyat kalemlerin gerçek toplamıdır */}
+        {indirimGenel(x) > 0 && (
+          <div className="relative -mx-2 -mt-2 mb-5 overflow-hidden rounded-[22px] bg-[var(--h-sand)] px-5 py-4 text-[var(--h-blue-deep)]">
+            <span aria-hidden className="pointer-events-none absolute -right-3 -top-6 select-none text-[6.5rem] font-bold leading-none opacity-[0.08]">%</span>
+            <p className="relative text-[11px] font-bold uppercase tracking-[0.22em]">{hitapAdi(x)}, size özel indirim</p>
+            <p className="relative mt-1 text-4xl font-bold md:text-5xl">{usd(indirimGenel(x))}</p>
+            <p className="relative mt-1 text-[13px] font-semibold">
+              Normal fiyat <span className="line-through">{usd(indirimsizGenel(x))}</span> · %{Math.round((indirimOf(x) / Math.max(1, indirimOf(x) + toplam(x))) * 100)} daha az{kisi > 1 ? ` · kişi başı ${usd(indirimGenel(x) / kisi)} kazancınız` : ""}
+            </p>
+          </div>
+        )}
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
-            <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[var(--h-blue)]/60">Toplam{x.kdv ? " · KDV dahil" : ""}</p>
+            <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-[var(--h-blue)]/60">{secili ? `${secili.ad || "Seçenek"} · ` : ""}Toplam{x.kdv ? " · KDV dahil" : ""}</p>
+            {indirimGenel(x) > 0 && <p className="text-lg font-semibold text-[#8a94ab] line-through">{usd(indirimsizGenel(x))}</p>}
             <p className="text-4xl font-bold text-[var(--h-blue)]">{usd(t)}</p>
             {kisi > 1 && <p className="text-sm text-[#5b6680]">Kişi başı {usd(t / kisi)}</p>}
           </div>
@@ -126,7 +177,9 @@ export default async function TeklifSayfasi({ params, searchParams }: { params: 
         </div>
         {x.kdv && (
           <dl className="mt-4 space-y-1.5 border-t border-[var(--h-sky)]/60 pt-4 text-sm">
-            <div className="flex justify-between text-[#5b6680]"><dt>Hizmetler (KDV hariç)</dt><dd>{usd(net)}</dd></div>
+            {indirimOf(x) > 0 && <div className="flex justify-between text-[#5b6680]"><dt>Hizmetler (KDV hariç)</dt><dd>{usd(net + indirimOf(x))}</dd></div>}
+            {indirimOf(x) > 0 && <div className="flex justify-between font-semibold text-[#8a6a1c]"><dt>Size özel indirim</dt><dd>−{usd(indirimOf(x))}</dd></div>}
+            <div className="flex justify-between text-[#5b6680]"><dt>{indirimOf(x) > 0 ? "İndirimli tutar (KDV hariç)" : "Hizmetler (KDV hariç)"}</dt><dd>{usd(net)}</dd></div>
             <div className="flex justify-between text-[#5b6680]"><dt>{KDV_ETIKETI}</dt><dd>{usd(kdvTutari(x))}</dd></div>
             <div className="flex justify-between font-bold text-[#14213d]"><dt>Havale / EFT ile</dt><dd>{usd(t)}</dd></div>
             <div className="flex justify-between font-bold text-[#14213d]"><dt>Kredi kartıyla (%{Math.round(KART_PAYI * 100)} kart payı dahil)</dt><dd>{usd(kartla(t))}</dd></div>
@@ -141,7 +194,7 @@ export default async function TeklifSayfasi({ params, searchParams }: { params: 
         {x.teklifNotu && <p className="mt-4 text-sm text-[#5b6680]">{x.teklifNotu}</p>}
       </section>
 
-      {!suresiDoldu && <TeklifOnayla token={d.token} onaylandi={onaylandiMi(d.status)} />}
+      {!suresiDoldu && <TeklifOnayla token={d.token} onaylandi={onaylandiMi(d.status)} secenek={secili ? { id: secili.id, ad: secili.ad || "Seçenek" } : undefined} />}
       <div className="grid gap-2 sm:grid-cols-2">
         <a href={wa} className="flex items-center justify-center gap-2 rounded-2xl border border-[var(--h-sky)] bg-white px-5 py-3.5 text-sm font-bold text-[var(--h-blue)]"><HugIcon name="mesaj" size={18} /> WhatsApp&apos;tan sorun</a>
         <Link href="/profil/uye-ol" className="flex items-center justify-center gap-2 rounded-2xl bg-[var(--h-sand)] px-5 py-3.5 text-sm font-bold text-[var(--h-blue-deep)]"><HugIcon name="bireysel" size={18} /> Üye olun, umrenizi takip edin</Link>

@@ -40,7 +40,7 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
     ozet(d),
     directoryHotels({ all: true }).catch(() => []),
     prisma.service.findMany({ where: { type: "HOTEL" }, select: { id: true, name: true, extraData: true } }).catch(() => []),
-    prisma.serviceLibrary.findMany({ where: { isActive: true }, select: { id: true, category: true, name: true, defaultCostUsd: true, prices: { where: { month: ay }, select: { salePriceUsd: true, variant: true } } }, orderBy: [{ category: "asc" }, { sortOrder: "asc" }] }).catch(() => []),
+    prisma.serviceLibrary.findMany({ where: { isActive: true }, select: { id: true, category: true, name: true, city: true, defaultCostUsd: true, prices: { where: { month: ay }, select: { salePriceUsd: true, variant: true } } }, orderBy: [{ category: "asc" }, { sortOrder: "asc" }] }).catch(() => []),
     prisma.adminUser.findMany({ where: { status: "active" }, select: { id: true, name: true } }).catch(() => []),
   ]);
   const katalogOtel = katalog
@@ -55,7 +55,7 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
     asamalar: ASAMALAR,
     ekip,
     oteller: [...rehber.map((h) => ({ slug: h.slug, ad: h.name, sehir: h.city, kabe: h.kaabaMeters })), ...katalogOtel],
-    kutuphane: kutuphane.map((k) => ({ id: k.id, kategori: k.category, ad: k.name, alis: k.defaultCostUsd, satis: k.prices[0]?.salePriceUsd ?? null })),
+    kutuphane: kutuphane.map((k) => ({ id: k.id, kategori: k.category, ad: k.name, sehir: k.city, alis: k.defaultCostUsd, satis: k.prices[0]?.salePriceUsd ?? null })),
   });
 }
 

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import HugIcon from "@/components/icons/HugIcon";
 
-export default function TeklifOnayla({ token, onaylandi }: { token: string; onaylandi: boolean }) {
+export default function TeklifOnayla({ token, onaylandi, secenek }: { token: string; onaylandi: boolean; secenek?: { id: string; ad: string } }) {
   const [ok, setOk] = useState(onaylandi);
   const [busy, setBusy] = useState(false);
   const [hata, setHata] = useState("");
@@ -19,10 +19,10 @@ export default function TeklifOnayla({ token, onaylandi }: { token: string; onay
         type="button"
         disabled={busy}
         onClick={async () => {
-          if (!confirm("Teklifi onaylıyor musunuz? Ekibimiz ödeme ve sonraki adımlar için sizinle iletişime geçecek.")) return;
+          if (!confirm(`${secenek ? `"${secenek.ad}" seçeneğini` : "Teklifi"} onaylıyor musunuz? Ekibimiz ödeme ve sonraki adımlar için sizinle iletişime geçecek.`)) return;
           setBusy(true);
           setHata("");
-          const r = await fetch("/api/satis/onay", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ token }) });
+          const r = await fetch("/api/satis/onay", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ token, secenek: secenek?.id }) });
           const d = await r.json().catch(() => ({}));
           setBusy(false);
           if (!r.ok) return setHata(d.error || "Onaylanamadı; lütfen WhatsApp'tan yazın.");
@@ -30,7 +30,7 @@ export default function TeklifOnayla({ token, onaylandi }: { token: string; onay
         }}
         className="flex w-full items-center justify-center gap-2 rounded-2xl bg-[var(--h-blue)] px-6 py-4 text-[16px] font-bold text-white shadow-[0_12px_24px_-12px_rgba(29,66,138,0.8)] transition hover:bg-[var(--h-blue-deep)] disabled:opacity-60"
       >
-        <HugIcon name="onay" size={20} className="text-[var(--h-sand)]" /> {busy ? "Gönderiliyor…" : "Teklifi onaylıyorum"}
+        <HugIcon name="onay" size={20} className="text-[var(--h-sand)]" /> {busy ? "Gönderiliyor…" : secenek ? `"${secenek.ad}" seçeneğiyle onaylıyorum` : "Teklifi onaylıyorum"}
       </button>
       {hata && <p className="mt-2 text-sm font-bold text-red-700">{hata}</p>}
     </div>

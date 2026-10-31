@@ -9,7 +9,7 @@ import { istek } from "@/api/istemci";
 import { useDosya, type DosyaAyrinti } from "@/veri/sorgular";
 import {
   ASAMALAR, KALEM_TURLERI, KART_PAYI, KDV_ETIKETI, alisToplam, asamaLabel, faturaGece, genelToplam, geceSayisi, gunKaldi, kalemToplam, kartPayiOf, kartla, kdvTutari,
-  odemeDagilimi, odenen, onaylandiMi, oteller, toplam, trTarih, usd, type Odeme,
+  indirimGenel, odemeDagilimi, odenen, onaylandiMi, oteller, toplam, trTarih, tumSecenekler, usd, type Odeme,
 } from "@ortak/ortak";
 import { Alan, Ayrac, Baslik, Bolum, Dugme, Ekran, HataKutusu, IkonDugme, Kart, Rozet, Satir, Segment, Yazi, Yukleniyor } from "@/ui/temel";
 import AltSayfa from "@/ui/AltSayfa";
@@ -117,7 +117,10 @@ export default function DosyaEkrani() {
         {/* Para */}
         <Bolum baslik="Ödeme">
           <Kart style={{ gap: 8 }}>
+            {indirimGenel(x) > 0 ? <Tutar etiket="İndirim" deger={`−${usd(indirimGenel(x))}`} renk={R.altin} alt="Kârdan düşüldü" /> : null}
             <Tutar etiket="Toplam" deger={usd(top)} kalin alt={x.kdv ? `${KDV_ETIKETI} dahil (${usd(kdvTutari(x))})` : "KDV'siz"} />
+            {/* Seçenekli teklif (31 Ekim): müşteri onaylayana kadar toplam 1. seçeneğindir */}
+            {!onaylandiMi(d.status) && tumSecenekler(x).length ? <Yazi tur="kucuk">Teklifte {tumSecenekler(x).length} seçenek var; toplam 1. seçeneğin ({x.anaAd || "1. seçenek"}). Müşteri onaylayınca seçtiği geçerli olur.</Yazi> : null}
             <Tutar etiket="Ödenen" deger={usd(od)} renk={R.yesil} />
             <Tutar etiket="Kalan" deger={usd(kalanTutar)} renk={kalanTutar > 0.5 ? R.kirmizi : R.yesil} kalin />
             {x.odemePlani === "bolunmus" ? (() => { const o = odemeDagilimi(x); return <Yazi tur="kucuk">Bölünmüş ödeme: {usd(o.onden)} önden, {usd(o.varis)} Cidde'de</Yazi>; })() : null}

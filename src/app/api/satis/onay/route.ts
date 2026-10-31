@@ -2,7 +2,7 @@
 import { NextResponse } from "next/server";
 import { bildirArkada, kisaAd } from "@/lib/mobil/bildir";
 import { prisma } from "@/lib/prisma";
-import { getDosya, saveDosya, teklifSuresiDoldu } from "@/lib/satis";
+import { getDosya, saveDosya, secenekOnayla, teklifSuresiDoldu, tumSecenekler } from "@/lib/satis";
 import { rateLimit, getClientIp } from "@/lib/rate-limit";
 
 export async function POST(req: Request) {
@@ -12,8 +12,13 @@ export async function POST(req: Request) {
   if (!d) return NextResponse.json({ error: "Teklif bulunamadı." }, { status: 404 });
   if (d.status !== "talep" && d.status !== "teklif") return NextResponse.json({ ok: true });
   if (teklifSuresiDoldu(d.data.gecerlilik)) return NextResponse.json({ error: "Teklifin geçerlilik süresi dolmuş; güncel fiyat için WhatsApp'tan yazın." }, { status: 400 });
-  await saveDosya(d.id, { status: "onaylandi" }, "Müşteri", "Müşteri teklifi bağlantıdan onayladı");
-  bildirArkada("teklif", { baslik: "Teklif onaylandı", govde: `${kisaAd(d.data.musteriAdi)} · ${d.no}`, yol: `/satis/${d.no}` });
+  // Seçenekli teklif (31 Ekim): onaylanan seçenek dosyanın kalemleri olur
+  const secId = typeof b.secenek === "string" ? b.secenek : "ana";
+  const yama = secenekOnayla(d.data, secId);
+  if (!yama) return NextResponse.json({ error: "Seçenek bulunamadı; sayfayı yenileyin." }, { status: 400 });
+  const secAd = tumSecenekler(d.data).find((s) => s.id === secId)?.ad;
+  await saveDosya(d.id, { status: "onaylandi", data: yama }, "Müşteri", `Müşteri teklifi bağlantıdan onayladı${secAd ? ` (seçenek: ${secAd})` : ""}`);
+  bildirArkada("teklif", { baslik: "Teklif onaylandı", govde: `${kisaAd(d.data.musteriAdi)}${secAd ? ` · ${secAd}` : ""} · ${d.no}`, yol: `/satis/${d.no}` });
   await prisma.contactRequest.create({ data: { name: d.data.musteriAdi, phone: d.phone || "-", package: "Teklif onayı", message: `${d.no} numaralı dosyanın teklifi müşteri tarafından onaylandı. Satış masasından ödeme ve sonraki adımlar.` } }).catch(() => {});
   return NextResponse.json({ ok: true });
 }

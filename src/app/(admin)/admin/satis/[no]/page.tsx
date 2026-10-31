@@ -4,13 +4,13 @@
 import { use, useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { durakSayisi, ZIYARET_ROTALARI } from "@/lib/satis/ziyaret";
-import { SATIS_TURLERI } from "@/lib/satis/ortak";
+import { SATIS_TURLERI, SECENEK_SINIRI, araToplam, indirimGenel, secenekUygula, type Secenek } from "@/lib/satis/ortak";
 import { ASAMALAR, KALEM_TURLERI, KART_PAYI, KDV_ETIKETI, KDV_ORANI, alisToplam, genelToplam, kartla, kartPayiOf, kdvTutari, asamaIndex, asamaLabel, geceSayisi, kalemToplam, tarihTers, faturaGece, gunEkle, odemeDagilimi, odenen, onaylandiMi, toplam, trTarih, usd, waNumara, type Dosya, type DosyaData, type Kalem, type KalemTur, type Odeme } from "@/lib/satis/ortak";
 import { teklifLinki, teklifMesaji, voucherLinki, voucherMesaji, waLink } from "@/lib/satis/mesaj";
 import type { TeklifAcilis } from "@/lib/satis/acilis";
 
 type Otel = { slug: string; ad: string; sehir: string; kabe: number | null };
-type Kutuphane = { id: string; kategori: string; ad: string; alis: number; satis: number | null };
+type Kutuphane = { id: string; kategori: string; ad: string; alis: number; satis: number | null; sehir?: string | null };
 type Uye = { id: string; name: string; email: string };
 type Belge = { id: string; ad: string; tur: string; boyut: number };
 type Yanit = { dosya: Dosya; belgeler: Belge[]; oneri: Uye[]; bagliUye: Uye | null; ekip: { id: string; name: string }[]; oteller: Otel[]; kutuphane: Kutuphane[]; acilislar?: TeklifAcilis[] };
@@ -20,6 +20,7 @@ const inp = "w-full bg-surface-container-lowest border border-outline-variant/25
 const lbl = "block text-[10px] font-bold uppercase text-outline mb-1";
 const KUT_TUR: Record<string, KalemTur> = { vize: "vize", hotel: "otel_mekke", transfer: "transfer", tur: "tur", flight: "diger", extra: "diger" };
 const uid = () => Math.random().toString(36).slice(2, 10);
+const yama = (k: Kalem, patch: Partial<Kalem>): Kalem => ({ ...k, ...patch, otel: patch.otel ? { ...(k.otel ?? { ad: "" }), ...patch.otel } : k.otel });
 
 function Kart({ baslik, aciklama, children }: { baslik: string; aciklama?: string; children: React.ReactNode }) {
   return (
@@ -70,7 +71,7 @@ export default function SatisDosyasi({ params }: { params: Promise<{ no: string 
     setData((d) => (d ? { ...d, [k]: v } : d));
     setKirli(true);
   };
-  const setKalem = (id: string, patch: Partial<Kalem>) => set("kalemler", (data?.kalemler ?? []).map((k) => (k.id === id ? { ...k, ...patch, otel: patch.otel ? { ...(k.otel ?? { ad: "" }), ...patch.otel } : k.otel } : k)));
+  const setKalem = (id: string, patch: Partial<Kalem>) => set("kalemler", (data?.kalemler ?? []).map((k) => (k.id === id ? yama(k, patch) : k)));
   // Kişi başı fiyatlanan kalemler: adet = kişi sayısı, birim = kişi başı fiyat. 15 Ekim (kullanıcı): ziyaret turu ve transfer
   // araç bazlı; adet = araç sayısı, birim = araç başı fiyat
   const kisiBasi = (k: Kalem) => ["vize", "tren"].includes(k.tur);
@@ -78,10 +79,19 @@ export default function SatisDosyasi({ params }: { params: Promise<{ no: string 
   const adetEtiketi = (k: Kalem) => (kisiBasi(k) ? "Kişi" : aracBasi(k) ? "Araç" : "Adet");
   const birimEtiketi = (k: Kalem, ne: "satış" | "alış") => `${kisiBasi(k) ? "Kişi başı" : aracBasi(k) ? "Araç başı" : "Birim"} ${ne} $`;
   const yuvarla = (n: number) => Math.round(n * 100) / 100;
+  // 31 Ekim (kullanıcı: "önce Medine seçince Medine oteli dönüş gibi oluyor"): önce gidilen şehrin oteli gidiş tarihiyle
+  // başlar, sonraki şehrin oteli dönüş tarihiyle biter; öbür şehrin oteli varsa geçiş günü ondan alınır
+  const otelTarihleri = (tur: KalemTur, mevcut: Kalem[]) => {
+    const ilk = (data?.onceSehir ?? "mekke") === "medine" ? "otel_medine" : "otel_mekke";
+    const obur = mevcut.find((k) => k.tur.startsWith("otel_") && k.tur !== tur);
+    return tur === ilk
+      ? { giris: data?.gidis, cikis: obur?.otel?.giris }
+      : { giris: mevcut.find((k) => k.tur === ilk)?.otel?.cikis, cikis: data?.donus };
+  };
   const kalemEkle = (tur: KalemTur, extra: Partial<Kalem> = {}) => {
     const kisiSayisi = (data?.yetiskin ?? 1) + (data?.cocuk ?? 0);
     const base: Kalem = { id: uid(), tur, ad: KALEM_TURLERI[tur].label, adet: tur.startsWith("otel_") ? 1 : ["vize", "tren"].includes(tur) ? kisiSayisi : 1, birim: 0, ...extra };
-    if (tur.startsWith("otel_")) base.otel = { ad: "", giris: tur === "otel_mekke" ? data?.gidis : undefined, cikis: tur === "otel_medine" ? data?.donus : undefined, oda: "" };
+    if (tur.startsWith("otel_")) base.otel = { ad: "", ...otelTarihleri(tur, data?.kalemler ?? []), oda: "" };
     set("kalemler", [...(data?.kalemler ?? []), base]);
   };
 
@@ -137,6 +147,101 @@ export default function SatisDosyasi({ params }: { params: Promise<{ no: string 
   if (!y || !data || !hesap) return <div className="p-8 text-xs text-on-surface-variant">Dosya yükleniyor…</div>;
   const d = y.dosya;
   const tel = waNumara(kisi.phone);
+  // İndirim (31 Ekim, kullanıcı: "kâra indirim olacak"): kâr = indirimsiz toplam − alış; hızlı düğmeler kârın bir kısmını
+  // 10 $'a yuvarlar. Kârı aşan indirim kırmızı uyarı verir (zarar)
+  const indirimAlani = (dd: DosyaData, deger: number | undefined, degistir: (n: number | undefined) => void) => {
+    const ara = araToplam(dd);
+    const alis = alisToplam(dd);
+    const kar = ara - alis;
+    const ind = Math.max(0, deger ?? 0);
+    const kalan = kar - ind;
+    return (
+      <div className="rounded-xl border border-[#B8902A]/30 bg-[#F2DDA6]/20 p-3">
+        <div className="flex flex-wrap items-end gap-2">
+          <label className="w-36"><span className={lbl}>İndirim $ (KDV hariç)</span><input type="number" min={0} className={`${inp} font-bold`} value={deger || ""} onChange={(e) => degistir(Number(e.target.value) > 0 ? Number(e.target.value) : undefined)} /></label>
+          {alis > 0 && kar > 0 && [0.25, 0.5].map((o) => (
+            <button key={o} type="button" onClick={() => degistir(Math.max(10, Math.floor((kar * o) / 10) * 10))} className="rounded-lg border border-[#B8902A]/40 px-3 py-2 text-[11px] font-bold text-[#8a6a1c] hover:bg-[#F2DDA6]/40">Kârın %{o * 100}&apos;i</button>
+          ))}
+          {ind > 0 && <button type="button" onClick={() => degistir(undefined)} className="px-2 py-2 text-[11px] text-outline hover:text-error">kaldır</button>}
+        </div>
+        {ind > 0 && (
+          <p className={`mt-2 text-[11px] ${alis && kalan < 0 ? "font-bold text-error" : "text-on-surface-variant"}`}>
+            Müşteri görür: <s>{usd(ara)}</s> → <b>{usd(ara - Math.min(ind, ara))}</b> (KDV hariç) · %{ara ? Math.round((ind / ara) * 100) : 0} indirim
+            {alis ? <> · kalan kâr <b>{usd(kalan)}</b>{kalan < 0 ? " · indirim kârı aşıyor, zarar ediyorsunuz" : ""}</> : " · alış girilmediği için kâr denetlenemiyor"}
+          </p>
+        )}
+      </div>
+    );
+  };
+  // Kalem düzenleme satırı; dosyanın kalemlerinde ve seçeneklerin otel/transfer kalemlerinde aynı (31 Ekim)
+  const kalemSatiri = (k: Kalem, guncelle: (patch: Partial<Kalem>) => void, sil: () => void) => {
+    const otel = k.tur.startsWith("otel_");
+    const sehir = k.tur === "otel_mekke" ? "mekke" : "medine";
+    const g = geceSayisi(k.otel?.giris, k.otel?.cikis);
+    return (
+      <div key={k.id} className="rounded-xl border border-outline-variant/15 bg-surface-container-low/50 p-3">
+        <div className="flex items-center justify-between gap-2">
+          <span className="rounded bg-primary/10 px-2 py-0.5 text-[10px] font-bold text-primary">{KALEM_TURLERI[k.tur].label}</span>
+          <div className="flex items-center gap-3">
+            <span className="text-[11px] text-on-surface-variant">{k.birim ? (otel ? `${k.adet} oda × ${faturaGece(k)} gece × ${usd(k.birim)}` : aracBasi(k) ? `${k.adet} araç × ${usd(k.birim)}` : k.adet > 1 ? `${k.adet} × ${usd(k.birim)}` : "") : ""}</span>
+            <span className="font-mono text-sm font-bold text-primary">{usd(kalemToplam(k))}</span>
+            <button type="button" onClick={sil} className="text-xs text-outline hover:text-error">sil</button>
+          </div>
+        </div>
+        {otel ? (
+          <>
+          <div className="mt-2 grid grid-cols-2 gap-2 md:grid-cols-[2fr_1fr_64px_1fr_64px_1.1fr_1fr_1fr]">
+            <label><span className={lbl}>Otel</span>
+              <select className={inp} value={k.otel?.slug ?? (k.otel?.ad ? "__elle" : "")} onChange={(e) => { const h = y.oteller.find((o) => o.slug === e.target.value); guncelle({ otel: { slug: h?.slug, ad: h?.ad ?? "" }, ad: h?.ad ?? KALEM_TURLERI[k.tur].label }); }}>
+                <option value="">Seçin</option>
+                {y.oteller.filter((o) => o.sehir === sehir).map((o) => <option key={o.slug} value={o.slug}>{o.ad}{o.kabe ? ` · ${o.kabe} m` : ""}</option>)}
+                <option value="__elle">Listede yok, elle yaz</option>
+              </select>
+              {!k.otel?.slug && <input className={`${inp} mt-1`} placeholder="Otel adı" value={k.otel?.ad ?? ""} onChange={(e) => guncelle({ otel: { ad: e.target.value }, ad: e.target.value })} />}
+            </label>
+            <label><span className={lbl}>Giriş</span><input type="date" className={inp} value={k.otel?.giris ?? ""} onChange={(e) => {
+              // Giriş değişince gece sayısı korunur, çıkış kayar (28 Ekim: ters tarih olmasın)
+              const yeni = e.target.value; const eski = g;
+              guncelle({ otel: { ad: k.otel?.ad ?? "", giris: yeni, ...(yeni && eski ? { cikis: gunEkle(yeni, eski) } : {}) } });
+            }} /></label>
+            <label><span className={lbl}>Gece</span><input type="number" min={1} className={inp} value={g || ""} placeholder="—" disabled={!k.otel?.giris} title={k.otel?.giris ? "Gece sayısını yazın, çıkış tarihi hesaplanır" : "Önce giriş tarihini seçin"}
+              onChange={(e) => { const n = Number(e.target.value); if (k.otel?.giris && n > 0) guncelle({ otel: { ad: k.otel?.ad ?? "", cikis: gunEkle(k.otel.giris, n) } }); }} /></label>
+            <label><span className={lbl}>Çıkış</span><input type="date" min={k.otel?.giris ? gunEkle(k.otel.giris, 1) : undefined} className={`${inp} ${tarihTers(k.otel?.giris, k.otel?.cikis) ? "!border-error" : ""}`} value={k.otel?.cikis ?? ""} onChange={(e) => guncelle({ otel: { ad: k.otel?.ad ?? "", cikis: e.target.value } })} /></label>
+            <label><span className={lbl}>Oda</span><input type="number" min={1} className={inp} value={k.adet} onChange={(e) => guncelle({ adet: Number(e.target.value) || 1 })} /></label>
+            <label><span className={lbl}>Oda tipi</span><input className={inp} placeholder="2 kişilik" value={k.otel?.oda ?? ""} onChange={(e) => guncelle({ otel: { ad: k.otel?.ad ?? "", oda: e.target.value } })} /></label>
+            <label><span className={lbl}>Gecelik satış $</span><input type="number" min={0} className={inp} value={k.birim || ""} onChange={(e) => guncelle({ birim: Number(e.target.value) || 0 })} /></label>
+            <label><span className={lbl}>Gecelik alış $</span><input type="number" min={0} className={inp} value={k.alis || ""} onChange={(e) => guncelle({ alis: Number(e.target.value) || 0 })} /></label>
+          </div>
+          {tarihTers(k.otel?.giris, k.otel?.cikis) && (
+            <p className="mt-2 rounded-lg bg-error/10 px-3 py-2 text-xs font-semibold text-error">Çıkış ({trTarih(k.otel?.cikis)}) girişten ({trTarih(k.otel?.giris)}) önce; bu otel 0 gece sayılıyor. Çıkış tarihini düzeltin ya da “Gece” kutusuna gece sayısını yazın.</p>
+          )}
+          </>
+        ) : (
+          <div className="mt-2 grid grid-cols-2 gap-2 md:grid-cols-[1.4fr_1.4fr_64px_1fr_1fr_1fr_1fr]">
+            <label><span className={lbl}>Hizmet</span><input className={inp} value={k.ad} onChange={(e) => guncelle({ ad: e.target.value })} /></label>
+            {k.tur === "tur" ? (
+              <label><span className={lbl}>Rota (müşteri durakları görür)</span>
+                <select className={inp} value={k.rota ?? ""} onChange={(e) => { const r = e.target.value as "mekke" | "medine" | ""; guncelle(r ? { rota: r, ad: ZIYARET_ROTALARI[r].ad, aciklama: undefined } : { rota: undefined }); }}>
+                  <option value="mekke">Mekke ziyaret turu ({durakSayisi(ZIYARET_ROTALARI.mekke)} durak)</option>
+                  <option value="medine">Medine ziyaret turu ({durakSayisi(ZIYARET_ROTALARI.medine)} durak)</option>
+                  <option value="">Özel tur (açıklamayla)</option>
+                </select>
+                {!k.rota && <input className={`${inp} mt-1`} placeholder="Açıklama" value={k.aciklama ?? ""} onChange={(e) => guncelle({ aciklama: e.target.value })} />}
+              </label>
+            ) : (
+              <label><span className={lbl}>Açıklama (müşteri görür)</span><input className={inp} value={k.aciklama ?? ""} onChange={(e) => guncelle({ aciklama: e.target.value })} /></label>
+            )}
+            <label><span className={lbl}>{adetEtiketi(k)}</span><input type="number" min={1} className={inp} value={k.adet} onChange={(e) => guncelle({ adet: Number(e.target.value) || 1 })} /></label>
+            <label><span className={lbl}>{birimEtiketi(k, "satış")}</span><input type="number" min={0} className={inp} value={k.birim || ""} onChange={(e) => guncelle({ birim: Number(e.target.value) || 0 })} /></label>
+            {/* 15 Ekim: Excel'deki toplamı yazınca birim fiyat kendiliğinden hesaplanır (toplam ÷ adet) */}
+            <label><span className={lbl}>Toplam satış $</span><input type="number" min={0} className={`${inp} font-bold`} value={k.birim ? yuvarla(k.birim * k.adet) : ""} onChange={(e) => guncelle({ birim: yuvarla((Number(e.target.value) || 0) / Math.max(1, k.adet)) })} /></label>
+            <label><span className={lbl}>{birimEtiketi(k, "alış")}</span><input type="number" min={0} className={inp} value={k.alis || ""} onChange={(e) => guncelle({ alis: Number(e.target.value) || 0 })} /></label>
+            <label><span className={lbl}>Toplam alış $</span><input type="number" min={0} className={inp} value={k.alis ? yuvarla(k.alis * k.adet) : ""} onChange={(e) => guncelle({ alis: yuvarla((Number(e.target.value) || 0) / Math.max(1, k.adet)) })} /></label>
+          </div>
+        )}
+      </div>
+    );
+  };
   const kisiSayisi = data.yetiskin + data.cocuk;
 
   return (
@@ -207,74 +312,7 @@ export default function SatisDosyasi({ params }: { params: Promise<{ no: string 
             <Kart baslik="Teklif kalemleri" aciklama="Fiyatlar satış fiyatıdır ($). Alış sütununu yalnızca siz görürsünüz. Otel: gecelik oda fiyatı × oda × gece.">
               <div className="space-y-2">
                 {data.kalemler.length === 0 && <p className="rounded-lg border border-dashed border-outline-variant/40 p-6 text-center text-xs text-outline">Aşağıdaki düğmelerle otel, vize, transfer ve diğer kalemleri ekleyin.</p>}
-                {data.kalemler.map((k) => {
-                  const otel = k.tur.startsWith("otel_");
-                  const sehir = k.tur === "otel_mekke" ? "mekke" : "medine";
-                  const g = geceSayisi(k.otel?.giris, k.otel?.cikis);
-                  return (
-                    <div key={k.id} className="rounded-xl border border-outline-variant/15 bg-surface-container-low/50 p-3">
-                      <div className="flex items-center justify-between gap-2">
-                        <span className="rounded bg-primary/10 px-2 py-0.5 text-[10px] font-bold text-primary">{KALEM_TURLERI[k.tur].label}</span>
-                        <div className="flex items-center gap-3">
-                          <span className="text-[11px] text-on-surface-variant">{k.birim ? (otel ? `${k.adet} oda × ${faturaGece(k)} gece × ${usd(k.birim)}` : aracBasi(k) ? `${k.adet} araç × ${usd(k.birim)}` : k.adet > 1 ? `${k.adet} × ${usd(k.birim)}` : "") : ""}</span>
-                          <span className="font-mono text-sm font-bold text-primary">{usd(kalemToplam(k))}</span>
-                          <button type="button" onClick={() => set("kalemler", data.kalemler.filter((x) => x.id !== k.id))} className="text-xs text-outline hover:text-error">sil</button>
-                        </div>
-                      </div>
-                      {otel ? (
-                        <>
-                        <div className="mt-2 grid grid-cols-2 gap-2 md:grid-cols-[2fr_1fr_64px_1fr_64px_1.1fr_1fr_1fr]">
-                          <label><span className={lbl}>Otel</span>
-                            <select className={inp} value={k.otel?.slug ?? (k.otel?.ad ? "__elle" : "")} onChange={(e) => { const h = y.oteller.find((o) => o.slug === e.target.value); setKalem(k.id, { otel: { slug: h?.slug, ad: h?.ad ?? "" }, ad: h?.ad ?? KALEM_TURLERI[k.tur].label }); }}>
-                              <option value="">Seçin</option>
-                              {y.oteller.filter((o) => o.sehir === sehir).map((o) => <option key={o.slug} value={o.slug}>{o.ad}{o.kabe ? ` · ${o.kabe} m` : ""}</option>)}
-                              <option value="__elle">Listede yok, elle yaz</option>
-                            </select>
-                            {!k.otel?.slug && <input className={`${inp} mt-1`} placeholder="Otel adı" value={k.otel?.ad ?? ""} onChange={(e) => setKalem(k.id, { otel: { ad: e.target.value }, ad: e.target.value })} />}
-                          </label>
-                          <label><span className={lbl}>Giriş</span><input type="date" className={inp} value={k.otel?.giris ?? ""} onChange={(e) => {
-                            // Giriş değişince gece sayısı korunur, çıkış kayar (28 Ekim: ters tarih olmasın)
-                            const yeni = e.target.value; const eski = g;
-                            setKalem(k.id, { otel: { ad: k.otel?.ad ?? "", giris: yeni, ...(yeni && eski ? { cikis: gunEkle(yeni, eski) } : {}) } });
-                          }} /></label>
-                          <label><span className={lbl}>Gece</span><input type="number" min={1} className={inp} value={g || ""} placeholder="—" disabled={!k.otel?.giris} title={k.otel?.giris ? "Gece sayısını yazın, çıkış tarihi hesaplanır" : "Önce giriş tarihini seçin"}
-                            onChange={(e) => { const n = Number(e.target.value); if (k.otel?.giris && n > 0) setKalem(k.id, { otel: { ad: k.otel?.ad ?? "", cikis: gunEkle(k.otel.giris, n) } }); }} /></label>
-                          <label><span className={lbl}>Çıkış</span><input type="date" min={k.otel?.giris ? gunEkle(k.otel.giris, 1) : undefined} className={`${inp} ${tarihTers(k.otel?.giris, k.otel?.cikis) ? "!border-error" : ""}`} value={k.otel?.cikis ?? ""} onChange={(e) => setKalem(k.id, { otel: { ad: k.otel?.ad ?? "", cikis: e.target.value } })} /></label>
-                          <label><span className={lbl}>Oda</span><input type="number" min={1} className={inp} value={k.adet} onChange={(e) => setKalem(k.id, { adet: Number(e.target.value) || 1 })} /></label>
-                          <label><span className={lbl}>Oda tipi</span><input className={inp} placeholder="2 kişilik" value={k.otel?.oda ?? ""} onChange={(e) => setKalem(k.id, { otel: { ad: k.otel?.ad ?? "", oda: e.target.value } })} /></label>
-                          <label><span className={lbl}>Gecelik satış $</span><input type="number" min={0} className={inp} value={k.birim || ""} onChange={(e) => setKalem(k.id, { birim: Number(e.target.value) || 0 })} /></label>
-                          <label><span className={lbl}>Gecelik alış $</span><input type="number" min={0} className={inp} value={k.alis || ""} onChange={(e) => setKalem(k.id, { alis: Number(e.target.value) || 0 })} /></label>
-                        </div>
-                        {tarihTers(k.otel?.giris, k.otel?.cikis) && (
-                          <p className="mt-2 rounded-lg bg-error/10 px-3 py-2 text-xs font-semibold text-error">Çıkış ({trTarih(k.otel?.cikis)}) girişten ({trTarih(k.otel?.giris)}) önce; bu otel 0 gece sayılıyor. Çıkış tarihini düzeltin ya da “Gece” kutusuna gece sayısını yazın.</p>
-                        )}
-                        </>
-                      ) : (
-                        <div className="mt-2 grid grid-cols-2 gap-2 md:grid-cols-[1.4fr_1.4fr_64px_1fr_1fr_1fr_1fr]">
-                          <label><span className={lbl}>Hizmet</span><input className={inp} value={k.ad} onChange={(e) => setKalem(k.id, { ad: e.target.value })} /></label>
-                          {k.tur === "tur" ? (
-                            <label><span className={lbl}>Rota (müşteri durakları görür)</span>
-                              <select className={inp} value={k.rota ?? ""} onChange={(e) => { const r = e.target.value as "mekke" | "medine" | ""; setKalem(k.id, r ? { rota: r, ad: ZIYARET_ROTALARI[r].ad, aciklama: undefined } : { rota: undefined }); }}>
-                                <option value="mekke">Mekke ziyaret turu ({durakSayisi(ZIYARET_ROTALARI.mekke)} durak)</option>
-                                <option value="medine">Medine ziyaret turu ({durakSayisi(ZIYARET_ROTALARI.medine)} durak)</option>
-                                <option value="">Özel tur (açıklamayla)</option>
-                              </select>
-                              {!k.rota && <input className={`${inp} mt-1`} placeholder="Açıklama" value={k.aciklama ?? ""} onChange={(e) => setKalem(k.id, { aciklama: e.target.value })} />}
-                            </label>
-                          ) : (
-                            <label><span className={lbl}>Açıklama (müşteri görür)</span><input className={inp} value={k.aciklama ?? ""} onChange={(e) => setKalem(k.id, { aciklama: e.target.value })} /></label>
-                          )}
-                          <label><span className={lbl}>{adetEtiketi(k)}</span><input type="number" min={1} className={inp} value={k.adet} onChange={(e) => setKalem(k.id, { adet: Number(e.target.value) || 1 })} /></label>
-                          <label><span className={lbl}>{birimEtiketi(k, "satış")}</span><input type="number" min={0} className={inp} value={k.birim || ""} onChange={(e) => setKalem(k.id, { birim: Number(e.target.value) || 0 })} /></label>
-                          {/* 15 Ekim: Excel'deki toplamı yazınca birim fiyat kendiliğinden hesaplanır (toplam ÷ adet) */}
-                          <label><span className={lbl}>Toplam satış $</span><input type="number" min={0} className={`${inp} font-bold`} value={k.birim ? yuvarla(k.birim * k.adet) : ""} onChange={(e) => setKalem(k.id, { birim: yuvarla((Number(e.target.value) || 0) / Math.max(1, k.adet)) })} /></label>
-                          <label><span className={lbl}>{birimEtiketi(k, "alış")}</span><input type="number" min={0} className={inp} value={k.alis || ""} onChange={(e) => setKalem(k.id, { alis: Number(e.target.value) || 0 })} /></label>
-                          <label><span className={lbl}>Toplam alış $</span><input type="number" min={0} className={inp} value={k.alis ? yuvarla(k.alis * k.adet) : ""} onChange={(e) => setKalem(k.id, { alis: yuvarla((Number(e.target.value) || 0) / Math.max(1, k.adet)) })} /></label>
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
+                {data.kalemler.map((k) => kalemSatiri(k, (p) => setKalem(k.id, p), () => set("kalemler", data.kalemler.filter((x) => x.id !== k.id))))}
               </div>
               <div className="mt-3 flex flex-wrap gap-1.5">
                 {(Object.keys(KALEM_TURLERI) as KalemTur[]).flatMap((t) =>
@@ -285,7 +323,7 @@ export default function SatisDosyasi({ params }: { params: Promise<{ no: string 
                     : [<button key={t} type="button" onClick={() => kalemEkle(t)} className="rounded-lg border border-primary/25 px-3 py-1.5 text-[11px] font-bold text-primary hover:bg-primary/5">+ {KALEM_TURLERI[t].label}</button>],
                 )}
                 {y.kutuphane.length > 0 && (
-                  <select className={`${inp} w-60`} value="" onChange={(e) => { const s = y.kutuphane.find((x) => x.id === e.target.value); if (s) kalemEkle(KUT_TUR[s.kategori] ?? "diger", { ad: s.ad, birim: s.satis ?? 0, alis: s.alis || undefined }); }}>
+                  <select className={`${inp} w-60`} value="" onChange={(e) => { const s = y.kutuphane.find((x) => x.id === e.target.value); if (s) kalemEkle(s.kategori === "hotel" && /medine/i.test(s.sehir ?? "") ? "otel_medine" : KUT_TUR[s.kategori] ?? "diger", { ad: s.ad, birim: s.satis ?? 0, alis: s.alis || undefined }); }}>
                     <option value="">Hizmet kütüphanesinden ekle…</option>
                     {y.kutuphane.map((s) => <option key={s.id} value={s.id}>{s.ad}{s.satis ? ` · ${s.satis} $` : ""}</option>)}
                   </select>
@@ -308,11 +346,79 @@ export default function SatisDosyasi({ params }: { params: Promise<{ no: string 
                 <div><p className={lbl}>Alış</p><p className="font-mono text-lg font-bold text-on-surface-variant">{hesap.a ? usd(hesap.a) : "—"}</p></div>
                 <div><p className={lbl}>Kâr (KDV hariç)</p><p className={`font-mono text-lg font-bold ${hesap.t - hesap.a >= 0 ? "text-secondary" : "text-error"}`}>{hesap.a ? `${usd(hesap.t - hesap.a)} · %${hesap.t ? Math.round(((hesap.t - hesap.a) / hesap.t) * 100) : 0}` : "—"}</p></div>
               </div>
+              <div className="mt-3">{indirimAlani({ ...data, indirim: undefined }, data.indirim, (n) => set("indirim", n))}</div>
               <div className="mt-3 grid gap-3 md:grid-cols-[200px_1fr]">
                 <label><span className={lbl}>Geçerlilik</span><input type="date" className={inp} value={data.gecerlilik ?? ""} onChange={(e) => set("gecerlilik", e.target.value)} /></label>
                 <label><span className={lbl}>Teklif notu (mesajda ve teklif sayfasında)</span><input className={inp} value={data.teklifNotu ?? ""} onChange={(e) => set("teklifNotu", e.target.value)} placeholder="Fiyatlar müsaitliğe göre değişebilir…" /></label>
               </div>
               {data.teklifGonderildi && <p className="mt-2 text-[11px] text-secondary">Son gönderim: {new Date(data.teklifGonderildi).toLocaleString("tr-TR", { dateStyle: "short", timeStyle: "short" })}</p>}
+            </Kart>
+
+            <Kart baslik="Seçenekler" aciklama="Müşteri aynı bağlantıda seçenekleri karşılaştırır ve birini onaylar; kendisi bir şey değiştiremez. Seçenek yalnızca otelleri, isterseniz transferleri (araç farkı) ve indirimi değiştirir; vize, tur, tren ortaktır.">
+              {(() => {
+                const secs = data.secenekler ?? [];
+                const setSecs = (l: Secenek[]) => set("secenekler", l.length ? l : undefined);
+                const setSec = (id: string, p: Partial<Secenek>) => setSecs(secs.map((x) => (x.id === id ? { ...x, ...p } : x)));
+                const kopya = (l: Kalem[]) => l.map((k) => ({ ...k, id: uid(), otel: k.otel ? { ...k.otel, onayNo: undefined } : undefined }));
+                const onerilen = data.onerilen ?? "ana";
+                const ozet = (dd: DosyaData) => { const g = genelToplam(dd); return { g, kisi: kisiSayisi ? g / kisiSayisi : g, kar: toplam(dd) - alisToplam(dd), a: alisToplam(dd) }; };
+                const anaOzet = ozet(data);
+                const satir = (id: string, ad: string, o: ReturnType<typeof ozet>, ind: number) => (
+                  <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] text-on-surface-variant">
+                    <label className="flex items-center gap-1.5 font-bold text-primary"><input type="radio" name="onerilen" checked={onerilen === id} onChange={() => set("onerilen", id)} /> Önerilen</label>
+                    <span>Toplam <b className="font-mono text-on-surface">{usd(o.g)}</b></span>
+                    <span>Kişi başı <b className="font-mono text-on-surface">{usd(o.kisi)}</b></span>
+                    {ind > 0 && <span className="font-bold text-[#8a6a1c]">{usd(ind)} indirim</span>}
+                    {o.a > 0 && <span className={o.kar < 0 ? "font-bold text-error" : "text-secondary"}>Kâr {usd(o.kar)}</span>}
+                    {id !== "ana" && <span>1. seçeneğe göre {o.g - anaOzet.g >= 0 ? "+" : "−"}{usd(Math.abs(o.g - anaOzet.g))}</span>}
+                    <span className="sr-only">{ad}</span>
+                  </div>
+                );
+                return (
+                  <div className="space-y-3">
+                    {secs.length > 0 && (
+                      <div className="rounded-xl border border-primary/20 bg-primary/5 p-3">
+                        <label className="block max-w-xs"><span className={lbl}>1. seçenek adı (yukarıdaki kalemler)</span><input className={inp} value={data.anaAd ?? ""} placeholder="Örn. Yemekli" onChange={(e) => set("anaAd", e.target.value)} /></label>
+                        <div className="mt-2">{satir("ana", data.anaAd ?? "", anaOzet, indirimGenel(data))}</div>
+                      </div>
+                    )}
+                    {secs.map((sc, i) => {
+                      const dd = secenekUygula(data, sc);
+                      return (
+                        <div key={sc.id} className="rounded-xl border border-outline-variant/25 p-3">
+                          <div className="flex flex-wrap items-end justify-between gap-2">
+                            <label className="block w-full max-w-xs"><span className={lbl}>{i + 2}. seçenek adı</span><input className={inp} value={sc.ad} placeholder="Örn. Ekonomik" onChange={(e) => setSec(sc.id, { ad: e.target.value })} /></label>
+                            <div className="flex items-center gap-3">
+                              <label className="flex items-center gap-1.5 text-[11px] font-bold text-on-surface-variant">
+                                <input type="checkbox" checked={!!sc.transferler} onChange={(e) => setSec(sc.id, { transferler: e.target.checked ? kopya(data.kalemler.filter((k) => k.tur === "transfer")) : undefined })} />
+                                Araç farkı (transferler bu seçenekte ayrı)
+                              </label>
+                              <button type="button" onClick={() => { setSecs(secs.filter((x) => x.id !== sc.id)); if (onerilen === sc.id) set("onerilen", "ana"); }} className="text-xs text-outline hover:text-error">seçeneği sil</button>
+                            </div>
+                          </div>
+                          <div className="mt-2 space-y-2">
+                            {sc.oteller.map((k) => kalemSatiri(k, (p) => setSec(sc.id, { oteller: sc.oteller.map((x) => (x.id === k.id ? yama(x, p) : x)) }), () => setSec(sc.id, { oteller: sc.oteller.filter((x) => x.id !== k.id) })))}
+                            {sc.transferler?.map((k) => kalemSatiri(k, (p) => setSec(sc.id, { transferler: sc.transferler!.map((x) => (x.id === k.id ? yama(x, p) : x)) }), () => setSec(sc.id, { transferler: sc.transferler!.filter((x) => x.id !== k.id) })))}
+                          </div>
+                          <div className="mt-2 flex flex-wrap gap-1.5">
+                            {(["otel_mekke", "otel_medine"] as const).map((t) => (
+                              <button key={t} type="button" onClick={() => setSec(sc.id, { oteller: [...sc.oteller, { id: uid(), tur: t, ad: KALEM_TURLERI[t].label, adet: 1, birim: 0, otel: { ad: "", ...otelTarihleri(t, sc.oteller), oda: "" } }] })} className="rounded-lg border border-primary/25 px-3 py-1.5 text-[11px] font-bold text-primary hover:bg-primary/5">+ {KALEM_TURLERI[t].label}</button>
+                            ))}
+                          </div>
+                          <div className="mt-2">{indirimAlani({ ...dd, indirim: undefined }, sc.indirim, (n) => setSec(sc.id, { indirim: n }))}</div>
+                          <div className="mt-2">{satir(sc.id, sc.ad, ozet(dd), indirimGenel(dd))}</div>
+                        </div>
+                      );
+                    })}
+                    {secs.length + 1 < SECENEK_SINIRI && (
+                      <button type="button" disabled={!data.kalemler.some((k) => k.tur.startsWith("otel_"))} onClick={() => {
+                        setSecs([...secs, { id: uid(), ad: "", oteller: kopya(data.kalemler.filter((k) => k.tur.startsWith("otel_"))) }]);
+                      }} className="rounded-xl border border-dashed border-primary/40 px-4 py-2.5 text-xs font-bold text-primary hover:bg-primary/5 disabled:opacity-40">+ Seçenek ekle (oteller kopyalanır, değiştirdiğiniz otel farklı olur)</button>
+                    )}
+                    {!data.kalemler.some((k) => k.tur.startsWith("otel_")) && <p className="text-[11px] text-outline">Seçenek eklemek için önce yukarıya otel ekleyin.</p>}
+                  </div>
+                );
+              })()}
             </Kart>
           </>
         )}

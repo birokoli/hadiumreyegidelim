@@ -52,6 +52,14 @@ export type Kalem = {
   rota?: "mekke" | "medine";
 };
 /** tutar borçtan düşen kısımdır; kartla ödemede karttan çekilen = tutar + kartPayi (16 Ekim'den önceki ödemelerde kartPayi yok) */
+/**
+ * Teklif seçeneği (31 Ekim, kullanıcı: "genelde ayrım otelde, yemekli otel / ekonomik otel; geri kalan hizmetler aynı;
+ * en fazla bir de farklı araç soruyorlar; müşteri bir şey ayarlamasın"). Dosyanın kendi kalemleri 1. seçenektir (adı anaAd).
+ * Diğer seçenekler yalnızca otel kalemlerini, istenirse transferleri (araç farkı) ve indirimi değiştirir; vize, tur, tren ortak.
+ * Müşteri bir seçeneği onaylayınca o seçenek dosyanın kalemleri olur, eskisi seçeneklere geçer (secenekOnayla).
+ */
+export type Secenek = { id: string; ad: string; oteller: Kalem[]; transferler?: Kalem[]; indirim?: number };
+export const SECENEK_SINIRI = 3;
 export type Odeme = { id: string; tarih: string; tutar: number; yontem: "havale" | "kart" | "nakit"; yer: "onden" | "cidde"; aciklama?: string; kartPayi?: number };
 export type Kayit = { id: string; t: string; kim: string; metin: string };
 
@@ -72,6 +80,16 @@ export type DosyaData = {
   kampanyaId?: string;
   kampanyaBaslik?: string;
   kalemler: Kalem[];
+  /**
+   * İndirim (31 Ekim, kullanıcı: "kâra indirim olacak, büyük bir şey gibi görünmeli"): KDV hariç $, kalem toplamından düşer.
+   * Müşteri kalemlerin gerçek toplamını üstü çizili, indirimi ve indirimli fiyatı görür. Kârı aşmaması admin ekranında denetlenir.
+   */
+  indirim?: number;
+  /** 1. seçeneğin adı ("Yemekli"); seçenek yoksa kullanılmaz */
+  anaAd?: string;
+  secenekler?: Secenek[];
+  /** Önerilen seçenek: "ana" ya da seçenek id'si */
+  onerilen?: string;
   gecerlilik?: string; // teklif son geçerlilik tarihi
   teklifNotu?: string;
   teklifGonderildi?: string;
@@ -128,7 +146,11 @@ export const gunEkle = (tarih: string, gun: number) => {
 };
 export const kalemToplam = (k: Kalem) => (k.tur.startsWith("otel_") ? k.adet * k.birim * faturaGece(k) : k.adet * k.birim);
 export const kalemAlis = (k: Kalem) => (k.alis ? (k.tur.startsWith("otel_") ? k.adet * k.alis * faturaGece(k) : k.adet * k.alis) : 0);
-export const toplam = (d: DosyaData) => d.kalemler.reduce((s, k) => s + kalemToplam(k), 0);
+/** Kalemlerin indirimsiz toplamı (KDV hariç) */
+export const araToplam = (d: DosyaData) => d.kalemler.reduce((s, k) => s + kalemToplam(k), 0);
+export const indirimOf = (d: DosyaData) => Math.min(Math.max(0, d.indirim ?? 0), araToplam(d));
+/** İndirimli toplam (KDV hariç); kâr ve KDV bunun üstünden hesaplanır */
+export const toplam = (d: DosyaData) => araToplam(d) - indirimOf(d);
 export const alisToplam = (d: DosyaData) => d.kalemler.reduce((s, k) => s + kalemAlis(k), 0);
 export const odenen = (d: DosyaData) => d.odemeler.reduce((s, o) => s + o.tutar, 0);
 
@@ -142,6 +164,9 @@ const kdvCarpani = (d: DosyaData) => (d.kdv ? 1 + KDV_ORANI : 1);
 export const kdvTutari = (d: DosyaData) => (d.kdv ? toplam(d) * KDV_ORANI : 0);
 /** Müşterinin havale/nakitle ödeyeceği toplam (KDV dahil) */
 export const genelToplam = (d: DosyaData) => toplam(d) * kdvCarpani(d);
+/** Müşteriye üstü çizili gösterilen indirimsiz toplam ve indirim tutarı (KDV dahilse KDV'li) */
+export const indirimsizGenel = (d: DosyaData) => araToplam(d) * kdvCarpani(d);
+export const indirimGenel = (d: DosyaData) => indirimOf(d) * kdvCarpani(d);
 /** Bir tutarın kartla ödenince çekilecek hali */
 export const kartla = (tutar: number) => tutar * (1 + KART_PAYI);
 export const kartPayiOf = (tutar: number) => Math.round(tutar * KART_PAYI * 100) / 100;
@@ -159,6 +184,11 @@ export function odemeDagilimi(d: DosyaData) {
       varis += t / 2;
     } else onden += t;
   }
+  // İndirim önden ödenen kısımdan düşer; önden kısım yetmezse kalanı Cidde'dekinden
+  const ind = indirimOf(d);
+  const ondenInd = Math.min(onden, ind);
+  onden -= ondenInd;
+  varis = Math.max(0, varis - (ind - ondenInd));
   const c = kdvCarpani(d);
   return { onden: Math.round(onden * c), varis: Math.round(varis * c) };
 }
@@ -167,6 +197,34 @@ export const oteller = (d: DosyaData) => {
   const ilk = d.onceSehir === "medine" ? "otel_medine" : "otel_mekke";
   return d.kalemler.filter((k) => k.tur.startsWith("otel_") && k.otel?.ad).sort((a, b) => (a.otel?.giris ?? "").localeCompare(b.otel?.giris ?? "") || (a.tur === ilk ? -1 : 0) - (b.tur === ilk ? -1 : 0));
 };
+
+// ─── Seçenekler ────────────────────────────────────────────────────────────
+const otelMi = (k: Kalem) => k.tur.startsWith("otel_");
+/** Seçenek uygulanmış dosya verisi: otel kalemleri (ve araç farkı varsa transferler) ile indirim seçeneğinkiyle değişir */
+export function secenekUygula(d: DosyaData, s: Secenek | null | undefined): DosyaData {
+  if (!s) return d;
+  const kalan = d.kalemler.filter((k) => !otelMi(k) && !(s.transferler && k.tur === "transfer"));
+  return { ...d, kalemler: [...s.oteller, ...kalan, ...(s.transferler ?? [])], indirim: s.indirim };
+}
+/** Dosyanın kendi kalemleri seçenek olarak (onayda öteki seçeneklere geçer) */
+export const anaSecenek = (d: DosyaData, id = "ana"): Secenek => ({
+  id,
+  ad: d.anaAd || "1. seçenek",
+  oteller: d.kalemler.filter(otelMi),
+  transferler: d.secenekler?.some((s) => s.transferler) ? d.kalemler.filter((k) => k.tur === "transfer") : undefined,
+  indirim: d.indirim,
+});
+/** Müşteriye gösterilecek seçenekler: ana + diğerleri (seçenek yoksa boş) */
+export const tumSecenekler = (d: DosyaData): Secenek[] => (d.secenekler?.length ? [anaSecenek(d), ...d.secenekler] : []);
+/** Müşteri seçeneği onayladı: seçenek dosyanın kalemleri olur, eski kalemler seçenek olarak saklanır */
+export function secenekOnayla(d: DosyaData, id: string): Partial<DosyaData> | null {
+  if (id === "ana" || !d.secenekler?.length) return {};
+  const s = d.secenekler.find((x) => x.id === id);
+  if (!s) return null;
+  const yeni = secenekUygula(d, s);
+  const eski = { ...anaSecenek(d, `s_${Date.now().toString(36)}`), transferler: s.transferler ? d.kalemler.filter((k) => k.tur === "transfer") : undefined };
+  return { kalemler: yeni.kalemler, indirim: s.indirim, anaAd: s.ad, onerilen: d.onerilen === id ? "ana" : d.onerilen === "ana" ? eski.id : d.onerilen, secenekler: [...d.secenekler.filter((x) => x.id !== id), eski] };
+}
 
 export const usd = (n: number) => `${Math.round(n).toLocaleString("tr-TR")} $`;
 export const trTarih = (iso?: string, opts: Intl.DateTimeFormatOptions = { day: "numeric", month: "long" }) =>

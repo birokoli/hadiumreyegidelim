@@ -149,6 +149,7 @@ export default function SatisDosyasi({ params }: { params: Promise<{ no: string 
   const tel = waNumara(kisi.phone);
   // İndirim (31 Ekim, kullanıcı: "kâra indirim olacak"): kâr = indirimsiz toplam − alış; tutar ya da kârın yüzdesi girilir.
   // Kârı aşan indirim kırmızı uyarı verir (zarar)
+  // Dosyanın kendi indirimi kaldırılırken 0 yazılır: undefined JSON'da düşer, sunucu birleştirmesi eski değeri tutar (31 Ekim hatası)
   const indirimAlani = (dd: DosyaData, deger: number | undefined, degistir: (n: number | undefined) => void) => {
     const ara = araToplam(dd);
     const alis = alisToplam(dd);
@@ -345,7 +346,7 @@ export default function SatisDosyasi({ params }: { params: Promise<{ no: string 
                 <div><p className={lbl}>Alış</p><p className="font-mono text-lg font-bold text-on-surface-variant">{hesap.a ? usd(hesap.a) : "—"}</p></div>
                 <div><p className={lbl}>Kâr (KDV hariç)</p><p className={`font-mono text-lg font-bold ${hesap.t - hesap.a >= 0 ? "text-secondary" : "text-error"}`}>{hesap.a ? `${usd(hesap.t - hesap.a)} · %${hesap.t ? Math.round(((hesap.t - hesap.a) / hesap.t) * 100) : 0}` : "—"}</p></div>
               </div>
-              <div className="mt-3">{indirimAlani({ ...data, indirim: undefined }, data.indirim, (n) => set("indirim", n))}</div>
+              <div className="mt-3">{indirimAlani({ ...data, indirim: undefined }, data.indirim, (n) => set("indirim", n ?? 0))}</div>
               <div className="mt-3 grid gap-3 md:grid-cols-[200px_1fr]">
                 <label><span className={lbl}>Geçerlilik</span><input type="date" className={inp} value={data.gecerlilik ?? ""} onChange={(e) => set("gecerlilik", e.target.value)} /></label>
                 <label><span className={lbl}>Teklif notu (mesajda ve teklif sayfasında)</span><input className={inp} value={data.teklifNotu ?? ""} onChange={(e) => set("teklifNotu", e.target.value)} placeholder="Fiyatlar müsaitliğe göre değişebilir…" /></label>

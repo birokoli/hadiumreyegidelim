@@ -30,7 +30,7 @@ const STEPS = [
 // Metin ile şema aynı diziden üretilir
 const FAQ = [
   { q: "Bireysel umre nedir?", a: "Bireysel umre, sabit tarihli bir gruba katılmadan; tarihlerinizi, Mekke ve Medine otelinizi, transferinizi ve vizenizi kendinizin seçtiği umredir. Bu sayfadaki planlayıcıda hepsini seçip toplam fiyatı görebilirsiniz." },
-  { q: "Bireysel umre fiyatı nasıl hesaplanır?", a: "Otel fiyatları 1 oda, 1 gece içindir (giriş 16.00, ertesi gün çıkış 11.00). Bir odada en fazla 4 kişi kalır: 1–4 kişi 1 oda, 5–8 kişi 2 oda. Otel tutarı gecelik fiyat × gece sayısı × oda sayısıdır. Transfer araç ya da kişi başı, vize kişi başı eklenir. Fiyatlar seçtiğiniz ayın güncel fiyatlarıdır; IBAN ve kartla ödeme tutarları ayrıca gösterilir." },
+  { q: "Bireysel umre fiyatı nasıl hesaplanır?", a: "Otel fiyatları 1 oda, 1 gece içindir (giriş 16.00, ertesi gün çıkış 11.00). Bir odada en fazla 4 kişi kalır: 1–4 kişi 1 oda, 5–8 kişi 2 oda. Otel tutarı gecelik fiyat × gece sayısı × oda sayısıdır. Transfer araç ya da kişi başı, vize kişi başı eklenir. Fiyatlar seçtiğiniz ayın güncel fiyatlarıdır; Fiyatlar KDV hariçtir; havale ve kartla ödenecek KDV'li tutarlar ayrıca gösterilir." },
   { q: "Umre vizesi fiyata dahil mi?", a: "İsterseniz eklenir. Suudi Arabistan e-vize kişi başı 140 USD'dir; belgeleriniz tamamsa vizeniz 2 iş saati içinde çıkar. Vizeniz varsa planlayıcıda \"Vizem var\" seçeneğini işaretlemeniz yeterli." },
   { q: "Uçak bileti planlayıcıda var mı?", a: "Hayır. Uçak biletinizi kendiniz alırsınız; planlayıcı giriş-çıkış tarihlerinize göre konaklama, transfer, vize ve ek hizmetleri hesaplar." },
   { q: "Bebekle gidersem oda sayısı değişir mi?", a: "Hayır. 0–2 yaş bebekler otele bildirilmez ve oda sayısına girmez; bebek başına gecelik beşik ücreti eklenir." },
@@ -99,7 +99,7 @@ export default async function BireyselUmrePage({ searchParams }: { searchParams:
               lowPrice: Math.round(Math.min(...seviye.map((x) => x.on))),
               highPrice: Math.round(Math.max(...seviye.map((x) => x.on))),
               offerCount: seviye.length,
-              description: "Kişi başı, 10 gece (5 Mekke + 5 Medine), 2 kişi aynı odada; otel, transfer ve umre vizesi dahil, uçak bileti hariç, nakit ödeme.",
+              description: "Kişi başı, 10 gece (5 Mekke + 5 Medine), 2 kişi aynı odada; otel, transfer ve umre vizesi dahil, uçak bileti hariç, KDV hariç.",
             },
           }
         : {}),

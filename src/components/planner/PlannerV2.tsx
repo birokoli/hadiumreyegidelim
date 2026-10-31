@@ -488,7 +488,7 @@ export default function PlannerV2({ catalog, whatsappNumber, payment, query = {}
         <div className="rounded-2xl bg-primary p-5 text-white">
           <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-white/70">Planınız · {trRange(input.checkIn, input.checkOut)}</p>
           <p className="mt-2 font-headline text-3xl font-bold">{quote.totalUsd > 0 ? usd(quote.totalUsd) : "Teklif hazırlanır"}</p>
-          {quote.totalUsd > 0 && <p className="text-sm text-white/80">kişi başı {usd(quote.perPersonUsd)}{quote.complete ? "" : " · eksik kalemler teklifte eklenir"}</p>}
+          {quote.totalUsd > 0 && <p className="text-sm text-white/80">KDV hariç · kişi başı {usd(quote.perPersonUsd)}{quote.complete ? "" : " · eksik kalemler teklifte eklenir"}</p>}
           
           {hasHotelError && (
             <div className="mt-3 rounded-xl border border-white/25 bg-white/10 p-2.5 text-xs font-semibold text-white">

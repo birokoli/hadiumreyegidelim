@@ -15,7 +15,7 @@ export const NASIL_ADIMLAR = [
   { title: "Umre vizesini alın", text: "Suudi Arabistan e-vizesi pasaport bilgilerinizle çevrim içi alınır; otel rezervasyonu, uçak bileti, pasaport ve biyometrik fotoğraf tamamsa 2 iş saatinde çıkar. Pasaportunuz Suudi Arabistan'a giriş tarihinden itibaren en az 6 ay geçerli olmalıdır." },
   { title: "Mekke ve Medine otelini seçin", text: "Otel fiyatı oda başına ve gecelik hesaplanır; bir odada en fazla 4 kişi kalır. Harem'e yürüme mesafesi fiyatı en çok etkileyen şeydir: yaşlı ya da çocuklu yolcular için yakın otel, günlük yorgunluğu belirgin biçimde azaltır." },
   { title: "Transferi ayarlayın", text: "Havalimanı, Mekke–Medine arası ve dönüş için özel araç (sedan, minivan, minibüs) ya da Haremeyn hızlı treni kullanılır. Araç fiyatı kişi değil araç başınadır; aile ya da arkadaş grubunda kişi başı maliyet düşer." },
-  { title: "Umrenizi yapın, Ravza randevusu alın", text: "Mekke'de ihram, tavaf, sa'y ve tıraşla umre tamamlanır. Medine'de Ravza-i Mutahhara ziyareti için Nusuk uygulamasından randevu alınır; umrenizi bizimle planlarsanız randevuyu biz alırız. İsterseniz ilahiyatçı rehber eşliği ve ziyaret turları eklenir." },
+  { title: "Umrenizi yapın, Ravza randevusu alın", text: "Mekke'de ihram, tavaf, sa'y ve tıraşla umre tamamlanır. Medine'de Ravza-i Mutahhara ziyareti için randevuyu Nusuk uygulamasından kendiniz alırsınız. İsterseniz ilahiyatçı rehber eşliği ve ziyaret turları eklenir." },
 ];
 
 type Fiyat = { ad: string; usd: number } | null;
@@ -199,7 +199,7 @@ export default function BireyselUmreRehberi({ catalog, payment }: { catalog: Cat
                 <h3 className="font-headline text-lg font-bold text-primary">Kişi başı bireysel umre fiyatı ({monthLabel(m.ay)})</h3>
                 <p className="mt-2 text-[15px] leading-relaxed text-on-surface">
                   {monthLabel(m.ay)} fiyatlarıyla, 2 kişinin aynı odada kaldığı 10 gecelik (5 gece Mekke, 5 gece Medine) bireysel umre kişi başı{" "}
-                  <strong>{usd(ilk.on)}</strong>{usdTry ? <> (yaklaşık <strong>{tl(ilk.on, usdTry)}</strong>)</> : null}&apos;den başlar. Fiyat nakit ödemeye göredir; otel, sedan araçla üç transfer ve umre vizesi dahildir, uçak bileti dahil değildir.
+                  <strong>{usd(ilk.on)}</strong>{usdTry ? <> (yaklaşık <strong>{tl(ilk.on, usdTry)}</strong>)</> : null}&apos;den başlar. Fiyat KDV hariçtir; otel, sedan araçla üç transfer ve umre vizesi dahildir, uçak bileti dahil değildir.
                 </p>
                 <div className="mt-4 overflow-x-auto border border-outline-variant/30 bg-white">
                   <table className="w-full text-[14px]">
@@ -231,7 +231,7 @@ export default function BireyselUmreRehberi({ catalog, payment }: { catalog: Cat
                   </table>
                 </div>
                 <p className="mt-3 text-[12.5px] leading-relaxed text-on-surface-variant">
-                  Kişi başı tutar, 2 kişinin aynı odada kalmasına ve nakit ödemeye göredir; IBAN ile ödemede %{payment.ibanPercent}, kredi kartıyla %{payment.cardPercent} eklenir. Odada 3–4 kişi kaldığınızda ve araç paylaşıldığında kişi başı tutar düşer. Uçak bileti hariçtir.
+                  Kişi başı tutar, 2 kişinin aynı odada kalmasına ve KDV hariçtir; havale ve EFT'de KDV %5, kredi kartıyla ayrıca %5 kart farkı eklenir. Odada 3–4 kişi kaldığınızda ve araç paylaşıldığında kişi başı tutar düşer. Uçak bileti hariçtir.
                   {usdTry ? ` TL karşılıkları ${kurTarihi ? `${kurTarihi} tarihli ` : ""}kurla (1 $ = ${usdTry.toLocaleString("tr-TR")} TL) hesaplanmış yaklaşık tutarlardır.` : ""}{" "}
                   Kendi tarihinizle kesin fiyat için yukarıdaki planlayıcıyı kullanın.
                 </p>

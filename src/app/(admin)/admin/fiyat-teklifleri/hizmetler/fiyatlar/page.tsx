@@ -189,11 +189,9 @@ export default function MonthlyPricesPage() {
           <button onClick={runFill} disabled={busy || !fill.month} className="rounded-lg border border-primary/30 px-3 py-1.5 font-bold text-primary disabled:opacity-50">Doldur</button>
         </div>
         <div className="flex flex-wrap items-end gap-3 rounded-2xl border border-outline-variant/20 bg-white p-4 text-xs">
-          <span className="w-full font-bold text-primary">Ödeme ve kur <span className="font-normal text-on-surface-variant">(planlayıcı nakit, IBAN ve kart tutarlarını ve ≈ TL karşılığını bununla gösterir)</span></span>
+          <span className="w-full font-bold text-primary">Ödeme ve kur <span className="font-normal text-on-surface-variant">(planlayıcı ≈ TL karşılığını bununla gösterir; havale KDV %5 dahil, kart ayrıca %5: Satış Masası ile aynı, 31 Ekim)</span></span>
           <label>Dolar kuru (₺) <input inputMode="decimal" value={pay.usdTry} onChange={(e) => setPay({ ...pay, usdTry: e.target.value })} placeholder="49,874" className={`${sel} w-20`} /></label>
           <label>Kur tarihi <input type="date" value={pay.rateDate} onChange={(e) => setPay({ ...pay, rateDate: e.target.value })} className={sel} /></label>
-          <label>IBAN farkı % <input type="number" value={pay.ibanPercent} onChange={(e) => setPay({ ...pay, ibanPercent: e.target.value })} className={`${sel} w-14`} /></label>
-          <label>Kart farkı % <input type="number" value={pay.cardPercent} onChange={(e) => setPay({ ...pay, cardPercent: e.target.value })} className={`${sel} w-14`} /></label>
           <label title="Paket fiyatı = (otel + araç + tur satış fiyatları) × (1 + pay)">Paket payı % <input type="number" value={pay.packagePercent} onChange={(e) => setPay({ ...pay, packagePercent: e.target.value })} className={`${sel} w-16`} /></label>
           <button onClick={savePay} disabled={busy} className="rounded-lg bg-primary px-3 py-1.5 font-bold text-white disabled:opacity-50">Kaydet</button>
         </div>

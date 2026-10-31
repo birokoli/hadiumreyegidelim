@@ -1,5 +1,6 @@
 // Bireysel umre planı fiyat motoru (Y2). Saf fonksiyonlar: hem sunucuda hem tarayıcıda çalışır.
 // Fiyatlar yalnızca katalogdaki aylık SATIŞ fiyatlarından veya basePriceUsd'den gelir (src/lib/catalog).
+import { KART_PAYI, KDV_ETIKETI, KDV_ORANI } from "@/lib/satis/ortak";
 import type { CatalogItem, PaymentSettings } from "@/lib/catalog";
 import { vehicleByKey } from "@/lib/catalog/transfers";
 import { vehicleCapacity } from "@/lib/quotation-calc";
@@ -213,17 +214,18 @@ export function planToText(input: PlanInput, quote: PlanQuote, catalog: CatalogI
   return out.join("\n");
 }
 
-export type PaymentRow = { key: "nakit" | "iban" | "kart"; label: string; usd: number; tryAmount: number | null };
+export type PaymentRow = { key: "havale" | "kart"; label: string; usd: number; tryAmount: number | null };
 
-/** Nakit esas; IBAN ve kart farkı fiyat motoruyla aynı (varsayılan +%20, +%26). Kur varsa ≈ TL. */
+/** 31 Ekim (kullanıcı): Satış Masası teklifiyle aynı kural; havale = KDV %5 dahil, kart = KDV dahil tutar + %5 kart farkı.
+ *  Eski IBAN +%20 / kart +%26 ayarları artık kullanılmıyor. Kur varsa ≈ TL. */
 export function paymentOptions(totalUsd: number, p: PaymentSettings): PaymentRow[] {
+  const kdvli = totalUsd * (1 + KDV_ORANI);
   const rows: [PaymentRow["key"], string, number][] = [
-    ["nakit", "Nakit / peşin", 0],
-    ["iban", `IBAN / havale (+%${p.ibanPercent})`, p.ibanPercent],
-    ["kart", `Kredi kartı (+%${p.cardPercent})`, p.cardPercent],
+    ["havale", `Havale / EFT (${KDV_ETIKETI} dahil)`, kdvli],
+    ["kart", `Kredi kartı (${KDV_ETIKETI} + %${Math.round(KART_PAYI * 100)} kart farkı)`, kdvli * (1 + KART_PAYI)],
   ];
-  return rows.map(([key, label, pct]) => {
-    const usd = Math.round(totalUsd * (1 + pct / 100));
+  return rows.map(([key, label, tutar]) => {
+    const usd = Math.round(tutar);
     return { key, label, usd, tryAmount: p.usdTry ? Math.round(usd * p.usdTry) : null };
   });
 }

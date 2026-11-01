@@ -1,6 +1,7 @@
 // Influencer'lar ve başvurular: bekleyen başvuruları onayla / reddet; aktiflerin satış ve tıklama özeti.
 import { useState } from "react";
 import { Alert, Linking, View } from "react-native";
+import { router } from "expo-router";
 import { istek } from "@/api/istemci";
 import { useInfluencerlar, useIslem } from "@/veri/sorgular";
 import { Baslik, Dugme, Kart, Rozet, Segment, Yazi } from "@/ui/temel";
@@ -19,7 +20,7 @@ export default function Basvurular() {
         <Segment secenekler={[{ deger: "pending", etiket: "Başvurular", sayi: (q.data?.influencers ?? []).filter((i) => i.status === "pending").length || undefined }, { deger: "active", etiket: "Aktif" }, { deger: "passive", etiket: "Pasif" }, { deger: "tumu", etiket: "Tümü" }]} deger={suz} degisti={setSuz} />
       </View>
       <Liste q={q} veri={liste} anahtar={(i) => i.id} bos="Kayıt yok" kart satir={(i) => (
-        <Kart style={{ gap: 6 }}>
+        <Kart style={{ gap: 6 }} onPress={i.status !== "pending" ? () => router.push({ pathname: "/influencer/[id]", params: { id: i.id } }) : undefined}>
           <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
             <Yazi tur="altBaslik" style={{ flex: 1 }} satir={1}>{i.fullName}</Yazi>
             <Rozet metin={i.status === "pending" ? "Başvuru" : i.status === "active" ? i.tier : i.status} ton={i.status === "pending" ? "turuncu" : i.status === "active" ? "yesil" : "gri"} />

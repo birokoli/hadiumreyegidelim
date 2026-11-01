@@ -1,4 +1,5 @@
-import type { FaqItem } from "@/components/help/FaqBrowser";
+// Tip burada tanımlı (FaqBrowser'daki FaqItem ile aynı): mobil uygulama da bu dosyayı kullanır, site bileşenini içe aktaramaz
+type FaqItem = { cat: string; q: string; a: string };
 
 /** Sayfa Metinleri → SSS "Sorular" alanı: "Kategori | Soru" satırı, altında cevap, bloklar arası boş satır */
 export function parseFaq(raw: string): FaqItem[] {

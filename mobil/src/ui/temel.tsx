@@ -156,6 +156,15 @@ export function Segment<T extends string>({ secenekler, deger, degisti }: { sece
   );
 }
 
+/** Tek seçilebilir çip (çoklu seçimde) */
+export function Cip({ metin, secili, onPress }: { metin: string; secili: boolean; onPress: () => void }) {
+  return (
+    <Pressable onPress={() => (titret(), onPress())} style={[s.cip, secili && { backgroundColor: R.lacivert, borderColor: R.lacivert }]}>
+      <Text style={[s.cipYazi, secili && { color: "#fff" }]}>{secili ? "✓ " : ""}{metin}</Text>
+    </Pressable>
+  );
+}
+
 export function Sayac({ etiket, deger, ikon, ton = "mavi", onPress }: { etiket: string; deger: number | string; ikon: string; ton?: Ton; onPress?: () => void }) {
   return (
     <Kart onPress={onPress} style={{ flex: 1, minWidth: 150, gap: BOSLUK.s }}>

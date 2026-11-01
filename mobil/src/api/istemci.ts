@@ -121,3 +121,19 @@ export async function cikisYap() {
   await istek("/api/mobil/cikis", { govde: {} }).catch(() => {});
   await temizle();
 }
+
+/** Dosya yükleme (görsel): web panelinin kullandığı /api/upload; dönen adres sitede kullanılır */
+export async function yukle(dosya: { uri: string; ad: string; tur: string }, alanlar: Record<string, string> = {}): Promise<string> {
+  const gonder = () => {
+    const f = new FormData();
+    f.append("file", { uri: dosya.uri, name: dosya.ad, type: dosya.tur } as unknown as Blob);
+    for (const [k, v] of Object.entries(alanlar)) f.append(k, v);
+    return fetch(`${API_URL}/api/upload`, { method: "POST", headers: { authorization: `Bearer ${erisim ?? ""}` }, body: f });
+  };
+  let r = await gonder().catch(() => null);
+  if (r?.status === 401 && (await yenile())) r = await gonder().catch(() => null);
+  if (!r) throw new ApiHatasi(0, "Sunucuya ulaşılamadı. İnternet bağlantınızı kontrol edin.");
+  const j = (await jsonVeHata(r)) as { success?: boolean; url?: string; error?: string };
+  if (!j.url) throw new ApiHatasi(400, j.error || "Yüklenemedi.");
+  return j.url;
+}

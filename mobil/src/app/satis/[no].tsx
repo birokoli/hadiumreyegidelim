@@ -1,5 +1,5 @@
 // Satış dosyası: müşteriyi arama / WhatsApp, teklif ve voucher gönderme, aşama değiştirme, ödeme ekleme, yolculuk bilgileri,
-// not, kalemler ve geçmiş. Kalem ve fiyat düzenleme web panelinde (uzun form); burada okunur.
+// not, kalemler ve geçmiş. Kalem, fiyat, indirim ve seçenek düzenleme /satis/duzenle/[no] ekranında.
 // Hesaplar sitenin src/lib/satis/ortak.ts dosyasından (web paneliyle birebir aynı).
 import { useState } from "react";
 import { Alert, Linking, Share, Switch, View } from "react-native";
@@ -90,7 +90,7 @@ export default function DosyaEkrani() {
         baslik={x.musteriAdi}
         alt={`${d.no} · ${asamaLabel(d.status)}`}
         geri
-        sag={<IkonDugme ikon="kalem" etiket="Tam düzenleme" onPress={() => router.push({ pathname: "/panel", params: { yol: `/admin/satis/${d.no}`, baslik: d.no } })} />}
+        sag={<IkonDugme ikon="kalem" etiket="Teklifi düzenle" onPress={() => router.push({ pathname: "/satis/duzenle/[no]", params: { no: d.no } })} />}
       />
       <Ekran yenile={q.refetch} yenileniyor={q.isRefetching}>
         {/* Hızlı işlemler */}
@@ -153,7 +153,7 @@ export default function DosyaEkrani() {
         </Bolum>
 
         {/* Kalemler */}
-        <Bolum baslik={`Kalemler (${x.kalemler.length})`} sag={<Dugme metin="Düzenle" kucuk tur="hafif" onPress={() => router.push({ pathname: "/panel", params: { yol: `/admin/satis/${d.no}`, baslik: d.no } })} />}>
+        <Bolum baslik={`Kalemler (${x.kalemler.length})`} sag={<Dugme metin="Düzenle" kucuk tur="hafif" onPress={() => router.push({ pathname: "/satis/duzenle/[no]", params: { no: d.no } })} />}>
           <Kart style={{ padding: 0, overflow: "hidden" }}>
             {x.kalemler.length ? x.kalemler.map((k, i) => (
               <View key={k.id}>
@@ -165,7 +165,7 @@ export default function DosyaEkrani() {
                   sag={<Yazi tur="govde" style={{ fontFamily: Y.kalin }}>{usd(kalemToplam(k))}</Yazi>}
                 />
               </View>
-            )) : <View style={{ padding: 16, gap: 8 }}><Yazi tur="kucuk">Henüz kalem yok.</Yazi><Dugme metin="Kalem ve fiyat ekle" ikon="kalem" kucuk tur="hafif" onPress={() => router.push({ pathname: "/panel", params: { yol: `/admin/satis/${d.no}`, baslik: d.no } })} /></View>}
+            )) : <View style={{ padding: 16, gap: 8 }}><Yazi tur="kucuk">Henüz kalem yok.</Yazi><Dugme metin="Kalem ve fiyat ekle" ikon="kalem" kucuk tur="hafif" onPress={() => router.push({ pathname: "/satis/duzenle/[no]", params: { no: d.no } })} /></View>}
           </Kart>
         </Bolum>
 

@@ -2,7 +2,7 @@
   "expo": {
     "name": "Hadi Yönetim",
     "slug": "hadi-yonetim",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "orientation": "default",
     "icon": "./assets/marka/ikon.png",
     "scheme": "hadiyonetim",
@@ -10,7 +10,7 @@
     "backgroundColor": "#FFFFFF",
     "android": {
       "package": "com.hadiumreyegidelim.yonetim",
-      "versionCode": 3,
+      "versionCode": 4,
       "adaptiveIcon": {
         "backgroundColor": "#FFFFFF",
         "foregroundImage": "./assets/marka/ikon-on.png",

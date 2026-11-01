@@ -357,7 +357,8 @@ export default function SatisDosyasi({ params }: { params: Promise<{ no: string 
             <Kart baslik="Seçenekler" aciklama="Müşteri aynı bağlantıda seçenekleri karşılaştırır ve birini onaylar; kendisi bir şey değiştiremez. Seçenek yalnızca otelleri, isterseniz transferleri (araç farkı) ve indirimi değiştirir; vize, tur, tren ortaktır.">
               {(() => {
                 const secs = data.secenekler ?? [];
-                const setSecs = (l: Secenek[]) => set("secenekler", l.length ? l : undefined);
+                // Boş liste [] olarak gider: undefined JSON'da düşer ve sunucudaki birleştirme eski seçenekleri geri getirirdi
+                const setSecs = (l: Secenek[]) => set("secenekler", l);
                 const setSec = (id: string, p: Partial<Secenek>) => setSecs(secs.map((x) => (x.id === id ? { ...x, ...p } : x)));
                 const kopya = (l: Kalem[]) => l.map((k) => ({ ...k, id: uid(), otel: k.otel ? { ...k.otel, onayNo: undefined } : undefined }));
                 const onerilen = data.onerilen ?? "ana";
@@ -545,7 +546,7 @@ export default function SatisDosyasi({ params }: { params: Promise<{ no: string 
                 <label><span className={lbl}>Ad soyad</span>
                   <span className="flex gap-1.5">
                     <input className={inp} value={data.musteriAdi} onChange={(e) => set("musteriAdi", e.target.value)} />
-                    <select className={`${inp} w-24`} value={data.hitap ?? ""} onChange={(e) => set("hitap", (e.target.value || undefined) as DosyaData["hitap"])} title="Teklif, voucher ve mesajlarda hitap">
+                    <select className={`${inp} w-24`} value={data.hitap ?? ""} onChange={(e) => set("hitap", (e.target.value || null) as DosyaData["hitap"])} title="Teklif, voucher ve mesajlarda hitap">
                       <option value="">Hitap</option>
                       <option value="hanim">Hanım</option>
                       <option value="bey">Bey</option>

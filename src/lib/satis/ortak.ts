@@ -68,7 +68,7 @@ export type DosyaData = {
   /** Satış türü kodu (numarada da yer alır); eski dosyalarda yok */
   satisTuru?: SatisTuru;
   /** Hitap (15 Ekim, kullanıcı: "Neriman Hanım, Yasin Bey gibi olmalı"); admin seçer, isimden tahmin edilmez */
-  hitap?: "bey" | "hanim";
+  hitap?: "bey" | "hanim" | null; // null = seçim kaldırıldı (undefined kaydedilmez)
   yetiskin: number;
   cocuk: number;
   bebek: number;

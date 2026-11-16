@@ -15,7 +15,7 @@ export async function GET() {
       orderBy: { createdAt: 'desc' }
     });
 
-    let csvRows = ['Sipariş ID,Oluşturulma Tarihi,Kişi Sayısı,Toplam Tutar (USD),Sipariş Durumu,Müşteri Bilgileri,Seçilen Ekstralar,Uçuş Seçimi,Otel Seçimi'];
+    const csvRows = ['Sipariş ID,Oluşturulma Tarihi,Kişi Sayısı,Toplam Tutar (USD),Sipariş Durumu,Müşteri Bilgileri,Seçilen Ekstralar,Uçuş Seçimi,Otel Seçimi'];
     
     for (const order of orders) {
       const row = [

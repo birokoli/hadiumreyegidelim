@@ -6,6 +6,7 @@ import { turkeyCities } from '@/lib/turkey-cities';
 import { contentPath } from '@/content/pages';
 import { getLiveContentPages } from '@/content/pages/store';
 import { SITE_URL } from '@/lib/seo/site';
+import { VIZE_BIRLESEN_SLUGLAR } from '@/lib/blog/vize-birlesik';
 
 // Her istekte canlı veriden üretilir (yeni yazı, paket, otel anında görünür). Hız sorgu tarafında: yalnızca gereken alanlar, paralel.
 export const dynamic = 'force-dynamic';
@@ -29,7 +30,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     prisma.package.findMany({ where: { published: true }, select: { slug: true, updatedAt: true }, orderBy: { updatedAt: 'desc' } }).catch(() => []),
   ]);
 
-  const blogUrls = posts.map((post) => ({
+  // 16 Kasım: tek yazıda birleştirilen vize yazıları yayında kalsa da kalıcı yönlendirilir (next.config.ts); haritaya girmesin
+  const blogUrls = posts.filter((post) => !VIZE_BIRLESEN_SLUGLAR.includes(post.slug)).map((post) => ({
     url: `${baseUrl}/blog/${post.slug}`,
     lastModified: post.updatedAt,
     changeFrequency: 'weekly' as const,

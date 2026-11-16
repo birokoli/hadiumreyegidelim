@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
   outputFileTracingIncludes: {
     "/api/admin/reviews/[id]/image": ["./public/fonts/Poppins-*.ttf", "./public/images/hero-kabe.jpg", "./public/hadiumreyegidelim.svg"],
     "/api/og/story": ["./public/logo-beyaz.svg"],
+    "/og": ["./public/og/*.jpg", "./public/email/logo-beyaz.png"],
   },
   // Sayfalar build sırasında veritabanından önceden üretilir. İki Vercel projesi aynı anda
   // build ederken bağlantı sınırına takılmamak için işçi ve eş zamanlılık sınırlı; düşen

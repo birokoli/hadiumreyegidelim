@@ -2,6 +2,7 @@
 // Görseller kullanıcının yapay zekâyla ürettiği 44 görsel (docs/Paylasim-Gorselleri-Brief.docx); konu sağ yarıda, sol yarı başlık için.
 // Kullanım: /og?g=bolge-karadeniz&k=Bireysel%20umre&t=Trabzon%20çıkışlı%20bireysel%20umre  (src/lib/seo/og.ts → ogGorsel)
 import { readFile } from "node:fs/promises";
+import path from "node:path";
 import { ImageResponse } from "next/og";
 import sharp from "sharp";
 import { OG_GORSELLER } from "@/lib/seo/og";
@@ -20,6 +21,12 @@ const fontlar = Promise.all(
   })),
 );
 
+// 16 Kasım: görseller diskten okunur. Next 16.4'ün SSRF koruması ImageResponse'un kendi alan adından (yerelde localhost) görsel
+// çekmesini engelliyor; ayrıca sunucunun kendine istek atması gereksiz bir gidiş-dönüştü. Dosyalar next.config.ts'te fonksiyona dahil.
+const pub = (p: string) => path.join(process.cwd(), "public", p);
+const veriAdresi = async (p: string, tur: string) => `data:${tur};base64,${(await readFile(pub(p))).toString("base64")}`;
+const logo = veriAdresi("email/logo-beyaz.png", "image/png");
+
 const kisalt = (s: string, max: number) => (s.length > max ? `${s.slice(0, max - 1).trimEnd()}…` : s);
 
 export async function GET(req: Request) {
@@ -28,16 +35,16 @@ export async function GET(req: Request) {
   const gorsel = (OG_GORSELLER as readonly string[]).includes(g) ? g : "varsayilan";
   const baslik = kisalt((url.searchParams.get("t") ?? "Hadi Umreye Gidelim").trim(), 90);
   const kicker = kisalt((url.searchParams.get("k") ?? "Bireysel umre").trim(), 40);
-  const kok = url.origin;
+  const [arkaPlan, logoAdresi] = await Promise.all([veriAdresi(`og/${gorsel}.jpg`, "image/jpeg"), logo]);
   const uzun = baslik.length > 48;
 
   const png = new ImageResponse(
     (
       <div style={{ width: "100%", height: "100%", display: "flex", position: "relative", fontFamily: "Cairo" }}>
-        <img src={`${kok}/og/${gorsel}.jpg`} width={1200} height={630} style={{ position: "absolute", top: 0, left: 0, width: 1200, height: 630, objectFit: "cover" }} alt="" />
+        <img src={arkaPlan} width={1200} height={630} style={{ position: "absolute", top: 0, left: 0, width: 1200, height: 630, objectFit: "cover" }} alt="" />
         <div style={{ position: "absolute", top: 0, left: 0, width: 1200, height: 630, display: "flex", backgroundImage: "linear-gradient(90deg, rgba(15,37,82,0.94) 0%, rgba(15,37,82,0.82) 34%, rgba(15,37,82,0.35) 58%, rgba(15,37,82,0) 75%)" }} />
         <div style={{ position: "absolute", top: 0, left: 0, width: 640, height: 630, display: "flex", flexDirection: "column", justifyContent: "space-between", padding: "48px 56px" }}>
-          <img src={`${kok}/email/logo-beyaz.png`} width={92} height={95} style={{ width: 92, height: 95 }} alt="" />
+          <img src={logoAdresi} width={92} height={95} style={{ width: 92, height: 95 }} alt="" />
           <div style={{ display: "flex", flexDirection: "column" }}>
             <div style={{ display: "flex", fontSize: 22, fontWeight: 700, letterSpacing: 4, color: "#f2dda6", textTransform: "uppercase" }}>{kicker}</div>
             <div style={{ display: "flex", width: 56, height: 5, borderRadius: 3, backgroundColor: "#f2dda6", margin: "16px 0 20px" }} />

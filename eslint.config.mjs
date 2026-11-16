@@ -20,6 +20,8 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
     // Mobil yönetim uygulaması (Expo) kendi lint ayarıyla
     "mobil/**",
+    // Prisma'nın ürettiği istemci (prisma generate); elle yazılmadı, lint edilmez
+    "src/generated/**",
   ]),
 ]);
 

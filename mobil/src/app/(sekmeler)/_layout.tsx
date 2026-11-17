@@ -33,7 +33,7 @@ export default function Sekmeler() {
       <Tabs.Screen name="satis" options={{ title: "Satış", tabBarIcon: ikon("dosya"), tabBarBadge: rozet(sayac?.dosya?.talep) }} />
       <Tabs.Screen name="talepler" options={{ title: "Talepler", tabBarIcon: ikon("gelen"), tabBarBadge: rozet(sayac?.yeniTalep) }} />
       <Tabs.Screen name="bildirimler" options={{ title: "Bildirimler", tabBarIcon: ikon("zil"), tabBarBadge: rozet(sayac?.okunmamis) }} />
-      <Tabs.Screen name="daha" options={{ title: "Daha", tabBarIcon: ikon("izgara"), tabBarBadge: rozet((sayac?.yorum ?? 0) + (sayac?.icerik ?? 0) + (sayac?.basvuru ?? 0) + (sayac?.destek ?? 0) + (sayac?.whatsapp ?? 0)) }} />
+      <Tabs.Screen name="daha" options={{ title: "Daha", tabBarIcon: ikon("izgara"), tabBarBadge: rozet((sayac?.yorum ?? 0) + (sayac?.icerik ?? 0) + (sayac?.basvuru ?? 0) + (sayac?.destek ?? 0)) }} />
     </Tabs>
   );
 }

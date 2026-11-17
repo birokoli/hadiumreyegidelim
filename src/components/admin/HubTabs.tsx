@@ -63,7 +63,6 @@ export const HUBS: Record<HubKey, TabItem[]> = {
   ],
   sohbet: [
     { label: "Canlı destek", href: "/admin/support" },
-    { label: "WhatsApp AI", href: "/admin/whatsapp-ai" },
   ],
   sistem: [
     { label: "Ayarlar", href: "/admin/settings" },

@@ -17,7 +17,7 @@ export async function GET(req: Request) {
   const pazarlama = yetkili(o, "marketing");
   const s = <T,>(p: Promise<T>, yedek: T) => p.catch((e) => (console.error("[mobil/ozet]", e), yedek));
 
-  const [dosyalar, yeniTalep, ramazan, yeniUye, yorum, icerik, basvuru, destek, whatsapp, okunmamis] = await Promise.all([
+  const [dosyalar, yeniTalep, ramazan, yeniUye, yorum, icerik, basvuru, destek, okunmamis] = await Promise.all([
     siparis ? s(listDosyalar(), []) : Promise.resolve([]),
     siparis ? s(prisma.contactRequest.count({ where: { status: "UNREAD" } }), 0) : 0,
     siparis ? s(rezervasyonlar(), []) : Promise.resolve([]),
@@ -26,7 +26,6 @@ export async function GET(req: Request) {
     pazarlama ? s(prisma.share.count({ where: { status: "pending" } }), 0) : 0,
     pazarlama ? s(prisma.influencer.count({ where: { status: "pending" } }), 0) : 0,
     pazarlama ? s(prisma.supportChat.aggregate({ _sum: { unreadByAdmin: true } }).then((a) => a._sum.unreadByAdmin ?? 0), 0) : 0,
-    pazarlama ? s(prisma.whatsAppConversation.count({ where: { status: "HUMAN_NEEDED" } }), 0) : 0,
     s(prisma.$queryRawUnsafe<{ n: number }[]>(`SELECT COUNT(*)::int AS n FROM "MobilBildirim" WHERE "adminId" = $1 AND NOT "okundu"`, o.adminId).then((r) => r[0]?.n ?? 0), 0),
   ]);
 
@@ -44,7 +43,8 @@ export async function GET(req: Request) {
     ad: o.ad,
     yetkiler: { siparis, pazarlama },
     sayac: {
-      yeniTalep, yeniUye, yorum, icerik, basvuru, destek, whatsapp, okunmamis,
+      yeniTalep, yeniUye, yorum, icerik, basvuru, destek, okunmamis,
+      whatsapp: 0, // 18 Kasım: WhatsApp asistanı kaldırıldı; eski uygulama sürümleri bu alanı okuyor
       ramazanAktif: ramazan.filter((r) => aktif(r)).length,
       ramazanBekleyen: ramazan.filter((r) => r.durum === "bekliyor" && aktif(r)).length,
       dosya: asama,

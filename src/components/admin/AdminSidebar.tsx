@@ -118,7 +118,7 @@ const menuGroups: { title: string; links: SidebarLink[] }[] = [
         href: "/admin/support",
         icon: "forum",
         label: "Sohbetler",
-        match: ["/admin/support", "/admin/whatsapp-ai"],
+        match: ["/admin/support"],
         permission: "marketing",
       },
     ],

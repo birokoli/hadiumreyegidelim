@@ -4,7 +4,7 @@ export type { Dosya, DosyaData, Kalem, Odeme, Kayit, Asama, KalemTur } from "@or
 export type Ozet = {
   ad: string;
   yetkiler: { siparis: boolean; pazarlama: boolean };
-  sayac: { yeniTalep: number; yeniUye: number; yorum: number; icerik: number; basvuru: number; destek: number; whatsapp: number; okunmamis: number; ramazanAktif: number; ramazanBekleyen: number; dosya: Record<string, number> };
+  sayac: { yeniTalep: number; yeniUye: number; yorum: number; icerik: number; basvuru: number; destek: number; okunmamis: number; ramazanAktif: number; ramazanBekleyen: number; dosya: Record<string, number> };
   yaklasan: { no: string; musteri: string; gidis: string | null; kalan: number | null; status: string }[];
   bekleyenTeklif: { no: string; musteri: string; tarih: string }[];
 };
@@ -22,5 +22,3 @@ export type Aday = { id: string; platform: string; handle: string; name: string 
 export type Kampanya = { id: string; title: string; slug: string; description: string | null; type: string; discountType: string | null; discountValue: number | null; status: string; startDate: string | null; endDate: string | null; commissionPct: number | null; imageUrl: string | null; _count?: { participants?: number } };
 export type DestekMesaj = { id: string; senderType: string; content: string; createdAt: string };
 export type DestekSohbet = { id: string; status: string; lastMessageAt: string; unreadByAdmin: number; influencer: { id: string; fullName: string; email?: string; instagramHandle?: string | null }; messages: DestekMesaj[] };
-export type WaMesaj = { id: string; direction: "INBOUND" | "OUTBOUND"; source: string; content: string; createdAt: string };
-export type WaKonusma = { id: string; phone: string; name: string | null; status: string; leadType: string | null; leadScore: number | null; handoffReason: string | null; lastMessageAt: string; messages: WaMesaj[] };

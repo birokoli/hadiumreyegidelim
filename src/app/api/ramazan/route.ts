@@ -2,7 +2,6 @@
 import { NextResponse, after } from "next/server";
 import { bildirArkada, kisaAd } from "@/lib/mobil/bildir";
 import { prisma } from "@/lib/prisma";
-import { notifyNewLead } from "@/lib/lead-notify";
 import { rateLimit, getClientIp } from "@/lib/rate-limit";
 import { checkEmail, checkPhone } from "@/lib/leads/email-check";
 import { ramazanDurumu, rezervasyonYap } from "@/lib/ramazan";
@@ -50,7 +49,7 @@ export async function POST(request: Request) {
     .catch((e) => { console.error("[ramazan] rezervasyon", e); return { ok: false as const, hata: "Rezervasyon kaydedilemedi; WhatsApp'tan yazın." }; });
   if (!sonuc.ok) return NextResponse.json({ error: sonuc.hata }, { status: 409 });
 
-  // Gelen Kutusu'na düşer, yöneticiye WhatsApp bildirimi gider (yanıtı bekletmeden)
+  // Gelen Kutusu'na düşer, yöneticinin telefonuna (Hadi Yönetim) bildirim gider (yanıtı bekletmeden)
   const t = paketTarihleri(paket);
   const ozet = `Ramazan 2027 · ${sonuc.paket} · ${kisi} kişi · ${sonuc.kod}`;
   const mesaj = [
@@ -64,7 +63,6 @@ export async function POST(request: Request) {
   bildirArkada("ramazan", { baslik: "Ramazan rezervasyonu", govde: `${kisaAd(adSoyad)} · ${sonuc.paket} · ${kisi} kişi`, yol: "/ramazan" });
   after(async () => {
     const kayit = await prisma.contactRequest.create({ data: { name: adSoyad, phone: tel.phone, package: ozet, message: mesaj } }).catch(() => null);
-    await notifyNewLead({ name: adSoyad, phone: tel.phone, package: ozet, message: mesaj });
     if (!kayit) console.warn("[ramazan] gelen kutusu kaydı açılamadı", sonuc.kod);
   });
 

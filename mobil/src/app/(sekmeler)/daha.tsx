@@ -58,9 +58,7 @@ export default function Daha() {
       { ikon: "yapayzeka", baslik: "AI Görünürlük", yol: "/pazarlama/ai-gorunurluk", yetki: "marketing" }
     ] },
     { baslik: "Sohbetler", ogeler: [
-      { ikon: "sohbet", baslik: "Canlı destek", yol: "/destek", sayi: s?.destek, yetki: "marketing" },
-      { ikon: "whatsapp", baslik: "WhatsApp konuşmaları", yol: "/whatsapp", sayi: s?.whatsapp, yetki: "marketing" },
-      { ikon: "ayarlar", baslik: "WhatsApp AI ayarları", yol: "/pazarlama/whatsapp-ai", yetki: "marketing" }
+      { ikon: "sohbet", baslik: "Canlı destek", yol: "/destek", sayi: s?.destek, yetki: "marketing" }
     ] },
     { baslik: "Sistem", ogeler: [
       { ikon: "ayarlar", baslik: "Site ayarları", yol: "/sistem/site-ayarlari", yetki: "settings" },

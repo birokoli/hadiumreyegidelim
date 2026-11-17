@@ -47,7 +47,6 @@ export default function Bugun() {
                 <Sayac etiket="Influencer içeriği" deger={o.sayac.icerik} ikon="icerik" ton={o.sayac.icerik ? "turuncu" : "mavi"} onPress={() => router.push("/influencer/icerikler")} />
                 <Sayac etiket="Başvuru" deger={o.sayac.basvuru} ikon="davet" ton={o.sayac.basvuru ? "turuncu" : "mavi"} onPress={() => router.push("/influencer/basvurular")} />
                 <Sayac etiket="Destek mesajı" deger={o.sayac.destek} ikon="sohbet" ton={o.sayac.destek ? "kirmizi" : "mavi"} onPress={() => router.push("/destek")} />
-                <Sayac etiket="WhatsApp devri" deger={o.sayac.whatsapp} ikon="whatsapp" ton={o.sayac.whatsapp ? "kirmizi" : "yesil"} onPress={() => router.push("/whatsapp")} />
               </View>
             </Bolum>
           ) : null}

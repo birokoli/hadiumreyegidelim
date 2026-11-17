@@ -1,4 +1,4 @@
-// Mesajlaşma görünümü (destek ve WhatsApp): balonlar, altta yazma kutusu.
+// Mesajlaşma görünümü (canlı destek): balonlar, altta yazma kutusu.
 import { useRef, useState } from "react";
 import { FlatList, KeyboardAvoidingView, Platform, Pressable, StyleSheet, TextInput, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";

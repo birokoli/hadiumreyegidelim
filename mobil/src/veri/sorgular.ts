@@ -1,7 +1,7 @@
 // Veri kancaları (React Query). Uçlar web panelinin kullandıklarıyla aynı; mobil uçlar yalnızca uygulamaya özel işler için.
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { istek } from "@/api/istemci";
-import type { Aday, Bildirim, CrmKayit, DestekSohbet, Dosya, HavuzKayit, Icerik, Iletisim, Influencer, Kampanya, Ozet, Rezervasyon, Uye, WaKonusma, Yorum } from "./tipler";
+import type { Aday, Bildirim, CrmKayit, DestekSohbet, Dosya, HavuzKayit, Icerik, Iletisim, Influencer, Kampanya, Ozet, Rezervasyon, Uye, Yorum } from "./tipler";
 
 export const useOzet = () => useQuery({ queryKey: ["ozet"], queryFn: () => istek<Ozet>("/api/mobil/ozet"), refetchInterval: 60_000 });
 
@@ -36,7 +36,6 @@ export const useAdaylar = () => useQuery({ queryKey: ["adaylar"], queryFn: () =>
 export const useKampanyalar = () => useQuery({ queryKey: ["kampanyalar"], queryFn: () => istek<{ campaigns: Kampanya[] }>("/api/admin/campaigns") });
 export const useDestekler = () => useQuery({ queryKey: ["destek"], queryFn: () => istek<{ chats: DestekSohbet[] }>("/api/admin/support") });
 export const useDestek = (id: string) => useQuery({ queryKey: ["destek", id], queryFn: () => istek<{ chat: DestekSohbet }>(`/api/admin/support/${id}`), refetchInterval: 15_000 });
-export const useWhatsapp = () => useQuery({ queryKey: ["whatsapp"], queryFn: () => istek<{ conversations: WaKonusma[] }>("/api/admin/whatsapp-ai"), refetchInterval: 30_000 });
 export const useFiyatlar = () =>
   useQuery({ queryKey: ["fiyatlar"], queryFn: () => istek<{ months: string[]; prices: { serviceId: string; month: string; variant: string; salePriceUsd: number }[]; payment: { usdTry: number | null; rateDate: string | null; ibanPercent: number; cardPercent: number } }>("/api/admin/service-prices") });
 

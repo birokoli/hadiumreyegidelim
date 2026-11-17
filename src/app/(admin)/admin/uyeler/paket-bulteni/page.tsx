@@ -5,6 +5,7 @@
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import HubTabs from "@/components/admin/HubTabs";
+import HosgeldinSerisi from "./HosgeldinSerisi";
 
 type Kart = { slug: string; otel: string; not: string; gorsel: string | null; fiyat: number; fiyatEtiket: string; ay: string };
 type Onizleme = { konu: string; html: string; alici: number; uye: number; havuz: number; dogrulanmamis: number; engelli: number; zatenGitti: number; izniKapali: number };
@@ -12,16 +13,19 @@ type Gecmis = { id: string; konu: string; anahtar: string; toplam: number; gonde
 
 const btn = "inline-flex items-center gap-1.5 rounded-xl px-4 py-2 text-xs font-bold transition active:scale-95 disabled:opacity-50";
 const alan = "w-full rounded-lg border border-outline-variant/25 bg-surface-container-lowest px-3 py-2 text-xs outline-none focus:border-primary/40";
+// 18 Kasım: kod eskiden "paketler-2026-11" sabitti; aynı kod bir kişiye bir kez gittiği için sonraki bültenler kimseye gitmiyordu.
+// Varsayılan kod artık günün tarihi: her yeni bülten yeni kod, aynı gün iki kez basılırsa aynı kişiye iki kez gitmez.
+const bugunKodu = () => `bulten-${new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Istanbul" }).format(new Date())}`;
 const usd = (n: number) => `${n.toLocaleString("tr-TR", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} $`;
 
 export default function PaketBulteni() {
   const [secenekler, setSecenekler] = useState<Kart[]>([]);
   const [secili, setSecili] = useState<string[]>([]);
-  const [kod, setKod] = useState("paketler-2026-11");
+  const [kod, setKod] = useState(bugunKodu);
   const [konu, setKonu] = useState("");
-  const [kicker, setKicker] = useState("Kasım 2026 · Mekke umre paketleri");
+  const [kicker, setKicker] = useState("");
   const [baslik, setBaslik] = useState("");
-  const [giris, setGiris] = useState("Kasım için vize dahil umre paketlerimizi hazırladık. Gece ve kişi sayınızı seçip fiyatınızı hemen görebilirsiniz.");
+  const [giris, setGiris] = useState("");
   const [o, setO] = useState<Onizleme | null>(null);
   const [gecmis, setGecmis] = useState<Gecmis[]>([]);
   const [deneme, setDeneme] = useState("");
@@ -49,6 +53,8 @@ export default function PaketBulteni() {
       setSecili(ks.map((k) => k.slug));
       setBaslik(`${sayi}, vize dahil`);
       setKonu(`${ks[0].ay}'da Mekke: vize dahil umre paketleri ${usd(Math.min(...ks.map((k) => k.fiyat)))}'dan`);
+      setKicker(`${ks[0].ay} · Mekke umre paketleri`);
+      setGiris(`${ks[0].ay} için vize dahil umre paketlerimizi hazırladık. Gece ve kişi sayınızı seçip fiyatınızı hemen görebilirsiniz.`);
     }
   }, [ayar, ilk]);
 
@@ -147,6 +153,8 @@ export default function PaketBulteni() {
           </div>
         </div>
       )}
+
+      <HosgeldinSerisi />
 
       <section>
         <h2 className="font-headline text-lg font-bold text-primary mb-3">Paket bülteni geçmişi</h2>

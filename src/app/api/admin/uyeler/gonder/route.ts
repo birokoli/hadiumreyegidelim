@@ -11,9 +11,10 @@ export async function GET(req: NextRequest) {
   if (!(await getAdminSession())) return NextResponse.json({ error: "Yetkisiz." }, { status: 401 });
   const tur = (req.nextUrl.searchParams.get("tur") === "kampanya" ? "kampanya" : "duyuru") as GonderimTur;
   const kampanyaId = req.nextUrl.searchParams.get("kampanya") || undefined;
+  const tekrar = req.nextUrl.searchParams.get("tekrar") === "1";
   try {
     const [o, gecmis, kampanyalar] = await Promise.all([
-      tur === "kampanya" && !kampanyaId ? null : onizleme(tur, kampanyaId),
+      tur === "kampanya" && !kampanyaId ? null : onizleme(tur, kampanyaId, tekrar),
       gonderimGecmisi(),
       listKampanyalar(),
     ]);
@@ -34,12 +35,12 @@ export async function POST(req: NextRequest) {
     if (b.action === "deneme") {
       const adres = String(b.adres ?? "").trim();
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(adres)) return NextResponse.json({ error: "Geçerli bir e-posta yazın." }, { status: 400 });
-      await denemeGonder(tur, adres, b.kampanyaId);
+      await denemeGonder(tur, adres, b.kampanyaId, b.tekrar === true);
       return NextResponse.json({ ok: true });
     }
     if (b.action === "gonder") {
       if (b.onay !== "GÖNDER") return NextResponse.json({ error: "Onay metni eksik." }, { status: 400 });
-      const r = await topluGonder(tur, String((s as { name?: string; username?: string }).name ?? (s as { username?: string }).username ?? "admin"), b.kampanyaId);
+      const r = await topluGonder(tur, String((s as { name?: string; username?: string }).name ?? (s as { username?: string }).username ?? "admin"), b.kampanyaId, b.tekrar === true);
       return NextResponse.json({ ok: true, ...r });
     }
     if (b.action === "whatsapp") {

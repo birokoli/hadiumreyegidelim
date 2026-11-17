@@ -22,6 +22,7 @@ export const OLAYLAR = {
   icerik: { ad: "Influencer içerikleri", yetki: "marketing" },
   basvuru: { ad: "Influencer başvuruları", yetki: "marketing" },
   destek: { ad: "Destek mesajları", yetki: "marketing" },
+  bulten: { ad: "Bülten hatırlatması (2 haftada bir)", yetki: "marketing" },
 } as const;
 export type Olay = keyof typeof OLAYLAR;
 

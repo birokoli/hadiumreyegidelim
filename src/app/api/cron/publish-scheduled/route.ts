@@ -5,6 +5,8 @@ import { gunlukHatirlatma } from '@/lib/mobil/hatirlatma';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
+// Günlük işler (hatırlatmalar, hoş geldin serisi e-postaları) aynı çalışmada; e-posta partileri için süre
+export const maxDuration = 120;
 
 export async function GET(req: Request) {
   // Vercel cron jobs otomatik olarak Authorization: Bearer <CRON_SECRET> header'ı ekler

@@ -55,6 +55,18 @@ export function ensureSchema() {
 }
 
 export type GonderimTur = "duyuru" | "kampanya";
+
+/** Türkiye tarihi (YYYY-AA-GG) */
+export const trGun = (d = new Date()) => new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/Istanbul" }).format(d);
+/**
+ * Gönderim anahtarı. Duyuru tek sefer. Kampanyanın ilk gönderimi kampanya kimliğiyle; tekrar (hatırlatma) gönderimi
+ * gün bazlı ayrı anahtarla (18 Kasım, kullanıcı: "hatırlatma maili veya kampanya tek seferlik gönderilebiliyor").
+ * Aynı gün içinde aynı kişiye iki kez gitmez.
+ */
+function anahtarAl(tur: GonderimTur, k: Kampanya | null, tekrar?: boolean) {
+  if (tur === "duyuru") return DUYURU_ANAHTAR;
+  return tekrar ? `${k!.id}:tekrar:${trGun()}` : k!.id;
+}
 const yeniId = (p: string) => `${p}_${Date.now().toString(36)}${Math.random().toString(36).slice(2, 8)}`;
 
 /** Geri dönmüş ya da spam bildirilmiş adresler (küçük harf). */
@@ -87,19 +99,21 @@ export async function epostaAlicilari(tur: GonderimTur, anahtar: string): Promis
   return { alicilar, toplamUye: uyeler.length, izinsiz, engelli: eng, zatenGitti: zaten };
 }
 
-async function icerik(tur: GonderimTur, u: Pick<AdminMember, "id" | "name" | "email">, k: Kampanya | null) {
+async function icerik(tur: GonderimTur, u: Pick<AdminMember, "id" | "name" | "email">, k: Kampanya | null, tekrar?: boolean) {
   if (tur === "duyuru") return { ...duyuruEposta({ ad: u.name, email: u.email }), headers: undefined as Record<string, string> | undefined };
   const abonelik = await abonelikLinki(u.id);
-  return { ...kampanyaEposta({ ad: u.name, k: k!, abonelik }), headers: { "List-Unsubscribe": `<${abonelik}>`, "List-Unsubscribe-Post": "List-Unsubscribe=One-Click" } };
+  const c = kampanyaEposta({ ad: u.name, k: k!, abonelik });
+  return { ...c, subject: tekrar ? `Hatırlatma: ${c.subject}` : c.subject, headers: { "List-Unsubscribe": `<${abonelik}>`, "List-Unsubscribe-Post": "List-Unsubscribe=One-Click" } };
 }
 
-export async function onizleme(tur: GonderimTur, kampanyaId?: string) {
+export async function onizleme(tur: GonderimTur, kampanyaId?: string, tekrar?: boolean) {
   const k = tur === "kampanya" ? await getKampanya(String(kampanyaId)) : null;
   if (tur === "kampanya" && !k) throw new Error("Kampanya bulunamadı.");
-  const c = await icerik(tur, { id: "onizleme", name: "Ayşe Yılmaz", email: "ornek@example.com" }, k);
-  const anahtar = tur === "duyuru" ? DUYURU_ANAHTAR : k!.id;
-  const o = await epostaAlicilari(tur, anahtar);
-  return { konu: c.subject, html: c.html, alici: o.alicilar.length, toplamUye: o.toplamUye, izinsiz: o.izinsiz, engelli: o.engelli, zatenGitti: o.zatenGitti };
+  const c = await icerik(tur, { id: "onizleme", name: "Ayşe Yılmaz", email: "ornek@example.com" }, k, tekrar);
+  const o = await epostaAlicilari(tur, anahtarAl(tur, k, tekrar));
+  // ilkGitti: kampanya daha önce gönderildiyse "Tekrar gönder" seçeneği gösterilir
+  const ilkGitti = tur === "kampanya" ? (await gonderilmisler(k!.id, "eposta")).size : 0;
+  return { konu: c.subject, html: c.html, alici: o.alicilar.length, toplamUye: o.toplamUye, izinsiz: o.izinsiz, engelli: o.engelli, zatenGitti: o.zatenGitti, ilkGitti };
 }
 
 export const gonderen = () => process.env.UYE_EMAIL_FROM || process.env.LEAD_EMAIL_FROM || "";
@@ -117,23 +131,23 @@ export async function resendToplu(mesajlar: { to: string[]; subject: string; htm
 }
 
 /** Deneme: tek adrese, konu başında [DENEME]. Kayıt tutulmaz. */
-export async function denemeGonder(tur: GonderimTur, adres: string, kampanyaId?: string) {
+export async function denemeGonder(tur: GonderimTur, adres: string, kampanyaId?: string, tekrar?: boolean) {
   if (!emailVerificationEnabled()) throw new Error("E-posta servisi yapılandırılmamış (RESEND_API_KEY / LEAD_EMAIL_FROM).");
   const k = tur === "kampanya" ? await getKampanya(String(kampanyaId)) : null;
-  const c = await icerik(tur, { id: "deneme", name: "Deneme Alıcı", email: adres }, k);
+  const c = await icerik(tur, { id: "deneme", name: "Deneme Alıcı", email: adres }, k, tekrar);
   await resendToplu([{ to: [adres], subject: `[DENEME] ${c.subject}`, html: c.html, text: c.text, headers: c.headers, tags: [{ name: "tur", value: "deneme" }] }]);
 }
 
 /** Gerçek gönderim. Alıcı kaydı gönderimden önce yazılır (benzersiz indeks yarışta ikinci gönderimi engeller). */
-export async function topluGonder(tur: GonderimTur, kim: string, kampanyaId?: string): Promise<{ id: string; gonderilen: number; hatali: number; toplam: number }> {
+export async function topluGonder(tur: GonderimTur, kim: string, kampanyaId?: string, tekrar?: boolean): Promise<{ id: string; gonderilen: number; hatali: number; toplam: number }> {
   if (!emailVerificationEnabled()) throw new Error("E-posta servisi yapılandırılmamış (RESEND_API_KEY / LEAD_EMAIL_FROM).");
   await ensureSchema();
   const k = tur === "kampanya" ? await getKampanya(String(kampanyaId)) : null;
   if (tur === "kampanya" && !k) throw new Error("Kampanya bulunamadı.");
-  const anahtar = tur === "duyuru" ? DUYURU_ANAHTAR : k!.id;
+  const anahtar = anahtarAl(tur, k, tekrar);
   const { alicilar } = await epostaAlicilari(tur, anahtar);
   const id = yeniId("ug");
-  const konu = tur === "duyuru" ? duyuruEposta({ ad: "", email: "" }).subject : kampanyaEposta({ ad: "", k: k!, abonelik: "" }).subject;
+  const konu = tur === "duyuru" ? duyuruEposta({ ad: "", email: "" }).subject : `${tekrar ? "Hatırlatma: " : ""}${kampanyaEposta({ ad: "", k: k!, abonelik: "" }).subject}`;
   await prisma.$executeRawUnsafe(`INSERT INTO "UyeGonderim" ("id","tur","anahtar","kanal","konu","toplam","kim") VALUES ($1,$2,$3,'eposta',$4,$5,$6)`, id, tur, anahtar, konu, alicilar.length, kim);
 
   let gonderilen = 0, hatali = 0;
@@ -149,7 +163,7 @@ export async function topluGonder(tur: GonderimTur, kim: string, kampanyaId?: st
     }
     if (!parti.length) continue;
     const mesajlar = await Promise.all(parti.map(async (u) => {
-      const c = await icerik(tur, u, k);
+      const c = await icerik(tur, u, k, tekrar);
       return { to: [u.email], subject: c.subject, html: c.html, text: c.text, headers: c.headers, tags: [{ name: "gonderim", value: id }] };
     }));
     try {

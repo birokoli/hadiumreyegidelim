@@ -6,7 +6,7 @@ import Link from "next/link";
 import HubTabs from "@/components/admin/HubTabs";
 import { donemLabel, type Kampanya } from "@/lib/uye-kampanya/ortak";
 
-type Onizleme = { konu: string; html: string; alici: number; toplamUye: number; izinsiz: number; engelli: number; zatenGitti: number };
+type Onizleme = { konu: string; html: string; alici: number; toplamUye: number; izinsiz: number; engelli: number; zatenGitti: number; ilkGitti: number };
 type Gecmis = { id: string; tur: string; konu: string; toplam: number; gonderilen: number; hatali: number; durum: string; kim: string | null; createdAt: string; teslim: number; acildi: number; tiklandi: number; geriDondu: number };
 type WaUye = { id: string; name: string; phone: string; gonderildi: boolean; planDonem: string | null };
 
@@ -23,6 +23,8 @@ function waUrl(phone: string, text: string) {
 export default function UyeGonderim() {
   const [tur, setTur] = useState<"duyuru" | "kampanya">("duyuru");
   const [kampanyaId, setKampanyaId] = useState("");
+  // 18 Kasım: daha önce gönderilmiş kampanyayı hatırlatma olarak yeniden gönderme (aynı gün aynı kişiye bir kez)
+  const [tekrar, setTekrar] = useState(false);
   const [o, setO] = useState<Onizleme | null>(null);
   const [gecmis, setGecmis] = useState<Gecmis[]>([]);
   const [kampanyalar, setKampanyalar] = useState<Kampanya[]>([]);
@@ -33,7 +35,7 @@ export default function UyeGonderim() {
   const [mesaj, setMesaj] = useState<{ tip: "ok" | "hata"; metin: string } | null>(null);
 
   const yukle = useCallback(async () => {
-    const q = new URLSearchParams({ tur, ...(kampanyaId ? { kampanya: kampanyaId } : {}) });
+    const q = new URLSearchParams({ tur, ...(kampanyaId ? { kampanya: kampanyaId } : {}), ...(tekrar ? { tekrar: "1" } : {}) });
     const r = await fetch(`/api/admin/uyeler/gonder?${q}`);
     const d = await r.json().catch(() => ({}));
     if (!r.ok) return setMesaj({ tip: "hata", metin: d.error || "Yüklenemedi." });
@@ -41,7 +43,7 @@ export default function UyeGonderim() {
     setGecmis(d.gecmis);
     setKampanyalar(d.kampanyalar);
     setWa(d.whatsapp ?? []);
-  }, [tur, kampanyaId]);
+  }, [tur, kampanyaId, tekrar]);
   useEffect(() => {
     const t = setTimeout(yukle, 0);
     return () => clearTimeout(t);
@@ -54,7 +56,7 @@ export default function UyeGonderim() {
   );
 
   const post = async (body: Record<string, unknown>) => {
-    const r = await fetch("/api/admin/uyeler/gonder", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ tur, kampanyaId, ...body }) });
+    const r = await fetch("/api/admin/uyeler/gonder", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ tur, kampanyaId, tekrar, ...body }) });
     return { r, d: await r.json().catch(() => ({})) };
   };
   const denemeGonder = async () => {
@@ -90,12 +92,12 @@ export default function UyeGonderim() {
 
       <div className="flex flex-wrap items-center gap-2">
         {(["duyuru", "kampanya"] as const).map((t) => (
-          <button key={t} type="button" onClick={() => { setTur(t); setO(null); setMesaj(null); }} className={`${btn} border ${tur === t ? "bg-primary text-white border-primary" : "bg-surface-container-lowest border-outline-variant/25 text-on-surface-variant"}`}>
+          <button key={t} type="button" onClick={() => { setTur(t); setO(null); setMesaj(null); setTekrar(false); }} className={`${btn} border ${tur === t ? "bg-primary text-white border-primary" : "bg-surface-container-lowest border-outline-variant/25 text-on-surface-variant"}`}>
             {t === "duyuru" ? "Hesap duyurusu (tüm üyeler)" : "Kampanya (izinli üyeler)"}
           </button>
         ))}
         {tur === "kampanya" && (
-          <select value={kampanyaId} onChange={(e) => setKampanyaId(e.target.value)} className="rounded-xl border border-outline-variant/25 bg-surface-container-lowest px-3 py-2 text-xs">
+          <select value={kampanyaId} onChange={(e) => (setKampanyaId(e.target.value), setTekrar(false))} className="rounded-xl border border-outline-variant/25 bg-surface-container-lowest px-3 py-2 text-xs">
             <option value="">Kampanya seçin</option>
             {yayinda.map((x) => <option key={x.id} value={x.id}>{x.baslik.replace(/\*/g, "")}</option>)}
           </select>
@@ -119,8 +121,14 @@ export default function UyeGonderim() {
                 <li>Toplam üye: {o.toplamUye}</li>
                 {tur === "kampanya" && <li>E-posta izni olmayan (gönderilmez): {o.izinsiz}</li>}
                 <li>Adresi geçersiz ya da spam bildirmiş (atlanır): {o.engelli}</li>
-                <li>Bu e-postayı daha önce almış (atlanır): {o.zatenGitti}</li>
+                <li>{tekrar ? "Bugün hatırlatmayı zaten almış (atlanır)" : "Bu e-postayı daha önce almış (atlanır)"}: {o.zatenGitti}</li>
               </ul>
+              {tur === "kampanya" && (o.ilkGitti > 0 || tekrar) && (
+                <label className="mt-3 flex items-start gap-2 rounded-lg bg-surface-container-low p-2.5 text-[11px] text-on-surface-variant">
+                  <input type="checkbox" checked={tekrar} onChange={(e) => setTekrar(e.target.checked)} className="mt-0.5" />
+                  <span><b className="text-on-surface">Hatırlatma olarak tekrar gönder.</b> Kampanya {o.ilkGitti} kişiye gitmişti; işaretlerseniz daha önce alanlara da gider, konu başına &quot;Hatırlatma:&quot; eklenir.</span>
+                </label>
+              )}
             </div>
             <div className="rounded-2xl border border-outline-variant/15 bg-surface-container-lowest p-5 space-y-2">
               <p className="text-xs font-bold">1. Kendinize deneme gönderin</p>

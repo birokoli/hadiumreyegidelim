@@ -20,6 +20,7 @@ export default function Daha() {
       { ikon: "eposta", baslik: "Müşteri havuzu", yol: "/talepler?sekme=havuz", yetki: "orders" },
       { ikon: "kullanicilar", baslik: "Üyeler", yol: "/uyeler", yetki: "orders" },
       { ikon: "kampanya2", baslik: "Üye kampanyaları", yol: "/pazarlama/uye-kampanyalari", yetki: "orders" },
+      { ikon: "eposta", baslik: "Bülten ve e-posta", yol: "/pazarlama/bulten", yetki: "marketing" },
       { ikon: "paket", baslik: "Siparişler", yol: "/site/siparisler", yetki: "orders" },
       { ikon: "kullanici", baslik: "CRM", yol: "/talepler?sekme=crm", yetki: "orders" },
       { ikon: "dosya", baslik: "Satış masası", yol: "/satis", yetki: "orders" },

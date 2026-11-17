@@ -7,6 +7,22 @@ import { prisma } from "@/lib/prisma";
 import { listDosyalar } from "@/lib/satis";
 import { genelToplam, gunKaldi, odenen, onaylandiMi } from "@/lib/satis/ortak";
 import { bildir, kisaAd } from "./bildir";
+import { hosgeldinCalistir } from "@/lib/hosgeldin";
+
+/** Bülten 2 haftada bir elle gönderilir (18 Kasım, kullanıcı seçimi); son paket bülteninin üstünden 14 gün geçtiyse hatırlatır. */
+const BULTEN_ARALIK_GUN = 14;
+export async function bultenHatirlatma(simdi = new Date()): Promise<number> {
+  const [son, hatirlatma] = await Promise.all([
+    prisma.$queryRawUnsafe<{ t: Date }[]>(`SELECT MAX("createdAt") AS "t" FROM "UyeGonderim" WHERE "tur" = 'paket'`).then((r) => r[0]?.t ?? null).catch(() => null),
+    prisma.setting.findUnique({ where: { key: "BULTEN_HATIRLATMA_SON" } }).catch(() => null),
+  ]);
+  const gun = (d: Date | string) => (simdi.getTime() - new Date(d).getTime()) / 86_400_000;
+  if (son && gun(son) < BULTEN_ARALIK_GUN) return 0;
+  if (hatirlatma?.value && gun(hatirlatma.value) < BULTEN_ARALIK_GUN) return 0;
+  await bildir("bulten", { baslik: "Bülten zamanı", govde: son ? `Son paket bülteni ${Math.floor(gun(son))} gün önce gitti.` : "Henüz paket bülteni gönderilmedi.", yol: "/pazarlama/bulten" });
+  await prisma.setting.upsert({ where: { key: "BULTEN_HATIRLATMA_SON" }, update: { value: simdi.toISOString() }, create: { key: "BULTEN_HATIRLATMA_SON", value: simdi.toISOString() } });
+  return 1;
+}
 
 export async function hatirlatmalar(): Promise<number> {
   const dosyalar = await listDosyalar();
@@ -38,5 +54,12 @@ export async function gunlukHatirlatma(simdi = new Date()) {
   if (Number(p("hour")) < 9) return null;
   const key = `MOBIL_HATIRLATMA:${p("year")}-${p("month")}-${p("day")}`;
   const ilk = await prisma.setting.create({ data: { key, value: simdi.toISOString() } }).then(() => true).catch(() => false);
-  return ilk ? hatirlatmalar() : null;
+  if (!ilk) return null;
+  // Her biri ayrı: biri hata verirse diğerleri yine çalışır
+  const [dosya, hosgeldin, bulten] = await Promise.all([
+    hatirlatmalar().catch((e) => (console.error("[hatirlatma] dosya", e), 0)),
+    hosgeldinCalistir(simdi).catch((e) => (console.error("[hatirlatma] hoş geldin serisi", e), 0)),
+    bultenHatirlatma(simdi).catch((e) => (console.error("[hatirlatma] bülten", e), 0)),
+  ]);
+  return { dosya, hosgeldin, bulten };
 }

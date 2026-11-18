@@ -25,6 +25,7 @@ export const HUBS: Record<HubKey, TabItem[]> = {
     { label: "Talepler ve iletişim", href: "/admin/contact" },
     { label: "Müşteri havuzu", href: "/admin/musteri-havuzu" },
     { label: "Üyeler", href: "/admin/uyeler" },
+    { label: "Bülten ve e-posta", href: "/admin/uyeler/paket-bulteni" },
     { label: "Üye kampanyaları", href: "/admin/uye-kampanyalari" },
     { label: "Siparişler", href: "/admin/orders" },
     { label: "CRM", href: "/admin/crm" },
@@ -76,13 +77,15 @@ export default function HubTabs({ hub }: { hub: HubKey }) {
   const tabs = HUBS[hub] || [];
 
   if (tabs.length === 0) return null;
+  const eslesme = (tab: TabItem) =>
+    pathname === tab.href || (!tab.exact && pathname.startsWith(tab.href + "/")) ? tab.href.length : -1;
+  const enIyi = Math.max(-1, ...tabs.map(eslesme));
 
   return (
     <nav className="mb-6 flex items-center gap-1.5 overflow-x-auto whitespace-nowrap border-b border-outline-variant/20 pb-2 text-xs font-medium">
       {tabs.map((tab) => {
-        const isActive = tab.exact
-          ? pathname === tab.href
-          : pathname === tab.href || pathname.startsWith(tab.href + "/");
+        // En uzun eşleşen sekme kazanır: /admin/uyeler/paket-bulteni'de "Üyeler" değil "Bülten ve e-posta" seçili
+        const isActive = eslesme(tab) >= 0 && eslesme(tab) === enIyi;
 
         return (
           <Link

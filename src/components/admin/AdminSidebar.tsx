@@ -50,6 +50,12 @@ const menuGroups: { title: string; links: SidebarLink[] }[] = [
         permission: "orders",
       },
       {
+        href: "/admin/uyeler/paket-bulteni",
+        icon: "mail",
+        label: "Bülten ve E-posta",
+        permission: "orders",
+      },
+      {
         href: "/admin/satis",
         icon: "travel_explore",
         label: "Satış Masası",

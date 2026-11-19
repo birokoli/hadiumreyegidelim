@@ -7,6 +7,7 @@ import "react-quill-new/dist/quill.snow.css";
 import { marked } from "marked";
 import { useAdminContext } from "@/components/admin/AdminContext";
 import BlogEngine from "@/components/admin/content/BlogEngine";
+import BlogTakvim from "@/components/admin/content/BlogTakvim";
 
 import HubTabs from "@/components/admin/HubTabs";
 
@@ -1528,6 +1529,8 @@ export default function ContentPage() {
         </section>
       )}
 
+      {!showAdd && <BlogTakvim posts={posts} onEdit={(p) => { handleEdit(p); window.scrollTo({ top: 0, behavior: "smooth" }); }} />}
+
       {/* Existing Blogs Table */}
       <div className="bg-surface-container-lowest rounded-2xl overflow-hidden shadow-[0px_32px_64px_-12px_rgba(0,55,129,0.06)] border border-outline-variant/10">
         <div className="p-6 border-b border-outline-variant/10 bg-surface-container-low/30 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
@@ -1600,7 +1603,12 @@ export default function ContentPage() {
                   )}
                 </td>
                 <td className="px-8 py-6 text-sm text-on-surface-variant font-medium">
-                  {new Date(post.createdAt).toLocaleDateString('tr-TR')}
+                  {!post.published && post.scheduledAt ? (
+                    <span className="text-[#8a6420] font-bold" title="Zamanlanmış yayın tarihi">
+                      <span className="material-symbols-outlined text-[14px] align-middle mr-1">schedule</span>
+                      {new Date(post.scheduledAt).toLocaleString('tr-TR', { timeZone: 'Europe/Istanbul', day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                    </span>
+                  ) : new Date(post.createdAt).toLocaleDateString('tr-TR')}
                 </td>
                 <td className="px-8 py-6 text-right">
                   <div className="flex items-center justify-end gap-2">

@@ -6,7 +6,7 @@ import { useMemo, useState } from "react";
 // Yayındaki yazı: createdAt (zamanlanan yazı yayına girince cron createdAt'i yayın anı yapar, scheduledAt'i siler).
 // Zamanlanmış yazı: published=false ve scheduledAt dolu.
 
-type Post = { id: string; title: string; slug: string; published: boolean; createdAt: string; scheduledAt?: string | null };
+export type Post = { id: string; title: string; slug: string; published: boolean; createdAt: string; scheduledAt?: string | null };
 type Olay = { post: Post; tur: "yayinda" | "zamanli"; saat: string };
 
 const AYLAR = ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"];
@@ -16,10 +16,33 @@ const TZ = "Europe/Istanbul";
 const gunAnahtari = (d: Date) => d.toLocaleDateString("en-CA", { timeZone: TZ }); // YYYY-MM-DD
 const saatYaz = (d: Date) => d.toLocaleTimeString("tr-TR", { timeZone: TZ, hour: "2-digit", minute: "2-digit" });
 const anahtar = (y: number, m: number, g: number) => `${y}-${String(m + 1).padStart(2, "0")}-${String(g).padStart(2, "0")}`;
-const trTarih = (k: string) => {
-  const [y, m, g] = k.split("-").map(Number);
+export const trTarih = (k: string) => {
+  const [, m, g] = k.split("-").map(Number);
   return `${g} ${AYLAR[m - 1]}`;
 };
+
+// Yazının takvimde düştüğü gün (Türkiye saati); tarihsiz taslak için null
+export function yaziGunu(p: Post): string | null {
+  const t = p.published ? p.createdAt : p.scheduledAt;
+  if (!t) return null;
+  const d = new Date(t);
+  return isNaN(d.getTime()) ? null : gunAnahtari(d);
+}
+
+// Bugünden itibaren yazısı olmayan ilk N gün (YYYY-MM-DD). 09:00 geçtiyse bugün atlanır
+// (zamanlanan saat geçmiş olur, yazı hemen yayına girerdi). haricId: düzenlenen yazının kendi günü boş sayılır.
+export function bosGunler(posts: Post[], adet = 3, haricId?: string | null): string[] {
+  const dolu = new Set(posts.filter((p) => p.id !== haricId).map(yaziGunu).filter(Boolean) as string[]);
+  const bugun = gunAnahtari(new Date());
+  const saat = Number(new Date().toLocaleString("en-GB", { timeZone: TZ, hour: "2-digit", hour12: false }));
+  const [y, m, g] = bugun.split("-").map(Number);
+  const sonuc: string[] = [];
+  for (let i = saat >= 9 ? 1 : 0; i < 400 && sonuc.length < adet; i++) {
+    const k = new Date(Date.UTC(y, m - 1, g + i, 12)).toISOString().slice(0, 10);
+    if (!dolu.has(k)) sonuc.push(k);
+  }
+  return sonuc;
+}
 
 export default function BlogTakvim({ posts, onEdit }: { posts: Post[]; onEdit: (post: Post) => void }) {
   const bugun = gunAnahtari(new Date());

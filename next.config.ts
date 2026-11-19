@@ -18,6 +18,28 @@ const nextConfig: NextConfig = {
     staticGenerationMinPagesPerWorker: 40,
     staticGenerationRetryCount: 2,
   },
+  // 19 Kasım: müşteriye gönderilen kişisel bağlantılar ve hesap alanları hiçbir koşulda indekslenmez.
+  // Sayfalardaki noindex etiketine ek olarak başlıkla da bildirilir (yönlendirmeler ve hata sayfaları dahil).
+  // robots.txt'te engellenmez: engellenirse Google noindex'i göremez ve bağlantı başka yerde geçerse adres dizine girebilir.
+  async headers() {
+    const gizli = [
+      "/t/:path*", // teklif onay bağlantısı
+      "/v/:path*", // voucher
+      "/yorum/:path*", // yorum isteği
+      "/teklif-onizleme",
+      "/paketler/:slug/checkout",
+      "/profil",
+      "/profil/:path*",
+      "/influencer",
+      "/influencer/:path*",
+      "/r/:path*", // influencer takip bağlantısı
+      "/c/:path*", // kampanya takip bağlantısı
+      "/admin",
+      "/admin/:path*",
+      "/api/:path*",
+    ];
+    return gizli.map((source) => ({ source, headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }] }));
+  },
   async redirects() {
     return [
       {

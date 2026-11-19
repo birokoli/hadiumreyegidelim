@@ -71,6 +71,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   hotelUrls.push({ url: `${baseUrl}/say-kitapcigi`, changeFrequency: "monthly" as const, priority: 0.6 });
   hotelUrls.push({ url: `${baseUrl}/dua-haritasi`, changeFrequency: "monthly" as const, priority: 0.6 });
   for (const p of ["/sss", "/grup-talepleri", "/isletme-kaydi"]) hotelUrls.push({ url: `${baseUrl}${p}`, changeFrequency: "monthly" as const, priority: 0.6 });
+  // 19 Kasım: indekslenebilir ama haritada olmayan sayfalar (site taraması). Yeni herkese açık sayfa eklenince buraya da ekle.
+  hotelUrls.push({ url: `${baseUrl}/ramazan-umresi-paketi`, changeFrequency: "weekly" as const, priority: 0.95 });
+  for (const p of ["/gizli-mucevher/kuba", "/kesifler/hendek-turu"]) hotelUrls.push({ url: `${baseUrl}${p}`, changeFrequency: "monthly" as const, priority: 0.6 });
   if (hotelUrls.length > 1) hotelUrls.unshift({ url: `${baseUrl}/oteller`, changeFrequency: "weekly" as const, priority: 0.7 });
 
   const latestPostDate = posts[0]?.updatedAt ? posts[0].updatedAt.toISOString().split("T")[0] : STATIC_REVIEWED;

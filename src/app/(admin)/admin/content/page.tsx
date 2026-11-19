@@ -1071,7 +1071,7 @@ export default function ContentPage() {
       {showAdd && (
         <form ref={formRef} onSubmit={handleCreate} noValidate className="space-y-5">
           {/* Üst çubuk: her zaman görünür */}
-          <div className="sticky top-0 z-30 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-3 bg-surface/95 backdrop-blur border-b border-outline-variant/20 flex items-center gap-3">
+          <div className="sticky top-14 z-30 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-3 bg-surface/95 backdrop-blur border-b border-outline-variant/20 flex items-center gap-3">
             <button type="button" onClick={editordenCik} className="p-2 rounded-lg hover:bg-surface-container text-primary shrink-0" title="Listeye dön (Esc)">
               <span className="material-symbols-outlined block">arrow_back</span>
             </button>
@@ -1273,7 +1273,7 @@ export default function ContentPage() {
 
                 {viewMode === "edit" ? (
                   <>
-                    <div className="bg-white rounded-xl border border-outline-variant/30 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/10 transition-all [&_.ql-toolbar]:sticky [&_.ql-toolbar]:top-[64px] [&_.ql-toolbar]:z-20 [&_.ql-toolbar]:bg-white [&_.ql-toolbar]:rounded-t-xl">
+                    <div className="bg-white rounded-xl border border-outline-variant/30 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/10 transition-all [&_.ql-toolbar]:sticky [&_.ql-toolbar]:top-[127px] [&_.ql-toolbar]:z-20 [&_.ql-toolbar]:bg-white [&_.ql-toolbar]:rounded-t-xl">
                       <ReactQuill
                         theme="snow"
                         value={thToTd(newPost.content)}
@@ -1571,7 +1571,7 @@ export default function ContentPage() {
             </div>
 
             {/* ── Sağ: sabit panel ── */}
-            <aside className="space-y-4 lg:sticky lg:top-[76px]">
+            <aside className="space-y-4 lg:sticky lg:top-[140px]">
               {/* Yayın */}
               <div className={`${kart} p-4 space-y-3`}>
                 <h4 className="font-bold text-sm text-primary">Yayın</h4>

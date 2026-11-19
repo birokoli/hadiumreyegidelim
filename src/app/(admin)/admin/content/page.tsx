@@ -1020,7 +1020,7 @@ export default function ContentPage() {
                                 title={`Yazısı olmayan ilk güne, ${trTarih(ilkBos)} 09:00'a zamanlar`}
                               >
                                 <span className="material-symbols-outlined text-[15px]">event_available</span>
-                                {zamanlananId === post.id ? "…" : `${trTarih(ilkBos)}'e zamanla`}
+                                {zamanlananId === post.id ? "…" : <>Zamanla · {trTarih(ilkBos)}</>}
                               </button>
                             )}
                             {zamanli && (

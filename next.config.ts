@@ -66,6 +66,11 @@ const nextConfig: NextConfig = {
       { source: "/blog/umre-vizesi-ne-kadar-ucret", destination: "/blog/bireysel-umre-vizesi-nasil-alinir", permanent: true },
       { source: "/blog/umre-vizesi-2026-ucreti-kac-tl", destination: "/blog/bireysel-umre-vizesi-nasil-alinir", permanent: true },
       { source: "/blog/2026-bireysel-umre-rehberi-nusuk-vize-surecleri", destination: "/blog/bireysel-umre-vizesi-nasil-alinir", permanent: true },
+      // 19 Kasım: Gizli Mücevher ve Keşifler sayfaları iptal edildi (kullanıcı kararı); en yakın konu Mekke-Medine yazıları
+      { source: "/gizli-mucevher", destination: "/blog/kategori/mekke-medine", permanent: true },
+      { source: "/gizli-mucevher/:path*", destination: "/blog/kategori/mekke-medine", permanent: true },
+      { source: "/kesifler", destination: "/blog/kategori/mekke-medine", permanent: true },
+      { source: "/kesifler/:path*", destination: "/blog/kategori/mekke-medine", permanent: true },
       { source: "/otel-rezervasyonu", destination: "/bireysel-umre", permanent: true },
       { source: "/tren-bileti-al", destination: "/bireysel-umre", permanent: true },
       // Yanlış slug prefix düzeltmesi: /blog/blog/:slug → /blog/:slug

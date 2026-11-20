@@ -70,8 +70,10 @@ export async function GET() {
   return NextResponse.json({
     guncellendi: new Date().toISOString(), ay: aylar[0], kdv: KDV_ORANI, kartPayi: KART_PAYI,
     oteller, araclar, aracTipleri: TRANSFER_VEHICLES, hizmetler, paketler: paketListe,
+    // Tek başına vize satış fiyatı (KDV hariç, $): katalogda vize kalemi yoksa site ayarı UYGULAMA_VIZE_USD; o da yoksa uygulamadaki yedek
+    vizeNet: Number(ayarlar.UYGULAMA_VIZE_USD) > 0 ? Number(ayarlar.UYGULAMA_VIZE_USD) : null,
     iletisim: { whatsapp: (ayarlar.WHATSAPP_NUMBER || "905404010038").replace(/\D/g, "") },
     // Uygulama ayarları (admin → site ayarları): en düşük desteklenen sürüm ve tek satırlık duyuru; tanımlı değilse boş
-    uygulama: { enAzSurum: ayarlar.UYGULAMA_EN_AZ_SURUM || null, duyuru: ayarlar.UYGULAMA_DUYURU || null },
+    uygulama: { enAzSurum: ayarlar.UYGULAMA_EN_AZ_SURUM || null, duyuru: ayarlar.UYGULAMA_DUYURU || null, iosUrl: ayarlar.UYGULAMA_IOS_URL || null, androidUrl: ayarlar.UYGULAMA_ANDROID_URL || null },
   }, { headers: { "Cache-Control": "public, s-maxage=300, stale-while-revalidate=600" } });
 }
